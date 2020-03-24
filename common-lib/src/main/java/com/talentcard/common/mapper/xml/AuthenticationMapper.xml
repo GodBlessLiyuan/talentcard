@@ -20,12 +20,12 @@
     <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
-    auth_id, user_id, political_status, education_background, school, fasmou_school,
-    major, education_certification, profssional_title, profssional_title_info, professional_qaulification,
+    auth_id, user_id, political_status, education_background, school, fasmou_school, 
+    major, education_certification, profssional_title, profssional_title_info, professional_qaulification, 
     professional_qaulification_info, `status`, create_time, upadate_time, dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from t_card_authentication
     where auth_id = #{authId,jdbcType=BIGINT}
@@ -35,17 +35,17 @@
     where auth_id = #{authId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.Authentication">
-    insert into t_card_authentication (auth_id, user_id, political_status,
-      education_background, school, fasmou_school,
-      major, education_certification, profssional_title,
-      profssional_title_info, professional_qaulification,
-      professional_qaulification_info, `status`, create_time,
+    insert into t_card_authentication (auth_id, user_id, political_status, 
+      education_background, school, fasmou_school, 
+      major, education_certification, profssional_title, 
+      profssional_title_info, professional_qaulification, 
+      professional_qaulification_info, `status`, create_time, 
       upadate_time, dr)
-    values (#{authId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{politicalStatus,jdbcType=TINYINT},
-      #{educationBackground,jdbcType=TINYINT}, #{school,jdbcType=CHAR}, #{fasmouSchool,jdbcType=TINYINT},
-      #{major,jdbcType=CHAR}, #{educationCertification,jdbcType=CHAR}, #{profssionalTitle,jdbcType=CHAR},
-      #{profssionalTitleInfo,jdbcType=CHAR}, #{professionalQaulification,jdbcType=CHAR},
-      #{professionalQaulificationInfo,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP},
+    values (#{authId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{politicalStatus,jdbcType=TINYINT}, 
+      #{educationBackground,jdbcType=TINYINT}, #{school,jdbcType=CHAR}, #{fasmouSchool,jdbcType=TINYINT}, 
+      #{major,jdbcType=CHAR}, #{educationCertification,jdbcType=CHAR}, #{profssionalTitle,jdbcType=CHAR}, 
+      #{profssionalTitleInfo,jdbcType=CHAR}, #{professionalQaulification,jdbcType=CHAR}, 
+      #{professionalQaulificationInfo,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{upadateTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.Authentication">
