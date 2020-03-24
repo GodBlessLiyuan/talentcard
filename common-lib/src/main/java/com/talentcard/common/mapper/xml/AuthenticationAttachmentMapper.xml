@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.AuthenticationAttachmentMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.AuthenticationAttachment">
+    <id column="card_authority_id" jdbcType="BIGINT" property="cardAuthorityId" />
+    <result column="auth_id" jdbcType="BIGINT" property="authId" />
+    <result column="professional_title_url" jdbcType="CHAR" property="professionalTitleUrl" />
+    <result column="profession_qualification" jdbcType="CHAR" property="professionQualification" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="upadate_time" jdbcType="TIMESTAMP" property="upadateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    card_authority_id, auth_id, professional_title_url, profession_qualification, create_time, 
+    upadate_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_card_authentication_attachment
+    where card_authority_id = #{cardAuthorityId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_card_authentication_attachment
+    where card_authority_id = #{cardAuthorityId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.AuthenticationAttachment">
+    insert into t_card_authentication_attachment (card_authority_id, auth_id, professional_title_url, 
+      profession_qualification, create_time, upadate_time
+      )
+    values (#{cardAuthorityId,jdbcType=BIGINT}, #{authId,jdbcType=BIGINT}, #{professionalTitleUrl,jdbcType=CHAR}, 
+      #{professionQualification,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{upadateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.AuthenticationAttachment">
+    insert into t_card_authentication_attachment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cardAuthorityId != null">
+        card_authority_id,
+      </if>
+      <if test="authId != null">
+        auth_id,
+      </if>
+      <if test="professionalTitleUrl != null">
+        professional_title_url,
+      </if>
+      <if test="professionQualification != null">
+        profession_qualification,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="upadateTime != null">
+        upadate_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cardAuthorityId != null">
+        #{cardAuthorityId,jdbcType=BIGINT},
+      </if>
+      <if test="authId != null">
+        #{authId,jdbcType=BIGINT},
+      </if>
+      <if test="professionalTitleUrl != null">
+        #{professionalTitleUrl,jdbcType=CHAR},
+      </if>
+      <if test="professionQualification != null">
+        #{professionQualification,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upadateTime != null">
+        #{upadateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.AuthenticationAttachment">
+    update t_card_authentication_attachment
+    <set>
+      <if test="authId != null">
+        auth_id = #{authId,jdbcType=BIGINT},
+      </if>
+      <if test="professionalTitleUrl != null">
+        professional_title_url = #{professionalTitleUrl,jdbcType=CHAR},
+      </if>
+      <if test="professionQualification != null">
+        profession_qualification = #{professionQualification,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upadateTime != null">
+        upadate_time = #{upadateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where card_authority_id = #{cardAuthorityId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.AuthenticationAttachment">
+    update t_card_authentication_attachment
+    set auth_id = #{authId,jdbcType=BIGINT},
+      professional_title_url = #{professionalTitleUrl,jdbcType=CHAR},
+      profession_qualification = #{professionQualification,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      upadate_time = #{upadateTime,jdbcType=TIMESTAMP}
+    where card_authority_id = #{cardAuthorityId,jdbcType=BIGINT}
+  </update>
+</mapper>
