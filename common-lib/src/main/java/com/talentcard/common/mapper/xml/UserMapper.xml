@@ -174,4 +174,9 @@
       dr = #{dr,jdbcType=TINYINT}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
+  <select id="test" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_card_user
+  </select>
 </mapper>

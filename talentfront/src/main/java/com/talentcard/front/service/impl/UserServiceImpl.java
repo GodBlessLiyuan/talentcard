@@ -19,7 +19,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public int insert(User user) {
-        userMapper.selectByPrimaryKey((long)1);
+        User use =userMapper.test();
 //        return userMapper.insertSelective(user);
         return 0;
     }
