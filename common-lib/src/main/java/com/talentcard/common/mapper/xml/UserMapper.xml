@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.User">
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="wechat_id" jdbcType="CHAR" property="wechatId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="identity_number" jdbcType="CHAR" property="identityNumber" />
+    <result column="passport_id" jdbcType="CHAR" property="passportId" />
+    <result column="industry" jdbcType="SMALLINT" property="industry" />
+    <result column="work_unit" jdbcType="CHAR" property="workUnit" />
+    <result column="phone" jdbcType="CHAR" property="phone" />
+    <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="upadate_time" jdbcType="TIMESTAMP" property="upadateTime" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, wechat_id, `name`, identity_number, passport_id, industry, work_unit, phone, 
+    gender, create_time, upadate_time, dr
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_card_user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_card_user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.User">
+    insert into t_card_user (user_id, wechat_id, `name`, 
+      identity_number, passport_id, industry, 
+      work_unit, phone, gender, 
+      create_time, upadate_time, dr
+      )
+    values (#{userId,jdbcType=BIGINT}, #{wechatId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
+      #{identityNumber,jdbcType=CHAR}, #{passportId,jdbcType=CHAR}, #{industry,jdbcType=SMALLINT}, 
+      #{workUnit,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{gender,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{upadateTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.User">
+    insert into t_card_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="wechatId != null">
+        wechat_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="identityNumber != null">
+        identity_number,
+      </if>
+      <if test="passportId != null">
+        passport_id,
+      </if>
+      <if test="industry != null">
+        industry,
+      </if>
+      <if test="workUnit != null">
+        work_unit,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="upadateTime != null">
+        upadate_time,
+      </if>
+      <if test="dr != null">
+        dr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="wechatId != null">
+        #{wechatId,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="identityNumber != null">
+        #{identityNumber,jdbcType=CHAR},
+      </if>
+      <if test="passportId != null">
+        #{passportId,jdbcType=CHAR},
+      </if>
+      <if test="industry != null">
+        #{industry,jdbcType=SMALLINT},
+      </if>
+      <if test="workUnit != null">
+        #{workUnit,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=CHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upadateTime != null">
+        #{upadateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.User">
+    update t_card_user
+    <set>
+      <if test="wechatId != null">
+        wechat_id = #{wechatId,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="identityNumber != null">
+        identity_number = #{identityNumber,jdbcType=CHAR},
+      </if>
+      <if test="passportId != null">
+        passport_id = #{passportId,jdbcType=CHAR},
+      </if>
+      <if test="industry != null">
+        industry = #{industry,jdbcType=SMALLINT},
+      </if>
+      <if test="workUnit != null">
+        work_unit = #{workUnit,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=CHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="upadateTime != null">
+        upadate_time = #{upadateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.User">
+    update t_card_user
+    set wechat_id = #{wechatId,jdbcType=CHAR},
+      `name` = #{name,jdbcType=CHAR},
+      identity_number = #{identityNumber,jdbcType=CHAR},
+      passport_id = #{passportId,jdbcType=CHAR},
+      industry = #{industry,jdbcType=SMALLINT},
+      work_unit = #{workUnit,jdbcType=CHAR},
+      phone = #{phone,jdbcType=CHAR},
+      gender = #{gender,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      upadate_time = #{upadateTime,jdbcType=TIMESTAMP},
+      dr = #{dr,jdbcType=TINYINT}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>

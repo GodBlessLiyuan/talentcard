@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.AuthorityMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.Authority">
+    <id column="card_authority_id" jdbcType="BIGINT" property="cardAuthorityId" />
+    <result column="card_type_id" jdbcType="BIGINT" property="cardTypeId" />
+    <result column="authority" jdbcType="TINYINT" property="authority" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    card_authority_id, card_type_id, authority, dr
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_card_authority
+    where card_authority_id = #{cardAuthorityId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_card_authority
+    where card_authority_id = #{cardAuthorityId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.Authority">
+    insert into t_card_authority (card_authority_id, card_type_id, authority, 
+      dr)
+    values (#{cardAuthorityId,jdbcType=BIGINT}, #{cardTypeId,jdbcType=BIGINT}, #{authority,jdbcType=TINYINT}, 
+      #{dr,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.Authority">
+    insert into t_card_authority
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cardAuthorityId != null">
+        card_authority_id,
+      </if>
+      <if test="cardTypeId != null">
+        card_type_id,
+      </if>
+      <if test="authority != null">
+        authority,
+      </if>
+      <if test="dr != null">
+        dr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cardAuthorityId != null">
+        #{cardAuthorityId,jdbcType=BIGINT},
+      </if>
+      <if test="cardTypeId != null">
+        #{cardTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="authority != null">
+        #{authority,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.Authority">
+    update t_card_authority
+    <set>
+      <if test="cardTypeId != null">
+        card_type_id = #{cardTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="authority != null">
+        authority = #{authority,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
+    </set>
+    where card_authority_id = #{cardAuthorityId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.Authority">
+    update t_card_authority
+    set card_type_id = #{cardTypeId,jdbcType=BIGINT},
+      authority = #{authority,jdbcType=TINYINT},
+      dr = #{dr,jdbcType=TINYINT}
+    where card_authority_id = #{cardAuthorityId,jdbcType=BIGINT}
+  </update>
+</mapper>
