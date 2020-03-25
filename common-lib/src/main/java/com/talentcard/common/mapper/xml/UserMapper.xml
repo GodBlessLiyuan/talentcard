@@ -15,6 +15,49 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
+<!--  这也是我写的，嘿嘿嘿。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。-->
+  <resultMap id="UserBOResultMap" type="com.talentcard.common.bo.UserBO">
+    <id column="user_user_id" jdbcType="BIGINT" property="userId" />
+    <result column="wechat_id" jdbcType="CHAR" property="wechatId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="identity_number" jdbcType="CHAR" property="identityNumber" />
+    <result column="passport_id" jdbcType="CHAR" property="passportId" />
+    <result column="industry" jdbcType="SMALLINT" property="industry" />
+    <result column="work_unit" jdbcType="CHAR" property="workUnit" />
+    <result column="phone" jdbcType="CHAR" property="phone" />
+    <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="user_create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="user_update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <collection property="userDetail" ofType="com.talentcard.common.pojo.AuthenticationPO">
+      <id column="auth_id" jdbcType="BIGINT" property="authId" />
+      <result column="authentication_user_id" jdbcType="BIGINT" property="userId" />
+      <result column="political_status" jdbcType="TINYINT" property="politicalStatus" />
+      <result column="education_background" jdbcType="TINYINT" property="educationBackground" />
+      <result column="school" jdbcType="CHAR" property="school" />
+      <result column="famous_school" jdbcType="TINYINT" property="famousSchool" />
+      <result column="major" jdbcType="CHAR" property="major" />
+      <result column="education_certification" jdbcType="CHAR" property="educationCertification" />
+      <result column="professional_title" jdbcType="CHAR" property="professionalTitle" />
+      <result column="professional_title_info" jdbcType="CHAR" property="professionalTitleInfo" />
+      <result column="professional_qualification" jdbcType="CHAR" property="professionalQualification" />
+      <result column="professional_qualification_info" jdbcType="CHAR" property="professionalQualificationInfo" />
+      <result column="status" jdbcType="TINYINT" property="status" />
+      <result column="authentication_create_time" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="authentication_update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </collection>
+  </resultMap>
+  <sql id="UserBO_List">
+    t_card_user.user_id as user_user_id, wechat_id, `name`, identity_number, passport_id, industry, work_unit, phone,
+    gender, t_card_user.create_time as user_create_time, t_card_user.update_time as user_update_time,
+
+    auth_id, t_card_authentication.user_id as authentication_user_id,
+    political_status, education_background, school, famous_school,
+    major, education_certification, professional_title, professional_title_info, professional_qualification,
+    professional_qualification_info, `status`,
+    t_card_authentication.create_time as authentication_create_time,
+    t_card_authentication.update_time as authentication_update_time
+  </sql>
+  <!--  下面就不是我写的了，嘿嘿嘿。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。-->
   <sql id="Base_Column_List">
     user_id, wechat_id, `name`, identity_number, passport_id, industry, work_unit, phone, 
     gender, create_time, update_time, dr
@@ -176,17 +219,31 @@
   </update>
 
 
-<!--  接下来是我写的。嘿嘿嘿。-->
+<!--  接下来是我写的。嘿嘿嘿。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。-->
   <insert id="insertReturnId" useGeneratedKeys="true" keyProperty="userId" parameterType="com.talentcard.common.pojo.UserPO">
-    insert into t_card_user (user_id, wechat_id, `name`,
+    insert into t_card_user
+    (user_id, wechat_id, `name`,
       identity_number, passport_id, industry,
       work_unit, phone, gender,
-      create_time, update_time, dr
-      )
-    values (#{userId,jdbcType=BIGINT}, #{wechatId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
+      create_time, update_time, dr)
+    values
+    (#{userId,jdbcType=BIGINT}, #{wechatId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
       #{identityNumber,jdbcType=CHAR}, #{passportId,jdbcType=CHAR}, #{industry,jdbcType=SMALLINT},
       #{workUnit,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{gender,jdbcType=TINYINT},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}
       )
   </insert>
+
+  <select id="findByWechat" resultMap="UserBOResultMap">
+    select
+    <include refid="UserBO_List" />
+    from t_card_user
+    left join
+    t_card_authentication
+    on t_card_user.user_id = t_card_authentication.user_id
+    where wechat_id = #{wechatId,jdbcType=CHAR}
+    and t_card_user.dr=1
+    and t_card_authentication.dr=1
+    and t_card_authentication.status=#{status,jdbcType=TINYINT}
+  </select>
 </mapper>

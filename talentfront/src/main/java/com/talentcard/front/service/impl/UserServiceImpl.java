@@ -1,5 +1,6 @@
 package com.talentcard.front.service.impl;
 
+import com.talentcard.common.bo.UserBO;
 import com.talentcard.common.mapper.UserMapper;
 import com.talentcard.common.pojo.UserPO;
 import com.talentcard.front.service.IUserService;
@@ -20,5 +21,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public int insert(UserPO userPO) {
         return userMapper.insertReturnId(userPO);
+    }
+
+    @Override
+    public UserBO findByWechat(String wechatId, Byte status) {
+        return userMapper.findByWechat(wechatId, status);
     }
 }
