@@ -45,6 +45,14 @@
             <version>3.5.2</version>
             <scope>compile</scope>
         </dependency>
+
+        <!--lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+            <version>1.18.4</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -56,6 +64,12 @@
                 </includes>
             </resource>
         </resources>
+
+        <!-- addClasspath 和 classpathPrefix表明
+        会把 lib 下的 jar作为第三方依赖加入 package 里，
+        所以我们需要把依赖拷贝到 lib 目录下，
+        我们可以使用maven-dependency-plugin:
+        https://www.dazhuanlan.com/2020/01/20/5e254ce58c5fa/-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -70,9 +84,7 @@
                         </manifest>
                     </archive>
                 </configuration>
-
             </plugin>
-
         </plugins>
     </build>
 

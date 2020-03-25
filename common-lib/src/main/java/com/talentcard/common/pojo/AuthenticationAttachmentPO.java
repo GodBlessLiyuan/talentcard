@@ -9,7 +9,7 @@ import lombok.Data;
  * @author 
  */
 @Data
-public class AuthenticationAttachment implements Serializable {
+public class AuthenticationAttachmentPO implements Serializable {
     /**
      * 人才卡权限表id
      */

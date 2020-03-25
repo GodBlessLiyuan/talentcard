@@ -9,7 +9,7 @@ import lombok.Data;
  * @author 
  */
 @Data
-public class Authentication implements Serializable {
+public class AuthenticationPO implements Serializable {
     /**
      * 认证表id
      */
@@ -38,7 +38,7 @@ public class Authentication implements Serializable {
     /**
      * 是否为双一流
      */
-    private Byte fasmouSchool;
+    private Byte famousSchool;
 
     /**
      * 专业
@@ -53,22 +53,22 @@ public class Authentication implements Serializable {
     /**
      * 职称类别
      */
-    private String profssionalTitle;
+    private String professionalTitle;
 
     /**
      * 职称信息
      */
-    private String profssionalTitleInfo;
+    private String professionalTitleInfo;
 
     /**
      * 职业资格
      */
-    private String professionalQaulification;
+    private String professionalQualification;
 
     /**
      * 职业资格信息
      */
-    private String professionalQaulificationInfo;
+    private String professionalQualificationInfo;
 
     /**
      * 状态 : 人才卡第一次申请状态
@@ -86,7 +86,7 @@ public class Authentication implements Serializable {
     /**
      * 更新时间
      */
-    private Date upadateTime;
+    private Date updateTime;
 
     /**
      * 是否删除

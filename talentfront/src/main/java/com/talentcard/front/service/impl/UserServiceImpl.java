@@ -1,7 +1,7 @@
 package com.talentcard.front.service.impl;
 
 import com.talentcard.common.mapper.UserMapper;
-import com.talentcard.common.pojo.User;
+import com.talentcard.common.pojo.UserPO;
 import com.talentcard.front.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +18,7 @@ public class UserServiceImpl implements IUserService {
     private UserMapper userMapper;
 
     @Override
-    public int insert(User user) {
-        userMapper.selectByPrimaryKey((long)1);
-//        return userMapper.insertSelective(user);
-        return 0;
+    public int insert(UserPO userPO) {
+        return userMapper.insertReturnId(userPO);
     }
 }

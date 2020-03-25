@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.AuthenticationAttachmentMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.AuthenticationAttachment">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.AuthenticationAttachmentPO">
     <id column="card_authority_id" jdbcType="BIGINT" property="cardAuthorityId" />
     <result column="auth_id" jdbcType="BIGINT" property="authId" />
     <result column="professional_title_url" jdbcType="CHAR" property="professionalTitleUrl" />
@@ -23,7 +23,7 @@
     delete from t_card_authentication_attachment
     where card_authority_id = #{cardAuthorityId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.AuthenticationAttachment">
+  <insert id="insert" parameterType="com.talentcard.common.pojo.AuthenticationAttachmentPO">
     insert into t_card_authentication_attachment (card_authority_id, auth_id, professional_title_url, 
       profession_qualification, create_time, upadate_time
       )
@@ -31,7 +31,7 @@
       #{professionQualification,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{upadateTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.AuthenticationAttachment">
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.AuthenticationAttachmentPO">
     insert into t_card_authentication_attachment
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="cardAuthorityId != null">
@@ -74,7 +74,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.AuthenticationAttachment">
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.AuthenticationAttachmentPO">
     update t_card_authentication_attachment
     <set>
       <if test="authId != null">
@@ -95,7 +95,7 @@
     </set>
     where card_authority_id = #{cardAuthorityId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.AuthenticationAttachment">
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.AuthenticationAttachmentPO">
     update t_card_authentication_attachment
     set auth_id = #{authId,jdbcType=BIGINT},
       professional_title_url = #{professionalTitleUrl,jdbcType=CHAR},

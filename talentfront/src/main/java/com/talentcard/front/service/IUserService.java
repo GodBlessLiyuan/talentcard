@@ -1,6 +1,6 @@
 package com.talentcard.front.service;
-import com.talentcard.common.pojo.User;
+import com.talentcard.common.pojo.UserPO;
 
 public interface IUserService {
-    int insert(User user);
+    int insert(UserPO userPO);
 }

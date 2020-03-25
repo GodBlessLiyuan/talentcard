@@ -44,13 +44,6 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>8.0.17</version>
             </dependency>
-
-            <!-- Common -->
-            <dependency>
-                <groupId>com.talent</groupId>
-                <artifactId>common-lib</artifactId>
-                <version>1.0.0</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -70,13 +63,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--lombok-->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-            <version>1.18.4</version>
-        </dependency>
         <!--MyBatis-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -94,7 +80,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.17</version>
         </dependency>
-
+        <!--aliJson-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
