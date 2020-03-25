@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.AuthorityMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.Authority">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.AuthorityPO">
     <id column="card_authority_id" jdbcType="BIGINT" property="cardAuthorityId" />
     <result column="card_type_id" jdbcType="BIGINT" property="cardTypeId" />
     <result column="authority" jdbcType="TINYINT" property="authority" />
@@ -20,13 +20,13 @@
     delete from t_card_authority
     where card_authority_id = #{cardAuthorityId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.Authority">
+  <insert id="insert" parameterType="com.talentcard.common.pojo.AuthorityPO">
     insert into t_card_authority (card_authority_id, card_type_id, authority, 
       dr)
     values (#{cardAuthorityId,jdbcType=BIGINT}, #{cardTypeId,jdbcType=BIGINT}, #{authority,jdbcType=TINYINT}, 
       #{dr,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.Authority">
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.AuthorityPO">
     insert into t_card_authority
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="cardAuthorityId != null">
@@ -57,7 +57,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.Authority">
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.AuthorityPO">
     update t_card_authority
     <set>
       <if test="cardTypeId != null">
@@ -72,7 +72,7 @@
     </set>
     where card_authority_id = #{cardAuthorityId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.Authority">
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.AuthorityPO">
     update t_card_authority
     set card_type_id = #{cardTypeId,jdbcType=BIGINT},
       authority = #{authority,jdbcType=TINYINT},

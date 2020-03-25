@@ -9,7 +9,7 @@ import lombok.Data;
  * @author 
  */
 @Data
-public class User implements Serializable {
+public class UserPO implements Serializable {
     /**
      * 用户id
      */
@@ -63,7 +63,7 @@ public class User implements Serializable {
     /**
      * 更新时间
      */
-    private Date upadateTime;
+    private Date updateTime;
 
     /**
      * 是否删除

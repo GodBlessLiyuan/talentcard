@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.MemberMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.Member">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.MemberPO">
     <id column="tc_id" jdbcType="BIGINT" property="tcId" />
     <result column="card_type_id" jdbcType="BIGINT" property="cardTypeId" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
@@ -23,7 +23,7 @@
     delete from t_card_member
     where tc_id = #{tcId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.Member">
+  <insert id="insert" parameterType="com.talentcard.common.pojo.MemberPO">
     insert into t_card_member (tc_id, card_type_id, user_id, 
       `status`, create_time, upadate_time, 
       dr)
@@ -31,7 +31,7 @@
       #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{upadateTime,jdbcType=TIMESTAMP}, 
       #{dr,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.Member">
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.MemberPO">
     insert into t_card_member
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="tcId != null">
@@ -80,7 +80,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.Member">
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.MemberPO">
     update t_card_member
     <set>
       <if test="cardTypeId != null">
@@ -104,7 +104,7 @@
     </set>
     where tc_id = #{tcId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.Member">
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.MemberPO">
     update t_card_member
     set card_type_id = #{cardTypeId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},

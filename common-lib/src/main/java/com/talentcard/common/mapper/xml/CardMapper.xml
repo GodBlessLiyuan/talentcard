@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.CardMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.Card">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.CardPO">
     <id column="card_type_id" jdbcType="BIGINT" property="cardTypeId" />
     <result column="card_name" jdbcType="CHAR" property="cardName" />
     <result column="card_title" jdbcType="CHAR" property="cardTitle" />
@@ -34,7 +34,7 @@
     delete from t_card_type
     where card_type_id = #{cardTypeId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.Card">
+  <insert id="insert" parameterType="com.talentcard.common.pojo.CardPO">
     insert into t_card_type (card_type_id, card_name, card_title, 
       initial_card_number, card_description, background_picture_url, 
       `status`, create_time, upadate_time, 
@@ -48,7 +48,7 @@
       #{brandName,jdbcType=CHAR}, #{color,jdbcType=CHAR}, #{bonusRule,jdbcType=CHAR}, 
       #{remaindTime,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.Card">
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CardPO">
     insert into t_card_type
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="cardTypeId != null">
@@ -151,7 +151,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.Card">
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.CardPO">
     update t_card_type
     <set>
       <if test="cardName != null">
@@ -202,7 +202,7 @@
     </set>
     where card_type_id = #{cardTypeId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.Card">
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.CardPO">
     update t_card_type
     set card_name = #{cardName,jdbcType=CHAR},
       card_title = #{cardTitle,jdbcType=CHAR},

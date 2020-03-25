@@ -8,7 +8,7 @@ import lombok.Data;
  * @author 
  */
 @Data
-public class Authority implements Serializable {
+public class AuthorityPO implements Serializable {
     /**
      * 人才卡权限表id
      */

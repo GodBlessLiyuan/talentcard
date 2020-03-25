@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.User">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.UserPO">
     <id column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="wechat_id" jdbcType="CHAR" property="wechatId" />
     <result column="name" jdbcType="CHAR" property="name" />
@@ -12,12 +12,12 @@
     <result column="phone" jdbcType="CHAR" property="phone" />
     <result column="gender" jdbcType="TINYINT" property="gender" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="upadate_time" jdbcType="TIMESTAMP" property="upadateTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
     user_id, wechat_id, `name`, identity_number, passport_id, industry, work_unit, phone, 
-    gender, create_time, upadate_time, dr
+    gender, create_time, update_time, dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -29,19 +29,19 @@
     delete from t_card_user
     where user_id = #{userId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.User">
+  <insert id="insert" parameterType="com.talentcard.common.pojo.UserPO">
     insert into t_card_user (user_id, wechat_id, `name`, 
       identity_number, passport_id, industry, 
       work_unit, phone, gender, 
-      create_time, upadate_time, dr
+      create_time, update_time, dr
       )
     values (#{userId,jdbcType=BIGINT}, #{wechatId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
       #{identityNumber,jdbcType=CHAR}, #{passportId,jdbcType=CHAR}, #{industry,jdbcType=SMALLINT}, 
       #{workUnit,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{gender,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{upadateTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.User">
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.UserPO">
     insert into t_card_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -74,8 +74,8 @@
       <if test="createTime != null">
         create_time,
       </if>
-      <if test="upadateTime != null">
-        upadate_time,
+      <if test="updateTime != null">
+        update_time,
       </if>
       <if test="dr != null">
         dr,
@@ -112,15 +112,15 @@
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="upadateTime != null">
-        #{upadateTime,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="dr != null">
         #{dr,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.User">
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.UserPO">
     update t_card_user
     <set>
       <if test="wechatId != null">
@@ -150,8 +150,8 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="upadateTime != null">
-        upadate_time = #{upadateTime,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="dr != null">
         dr = #{dr,jdbcType=TINYINT},
@@ -159,7 +159,7 @@
     </set>
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.User">
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.UserPO">
     update t_card_user
     set wechat_id = #{wechatId,jdbcType=CHAR},
       `name` = #{name,jdbcType=CHAR},
@@ -170,13 +170,23 @@
       phone = #{phone,jdbcType=CHAR},
       gender = #{gender,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      upadate_time = #{upadateTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
       dr = #{dr,jdbcType=TINYINT}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
-  <select id="test" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_card_user
-  </select>
+
+
+<!--  接下来是我写的。嘿嘿嘿。-->
+  <insert id="insertReturnId" useGeneratedKeys="true" keyProperty="userId" parameterType="com.talentcard.common.pojo.UserPO">
+    insert into t_card_user (user_id, wechat_id, `name`,
+      identity_number, passport_id, industry,
+      work_unit, phone, gender,
+      create_time, update_time, dr
+      )
+    values (#{userId,jdbcType=BIGINT}, #{wechatId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
+      #{identityNumber,jdbcType=CHAR}, #{passportId,jdbcType=CHAR}, #{industry,jdbcType=SMALLINT},
+      #{workUnit,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{gender,jdbcType=TINYINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}
+      )
+  </insert>
 </mapper>

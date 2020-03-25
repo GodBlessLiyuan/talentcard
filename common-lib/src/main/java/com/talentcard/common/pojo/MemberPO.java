@@ -9,7 +9,7 @@ import lombok.Data;
  * @author 
  */
 @Data
-public class Member implements Serializable {
+public class MemberPO implements Serializable {
     /**
      * 人才卡id
      */

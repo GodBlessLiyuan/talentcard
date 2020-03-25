@@ -9,7 +9,7 @@ import lombok.Data;
  * @author 
  */
 @Data
-public class Card implements Serializable {
+public class CardPO implements Serializable {
     /**
      * 会员卡类别编号
      */

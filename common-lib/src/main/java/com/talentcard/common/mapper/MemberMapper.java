@@ -1,6 +1,6 @@
 package com.talentcard.common.mapper;
 
-import com.talentcard.common.pojo.Member;
+import com.talentcard.common.pojo.MemberPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Mapper
 @Repository
-public interface MemberMapper extends BaseMapper<Member, Long> {
+public interface MemberMapper extends BaseMapper<MemberPO, Long> {
 }
