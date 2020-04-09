@@ -36,14 +36,14 @@ CREATE TABLE t_annex
 );
 
 
--- È¨ÏÞ±í
+-- 权限表
 CREATE TABLE t_authority
 (
 	authority_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	authority_name char(32),
 	PRIMARY KEY (authority_id),
 	UNIQUE (authority_id)
-) COMMENT = 'È¨ÏÞ±í';
+) COMMENT = '权限表';
 
 
 CREATE TABLE t_bank
@@ -69,8 +69,8 @@ CREATE TABLE t_card
 	description char(255) NOT NULL,
 	picture char(255) NOT NULL,
 	create_time datetime,
-	-- 1£ºÄ¬ÈÏ£»2£º·ÇÄ¬ÈÏ
-	status tinyint COMMENT '1£ºÄ¬ÈÏ£»2£º·ÇÄ¬ÈÏ',
+	-- 1：默认；2：非默认
+	status tinyint COMMENT '1：默认；2：非默认',
 	PRIMARY KEY (card_id),
 	UNIQUE (card_id)
 );
@@ -85,8 +85,8 @@ CREATE TABLE t_certification
 	pq_id bigint unsigned,
 	political char(128) NOT NULL,
 	create_time datetime,
-	-- 1£ºÒÑÍ¬Òâ£»2£ºÒÑ²µ»Ø£»3£º´ýÉóÅú
-	status tinyint DEFAULT 3 COMMENT '1£ºÒÑÍ¬Òâ£»2£ºÒÑ²µ»Ø£»3£º´ýÉóÅú',
+	-- 1：已同意；2：已驳回；3：待审批
+	status tinyint DEFAULT 3 COMMENT '1：已同意；2：已驳回；3：待审批',
 	PRIMARY KEY (cert_id),
 	UNIQUE (cert_id)
 );
@@ -114,8 +114,8 @@ CREATE TABLE t_education
 	talent_id bigint unsigned NOT NULL,
 	eduction char(32),
 	school char(255),
-	-- 1£ºÊÇ£»2£º·ñ
-	frist_class tinyint COMMENT '1£ºÊÇ£»2£º·ñ',
+	-- 1：是；2：否
+	frist_class tinyint COMMENT '1：是；2：否',
 	major char(255),
 	educ_picture char(255),
 	PRIMARY KEY (educ_id),
@@ -132,13 +132,13 @@ CREATE TABLE t_policy
 	cards char(255),
 	categories char(255),
 	educations char(255),
-	-- 1£ºÐèÒª£»2£º²»ÐèÒª
-	apply tinyint DEFAULT 2 COMMENT '1£ºÐèÒª£»2£º²»ÐèÒª',
+	-- 1：需要；2：不需要
+	apply tinyint DEFAULT 2 COMMENT '1：需要；2：不需要',
 	frequency char(32),
-	-- 1£ºÐèÒª£»2£º²»ÐèÒª£»
-	bank tinyint COMMENT '1£ºÐèÒª£»2£º²»ÐèÒª£»',
-	-- 1£ºÐèÒª£»2£º²»ÐèÒª£»
-	annex tinyint COMMENT '1£ºÐèÒª£»2£º²»ÐèÒª£»',
+	-- 1：需要；2：不需要；
+	bank tinyint COMMENT '1：需要；2：不需要；',
+	-- 1：需要；2：不需要；
+	annex tinyint COMMENT '1：需要；2：不需要；',
 	PRIMARY KEY (policy_id),
 	UNIQUE (policy_id)
 );
@@ -151,8 +151,8 @@ CREATE TABLE t_policy_apply
 	name char(64) NOT NULL,
 	policy_id bigint unsigned NOT NULL,
 	create_time datetime,
-	-- 1£ºÒÑÍ¬Òâ£»2£ºÒÑ²µ»Ø£»3£º´ýÉóÅú
-	status tinyint DEFAULT 3 COMMENT '1£ºÒÑÍ¬Òâ£»2£ºÒÑ²µ»Ø£»3£º´ýÉóÅú',
+	-- 1：已同意；2：已驳回；3：待审批
+	status tinyint DEFAULT 3 COMMENT '1：已同意；2：已驳回；3：待审批',
 	PRIMARY KEY (pa_id),
 	UNIQUE (pa_id)
 );
@@ -197,7 +197,7 @@ CREATE TABLE t_prof_title
 );
 
 
--- ½ÇÉ«±í
+-- 角色表
 CREATE TABLE t_role
 (
 	role_id bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -206,14 +206,14 @@ CREATE TABLE t_role
 	create_time date,
 	PRIMARY KEY (role_id),
 	UNIQUE (role_id)
-) COMMENT = '½ÇÉ«±í';
+) COMMENT = '角色表';
 
 
 CREATE TABLE t_role_authority
 (
 	ra_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	-- 0È¨ÏÞ¹Ø±Õ    1È¨ÏÞ¿ª·Å
-	status tinyint(4) DEFAULT 1 COMMENT '0È¨ÏÞ¹Ø±Õ    1È¨ÏÞ¿ª·Å',
+	-- 0权限关闭    1权限开放
+	status tinyint(4) DEFAULT 1 COMMENT '0权限关闭    1权限开放',
 	authority_id bigint unsigned NOT NULL,
 	role_id bigint unsigned NOT NULL,
 	PRIMARY KEY (ra_id),
@@ -227,8 +227,8 @@ CREATE TABLE t_talent
 (
 	talent_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	name char(64) NOT NULL,
-	-- 1£ºÄÐ£»2£ºÅ®
-	sex tinyint COMMENT '1£ºÄÐ£»2£ºÅ®',
+	-- 1：男；2：女
+	sex tinyint COMMENT '1：男；2：女',
 	id_card char(18) NOT NULL,
 	work_unit char(255) NOT NULL,
 	industry char(255) NOT NULL,
@@ -240,7 +240,7 @@ CREATE TABLE t_talent
 );
 
 
--- ÈË²Å¿¨ÓÃ»§»ù±¾ÐÅÏ¢±í
+-- 人才卡用户基本信息表
 CREATE TABLE t_user
 (
 	user_id bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -248,15 +248,15 @@ CREATE TABLE t_user
 	name char(32),
 	password char(32),
 	create_time date,
-	-- 0 Î´É¾³ý  1 ÒÑÉ¾³ý
-	dr tinyint(4) DEFAULT 0 COMMENT '0 Î´É¾³ý  1 ÒÑÉ¾³ý',
+	-- 0 未删除  1 已删除
+	dr tinyint(4) DEFAULT 0 COMMENT '0 未删除  1 已删除',
 	extra char(255),
 	role_id bigint unsigned NOT NULL,
 	PRIMARY KEY (user_id),
 	UNIQUE (user_id),
 	UNIQUE (username),
 	UNIQUE (role_id)
-) COMMENT = 'ÈË²Å¿¨ÓÃ»§»ù±¾ÐÅÏ¢±í';
+) COMMENT = '人才卡用户基本信息表';
 
 
 CREATE TABLE t_user_card
