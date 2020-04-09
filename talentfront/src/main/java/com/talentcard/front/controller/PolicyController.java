@@ -3,10 +3,7 @@ package com.talentcard.front.controller;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IPolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author: xiahui
@@ -20,8 +17,8 @@ public class PolicyController {
     @Autowired
     private IPolicyService service;
 
-    @PostMapping("applies")
-    public ResultVO applies(@RequestParam(value = "tid") Long tid) {
+    @RequestMapping("applies")
+    public ResultVO applies(@RequestParam(name = "tid", defaultValue = "0") Long tid) {
         return service.applies(tid);
     }
 }
