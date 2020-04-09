@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @MapperScan("com.talentcard.common.mapper")
 @SpringBootApplication
-public class TalentfrontApplication {
+public class FrontApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TalentfrontApplication.class, args);
+        SpringApplication.run(FrontApplication.class, args);
     }
 }
