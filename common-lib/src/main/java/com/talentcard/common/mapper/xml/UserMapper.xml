@@ -5,14 +5,14 @@
     <id column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="username" jdbcType="CHAR" property="username" />
     <result column="name" jdbcType="CHAR" property="name" />
-    <result column="password" jdbcType="BIGINT" property="password" />
-    <result column="cread_time" jdbcType="DATE" property="creadTime" />
+    <result column="password" jdbcType="CHAR" property="password" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
     <result column="extra" jdbcType="CHAR" property="extra" />
     <result column="role_id" jdbcType="BIGINT" property="roleId" />
   </resultMap>
   <sql id="Base_Column_List">
-    user_id, username, `name`, `password`, cread_time, dr, extra, role_id
+    user_id, username, `name`, `password`, create_time, dr, extra, role_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -26,10 +26,10 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.UserPO">
     insert into t_user (user_id, username, `name`, 
-      `password`, cread_time, dr, 
+      `password`, create_time, dr, 
       extra, role_id)
     values (#{userId,jdbcType=BIGINT}, #{username,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
-      #{password,jdbcType=BIGINT}, #{creadTime,jdbcType=DATE}, #{dr,jdbcType=TINYINT}, 
+      #{password,jdbcType=CHAR}, #{createTime,jdbcType=DATE}, #{dr,jdbcType=TINYINT}, 
       #{extra,jdbcType=CHAR}, #{roleId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.UserPO">
@@ -47,8 +47,8 @@
       <if test="password != null">
         `password`,
       </if>
-      <if test="creadTime != null">
-        cread_time,
+      <if test="createTime != null">
+        create_time,
       </if>
       <if test="dr != null">
         dr,
@@ -71,10 +71,10 @@
         #{name,jdbcType=CHAR},
       </if>
       <if test="password != null">
-        #{password,jdbcType=BIGINT},
+        #{password,jdbcType=CHAR},
       </if>
-      <if test="creadTime != null">
-        #{creadTime,jdbcType=DATE},
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
       </if>
       <if test="dr != null">
         #{dr,jdbcType=TINYINT},
@@ -97,10 +97,10 @@
         `name` = #{name,jdbcType=CHAR},
       </if>
       <if test="password != null">
-        `password` = #{password,jdbcType=BIGINT},
+        `password` = #{password,jdbcType=CHAR},
       </if>
-      <if test="creadTime != null">
-        cread_time = #{creadTime,jdbcType=DATE},
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=DATE},
       </if>
       <if test="dr != null">
         dr = #{dr,jdbcType=TINYINT},
@@ -118,11 +118,18 @@
     update t_user
     set username = #{username,jdbcType=CHAR},
       `name` = #{name,jdbcType=CHAR},
-      `password` = #{password,jdbcType=BIGINT},
-      cread_time = #{creadTime,jdbcType=DATE},
+      `password` = #{password,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=DATE},
       dr = #{dr,jdbcType=TINYINT},
       extra = #{extra,jdbcType=CHAR},
       role_id = #{roleId,jdbcType=BIGINT}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
+
+  <select id="queryByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where username = #{username,jdbcType=CHAR} and dr=1
+  </select>
 </mapper>

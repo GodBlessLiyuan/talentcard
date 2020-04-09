@@ -14,9 +14,9 @@ public class UserPO implements Serializable {
 
     private String name;
 
-    private Long password;
+    private String password;
 
-    private Date creadTime;
+    private Date createTime;
 
     /**
      * 1 未删除  2 已删除
@@ -53,20 +53,20 @@ public class UserPO implements Serializable {
         this.name = name;
     }
 
-    public Long getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(Long password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public Date getCreadTime() {
-        return creadTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreadTime(Date creadTime) {
-        this.creadTime = creadTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Byte getDr() {
@@ -109,7 +109,7 @@ public class UserPO implements Serializable {
             && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
-            && (this.getCreadTime() == null ? other.getCreadTime() == null : this.getCreadTime().equals(other.getCreadTime()))
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getDr() == null ? other.getDr() == null : this.getDr().equals(other.getDr()))
             && (this.getExtra() == null ? other.getExtra() == null : this.getExtra().equals(other.getExtra()))
             && (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()));
@@ -123,7 +123,7 @@ public class UserPO implements Serializable {
         result = prime * result + ((getUsername() == null) ? 0 : getUsername().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
-        result = prime * result + ((getCreadTime() == null) ? 0 : getCreadTime().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getDr() == null) ? 0 : getDr().hashCode());
         result = prime * result + ((getExtra() == null) ? 0 : getExtra().hashCode());
         result = prime * result + ((getRoleId() == null) ? 0 : getRoleId().hashCode());
@@ -140,7 +140,7 @@ public class UserPO implements Serializable {
         sb.append(", username=").append(username);
         sb.append(", name=").append(name);
         sb.append(", password=").append(password);
-        sb.append(", creadTime=").append(creadTime);
+        sb.append(", createTime=").append(createTime);
         sb.append(", dr=").append(dr);
         sb.append(", extra=").append(extra);
         sb.append(", roleId=").append(roleId);

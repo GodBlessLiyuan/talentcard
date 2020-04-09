@@ -9,13 +9,13 @@ DROP TABLE IF EXISTS t_bank;
 DROP TABLE IF EXISTS t_cert_approval;
 DROP TABLE IF EXISTS t_user_card;
 DROP TABLE IF EXISTS t_card;
-DROP TABLE IF EXISTS t_education;
-DROP TABLE IF EXISTS t_prof_quality;
-DROP TABLE IF EXISTS t_prof_title;
 DROP TABLE IF EXISTS t_certification;
+DROP TABLE IF EXISTS t_education;
 DROP TABLE IF EXISTS t_policy_approval;
 DROP TABLE IF EXISTS t_policy_apply;
 DROP TABLE IF EXISTS t_policy;
+DROP TABLE IF EXISTS t_prof_quality;
+DROP TABLE IF EXISTS t_prof_title;
 DROP TABLE IF EXISTS t_user;
 DROP TABLE IF EXISTS t_role;
 DROP TABLE IF EXISTS t_talent;
@@ -36,14 +36,14 @@ CREATE TABLE t_annex
 );
 
 
--- 权限表
+-- 脠篓脧脼卤铆
 CREATE TABLE t_authority
 (
 	authority_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	name char(32),
+	authority_name char(32),
 	PRIMARY KEY (authority_id),
 	UNIQUE (authority_id)
-) COMMENT = '权限表';
+) COMMENT = '脠篓脧脼卤铆';
 
 
 CREATE TABLE t_bank
@@ -69,8 +69,8 @@ CREATE TABLE t_card
 	description char(255) NOT NULL,
 	picture char(255) NOT NULL,
 	create_time datetime,
-	-- 1：默认；2：非默认
-	status tinyint COMMENT '1：默认；2：非默认',
+	-- 1拢潞脛卢脠脧拢禄2拢潞路脟脛卢脠脧
+	status tinyint COMMENT '1拢潞脛卢脠脧拢禄2拢潞路脟脛卢脠脧',
 	PRIMARY KEY (card_id),
 	UNIQUE (card_id)
 );
@@ -80,10 +80,13 @@ CREATE TABLE t_certification
 (
 	cert_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	talent_id bigint unsigned,
+	educ_id bigint unsigned,
+	pq_id bigint unsigned,
+	pq_id bigint unsigned,
 	political char(128) NOT NULL,
 	create_time datetime,
-	-- 1：已同意；2：已驳回；3：待审批
-	status tinyint DEFAULT 3 COMMENT '1：已同意；2：已驳回；3：待审批',
+	-- 1拢潞脪脩脥卢脪芒拢禄2拢潞脪脩虏碌禄脴拢禄3拢潞麓媒脡贸脜煤
+	status tinyint DEFAULT 3 COMMENT '1拢潞脪脩脥卢脪芒拢禄2拢潞脪脩虏碌禄脴拢禄3拢潞麓媒脡贸脜煤',
 	PRIMARY KEY (cert_id),
 	UNIQUE (cert_id)
 );
@@ -95,7 +98,7 @@ CREATE TABLE t_cert_approval
 	cert_id bigint unsigned NOT NULL,
 	create_time datetime,
 	type char(32),
-	user_id bigint unsigned,
+	user_id bigint unsigned NOT NULL,
 	card_id bigint unsigned NOT NULL,
 	category char(255),
 	result char(255),
@@ -108,16 +111,15 @@ CREATE TABLE t_cert_approval
 CREATE TABLE t_education
 (
 	educ_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	eduction int,
+	talent_id bigint unsigned NOT NULL,
+	eduction char(32),
 	school char(255),
-	-- 1：是；2：否
-	frist_class tinyint COMMENT '1：是；2：否',
+	-- 1拢潞脢脟拢禄2拢潞路帽
+	frist_class tinyint COMMENT '1拢潞脢脟拢禄2拢潞路帽',
 	major char(255),
 	educ_picture char(255),
-	cert_id bigint unsigned NOT NULL,
 	PRIMARY KEY (educ_id),
-	UNIQUE (educ_id),
-	UNIQUE (cert_id)
+	UNIQUE (educ_id)
 );
 
 
@@ -130,13 +132,13 @@ CREATE TABLE t_policy
 	cards char(255),
 	categories char(255),
 	educations char(255),
-	-- 1：需要；2：不需要
-	apply tinyint DEFAULT 2 COMMENT '1：需要；2：不需要',
+	-- 1拢潞脨猫脪陋拢禄2拢潞虏禄脨猫脪陋
+	apply tinyint DEFAULT 2 COMMENT '1拢潞脨猫脪陋拢禄2拢潞虏禄脨猫脪陋',
 	frequency char(32),
-	-- 1：需要；2：不需要；
-	bank tinyint COMMENT '1：需要；2：不需要；',
-	-- 1：需要；2：不需要；
-	annex tinyint COMMENT '1：需要；2：不需要；',
+	-- 1拢潞脨猫脪陋拢禄2拢潞虏禄脨猫脪陋拢禄
+	bank tinyint COMMENT '1拢潞脨猫脪陋拢禄2拢潞虏禄脨猫脪陋拢禄',
+	-- 1拢潞脨猫脪陋拢禄2拢潞虏禄脨猫脪陋拢禄
+	annex tinyint COMMENT '1拢潞脨猫脪陋拢禄2拢潞虏禄脨猫脪陋拢禄',
 	PRIMARY KEY (policy_id),
 	UNIQUE (policy_id)
 );
@@ -149,8 +151,8 @@ CREATE TABLE t_policy_apply
 	name char(64) NOT NULL,
 	policy_id bigint unsigned NOT NULL,
 	create_time datetime,
-	-- 1：已同意；2：已驳回；3：待审批
-	status tinyint DEFAULT 3 COMMENT '1：已同意；2：已驳回；3：待审批',
+	-- 1拢潞脪脩脥卢脪芒拢禄2拢潞脪脩虏碌禄脴拢禄3拢潞麓媒脡贸脜煤
+	status tinyint DEFAULT 3 COMMENT '1拢潞脪脩脥卢脪芒拢禄2拢潞脪脩虏碌禄脴拢禄3拢潞麓媒脡贸脜煤',
 	PRIMARY KEY (pa_id),
 	UNIQUE (pa_id)
 );
@@ -174,50 +176,50 @@ CREATE TABLE t_policy_approval
 CREATE TABLE t_prof_quality
 (
 	pq_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	category int,
+	talent_id bigint unsigned,
+	category char(64),
 	info char(255),
 	picture char(255),
-	cert_id bigint unsigned NOT NULL,
 	PRIMARY KEY (pq_id),
-	UNIQUE (pq_id),
-	UNIQUE (cert_id)
+	UNIQUE (pq_id)
 );
 
 
 CREATE TABLE t_prof_title
 (
-	pt_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	category int,
+	pq_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	talent_id bigint unsigned,
+	category char(64),
 	info char(255),
 	picture char(255),
-	cert_id bigint unsigned NOT NULL,
-	PRIMARY KEY (pt_id),
-	UNIQUE (pt_id),
-	UNIQUE (cert_id)
+	PRIMARY KEY (pq_id),
+	UNIQUE (pq_id)
 );
 
 
--- 角色表
+-- 陆脟脡芦卤铆
 CREATE TABLE t_role
 (
 	role_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	name char(32),
+	role_name char(32),
 	extra char(255),
 	create_time date,
 	PRIMARY KEY (role_id),
 	UNIQUE (role_id)
-) COMMENT = '角色表';
+) COMMENT = '陆脟脡芦卤铆';
 
 
 CREATE TABLE t_role_authority
 (
 	ra_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	-- 1权限开放; 2权限关闭    
-	status tinyint(4) DEFAULT 1 COMMENT '1权限开放; 2权限关闭    ',
+	-- 0脠篓脧脼鹿脴卤脮    1脠篓脧脼驴陋路脜
+	status tinyint(4) DEFAULT 1 COMMENT '0脠篓脧脼鹿脴卤脮    1脠篓脧脼驴陋路脜',
 	authority_id bigint unsigned NOT NULL,
 	role_id bigint unsigned NOT NULL,
 	PRIMARY KEY (ra_id),
-	UNIQUE (ra_id)
+	UNIQUE (ra_id),
+	UNIQUE (authority_id),
+	UNIQUE (role_id)
 );
 
 
@@ -225,10 +227,9 @@ CREATE TABLE t_talent
 (
 	talent_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	name char(64) NOT NULL,
-	-- 1：男；2：女
-	sex tinyint COMMENT '1：男；2：女',
+	-- 1拢潞脛脨拢禄2拢潞脜庐
+	sex tinyint COMMENT '1拢潞脛脨拢禄2拢潞脜庐',
 	id_card char(18) NOT NULL,
-	passport char(32),
 	work_unit char(255) NOT NULL,
 	industry char(255) NOT NULL,
 	phone char(32) NOT NULL,
@@ -239,22 +240,23 @@ CREATE TABLE t_talent
 );
 
 
--- 人才卡用户基本信息表
+-- 脠脣虏脜驴篓脫脙禄搂禄霉卤戮脨脜脧垄卤铆
 CREATE TABLE t_user
 (
 	user_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	username char(32),
 	name char(32),
-	password bigint(32),
-	cread_time date,
-	-- 1 未删除  2 已删除
-	dr tinyint COMMENT '1 未删除  2 已删除',
+	password char(32),
+	create_time date,
+	-- 0 脦麓脡戮鲁媒  1 脪脩脡戮鲁媒
+	dr tinyint(4) DEFAULT 0 COMMENT '0 脦麓脡戮鲁媒  1 脪脩脡戮鲁媒',
 	extra char(255),
 	role_id bigint unsigned NOT NULL,
 	PRIMARY KEY (user_id),
 	UNIQUE (user_id),
-	UNIQUE (username)
-) COMMENT = '人才卡用户基本信息表';
+	UNIQUE (username),
+	UNIQUE (role_id)
+) COMMENT = '脠脣虏脜驴篓脫脙禄搂禄霉卤戮脨脜脧垄卤铆';
 
 
 CREATE TABLE t_user_card
@@ -264,12 +266,6 @@ CREATE TABLE t_user_card
 	card_id bigint unsigned,
 	num char(32) NOT NULL,
 	create_time datetime,
-	-- 1 待激活
-	-- 2 激活中
-	-- 3 废弃
-	status tinyint COMMENT '1 待激活
-2 激活中
-3 废弃',
 	PRIMARY KEY (uc_id),
 	UNIQUE (uc_id),
 	UNIQUE (talent_id),
@@ -312,25 +308,9 @@ ALTER TABLE t_cert_approval
 ;
 
 
-ALTER TABLE t_education
-	ADD FOREIGN KEY (cert_id)
-	REFERENCES t_certification (cert_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE t_prof_quality
-	ADD FOREIGN KEY (cert_id)
-	REFERENCES t_certification (cert_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE t_prof_title
-	ADD FOREIGN KEY (cert_id)
-	REFERENCES t_certification (cert_id)
+ALTER TABLE t_certification
+	ADD FOREIGN KEY (educ_id)
+	REFERENCES t_education (educ_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
@@ -368,6 +348,22 @@ ALTER TABLE t_policy_approval
 ;
 
 
+ALTER TABLE t_certification
+	ADD FOREIGN KEY (pq_id)
+	REFERENCES t_prof_quality (pq_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_certification
+	ADD FOREIGN KEY (pq_id)
+	REFERENCES t_prof_title (pq_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE t_role_authority
 	ADD FOREIGN KEY (role_id)
 	REFERENCES t_role (role_id)
@@ -392,7 +388,31 @@ ALTER TABLE t_certification
 ;
 
 
+ALTER TABLE t_education
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE t_policy_apply
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_prof_quality
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_prof_title
 	ADD FOREIGN KEY (talent_id)
 	REFERENCES t_talent (talent_id)
 	ON UPDATE RESTRICT
@@ -403,22 +423,6 @@ ALTER TABLE t_policy_apply
 ALTER TABLE t_user_card
 	ADD FOREIGN KEY (talent_id)
 	REFERENCES t_talent (talent_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE t_cert_approval
-	ADD FOREIGN KEY (user_id)
-	REFERENCES t_user (user_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE t_policy_approval
-	ADD FOREIGN KEY (user_id)
-	REFERENCES t_user (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
