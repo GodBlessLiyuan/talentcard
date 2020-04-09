@@ -98,7 +98,7 @@ CREATE TABLE t_cert_approval
     user_id bigint unsigned,
     card_id bigint unsigned NOT NULL,
     category char(255),
-    result char(255),
+    result tinyint,
     opinion char(255),
     PRIMARY KEY (approval_id),
     UNIQUE (approval_id)
@@ -164,7 +164,7 @@ CREATE TABLE t_policy_approval
     create_time datetime,
     type char(32),
     user_id bigint unsigned,
-    result char(255),
+    result tinyint,
     opinion char(255),
     PRIMARY KEY (approval_id),
     UNIQUE (approval_id),

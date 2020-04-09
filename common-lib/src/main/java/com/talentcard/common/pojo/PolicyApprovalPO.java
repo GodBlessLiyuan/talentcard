@@ -18,7 +18,7 @@ public class PolicyApprovalPO implements Serializable {
 
     private Long userId;
 
-    private String result;
+    private Byte result;
 
     private String opinion;
 
@@ -64,11 +64,11 @@ public class PolicyApprovalPO implements Serializable {
         this.userId = userId;
     }
 
-    public String getResult() {
+    public Byte getResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(Byte result) {
         this.result = result;
     }
 

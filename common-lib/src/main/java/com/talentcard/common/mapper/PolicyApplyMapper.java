@@ -1,5 +1,6 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.pojo.PolicyApplyPO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,4 +18,12 @@ public interface PolicyApplyMapper extends BaseMapper<PolicyApplyPO, Long> {
      * @return
      */
     List<PolicyApplyPO> queryByTalentId(Long talentId);
+
+    /**
+     * 查询详细信息
+     *
+     * @param paid
+     * @return
+     */
+    List<PolicyApplyBO> queryDetail(Long paid);
 }

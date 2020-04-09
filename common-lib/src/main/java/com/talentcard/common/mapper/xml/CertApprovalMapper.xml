@@ -9,7 +9,7 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="card_id" jdbcType="BIGINT" property="cardId" />
     <result column="category" jdbcType="CHAR" property="category" />
-    <result column="result" jdbcType="CHAR" property="result" />
+    <result column="result" jdbcType="TINYINT" property="result" />
     <result column="opinion" jdbcType="CHAR" property="opinion" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -32,7 +32,7 @@
       `result`, opinion)
     values (#{approvalId,jdbcType=BIGINT}, #{certId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{type,jdbcType=CHAR}, #{userId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT}, #{category,jdbcType=CHAR}, 
-      #{result,jdbcType=CHAR}, #{opinion,jdbcType=CHAR})
+      #{result,jdbcType=TINYINT}, #{opinion,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CertApprovalPO">
     insert into t_cert_approval
@@ -88,7 +88,7 @@
         #{category,jdbcType=CHAR},
       </if>
       <if test="result != null">
-        #{result,jdbcType=CHAR},
+        #{result,jdbcType=TINYINT},
       </if>
       <if test="opinion != null">
         #{opinion,jdbcType=CHAR},
@@ -117,7 +117,7 @@
         category = #{category,jdbcType=CHAR},
       </if>
       <if test="result != null">
-        `result` = #{result,jdbcType=CHAR},
+        `result` = #{result,jdbcType=TINYINT},
       </if>
       <if test="opinion != null">
         opinion = #{opinion,jdbcType=CHAR},
@@ -133,7 +133,7 @@
       user_id = #{userId,jdbcType=BIGINT},
       card_id = #{cardId,jdbcType=BIGINT},
       category = #{category,jdbcType=CHAR},
-      `result` = #{result,jdbcType=CHAR},
+      `result` = #{result,jdbcType=TINYINT},
       opinion = #{opinion,jdbcType=CHAR}
     where approval_id = #{approvalId,jdbcType=BIGINT}
   </update>

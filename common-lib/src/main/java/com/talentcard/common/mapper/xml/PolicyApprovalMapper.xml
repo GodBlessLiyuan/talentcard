@@ -7,7 +7,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="type" jdbcType="CHAR" property="type" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="result" jdbcType="CHAR" property="result" />
+    <result column="result" jdbcType="TINYINT" property="result" />
     <result column="opinion" jdbcType="CHAR" property="opinion" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -28,7 +28,7 @@
       `type`, user_id, `result`, opinion
       )
     values (#{approvalId,jdbcType=BIGINT}, #{paId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{type,jdbcType=CHAR}, #{userId,jdbcType=BIGINT}, #{result,jdbcType=CHAR}, #{opinion,jdbcType=CHAR}
+      #{type,jdbcType=CHAR}, #{userId,jdbcType=BIGINT}, #{result,jdbcType=TINYINT}, #{opinion,jdbcType=CHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyApprovalPO">
@@ -73,7 +73,7 @@
         #{userId,jdbcType=BIGINT},
       </if>
       <if test="result != null">
-        #{result,jdbcType=CHAR},
+        #{result,jdbcType=TINYINT},
       </if>
       <if test="opinion != null">
         #{opinion,jdbcType=CHAR},
@@ -96,7 +96,7 @@
         user_id = #{userId,jdbcType=BIGINT},
       </if>
       <if test="result != null">
-        `result` = #{result,jdbcType=CHAR},
+        `result` = #{result,jdbcType=TINYINT},
       </if>
       <if test="opinion != null">
         opinion = #{opinion,jdbcType=CHAR},
@@ -110,7 +110,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       `type` = #{type,jdbcType=CHAR},
       user_id = #{userId,jdbcType=BIGINT},
-      `result` = #{result,jdbcType=CHAR},
+      `result` = #{result,jdbcType=TINYINT},
       opinion = #{opinion,jdbcType=CHAR}
     where approval_id = #{approvalId,jdbcType=BIGINT}
   </update>

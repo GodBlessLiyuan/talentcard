@@ -17,8 +17,25 @@ public class PolicyController {
     @Autowired
     private IPolicyService service;
 
+    /**
+     * 我的申请
+     *
+     * @param tid 人才ID
+     * @return
+     */
     @RequestMapping("applies")
-    public ResultVO applies(@RequestParam(name = "tid", defaultValue = "0") Long tid) {
+    public ResultVO applies(@RequestParam(name = "tid") Long tid) {
         return service.applies(tid);
+    }
+
+    /**
+     * 我的申请 - 详情
+     *
+     * @param paid 申请ID
+     * @return
+     */
+    @RequestMapping("detail")
+    public ResultVO detail(@RequestParam(name = "paid") Long paid) {
+        return service.detail(paid);
     }
 }

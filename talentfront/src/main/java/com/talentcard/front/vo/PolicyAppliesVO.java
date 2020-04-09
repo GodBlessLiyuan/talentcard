@@ -1,17 +1,17 @@
 package com.talentcard.front.vo;
 
 import com.talentcard.common.pojo.PolicyApplyPO;
+import com.talentcard.common.utils.DateUtil;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * @author: xiahui
  * @date: Created in 2020/4/9 18:45
- * @description: TODO
+ * @description: 我的申请
  * @version: 1.0
  */
 @Data
@@ -20,7 +20,7 @@ public class PolicyAppliesVO implements Serializable {
 
     private Long paId;
     private String name;
-    private Date applyTime;
+    private String applyDate;
     private String status;
 
     /**
@@ -46,7 +46,7 @@ public class PolicyAppliesVO implements Serializable {
     public static PolicyAppliesVO convert(PolicyApplyPO po) {
         PolicyAppliesVO vo = new PolicyAppliesVO();
         vo.setPaId(po.getPaId());
-        vo.setApplyTime(po.getCreateTime());
+        vo.setApplyDate(DateUtil.date2Str(po.getCreateTime(), DateUtil.YMD));
         vo.setName(po.getPolicyName());
         vo.setStatus(po.getStatus() == 1 ? "审核通过" : po.getStatus() == 2 ? "审核中" : po.getStatus() == 3 ? "审核驳回" : "无");
         return vo;

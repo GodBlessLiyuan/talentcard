@@ -1,5 +1,6 @@
 package com.talentcard.front.service.impl;
 
+import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.mapper.PolicyApplyMapper;
 import com.talentcard.common.pojo.PolicyApplyPO;
 import com.talentcard.common.vo.ResultVO;
@@ -8,7 +9,6 @@ import com.talentcard.front.vo.PolicyAppliesVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,5 +26,12 @@ public class PolicyServiceImpl implements IPolicyService {
     public ResultVO applies(Long tid) {
         List<PolicyApplyPO> pos = policyApplyMapper.queryByTalentId(tid);
         return new ResultVO<>(1000, PolicyAppliesVO.convert(pos));
+    }
+
+    @Override
+    public ResultVO detail(Long paid) {
+        List<PolicyApplyBO> bos = policyApplyMapper.queryDetail(paid);
+
+        return null;
     }
 }

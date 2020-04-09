@@ -22,7 +22,7 @@ public class CertApprovalPO implements Serializable {
 
     private String category;
 
-    private String result;
+    private Byte result;
 
     private String opinion;
 
@@ -84,11 +84,11 @@ public class CertApprovalPO implements Serializable {
         this.category = category;
     }
 
-    public String getResult() {
+    public Byte getResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(Byte result) {
         this.result = result;
     }
 

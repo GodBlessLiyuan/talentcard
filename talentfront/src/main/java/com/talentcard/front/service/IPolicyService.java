@@ -16,4 +16,12 @@ public interface IPolicyService {
      * @return
      */
     ResultVO applies(Long tid);
+
+    /**
+     * 我的申请 - 详情
+     *
+     * @param paid
+     * @return
+     */
+    ResultVO detail(Long paid);
 }

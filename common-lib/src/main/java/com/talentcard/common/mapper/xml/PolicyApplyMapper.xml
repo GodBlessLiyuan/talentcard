@@ -10,6 +10,31 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
+  <resultMap id="DetailResultMap" type="com.talentcard.common.bo.PolicyApplyBO">
+    <id column="pa_id" jdbcType="BIGINT" property="paId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="talent_name" jdbcType="CHAR" property="talentName" />
+    <result column="policy_id" jdbcType="BIGINT" property="policyId" />
+    <result column="policy_name" jdbcType="CHAR" property="policyName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="num" jdbcType="CHAR" property="num" />
+    <result column="bank_num" jdbcType="CHAR" property="bankNum" />
+    <result column="bank_name" jdbcType="CHAR" property="bankName" />
+    <collection property="annexes" ofType="com.talentcard.common.pojo.AnnexPO">
+      <id column="annex_id" jdbcType="BIGINT" property="annexId" />
+      <result column="name" jdbcType="CHAR" property="name" />
+      <result column="location" jdbcType="CHAR" property="location" />
+    </collection>
+    <collection property="approval" ofType="com.talentcard.common.pojo.PolicyApprovalPO">
+      <id column="approval_id" jdbcType="BIGINT" property="approvalId" />
+      <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="type" jdbcType="CHAR" property="type" />
+      <result column="user_id" jdbcType="BIGINT" property="userId" />
+      <result column="result" jdbcType="TINYINT" property="result" />
+      <result column="opinion" jdbcType="CHAR" property="opinion" />
+    </collection>
+  </resultMap>
   <sql id="Base_Column_List">
     pa_id, talent_id, talent_name, policy_id, policy_name, create_time, `status`
   </sql>
