@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.CertApprovalMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.CertApprovalPO">
+    <id column="approval_id" jdbcType="BIGINT" property="approvalId" />
+    <result column="cert_id" jdbcType="BIGINT" property="certId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="type" jdbcType="CHAR" property="type" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="card_id" jdbcType="BIGINT" property="cardId" />
+    <result column="category" jdbcType="CHAR" property="category" />
+    <result column="result" jdbcType="CHAR" property="result" />
+    <result column="opinion" jdbcType="CHAR" property="opinion" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    approval_id, cert_id, create_time, `type`, user_id, card_id, category, `result`, 
+    opinion
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_cert_approval
+    where approval_id = #{approvalId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_cert_approval
+    where approval_id = #{approvalId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.CertApprovalPO">
+    insert into t_cert_approval (approval_id, cert_id, create_time, 
+      `type`, user_id, card_id, category, 
+      `result`, opinion)
+    values (#{approvalId,jdbcType=BIGINT}, #{certId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{type,jdbcType=CHAR}, #{userId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT}, #{category,jdbcType=CHAR}, 
+      #{result,jdbcType=CHAR}, #{opinion,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CertApprovalPO">
+    insert into t_cert_approval
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="approvalId != null">
+        approval_id,
+      </if>
+      <if test="certId != null">
+        cert_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="cardId != null">
+        card_id,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="result != null">
+        `result`,
+      </if>
+      <if test="opinion != null">
+        opinion,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="approvalId != null">
+        #{approvalId,jdbcType=BIGINT},
+      </if>
+      <if test="certId != null">
+        #{certId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="cardId != null">
+        #{cardId,jdbcType=BIGINT},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=CHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=CHAR},
+      </if>
+      <if test="opinion != null">
+        #{opinion,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.CertApprovalPO">
+    update t_cert_approval
+    <set>
+      <if test="certId != null">
+        cert_id = #{certId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="cardId != null">
+        card_id = #{cardId,jdbcType=BIGINT},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=CHAR},
+      </if>
+      <if test="result != null">
+        `result` = #{result,jdbcType=CHAR},
+      </if>
+      <if test="opinion != null">
+        opinion = #{opinion,jdbcType=CHAR},
+      </if>
+    </set>
+    where approval_id = #{approvalId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.CertApprovalPO">
+    update t_cert_approval
+    set cert_id = #{certId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `type` = #{type,jdbcType=CHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      card_id = #{cardId,jdbcType=BIGINT},
+      category = #{category,jdbcType=CHAR},
+      `result` = #{result,jdbcType=CHAR},
+      opinion = #{opinion,jdbcType=CHAR}
+    where approval_id = #{approvalId,jdbcType=BIGINT}
+  </update>
+</mapper>

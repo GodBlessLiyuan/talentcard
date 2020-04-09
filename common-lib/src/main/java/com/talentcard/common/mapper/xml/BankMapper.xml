@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.BankMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.BankPO">
+    <id column="bank_id" jdbcType="BIGINT" property="bankId" />
+    <result column="num" jdbcType="CHAR" property="num" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="pa_id" jdbcType="BIGINT" property="paId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    bank_id, num, `name`, pa_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_bank
+    where bank_id = #{bankId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_bank
+    where bank_id = #{bankId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.BankPO">
+    insert into t_bank (bank_id, num, `name`, pa_id
+      )
+    values (#{bankId,jdbcType=BIGINT}, #{num,jdbcType=CHAR}, #{name,jdbcType=CHAR}, #{paId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.BankPO">
+    insert into t_bank
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bankId != null">
+        bank_id,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="paId != null">
+        pa_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bankId != null">
+        #{bankId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="paId != null">
+        #{paId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.BankPO">
+    update t_bank
+    <set>
+      <if test="num != null">
+        num = #{num,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="paId != null">
+        pa_id = #{paId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where bank_id = #{bankId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.BankPO">
+    update t_bank
+    set num = #{num,jdbcType=CHAR},
+      `name` = #{name,jdbcType=CHAR},
+      pa_id = #{paId,jdbcType=BIGINT}
+    where bank_id = #{bankId,jdbcType=BIGINT}
+  </update>
+</mapper>

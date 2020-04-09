@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.PolicyMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PolicyPO">
+    <id column="policy_id" jdbcType="BIGINT" property="policyId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="num" jdbcType="CHAR" property="num" />
+    <result column="description" jdbcType="CHAR" property="description" />
+    <result column="cards" jdbcType="CHAR" property="cards" />
+    <result column="categories" jdbcType="CHAR" property="categories" />
+    <result column="educations" jdbcType="CHAR" property="educations" />
+    <result column="apply" jdbcType="TINYINT" property="apply" />
+    <result column="frequency" jdbcType="CHAR" property="frequency" />
+    <result column="bank" jdbcType="TINYINT" property="bank" />
+    <result column="annex" jdbcType="TINYINT" property="annex" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    policy_id, `name`, num, description, cards, categories, educations, apply, frequency, 
+    bank, annex
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_policy
+    where policy_id = #{policyId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_policy
+    where policy_id = #{policyId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyPO">
+    insert into t_policy (policy_id, `name`, num, 
+      description, cards, categories, 
+      educations, apply, frequency, 
+      bank, annex)
+    values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR}, 
+      #{description,jdbcType=CHAR}, #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR}, 
+      #{educations,jdbcType=CHAR}, #{apply,jdbcType=TINYINT}, #{frequency,jdbcType=CHAR}, 
+      #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyPO">
+    insert into t_policy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="policyId != null">
+        policy_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="cards != null">
+        cards,
+      </if>
+      <if test="categories != null">
+        categories,
+      </if>
+      <if test="educations != null">
+        educations,
+      </if>
+      <if test="apply != null">
+        apply,
+      </if>
+      <if test="frequency != null">
+        frequency,
+      </if>
+      <if test="bank != null">
+        bank,
+      </if>
+      <if test="annex != null">
+        annex,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="policyId != null">
+        #{policyId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=CHAR},
+      </if>
+      <if test="cards != null">
+        #{cards,jdbcType=CHAR},
+      </if>
+      <if test="categories != null">
+        #{categories,jdbcType=CHAR},
+      </if>
+      <if test="educations != null">
+        #{educations,jdbcType=CHAR},
+      </if>
+      <if test="apply != null">
+        #{apply,jdbcType=TINYINT},
+      </if>
+      <if test="frequency != null">
+        #{frequency,jdbcType=CHAR},
+      </if>
+      <if test="bank != null">
+        #{bank,jdbcType=TINYINT},
+      </if>
+      <if test="annex != null">
+        #{annex,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PolicyPO">
+    update t_policy
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=CHAR},
+      </if>
+      <if test="cards != null">
+        cards = #{cards,jdbcType=CHAR},
+      </if>
+      <if test="categories != null">
+        categories = #{categories,jdbcType=CHAR},
+      </if>
+      <if test="educations != null">
+        educations = #{educations,jdbcType=CHAR},
+      </if>
+      <if test="apply != null">
+        apply = #{apply,jdbcType=TINYINT},
+      </if>
+      <if test="frequency != null">
+        frequency = #{frequency,jdbcType=CHAR},
+      </if>
+      <if test="bank != null">
+        bank = #{bank,jdbcType=TINYINT},
+      </if>
+      <if test="annex != null">
+        annex = #{annex,jdbcType=TINYINT},
+      </if>
+    </set>
+    where policy_id = #{policyId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PolicyPO">
+    update t_policy
+    set `name` = #{name,jdbcType=CHAR},
+      num = #{num,jdbcType=CHAR},
+      description = #{description,jdbcType=CHAR},
+      cards = #{cards,jdbcType=CHAR},
+      categories = #{categories,jdbcType=CHAR},
+      educations = #{educations,jdbcType=CHAR},
+      apply = #{apply,jdbcType=TINYINT},
+      frequency = #{frequency,jdbcType=CHAR},
+      bank = #{bank,jdbcType=TINYINT},
+      annex = #{annex,jdbcType=TINYINT}
+    where policy_id = #{policyId,jdbcType=BIGINT}
+  </update>
+</mapper>

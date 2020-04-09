@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.CertificationMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.CertificationPO">
+    <id column="cert_id" jdbcType="BIGINT" property="certId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="political" jdbcType="CHAR" property="political" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cert_id, talent_id, political, create_time, `status`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_certification
+    where cert_id = #{certId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_certification
+    where cert_id = #{certId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.CertificationPO">
+    insert into t_certification (cert_id, talent_id, political, 
+      create_time, `status`)
+    values (#{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{political,jdbcType=CHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CertificationPO">
+    insert into t_certification
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="certId != null">
+        cert_id,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="political != null">
+        political,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="certId != null">
+        #{certId,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="political != null">
+        #{political,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.CertificationPO">
+    update t_certification
+    <set>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="political != null">
+        political = #{political,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where cert_id = #{certId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.CertificationPO">
+    update t_certification
+    set talent_id = #{talentId,jdbcType=BIGINT},
+      political = #{political,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=TINYINT}
+    where cert_id = #{certId,jdbcType=BIGINT}
+  </update>
+</mapper>

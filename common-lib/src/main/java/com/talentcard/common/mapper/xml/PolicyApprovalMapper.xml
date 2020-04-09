@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.PolicyApprovalMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PolicyApprovalPO">
+    <id column="approval_id" jdbcType="BIGINT" property="approvalId" />
+    <result column="pa_id" jdbcType="BIGINT" property="paId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="type" jdbcType="CHAR" property="type" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="result" jdbcType="CHAR" property="result" />
+    <result column="opinion" jdbcType="CHAR" property="opinion" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    approval_id, pa_id, create_time, `type`, user_id, `result`, opinion
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_policy_approval
+    where approval_id = #{approvalId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_policy_approval
+    where approval_id = #{approvalId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyApprovalPO">
+    insert into t_policy_approval (approval_id, pa_id, create_time, 
+      `type`, user_id, `result`, opinion
+      )
+    values (#{approvalId,jdbcType=BIGINT}, #{paId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{type,jdbcType=CHAR}, #{userId,jdbcType=BIGINT}, #{result,jdbcType=CHAR}, #{opinion,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyApprovalPO">
+    insert into t_policy_approval
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="approvalId != null">
+        approval_id,
+      </if>
+      <if test="paId != null">
+        pa_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="result != null">
+        `result`,
+      </if>
+      <if test="opinion != null">
+        opinion,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="approvalId != null">
+        #{approvalId,jdbcType=BIGINT},
+      </if>
+      <if test="paId != null">
+        #{paId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=CHAR},
+      </if>
+      <if test="opinion != null">
+        #{opinion,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PolicyApprovalPO">
+    update t_policy_approval
+    <set>
+      <if test="paId != null">
+        pa_id = #{paId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="result != null">
+        `result` = #{result,jdbcType=CHAR},
+      </if>
+      <if test="opinion != null">
+        opinion = #{opinion,jdbcType=CHAR},
+      </if>
+    </set>
+    where approval_id = #{approvalId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PolicyApprovalPO">
+    update t_policy_approval
+    set pa_id = #{paId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `type` = #{type,jdbcType=CHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      `result` = #{result,jdbcType=CHAR},
+      opinion = #{opinion,jdbcType=CHAR}
+    where approval_id = #{approvalId,jdbcType=BIGINT}
+  </update>
+</mapper>

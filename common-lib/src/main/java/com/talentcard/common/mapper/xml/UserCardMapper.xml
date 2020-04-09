@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.UserCardMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.UserCardPO">
+    <id column="uc_id" jdbcType="BIGINT" property="ucId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="card_id" jdbcType="BIGINT" property="cardId" />
+    <result column="num" jdbcType="CHAR" property="num" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uc_id, talent_id, card_id, num, create_time, `status`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_card
+    where uc_id = #{ucId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_user_card
+    where uc_id = #{ucId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.UserCardPO">
+    insert into t_user_card (uc_id, talent_id, card_id, 
+      num, create_time, `status`
+      )
+    values (#{ucId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT}, 
+      #{num,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.UserCardPO">
+    insert into t_user_card
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ucId != null">
+        uc_id,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="cardId != null">
+        card_id,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ucId != null">
+        #{ucId,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="cardId != null">
+        #{cardId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.UserCardPO">
+    update t_user_card
+    <set>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="cardId != null">
+        card_id = #{cardId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where uc_id = #{ucId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.UserCardPO">
+    update t_user_card
+    set talent_id = #{talentId,jdbcType=BIGINT},
+      card_id = #{cardId,jdbcType=BIGINT},
+      num = #{num,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=TINYINT}
+    where uc_id = #{ucId,jdbcType=BIGINT}
+  </update>
+</mapper>

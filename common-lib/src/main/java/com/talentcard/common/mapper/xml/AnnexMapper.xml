@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.AnnexMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.AnnexPO">
+    <id column="annex_id" jdbcType="BIGINT" property="annexId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="location" jdbcType="CHAR" property="location" />
+    <result column="pa_id" jdbcType="BIGINT" property="paId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    annex_id, `name`, `location`, pa_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_annex
+    where annex_id = #{annexId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_annex
+    where annex_id = #{annexId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.AnnexPO">
+    insert into t_annex (annex_id, `name`, `location`, 
+      pa_id)
+    values (#{annexId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{location,jdbcType=CHAR}, 
+      #{paId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.AnnexPO">
+    insert into t_annex
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="annexId != null">
+        annex_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="location != null">
+        `location`,
+      </if>
+      <if test="paId != null">
+        pa_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="annexId != null">
+        #{annexId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=CHAR},
+      </if>
+      <if test="paId != null">
+        #{paId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.AnnexPO">
+    update t_annex
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="location != null">
+        `location` = #{location,jdbcType=CHAR},
+      </if>
+      <if test="paId != null">
+        pa_id = #{paId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where annex_id = #{annexId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.AnnexPO">
+    update t_annex
+    set `name` = #{name,jdbcType=CHAR},
+      `location` = #{location,jdbcType=CHAR},
+      pa_id = #{paId,jdbcType=BIGINT}
+    where annex_id = #{annexId,jdbcType=BIGINT}
+  </update>
+</mapper>

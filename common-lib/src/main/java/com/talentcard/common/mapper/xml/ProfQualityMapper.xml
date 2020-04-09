@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.ProfQualityMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ProfQualityPO">
+    <id column="pq_id" jdbcType="BIGINT" property="pqId" />
+    <result column="category" jdbcType="INTEGER" property="category" />
+    <result column="info" jdbcType="CHAR" property="info" />
+    <result column="picture" jdbcType="CHAR" property="picture" />
+    <result column="cert_id" jdbcType="BIGINT" property="certId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pq_id, category, info, picture, cert_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_prof_quality
+    where pq_id = #{pqId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_prof_quality
+    where pq_id = #{pqId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.ProfQualityPO">
+    insert into t_prof_quality (pq_id, category, info, 
+      picture, cert_id)
+    values (#{pqId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{info,jdbcType=CHAR}, 
+      #{picture,jdbcType=CHAR}, #{certId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ProfQualityPO">
+    insert into t_prof_quality
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pqId != null">
+        pq_id,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="info != null">
+        info,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+      <if test="certId != null">
+        cert_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pqId != null">
+        #{pqId,jdbcType=BIGINT},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="info != null">
+        #{info,jdbcType=CHAR},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=CHAR},
+      </if>
+      <if test="certId != null">
+        #{certId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.ProfQualityPO">
+    update t_prof_quality
+    <set>
+      <if test="category != null">
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="info != null">
+        info = #{info,jdbcType=CHAR},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=CHAR},
+      </if>
+      <if test="certId != null">
+        cert_id = #{certId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where pq_id = #{pqId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.ProfQualityPO">
+    update t_prof_quality
+    set category = #{category,jdbcType=INTEGER},
+      info = #{info,jdbcType=CHAR},
+      picture = #{picture,jdbcType=CHAR},
+      cert_id = #{certId,jdbcType=BIGINT}
+    where pq_id = #{pqId,jdbcType=BIGINT}
+  </update>
+</mapper>

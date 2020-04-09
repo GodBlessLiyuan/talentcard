@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.ProfTitleMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ProfTitlePO">
+    <id column="pt_id" jdbcType="BIGINT" property="ptId" />
+    <result column="category" jdbcType="INTEGER" property="category" />
+    <result column="info" jdbcType="CHAR" property="info" />
+    <result column="picture" jdbcType="CHAR" property="picture" />
+    <result column="cert_id" jdbcType="BIGINT" property="certId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pt_id, category, info, picture, cert_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_prof_title
+    where pt_id = #{ptId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_prof_title
+    where pt_id = #{ptId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.ProfTitlePO">
+    insert into t_prof_title (pt_id, category, info, 
+      picture, cert_id)
+    values (#{ptId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{info,jdbcType=CHAR}, 
+      #{picture,jdbcType=CHAR}, #{certId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ProfTitlePO">
+    insert into t_prof_title
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ptId != null">
+        pt_id,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="info != null">
+        info,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+      <if test="certId != null">
+        cert_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ptId != null">
+        #{ptId,jdbcType=BIGINT},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="info != null">
+        #{info,jdbcType=CHAR},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=CHAR},
+      </if>
+      <if test="certId != null">
+        #{certId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.ProfTitlePO">
+    update t_prof_title
+    <set>
+      <if test="category != null">
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="info != null">
+        info = #{info,jdbcType=CHAR},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=CHAR},
+      </if>
+      <if test="certId != null">
+        cert_id = #{certId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where pt_id = #{ptId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.ProfTitlePO">
+    update t_prof_title
+    set category = #{category,jdbcType=INTEGER},
+      info = #{info,jdbcType=CHAR},
+      picture = #{picture,jdbcType=CHAR},
+      cert_id = #{certId,jdbcType=BIGINT}
+    where pt_id = #{ptId,jdbcType=BIGINT}
+  </update>
+</mapper>

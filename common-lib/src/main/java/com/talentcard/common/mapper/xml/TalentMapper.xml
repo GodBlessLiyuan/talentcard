@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.TalentMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentPO">
+    <id column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="id_card" jdbcType="CHAR" property="idCard" />
+    <result column="passport" jdbcType="CHAR" property="passport" />
+    <result column="work_unit" jdbcType="CHAR" property="workUnit" />
+    <result column="industry" jdbcType="CHAR" property="industry" />
+    <result column="phone" jdbcType="CHAR" property="phone" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    talent_id, `name`, sex, id_card, passport, work_unit, industry, phone, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_talent
+    where talent_id = #{talentId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_talent
+    where talent_id = #{talentId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.TalentPO">
+    insert into t_talent (talent_id, `name`, sex, 
+      id_card, passport, work_unit, 
+      industry, phone, create_time
+      )
+    values (#{talentId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{sex,jdbcType=TINYINT}, 
+      #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR}, 
+      #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentPO">
+    insert into t_talent
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="passport != null">
+        passport,
+      </if>
+      <if test="workUnit != null">
+        work_unit,
+      </if>
+      <if test="industry != null">
+        industry,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=CHAR},
+      </if>
+      <if test="passport != null">
+        #{passport,jdbcType=CHAR},
+      </if>
+      <if test="workUnit != null">
+        #{workUnit,jdbcType=CHAR},
+      </if>
+      <if test="industry != null">
+        #{industry,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentPO">
+    update t_talent
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=CHAR},
+      </if>
+      <if test="passport != null">
+        passport = #{passport,jdbcType=CHAR},
+      </if>
+      <if test="workUnit != null">
+        work_unit = #{workUnit,jdbcType=CHAR},
+      </if>
+      <if test="industry != null">
+        industry = #{industry,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where talent_id = #{talentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentPO">
+    update t_talent
+    set `name` = #{name,jdbcType=CHAR},
+      sex = #{sex,jdbcType=TINYINT},
+      id_card = #{idCard,jdbcType=CHAR},
+      passport = #{passport,jdbcType=CHAR},
+      work_unit = #{workUnit,jdbcType=CHAR},
+      industry = #{industry,jdbcType=CHAR},
+      phone = #{phone,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where talent_id = #{talentId,jdbcType=BIGINT}
+  </update>
+</mapper>

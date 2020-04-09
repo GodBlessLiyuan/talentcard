@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.EducationMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.EducationPO">
+    <id column="educ_id" jdbcType="BIGINT" property="educId" />
+    <result column="eduction" jdbcType="INTEGER" property="eduction" />
+    <result column="school" jdbcType="CHAR" property="school" />
+    <result column="frist_class" jdbcType="TINYINT" property="fristClass" />
+    <result column="major" jdbcType="CHAR" property="major" />
+    <result column="educ_picture" jdbcType="CHAR" property="educPicture" />
+    <result column="cert_id" jdbcType="BIGINT" property="certId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    educ_id, eduction, school, frist_class, major, educ_picture, cert_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_education
+    where educ_id = #{educId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_education
+    where educ_id = #{educId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.EducationPO">
+    insert into t_education (educ_id, eduction, school, 
+      frist_class, major, educ_picture, 
+      cert_id)
+    values (#{educId,jdbcType=BIGINT}, #{eduction,jdbcType=INTEGER}, #{school,jdbcType=CHAR}, 
+      #{fristClass,jdbcType=TINYINT}, #{major,jdbcType=CHAR}, #{educPicture,jdbcType=CHAR}, 
+      #{certId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EducationPO">
+    insert into t_education
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="educId != null">
+        educ_id,
+      </if>
+      <if test="eduction != null">
+        eduction,
+      </if>
+      <if test="school != null">
+        school,
+      </if>
+      <if test="fristClass != null">
+        frist_class,
+      </if>
+      <if test="major != null">
+        major,
+      </if>
+      <if test="educPicture != null">
+        educ_picture,
+      </if>
+      <if test="certId != null">
+        cert_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="educId != null">
+        #{educId,jdbcType=BIGINT},
+      </if>
+      <if test="eduction != null">
+        #{eduction,jdbcType=INTEGER},
+      </if>
+      <if test="school != null">
+        #{school,jdbcType=CHAR},
+      </if>
+      <if test="fristClass != null">
+        #{fristClass,jdbcType=TINYINT},
+      </if>
+      <if test="major != null">
+        #{major,jdbcType=CHAR},
+      </if>
+      <if test="educPicture != null">
+        #{educPicture,jdbcType=CHAR},
+      </if>
+      <if test="certId != null">
+        #{certId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.EducationPO">
+    update t_education
+    <set>
+      <if test="eduction != null">
+        eduction = #{eduction,jdbcType=INTEGER},
+      </if>
+      <if test="school != null">
+        school = #{school,jdbcType=CHAR},
+      </if>
+      <if test="fristClass != null">
+        frist_class = #{fristClass,jdbcType=TINYINT},
+      </if>
+      <if test="major != null">
+        major = #{major,jdbcType=CHAR},
+      </if>
+      <if test="educPicture != null">
+        educ_picture = #{educPicture,jdbcType=CHAR},
+      </if>
+      <if test="certId != null">
+        cert_id = #{certId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where educ_id = #{educId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.EducationPO">
+    update t_education
+    set eduction = #{eduction,jdbcType=INTEGER},
+      school = #{school,jdbcType=CHAR},
+      frist_class = #{fristClass,jdbcType=TINYINT},
+      major = #{major,jdbcType=CHAR},
+      educ_picture = #{educPicture,jdbcType=CHAR},
+      cert_id = #{certId,jdbcType=BIGINT}
+    where educ_id = #{educId,jdbcType=BIGINT}
+  </update>
+</mapper>

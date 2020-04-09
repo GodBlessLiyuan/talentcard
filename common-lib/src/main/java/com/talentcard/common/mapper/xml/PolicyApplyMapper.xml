@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.PolicyApplyMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PolicyApplyPO">
+    <id column="pa_id" jdbcType="BIGINT" property="paId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="policy_id" jdbcType="BIGINT" property="policyId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pa_id, talent_id, `name`, policy_id, create_time, `status`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_policy_apply
+    where pa_id = #{paId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_policy_apply
+    where pa_id = #{paId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
+    insert into t_policy_apply (pa_id, talent_id, `name`, 
+      policy_id, create_time, `status`
+      )
+    values (#{paId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, 
+      #{policyId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
+    insert into t_policy_apply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="paId != null">
+        pa_id,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="policyId != null">
+        policy_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="paId != null">
+        #{paId,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="policyId != null">
+        #{policyId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
+    update t_policy_apply
+    <set>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="policyId != null">
+        policy_id = #{policyId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where pa_id = #{paId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
+    update t_policy_apply
+    set talent_id = #{talentId,jdbcType=BIGINT},
+      `name` = #{name,jdbcType=CHAR},
+      policy_id = #{policyId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=TINYINT}
+    where pa_id = #{paId,jdbcType=BIGINT}
+  </update>
+</mapper>

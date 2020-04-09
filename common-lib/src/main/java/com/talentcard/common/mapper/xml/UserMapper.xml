@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.UserPO">
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="username" jdbcType="CHAR" property="username" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="password" jdbcType="BIGINT" property="password" />
+    <result column="cread_time" jdbcType="DATE" property="creadTime" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+    <result column="extra" jdbcType="CHAR" property="extra" />
+    <result column="role_id" jdbcType="BIGINT" property="roleId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, username, `name`, `password`, cread_time, dr, extra, role_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.UserPO">
+    insert into t_user (user_id, username, `name`, 
+      `password`, cread_time, dr, 
+      extra, role_id)
+    values (#{userId,jdbcType=BIGINT}, #{username,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
+      #{password,jdbcType=BIGINT}, #{creadTime,jdbcType=DATE}, #{dr,jdbcType=TINYINT}, 
+      #{extra,jdbcType=CHAR}, #{roleId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.UserPO">
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="password != null">
+        `password`,
+      </if>
+      <if test="creadTime != null">
+        cread_time,
+      </if>
+      <if test="dr != null">
+        dr,
+      </if>
+      <if test="extra != null">
+        extra,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=BIGINT},
+      </if>
+      <if test="creadTime != null">
+        #{creadTime,jdbcType=DATE},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
+      </if>
+      <if test="extra != null">
+        #{extra,jdbcType=CHAR},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.UserPO">
+    update t_user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="password != null">
+        `password` = #{password,jdbcType=BIGINT},
+      </if>
+      <if test="creadTime != null">
+        cread_time = #{creadTime,jdbcType=DATE},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
+      <if test="extra != null">
+        extra = #{extra,jdbcType=CHAR},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.UserPO">
+    update t_user
+    set username = #{username,jdbcType=CHAR},
+      `name` = #{name,jdbcType=CHAR},
+      `password` = #{password,jdbcType=BIGINT},
+      cread_time = #{creadTime,jdbcType=DATE},
+      dr = #{dr,jdbcType=TINYINT},
+      extra = #{extra,jdbcType=CHAR},
+      role_id = #{roleId,jdbcType=BIGINT}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>
