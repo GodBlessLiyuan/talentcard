@@ -4,13 +4,14 @@
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PolicyApplyPO">
     <id column="pa_id" jdbcType="BIGINT" property="paId" />
     <result column="talent_id" jdbcType="BIGINT" property="talentId" />
-    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="talent_name" jdbcType="CHAR" property="talentName" />
     <result column="policy_id" jdbcType="BIGINT" property="policyId" />
+    <result column="policy_name" jdbcType="CHAR" property="policyName" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    pa_id, talent_id, `name`, policy_id, create_time, `status`
+    pa_id, talent_id, talent_name, policy_id, policy_name, create_time, `status`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -23,12 +24,12 @@
     where pa_id = #{paId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
-    insert into t_policy_apply (pa_id, talent_id, `name`, 
-      policy_id, create_time, `status`
-      )
-    values (#{paId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, 
-      #{policyId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}
-      )
+    insert into t_policy_apply (pa_id, talent_id, talent_name, 
+      policy_id, policy_name, create_time, 
+      `status`)
+    values (#{paId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{talentName,jdbcType=CHAR}, 
+      #{policyId,jdbcType=BIGINT}, #{policyName,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
     insert into t_policy_apply
@@ -39,11 +40,14 @@
       <if test="talentId != null">
         talent_id,
       </if>
-      <if test="name != null">
-        `name`,
+      <if test="talentName != null">
+        talent_name,
       </if>
       <if test="policyId != null">
         policy_id,
+      </if>
+      <if test="policyName != null">
+        policy_name,
       </if>
       <if test="createTime != null">
         create_time,
@@ -59,11 +63,14 @@
       <if test="talentId != null">
         #{talentId,jdbcType=BIGINT},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=CHAR},
+      <if test="talentName != null">
+        #{talentName,jdbcType=CHAR},
       </if>
       <if test="policyId != null">
         #{policyId,jdbcType=BIGINT},
+      </if>
+      <if test="policyName != null">
+        #{policyName,jdbcType=CHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -79,11 +86,14 @@
       <if test="talentId != null">
         talent_id = #{talentId,jdbcType=BIGINT},
       </if>
-      <if test="name != null">
-        `name` = #{name,jdbcType=CHAR},
+      <if test="talentName != null">
+        talent_name = #{talentName,jdbcType=CHAR},
       </if>
       <if test="policyId != null">
         policy_id = #{policyId,jdbcType=BIGINT},
+      </if>
+      <if test="policyName != null">
+        policy_name = #{policyName,jdbcType=CHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -97,8 +107,9 @@
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
     update t_policy_apply
     set talent_id = #{talentId,jdbcType=BIGINT},
-      `name` = #{name,jdbcType=CHAR},
+      talent_name = #{talentName,jdbcType=CHAR},
       policy_id = #{policyId,jdbcType=BIGINT},
+      policy_name = #{policyName,jdbcType=CHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=TINYINT}
     where pa_id = #{paId,jdbcType=BIGINT}

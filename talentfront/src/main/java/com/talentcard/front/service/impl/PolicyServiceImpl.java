@@ -1,6 +1,6 @@
 package com.talentcard.front.service.impl;
 
-import com.talentcard.common.mapper.PolicyMapper;
+import com.talentcard.common.mapper.PolicyApplyMapper;
 import com.talentcard.common.pojo.PolicyPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IPolicyService;
@@ -18,11 +18,11 @@ import java.util.List;
 @Service
 public class PolicyServiceImpl implements IPolicyService {
     @Resource
-    private PolicyMapper policyMapper;
+    private PolicyApplyMapper policyApplyMapper;
 
     @Override
     public ResultVO applies(Long tid) {
-        List<PolicyPO> pos = policyMapper.queryByTalentId(tid);
+        List<PolicyPO> pos = policyApplyMapper.queryByTalentId(tid);
         return null;
     }
 }

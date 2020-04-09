@@ -10,11 +10,4 @@ import java.util.List;
  */
 @Mapper
 public interface PolicyMapper extends BaseMapper<PolicyPO, Long> {
-    /**
-     * 根据人才ID查询政策数据
-     *
-     * @param tid
-     * @return
-     */
-    List<PolicyPO> queryByTalentId(Long tid);
 }
