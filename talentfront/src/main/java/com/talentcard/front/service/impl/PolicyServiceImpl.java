@@ -3,7 +3,9 @@ package com.talentcard.front.service.impl;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.mapper.PolicyApplyMapper;
 import com.talentcard.common.mapper.PolicyMapper;
+import com.talentcard.common.mapper.TalentMapper;
 import com.talentcard.common.pojo.PolicyApplyPO;
+import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IPolicyService;
 import com.talentcard.front.vo.PolicyAppliesVO;
@@ -24,10 +26,18 @@ public class PolicyServiceImpl implements IPolicyService {
     @Resource
     private PolicyApplyMapper policyApplyMapper;
     @Resource
+    private TalentMapper talentMapper;
+    @Resource
     private PolicyMapper policyMapper;
 
     @Override
     public ResultVO policies(Long tid) {
+        TalentPO po = talentMapper.selectByPrimaryKey(tid);
+        if(null == po || po.getStatus() == 2) {
+            return new ResultVO(1000);
+        }
+
+
         return null;
     }
 
