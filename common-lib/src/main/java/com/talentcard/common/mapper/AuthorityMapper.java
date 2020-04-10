@@ -8,4 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AuthorityMapper extends BaseMapper<AuthorityPO, Long> {
+    java.lang.String queryByAuthorityId(long authorityId);
 }
