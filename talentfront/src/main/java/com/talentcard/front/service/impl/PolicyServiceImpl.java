@@ -2,6 +2,7 @@ package com.talentcard.front.service.impl;
 
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.mapper.PolicyApplyMapper;
+import com.talentcard.common.mapper.PolicyMapper;
 import com.talentcard.common.pojo.PolicyApplyPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IPolicyService;
@@ -22,6 +23,8 @@ import java.util.List;
 public class PolicyServiceImpl implements IPolicyService {
     @Resource
     private PolicyApplyMapper policyApplyMapper;
+    @Resource
+    private PolicyMapper policyMapper;
 
     @Override
     public ResultVO policies(Long tid) {
@@ -42,7 +45,7 @@ public class PolicyServiceImpl implements IPolicyService {
     @Override
     public ResultVO detail(Long paid) {
         PolicyApplyBO bo = policyApplyMapper.queryDetail(paid);
-        if(null == bo) {
+        if (null == bo) {
             return new ResultVO(2000);
         }
 

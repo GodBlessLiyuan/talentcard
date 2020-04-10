@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class EducationPO implements Serializable {
     private Long educId;
 
-    private Integer eduction;
+    private Integer education;
 
     private String school;
 
@@ -24,6 +24,13 @@ public class EducationPO implements Serializable {
 
     private Long certId;
 
+    private Long talentId;
+
+    /**
+     * 1 刚注册 2：已同意使用中；3：待审批；4：已驳回 5废弃
+     */
+    private Byte status;
+
     private static final long serialVersionUID = 1L;
 
     public Long getEducId() {
@@ -34,12 +41,12 @@ public class EducationPO implements Serializable {
         this.educId = educId;
     }
 
-    public Integer getEduction() {
-        return eduction;
+    public Integer getEducation() {
+        return education;
     }
 
-    public void setEduction(Integer eduction) {
-        this.eduction = eduction;
+    public void setEducation(Integer education) {
+        this.education = education;
     }
 
     public String getSchool() {
@@ -82,6 +89,22 @@ public class EducationPO implements Serializable {
         this.certId = certId;
     }
 
+    public Long getTalentId() {
+        return talentId;
+    }
+
+    public void setTalentId(Long talentId) {
+        this.talentId = talentId;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -95,12 +118,14 @@ public class EducationPO implements Serializable {
         }
         EducationPO other = (EducationPO) that;
         return (this.getEducId() == null ? other.getEducId() == null : this.getEducId().equals(other.getEducId()))
-            && (this.getEduction() == null ? other.getEduction() == null : this.getEduction().equals(other.getEduction()))
+            && (this.getEducation() == null ? other.getEducation() == null : this.getEducation().equals(other.getEducation()))
             && (this.getSchool() == null ? other.getSchool() == null : this.getSchool().equals(other.getSchool()))
             && (this.getFristClass() == null ? other.getFristClass() == null : this.getFristClass().equals(other.getFristClass()))
             && (this.getMajor() == null ? other.getMajor() == null : this.getMajor().equals(other.getMajor()))
             && (this.getEducPicture() == null ? other.getEducPicture() == null : this.getEducPicture().equals(other.getEducPicture()))
-            && (this.getCertId() == null ? other.getCertId() == null : this.getCertId().equals(other.getCertId()));
+            && (this.getCertId() == null ? other.getCertId() == null : this.getCertId().equals(other.getCertId()))
+            && (this.getTalentId() == null ? other.getTalentId() == null : this.getTalentId().equals(other.getTalentId()))
+            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()));
     }
 
     @Override
@@ -108,12 +133,14 @@ public class EducationPO implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getEducId() == null) ? 0 : getEducId().hashCode());
-        result = prime * result + ((getEduction() == null) ? 0 : getEduction().hashCode());
+        result = prime * result + ((getEducation() == null) ? 0 : getEducation().hashCode());
         result = prime * result + ((getSchool() == null) ? 0 : getSchool().hashCode());
         result = prime * result + ((getFristClass() == null) ? 0 : getFristClass().hashCode());
         result = prime * result + ((getMajor() == null) ? 0 : getMajor().hashCode());
         result = prime * result + ((getEducPicture() == null) ? 0 : getEducPicture().hashCode());
         result = prime * result + ((getCertId() == null) ? 0 : getCertId().hashCode());
+        result = prime * result + ((getTalentId() == null) ? 0 : getTalentId().hashCode());
+        result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         return result;
     }
 
@@ -124,12 +151,14 @@ public class EducationPO implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", educId=").append(educId);
-        sb.append(", eduction=").append(eduction);
+        sb.append(", education=").append(education);
         sb.append(", school=").append(school);
         sb.append(", fristClass=").append(fristClass);
         sb.append(", major=").append(major);
         sb.append(", educPicture=").append(educPicture);
         sb.append(", certId=").append(certId);
+        sb.append(", talentId=").append(talentId);
+        sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
