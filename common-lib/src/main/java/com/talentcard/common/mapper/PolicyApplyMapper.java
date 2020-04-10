@@ -25,5 +25,5 @@ public interface PolicyApplyMapper extends BaseMapper<PolicyApplyPO, Long> {
      * @param paid
      * @return
      */
-    List<PolicyApplyBO> queryDetail(Long paid);
+    PolicyApplyBO queryDetail(Long paid);
 }

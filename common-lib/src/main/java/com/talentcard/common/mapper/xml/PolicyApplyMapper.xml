@@ -21,11 +21,6 @@
     <result column="num" jdbcType="CHAR" property="num" />
     <result column="bank_num" jdbcType="CHAR" property="bankNum" />
     <result column="bank_name" jdbcType="CHAR" property="bankName" />
-    <collection property="annexes" ofType="com.talentcard.common.pojo.AnnexPO">
-      <id column="annex_id" jdbcType="BIGINT" property="annexId" />
-      <result column="name" jdbcType="CHAR" property="name" />
-      <result column="location" jdbcType="CHAR" property="location" />
-    </collection>
     <collection property="approval" ofType="com.talentcard.common.pojo.PolicyApprovalPO">
       <id column="approval_id" jdbcType="BIGINT" property="approvalId" />
       <result column="approval_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -33,6 +28,11 @@
       <result column="user_id" jdbcType="BIGINT" property="userId" />
       <result column="result" jdbcType="TINYINT" property="result" />
       <result column="opinion" jdbcType="CHAR" property="opinion" />
+    </collection>
+    <collection property="annexes" ofType="com.talentcard.common.pojo.AnnexPO">
+      <id column="annex_id" jdbcType="BIGINT" property="annexId" />
+      <result column="name" jdbcType="CHAR" property="name" />
+      <result column="location" jdbcType="CHAR" property="location" />
     </collection>
   </resultMap>
   <sql id="Base_Column_List">
@@ -149,11 +149,11 @@
   <select id="queryDetail" parameterType="java.lang.Long" resultMap="DetailResultMap">
     select pa.pa_id, pa.talent_id, pa.talent_name, pa.policy_id, pa.policy_name, pa.create_time, pa.`status`,
     p.num, b.num as bank_num, b.name as bank_name, a.annex_id, a.name, a.location,
-    pal.create_time as approval_time, pal.type, pal.result, pal.opinion
+    pal.approval_id, pal.create_time as approval_time, pal.type, pal.result, pal.opinion
     from t_policy_apply pa
     left join t_bank b on pa.pa_id = b.pa_id
-    left join t_annex a on pa.pa_id = a.pa_id
     left join t_policy_approval pal on pa.pa_id = pal.pa_id
+    left join t_annex a on pa.pa_id = a.pa_id
     left join t_policy p on pa.policy_id = p.policy_id
     where pa.pa_id = #{paId,jdbcType=BIGINT}
   </select>

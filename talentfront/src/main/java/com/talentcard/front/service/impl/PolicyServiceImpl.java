@@ -3,9 +3,11 @@ package com.talentcard.front.service.impl;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.mapper.PolicyApplyMapper;
 import com.talentcard.common.pojo.PolicyApplyPO;
+import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IPolicyService;
 import com.talentcard.front.vo.PolicyAppliesVO;
+import com.talentcard.front.vo.PolicyApplyDetailVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,8 +32,11 @@ public class PolicyServiceImpl implements IPolicyService {
 
     @Override
     public ResultVO detail(Long paid) {
-        List<PolicyApplyBO> bos = policyApplyMapper.queryDetail(paid);
+        PolicyApplyBO bo = policyApplyMapper.queryDetail(paid);
+        if(null == bo) {
+            return new ResultVO(2000);
+        }
 
-        return new ResultVO<>(1000, bos);
+        return new ResultVO<>(1000, PolicyApplyDetailVO.convert(bo));
     }
 }
