@@ -46,11 +46,6 @@ public class LoginController {
         return loginService.login(session,response,username,password,checkCode);
     }
 
-    @RequestMapping("test")
-    public ResultVO testcon(@RequestParam(value = "username", required = false) String username,
-                                @RequestParam(value = "password", required = false) String password){
-        return new ResultVO(1000,"hello");
-    }
 
     /**
      * 用户登出
