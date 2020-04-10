@@ -167,8 +167,7 @@ CREATE TABLE t_policy_approval
     result tinyint,
     opinion char(255),
     PRIMARY KEY (approval_id),
-    UNIQUE (approval_id),
-    UNIQUE (pa_id)
+    UNIQUE (approval_id)
 );
 
 

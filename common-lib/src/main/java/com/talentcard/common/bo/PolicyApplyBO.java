@@ -1,8 +1,11 @@
 package com.talentcard.common.bo;
 
+import com.talentcard.common.pojo.AnnexPO;
+import com.talentcard.common.pojo.PolicyApplyPO;
+import com.talentcard.common.pojo.PolicyApprovalPO;
 import lombok.Data;
 
-import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author: xiahui
@@ -11,8 +14,10 @@ import java.io.Serializable;
  * @version: 1.0
  */
 @Data
-public class PolicyApplyBO implements Serializable {
-    private static final long SerialVersionUID = 1L;
-
-
+public class PolicyApplyBO extends PolicyApplyPO {
+    private String num;
+    private String bankNum;
+    private String bankName;
+    private List<AnnexPO> annexes;
+    private List<PolicyApprovalPO> approval;
 }

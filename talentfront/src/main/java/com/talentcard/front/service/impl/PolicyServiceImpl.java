@@ -32,6 +32,6 @@ public class PolicyServiceImpl implements IPolicyService {
     public ResultVO detail(Long paid) {
         List<PolicyApplyBO> bos = policyApplyMapper.queryDetail(paid);
 
-        return null;
+        return new ResultVO<>(1000, bos);
     }
 }
