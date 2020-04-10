@@ -125,11 +125,12 @@
       role_id = #{roleId,jdbcType=BIGINT}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
-
+<!--  根据用户名查询当前用户信息-->
   <select id="queryByName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_user
-    where username = #{username,jdbcType=CHAR} and dr=1
+    where username = #{username,jdbcType=CHAR}
   </select>
+
 </mapper>

@@ -22,7 +22,7 @@ public class PolicyServiceImpl implements IPolicyService {
 
     @Override
     public ResultVO applies(Long tid) {
-        List<PolicyPO> pos = policyApplyMapper.queryByTalentId(tid);
+//        List<PolicyPO> pos = policyApplyMapper.queryByTalentId(tid);
         return null;
     }
 }

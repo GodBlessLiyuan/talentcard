@@ -1,5 +1,6 @@
 package com.talentcard.web.service;
 
+import com.talentcard.common.vo.ResultVO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,7 +14,6 @@ import java.util.Map;
  * @version: 1.0.0
  * @description:
  */
-@Service
 public interface ILoginService {
-    ModelAndView login(HttpSession session, HttpServletResponse response, String phone, String password, String checkCode);
+    ResultVO login(HttpSession session, HttpServletResponse response, String phone, String password, String checkCode);
 }

@@ -55,4 +55,10 @@
     set `name` = #{name,jdbcType=CHAR}
     where authority_id = #{authorityId,jdbcType=BIGINT}
   </update>
+
+  <select id="queryByAuthorityId" parameterType="java.lang.Long" resultType="java.lang.String">
+    select `name`
+    from t_authority
+    where authority_id = #{authorityId,jdbcType=BIGINT}
+  </select>
 </mapper>

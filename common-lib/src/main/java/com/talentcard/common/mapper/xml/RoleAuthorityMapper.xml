@@ -79,4 +79,13 @@
       role_id = #{roleId,jdbcType=BIGINT}
     where ra_id = #{raId,jdbcType=BIGINT}
   </update>
+
+<!--  根据角色id查找权限-->
+  <select id="queryByRoleId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_role_authority
+    where role_id = #{roleId,jdbcType=BIGINT}
+  </select>
+
 </mapper>
