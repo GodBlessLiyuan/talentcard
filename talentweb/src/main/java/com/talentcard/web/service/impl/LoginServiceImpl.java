@@ -15,9 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -45,9 +47,11 @@ public class LoginServiceImpl implements ILoginService {
 //        String code = (String)session.getAttribute(VERIFY_ID);
         String code = "1234";
         if (null == code) {
+            // 验证码过期
             return new ResultVO(1018);
         }
         if (!code.equalsIgnoreCase(checkCode)) {
+            //验证码错误
             return new ResultVO(1019);
         }
 
@@ -58,9 +62,11 @@ public class LoginServiceImpl implements ILoginService {
         if (null!=userPo) {
             String realPassword = userPo.getPassword();
             if (!password.equals(realPassword)) {
+                //密码错误
                 return new ResultVO(1020);
             }
         } else {
+            //用户名错误
             return new ResultVO(1021);
         }
         // 4 . 将用户信息存放到session当中
@@ -69,17 +75,29 @@ public class LoginServiceImpl implements ILoginService {
         // 5 . 获取当前用户权限，决定展示内容区别
         List<RoleAuthortyNameBO> roleAuthortyNameBOS = new ArrayList<>();
         List<RoleAuthorityPO> roleAuthorityPOS = roleAuthorityMapper.queryByRoleId(userPo.getRoleId());
+
         for (RoleAuthorityPO po:roleAuthorityPOS) {
-            RoleAuthortyNameBO roleAuthortyNameBO = new RoleAuthortyNameBO();
+            RoleAuthortyNameBO roleAuthortyNameBo = new RoleAuthortyNameBO();
             Long authorityId = po.getAuthorityId();
             String authorityName = authorityMapper.queryByAuthorityId(authorityId);
-            roleAuthortyNameBO.setAuthorityName(authorityName);
-            roleAuthortyNameBO.setRoleAuthorityPO(po);
+            roleAuthortyNameBo.setAuthorityName(authorityName);
+            roleAuthortyNameBo.setRoleAuthorityPO(po);
+            roleAuthortyNameBOS.add(roleAuthortyNameBo);
         }
         RoleAuthorityVO roleAuthorityVO = RoleAuthorityVO.convert(roleAuthortyNameBOS);
         session.setAttribute("userAuthority", roleAuthorityVO);
         session.setMaxInactiveInterval(60 * 60 * 2);
 
         return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO quit(HttpServletRequest request) {
+        Enumeration em = request.getSession().getAttributeNames();
+        while (em.hasMoreElements()) {
+            request.getSession().removeAttribute(em.nextElement().toString());
+        }
+        //退出登入成功
+        return new ResultVO(1225);
     }
 }

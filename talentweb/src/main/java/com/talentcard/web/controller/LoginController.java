@@ -53,6 +53,16 @@ public class LoginController {
     }
 
     /**
+     * 用户登出
+     * @param request
+     * @return
+     */
+    @RequestMapping("logOut")
+    public ResultVO quit(HttpServletRequest request) {
+        return loginService.quit(request);
+    }
+
+    /**
      * 在用户输入验证码之前将验证码写进session
      * @param session
      * @param response
