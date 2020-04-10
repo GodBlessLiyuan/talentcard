@@ -3,7 +3,6 @@ package com.talentcard.front.service.impl;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.mapper.PolicyApplyMapper;
 import com.talentcard.common.pojo.PolicyApplyPO;
-import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IPolicyService;
 import com.talentcard.front.vo.PolicyAppliesVO;
@@ -23,6 +22,16 @@ import java.util.List;
 public class PolicyServiceImpl implements IPolicyService {
     @Resource
     private PolicyApplyMapper policyApplyMapper;
+
+    @Override
+    public ResultVO policies(Long tid) {
+        return null;
+    }
+
+    @Override
+    public ResultVO apply(Long tid, Long pid) {
+        return null;
+    }
 
     @Override
     public ResultVO applies(Long tid) {

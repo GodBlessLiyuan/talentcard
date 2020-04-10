@@ -9,6 +9,24 @@ import com.talentcard.common.vo.ResultVO;
  * @version: 1.0
  */
 public interface IPolicyService {
+
+    /**
+     * 我的权益
+     *
+     * @param tid
+     * @return
+     */
+    ResultVO policies(Long tid);
+
+    /**
+     * 我的权益 - 申请
+     *
+     * @param tid
+     * @param pid
+     * @return
+     */
+    ResultVO apply(Long tid, Long pid);
+
     /**
      * 我的申请
      *

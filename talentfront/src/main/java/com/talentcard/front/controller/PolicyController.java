@@ -18,6 +18,29 @@ public class PolicyController {
     private IPolicyService service;
 
     /**
+     * 我的权益
+     *
+     * @param tid
+     * @return
+     */
+    @RequestMapping("policies")
+    public ResultVO policies(@RequestParam(name = "tid") Long tid) {
+        return service.policies(tid);
+    }
+
+    /**
+     * 我的权益 - 申请
+     *
+     * @param pid
+     * @return
+     */
+    @RequestMapping("apply")
+    public ResultVO policyDetail(@RequestParam(name = "tid") Long tid, @RequestParam(name = "pid") Long pid) {
+        return service.apply(tid, pid);
+    }
+
+
+    /**
      * 我的申请
      *
      * @param tid 人才ID
@@ -35,7 +58,7 @@ public class PolicyController {
      * @return
      */
     @RequestMapping("detail")
-    public ResultVO detail(@RequestParam(name = "paid") Long paid) {
+    public ResultVO applyDetail(@RequestParam(name = "paid") Long paid) {
         return service.detail(paid);
     }
 }
