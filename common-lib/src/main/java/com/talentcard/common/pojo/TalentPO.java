@@ -34,6 +34,10 @@ public class TalentPO implements Serializable {
      */
     private Byte status;
 
+    private String category;
+
+    private Long cardId;
+
     private static final long serialVersionUID = 1L;
 
     public Long getTalentId() {
@@ -116,6 +120,22 @@ public class TalentPO implements Serializable {
         this.status = status;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public Long getCardId() {
+        return cardId;
+    }
+
+    public void setCardId(Long cardId) {
+        this.cardId = cardId;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -137,7 +157,9 @@ public class TalentPO implements Serializable {
             && (this.getIndustry() == null ? other.getIndustry() == null : this.getIndustry().equals(other.getIndustry()))
             && (this.getPhone() == null ? other.getPhone() == null : this.getPhone().equals(other.getPhone()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()));
+            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
+            && (this.getCategory() == null ? other.getCategory() == null : this.getCategory().equals(other.getCategory()))
+            && (this.getCardId() == null ? other.getCardId() == null : this.getCardId().equals(other.getCardId()));
     }
 
     @Override
@@ -154,6 +176,8 @@ public class TalentPO implements Serializable {
         result = prime * result + ((getPhone() == null) ? 0 : getPhone().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
+        result = prime * result + ((getCategory() == null) ? 0 : getCategory().hashCode());
+        result = prime * result + ((getCardId() == null) ? 0 : getCardId().hashCode());
         return result;
     }
 
@@ -173,6 +197,8 @@ public class TalentPO implements Serializable {
         sb.append(", phone=").append(phone);
         sb.append(", createTime=").append(createTime);
         sb.append(", status=").append(status);
+        sb.append(", category=").append(category);
+        sb.append(", cardId=").append(cardId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
