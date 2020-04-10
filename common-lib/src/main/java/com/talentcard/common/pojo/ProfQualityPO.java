@@ -17,6 +17,13 @@ public class ProfQualityPO implements Serializable {
 
     private Long certId;
 
+    private Long talentId;
+
+    /**
+     * 1 刚注册 2：已同意使用中；3：待审批；4：已驳回 5废弃
+     */
+    private Byte status;
+
     private static final long serialVersionUID = 1L;
 
     public Long getPqId() {
@@ -59,6 +66,22 @@ public class ProfQualityPO implements Serializable {
         this.certId = certId;
     }
 
+    public Long getTalentId() {
+        return talentId;
+    }
+
+    public void setTalentId(Long talentId) {
+        this.talentId = talentId;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -75,7 +98,9 @@ public class ProfQualityPO implements Serializable {
             && (this.getCategory() == null ? other.getCategory() == null : this.getCategory().equals(other.getCategory()))
             && (this.getInfo() == null ? other.getInfo() == null : this.getInfo().equals(other.getInfo()))
             && (this.getPicture() == null ? other.getPicture() == null : this.getPicture().equals(other.getPicture()))
-            && (this.getCertId() == null ? other.getCertId() == null : this.getCertId().equals(other.getCertId()));
+            && (this.getCertId() == null ? other.getCertId() == null : this.getCertId().equals(other.getCertId()))
+            && (this.getTalentId() == null ? other.getTalentId() == null : this.getTalentId().equals(other.getTalentId()))
+            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()));
     }
 
     @Override
@@ -87,6 +112,8 @@ public class ProfQualityPO implements Serializable {
         result = prime * result + ((getInfo() == null) ? 0 : getInfo().hashCode());
         result = prime * result + ((getPicture() == null) ? 0 : getPicture().hashCode());
         result = prime * result + ((getCertId() == null) ? 0 : getCertId().hashCode());
+        result = prime * result + ((getTalentId() == null) ? 0 : getTalentId().hashCode());
+        result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         return result;
     }
 
@@ -101,6 +128,8 @@ public class ProfQualityPO implements Serializable {
         sb.append(", info=").append(info);
         sb.append(", picture=").append(picture);
         sb.append(", certId=").append(certId);
+        sb.append(", talentId=").append(talentId);
+        sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

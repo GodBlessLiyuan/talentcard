@@ -3,15 +3,18 @@
 <mapper namespace="com.talentcard.common.mapper.EducationMapper">
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.EducationPO">
     <id column="educ_id" jdbcType="BIGINT" property="educId" />
-    <result column="eduction" jdbcType="INTEGER" property="eduction" />
+    <result column="education" jdbcType="INTEGER" property="education" />
     <result column="school" jdbcType="CHAR" property="school" />
     <result column="frist_class" jdbcType="TINYINT" property="fristClass" />
     <result column="major" jdbcType="CHAR" property="major" />
     <result column="educ_picture" jdbcType="CHAR" property="educPicture" />
     <result column="cert_id" jdbcType="BIGINT" property="certId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    educ_id, eduction, school, frist_class, major, educ_picture, cert_id
+    educ_id, education, school, frist_class, major, educ_picture, cert_id, talent_id, 
+    `status`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,12 +27,14 @@
     where educ_id = #{educId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.EducationPO">
-    insert into t_education (educ_id, eduction, school, 
+    insert into t_education (educ_id, education, school, 
       frist_class, major, educ_picture, 
-      cert_id)
-    values (#{educId,jdbcType=BIGINT}, #{eduction,jdbcType=INTEGER}, #{school,jdbcType=CHAR}, 
+      cert_id, talent_id, `status`
+      )
+    values (#{educId,jdbcType=BIGINT}, #{education,jdbcType=INTEGER}, #{school,jdbcType=CHAR}, 
       #{fristClass,jdbcType=TINYINT}, #{major,jdbcType=CHAR}, #{educPicture,jdbcType=CHAR}, 
-      #{certId,jdbcType=BIGINT})
+      #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EducationPO">
     insert into t_education
@@ -37,8 +42,8 @@
       <if test="educId != null">
         educ_id,
       </if>
-      <if test="eduction != null">
-        eduction,
+      <if test="education != null">
+        education,
       </if>
       <if test="school != null">
         school,
@@ -55,13 +60,19 @@
       <if test="certId != null">
         cert_id,
       </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="educId != null">
         #{educId,jdbcType=BIGINT},
       </if>
-      <if test="eduction != null">
-        #{eduction,jdbcType=INTEGER},
+      <if test="education != null">
+        #{education,jdbcType=INTEGER},
       </if>
       <if test="school != null">
         #{school,jdbcType=CHAR},
@@ -78,13 +89,19 @@
       <if test="certId != null">
         #{certId,jdbcType=BIGINT},
       </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.EducationPO">
     update t_education
     <set>
-      <if test="eduction != null">
-        eduction = #{eduction,jdbcType=INTEGER},
+      <if test="education != null">
+        education = #{education,jdbcType=INTEGER},
       </if>
       <if test="school != null">
         school = #{school,jdbcType=CHAR},
@@ -101,17 +118,25 @@
       <if test="certId != null">
         cert_id = #{certId,jdbcType=BIGINT},
       </if>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
     </set>
     where educ_id = #{educId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.EducationPO">
     update t_education
-    set eduction = #{eduction,jdbcType=INTEGER},
+    set education = #{education,jdbcType=INTEGER},
       school = #{school,jdbcType=CHAR},
       frist_class = #{fristClass,jdbcType=TINYINT},
       major = #{major,jdbcType=CHAR},
       educ_picture = #{educPicture,jdbcType=CHAR},
-      cert_id = #{certId,jdbcType=BIGINT}
+      cert_id = #{certId,jdbcType=BIGINT},
+      talent_id = #{talentId,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=TINYINT}
     where educ_id = #{educId,jdbcType=BIGINT}
   </update>
 </mapper>

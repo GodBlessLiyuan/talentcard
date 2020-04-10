@@ -11,9 +11,11 @@
     <result column="industry" jdbcType="CHAR" property="industry" />
     <result column="phone" jdbcType="CHAR" property="phone" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    talent_id, `name`, sex, id_card, passport, work_unit, industry, phone, create_time
+    talent_id, `name`, sex, id_card, passport, work_unit, industry, phone, create_time, 
+    `status`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -28,12 +30,12 @@
   <insert id="insert" parameterType="com.talentcard.common.pojo.TalentPO">
     insert into t_talent (talent_id, `name`, sex, 
       id_card, passport, work_unit, 
-      industry, phone, create_time
-      )
+      industry, phone, create_time, 
+      `status`)
     values (#{talentId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{sex,jdbcType=TINYINT}, 
       #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR}, 
-      #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}
-      )
+      #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentPO">
     insert into t_talent
@@ -65,6 +67,9 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="status != null">
+        `status`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="talentId != null">
@@ -93,6 +98,9 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -123,6 +131,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
     </set>
     where talent_id = #{talentId,jdbcType=BIGINT}
   </update>
@@ -135,7 +146,8 @@
       work_unit = #{workUnit,jdbcType=CHAR},
       industry = #{industry,jdbcType=CHAR},
       phone = #{phone,jdbcType=CHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=TINYINT}
     where talent_id = #{talentId,jdbcType=BIGINT}
   </update>
 </mapper>

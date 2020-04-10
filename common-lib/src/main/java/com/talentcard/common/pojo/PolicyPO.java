@@ -21,6 +21,10 @@ public class PolicyPO implements Serializable {
 
     private String educations;
 
+    private String titles;
+
+    private String qualities;
+
     /**
      * 1：需要；2：不需要
      */
@@ -37,6 +41,11 @@ public class PolicyPO implements Serializable {
      * 1：需要；2：不需要；
      */
     private Byte annex;
+
+    /**
+     * 1 未删除  2 已删除
+     */
+    private Byte dr;
 
     private static final long serialVersionUID = 1L;
 
@@ -96,6 +105,22 @@ public class PolicyPO implements Serializable {
         this.educations = educations;
     }
 
+    public String getTitles() {
+        return titles;
+    }
+
+    public void setTitles(String titles) {
+        this.titles = titles;
+    }
+
+    public String getQualities() {
+        return qualities;
+    }
+
+    public void setQualities(String qualities) {
+        this.qualities = qualities;
+    }
+
     public Byte getApply() {
         return apply;
     }
@@ -128,6 +153,14 @@ public class PolicyPO implements Serializable {
         this.annex = annex;
     }
 
+    public Byte getDr() {
+        return dr;
+    }
+
+    public void setDr(Byte dr) {
+        this.dr = dr;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -147,10 +180,13 @@ public class PolicyPO implements Serializable {
             && (this.getCards() == null ? other.getCards() == null : this.getCards().equals(other.getCards()))
             && (this.getCategories() == null ? other.getCategories() == null : this.getCategories().equals(other.getCategories()))
             && (this.getEducations() == null ? other.getEducations() == null : this.getEducations().equals(other.getEducations()))
+            && (this.getTitles() == null ? other.getTitles() == null : this.getTitles().equals(other.getTitles()))
+            && (this.getQualities() == null ? other.getQualities() == null : this.getQualities().equals(other.getQualities()))
             && (this.getApply() == null ? other.getApply() == null : this.getApply().equals(other.getApply()))
             && (this.getFrequency() == null ? other.getFrequency() == null : this.getFrequency().equals(other.getFrequency()))
             && (this.getBank() == null ? other.getBank() == null : this.getBank().equals(other.getBank()))
-            && (this.getAnnex() == null ? other.getAnnex() == null : this.getAnnex().equals(other.getAnnex()));
+            && (this.getAnnex() == null ? other.getAnnex() == null : this.getAnnex().equals(other.getAnnex()))
+            && (this.getDr() == null ? other.getDr() == null : this.getDr().equals(other.getDr()));
     }
 
     @Override
@@ -164,10 +200,13 @@ public class PolicyPO implements Serializable {
         result = prime * result + ((getCards() == null) ? 0 : getCards().hashCode());
         result = prime * result + ((getCategories() == null) ? 0 : getCategories().hashCode());
         result = prime * result + ((getEducations() == null) ? 0 : getEducations().hashCode());
+        result = prime * result + ((getTitles() == null) ? 0 : getTitles().hashCode());
+        result = prime * result + ((getQualities() == null) ? 0 : getQualities().hashCode());
         result = prime * result + ((getApply() == null) ? 0 : getApply().hashCode());
         result = prime * result + ((getFrequency() == null) ? 0 : getFrequency().hashCode());
         result = prime * result + ((getBank() == null) ? 0 : getBank().hashCode());
         result = prime * result + ((getAnnex() == null) ? 0 : getAnnex().hashCode());
+        result = prime * result + ((getDr() == null) ? 0 : getDr().hashCode());
         return result;
     }
 
@@ -184,10 +223,13 @@ public class PolicyPO implements Serializable {
         sb.append(", cards=").append(cards);
         sb.append(", categories=").append(categories);
         sb.append(", educations=").append(educations);
+        sb.append(", titles=").append(titles);
+        sb.append(", qualities=").append(qualities);
         sb.append(", apply=").append(apply);
         sb.append(", frequency=").append(frequency);
         sb.append(", bank=").append(bank);
         sb.append(", annex=").append(annex);
+        sb.append(", dr=").append(dr);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

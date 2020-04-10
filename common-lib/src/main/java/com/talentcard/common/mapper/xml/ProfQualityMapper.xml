@@ -7,9 +7,11 @@
     <result column="info" jdbcType="CHAR" property="info" />
     <result column="picture" jdbcType="CHAR" property="picture" />
     <result column="cert_id" jdbcType="BIGINT" property="certId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    pq_id, category, info, picture, cert_id
+    pq_id, category, info, picture, cert_id, talent_id, `status`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -23,9 +25,11 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.ProfQualityPO">
     insert into t_prof_quality (pq_id, category, info, 
-      picture, cert_id)
+      picture, cert_id, talent_id, 
+      `status`)
     values (#{pqId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{info,jdbcType=CHAR}, 
-      #{picture,jdbcType=CHAR}, #{certId,jdbcType=BIGINT})
+      #{picture,jdbcType=CHAR}, #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
+      #{status,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ProfQualityPO">
     insert into t_prof_quality
@@ -45,6 +49,12 @@
       <if test="certId != null">
         cert_id,
       </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="pqId != null">
@@ -61,6 +71,12 @@
       </if>
       <if test="certId != null">
         #{certId,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -79,6 +95,12 @@
       <if test="certId != null">
         cert_id = #{certId,jdbcType=BIGINT},
       </if>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
     </set>
     where pq_id = #{pqId,jdbcType=BIGINT}
   </update>
@@ -87,7 +109,9 @@
     set category = #{category,jdbcType=INTEGER},
       info = #{info,jdbcType=CHAR},
       picture = #{picture,jdbcType=CHAR},
-      cert_id = #{certId,jdbcType=BIGINT}
+      cert_id = #{certId,jdbcType=BIGINT},
+      talent_id = #{talentId,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=TINYINT}
     where pq_id = #{pqId,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -9,14 +9,17 @@
     <result column="cards" jdbcType="CHAR" property="cards" />
     <result column="categories" jdbcType="CHAR" property="categories" />
     <result column="educations" jdbcType="CHAR" property="educations" />
+    <result column="titles" jdbcType="CHAR" property="titles" />
+    <result column="qualities" jdbcType="CHAR" property="qualities" />
     <result column="apply" jdbcType="TINYINT" property="apply" />
     <result column="frequency" jdbcType="CHAR" property="frequency" />
     <result column="bank" jdbcType="TINYINT" property="bank" />
     <result column="annex" jdbcType="TINYINT" property="annex" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
-    policy_id, `name`, num, description, cards, categories, educations, apply, frequency, 
-    bank, annex
+    policy_id, `name`, num, description, cards, categories, educations, titles, qualities, 
+    apply, frequency, bank, annex, dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -31,12 +34,14 @@
   <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyPO">
     insert into t_policy (policy_id, `name`, num, 
       description, cards, categories, 
-      educations, apply, frequency, 
-      bank, annex)
+      educations, titles, qualities, 
+      apply, frequency, bank, 
+      annex, dr)
     values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR}, 
       #{description,jdbcType=CHAR}, #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR}, 
-      #{educations,jdbcType=CHAR}, #{apply,jdbcType=TINYINT}, #{frequency,jdbcType=CHAR}, 
-      #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT})
+      #{educations,jdbcType=CHAR}, #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR}, 
+      #{apply,jdbcType=TINYINT}, #{frequency,jdbcType=CHAR}, #{bank,jdbcType=TINYINT}, 
+      #{annex,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyPO">
     insert into t_policy
@@ -62,6 +67,12 @@
       <if test="educations != null">
         educations,
       </if>
+      <if test="titles != null">
+        titles,
+      </if>
+      <if test="qualities != null">
+        qualities,
+      </if>
       <if test="apply != null">
         apply,
       </if>
@@ -73,6 +84,9 @@
       </if>
       <if test="annex != null">
         annex,
+      </if>
+      <if test="dr != null">
+        dr,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -97,6 +111,12 @@
       <if test="educations != null">
         #{educations,jdbcType=CHAR},
       </if>
+      <if test="titles != null">
+        #{titles,jdbcType=CHAR},
+      </if>
+      <if test="qualities != null">
+        #{qualities,jdbcType=CHAR},
+      </if>
       <if test="apply != null">
         #{apply,jdbcType=TINYINT},
       </if>
@@ -108,6 +128,9 @@
       </if>
       <if test="annex != null">
         #{annex,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -132,6 +155,12 @@
       <if test="educations != null">
         educations = #{educations,jdbcType=CHAR},
       </if>
+      <if test="titles != null">
+        titles = #{titles,jdbcType=CHAR},
+      </if>
+      <if test="qualities != null">
+        qualities = #{qualities,jdbcType=CHAR},
+      </if>
       <if test="apply != null">
         apply = #{apply,jdbcType=TINYINT},
       </if>
@@ -144,6 +173,9 @@
       <if test="annex != null">
         annex = #{annex,jdbcType=TINYINT},
       </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
     </set>
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>
@@ -155,10 +187,13 @@
       cards = #{cards,jdbcType=CHAR},
       categories = #{categories,jdbcType=CHAR},
       educations = #{educations,jdbcType=CHAR},
+      titles = #{titles,jdbcType=CHAR},
+      qualities = #{qualities,jdbcType=CHAR},
       apply = #{apply,jdbcType=TINYINT},
       frequency = #{frequency,jdbcType=CHAR},
       bank = #{bank,jdbcType=TINYINT},
-      annex = #{annex,jdbcType=TINYINT}
+      annex = #{annex,jdbcType=TINYINT},
+      dr = #{dr,jdbcType=TINYINT}
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>
 </mapper>

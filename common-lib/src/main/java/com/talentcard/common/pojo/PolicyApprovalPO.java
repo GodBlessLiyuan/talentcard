@@ -14,11 +14,17 @@ public class PolicyApprovalPO implements Serializable {
 
     private Date createTime;
 
-    private String type;
+    /**
+     * 1：提交；2：审批
+     */
+    private Byte type;
 
     private Long userId;
 
-    private String result;
+    /**
+     * 1：同意；2：拒绝
+     */
+    private Byte result;
 
     private String opinion;
 
@@ -48,11 +54,11 @@ public class PolicyApprovalPO implements Serializable {
         this.createTime = createTime;
     }
 
-    public String getType() {
+    public Byte getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Byte type) {
         this.type = type;
     }
 
@@ -64,11 +70,11 @@ public class PolicyApprovalPO implements Serializable {
         this.userId = userId;
     }
 
-    public String getResult() {
+    public Byte getResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(Byte result) {
         this.result = result;
     }
 

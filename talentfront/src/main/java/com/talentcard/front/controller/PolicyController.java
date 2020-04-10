@@ -3,10 +3,7 @@ package com.talentcard.front.controller;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IPolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author: xiahui
@@ -20,8 +17,48 @@ public class PolicyController {
     @Autowired
     private IPolicyService service;
 
-    @PostMapping("applies")
-    public ResultVO applies(@RequestParam(value = "tid") Long tid) {
+    /**
+     * 我的权益
+     *
+     * @param tid
+     * @return
+     */
+    @RequestMapping("policies")
+    public ResultVO policies(@RequestParam(name = "tid") Long tid) {
+        return service.policies(tid);
+    }
+
+    /**
+     * 我的权益 - 申请
+     *
+     * @param pid
+     * @return
+     */
+    @RequestMapping("apply")
+    public ResultVO policyDetail(@RequestParam(name = "tid") Long tid, @RequestParam(name = "pid") Long pid) {
+        return service.apply(tid, pid);
+    }
+
+
+    /**
+     * 我的申请
+     *
+     * @param tid 人才ID
+     * @return
+     */
+    @RequestMapping("applies")
+    public ResultVO applies(@RequestParam(name = "tid") Long tid) {
         return service.applies(tid);
+    }
+
+    /**
+     * 我的申请 - 详情
+     *
+     * @param paid 申请ID
+     * @return
+     */
+    @RequestMapping("detail")
+    public ResultVO applyDetail(@RequestParam(name = "paid") Long paid) {
+        return service.detail(paid);
     }
 }
