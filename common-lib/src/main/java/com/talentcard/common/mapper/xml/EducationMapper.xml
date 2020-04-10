@@ -139,4 +139,10 @@
       `status` = #{status,jdbcType=TINYINT}
     where educ_id = #{educId,jdbcType=BIGINT}
   </update>
+
+  <select id="queryNameByTalentId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    select education
+    from t_education
+    where talent_id = #{talentId,jdbcType=BIGINT} and `status` = 1
+  </select>
 </mapper>

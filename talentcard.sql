@@ -7,18 +7,18 @@ DROP TABLE IF EXISTS t_role_authority;
 DROP TABLE IF EXISTS t_authority;
 DROP TABLE IF EXISTS t_bank;
 DROP TABLE IF EXISTS t_cert_approval;
-DROP TABLE IF EXISTS t_user_card;
-DROP TABLE IF EXISTS t_card;
 DROP TABLE IF EXISTS t_education;
 DROP TABLE IF EXISTS t_prof_quality;
 DROP TABLE IF EXISTS t_prof_title;
 DROP TABLE IF EXISTS t_certification;
 DROP TABLE IF EXISTS t_policy_approval;
 DROP TABLE IF EXISTS t_policy_apply;
+DROP TABLE IF EXISTS t_user_card;
+DROP TABLE IF EXISTS t_talent;
+DROP TABLE IF EXISTS t_card;
 DROP TABLE IF EXISTS t_policy;
 DROP TABLE IF EXISTS t_user;
 DROP TABLE IF EXISTS t_role;
-DROP TABLE IF EXISTS t_talent;
 
 
 
@@ -82,8 +82,16 @@ CREATE TABLE t_certification
     talent_id bigint unsigned,
     political char(128),
     create_time datetime,
-    -- 1：已同意使用中；2：已驳回；3：待审批；4废弃
-    status tinyint DEFAULT 3 COMMENT '1：已同意使用中；2：已驳回；3：待审批；4废弃',
+    -- 1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃
+    status tinyint DEFAULT 3 COMMENT '1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃',
+    -- 1 学历
+    -- 2 职称
+    -- 3 职业资格
+    -- 4 全都有
+    current_type tinyint DEFAULT 4 COMMENT '1 学历
+2 职称
+3 职业资格
+4 全都有',
     PRIMARY KEY (cert_id),
     UNIQUE (cert_id)
 );
@@ -118,8 +126,8 @@ CREATE TABLE t_education
     educ_picture char(255),
     cert_id bigint unsigned NOT NULL,
     talent_id bigint unsigned NOT NULL,
-    -- 1：已同意使用中；2：已驳回；3：待审批；4废弃
-    status tinyint COMMENT '1：已同意使用中；2：已驳回；3：待审批；4废弃',
+    -- 1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃
+    status tinyint COMMENT '1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃',
     PRIMARY KEY (educ_id),
     UNIQUE (educ_id),
     UNIQUE (cert_id),
@@ -191,8 +199,8 @@ CREATE TABLE t_prof_quality
     picture char(255),
     cert_id bigint unsigned NOT NULL,
     talent_id bigint unsigned NOT NULL,
-    -- 1：已同意使用中；2：已驳回；3：待审批；4废弃
-    status tinyint COMMENT '1：已同意使用中；2：已驳回；3：待审批；4废弃',
+    -- 1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃
+    status tinyint COMMENT '1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃',
     PRIMARY KEY (pq_id),
     UNIQUE (pq_id),
     UNIQUE (cert_id),
@@ -208,8 +216,8 @@ CREATE TABLE t_prof_title
     picture char(255),
     cert_id bigint unsigned NOT NULL,
     talent_id bigint unsigned NOT NULL,
-    -- 1：已同意使用中；2：已驳回；3：待审批；4废弃
-    status tinyint COMMENT '1：已同意使用中；2：已驳回；3：待审批；4废弃',
+    -- 1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃
+    status tinyint COMMENT '1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃',
     PRIMARY KEY (pt_id),
     UNIQUE (pt_id),
     UNIQUE (cert_id),
@@ -255,6 +263,8 @@ CREATE TABLE t_talent
     create_time datetime,
     -- 1：已认证；2：未认证
     status tinyint DEFAULT 2 COMMENT '1：已认证；2：未认证',
+    category char(255),
+    card_id bigint unsigned,
     PRIMARY KEY (talent_id),
     UNIQUE (talent_id),
     UNIQUE (id_card)
@@ -311,6 +321,14 @@ ALTER TABLE t_role_authority
 
 
 ALTER TABLE t_cert_approval
+    ADD FOREIGN KEY (card_id)
+        REFERENCES t_card (card_id)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_talent
     ADD FOREIGN KEY (card_id)
         REFERENCES t_card (card_id)
         ON UPDATE RESTRICT
