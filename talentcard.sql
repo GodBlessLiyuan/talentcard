@@ -264,7 +264,7 @@ CREATE TABLE t_talent
     -- 1：已认证；2：未认证
     status tinyint DEFAULT 2 COMMENT '1：已认证；2：未认证',
     category char(255),
-    card_id bigint unsigned NOT NULL,
+    card_id bigint unsigned,
     PRIMARY KEY (talent_id),
     UNIQUE (talent_id),
     UNIQUE (id_card)

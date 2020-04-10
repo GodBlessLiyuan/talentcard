@@ -46,6 +46,8 @@ public class PolicyServiceImpl implements IPolicyService {
         List<Integer> existEduc = educationMapper.queryNameByTalentId(talentId);
         List<Integer> existTitle = profTitleMapper.queryNameByTalentId(talentId);
         List<Integer> existQuality = profQualityMapper.queryNameByTalentId(talentId);
+        String[] existCategories = talentPO.getCategory().split(",");
+
 
         List<PolicyPO> pos = policyMapper.queryByDr((byte) 1);
         List<PolicyPO> showPOs = new ArrayList<>();
