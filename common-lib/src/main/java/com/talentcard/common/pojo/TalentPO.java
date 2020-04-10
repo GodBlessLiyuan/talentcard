@@ -29,6 +29,11 @@ public class TalentPO implements Serializable {
 
     private Date createTime;
 
+    /**
+     * 1：已认证；2：未认证
+     */
+    private Byte status;
+
     private static final long serialVersionUID = 1L;
 
     public Long getTalentId() {
@@ -103,6 +108,14 @@ public class TalentPO implements Serializable {
         this.createTime = createTime;
     }
 
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -123,7 +136,8 @@ public class TalentPO implements Serializable {
             && (this.getWorkUnit() == null ? other.getWorkUnit() == null : this.getWorkUnit().equals(other.getWorkUnit()))
             && (this.getIndustry() == null ? other.getIndustry() == null : this.getIndustry().equals(other.getIndustry()))
             && (this.getPhone() == null ? other.getPhone() == null : this.getPhone().equals(other.getPhone()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()));
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()));
     }
 
     @Override
@@ -139,6 +153,7 @@ public class TalentPO implements Serializable {
         result = prime * result + ((getIndustry() == null) ? 0 : getIndustry().hashCode());
         result = prime * result + ((getPhone() == null) ? 0 : getPhone().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         return result;
     }
 
@@ -157,6 +172,7 @@ public class TalentPO implements Serializable {
         sb.append(", industry=").append(industry);
         sb.append(", phone=").append(phone);
         sb.append(", createTime=").append(createTime);
+        sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
