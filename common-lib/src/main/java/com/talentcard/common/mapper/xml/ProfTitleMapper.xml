@@ -114,4 +114,10 @@
       `status` = #{status,jdbcType=TINYINT}
     where pt_id = #{ptId,jdbcType=BIGINT}
   </update>
+
+  <select id="queryNameByTalentId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    select category
+    from t_prof_title
+    where talent_id = #{talentId,jdbcType=BIGINT} and `status` = 1
+  </select>
 </mapper>
