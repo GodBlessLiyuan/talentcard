@@ -3,6 +3,7 @@
 <mapper namespace="com.talentcard.common.mapper.TalentMapper">
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentPO">
     <id column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="open_id" jdbcType="CHAR" property="openId" />
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="sex" jdbcType="TINYINT" property="sex" />
     <result column="id_card" jdbcType="CHAR" property="idCard" />
@@ -16,7 +17,7 @@
     <result column="card_id" jdbcType="BIGINT" property="cardId" />
   </resultMap>
   <sql id="Base_Column_List">
-    talent_id, `name`, sex, id_card, passport, work_unit, industry, phone, create_time, 
+    talent_id, open_id, `name`, sex, id_card, passport, work_unit, industry, phone, create_time, 
     `status`, category, card_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -30,13 +31,13 @@
     where talent_id = #{talentId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.TalentPO">
-    insert into t_talent (talent_id, `name`, sex, 
-      id_card, passport, work_unit, 
+    insert into t_talent (talent_id, open_id, `name`, 
+      sex, id_card, passport, work_unit, 
       industry, phone, create_time, 
       `status`, category, card_id
       )
-    values (#{talentId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{sex,jdbcType=TINYINT}, 
-      #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR}, 
+    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
+      #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR}, 
       #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=TINYINT}, #{category,jdbcType=CHAR}, #{cardId,jdbcType=BIGINT}
       )
@@ -46,6 +47,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="talentId != null">
         talent_id,
+      </if>
+      <if test="openId != null">
+        open_id,
       </if>
       <if test="name != null">
         `name`,
@@ -85,6 +89,9 @@
       <if test="talentId != null">
         #{talentId,jdbcType=BIGINT},
       </if>
+      <if test="openId != null">
+        #{openId,jdbcType=CHAR},
+      </if>
       <if test="name != null">
         #{name,jdbcType=CHAR},
       </if>
@@ -123,6 +130,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentPO">
     update t_talent
     <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=CHAR},
+      </if>
       <if test="name != null">
         `name` = #{name,jdbcType=CHAR},
       </if>
@@ -161,7 +171,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentPO">
     update t_talent
-    set `name` = #{name,jdbcType=CHAR},
+    set open_id = #{openId,jdbcType=CHAR},
+      `name` = #{name,jdbcType=CHAR},
       sex = #{sex,jdbcType=TINYINT},
       id_card = #{idCard,jdbcType=CHAR},
       passport = #{passport,jdbcType=CHAR},
@@ -186,4 +197,20 @@
       #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
+  <select id="findRegisterOne" parameterType="java.lang.Long" resultType="java.util.Map">
+    select
+    talent_id as talentId, `name` , sex, id_card as idCard, passport, work_unit as workUnity, industry, phone,
+    t.`status` as tStatus, category
+    from t_talent t
+    left join t_certification c
+    on  t.talent_id = c.talent_id
+    left join t_education e
+    on c.cert_id = e.cert_id
+    left join t_prof_title pt
+    on c.cert_id = pt.cert_id
+    left join t_prof_quality pq
+    on c.cert_id = pq.cert_id
+    where t.open_id = #{openId,jdbcType=CHAR}
+    and c.status = 3
+  </select>
 </mapper>
