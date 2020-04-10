@@ -27,9 +27,10 @@ public class AccessTokenUtil {
 
     //构造方法执行后的初始化
     @PostConstruct
-    public void AccessTokenInitialize(){
+    public void AccessTokenInitialize() {
         AccessTokenUtil.applyAccessToken();
     }
+
     /**
      * @throws WechatException
      * @Description: 申请access_token
@@ -52,15 +53,18 @@ public class AccessTokenUtil {
         if (applyAccessToken != null) {
             accessToken = applyAccessToken;
             accessTokenCreateTime = System.currentTimeMillis();
+            System.out.println("成功拿到token：" + accessToken);
+            System.out.println("成功更新创建时间：" + accessTokenCreateTime);
         } else {
             throw new WechatException("token拿不到");
         }
     }
 
-    public static String getAccessToken(){
+    public static String getAccessToken() {
         //一小时，更换accessToken
-        if((System.currentTimeMillis()-accessTokenCreateTime)>60*60*1000){
+        if ((System.currentTimeMillis() - accessTokenCreateTime) > 60 * 60 * 1000) {
             AccessTokenUtil.applyAccessToken();
+            System.out.println("成功更换token");
         }
         return accessToken;
     }

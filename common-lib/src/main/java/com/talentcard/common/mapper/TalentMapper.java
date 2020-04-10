@@ -8,4 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface TalentMapper extends BaseMapper<TalentPO, Long> {
+    Integer add(TalentPO talentPO);
 }
