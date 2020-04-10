@@ -90,4 +90,11 @@
       `status` = #{status,jdbcType=TINYINT}
     where cert_id = #{certId,jdbcType=BIGINT}
   </update>
+
+  <insert id="add" useGeneratedKeys="true" keyProperty="certId" parameterType="com.talentcard.common.pojo.CertificationPO">
+    insert into t_certification (cert_id, talent_id, political,
+      create_time, `status`)
+    values (#{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{political,jdbcType=CHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
+  </insert>
 </mapper>
