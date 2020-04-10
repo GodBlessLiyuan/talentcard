@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface CertificationMapper extends BaseMapper<CertificationPO, Long> {
+    Integer add(CertificationPO certificationPO);
 }
