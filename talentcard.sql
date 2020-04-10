@@ -82,8 +82,8 @@ CREATE TABLE t_certification
     talent_id bigint unsigned,
     political char(128) NOT NULL,
     create_time datetime,
-    -- 1：已同意；2：已驳回；3：待审批
-    status tinyint DEFAULT 3 COMMENT '1：已同意；2：已驳回；3：待审批',
+    -- 1 刚注册 2：已同意使用中；3：待审批；4：已驳回 5废弃
+    status tinyint DEFAULT 3 COMMENT '1 刚注册 2：已同意使用中；3：待审批；4：已驳回 5废弃',
     PRIMARY KEY (cert_id),
     UNIQUE (cert_id)
 );
@@ -94,11 +94,13 @@ CREATE TABLE t_cert_approval
     approval_id bigint unsigned NOT NULL AUTO_INCREMENT,
     cert_id bigint unsigned NOT NULL,
     create_time datetime,
-    type char(32),
+    -- 1：提交；2：审批
+    type tinyint COMMENT '1：提交；2：审批',
     user_id bigint unsigned,
     card_id bigint unsigned NOT NULL,
     category char(255),
-    result tinyint,
+    -- 1：同意；2：拒绝
+    result tinyint COMMENT '1：同意；2：拒绝',
     opinion char(255),
     PRIMARY KEY (approval_id),
     UNIQUE (approval_id)
@@ -108,16 +110,20 @@ CREATE TABLE t_cert_approval
 CREATE TABLE t_education
 (
     educ_id bigint unsigned NOT NULL AUTO_INCREMENT,
-    eduction int,
+    education int,
     school char(255),
     -- 1：是；2：否
     frist_class tinyint COMMENT '1：是；2：否',
     major char(255),
     educ_picture char(255),
     cert_id bigint unsigned NOT NULL,
+    talent_id bigint unsigned NOT NULL,
+    -- 1 刚注册 2：已同意使用中；3：待审批；4：已驳回 5废弃
+    status tinyint COMMENT '1 刚注册 2：已同意使用中；3：待审批；4：已驳回 5废弃',
     PRIMARY KEY (educ_id),
     UNIQUE (educ_id),
-    UNIQUE (cert_id)
+    UNIQUE (cert_id),
+    UNIQUE (talent_id)
 );
 
 
@@ -130,6 +136,8 @@ CREATE TABLE t_policy
     cards char(255),
     categories char(255),
     educations char(255),
+    titles char(255),
+    qualities char(255),
     -- 1：需要；2：不需要
     apply tinyint DEFAULT 2 COMMENT '1：需要；2：不需要',
     frequency char(32),
@@ -162,9 +170,11 @@ CREATE TABLE t_policy_approval
     approval_id bigint unsigned NOT NULL AUTO_INCREMENT,
     pa_id bigint unsigned NOT NULL,
     create_time datetime,
-    type char(32),
+    -- 1：提交；2：审批
+    type tinyint COMMENT '1：提交；2：审批',
     user_id bigint unsigned,
-    result tinyint,
+    -- 1：同意；2：拒绝
+    result tinyint COMMENT '1：同意；2：拒绝',
     opinion char(255),
     PRIMARY KEY (approval_id),
     UNIQUE (approval_id)
@@ -178,9 +188,13 @@ CREATE TABLE t_prof_quality
     info char(255),
     picture char(255),
     cert_id bigint unsigned NOT NULL,
+    talent_id bigint unsigned NOT NULL,
+    -- 1 刚注册 2：已同意使用中；3：待审批；4：已驳回 5废弃
+    status tinyint COMMENT '1 刚注册 2：已同意使用中；3：待审批；4：已驳回 5废弃',
     PRIMARY KEY (pq_id),
     UNIQUE (pq_id),
-    UNIQUE (cert_id)
+    UNIQUE (cert_id),
+    UNIQUE (talent_id)
 );
 
 
@@ -191,9 +205,13 @@ CREATE TABLE t_prof_title
     info char(255),
     picture char(255),
     cert_id bigint unsigned NOT NULL,
+    talent_id bigint unsigned NOT NULL,
+    -- 1 刚注册 2：已同意使用中；3：待审批；4：已驳回 5废弃
+    status tinyint COMMENT '1 刚注册 2：已同意使用中；3：待审批；4：已驳回 5废弃',
     PRIMARY KEY (pt_id),
     UNIQUE (pt_id),
-    UNIQUE (cert_id)
+    UNIQUE (cert_id),
+    UNIQUE (talent_id)
 );
 
 
@@ -392,7 +410,31 @@ ALTER TABLE t_certification
 ;
 
 
+ALTER TABLE t_education
+    ADD FOREIGN KEY (talent_id)
+        REFERENCES t_talent (talent_id)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
 ALTER TABLE t_policy_apply
+    ADD FOREIGN KEY (talent_id)
+        REFERENCES t_talent (talent_id)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_prof_quality
+    ADD FOREIGN KEY (talent_id)
+        REFERENCES t_talent (talent_id)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_prof_title
     ADD FOREIGN KEY (talent_id)
         REFERENCES t_talent (talent_id)
         ON UPDATE RESTRICT
