@@ -150,4 +150,16 @@
       `status` = #{status,jdbcType=TINYINT}
     where talent_id = #{talentId,jdbcType=BIGINT}
   </update>
+
+  <!--  insert，且返回主键-->
+  <insert id="add" useGeneratedKeys="true" keyProperty="talentId" parameterType="com.talentcard.common.pojo.TalentPO">
+    insert into t_talent (talent_id, `name`, sex,
+      id_card, passport, work_unit,
+      industry, phone, create_time
+      )
+    values (#{talentId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{sex,jdbcType=TINYINT},
+      #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR},
+      #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
 </mapper>
