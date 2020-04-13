@@ -251,12 +251,16 @@ public class TalentServiceImpl implements ITalentService {
         CardPO cardPO = cardMapper.findDefaultCard();
         Long cardId = cardPO.getCardId();
         jsonObject.put("cardId", cardId);
-        //人卡表里添加数据
+        //人卡表里设置参数
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
         UserCardPO userCardPO = new UserCardPO();
         userCardPO.setTalentId(talentPO.getTalentId());
         userCardPO.setCardId(cardId);
-        userCardPO.setNum("" + cardPO.getCurrNum());
+        //设置当前编号，组合起来，并且更新卡的currentNum
+        userCardPO.setNum(cardPO.getInitialWord() + cardPO.getCurrNum());
+        cardPO.setCurrNum(cardPO.getCurrNum() + 1);
+        cardMapper.updateByPrimaryKeySelective(cardPO);
+        //人卡表里设置参数；添加数据
         userCardPO.setCreateTime(new Date());
         userCardPO.setStatus((byte) 1);
         userCardMapper.insertSelective(userCardPO);
