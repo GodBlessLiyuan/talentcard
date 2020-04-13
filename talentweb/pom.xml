@@ -86,9 +86,46 @@
 
     <build>
         <plugins>
+            <!--  <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-dependency-plugin</artifactId>
+                  <version>2.10</version>
+                  <executions>
+                      <execution>
+                          <id>copy-dependencies</id>
+                          <phase>package</phase>
+                          <goals>
+                              <goal>copy-dependencies</goal>
+                          </goals>
+                          <configuration>
+                              <outputDirectory>target/lib</outputDirectory>
+                              <excludeTransitive>false</excludeTransitive>
+                              <stripVersion>false</stripVersion>
+                              <includeScope>runtime</includeScope>
+                          </configuration>
+                      </execution>
+                  </executions>
+              </plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.talentcard.web.WebApplication</mainClass>
+                    <layout>ZIP</layout>
+                    <includes>
+                        <include>
+                            <groupId>nothing</groupId>
+                            <artifactId>nothing</artifactId>
+                        </include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
