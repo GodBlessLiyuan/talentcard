@@ -216,6 +216,7 @@ public class PolicyServiceImpl implements IPolicyService {
             BankPO bankPO = new BankPO();
             bankPO.setNum(dto.getCard());
             bankPO.setName(dto.getBank());
+            bankPO.setPaId(applyPO.getPaId());
             bankMapper.insert(bankPO);
         }
         if (null != dto.getFiles() && dto.getFiles().length > 0) {
@@ -225,6 +226,7 @@ public class PolicyServiceImpl implements IPolicyService {
                 annexPO.setName(file.getOriginalFilename());
                 annexPO.setLocation(FileUtil.uploadFile(file, rootDir, projectDir, annexDir, "annex"));
                 annexPO.setPaId(applyPO.getPaId());
+                annexPOs.add(annexPO);
             }
             annexMapper.batchInsert(annexPOs);
         }

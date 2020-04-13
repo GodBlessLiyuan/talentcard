@@ -53,9 +53,7 @@ CREATE TABLE t_bank
     name char(32) NOT NULL,
     pa_id bigint unsigned NOT NULL,
     PRIMARY KEY (bank_id),
-    UNIQUE (bank_id),
-    UNIQUE (num),
-    UNIQUE (pa_id)
+    UNIQUE (bank_id)
 );
 
 
@@ -104,7 +102,7 @@ CREATE TABLE t_cert_approval
     create_time datetime,
     -- 1：提交；2：审批
     type tinyint COMMENT '1：提交；2：审批',
-    card_id bigint unsigned NOT NULL,
+    card_id bigint unsigned,
     category char(255),
     user_id bigint unsigned,
     update_time datetime,
@@ -264,8 +262,8 @@ CREATE TABLE t_talent
     industry char(255) NOT NULL,
     phone char(32) NOT NULL,
     create_time datetime,
-    -- 1：已认证；2：未认证
-    status tinyint DEFAULT 2 COMMENT '1：已认证；2：未认证',
+    -- 1：已认证；2：未认证；3：认证中
+    status tinyint DEFAULT 2 COMMENT '1：已认证；2：未认证；3：认证中',
     category char(255),
     card_id bigint unsigned,
     PRIMARY KEY (talent_id),
