@@ -35,5 +35,5 @@ public interface PolicyApplyMapper extends BaseMapper<PolicyApplyPO, Long> {
      * @param policyId
      * @return
      */
-    List<PolicyApplyPO> queryByTidAndPidAndMonth(@Param("talentId") Long talentId, @Param("policyId") Long policyId, @Param("month") Long month);
+    List<PolicyApplyPO> queryByTidAndPidAndMonth(@Param("talentId") Long talentId, @Param("policyId") Long policyId, @Param("month") Integer month);
 }

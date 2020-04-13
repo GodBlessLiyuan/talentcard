@@ -158,24 +158,43 @@ public class PolicyServiceImpl implements IPolicyService {
             vo.setAnnex(po.getAnnex());
             vo.setApply(po.getApply());
 
-            List<PolicyApplyPO> applyPOs = policyApplyMapper.queryByTidAndPidAndMonth(talentId, po.getPolicyId(), 5L);
-            if (null == applyPOs || applyPOs.size() == 0) {
-                vo.setRight((byte) 1);
-            } else {
-                int applyNum = 0;
-                for (PolicyApplyPO applyPO : applyPOs) {
-                    if (applyPO.getStatus() == 3) {
-                        vo.setRight((byte) 2);
-                        break;
-                    } else if (applyPO.getStatus() == 1) {
-                        applyNum++;
+            if (null != po.getApply() && po.getApply() == 1) {
+                // 根据频次计算相隔月份
+                int month = 0;
+                if (null != po.getUnit() && null != po.getRate() && null != po.getTimes()) {
+                    if (po.getUnit() == 1) {
+                        month = po.getRate() * 12;  // 年
+                    } else if (po.getUnit() == 2) {
+                        month = po.getRate() * 3;   // 季
+                    } else if (po.getUnit() == 3) {
+                        month = po.getRate();       // 月
                     }
                 }
 
-                if (null != vo.getRight()) {
+                List<PolicyApplyPO> applyPOs = policyApplyMapper.queryByTidAndPidAndMonth(talentId, po.getPolicyId(), month);
+                if (null == applyPOs || applyPOs.size() == 0) {
+                    vo.setRight((byte) 1);
+                } else {
+                    int applyNum = 0;
+                    for (PolicyApplyPO applyPO : applyPOs) {
+                        if (applyPO.getStatus() == 3) {
+                            vo.setRight((byte) 2);
+                            break;
+                        } else if (applyPO.getStatus() == 1) {
+                            applyNum++;
+                        }
+                    }
 
-                    if (applyNum >= 1) {
-                        vo.setRight((byte) 3);
+                    if (null == vo.getRight()) {
+                        if (null == po.getUnit()) {
+                            vo.setRight((byte) 1);
+                        } else {
+                            if (applyNum >= po.getUnit()) {
+                                vo.setRight((byte) 3);
+                            } else {
+                                vo.setRight((byte) 1);
+                            }
+                        }
                     }
                 }
             }

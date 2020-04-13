@@ -157,11 +157,13 @@
     left join t_policy p on pa.policy_id = p.policy_id
     where pa.pa_id = #{paId,jdbcType=BIGINT}
   </select>
-  <select id="queryByTidAndPidAndMonth" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="queryByTidAndPidAndMonth" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_policy_apply
     where talent_id = #{talentId,jdbcType=BIGINT} and policy_id = #{policyId,jdbcType=BIGINT}
+    <if test="month != null and month != 0">
       and (`status` = 3 or create_time between date_sub(now(), interval #{month,jdbcType=BIGINT}  month) and now())
+    </if>
   </select>
 </mapper>
