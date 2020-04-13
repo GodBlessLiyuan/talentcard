@@ -9,6 +9,7 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IPolicyService;
 import com.talentcard.front.vo.PolicyAppliesVO;
 import com.talentcard.front.vo.PolicyApplyDetailVO;
+import com.talentcard.front.vo.PolicyDetailVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,6 +36,8 @@ public class PolicyServiceImpl implements IPolicyService {
     private ProfTitleMapper profTitleMapper;
     @Resource
     private ProfQualityMapper profQualityMapper;
+    @Resource
+    private PolicyApprovalMapper policyApprovalMapper;
 
     @Override
     public ResultVO policies(Long talentId) {
@@ -43,21 +46,126 @@ public class PolicyServiceImpl implements IPolicyService {
             return new ResultVO(1000);
         }
 
-        List<Integer> existEduc = educationMapper.queryNameByTalentId(talentId);
-        List<Integer> existTitle = profTitleMapper.queryNameByTalentId(talentId);
-        List<Integer> existQuality = profQualityMapper.queryNameByTalentId(talentId);
-        String[] existCategories = talentPO.getCategory().split(",");
+        List<Integer> existEducations = educationMapper.queryNameByTalentId(talentId);
+        List<Integer> existTitles = profTitleMapper.queryNameByTalentId(talentId);
+        List<Integer> existQualities = profQualityMapper.queryNameByTalentId(talentId);
+        String[] existCategories = null;
+        if (null != talentPO.getCategory()) {
+            existCategories = talentPO.getCategory().split(",");
+        }
 
+        Long existCardId = talentPO.getCardId();
 
         List<PolicyPO> pos = policyMapper.queryByDr((byte) 1);
         List<PolicyPO> showPOs = new ArrayList<>();
         for (PolicyPO po : pos) {
-            String[] educ = po.getEducations().split(",");
-            String[] title = po.getTitles().split(",");
-            String[] quality = po.getQualities().split(",");
+            String[] cardIds = null;
+            String[] categories = null;
+            String[] educations = null;
+            String[] titles = null;
+            String[] qualities = null;
+            if (null != po.getCards()) {
+                cardIds = po.getCards().split(",");
+            }
+            if (null != po.getCategories()) {
+                categories = po.getCategories().split(",");
+            }
+            if (null != po.getEducations()) {
+                educations = po.getEducations().split(",");
+            }
+            if (null != po.getTitles()) {
+                titles = po.getTitles().split(",");
+            }
+            if (null != po.getQualities()) {
+                qualities = po.getQualities().split(",");
+            }
+
+            boolean show = false;
+            if (null != cardIds) {
+                for (String cardId : cardIds) {
+                    if (existCardId.toString().equals(cardId)) {
+                        show = true;
+                        break;
+                    }
+                }
+            }
+            if (!show && null != categories && null != existCategories) {
+                for (String category : categories) {
+                    if (!show) {
+                        for (String existCategory : existCategories) {
+                            if (category.equals(existCategory)) {
+                                show = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!show && null != educations) {
+                for (String educ : educations) {
+                    if (existEducations.contains(educ)) {
+                        show = true;
+                        break;
+                    }
+                }
+            }
+            if (!show && null != titles) {
+                for (String title : titles) {
+                    if (existTitles.contains(title)) {
+                        show = true;
+                        break;
+                    }
+                }
+            }
+            if (!show && null != qualities) {
+                for (String quality : qualities) {
+                    if (existQualities.contains(quality)) {
+                        show = true;
+                        break;
+                    }
+                }
+            }
+
+            if (show) {
+                showPOs.add(po);
+            }
         }
 
-        return null;
+        List<PolicyDetailVO> vos = new ArrayList<>();
+        for (PolicyPO po : showPOs) {
+            PolicyDetailVO vo = new PolicyDetailVO();
+            vo.setPid(po.getPolicyId());
+            vo.setName(po.getName());
+            vo.setDesc(po.getDescription());
+            vo.setBank(po.getBank());
+            vo.setAnnex(po.getAnnex());
+            vo.setApply(po.getApply());
+
+            List<PolicyApplyPO> applyPOs = policyApplyMapper.queryByTidAndPid(talentId, po.getPolicyId());
+            if (null == applyPOs || applyPOs.size() == 0) {
+                vo.setRight((byte) 1);
+            } else {
+                int applyNum = 0;
+                for (PolicyApplyPO applyPO : applyPOs) {
+                    if (applyPO.getStatus() == 3) {
+                        vo.setRight((byte) 2);
+                        break;
+                    } else if (applyPO.getStatus() == 1) {
+                        applyNum++;
+                    }
+                }
+
+                if (null != vo.getRight()) {
+                    if (applyNum >= 1) {
+                        vo.setRight((byte) 3);
+                    }
+                }
+            }
+
+            vos.add(vo);
+        }
+
+        return new ResultVO<>(1000, vos);
     }
 
     @Override

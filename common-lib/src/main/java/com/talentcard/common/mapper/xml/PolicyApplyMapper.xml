@@ -157,4 +157,10 @@
     left join t_policy p on pa.policy_id = p.policy_id
     where pa.pa_id = #{paId,jdbcType=BIGINT}
   </select>
+  <select id="queryByTidAndPid" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_policy_apply
+    where talent_id = #{talentId,jdbcType=BIGINT} and policy_id = #{policyId,jdbcType=BIGINT}
+  </select>
 </mapper>
