@@ -145,6 +145,7 @@ public class PolicyServiceImpl implements IPolicyService {
             if (null == applyPOs || applyPOs.size() == 0) {
                 vo.setRight((byte) 1);
             } else {
+                // TODO：频次需要进行计算
                 int applyNum = 0;
                 for (PolicyApplyPO applyPO : applyPOs) {
                     if (applyPO.getStatus() == 3) {
