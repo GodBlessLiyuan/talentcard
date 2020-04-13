@@ -1,6 +1,7 @@
 package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
@@ -9,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * 人才注册/认证相关
+ *
  * @author ChenXU
  */
 @Service
@@ -30,7 +33,7 @@ public class TalentServiceImpl implements ITalentService {
     @Override
     public ResultVO register(JSONObject jsonObject) {
         //设置状态值 状态3为注册中
-        Byte status = (byte)3;
+        Byte status = (byte) 3;
         //通过currentType判定第一次注册填写的哪一个
         Byte currentType = jsonObject.getByte("currentType");
         //人才表
@@ -56,7 +59,7 @@ public class TalentServiceImpl implements ITalentService {
         Long certificationId = certificationPO.getCertId();
 
         //学历表
-        if(currentType==1) {
+        if (currentType == 1) {
             EducationPO educationPO = new EducationPO();
             educationPO.setEducation(jsonObject.getInteger("education"));
             educationPO.setSchool(jsonObject.getString("school"));
@@ -69,7 +72,7 @@ public class TalentServiceImpl implements ITalentService {
         }
 
         //职称表
-        else if(currentType==2) {
+        else if (currentType == 2) {
             ProfTitlePO profTitlePO = new ProfTitlePO();
             profTitlePO.setCategory(jsonObject.getInteger("profTitleCategory"));
             profTitlePO.setInfo(jsonObject.getString("profTitleInfo"));
@@ -90,5 +93,12 @@ public class TalentServiceImpl implements ITalentService {
             profQualityMapper.insertSelective(profQualityPO);
         }
         return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO findOne(HashMap<String, Object> hashMap) {
+        TalentBO talentBO = new TalentBO();
+        talentBO = talentMapper.findOne(hashMap).get(0);
+        return new ResultVO(1000, talentBO);
     }
 }
