@@ -104,9 +104,10 @@ CREATE TABLE t_cert_approval
     create_time datetime,
     -- 1：提交；2：审批
     type tinyint COMMENT '1：提交；2：审批',
-    user_id bigint unsigned,
     card_id bigint unsigned NOT NULL,
     category char(255),
+    user_id bigint unsigned,
+    update_time datetime,
     -- 1：同意；2：拒绝
     result tinyint COMMENT '1：同意；2：拒绝',
     opinion char(255),
@@ -121,7 +122,7 @@ CREATE TABLE t_education
     education int,
     school char(255),
     -- 1：是；2：否
-    frist_class tinyint COMMENT '1：是；2：否',
+    first_class tinyint COMMENT '1：是；2：否',
     major char(255),
     educ_picture char(255),
     cert_id bigint unsigned NOT NULL,
@@ -183,6 +184,7 @@ CREATE TABLE t_policy_approval
     -- 1：提交；2：审批
     type tinyint COMMENT '1：提交；2：审批',
     user_id bigint unsigned,
+    update_time datetime,
     -- 1：同意；2：拒绝
     result tinyint COMMENT '1：同意；2：拒绝',
     opinion char(255),
@@ -252,6 +254,7 @@ CREATE TABLE t_role_authority
 CREATE TABLE t_talent
 (
     talent_id bigint unsigned NOT NULL AUTO_INCREMENT,
+    open_id char(128) NOT NULL,
     name char(64) NOT NULL,
     -- 1：男；2：女
     sex tinyint COMMENT '1：男；2：女',

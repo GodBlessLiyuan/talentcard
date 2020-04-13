@@ -7,11 +7,12 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="result" jdbcType="TINYINT" property="result" />
     <result column="opinion" jdbcType="CHAR" property="opinion" />
   </resultMap>
   <sql id="Base_Column_List">
-    approval_id, pa_id, create_time, `type`, user_id, `result`, opinion
+    approval_id, pa_id, create_time, `type`, user_id, update_time, `result`, opinion
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -25,11 +26,11 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyApprovalPO">
     insert into t_policy_approval (approval_id, pa_id, create_time, 
-      `type`, user_id, `result`, 
-      opinion)
+      `type`, user_id, update_time, 
+      `result`, opinion)
     values (#{approvalId,jdbcType=BIGINT}, #{paId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{type,jdbcType=TINYINT}, #{userId,jdbcType=BIGINT}, #{result,jdbcType=TINYINT}, 
-      #{opinion,jdbcType=CHAR})
+      #{type,jdbcType=TINYINT}, #{userId,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{result,jdbcType=TINYINT}, #{opinion,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyApprovalPO">
     insert into t_policy_approval
@@ -48,6 +49,9 @@
       </if>
       <if test="userId != null">
         user_id,
+      </if>
+      <if test="updateTime != null">
+        update_time,
       </if>
       <if test="result != null">
         `result`,
@@ -72,6 +76,9 @@
       <if test="userId != null">
         #{userId,jdbcType=BIGINT},
       </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="result != null">
         #{result,jdbcType=TINYINT},
       </if>
@@ -95,6 +102,9 @@
       <if test="userId != null">
         user_id = #{userId,jdbcType=BIGINT},
       </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="result != null">
         `result` = #{result,jdbcType=TINYINT},
       </if>
@@ -110,6 +120,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       `type` = #{type,jdbcType=TINYINT},
       user_id = #{userId,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
       `result` = #{result,jdbcType=TINYINT},
       opinion = #{opinion,jdbcType=CHAR}
     where approval_id = #{approvalId,jdbcType=BIGINT}
