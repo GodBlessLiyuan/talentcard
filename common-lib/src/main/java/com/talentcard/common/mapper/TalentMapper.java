@@ -11,6 +11,7 @@ import java.util.HashMap;
 @Mapper
 public interface TalentMapper extends BaseMapper<TalentPO, Long> {
     Integer add(TalentPO talentPO);
-    HashMap<String, Object> findRegisterOne(Long openId);
+    HashMap<String, Object> findRegisterOne(HashMap<String, Object> hashMap);
+    HashMap<String, Object> findOne(HashMap<String, Object> hashMap);
 
 }
