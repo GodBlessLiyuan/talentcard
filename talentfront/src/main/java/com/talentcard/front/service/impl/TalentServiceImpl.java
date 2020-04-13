@@ -157,7 +157,7 @@ public class TalentServiceImpl implements ITalentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO identification(String openId,
-                                   String political,
+                                   Byte political,
                                    Integer education,
                                    String school,
                                    Byte firstClass,

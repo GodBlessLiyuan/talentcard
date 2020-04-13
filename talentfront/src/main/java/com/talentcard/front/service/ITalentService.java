@@ -49,7 +49,7 @@ public interface ITalentService {
      * @return
      */
     ResultVO identification(String openId,
-                            String political,
+                            Byte political,
                             Integer education,
                             String school,
                             Byte firstClass,
