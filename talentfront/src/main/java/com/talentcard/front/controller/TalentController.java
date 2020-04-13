@@ -1,6 +1,7 @@
 package com.talentcard.front.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ISmsService;
 import com.talentcard.front.service.ITalentService;
@@ -25,6 +26,17 @@ public class TalentController {
     private ITalentService iTalentService;
     @Autowired
     private ISmsService iSmsService;
+    /**
+     * 用户一次打开，判断当前用户状态
+     * null，则表示没使用过，其余取决于status
+     * 1是已认证；2是未认证；3是认证中
+     * @param openId
+     * @return
+     */
+    @PostMapping("findStatus")
+    public ResultVO<TalentPO> findStatus(@RequestParam String openId) {
+        return iTalentService.findStatus(openId);
+    }
 
     /**
      * 用户注册模块
@@ -37,8 +49,10 @@ public class TalentController {
         //判断验证码
         Long verifyCreateTime = verifyCodeTime.get(jsonObject.getString("phone"));
         String verifyCode = verifyCodeMap.get(jsonObject.getString("phone"));
-        System.out.println(verifyCreateTime);
-        System.out.println(verifyCode);
+        if(verifyCode==null||verifyCreateTime==null){
+            //没有验证码
+            return new ResultVO(2303);
+        }
         if ((System.currentTimeMillis() - verifyCreateTime) >= 300000) {
             //验证码超时
             return new ResultVO(2301);
@@ -81,10 +95,21 @@ public class TalentController {
      * @param jsonObject
      * @return
      */
-    @PostMapping("findRegisterOne")
-    public ResultVO findRegisterOne(@RequestBody JSONObject jsonObject) {
+    @PostMapping("findOne")
+    public ResultVO findOne(@RequestBody JSONObject jsonObject) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("openId", jsonObject.get("openId"));
         return iTalentService.findOne(hashMap);
+    }
+
+    /**
+     * 用户认证模块
+     *
+     * @param jsonObject
+     * @return
+     */
+    @PostMapping("identification")
+    public ResultVO identification(@RequestBody JSONObject jsonObject) {
+        return iTalentService.identification(jsonObject);
     }
 }

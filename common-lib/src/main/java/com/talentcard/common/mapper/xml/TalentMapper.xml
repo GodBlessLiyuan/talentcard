@@ -295,4 +295,10 @@
     where t.open_id = #{openId,jdbcType=CHAR}
     and c.status = 3
   </select>
+  <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_talent
+    where open_id = #{openId,jdbcType=BIGINT}
+  </select>
 </mapper>
