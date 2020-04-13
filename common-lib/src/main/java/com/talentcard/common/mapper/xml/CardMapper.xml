@@ -5,6 +5,7 @@
     <id column="card_id" jdbcType="BIGINT" property="cardId" />
     <result column="title" jdbcType="CHAR" property="title" />
     <result column="name" jdbcType="CHAR" property="name" />
+    <result column="initial_word" jdbcType="VARCHAR" property="initialWord" />
     <result column="initial_num" jdbcType="CHAR" property="initialNum" />
     <result column="curr_num" jdbcType="BIGINT" property="currNum" />
     <result column="description" jdbcType="CHAR" property="description" />
@@ -13,8 +14,8 @@
     <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    card_id, title, `name`, initial_num, curr_num, description, picture, create_time, 
-    `status`
+    card_id, title, `name`, initial_word, initial_num, curr_num, description, picture, 
+    create_time, `status`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -28,13 +29,13 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.CardPO">
     insert into t_card (card_id, title, `name`, 
-      initial_num, curr_num, description, 
-      picture, create_time, `status`
-      )
+      initial_word, initial_num, curr_num, 
+      description, picture, create_time, 
+      `status`)
     values (#{cardId,jdbcType=BIGINT}, #{title,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
-      #{initialNum,jdbcType=CHAR}, #{currNum,jdbcType=BIGINT}, #{description,jdbcType=CHAR}, 
-      #{picture,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}
-      )
+      #{initialWord,jdbcType=VARCHAR}, #{initialNum,jdbcType=CHAR}, #{currNum,jdbcType=BIGINT}, 
+      #{description,jdbcType=CHAR}, #{picture,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CardPO">
     insert into t_card
@@ -47,6 +48,9 @@
       </if>
       <if test="name != null">
         `name`,
+      </if>
+      <if test="initialWord != null">
+        initial_word,
       </if>
       <if test="initialNum != null">
         initial_num,
@@ -77,6 +81,9 @@
       <if test="name != null">
         #{name,jdbcType=CHAR},
       </if>
+      <if test="initialWord != null">
+        #{initialWord,jdbcType=VARCHAR},
+      </if>
       <if test="initialNum != null">
         #{initialNum,jdbcType=CHAR},
       </if>
@@ -106,6 +113,9 @@
       <if test="name != null">
         `name` = #{name,jdbcType=CHAR},
       </if>
+      <if test="initialWord != null">
+        initial_word = #{initialWord,jdbcType=VARCHAR},
+      </if>
       <if test="initialNum != null">
         initial_num = #{initialNum,jdbcType=CHAR},
       </if>
@@ -131,6 +141,7 @@
     update t_card
     set title = #{title,jdbcType=CHAR},
       `name` = #{name,jdbcType=CHAR},
+      initial_word = #{initialWord,jdbcType=VARCHAR},
       initial_num = #{initialNum,jdbcType=CHAR},
       curr_num = #{currNum,jdbcType=BIGINT},
       description = #{description,jdbcType=CHAR},
