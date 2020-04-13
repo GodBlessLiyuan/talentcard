@@ -127,7 +127,7 @@ public class TalentController {
      */
     @PostMapping("identification")
     public ResultVO identification(@RequestParam(value = "openId") String openId,
-                                   @RequestParam(value = "political") String political,
+                                   @RequestParam(value = "political") Byte political,
                                    @RequestParam(value = "education") Integer education,
                                    @RequestParam(value = "school") String school,
                                    @RequestParam(value = "firstClass") Byte firstClass,

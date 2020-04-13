@@ -14,7 +14,7 @@ public class CertificationPO implements Serializable {
 
     private Long talentId;
 
-    private String political;
+    private Byte political;
 
     private Date createTime;
 
@@ -24,7 +24,10 @@ public class CertificationPO implements Serializable {
     private Byte status;
 
     /**
-     *1 学历 2 职称 3 职业资格 4 全都有
+     * 1 学历
+2 职称
+3 职业资格
+4 全都有
      */
     private Byte currentType;
 
