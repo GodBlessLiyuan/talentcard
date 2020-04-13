@@ -189,10 +189,19 @@ public class PolicyServiceImpl implements IPolicyService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVO apply(PolicyApplyDTO dto) {
+        TalentPO talentPO = talentMapper.selectByPrimaryKey(dto.getTid());
+        if (null == talentPO) {
+            return new ResultVO(2000);
+        }
+        PolicyPO policyPO = policyMapper.selectByPrimaryKey(dto.getPid());
+        if (null == policyPO) {
+            return new ResultVO(2000);
+        }
         PolicyApplyPO applyPO = new PolicyApplyPO();
         applyPO.setTalentId(dto.getTid());
-        applyPO.setTalentName(null);
+        applyPO.setTalentName(talentPO.getName());
         applyPO.setPolicyId(dto.getPid());
+        applyPO.setPolicyName(policyPO.getName());
         applyPO.setCreateTime(new Date());
         applyPO.setStatus((byte) 3);
         policyApplyMapper.insert(applyPO);
