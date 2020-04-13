@@ -4,13 +4,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ITalentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 人才注册/认证相关
@@ -29,6 +34,21 @@ public class TalentServiceImpl implements ITalentService {
     private ProfTitleMapper profTitleMapper;
     @Autowired
     private ProfQualityMapper profQualityMapper;
+    @Autowired
+    private CertApprovalMapper certApprovalMapper;
+
+    @Value("${file.publicPath}")
+    private String publicPath;
+    @Value("${file.rootDir}")
+    private String rootDir;
+    @Value("${file.projectDir}")
+    private String projectDir;
+    @Value("${file.educationDir}")
+    private String educationDir;
+    @Value("${file.profTitleDir}")
+    private String profTitleDir;
+    @Value("${file.profQualityDir}")
+    private String profQualityDir;
 
     @Override
     public ResultVO<TalentPO> findStatus(String openId) {
@@ -104,40 +124,86 @@ public class TalentServiceImpl implements ITalentService {
     @Override
     public ResultVO findOne(HashMap<String, Object> hashMap) {
         TalentBO talentBO = talentMapper.findOne(hashMap).get(0);
+        //学历
+        for (EducationPO educationPO : talentBO.getEducationPOList()) {
+            if (educationPO.getEducPicture() != null) {
+                educationPO.setEducPicture(publicPath + educationPO.getEducPicture());
+            }
+        }
+        //职称
+        for (ProfTitlePO profTitlePO : talentBO.getProfTitlePOList()) {
+            if (profTitlePO.getPicture() != null) {
+                profTitlePO.setPicture(publicPath + profTitlePO.getPicture());
+            }
+        }
+        //职业资格
+        for (ProfQualityPO profQualityPO : talentBO.getProfQualityPOList()) {
+            if (profQualityPO.getPicture() != null) {
+                profQualityPO.setPicture(publicPath + profQualityPO.getPicture());
+            }
+        }
         return new ResultVO(1000, talentBO);
     }
 
     @Override
-    public ResultVO identification(JSONObject jsonObject) {
+    public ResultVO identification(String openId,
+                                   String political,
+                                   Integer education,
+                                   String school,
+                                   Byte firstClass,
+                                   String major,
+                                   Integer profQualityCategory,
+                                   String profQualityInfo,
+                                   Integer profTitleCategory,
+                                   String profTitleInfo,
+                                   MultipartFile educPicture,
+                                   MultipartFile profTitlePicture,
+                                   MultipartFile profQualityPicture) {
         //设置状态值 状态4为待审批
         Byte status = (byte) 4;
-        //通过openId获取talent表里唯一的信息
-        TalentPO talentPO =talentMapper.selectByOpenId(jsonObject.getString("openId"));
-        talentPO.setStatus((byte)3);
+        //上传文件
+        String educUrl = FileUtil.uploadFile
+                (educPicture, rootDir, projectDir, educationDir, "education");
+        String profTitleUrl = FileUtil.uploadFile
+                (profTitlePicture, rootDir, projectDir, profTitleDir, "profTitle");
+        String profQualityUrl = FileUtil.uploadFile
+                (profQualityPicture, rootDir, projectDir, profQualityDir, "profQuality");
+        if (educUrl == ""||profTitleUrl == ""||profQualityUrl == "") {
+            return new ResultVO(2305,"上传文件失败");
+        }
+
+        //人才表；通过openId获取talent表里唯一的信息
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        talentPO.setStatus((byte) 3);
         talentMapper.updateByPrimaryKeySelective(talentPO);
         Long talentId = talentPO.getTalentId();
 
         //认证表
         CertificationPO certificationPO = new CertificationPO();
+        certificationPO.setPolitical(political);
         certificationPO.setCreateTime(new Date());
         certificationPO.setStatus(status);
         certificationPO.setTalentId(talentId);
+        certificationPO.setCurrentType((byte) 4);
         certificationMapper.add(certificationPO);
         Long certificationId = certificationPO.getCertId();
 
         //认证审批表
-
         CertApprovalPO certApprovalPO = new CertApprovalPO();
         certApprovalPO.setCertId(certificationId);
         certApprovalPO.setCreateTime(new Date());
-        certApprovalPO.setType((byte)1);
+        certApprovalPO.setType((byte) 1);
+        //type为1，则card表示过去的卡
         certApprovalPO.setCardId(talentPO.getCardId());
+        certApprovalMapper.insertSelective(certApprovalPO);
+
         //学历表
         EducationPO educationPO = new EducationPO();
-        educationPO.setEducation(jsonObject.getInteger("education"));
-        educationPO.setSchool(jsonObject.getString("school"));
-        educationPO.setFirstClass(jsonObject.getByte("firstClass"));
-        educationPO.setMajor(jsonObject.getString("major"));
+        educationPO.setEducation(education);
+        educationPO.setSchool(school);
+        educationPO.setFirstClass(firstClass);
+        educationPO.setMajor(major);
+        educationPO.setEducPicture(educUrl);
         educationPO.setCertId(certificationId);
         educationPO.setTalentId(talentId);
         educationPO.setStatus(status);
@@ -145,8 +211,9 @@ public class TalentServiceImpl implements ITalentService {
 
         //职称表
         ProfTitlePO profTitlePO = new ProfTitlePO();
-        profTitlePO.setCategory(jsonObject.getInteger("profTitleCategory"));
-        profTitlePO.setInfo(jsonObject.getString("profTitleInfo"));
+        profTitlePO.setCategory(profTitleCategory);
+        profTitlePO.setInfo(profTitleInfo);
+        profTitlePO.setPicture(profTitleUrl);
         profTitlePO.setCertId(certificationId);
         profTitlePO.setTalentId(talentId);
         profTitlePO.setStatus(status);
@@ -154,10 +221,10 @@ public class TalentServiceImpl implements ITalentService {
 
 
         //职业资格表
-
         ProfQualityPO profQualityPO = new ProfQualityPO();
-        profQualityPO.setCategory(jsonObject.getInteger("profQualityCategory"));
-        profQualityPO.setInfo(jsonObject.getString("profQualityInfo"));
+        profQualityPO.setCategory(profQualityCategory);
+        profQualityPO.setInfo(profQualityInfo);
+        profQualityPO.setPicture(profQualityUrl);
         profQualityPO.setCertId(certificationId);
         profQualityPO.setTalentId(talentId);
         profQualityPO.setStatus(status);

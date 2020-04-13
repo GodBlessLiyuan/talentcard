@@ -7,6 +7,7 @@ import com.talentcard.front.service.ISmsService;
 import com.talentcard.front.service.ITalentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -26,10 +27,12 @@ public class TalentController {
     private ITalentService iTalentService;
     @Autowired
     private ISmsService iSmsService;
+
     /**
      * 用户一次打开，判断当前用户状态
      * null，则表示没使用过，其余取决于status
      * 1是已认证；2是未认证；3是认证中
+     *
      * @param openId
      * @return
      */
@@ -49,7 +52,7 @@ public class TalentController {
         //判断验证码
         Long verifyCreateTime = verifyCodeTime.get(jsonObject.getString("phone"));
         String verifyCode = verifyCodeMap.get(jsonObject.getString("phone"));
-        if(verifyCode==null||verifyCreateTime==null){
+        if (verifyCode == null || verifyCreateTime == null) {
             //没有验证码
             return new ResultVO(2303);
         }
@@ -70,7 +73,7 @@ public class TalentController {
     @PostMapping("sms")
     public ResultVO sms(@RequestParam String phone) {
         Long verifyCreateTime = verifyCodeTime.get(phone);
-        //60内只能发一次验证码
+        //60s内只能发一次验证码
         if (verifyCreateTime != null) {
             if ((System.currentTimeMillis() - verifyCreateTime) <= 60000) {
                 return new ResultVO(2300);
@@ -86,12 +89,13 @@ public class TalentController {
             return new ResultVO(1000);
         } else {
             //短信发送失败
-            return new ResultVO<>(2000);
+            return new ResultVO<>(2304);
         }
     }
 
     /**
      * 用户注册模块，根据openID找一个，回填基本信息
+     *
      * @param jsonObject
      * @return
      */
@@ -104,12 +108,37 @@ public class TalentController {
 
     /**
      * 用户认证模块
-     *
-     * @param jsonObject
+     * @param openId
+     * @param political
+     * @param education
+     * @param school
+     * @param firstClass
+     * @param major
+     * @param profQualityCategory
+     * @param profQualityInfo
+     * @param profTitleCategory
+     * @param profTitleInfo
+     * @param educPicture
+     * @param profTitlePicture
+     * @param profQualityPicture
      * @return
      */
     @PostMapping("identification")
-    public ResultVO identification(@RequestBody JSONObject jsonObject) {
-        return iTalentService.identification(jsonObject);
+    public ResultVO identification(@RequestParam(value = "openId") String openId,
+                                   @RequestParam(value = "political") String political,
+                                   @RequestParam(value = "education") Integer education,
+                                   @RequestParam(value = "school") String school,
+                                   @RequestParam(value = "firstClass") Byte firstClass,
+                                   @RequestParam(value = "major") String major,
+                                   @RequestParam(value = "profQualityCategory") Integer profQualityCategory,
+                                   @RequestParam(value = "profQualityInfo") String profQualityInfo,
+                                   @RequestParam(value = "profTitleCategory") Integer profTitleCategory,
+                                   @RequestParam(value = "profTitleInfo") String profTitleInfo,
+                                   @RequestParam(value = "educPicture") MultipartFile educPicture,
+                                   @RequestParam(value = "profTitlePicture") MultipartFile profTitlePicture,
+                                   @RequestParam(value = "profQualityPicture") MultipartFile profQualityPicture) {
+        return iTalentService.identification(openId, political, education, school, firstClass,
+                major, profQualityCategory, profQualityInfo, profTitleCategory, profTitleInfo,
+                educPicture, profTitlePicture, profQualityPicture);
     }
 }
