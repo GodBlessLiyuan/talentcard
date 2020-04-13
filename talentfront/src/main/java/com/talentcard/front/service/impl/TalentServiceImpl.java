@@ -31,6 +31,11 @@ public class TalentServiceImpl implements ITalentService {
     private ProfQualityMapper profQualityMapper;
 
     @Override
+    public ResultVO<TalentPO> findStatus(String openId) {
+        return new ResultVO(1000, talentMapper.selectByOpenId(openId));
+    }
+
+    @Override
     public ResultVO register(JSONObject jsonObject) {
         //设置状态值 状态3为注册中
         Byte status = (byte) 3;
@@ -46,6 +51,7 @@ public class TalentServiceImpl implements ITalentService {
         talentPO.setIndustry(jsonObject.getString("industry"));
         talentPO.setPhone(jsonObject.getString("phone"));
         talentPO.setCreateTime(new Date());
+        talentPO.setStatus((byte) 2);
         talentMapper.add(talentPO);
         Long talentId = talentPO.getTalentId();
 
@@ -97,8 +103,66 @@ public class TalentServiceImpl implements ITalentService {
 
     @Override
     public ResultVO findOne(HashMap<String, Object> hashMap) {
-        TalentBO talentBO = new TalentBO();
-        talentBO = talentMapper.findOne(hashMap).get(0);
+        TalentBO talentBO = talentMapper.findOne(hashMap).get(0);
         return new ResultVO(1000, talentBO);
+    }
+
+    @Override
+    public ResultVO identification(JSONObject jsonObject) {
+        //设置状态值 状态4为待审批
+        Byte status = (byte) 4;
+        //通过openId获取talent表里唯一的信息
+        TalentPO talentPO =talentMapper.selectByOpenId(jsonObject.getString("openId"));
+        talentPO.setStatus((byte)3);
+        talentMapper.updateByPrimaryKeySelective(talentPO);
+        Long talentId = talentPO.getTalentId();
+
+        //认证表
+        CertificationPO certificationPO = new CertificationPO();
+        certificationPO.setCreateTime(new Date());
+        certificationPO.setStatus(status);
+        certificationPO.setTalentId(talentId);
+        certificationMapper.add(certificationPO);
+        Long certificationId = certificationPO.getCertId();
+
+        //认证审批表
+
+        CertApprovalPO certApprovalPO = new CertApprovalPO();
+        certApprovalPO.setCertId(certificationId);
+        certApprovalPO.setCreateTime(new Date());
+        certApprovalPO.setType((byte)1);
+        certApprovalPO.setCardId(talentPO.getCardId());
+        //学历表
+        EducationPO educationPO = new EducationPO();
+        educationPO.setEducation(jsonObject.getInteger("education"));
+        educationPO.setSchool(jsonObject.getString("school"));
+        educationPO.setFirstClass(jsonObject.getByte("firstClass"));
+        educationPO.setMajor(jsonObject.getString("major"));
+        educationPO.setCertId(certificationId);
+        educationPO.setTalentId(talentId);
+        educationPO.setStatus(status);
+        educationMapper.insertSelective(educationPO);
+
+        //职称表
+        ProfTitlePO profTitlePO = new ProfTitlePO();
+        profTitlePO.setCategory(jsonObject.getInteger("profTitleCategory"));
+        profTitlePO.setInfo(jsonObject.getString("profTitleInfo"));
+        profTitlePO.setCertId(certificationId);
+        profTitlePO.setTalentId(talentId);
+        profTitlePO.setStatus(status);
+        profTitleMapper.insertSelective(profTitlePO);
+
+
+        //职业资格表
+
+        ProfQualityPO profQualityPO = new ProfQualityPO();
+        profQualityPO.setCategory(jsonObject.getInteger("profQualityCategory"));
+        profQualityPO.setInfo(jsonObject.getString("profQualityInfo"));
+        profQualityPO.setCertId(certificationId);
+        profQualityPO.setTalentId(talentId);
+        profQualityPO.setStatus(status);
+        profQualityMapper.insertSelective(profQualityPO);
+
+        return new ResultVO(1000);
     }
 }
