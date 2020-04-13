@@ -293,7 +293,7 @@
     left join t_prof_quality pq
     on c.cert_id = pq.cert_id
     where t.open_id = #{openId,jdbcType=CHAR}
-    and c.status = 3
+    and c.status = #{status,jdbcType=TINYINT}
   </select>
   <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select

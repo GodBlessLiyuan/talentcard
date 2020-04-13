@@ -60,7 +60,7 @@ public class AccessTokenUtil {
         }
     }
 
-    public static String getAccessToken() {
+    public static String getAccessToken() throws WechatException{
         //一小时，更换accessToken
         if ((System.currentTimeMillis() - accessTokenCreateTime) > 60 * 60 * 1000) {
             AccessTokenUtil.applyAccessToken();

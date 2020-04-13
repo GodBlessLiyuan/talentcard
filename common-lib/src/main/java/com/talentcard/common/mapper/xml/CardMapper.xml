@@ -139,4 +139,12 @@
       `status` = #{status,jdbcType=TINYINT}
     where card_id = #{cardId,jdbcType=BIGINT}
   </update>
+
+  <select id="findDefaultCard" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_card
+    where status = 1
+    limit 1
+  </select>
 </mapper>
