@@ -60,7 +60,7 @@ public class TalentServiceImpl implements ITalentService {
             EducationPO educationPO = new EducationPO();
             educationPO.setEducation(jsonObject.getInteger("education"));
             educationPO.setSchool(jsonObject.getString("school"));
-            educationPO.setFristClass(jsonObject.getByte("firstClass"));
+            educationPO.setFirstClass(jsonObject.getByte("firstClass"));
             educationPO.setMajor(jsonObject.getString("major"));
             educationPO.setCertId(certificationId);
             educationPO.setTalentId(talentId);

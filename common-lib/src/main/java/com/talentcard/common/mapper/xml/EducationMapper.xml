@@ -5,7 +5,7 @@
     <id column="educ_id" jdbcType="BIGINT" property="educId" />
     <result column="education" jdbcType="INTEGER" property="education" />
     <result column="school" jdbcType="CHAR" property="school" />
-    <result column="frist_class" jdbcType="TINYINT" property="fristClass" />
+    <result column="first_class" jdbcType="TINYINT" property="firstClass" />
     <result column="major" jdbcType="CHAR" property="major" />
     <result column="educ_picture" jdbcType="CHAR" property="educPicture" />
     <result column="cert_id" jdbcType="BIGINT" property="certId" />
@@ -13,7 +13,7 @@
     <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    educ_id, education, school, frist_class, major, educ_picture, cert_id, talent_id, 
+    educ_id, education, school, first_class, major, educ_picture, cert_id, talent_id, 
     `status`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -28,11 +28,11 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.EducationPO">
     insert into t_education (educ_id, education, school, 
-      frist_class, major, educ_picture, 
+      first_class, major, educ_picture, 
       cert_id, talent_id, `status`
       )
     values (#{educId,jdbcType=BIGINT}, #{education,jdbcType=INTEGER}, #{school,jdbcType=CHAR}, 
-      #{fristClass,jdbcType=TINYINT}, #{major,jdbcType=CHAR}, #{educPicture,jdbcType=CHAR}, 
+      #{firstClass,jdbcType=TINYINT}, #{major,jdbcType=CHAR}, #{educPicture,jdbcType=CHAR}, 
       #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}
       )
   </insert>
@@ -48,8 +48,8 @@
       <if test="school != null">
         school,
       </if>
-      <if test="fristClass != null">
-        frist_class,
+      <if test="firstClass != null">
+        first_class,
       </if>
       <if test="major != null">
         major,
@@ -77,8 +77,8 @@
       <if test="school != null">
         #{school,jdbcType=CHAR},
       </if>
-      <if test="fristClass != null">
-        #{fristClass,jdbcType=TINYINT},
+      <if test="firstClass != null">
+        #{firstClass,jdbcType=TINYINT},
       </if>
       <if test="major != null">
         #{major,jdbcType=CHAR},
@@ -106,8 +106,8 @@
       <if test="school != null">
         school = #{school,jdbcType=CHAR},
       </if>
-      <if test="fristClass != null">
-        frist_class = #{fristClass,jdbcType=TINYINT},
+      <if test="firstClass != null">
+        first_class = #{firstClass,jdbcType=TINYINT},
       </if>
       <if test="major != null">
         major = #{major,jdbcType=CHAR},
@@ -131,7 +131,7 @@
     update t_education
     set education = #{education,jdbcType=INTEGER},
       school = #{school,jdbcType=CHAR},
-      frist_class = #{fristClass,jdbcType=TINYINT},
+      first_class = #{firstClass,jdbcType=TINYINT},
       major = #{major,jdbcType=CHAR},
       educ_picture = #{educPicture,jdbcType=CHAR},
       cert_id = #{certId,jdbcType=BIGINT},
