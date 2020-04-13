@@ -1,6 +1,7 @@
 package com.talentcard.common.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * t_policy
@@ -30,7 +31,11 @@ public class PolicyPO implements Serializable {
      */
     private Byte apply;
 
-    private String frequency;
+    private Integer rate;
+
+    private Byte unit;
+
+    private Integer times;
 
     /**
      * 1：需要；2：不需要；
@@ -41,6 +46,10 @@ public class PolicyPO implements Serializable {
      * 1：需要；2：不需要；
      */
     private Byte annex;
+
+    private Long userId;
+
+    private Date createTime;
 
     /**
      * 1 未删除  2 已删除
@@ -129,12 +138,28 @@ public class PolicyPO implements Serializable {
         this.apply = apply;
     }
 
-    public String getFrequency() {
-        return frequency;
+    public Integer getRate() {
+        return rate;
     }
 
-    public void setFrequency(String frequency) {
-        this.frequency = frequency;
+    public void setRate(Integer rate) {
+        this.rate = rate;
+    }
+
+    public Byte getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Byte unit) {
+        this.unit = unit;
+    }
+
+    public Integer getTimes() {
+        return times;
+    }
+
+    public void setTimes(Integer times) {
+        this.times = times;
     }
 
     public Byte getBank() {
@@ -151,6 +176,22 @@ public class PolicyPO implements Serializable {
 
     public void setAnnex(Byte annex) {
         this.annex = annex;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Byte getDr() {
@@ -183,9 +224,13 @@ public class PolicyPO implements Serializable {
             && (this.getTitles() == null ? other.getTitles() == null : this.getTitles().equals(other.getTitles()))
             && (this.getQualities() == null ? other.getQualities() == null : this.getQualities().equals(other.getQualities()))
             && (this.getApply() == null ? other.getApply() == null : this.getApply().equals(other.getApply()))
-            && (this.getFrequency() == null ? other.getFrequency() == null : this.getFrequency().equals(other.getFrequency()))
+            && (this.getRate() == null ? other.getRate() == null : this.getRate().equals(other.getRate()))
+            && (this.getUnit() == null ? other.getUnit() == null : this.getUnit().equals(other.getUnit()))
+            && (this.getTimes() == null ? other.getTimes() == null : this.getTimes().equals(other.getTimes()))
             && (this.getBank() == null ? other.getBank() == null : this.getBank().equals(other.getBank()))
             && (this.getAnnex() == null ? other.getAnnex() == null : this.getAnnex().equals(other.getAnnex()))
+            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getDr() == null ? other.getDr() == null : this.getDr().equals(other.getDr()));
     }
 
@@ -203,9 +248,13 @@ public class PolicyPO implements Serializable {
         result = prime * result + ((getTitles() == null) ? 0 : getTitles().hashCode());
         result = prime * result + ((getQualities() == null) ? 0 : getQualities().hashCode());
         result = prime * result + ((getApply() == null) ? 0 : getApply().hashCode());
-        result = prime * result + ((getFrequency() == null) ? 0 : getFrequency().hashCode());
+        result = prime * result + ((getRate() == null) ? 0 : getRate().hashCode());
+        result = prime * result + ((getUnit() == null) ? 0 : getUnit().hashCode());
+        result = prime * result + ((getTimes() == null) ? 0 : getTimes().hashCode());
         result = prime * result + ((getBank() == null) ? 0 : getBank().hashCode());
         result = prime * result + ((getAnnex() == null) ? 0 : getAnnex().hashCode());
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getDr() == null) ? 0 : getDr().hashCode());
         return result;
     }
@@ -226,9 +275,13 @@ public class PolicyPO implements Serializable {
         sb.append(", titles=").append(titles);
         sb.append(", qualities=").append(qualities);
         sb.append(", apply=").append(apply);
-        sb.append(", frequency=").append(frequency);
+        sb.append(", rate=").append(rate);
+        sb.append(", unit=").append(unit);
+        sb.append(", times=").append(times);
         sb.append(", bank=").append(bank);
         sb.append(", annex=").append(annex);
+        sb.append(", userId=").append(userId);
+        sb.append(", createTime=").append(createTime);
         sb.append(", dr=").append(dr);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

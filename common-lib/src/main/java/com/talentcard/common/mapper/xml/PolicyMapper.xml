@@ -12,14 +12,18 @@
     <result column="titles" jdbcType="CHAR" property="titles" />
     <result column="qualities" jdbcType="CHAR" property="qualities" />
     <result column="apply" jdbcType="TINYINT" property="apply" />
-    <result column="frequency" jdbcType="CHAR" property="frequency" />
+    <result column="rate" jdbcType="INTEGER" property="rate" />
+    <result column="unit" jdbcType="TINYINT" property="unit" />
+    <result column="times" jdbcType="INTEGER" property="times" />
     <result column="bank" jdbcType="TINYINT" property="bank" />
     <result column="annex" jdbcType="TINYINT" property="annex" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
     policy_id, `name`, num, description, cards, categories, educations, titles, qualities, 
-    apply, frequency, bank, annex, dr
+    apply, rate, unit, times, bank, annex, user_id, create_time, dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -35,13 +39,17 @@
     insert into t_policy (policy_id, `name`, num, 
       description, cards, categories, 
       educations, titles, qualities, 
-      apply, frequency, bank, 
-      annex, dr)
+      apply, rate, unit, 
+      times, bank, annex, 
+      user_id, create_time, dr
+      )
     values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR}, 
       #{description,jdbcType=CHAR}, #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR}, 
       #{educations,jdbcType=CHAR}, #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR}, 
-      #{apply,jdbcType=TINYINT}, #{frequency,jdbcType=CHAR}, #{bank,jdbcType=TINYINT}, 
-      #{annex,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT})
+      #{apply,jdbcType=TINYINT}, #{rate,jdbcType=INTEGER}, #{unit,jdbcType=TINYINT}, 
+      #{times,jdbcType=INTEGER}, #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT}, 
+      #{userId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyPO">
     insert into t_policy
@@ -76,14 +84,26 @@
       <if test="apply != null">
         apply,
       </if>
-      <if test="frequency != null">
-        frequency,
+      <if test="rate != null">
+        rate,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="times != null">
+        times,
       </if>
       <if test="bank != null">
         bank,
       </if>
       <if test="annex != null">
         annex,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
       </if>
       <if test="dr != null">
         dr,
@@ -120,14 +140,26 @@
       <if test="apply != null">
         #{apply,jdbcType=TINYINT},
       </if>
-      <if test="frequency != null">
-        #{frequency,jdbcType=CHAR},
+      <if test="rate != null">
+        #{rate,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=TINYINT},
+      </if>
+      <if test="times != null">
+        #{times,jdbcType=INTEGER},
       </if>
       <if test="bank != null">
         #{bank,jdbcType=TINYINT},
       </if>
       <if test="annex != null">
         #{annex,jdbcType=TINYINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="dr != null">
         #{dr,jdbcType=TINYINT},
@@ -164,14 +196,26 @@
       <if test="apply != null">
         apply = #{apply,jdbcType=TINYINT},
       </if>
-      <if test="frequency != null">
-        frequency = #{frequency,jdbcType=CHAR},
+      <if test="rate != null">
+        rate = #{rate,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=TINYINT},
+      </if>
+      <if test="times != null">
+        times = #{times,jdbcType=INTEGER},
       </if>
       <if test="bank != null">
         bank = #{bank,jdbcType=TINYINT},
       </if>
       <if test="annex != null">
         annex = #{annex,jdbcType=TINYINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="dr != null">
         dr = #{dr,jdbcType=TINYINT},
@@ -190,9 +234,13 @@
       titles = #{titles,jdbcType=CHAR},
       qualities = #{qualities,jdbcType=CHAR},
       apply = #{apply,jdbcType=TINYINT},
-      frequency = #{frequency,jdbcType=CHAR},
+      rate = #{rate,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=TINYINT},
+      times = #{times,jdbcType=INTEGER},
       bank = #{bank,jdbcType=TINYINT},
       annex = #{annex,jdbcType=TINYINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       dr = #{dr,jdbcType=TINYINT}
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>

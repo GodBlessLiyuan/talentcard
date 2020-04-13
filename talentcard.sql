@@ -152,7 +152,7 @@ CREATE TABLE t_policy
     bank tinyint COMMENT '1：需要；2：不需要；',
     -- 1：需要；2：不需要；
     annex tinyint COMMENT '1：需要；2：不需要；',
-    user_id bigint,
+    user_id bigint unsigned,
     create_time datetime,
     -- 1 未删除  2 已删除
     dr tinyint COMMENT '1 未删除  2 已删除',
@@ -472,6 +472,14 @@ ALTER TABLE t_user_card
 
 
 ALTER TABLE t_cert_approval
+    ADD FOREIGN KEY (user_id)
+        REFERENCES t_user (user_id)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_policy
     ADD FOREIGN KEY (user_id)
         REFERENCES t_user (user_id)
         ON UPDATE RESTRICT
