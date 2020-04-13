@@ -158,11 +158,10 @@ public class PolicyServiceImpl implements IPolicyService {
             vo.setAnnex(po.getAnnex());
             vo.setApply(po.getApply());
 
-            List<PolicyApplyPO> applyPOs = policyApplyMapper.queryByTidAndPid(talentId, po.getPolicyId());
+            List<PolicyApplyPO> applyPOs = policyApplyMapper.queryByTidAndPidAndMonth(talentId, po.getPolicyId(), 5L);
             if (null == applyPOs || applyPOs.size() == 0) {
                 vo.setRight((byte) 1);
             } else {
-                // TODO：频次需要进行计算
                 int applyNum = 0;
                 for (PolicyApplyPO applyPO : applyPOs) {
                     if (applyPO.getStatus() == 3) {
@@ -174,6 +173,7 @@ public class PolicyServiceImpl implements IPolicyService {
                 }
 
                 if (null != vo.getRight()) {
+
                     if (applyNum >= 1) {
                         vo.setRight((byte) 3);
                     }

@@ -18,11 +18,11 @@
     <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
-    policy_id, `name`, num, description, cards, categories, educations, titles, qualities,
+    policy_id, `name`, num, description, cards, categories, educations, titles, qualities, 
     apply, frequency, bank, annex, dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from t_policy
     where policy_id = #{policyId,jdbcType=BIGINT}
@@ -32,15 +32,15 @@
     where policy_id = #{policyId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyPO">
-    insert into t_policy (policy_id, `name`, num,
-      description, cards, categories,
-      educations, titles, qualities,
-      apply, frequency, bank,
+    insert into t_policy (policy_id, `name`, num, 
+      description, cards, categories, 
+      educations, titles, qualities, 
+      apply, frequency, bank, 
       annex, dr)
-    values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR},
-      #{description,jdbcType=CHAR}, #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR},
-      #{educations,jdbcType=CHAR}, #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR},
-      #{apply,jdbcType=TINYINT}, #{frequency,jdbcType=CHAR}, #{bank,jdbcType=TINYINT},
+    values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR}, 
+      #{description,jdbcType=CHAR}, #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR}, 
+      #{educations,jdbcType=CHAR}, #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR}, 
+      #{apply,jdbcType=TINYINT}, #{frequency,jdbcType=CHAR}, #{bank,jdbcType=TINYINT}, 
       #{annex,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyPO">

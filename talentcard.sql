@@ -128,9 +128,7 @@ CREATE TABLE t_education
     -- 1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃
     status tinyint COMMENT '1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃',
     PRIMARY KEY (educ_id),
-    UNIQUE (educ_id),
-    UNIQUE (cert_id),
-    UNIQUE (talent_id)
+    UNIQUE (educ_id)
 );
 
 
@@ -147,11 +145,15 @@ CREATE TABLE t_policy
     qualities char(255),
     -- 1：需要；2：不需要
     apply tinyint DEFAULT 2 COMMENT '1：需要；2：不需要',
-    frequency char(32),
+    rate int,
+    unit tinyint,
+    times int,
     -- 1：需要；2：不需要；
     bank tinyint COMMENT '1：需要；2：不需要；',
     -- 1：需要；2：不需要；
     annex tinyint COMMENT '1：需要；2：不需要；',
+    user_id bigint,
+    create_time datetime,
     -- 1 未删除  2 已删除
     dr tinyint COMMENT '1 未删除  2 已删除',
     PRIMARY KEY (policy_id),
@@ -202,9 +204,7 @@ CREATE TABLE t_prof_quality
     -- 1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃
     status tinyint COMMENT '1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃',
     PRIMARY KEY (pq_id),
-    UNIQUE (pq_id),
-    UNIQUE (cert_id),
-    UNIQUE (talent_id)
+    UNIQUE (pq_id)
 );
 
 
@@ -219,9 +219,7 @@ CREATE TABLE t_prof_title
     -- 1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃
     status tinyint COMMENT '1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃',
     PRIMARY KEY (pt_id),
-    UNIQUE (pt_id),
-    UNIQUE (cert_id),
-    UNIQUE (talent_id)
+    UNIQUE (pt_id)
 );
 
 
@@ -231,7 +229,7 @@ CREATE TABLE t_role
     role_id bigint unsigned NOT NULL AUTO_INCREMENT,
     name char(32),
     extra char(255),
-    create_time date,
+    create_time datetime,
     PRIMARY KEY (role_id),
     UNIQUE (role_id)
 ) COMMENT = '角色表';
@@ -279,7 +277,7 @@ CREATE TABLE t_user
     username char(32),
     name char(32),
     password char(32),
-    create_time date,
+    create_time datetime,
     -- 1 未删除  2 已删除
     dr tinyint COMMENT '1 未删除  2 已删除',
     extra char(255),

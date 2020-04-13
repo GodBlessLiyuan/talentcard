@@ -39,7 +39,7 @@
     pa_id, talent_id, talent_name, policy_id, policy_name, create_time, `status`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_policy_apply
     where pa_id = #{paId,jdbcType=BIGINT}
@@ -49,11 +49,11 @@
     where pa_id = #{paId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyApplyPO" useGeneratedKeys="true" keyProperty="paId">
-    insert into t_policy_apply (pa_id, talent_id, talent_name, 
-      policy_id, policy_name, create_time, 
+    insert into t_policy_apply (pa_id, talent_id, talent_name,
+      policy_id, policy_name, create_time,
       `status`)
-    values (#{paId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{talentName,jdbcType=CHAR}, 
-      #{policyId,jdbcType=BIGINT}, #{policyName,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+    values (#{paId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{talentName,jdbcType=CHAR},
+      #{policyId,jdbcType=BIGINT}, #{policyName,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
       #{status,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
@@ -157,10 +157,11 @@
     left join t_policy p on pa.policy_id = p.policy_id
     where pa.pa_id = #{paId,jdbcType=BIGINT}
   </select>
-  <select id="queryByTidAndPid" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="queryByTidAndPidAndMonth" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_policy_apply
     where talent_id = #{talentId,jdbcType=BIGINT} and policy_id = #{policyId,jdbcType=BIGINT}
+      and (`status` = 3 or create_time between date_sub(now(), interval #{month,jdbcType=BIGINT}  month) and now())
   </select>
 </mapper>
