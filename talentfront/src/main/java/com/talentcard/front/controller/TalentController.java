@@ -21,8 +21,8 @@ import java.util.Random;
 @RequestMapping("talent")
 @RestController
 public class TalentController {
-    private static HashMap<String, String> verifyCodeMap = new HashMap<>();
-    private static HashMap<String, Long> verifyCodeTime = new HashMap<>();
+    public static HashMap<String, String> verifyCodeMap = new HashMap<>();
+    public static HashMap<String, Long> verifyCodeTime = new HashMap<>();
     @Autowired
     private ITalentService iTalentService;
     @Autowired
@@ -49,20 +49,26 @@ public class TalentController {
      */
     @PostMapping("register")
     public ResultVO register(@RequestBody JSONObject jsonObject) {
+        String phone = jsonObject.getString("phone");
         //判断验证码
-        Long verifyCreateTime = verifyCodeTime.get(jsonObject.getString("phone"));
-        String verifyCode = verifyCodeMap.get(jsonObject.getString("phone"));
+        Long verifyCreateTime = verifyCodeTime.get(phone);
+        String verifyCode = verifyCodeMap.get(phone);
         if (verifyCode == null || verifyCreateTime == null) {
             //没有验证码
             return new ResultVO(2303);
         }
         if ((System.currentTimeMillis() - verifyCreateTime) >= 300000) {
             //验证码超时
+            verifyCodeTime.remove(phone);
+            verifyCodeMap.remove(phone);
             return new ResultVO(2301);
-        } else if (!verifyCode.equals(jsonObject.getString("verifyCode"))) {
+        }
+        if (!verifyCode.equals(jsonObject.getString("verifyCode"))) {
             //验证码错误
             return new ResultVO(2302);
         }
+        verifyCodeTime.remove(phone);
+        verifyCodeMap.remove(phone);
         return iTalentService.register(jsonObject);
     }
 

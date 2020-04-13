@@ -2,6 +2,7 @@ package com.talentcard.front.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.exception.WechatException;
+import com.talentcard.front.controller.TalentController;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 /**
@@ -53,18 +57,27 @@ public class AccessTokenUtil {
         if (applyAccessToken != null) {
             accessToken = applyAccessToken;
             accessTokenCreateTime = System.currentTimeMillis();
-            System.out.println("成功拿到token：" + accessToken);
-            System.out.println("成功更新创建时间：" + accessTokenCreateTime);
+//            System.out.println("成功拿到token：" + accessToken);
+//            System.out.println("成功更新创建时间：" + accessTokenCreateTime);
         } else {
             throw new WechatException("token拿不到");
         }
     }
 
-    public static String getAccessToken() throws WechatException{
+    public static String getAccessToken() throws WechatException {
         //一小时，更换accessToken
-        if ((System.currentTimeMillis() - accessTokenCreateTime) > 60 * 60 * 1000) {
+        if ((System.currentTimeMillis() - accessTokenCreateTime) > 100 * 60 * 1000) {
             AccessTokenUtil.applyAccessToken();
-            System.out.println("成功更换token");
+//            System.out.println("成功更换token");
+            //一小时清空存储验证码的hashmap
+            for (Iterator<HashMap.Entry<String, Long>> it = TalentController.
+                    verifyCodeTime.entrySet().iterator(); it.hasNext(); ) {
+                HashMap.Entry<String, Long> item = it.next();
+                if ((System.currentTimeMillis() - item.getValue()) >= 5 * 60 * 1000) {
+                    it.remove();
+                    TalentController.verifyCodeMap.remove(item.getKey());
+                }
+            }
         }
         return accessToken;
     }
