@@ -151,7 +151,8 @@ public class TalentController {
      * @return
      */
     @PostMapping("activate")
-    public ResultVO activate(String openId, String code) {
+    public ResultVO activate(@RequestParam(value = "openId")String openId,
+                             @RequestParam(value = "code")String code) {
         return iTalentService.activate(openId, code);
     }
 }
