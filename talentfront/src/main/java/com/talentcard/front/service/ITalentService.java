@@ -5,6 +5,7 @@ import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.xml.transform.Result;
 import java.util.HashMap;
 
 /**
@@ -32,7 +33,6 @@ public interface ITalentService {
     ResultVO findOne(HashMap<String, Object> hashMap);
 
     /**
-     *
      * @param openId
      * @param political
      * @param education
@@ -61,4 +61,12 @@ public interface ITalentService {
                             MultipartFile educPicture,
                             MultipartFile profTitlePicture,
                             MultipartFile profQualityPicture);
+
+    /**
+     * 激活
+     * @param openId
+     * @param code
+     * @return
+     */
+    ResultVO activate(String openId, String code);
 }
