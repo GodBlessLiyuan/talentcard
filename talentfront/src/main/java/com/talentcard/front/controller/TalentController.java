@@ -76,4 +76,15 @@ public class TalentController {
         }
     }
 
+    /**
+     * 用户注册模块，根据openID找一个，回填基本信息
+     * @param jsonObject
+     * @return
+     */
+    @PostMapping("findRegisterOne")
+    public ResultVO findRegisterOne(@RequestBody JSONObject jsonObject) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("openId", jsonObject.get("openId"));
+        return iTalentService.findOne(hashMap);
+    }
 }

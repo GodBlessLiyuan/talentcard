@@ -29,7 +29,7 @@
     <result column="t_create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="t_status" jdbcType="TINYINT" property="status" />
     <result column="t_category" jdbcType="CHAR" property="category" />
-    <result column="card_id" jdbcType="BIGINT" property="cardId" />
+    <result column="t_card_id" jdbcType="BIGINT" property="cardId" />
 
     <result column="c_cert_id" jdbcType="BIGINT" property="certId" />
     <result column="political" jdbcType="CHAR" property="political" />
@@ -40,7 +40,7 @@
       <id column="educ_id" jdbcType="BIGINT" property="educId" />
       <result column="education" jdbcType="INTEGER" property="education" />
       <result column="school" jdbcType="CHAR" property="school" />
-      <result column="frist_class" jdbcType="TINYINT" property="fristClass" />
+      <result column="first_class" jdbcType="TINYINT" property="firstClass" />
       <result column="major" jdbcType="CHAR" property="major" />
       <result column="e_educ_picture" jdbcType="CHAR" property="educPicture" />
       <result column="e_cert_id" jdbcType="BIGINT" property="certId" />
@@ -49,21 +49,21 @@
     </collection>
     <collection property ="profTitlePOList" ofType="com.talentcard.common.pojo.ProfTitlePO">
       <id column="pt_id" jdbcType="BIGINT" property="ptId" />
-      <result column="category" jdbcType="INTEGER" property="category" />
-      <result column="info" jdbcType="CHAR" property="info" />
-      <result column="picture" jdbcType="CHAR" property="picture" />
-      <result column="cert_id" jdbcType="BIGINT" property="certId" />
-      <result column="talent_id" jdbcType="BIGINT" property="talentId" />
-      <result column="status" jdbcType="TINYINT" property="status" />
+      <result column="pt_category" jdbcType="INTEGER" property="category" />
+      <result column="pt_info" jdbcType="CHAR" property="info" />
+      <result column="pt_picture" jdbcType="CHAR" property="picture" />
+      <result column="pt_cert_id" jdbcType="BIGINT" property="certId" />
+      <result column="pt_talent_id" jdbcType="BIGINT" property="talentId" />
+      <result column="pt_status" jdbcType="TINYINT" property="status" />
     </collection>
     <collection property ="profQualityPOList" ofType="com.talentcard.common.pojo.ProfQualityPO">
       <id column="pq_id" jdbcType="BIGINT" property="pqId" />
-      <result column="category" jdbcType="INTEGER" property="category" />
-      <result column="info" jdbcType="CHAR" property="info" />
-      <result column="picture" jdbcType="CHAR" property="picture" />
-      <result column="cert_id" jdbcType="BIGINT" property="certId" />
-      <result column="talent_id" jdbcType="BIGINT" property="talentId" />
-      <result column="status" jdbcType="TINYINT" property="status" />
+      <result column="pq_category" jdbcType="INTEGER" property="category" />
+      <result column="pq_info" jdbcType="CHAR" property="info" />
+      <result column="pq_picture" jdbcType="CHAR" property="picture" />
+      <result column="pq_cert_id" jdbcType="BIGINT" property="certId" />
+      <result column="pq_talent_id" jdbcType="BIGINT" property="talentId" />
+      <result column="pq_status" jdbcType="TINYINT" property="status" />
     </collection>
   </resultMap>
   <sql id="Base_Column_List">
@@ -247,11 +247,13 @@
       #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <select id="findRegisterOne" parameterType="java.util.HashMap" resultMap="TalentResultMap">
+  <select id="findRegisterOne" parameterType="java.lang.String" resultType="java.util.HashMap">
     select
     t.talent_id as talentId, `name` , sex, id_card as idCard, passport, work_unit as workUnity, industry, phone,
-    t.`status` as tStatus, c.cert_id as certId, c.status as cStatus, current_type as currentType,
-    education, school, first_class as firstClass, major, pt.category as ptCategory, pt.info as ptInfo,
+    t.`status` as tStatus,
+    c.cert_id as certId, c.status as cStatus, current_type as currentType,
+    education, school, first_class as firstClass, major,
+    pt.category as ptCategory, pt.info as ptInfo,
     pq.category as pqCategory, pq.info as pqInfo
     from t_talent t
     left join t_certification c
@@ -267,8 +269,20 @@
   </select>
   <select id="findOne" parameterType="java.util.HashMap" resultMap="TalentResultMap">
     select
-    talent_id as talentId, `name` , sex, id_card as idCard, passport, work_unit as workUnity, industry, phone,
-    t.`status` as tStatus, c.cert_id as certId,
+    t.talent_id as t_talent_id, open_id, `name`, sex, id_card, passport,
+    work_unit, industry, phone, t.create_time as t_create_time,
+    t.`status` as t_status, t.category as t_category, t.card_id as t_card_id,
+
+    c.cert_id as c_cert_id, political, c.status as c_status, current_type,
+
+    educ_id, education, school, first_class, major, e.educ_picture as e_educ_picture,
+    e.cert_id as e_cert_id, e.talent_id as e_talent_id, e.status as e_status,
+
+    pt_id, pt.category as pt_category, pt.info as pt_info, pt.picture as pt_picture,
+    pt.cert_id as pt_cert_id, pt.talent_id as pt_talent_id, pt.status as pt_status,
+
+    pq_id, pq.category as pq_category, pq.info as pq_info, pq.picture as pq_picture,
+    pq.cert_id as pq_cert_id, pq.talent_id as pq_talent_id, pq.status as pq_status
     from t_talent t
     left join t_certification c
     on  t.talent_id = c.talent_id
