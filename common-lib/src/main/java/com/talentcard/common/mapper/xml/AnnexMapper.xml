@@ -79,4 +79,12 @@
       pa_id = #{paId,jdbcType=BIGINT}
     where annex_id = #{annexId,jdbcType=BIGINT}
   </update>
+
+  <insert id="batchInsert" parameterType="java.util.List">
+    insert into t_annex (annex_id, `name`, `location`, pa_id)
+    values
+    <foreach collection="list" item="po" index="index" separator=",">
+        (#{po.annexId,jdbcType=BIGINT}, #{po.name,jdbcType=CHAR}, #{po.location,jdbcType=CHAR}, #{po.paId,jdbcType=BIGINT})
+    </foreach>
+  </insert>
 </mapper>

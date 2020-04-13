@@ -1,6 +1,7 @@
 package com.talentcard.front.service;
 
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.front.dto.PolicyApplyDTO;
 
 /**
  * @author: xiahui
@@ -21,11 +22,10 @@ public interface IPolicyService {
     /**
      * 我的权益 - 申请
      *
-     * @param tid
-     * @param pid
+     * @param dto
      * @return
      */
-    ResultVO apply(Long tid, Long pid);
+    ResultVO apply(PolicyApplyDTO dto);
 
     /**
      * 我的申请

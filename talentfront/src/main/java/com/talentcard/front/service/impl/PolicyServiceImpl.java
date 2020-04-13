@@ -2,18 +2,23 @@ package com.talentcard.front.service.impl;
 
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.mapper.*;
-import com.talentcard.common.pojo.PolicyApplyPO;
-import com.talentcard.common.pojo.PolicyPO;
-import com.talentcard.common.pojo.TalentPO;
+import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.front.dto.PolicyApplyDTO;
 import com.talentcard.front.service.IPolicyService;
 import com.talentcard.front.vo.PolicyAppliesVO;
 import com.talentcard.front.vo.PolicyApplyDetailVO;
 import com.talentcard.front.vo.PolicyDetailVO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +27,7 @@ import java.util.List;
  * @description: 政策权益
  * @version: 1.0
  */
+@EnableTransactionManagement
 @Service
 public class PolicyServiceImpl implements IPolicyService {
     @Resource
@@ -38,6 +44,17 @@ public class PolicyServiceImpl implements IPolicyService {
     private ProfQualityMapper profQualityMapper;
     @Resource
     private PolicyApprovalMapper policyApprovalMapper;
+    @Resource
+    private BankMapper bankMapper;
+    @Resource
+    private AnnexMapper annexMapper;
+
+    @Value("${file.rootDir}")
+    private String rootDir;
+    @Value("${file.projectDir}")
+    private String projectDir;
+    @Value("${file.annexDir}")
+    private String annexDir;
 
     @Override
     public ResultVO policies(Long talentId) {
@@ -169,9 +186,41 @@ public class PolicyServiceImpl implements IPolicyService {
         return new ResultVO<>(1000, vos);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultVO apply(Long tid, Long pid) {
-        return null;
+    public ResultVO apply(PolicyApplyDTO dto) {
+        PolicyApplyPO applyPO = new PolicyApplyPO();
+        applyPO.setTalentId(dto.getTid());
+        applyPO.setTalentName(null);
+        applyPO.setPolicyId(dto.getPid());
+        applyPO.setCreateTime(new Date());
+        applyPO.setStatus((byte) 3);
+        policyApplyMapper.insert(applyPO);
+
+        PolicyApprovalPO approvalPO = new PolicyApprovalPO();
+        approvalPO.setPaId(applyPO.getPaId());
+        approvalPO.setCreateTime(new Date());
+        approvalPO.setType((byte) 1);
+        policyApprovalMapper.insert(approvalPO);
+
+        if (dto.getCard() != null && dto.getBank() != null) {
+            BankPO bankPO = new BankPO();
+            bankPO.setNum(dto.getCard());
+            bankPO.setName(dto.getBank());
+            bankMapper.insert(bankPO);
+        }
+        if (null != dto.getFiles() && dto.getFiles().length > 0) {
+            List<AnnexPO> annexPOs = new ArrayList<>();
+            for (MultipartFile file : dto.getFiles()) {
+                AnnexPO annexPO = new AnnexPO();
+                annexPO.setName(file.getOriginalFilename());
+                annexPO.setLocation(FileUtil.uploadFile(file, rootDir, projectDir, annexDir, "annex"));
+                annexPO.setPaId(applyPO.getPaId());
+            }
+            annexMapper.batchInsert(annexPOs);
+        }
+
+        return new ResultVO(1000);
     }
 
     @Override

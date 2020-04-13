@@ -1,9 +1,11 @@
 package com.talentcard.front.controller;
 
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.front.dto.PolicyApplyDTO;
 import com.talentcard.front.service.IPolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author: xiahui
@@ -35,8 +37,13 @@ public class PolicyController {
      * @return
      */
     @RequestMapping("apply")
-    public ResultVO policyDetail(@RequestParam(name = "tid") Long tid, @RequestParam(name = "pid") Long pid) {
-        return service.apply(tid, pid);
+    public ResultVO apply(@RequestParam(name = "tid") Long tid,
+                          @RequestParam(name = "pid") Long pid,
+                          @RequestParam(name = "card", required = false) String card,
+                          @RequestParam(name = "bank", required = false) String bank,
+                          @RequestParam(value = "files", required = false) MultipartFile[] files) {
+        PolicyApplyDTO dto = new PolicyApplyDTO(tid, pid, card, bank, files);
+        return service.apply(dto);
     }
 
 
@@ -58,7 +65,7 @@ public class PolicyController {
      * @return
      */
     @RequestMapping("detail")
-    public ResultVO applyDetail(@RequestParam(name = "paid") Long paid) {
+    public ResultVO detail(@RequestParam(name = "paid") Long paid) {
         return service.detail(paid);
     }
 }
