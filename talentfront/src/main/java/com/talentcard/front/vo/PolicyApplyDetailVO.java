@@ -60,7 +60,7 @@ public class PolicyApplyDetailVO implements Serializable {
         PolicyApplyDetailVO vo = new PolicyApplyDetailVO();
 
         vo.setApplyDate(DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD));
-        vo.setStatus(bo.getStatus() == 1 ? "审核通过" : bo.getStatus() == 2 ? "审核中" : bo.getStatus() == 3 ? "审核驳回" : "无");
+        vo.setStatus(bo.getStatus() == 1 ? "审核通过" : bo.getStatus() == 2 ? "审核驳回" : bo.getStatus() == 3 ? "审核中" : "无");
         vo.setName(bo.getTalentName());
         vo.setCard(bo.getBankNum());
         vo.setBank(bo.getBankName());
@@ -71,7 +71,7 @@ public class PolicyApplyDetailVO implements Serializable {
         }
         vo.setAnnexes(annexes);
 
-        if (3 == bo.getStatus()) {
+        if (2 == bo.getStatus()) {
             for (PolicyApprovalPO po : bo.getApproval()) {
                 if (null != po.getOpinion()) {
                     vo.setReason(po.getOpinion());

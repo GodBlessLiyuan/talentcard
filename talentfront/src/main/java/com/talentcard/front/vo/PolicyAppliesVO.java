@@ -18,9 +18,21 @@ import java.util.List;
 public class PolicyAppliesVO implements Serializable {
     private static final long SerialVersionUID = 1L;
 
+    /**
+     * 权益申请ID
+     */
     private Long paId;
+    /**
+     * 权益名称
+     */
     private String name;
+    /**
+     * 申请时间
+     */
     private String applyDate;
+    /**
+     * 申请状态
+     */
     private String status;
 
     /**

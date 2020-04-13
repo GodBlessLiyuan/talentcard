@@ -32,8 +32,11 @@ public class PolicyController {
 
     /**
      * 我的权益 - 申请
-     *
-     * @param pid
+     * @param tid 人才Id
+     * @param pid 政策Id
+     * @param card 银行卡号
+     * @param bank 开户行号
+     * @param files 附件
      * @return
      */
     @RequestMapping("apply")
