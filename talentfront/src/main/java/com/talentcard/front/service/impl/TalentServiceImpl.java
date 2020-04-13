@@ -245,7 +245,6 @@ public class TalentServiceImpl implements ITalentService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO activate(String openId, String code) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("membershipNumber", code);
         jsonObject.put("code", code);
         //从card表里，寻找默认卡
         CardPO cardPO = cardMapper.findDefaultCard();
@@ -257,7 +256,9 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setTalentId(talentPO.getTalentId());
         userCardPO.setCardId(cardId);
         //设置当前编号，组合起来，并且更新卡的currentNum
-        userCardPO.setNum(cardPO.getInitialWord() + cardPO.getCurrNum());
+        String membershipNumber = cardPO.getInitialWord() + cardPO.getCurrNum();
+        userCardPO.setNum(membershipNumber);
+        jsonObject.put("membershipNumber", membershipNumber);
         cardPO.setCurrNum(cardPO.getCurrNum() + 1);
         cardMapper.updateByPrimaryKeySelective(cardPO);
         //人卡表里设置参数；添加数据
