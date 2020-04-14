@@ -36,7 +36,6 @@ public class RoleServiceImpl implements IRoleService {
     public ResultVO queryByRole(String roleName, Date startTime, Date endTime) {
         // 1 先在角色基础表中查询当前角色信息
         List<RolePO> rolePOS = roleMapper.queryRoleByTime(roleName,startTime,endTime);
-        System.out.println(rolePOS.get(0).getRoleId()+"---------"+rolePOS.get(0).getCreateTime());
         if (null == rolePOS) {
             // 角色列表查询失败
             return new ResultVO(10026);

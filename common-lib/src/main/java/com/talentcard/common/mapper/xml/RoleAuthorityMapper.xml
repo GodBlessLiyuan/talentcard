@@ -81,7 +81,7 @@
   </update>
 
 <!--  根据角色id查找权限+name-->
-  <select id="queryByRoleIdName" parameterType="java.lang.Long" resultMap="com.talentcard.common.bo.RoleAuthorityAddNameBO">
+  <select id="queryByRoleIdName" parameterType="java.lang.Long" resultType="com.talentcard.common.bo.RoleAuthorityAddNameBO">
     select ra.ra_id as raId, ra.status, ra.authority_id as authorityId, ra.role_id as roleId, a.name as authorityName
     from t_role_authority ra
     left join t_authority a on ra.authority_id = a.authority_id
