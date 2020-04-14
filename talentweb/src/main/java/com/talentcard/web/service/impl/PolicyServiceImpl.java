@@ -8,6 +8,7 @@ import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.PolicyDTO;
 import com.talentcard.web.service.IPolicyService;
+import com.talentcard.web.vo.PolicyDetailVO;
 import com.talentcard.web.vo.PolicyVO;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +75,30 @@ public class PolicyServiceImpl implements IPolicyService {
 
     @Override
     public ResultVO detail(Long pid) {
-        return null;
+        PolicyPO po = policyMapper.selectByPrimaryKey(pid);
+        if (null == po) {
+            // 数据已被删除
+            return new ResultVO(1001);
+        }
+
+        PolicyDetailVO vo = new PolicyDetailVO();
+        vo.setPid(po.getPolicyId());
+        vo.setName(po.getName());
+        vo.setNum(po.getNum());
+        vo.setDesc(po.getDescription());
+        vo.setCardIds(po.getCards().split(","));
+        vo.setCategoryIds(po.getCategories().split(","));
+        vo.setEducIds(po.getEducations().split(","));
+        vo.setTitleIds(po.getTitles().split(","));
+        vo.setQualityIds(po.getQualities().split(","));
+        vo.setApply(po.getApply());
+        vo.setRate(po.getRate());
+        vo.setUnit(po.getUnit());
+        vo.setTimes(po.getTimes());
+        vo.setBank(po.getBank());
+        vo.setAnnex(po.getAnnex());
+
+        return new ResultVO<>(1000, vo);
     }
 
     /**
