@@ -63,7 +63,11 @@ public class TalentServiceImpl implements ITalentService {
 
     @Override
     public ResultVO<TalentPO> findStatus(String openId) {
-        return new ResultVO(1000, talentMapper.selectByOpenId(openId));
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(5555, "查无此人");
+        }
+        return new ResultVO(1000, talentPO);
     }
 
     @Override
@@ -143,6 +147,7 @@ public class TalentServiceImpl implements ITalentService {
         userCurrentInfoPO.setPtInfo(jsonObject.getString("profTitleInfo"));
         userCurrentInfoPO.setPqCategory(jsonObject.getInteger("profQualityCategory"));
         userCurrentInfoPO.setPqInfo(jsonObject.getString("profQualityInfo"));
+        userCurrentInfoPO.setPolitical((byte) 0);
         userCurrentInfoMapper.insertSelective(userCurrentInfoPO);
 
         return new ResultVO(1000);
@@ -262,14 +267,23 @@ public class TalentServiceImpl implements ITalentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO activate(String openId, String code) {
+        //判断人卡表里是否已经有待审批的，如果有，错误代码
+        Integer ifExist = userCardMapper.findUserCardExist(openId);
+        if (ifExist != 0) {
+            return new ResultVO(2310);
+        }
+
+        //从card表里，寻找默认卡
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", code);
-        //从card表里，寻找默认卡
         CardPO cardPO = cardMapper.findDefaultCard();
         Long cardId = cardPO.getCardId();
         jsonObject.put("cardId", cardId);
-        //人卡表里设置参数
+        //更新人才表的cardId
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        talentPO.setCardId(cardId);
+        talentMapper.updateByPrimaryKeySelective(talentPO);
+        //人卡表里设置参数
         UserCardPO userCardPO = new UserCardPO();
         userCardPO.setTalentId(talentPO.getTalentId());
         userCardPO.setCardId(cardId);
@@ -284,13 +298,18 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setStatus((byte) 1);
         userCardMapper.insertSelective(userCardPO);
         //发送post请求，激活卡套
-        try {
-            String accessToken = AccessTokenUtil.getAccessToken();
-            String url = "https://api.weixin.qq.com/card/membercard/activate?access_token=" + accessToken;
-            WechatApiUtil.postRequest(url, jsonObject);
-        } catch (WechatException wechatException) {
-            return new ResultVO(6666);
-        }
+//        try {
+//            String accessToken = AccessTokenUtil.getAccessToken();
+//            String url = "https://api.weixin.qq.com/card/membercard/activate?access_token=" + accessToken;
+//            WechatApiUtil.postRequest(url, jsonObject);
+//        } catch (WechatException wechatException) {
+//            return new ResultVO(6666);
+//        }
         return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO findRegisterOne(String openId) {
+        return new ResultVO(1000, talentMapper.findRegisterOne(openId));
     }
 }
