@@ -38,7 +38,7 @@ public class AuthorityServiceImpl implements IAuthorityService {
 //        1 . 根据角色名和创建时间，find 角色ID
         Long roleId = roleMapper.queryRoleId(roleName,createTime);
 //        2 . 根据roleId在角色权限表中查询出所有的对象
-        List<RoleAuthorityAddNameBO> bos = roleAuthorityMapper.queryByRoleId(roleId);
+        List<RoleAuthorityAddNameBO> bos = roleAuthorityMapper.queryByRoleIdName(roleId);
 //        3 . 根据角色ID和权限名列表即权限ID,拼装成<roleID,authorityId>
         bos = RoleUtil.buildRoleAuthorityPOS(bos,roleAuthorityBO);
 //      5 . 根据roleAuthorityVO的状态码以及<roleID,authorityId,status>更新roleAuthority表

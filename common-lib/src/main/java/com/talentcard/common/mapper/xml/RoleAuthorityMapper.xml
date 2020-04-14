@@ -80,11 +80,18 @@
     where ra_id = #{raId,jdbcType=BIGINT}
   </update>
 
-<!--  根据角色id查找权限-->
-  <select id="queryByRoleId" parameterType="java.lang.Long" resultMap="com.talentcard.common.bo.RoleAuthorityAddNameBO">
+<!--  根据角色id查找权限+name-->
+  <select id="queryByRoleIdName" parameterType="java.lang.Long" resultMap="com.talentcard.common.bo.RoleAuthorityAddNameBO">
     select ra.ra_id as raId, ra.status, ra.authority_id as authorityId, ra.role_id as roleId, a.name as authorityName
     from t_role_authority ra
     left join t_authority a on ra.authority_id = a.authority_id
+    where role_id = #{roleId,jdbcType=BIGINT}
+  </select>
+
+  <select id="queryByRoleId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_role_authority
     where role_id = #{roleId,jdbcType=BIGINT}
   </select>
 

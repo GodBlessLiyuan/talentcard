@@ -16,7 +16,10 @@ public interface RoleAuthorityMapper extends BaseMapper<RoleAuthorityPO, Long> {
      * @param roleId
      * @return
      */
-    List<RoleAuthorityAddNameBO> queryByRoleId(long roleId);
+    List<RoleAuthorityAddNameBO> queryByRoleIdName(long roleId);
+
+    List<RoleAuthorityPO> queryByRoleId(long roleId);
+
 
 
 }
