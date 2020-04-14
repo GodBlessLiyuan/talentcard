@@ -6,19 +6,15 @@ import com.talentcard.web.utils.VerifyUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author: jiangzhaojie
@@ -39,10 +35,10 @@ public class LoginController {
      */
     @RequestMapping("checkLogin")
     public ResultVO login(HttpSession session,
-                              HttpServletResponse response,
-                              @RequestParam(value = "username", required = false) String username,
-                              @RequestParam(value = "password", required = false) String password,
-                              @RequestParam(value = "checkCode",required = false) String checkCode) {
+                          HttpServletResponse response,
+                          @RequestParam(value = "username", required = false) String username,
+                          @RequestParam(value = "password", required = false) String password,
+                          @RequestParam(value = "checkCode",required = false) String checkCode) {
         return loginService.login(session,response,username,password,checkCode);
     }
 

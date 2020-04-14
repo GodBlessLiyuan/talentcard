@@ -1,13 +1,10 @@
 package com.talentcard.web.service;
 
 import com.talentcard.common.vo.ResultVO;
-import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Map;
 
 /**
  * @author: jiangzhaojie

@@ -1,5 +1,6 @@
 package com.talentcard.web.service.impl;
 
+import com.talentcard.common.bo.RoleAuthorityBO;
 import com.talentcard.common.bo.RoleAuthortyNameBO;
 import com.talentcard.common.mapper.AuthorityMapper;
 import com.talentcard.common.mapper.RoleAuthorityMapper;
@@ -8,20 +9,16 @@ import com.talentcard.common.pojo.RoleAuthorityPO;
 import com.talentcard.common.pojo.UserPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ILoginService;
-import com.talentcard.web.vo.RoleAuthorityVO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.talentcard.web.utils.Md5Util;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author: jiangzhaojie
@@ -39,6 +36,7 @@ public class LoginServiceImpl implements ILoginService {
     AuthorityMapper authorityMapper;
 
     public static final String VERIFY_ID = "verifyKeyLogo";
+    public static final String SALT = "talentCard";
 
     @Override
     public ResultVO login(HttpSession session, HttpServletResponse response, String username, String password, String checkCode) {
@@ -60,7 +58,13 @@ public class LoginServiceImpl implements ILoginService {
 //        System.out.println(userPo.getUserId());
         // 3. 若不为空，则校验密码是否正确，若不对，提示无此用户名
         if (null!=userPo) {
+            // 查询到的编码是加密过的
             String realPassword = userPo.getPassword();
+            try {
+                password = Md5Util.encodeByMd5(SALT + password);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (!password.equals(realPassword)) {
                 //密码错误
                 return new ResultVO(1020);
@@ -84,8 +88,8 @@ public class LoginServiceImpl implements ILoginService {
             roleAuthortyNameBo.setRoleAuthorityPO(po);
             roleAuthortyNameBOS.add(roleAuthortyNameBo);
         }
-        RoleAuthorityVO roleAuthorityVO = RoleAuthorityVO.convert(roleAuthortyNameBOS);
-        session.setAttribute("userAuthority", roleAuthorityVO);
+        RoleAuthorityBO roleAuthorityBO = RoleAuthorityBO.convert(roleAuthortyNameBOS);
+        session.setAttribute("userAuthority", roleAuthorityBO);
         session.setMaxInactiveInterval(60 * 60 * 2);
 
         return new ResultVO(1000);

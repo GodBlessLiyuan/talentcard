@@ -79,4 +79,32 @@
       create_time = #{createTime,jdbcType=DATE}
     where role_id = #{roleId,jdbcType=BIGINT}
   </update>
+
+  <!--  根据角色和开始结束时间间隔查询角色-->
+  <select id="queryRoleByTime" resultType="com.talentcard.common.pojo.RolePO">
+    select r.role_id as roleId,r.create_time as createTime, r.name, r.extra
+    from t_role r
+    <where>
+      <if test="(startTime != null) and (endTime != null)">
+        r.create_time between #{startTime} AND #{endTime}
+      </if>
+      <if test="(startTime != null) and (endTime == null)">
+        AND r.create_time &gt;= #{startTime}
+      </if>
+      <if test="(startTime == null) and (endTime != null)">
+        AND r.create_time &lt;= #{endTime}
+      </if>
+      <if test="roleName != null and roleName != ''">
+        AND r.name like '%' #{roleName} '%'
+      </if>
+    </where>
+  </select>
+
+  <!--  根据角色名和创建时间查询 角色id-->
+  <select id="queryRoleId" resultType="java.lang.Long">
+    select r.role_id
+    from t_role r
+    where  r.create_time = #{createTime,jdbcType=DATE} and  r.name = #{roleName,jdbcType=CHAR}
+  </select>
+
 </mapper>

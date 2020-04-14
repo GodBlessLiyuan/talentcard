@@ -1,12 +1,9 @@
-package com.talentcard.web.vo;
+package com.talentcard.common.bo;
 
-import com.talentcard.common.bo.RoleAuthortyNameBO;
-import com.talentcard.common.pojo.RoleAuthorityPO;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +14,7 @@ import java.util.List;
  */
 @Data
 @Component
-public class RoleAuthorityVO implements Serializable {
+public class RoleAuthorityBO implements Serializable {
     private static final long SerialVersionUID = 1L;
     /**
      * 系统管理权限, 1关闭，2开放
@@ -78,8 +75,8 @@ public class RoleAuthorityVO implements Serializable {
      * @param bos
      * @return
      */
-    public static RoleAuthorityVO convert(List<RoleAuthortyNameBO> bos) {
-        RoleAuthorityVO vo = new RoleAuthorityVO();
+    public static RoleAuthorityBO convert(List<RoleAuthortyNameBO> bos) {
+        RoleAuthorityBO vo = new RoleAuthorityBO();
         for (RoleAuthortyNameBO bo : bos) {
             String RoleAuthortyName = bo.getAuthorityName();
             switch (RoleAuthortyName){
@@ -108,6 +105,28 @@ public class RoleAuthorityVO implements Serializable {
     }
 
 
-
-
+    @Override
+    public String toString() {
+        return "RoleAuthorityBO{" +
+                "roleQuery=" + roleQuery +
+                ", userCreate=" + userCreate +
+                ", userUpdate=" + userUpdate +
+                ", userDelete=" + userDelete +
+                ", userQuery=" + userQuery +
+                ", userCardUpdate=" + userCardUpdate +
+                ", userCardDelete=" + userCardDelete +
+                ", userCardQuery=" + userCardQuery +
+                ", userCardCreate=" + userCardCreate +
+                ", generalTalentQuery=" + generalTalentQuery +
+                ", verifiedTalentQuery=" + verifiedTalentQuery +
+                ", approvalTalentQuery=" + approvalTalentQuery +
+                ", approvalTalentAction=" + approvalTalentAction +
+                ", policyCreate=" + policyCreate +
+                ", policyUpdate=" + policyUpdate +
+                ", policyDelete=" + policyDelete +
+                ", policyQuery=" + policyQuery +
+                ", approvalPolicyQuery=" + approvalPolicyQuery +
+                ", approvalPolicyAction=" + approvalPolicyAction +
+                '}';
+    }
 }

@@ -125,18 +125,44 @@
       role_id = #{roleId,jdbcType=BIGINT}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
-<!--  根据用户名查询当前用户信息-->
-  <select id="queryByName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_user
-    where username = #{username,jdbcType=CHAR}
-  </select>
-
-<!--  根据当前用户更改密码-->
-  <update id="updatePassword">
+  <!--  根据用户名（唯一）编辑用户信息，更改使用者姓名，角色，备注-->
+  <update id="updateByUserName" parameterType="com.talentcard.common.bo.UserBO">
     update t_user
-    set password = #{newPassword,jdbcType=CHAR}
-    where user_id = #{userId,jdbcType=BIGINT} and dr=1
+    set `name` = #{name,jdbcType=CHAR},
+    extra = #{extra,jdbcType=CHAR},
+     role_id = #{roleId,jdbcType=BIGINT}
+    where username = #{username,jdbcType=CHAR}
   </update>
+
+  <!--  管理员更改用户密码-->
+  <update id="adminUpdatePassword">
+    update t_user
+    set password = #{password,jdbcType=CHAR}
+    where username = #{username,jdbcType=CHAR}
+  </update>
+
+  <delete id="deleteUser" parameterType="java.lang.String">
+    delete from t_user
+    where username = #{username,jdbcType=CHAR}
+  </delete>
+
+  <!--  根据用户名和角色id查询用户权限列表-->
+  <select id="queryUserRole" resultType="com.talentcard.common.bo.UserRoleBO">
+    select u.username, u.name, r.name as roleName, u.extra, group_concat(a.name) as authorityName
+    from t_user u
+    left join t_role r on u.role_id = r.role_id
+    left join t_role_authority ra on r.role_id = ra.role_id
+    left join t_authority a on ra.authority_id = a.authority_id
+    <where>
+      ra.`status`=1 and u.dr=1 and a.`name` in ('userUpdate','userDelete')
+      <if test="username != null and username != ''">
+        and u.username like '%' #{username} '%'
+      </if>
+      <if test="roleId != null and roleId != ''">
+        and u.role_id =  #{roleId}
+      </if>
+      group by u.username
+    </where>
+    order by u.create_time asc
+  </select>
 </mapper>
