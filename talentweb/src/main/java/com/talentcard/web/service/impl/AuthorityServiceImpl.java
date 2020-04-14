@@ -1,6 +1,7 @@
 package com.talentcard.web.service.impl;
 
-import com.talentcard.common.bo.RoleAndAuthorityBO;
+
+import com.talentcard.common.bo.RoleAuthorityAddNameBO;
 import com.talentcard.common.bo.RoleAuthorityBO;
 import com.talentcard.common.mapper.AuthorityMapper;
 import com.talentcard.common.mapper.RoleAuthorityMapper;
@@ -10,6 +11,7 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IAuthorityService;
 import com.talentcard.web.utils.RoleUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -30,21 +32,25 @@ public class AuthorityServiceImpl implements IAuthorityService {
     @Resource
     AuthorityMapper authorityMapper;
 
-//    @Override
-//    public ResultVO updateAuthority(String roleName, Date createTime, RoleAuthorityBO roleAuthorityBO) {
-////        1 . 根据角色名和创建时间，find 角色ID
-//        Long roleId = roleMapper.queryRoleId(roleName,createTime);
-////        2 . 根据roleId在角色权限表中查询出所有的对象
-//        List<RoleAuthorityPO> pos = roleAuthorityMapper.queryByRoleId(roleId);
-////        3 . 根据角色ID和权限名列表即权限ID,拼装成<roleID,authorityId>
-//        RoleAndAuthorityBO raBo = new RoleAndAuthorityBO();
-//        raBo.setRoleId(roleId);
-//        raBo.setRoleAuthorityBO(roleAuthorityBO);
-//        // 将RoleAndAuthorityBO 转换为 AuthorityPO
-////        4 . 构建<roleID,authorityId,status>
-//        List<RoleAuthorityPO> roleAuthorityPOS = RoleUtil.buildRoleAuthorityPOS(pos,raBo);
-//
-////        5 . 根据roleAuthorityVO的状态码以及<roleID,authorityId,status>更新roleAuthority表
-//    }
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public ResultVO updateAuthority(String roleName, Date createTime, RoleAuthorityBO roleAuthorityBO) {
+//        1 . 根据角色名和创建时间，find 角色ID
+        Long roleId = roleMapper.queryRoleId(roleName,createTime);
+//        2 . 根据roleId在角色权限表中查询出所有的对象
+        List<RoleAuthorityAddNameBO> bos = roleAuthorityMapper.queryByRoleIdName(roleId);
+//        3 . 根据角色ID和权限名列表即权限ID,拼装成<roleID,authorityId>
+        bos = RoleUtil.buildRoleAuthorityPOS(bos,roleAuthorityBO);
+//      5 . 根据roleAuthorityVO的状态码以及<roleID,authorityId,status>更新roleAuthority表
+        List<RoleAuthorityPO> pos = RoleUtil.convert(bos);
+        for (RoleAuthorityPO po:pos) {
+            int result = roleAuthorityMapper.updateByPrimaryKey(po);
+            if (result == 0){
+                // 更新权限失败
+                return new ResultVO(2143);
+            }
+        }
+        return new ResultVO(1000);
+    }
 
 }
