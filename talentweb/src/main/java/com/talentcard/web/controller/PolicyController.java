@@ -49,4 +49,19 @@ public class PolicyController {
     public ResultVO insert(HttpSession session, @RequestBody PolicyDTO dto) {
         return service.insert(session, dto);
     }
+
+    @RequestMapping("update")
+    public ResultVO update(HttpSession session, @RequestBody PolicyDTO dto) {
+        return service.update(session, dto);
+    }
+
+    @RequestMapping("delete")
+    public ResultVO update(@RequestParam(value = "pid") Long pid) {
+        return service.delete(pid);
+    }
+
+    @RequestMapping("detail")
+    public ResultVO detail(@RequestParam(value = "pid") Long pid) {
+        return service.detail(pid);
+    }
 }

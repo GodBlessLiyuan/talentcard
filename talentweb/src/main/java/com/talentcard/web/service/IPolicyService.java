@@ -33,4 +33,29 @@ public interface IPolicyService {
      * @return
      */
     ResultVO insert(HttpSession session, PolicyDTO dto);
+
+    /**
+     * 更新
+     *
+     * @param session
+     * @param dto
+     * @return
+     */
+    ResultVO update(HttpSession session, PolicyDTO dto);
+
+    /**
+     * 删除
+     *
+     * @param pid
+     * @return
+     */
+    ResultVO delete(Long pid);
+
+    /**
+     * 查看详情
+     *
+     * @param pid
+     * @return
+     */
+    ResultVO detail(Long pid);
 }

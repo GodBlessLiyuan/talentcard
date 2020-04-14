@@ -15,6 +15,10 @@ public class PolicyDTO implements Serializable {
     private static final long SerialVersionUID = 1L;
 
     /**
+     * 政策权益ID
+     */
+    private Long pid;
+    /**
      * 政策权益名称
      */
     private String name;
