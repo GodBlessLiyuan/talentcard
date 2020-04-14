@@ -6,7 +6,7 @@ import com.talentcard.web.dto.PolicyDTO;
 import com.talentcard.web.vo.PolicyVO;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author: xiahui
@@ -23,7 +23,7 @@ public interface IPolicyService {
      * @param hashMap
      * @return
      */
-    DTPageInfo<PolicyVO> query(int pageNum, int pageSize, HashMap<String, Object> hashMap);
+    DTPageInfo<PolicyVO> query(int pageNum, int pageSize, Map<String, Object> hashMap);
 
     /**
      * 插入

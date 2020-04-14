@@ -1,14 +1,20 @@
 package com.talentcard.web.service.impl;
 
+import com.github.pagehelper.Page;
+import com.talentcard.common.mapper.PolicyMapper;
+import com.talentcard.common.pojo.PolicyPO;
 import com.talentcard.common.utils.DTPageInfo;
+import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.PolicyDTO;
 import com.talentcard.web.service.IPolicyService;
 import com.talentcard.web.vo.PolicyVO;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author: xiahui
@@ -18,8 +24,13 @@ import java.util.HashMap;
  */
 @Service
 public class PolicyServiceImpl implements IPolicyService {
+    @Resource
+    private PolicyMapper policyMapper;
+
     @Override
-    public DTPageInfo<PolicyVO> query(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
+    public DTPageInfo<PolicyVO> query(int pageNum, int pageSize, Map<String, Object> reqMap) {
+        Page<PolicyPO> page = PageHelper.startPage(pageNum, pageSize);
+        List<PolicyPO> pos = policyMapper.query(reqMap);
         return null;
     }
 
