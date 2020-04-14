@@ -3,7 +3,7 @@
 <mapper namespace="com.talentcard.common.mapper.UserCurrentInfoMapper">
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.UserCurrentInfoPO">
     <id column="uci_id" jdbcType="BIGINT" property="uciId" />
-    <result column="uc_id" jdbcType="BIGINT" property="ucId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
     <result column="education" jdbcType="INTEGER" property="education" />
     <result column="pt_category" jdbcType="INTEGER" property="ptCategory" />
     <result column="pt_info" jdbcType="CHAR" property="ptInfo" />
@@ -11,7 +11,7 @@
     <result column="pq_info" jdbcType="CHAR" property="pqInfo" />
   </resultMap>
   <sql id="Base_Column_List">
-    uci_id, uc_id, education, pt_category, pt_info, pq_category, pq_info
+    uci_id, talent_id, education, pt_category, pt_info, pq_category, pq_info
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,10 +24,10 @@
     where uci_id = #{uciId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.UserCurrentInfoPO">
-    insert into t_user_current_info (uci_id, uc_id, education, 
+    insert into t_user_current_info (uci_id, talent_id, education, 
       pt_category, pt_info, pq_category, 
       pq_info)
-    values (#{uciId,jdbcType=BIGINT}, #{ucId,jdbcType=BIGINT}, #{education,jdbcType=INTEGER}, 
+    values (#{uciId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{education,jdbcType=INTEGER}, 
       #{ptCategory,jdbcType=INTEGER}, #{ptInfo,jdbcType=CHAR}, #{pqCategory,jdbcType=INTEGER}, 
       #{pqInfo,jdbcType=CHAR})
   </insert>
@@ -37,8 +37,8 @@
       <if test="uciId != null">
         uci_id,
       </if>
-      <if test="ucId != null">
-        uc_id,
+      <if test="talentId != null">
+        talent_id,
       </if>
       <if test="education != null">
         education,
@@ -60,8 +60,8 @@
       <if test="uciId != null">
         #{uciId,jdbcType=BIGINT},
       </if>
-      <if test="ucId != null">
-        #{ucId,jdbcType=BIGINT},
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
       </if>
       <if test="education != null">
         #{education,jdbcType=INTEGER},
@@ -83,8 +83,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.UserCurrentInfoPO">
     update t_user_current_info
     <set>
-      <if test="ucId != null">
-        uc_id = #{ucId,jdbcType=BIGINT},
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
       </if>
       <if test="education != null">
         education = #{education,jdbcType=INTEGER},
@@ -106,7 +106,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.UserCurrentInfoPO">
     update t_user_current_info
-    set uc_id = #{ucId,jdbcType=BIGINT},
+    set talent_id = #{talentId,jdbcType=BIGINT},
       education = #{education,jdbcType=INTEGER},
       pt_category = #{ptCategory,jdbcType=INTEGER},
       pt_info = #{ptInfo,jdbcType=CHAR},
