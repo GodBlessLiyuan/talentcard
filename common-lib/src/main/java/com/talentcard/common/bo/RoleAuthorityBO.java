@@ -81,24 +81,24 @@ public class RoleAuthorityBO implements Serializable {
             String RoleAuthortyName = bo.getAuthorityName();
             switch (RoleAuthortyName){
                 case "roleQuery": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "userCreate": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "userUpdate": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "userDelete": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "userQuery": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "userCardUpdate": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "userCardDelete": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "userCardQuery": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "userCardCreate": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "generalTalentQuery": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "verifiedTalentQuery": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "approvalTalentQuery": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "approvalTalentAction": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "policyCreate": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "policyUpdate": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "policyDelete": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "policyQuery": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "approvalPolicyQuery": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "approvalPolicyAction": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
+                case "userCreate": vo.setUserCreate(bo.getRoleAuthorityPO().getStatus());break;
+                case "userUpdate": vo.setUserUpdate(bo.getRoleAuthorityPO().getStatus());break;
+                case "userDelete": vo.setUserDelete(bo.getRoleAuthorityPO().getStatus());break;
+                case "userQuery": vo.setUserQuery(bo.getRoleAuthorityPO().getStatus());break;
+                case "userCardUpdate": vo.setUserCardUpdate(bo.getRoleAuthorityPO().getStatus());break;
+                case "userCardDelete": vo.setUserCardDelete(bo.getRoleAuthorityPO().getStatus());break;
+                case "userCardQuery": vo.setUserCardQuery(bo.getRoleAuthorityPO().getStatus());break;
+                case "userCardCreate": vo.setUserCardCreate(bo.getRoleAuthorityPO().getStatus());break;
+                case "generalTalentQuery": vo.setGeneralTalentQuery(bo.getRoleAuthorityPO().getStatus());break;
+                case "verifiedTalentQuery": vo.setVerifiedTalentQuery(bo.getRoleAuthorityPO().getStatus());break;
+                case "approvalTalentQuery": vo.setApprovalTalentQuery(bo.getRoleAuthorityPO().getStatus());break;
+                case "approvalTalentAction": vo.setApprovalTalentAction(bo.getRoleAuthorityPO().getStatus());break;
+                case "policyCreate": vo.setPolicyCreate(bo.getRoleAuthorityPO().getStatus());break;
+                case "policyUpdate": vo.setPolicyUpdate(bo.getRoleAuthorityPO().getStatus());break;
+                case "policyDelete": vo.setPolicyDelete(bo.getRoleAuthorityPO().getStatus());break;
+                case "policyQuery": vo.setPolicyQuery(bo.getRoleAuthorityPO().getStatus());break;
+                case "approvalPolicyQuery": vo.setApprovalPolicyQuery(bo.getRoleAuthorityPO().getStatus());break;
+                case "approvalPolicyAction": vo.setApprovalPolicyAction(bo.getRoleAuthorityPO().getStatus());break;
             }
         }
         return vo;

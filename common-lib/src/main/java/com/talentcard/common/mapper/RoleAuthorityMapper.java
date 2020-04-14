@@ -1,5 +1,6 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.bo.RoleAuthorityAddNameBO;
 import com.talentcard.common.pojo.RoleAuthorityPO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,5 +16,7 @@ public interface RoleAuthorityMapper extends BaseMapper<RoleAuthorityPO, Long> {
      * @param roleId
      * @return
      */
-    List<RoleAuthorityPO> queryByRoleId(long roleId);
+    List<RoleAuthorityAddNameBO> queryByRoleId(long roleId);
+
+
 }
