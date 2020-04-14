@@ -1,4 +1,4 @@
-package com.talentcard.front.utils;
+package com.talentcard.web.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.exception.WechatException;

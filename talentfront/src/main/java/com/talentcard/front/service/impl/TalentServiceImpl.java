@@ -179,7 +179,7 @@ public class TalentServiceImpl implements ITalentService {
         String profQualityUrl = FileUtil.uploadFile
                 (profQualityPicture, rootDir, projectDir, profQualityDir, "profQuality");
         if (educUrl == "" || profTitleUrl == "" || profQualityUrl == "") {
-            return new ResultVO(2305, "上传文件失败");
+            return new ResultVO(2304, "上传文件失败");
         }
 
         //人才表；通过openId获取talent表里唯一的信息

@@ -5,7 +5,9 @@ import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ISmsService;
 import com.talentcard.front.service.ITalentService;
+import com.talentcard.front.utils.VerificationCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,12 +23,12 @@ import java.util.Random;
 @RequestMapping("talent")
 @RestController
 public class TalentController {
-    public static HashMap<String, String> verifyCodeMap = new HashMap<>();
-    public static HashMap<String, Long> verifyCodeTime = new HashMap<>();
     @Autowired
     private ITalentService iTalentService;
     @Autowired
     private ISmsService iSmsService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 用户一次打开，判断当前用户状态
@@ -51,24 +53,15 @@ public class TalentController {
     public ResultVO register(@RequestBody JSONObject jsonObject) {
         String phone = jsonObject.getString("phone");
         //判断验证码
-        Long verifyCreateTime = verifyCodeTime.get(phone);
-        String verifyCode = verifyCodeMap.get(phone);
-        if (verifyCode == null || verifyCreateTime == null) {
+        String verificationCode = (String) redisTemplate.opsForValue().get("verificationCode");
+        if (verificationCode == null || verificationCode == "") {
             //没有验证码
-            return new ResultVO(2303);
-        }
-        if ((System.currentTimeMillis() - verifyCreateTime) >= 300000) {
-            //验证码超时
-            verifyCodeTime.remove(phone);
-            verifyCodeMap.remove(phone);
-            return new ResultVO(2301);
-        }
-        if (!verifyCode.equals(jsonObject.getString("verifyCode"))) {
-            //验证码错误
             return new ResultVO(2302);
         }
-        verifyCodeTime.remove(phone);
-        verifyCodeMap.remove(phone);
+        if (!verificationCode.equals(jsonObject.getString("verifyCode"))) {
+            //验证码错误
+            return new ResultVO(2301);
+        }
         return iTalentService.register(jsonObject);
     }
 
@@ -78,29 +71,22 @@ public class TalentController {
      */
     @PostMapping("sms")
     public ResultVO sms(@RequestParam String phone) {
-        Long verifyCreateTime = verifyCodeTime.get(phone);
-        //60s内只能发一次验证码
-        if (verifyCreateTime != null) {
-            if ((System.currentTimeMillis() - verifyCreateTime) <= 60000) {
-                return new ResultVO(2300);
-            }
-        }
         //6位短信验证码
         String verifyCode = String.valueOf(new Random().nextInt(899999) + 100000);
         //调用第三方短信接口，给指定手机号码发送指定短信验证码
         if (iSmsService.sendSMS(phone, verifyCode) == 1) {
-            //短信发送成功
-            verifyCodeMap.put(phone, verifyCode);
-            verifyCodeTime.put(phone, System.currentTimeMillis());
+            //短信发送成功，则将验证码存入缓存
+            VerificationCodeUtil.setCode(phone, verifyCode);
             return new ResultVO(1000);
         } else {
             //短信发送失败
-            return new ResultVO<>(2304);
+            return new ResultVO<>(2303);
         }
     }
 
     /**
      * 返回信息
+     *
      * @param openId
      * @param status 1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃
      * @return
@@ -116,6 +102,7 @@ public class TalentController {
 
     /**
      * 用户认证模块
+     *
      * @param openId
      * @param political
      * @param education
@@ -152,13 +139,14 @@ public class TalentController {
 
     /**
      * 第一次申请认证后激活卡套
+     *
      * @param openId
      * @param code
      * @return
      */
     @PostMapping("activate")
-    public ResultVO activate(@RequestParam(value = "openId")String openId,
-                             @RequestParam(value = "code")String code) {
+    public ResultVO activate(@RequestParam(value = "openId") String openId,
+                             @RequestParam(value = "code") String code) {
         return iTalentService.activate(openId, code);
     }
 }
