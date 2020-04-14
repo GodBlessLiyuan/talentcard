@@ -5,6 +5,7 @@ import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ISmsService;
 import com.talentcard.front.service.ITalentService;
+import com.talentcard.front.utils.AccessTokenUtil;
 import com.talentcard.front.utils.VerificationCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -160,4 +161,18 @@ public class TalentController {
                              @RequestParam(value = "code") String code) {
         return iTalentService.activate(openId, code);
     }
+
+    /**
+     * 获取accessToken
+     * @return accessToken
+     */
+    @GetMapping("getAccessToken")
+    public ResultVO getAccessToken() {
+        String accessToken = AccessTokenUtil.getAccessToken();
+        if (accessToken == null || accessToken == "") {
+            return new ResultVO(2200);
+        }
+        return new ResultVO(1000, accessToken);
+    }
+
 }

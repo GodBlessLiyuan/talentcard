@@ -77,7 +77,7 @@ public class TalentServiceImpl implements ITalentService {
         String openId = jsonObject.getString("openId");
         TalentPO ifExist = talentMapper.selectByOpenId(openId);
         if (ifExist != null) {
-            return new ResultVO(2200);
+            return new ResultVO(2305);
         }
         //设置状态值 状态3为注册中
         Byte status = (byte) 2;
