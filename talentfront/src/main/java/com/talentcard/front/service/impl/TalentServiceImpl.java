@@ -10,6 +10,7 @@ import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.AccessTokenUtil;
+import com.talentcard.front.utils.TalentUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -66,15 +67,24 @@ public class TalentServiceImpl implements ITalentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO register(JSONObject jsonObject) {
+        //判断是否注册过
+        String openId = jsonObject.getString("openId");
+        TalentPO ifExist = talentMapper.selectByOpenId(openId);
+        if (ifExist != null) {
+            return new ResultVO(2200);
+        }
         //设置状态值 状态3为注册中
         Byte status = (byte) 3;
         //通过currentType判定第一次注册填写的哪一个
         Byte currentType = jsonObject.getByte("currentType");
         //人才表
         TalentPO talentPO = new TalentPO();
+        talentPO.setOpenId(openId);
         talentPO.setName(jsonObject.getString("name"));
-        talentPO.setSex(jsonObject.getByte("sex"));
-        talentPO.setIdCard(jsonObject.getString("idCard"));
+        //通过身份证号判断性别
+        String idCard = jsonObject.getString("idCard");
+        talentPO.setSex(TalentUtil.judgeGenderUtil(idCard));
+        talentPO.setIdCard(idCard);
         talentPO.setPassport(jsonObject.getString("passport"));
         talentPO.setWorkUnit(jsonObject.getString("workUnit"));
         talentPO.setIndustry(jsonObject.getString("industry"));
@@ -94,39 +104,35 @@ public class TalentServiceImpl implements ITalentService {
         Long certificationId = certificationPO.getCertId();
 
         //学历表
-        if (currentType == 1) {
-            EducationPO educationPO = new EducationPO();
-            educationPO.setEducation(jsonObject.getInteger("education"));
-            educationPO.setSchool(jsonObject.getString("school"));
-            educationPO.setFirstClass(jsonObject.getByte("firstClass"));
-            educationPO.setMajor(jsonObject.getString("major"));
-            educationPO.setCertId(certificationId);
-            educationPO.setTalentId(talentId);
-            educationPO.setStatus(status);
-            educationMapper.insertSelective(educationPO);
-        }
+        EducationPO educationPO = new EducationPO();
+        educationPO.setEducation(jsonObject.getInteger("education"));
+        educationPO.setSchool(jsonObject.getString("school"));
+        educationPO.setFirstClass(jsonObject.getByte("firstClass"));
+        educationPO.setMajor(jsonObject.getString("major"));
+        educationPO.setCertId(certificationId);
+        educationPO.setTalentId(talentId);
+        educationPO.setStatus(status);
+        educationMapper.insertSelective(educationPO);
 
         //职称表
-        else if (currentType == 2) {
-            ProfTitlePO profTitlePO = new ProfTitlePO();
-            profTitlePO.setCategory(jsonObject.getInteger("profTitleCategory"));
-            profTitlePO.setInfo(jsonObject.getString("profTitleInfo"));
-            profTitlePO.setCertId(certificationId);
-            profTitlePO.setTalentId(talentId);
-            profTitlePO.setStatus(status);
-            profTitleMapper.insertSelective(profTitlePO);
-        }
+        ProfTitlePO profTitlePO = new ProfTitlePO();
+        profTitlePO.setCategory(jsonObject.getInteger("profTitleCategory"));
+        profTitlePO.setInfo(jsonObject.getString("profTitleInfo"));
+        profTitlePO.setCertId(certificationId);
+        profTitlePO.setTalentId(talentId);
+        profTitlePO.setStatus(status);
+        profTitleMapper.insertSelective(profTitlePO);
+
 
         //职业资格表
-        else {
-            ProfQualityPO profQualityPO = new ProfQualityPO();
-            profQualityPO.setCategory(jsonObject.getInteger("profQualityCategory"));
-            profQualityPO.setInfo(jsonObject.getString("profQualityInfo"));
-            profQualityPO.setCertId(certificationId);
-            profQualityPO.setTalentId(talentId);
-            profQualityPO.setStatus(status);
-            profQualityMapper.insertSelective(profQualityPO);
-        }
+        ProfQualityPO profQualityPO = new ProfQualityPO();
+        profQualityPO.setCategory(jsonObject.getInteger("profQualityCategory"));
+        profQualityPO.setInfo(jsonObject.getString("profQualityInfo"));
+        profQualityPO.setCertId(certificationId);
+        profQualityPO.setTalentId(talentId);
+        profQualityPO.setStatus(status);
+        profQualityMapper.insertSelective(profQualityPO);
+
         return new ResultVO(1000);
     }
 

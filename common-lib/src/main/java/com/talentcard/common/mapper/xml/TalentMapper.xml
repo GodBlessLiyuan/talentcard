@@ -16,6 +16,7 @@
     <result column="category" jdbcType="CHAR" property="category" />
     <result column="card_id" jdbcType="BIGINT" property="cardId" />
   </resultMap>
+
   <resultMap id="TalentResultMap" type="com.talentcard.common.bo.TalentBO">
     <id column="t_talent_id" jdbcType="BIGINT" property="talentId" />
     <result column="open_id" jdbcType="CHAR" property="openId" />
@@ -32,23 +33,23 @@
     <result column="t_card_id" jdbcType="BIGINT" property="cardId" />
 
     <result column="c_cert_id" jdbcType="BIGINT" property="certId" />
-    <result column="political" jdbcType="CHAR" property="political" />
+    <result column="c_political" jdbcType="CHAR" property="political" />
     <result column="c_status" jdbcType="TINYINT" property="certificationStatus" />
     <result column="current_type" jdbcType="TINYINT" property="currentType" />
 
     <collection property ="educationPOList" ofType="com.talentcard.common.pojo.EducationPO">
-      <id column="educ_id" jdbcType="BIGINT" property="educId" />
-      <result column="education" jdbcType="INTEGER" property="education" />
-      <result column="school" jdbcType="CHAR" property="school" />
-      <result column="first_class" jdbcType="TINYINT" property="firstClass" />
-      <result column="major" jdbcType="CHAR" property="major" />
+      <id column="e_educ_id" jdbcType="BIGINT" property="educId" />
+      <result column="e_education" jdbcType="INTEGER" property="education" />
+      <result column="e_school" jdbcType="CHAR" property="school" />
+      <result column="e_first_class" jdbcType="TINYINT" property="firstClass" />
+      <result column="e_major" jdbcType="CHAR" property="major" />
       <result column="e_educ_picture" jdbcType="CHAR" property="educPicture" />
       <result column="e_cert_id" jdbcType="BIGINT" property="certId" />
       <result column="e_talent_id" jdbcType="BIGINT" property="talentId" />
       <result column="e_status" jdbcType="TINYINT" property="status" />
     </collection>
     <collection property ="profTitlePOList" ofType="com.talentcard.common.pojo.ProfTitlePO">
-      <id column="pt_id" jdbcType="BIGINT" property="ptId" />
+      <id column="pt_pt_id" jdbcType="BIGINT" property="ptId" />
       <result column="pt_category" jdbcType="INTEGER" property="category" />
       <result column="pt_info" jdbcType="CHAR" property="info" />
       <result column="pt_picture" jdbcType="CHAR" property="picture" />
@@ -57,7 +58,7 @@
       <result column="pt_status" jdbcType="TINYINT" property="status" />
     </collection>
     <collection property ="profQualityPOList" ofType="com.talentcard.common.pojo.ProfQualityPO">
-      <id column="pq_id" jdbcType="BIGINT" property="pqId" />
+      <id column="pq_pq_id" jdbcType="BIGINT" property="pqId" />
       <result column="pq_category" jdbcType="INTEGER" property="category" />
       <result column="pq_info" jdbcType="CHAR" property="info" />
       <result column="pq_picture" jdbcType="CHAR" property="picture" />
@@ -238,50 +239,53 @@
 
   <!--  insert，且返回主键-->
   <insert id="add" useGeneratedKeys="true" keyProperty="talentId" parameterType="com.talentcard.common.pojo.TalentPO">
-    insert into t_talent (talent_id, `name`, sex,
-      id_card, passport, work_unit,
-      industry, phone, create_time
+    insert into t_talent (talent_id, open_id, `name`,
+      sex, id_card, passport, work_unit,
+      industry, phone, create_time,
+      `status`, category, card_id
       )
-    values (#{talentId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{sex,jdbcType=TINYINT},
-      #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR},
-      #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}
+    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
+      #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR},
+      #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{status,jdbcType=TINYINT}, #{category,jdbcType=CHAR}, #{cardId,jdbcType=BIGINT}
       )
   </insert>
-  <select id="findRegisterOne" parameterType="java.lang.String" resultType="java.util.HashMap">
-    select
-    t.talent_id as talentId, `name` , sex, id_card as idCard, passport, work_unit as workUnity, industry, phone,
-    t.`status` as tStatus,
-    c.cert_id as certId, c.status as cStatus, current_type as currentType,
-    education, school, first_class as firstClass, major,
-    pt.category as ptCategory, pt.info as ptInfo,
-    pq.category as pqCategory, pq.info as pqInfo
-    from t_talent t
-    left join t_certification c
-    on  t.talent_id = c.talent_id
-    left join t_education e
-    on c.cert_id = e.cert_id
-    left join t_prof_title pt
-    on c.cert_id = pt.cert_id
-    left join t_prof_quality pq
-    on c.cert_id = pq.cert_id
-    where t.open_id = #{openId,jdbcType=CHAR}
-    and c.status = 3
-  </select>
+<!--  <select id="findRegisterOne" parameterType="java.lang.String" resultType="java.util.HashMap">-->
+<!--    select-->
+<!--    t.talent_id as talentId, `name` , sex, id_card as idCard, passport, work_unit as workUnity, industry, phone,-->
+<!--    t.`status` as tStatus,-->
+<!--    c.cert_id as certId, c.status as cStatus, current_type as currentType,-->
+<!--    education, school, first_class as firstClass, major,-->
+<!--    pt.category as ptCategory, pt.info as ptInfo,-->
+<!--    pq.category as pqCategory, pq.info as pqInfo-->
+<!--    from t_talent t-->
+<!--    left join t_certification c-->
+<!--    on  t.talent_id = c.talent_id-->
+<!--    left join t_education e-->
+<!--    on c.cert_id = e.cert_id-->
+<!--    left join t_prof_title pt-->
+<!--    on c.cert_id = pt.cert_id-->
+<!--    left join t_prof_quality pq-->
+<!--    on c.cert_id = pq.cert_id-->
+<!--    where t.open_id = #{openId,jdbcType=CHAR}-->
+<!--    and c.status = 3-->
+<!--  </select>-->
   <select id="findOne" parameterType="java.util.HashMap" resultMap="TalentResultMap">
     select
     t.talent_id as t_talent_id, open_id, `name`, sex, id_card, passport,
     work_unit, industry, phone, t.create_time as t_create_time,
     t.`status` as t_status, t.category as t_category, t.card_id as t_card_id,
 
-    c.cert_id as c_cert_id, political, c.status as c_status, current_type,
+    c.cert_id as c_cert_id, c.political as c_political, c.status as c_status, current_type,
 
-    educ_id, education, school, first_class, major, e.educ_picture as e_educ_picture,
+    e.educ_id as e_educ_id, e.education as e_education, e.school as e_school,
+    e.first_class as e_first_class, e.major as e_major, e.educ_picture as e_educ_picture,
     e.cert_id as e_cert_id, e.talent_id as e_talent_id, e.status as e_status,
 
-    pt_id, pt.category as pt_category, pt.info as pt_info, pt.picture as pt_picture,
+    pt.pt_id as pt_pt_id, pt.category as pt_category, pt.info as pt_info, pt.picture as pt_picture,
     pt.cert_id as pt_cert_id, pt.talent_id as pt_talent_id, pt.status as pt_status,
 
-    pq_id, pq.category as pq_category, pq.info as pq_info, pq.picture as pq_picture,
+    pq.pq_id as pq_pq_id, pq.category as pq_category, pq.info as pq_info, pq.picture as pq_picture,
     pq.cert_id as pq_cert_id, pq.talent_id as pq_talent_id, pq.status as pq_status
     from t_talent t
     left join t_certification c
