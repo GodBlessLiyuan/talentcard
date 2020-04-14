@@ -18,4 +18,12 @@ public interface PolicyMapper extends BaseMapper<PolicyPO, Long> {
      * @return
      */
     List<PolicyPO> queryByDr(Byte dr);
+
+    /**
+     * 根据num查询
+     *
+     * @param num
+     * @return
+     */
+    PolicyPO queryByNum(String num);
 }

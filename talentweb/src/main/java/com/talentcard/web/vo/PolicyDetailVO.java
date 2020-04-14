@@ -1,4 +1,4 @@
-package com.talentcard.web.dto;
+package com.talentcard.web.vo;
 
 import lombok.Data;
 
@@ -7,11 +7,11 @@ import java.io.Serializable;
 /**
  * @author: xiahui
  * @date: Created in 2020/4/14 14:38
- * @description: 政策
+ * @description: 政策-详细信息
  * @version: 1.0
  */
 @Data
-public class PolicyDTO implements Serializable {
+public class PolicyDetailVO implements Serializable {
     private static final long SerialVersionUID = 1L;
 
     /**

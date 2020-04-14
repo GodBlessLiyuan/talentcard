@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -36,12 +37,33 @@ public class PolicyServiceImpl implements IPolicyService {
 
     @Override
     public ResultVO insert(HttpSession session, PolicyDTO dto) {
-        return null;
+        PolicyPO existPO = policyMapper.queryByNum(dto.getNum());
+        if (null != existPO) {
+            // 编号不能重复
+            return new ResultVO(1001);
+        }
+
+        PolicyPO po = buildPOByDTO(new PolicyPO(), dto);
+        po.setUserId((Long) session.getAttribute("userId"));
+        po.setCreateTime(new Date());
+        po.setDr((byte) 1);
+
+        policyMapper.insert(po);
+
+        return new ResultVO(1000);
     }
 
     @Override
     public ResultVO update(HttpSession session, PolicyDTO dto) {
-        return null;
+        PolicyPO po = policyMapper.selectByPrimaryKey(dto.getPid());
+        if (null == po) {
+            // 数据已被删除
+            return new ResultVO(1001);
+        }
+
+        policyMapper.updateByPrimaryKey(buildPOByDTO(po, dto));
+
+        return new ResultVO(1000);
     }
 
     @Override
@@ -53,5 +75,30 @@ public class PolicyServiceImpl implements IPolicyService {
     @Override
     public ResultVO detail(Long pid) {
         return null;
+    }
+
+    /**
+     * 根据 dto 构建 po
+     *
+     * @param po
+     * @param dto
+     */
+    private PolicyPO buildPOByDTO(PolicyPO po, PolicyDTO dto) {
+        po.setName(dto.getName());
+        po.setNum(dto.getNum());
+        po.setDescription(dto.getDesc());
+        po.setCards(String.join(",", dto.getCardIds()));
+        po.setCategories(String.join(",", dto.getCategoryIds()));
+        po.setEducations(String.join(",", dto.getEducIds()));
+        po.setTitles(String.join(",", dto.getTitleIds()));
+        po.setQualities(String.join(",", dto.getQualityIds()));
+        po.setApply(dto.getApply());
+        po.setRate(dto.getRate());
+        po.setUnit(dto.getUnit());
+        po.setTimes(dto.getTimes());
+        po.setBank(dto.getBank());
+        po.setAnnex(dto.getAnnex());
+
+        return po;
     }
 }

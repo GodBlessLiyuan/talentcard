@@ -29,7 +29,7 @@
         select
         <include refid="Base_Column_List"/>
         from t_policy
-        where policy_id = #{policyId,jdbcType=BIGINT}
+        where policy_id = #{policyId,jdbcType=BIGINT} and dr = 1
     </select>
     <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
         update t_policy
@@ -259,5 +259,11 @@
         <include refid="Base_Column_List"/>
         from t_policy
         where dr = #{dr,jdbcType=TINYINT}
+    </select>
+    <select id="queryByNum" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy
+        where dr = 1 and num = #{num,jdbcType=CHAR}
     </select>
 </mapper>
