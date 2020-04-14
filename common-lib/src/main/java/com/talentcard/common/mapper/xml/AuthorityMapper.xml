@@ -61,4 +61,11 @@
     from t_authority
     where authority_id = #{authorityId,jdbcType=BIGINT}
   </select>
+
+<!--  <select id="queryAuthority" resultType="BaseResultMap">-->
+<!--    select-->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from t_authority-->
+<!--  </select>-->
+
 </mapper>
