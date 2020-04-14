@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.UserCurrentInfoMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.UserCurrentInfoPO">
+    <id column="uci_id" jdbcType="BIGINT" property="uciId" />
+    <result column="uc_id" jdbcType="BIGINT" property="ucId" />
+    <result column="education" jdbcType="INTEGER" property="education" />
+    <result column="pt_category" jdbcType="INTEGER" property="ptCategory" />
+    <result column="pt_info" jdbcType="CHAR" property="ptInfo" />
+    <result column="pq_category" jdbcType="INTEGER" property="pqCategory" />
+    <result column="pq_info" jdbcType="CHAR" property="pqInfo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uci_id, uc_id, education, pt_category, pt_info, pq_category, pq_info
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_current_info
+    where uci_id = #{uciId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_user_current_info
+    where uci_id = #{uciId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.UserCurrentInfoPO">
+    insert into t_user_current_info (uci_id, uc_id, education, 
+      pt_category, pt_info, pq_category, 
+      pq_info)
+    values (#{uciId,jdbcType=BIGINT}, #{ucId,jdbcType=BIGINT}, #{education,jdbcType=INTEGER}, 
+      #{ptCategory,jdbcType=INTEGER}, #{ptInfo,jdbcType=CHAR}, #{pqCategory,jdbcType=INTEGER}, 
+      #{pqInfo,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.UserCurrentInfoPO">
+    insert into t_user_current_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uciId != null">
+        uci_id,
+      </if>
+      <if test="ucId != null">
+        uc_id,
+      </if>
+      <if test="education != null">
+        education,
+      </if>
+      <if test="ptCategory != null">
+        pt_category,
+      </if>
+      <if test="ptInfo != null">
+        pt_info,
+      </if>
+      <if test="pqCategory != null">
+        pq_category,
+      </if>
+      <if test="pqInfo != null">
+        pq_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uciId != null">
+        #{uciId,jdbcType=BIGINT},
+      </if>
+      <if test="ucId != null">
+        #{ucId,jdbcType=BIGINT},
+      </if>
+      <if test="education != null">
+        #{education,jdbcType=INTEGER},
+      </if>
+      <if test="ptCategory != null">
+        #{ptCategory,jdbcType=INTEGER},
+      </if>
+      <if test="ptInfo != null">
+        #{ptInfo,jdbcType=CHAR},
+      </if>
+      <if test="pqCategory != null">
+        #{pqCategory,jdbcType=INTEGER},
+      </if>
+      <if test="pqInfo != null">
+        #{pqInfo,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.UserCurrentInfoPO">
+    update t_user_current_info
+    <set>
+      <if test="ucId != null">
+        uc_id = #{ucId,jdbcType=BIGINT},
+      </if>
+      <if test="education != null">
+        education = #{education,jdbcType=INTEGER},
+      </if>
+      <if test="ptCategory != null">
+        pt_category = #{ptCategory,jdbcType=INTEGER},
+      </if>
+      <if test="ptInfo != null">
+        pt_info = #{ptInfo,jdbcType=CHAR},
+      </if>
+      <if test="pqCategory != null">
+        pq_category = #{pqCategory,jdbcType=INTEGER},
+      </if>
+      <if test="pqInfo != null">
+        pq_info = #{pqInfo,jdbcType=CHAR},
+      </if>
+    </set>
+    where uci_id = #{uciId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.UserCurrentInfoPO">
+    update t_user_current_info
+    set uc_id = #{ucId,jdbcType=BIGINT},
+      education = #{education,jdbcType=INTEGER},
+      pt_category = #{ptCategory,jdbcType=INTEGER},
+      pt_info = #{ptInfo,jdbcType=CHAR},
+      pq_category = #{pqCategory,jdbcType=INTEGER},
+      pq_info = #{pqInfo,jdbcType=CHAR}
+    where uci_id = #{uciId,jdbcType=BIGINT}
+  </update>
+</mapper>

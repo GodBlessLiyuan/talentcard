@@ -53,9 +53,9 @@ public class TalentController {
     public ResultVO register(@RequestBody JSONObject jsonObject) {
         String phone = jsonObject.getString("phone");
         //判断验证码
-        String verificationCode = (String) redisTemplate.opsForValue().get("verificationCode");
+        String verificationCode = (String) redisTemplate.opsForValue().get(phone);
         if (verificationCode == null || verificationCode == "") {
-            //没有验证码
+            //查不到验证码
             return new ResultVO(2302);
         }
         if (!verificationCode.equals(jsonObject.getString("verifyCode"))) {
