@@ -19,6 +19,10 @@ public class PolicyVO implements Serializable {
     private static final long SerialVersionUID = 1L;
 
     /**
+     * 政策权益ID
+     */
+    private Long pid;
+    /**
      * 创建时间
      */
     private Date createTime;
@@ -60,6 +64,7 @@ public class PolicyVO implements Serializable {
     public static PolicyVO convert(PolicyPO po) {
         PolicyVO vo = new PolicyVO();
 
+        vo.setPid(po.getPolicyId());
         vo.setCreateTime(po.getCreateTime());
         vo.setName(po.getName());
         vo.setNum(po.getNum());

@@ -46,7 +46,8 @@ public class PolicyServiceImpl implements IPolicyService {
 
     @Override
     public ResultVO delete(Long pid) {
-        return null;
+        policyMapper.deleteByPrimaryKey(pid);
+        return new ResultVO(1000);
     }
 
     @Override
