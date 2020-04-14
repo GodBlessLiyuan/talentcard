@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author: jiangzhaojie
@@ -89,8 +91,15 @@ public class UserController {
      * @return
      */
     @RequestMapping("queryByUser")
-    public ResultVO queryByUser(@RequestParam(value = "username", required = false) String username,
+    public ResultVO queryByUser(HttpSession session,
+                                @RequestParam(value = "draw", defaultValue = "1") int draw,
+                                @RequestParam(value = "start", defaultValue = "1") int pageNum,
+                                @RequestParam(value = "length", defaultValue = "10") int pageSize,
+                                @RequestParam(value = "username", required = false) String username,
                                 @RequestParam(value = "roleId", required = false) Long roleId) {
-        return userService.queryUserRole(username,roleId);
+        Map<String, Object> reqData = new HashMap<>(2);
+        reqData.put("username", username.replaceAll(" ", ""));
+        reqData.put("roleId", roleId);
+        return userService.queryUserRole(draw, pageNum, pageSize, reqData);
     }
 }

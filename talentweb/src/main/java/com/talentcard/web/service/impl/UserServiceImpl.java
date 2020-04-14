@@ -6,12 +6,18 @@ import com.talentcard.common.mapper.UserMapper;
 import com.talentcard.common.pojo.UserPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IUserService;
+import com.talentcard.web.utils.DTPageInfo;
 import com.talentcard.web.utils.Md5Util;
+import com.talentcard.web.utils.PageHelper;
+import com.github.pagehelper.Page;
+import com.talentcard.web.vo.UserRoleVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author: jiangzhaojie
@@ -111,13 +117,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ResultVO queryUserRole(String username, Long roleId){
-        UserRoleBO userRoleBO = userMapper.queryUserRole(username,roleId);
-        if (null == userRoleBO) {
+    public ResultVO queryUserRole(int draw, int pageNum, int pageSize, Map<String, Object> reqData){
+
+        Page<UserRoleBO> page = PageHelper.startPage(pageNum, pageSize);
+
+        List<UserRoleBO> bos = userMapper.queryUserRole(reqData);
+        if (null == bos) {
             //当前没有任何有系统权限的用户
             return new ResultVO(1253);
         }
-        return new ResultVO(1000,userRoleBO);
+        return new ResultVO(1000,new DTPageInfo<>(draw, page.getTotal(), UserRoleVO.convert(bos)));
     }
 
 

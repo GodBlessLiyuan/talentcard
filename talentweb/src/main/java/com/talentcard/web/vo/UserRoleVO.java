@@ -1,6 +1,12 @@
 package com.talentcard.web.vo;
 
+import com.talentcard.common.bo.RoleAuthorityBO;
+import com.talentcard.common.bo.RoleAuthortyNameBO;
+import com.talentcard.common.bo.UserRoleBO;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author: jiangzhaojie
@@ -25,6 +31,20 @@ public class UserRoleVO {
      */
     private String authorityName;
 
+
+    public static List<UserRoleVO> convert(List<UserRoleBO> userRoleBOS) {
+        List<UserRoleVO> userRoleVOS = new ArrayList<>();
+        for (UserRoleBO bo : userRoleBOS) {
+            UserRoleVO vo = new UserRoleVO();
+            vo.setAuthorityName(bo.getAuthorityName());
+            vo.setExtra(bo.getExtra());
+            vo.setName(bo.getName());
+            vo.setRoleName(bo.getRoleName());
+            vo.setUsername(bo.getUsername());
+            userRoleVOS.add(vo);
+        }
+        return userRoleVOS;
+    }
 
 
 }

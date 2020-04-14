@@ -3,6 +3,7 @@ package com.talentcard.web.service;
 import com.talentcard.common.vo.ResultVO;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * @author: jiangzhaojie
@@ -58,10 +59,12 @@ public interface IUserService {
 
     /**
      * 根据用户名和角色id获取当前用户系统权限列表，需要分页展示
-     * @param username
-     * @param roleId
+     * @param draw
+     * @param pageNum
+     * @param pageSize
+     * @param reqData
      * @return
      */
-    ResultVO queryUserRole(String username, Long roleId);
+    ResultVO queryUserRole(int draw, int pageNum, int pageSize, Map<String, Object> reqData);
 
 }
