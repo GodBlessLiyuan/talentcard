@@ -27,8 +27,6 @@ public class TalentController {
     private ITalentService iTalentService;
     @Autowired
     private ISmsService iSmsService;
-    @Autowired
-    private RedisTemplate redisTemplate;
 
     /**
      * 用户一次打开，判断当前用户状态
@@ -53,7 +51,7 @@ public class TalentController {
     public ResultVO register(@RequestBody JSONObject jsonObject) {
         String phone = jsonObject.getString("phone");
         //判断验证码
-        String verificationCode = (String) redisTemplate.opsForValue().get(phone);
+        String verificationCode = VerificationCodeUtil.getCode(phone);
         if (verificationCode == null || verificationCode == "") {
             //查不到验证码
             return new ResultVO(2302);
@@ -82,6 +80,19 @@ public class TalentController {
             //短信发送失败
             return new ResultVO<>(2303);
         }
+    }
+
+    /**
+     * 回填信息
+     *
+     * @param openId
+     * @return
+     */
+    @PostMapping("findRegisterOne")
+    public ResultVO findRegisterOne(@RequestParam(value = "openId") String openId) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("openId", openId);
+        return iTalentService.findRegisterOne(openId);
     }
 
     /**

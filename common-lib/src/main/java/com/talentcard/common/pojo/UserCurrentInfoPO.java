@@ -13,6 +13,8 @@ public class UserCurrentInfoPO implements Serializable {
 
     private Long talentId;
 
+    private Byte political;
+
     private Integer education;
 
     private Integer ptCategory;

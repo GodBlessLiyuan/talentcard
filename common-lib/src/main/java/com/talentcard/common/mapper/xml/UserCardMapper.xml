@@ -103,4 +103,15 @@
       `status` = #{status,jdbcType=TINYINT}
     where uc_id = #{ucId,jdbcType=BIGINT}
   </update>
+  <select id="findUserCardExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    count(uc.uc_id)
+    from t_user_card uc
+    left join t_talent t
+    on t.talent_id = uc.talent_id
+    where
+    t.open_id = #{openId,jdbcType=CHAR}
+    and
+    uc.status = 1
+  </select>
 </mapper>

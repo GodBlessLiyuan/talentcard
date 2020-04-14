@@ -33,10 +33,11 @@ public class VerificationCodeUtil {
     public static void setCode(String phone, String verificationCode) {
         myRedis.opsForValue().set(phone, verificationCode, 5L, TimeUnit.MINUTES);
 //        String newCode = (String) myRedis.opsForValue().get("verificationCode");
-//        logger.info("成功存入验证码：{}", newCode);
+        logger.info("验证码：{}", verificationCode);
     }
 
     public static String getCode(String phone) {
-        return (String) myRedis.opsForValue().get("phone");
+        //取出验证码
+        return (String) myRedis.opsForValue().get(phone);
     }
 }

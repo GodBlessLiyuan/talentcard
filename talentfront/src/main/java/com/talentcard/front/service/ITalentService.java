@@ -14,6 +14,11 @@ import java.util.HashMap;
  * @Description: 人才用的sevice层接口
  */
 public interface ITalentService {
+    /**
+     * 根据和openId，返回当前状态和卡号
+     * @param openId
+     * @return
+     */
     ResultVO<TalentPO> findStatus(String openId);
 
     /**
@@ -32,6 +37,12 @@ public interface ITalentService {
      */
     ResultVO findOne(HashMap<String, Object> hashMap);
 
+    /**
+     * 根据OpenId回填对应信息
+     * @param openId
+     * @return
+     */
+    ResultVO findRegisterOne(String openId);
     /**
      * @param openId
      * @param political
