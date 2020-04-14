@@ -45,6 +45,8 @@ public class TalentServiceImpl implements ITalentService {
     private CardMapper cardMapper;
     @Autowired
     private UserCardMapper userCardMapper;
+    @Autowired
+    private UserCurrentInfoMapper userCurrentInfoMapper;
 
     @Value("${file.publicPath}")
     private String publicPath;
@@ -74,7 +76,7 @@ public class TalentServiceImpl implements ITalentService {
             return new ResultVO(2200);
         }
         //设置状态值 状态3为注册中
-        Byte status = (byte) 3;
+        Byte status = (byte) 2;
         //通过currentType判定第一次注册填写的哪一个
         Byte currentType = jsonObject.getByte("currentType");
         //人才表
@@ -90,7 +92,7 @@ public class TalentServiceImpl implements ITalentService {
         talentPO.setIndustry(jsonObject.getString("industry"));
         talentPO.setPhone(jsonObject.getString("phone"));
         talentPO.setCreateTime(new Date());
-        talentPO.setStatus((byte) 2);
+        talentPO.setStatus(status);
         talentMapper.add(talentPO);
         Long talentId = talentPO.getTalentId();
 
@@ -133,6 +135,15 @@ public class TalentServiceImpl implements ITalentService {
         profQualityPO.setStatus(status);
         profQualityMapper.insertSelective(profQualityPO);
 
+        //更新基本信息表
+        UserCurrentInfoPO userCurrentInfoPO = new UserCurrentInfoPO();
+        userCurrentInfoPO.setTalentId(talentId);
+        userCurrentInfoPO.setEducation(jsonObject.getInteger("education"));
+        userCurrentInfoPO.setPtCategory(jsonObject.getInteger("profTitleCategory"));
+        userCurrentInfoPO.setPtInfo(jsonObject.getString("profTitleInfo"));
+        userCurrentInfoPO.setPqCategory(jsonObject.getInteger("profQualityCategory"));
+        userCurrentInfoPO.setPqInfo(jsonObject.getString("profQualityInfo"));
+        userCurrentInfoMapper.insertSelective(userCurrentInfoPO);
 
         return new ResultVO(1000);
     }
@@ -176,8 +187,8 @@ public class TalentServiceImpl implements ITalentService {
                                    MultipartFile educPicture,
                                    MultipartFile profTitlePicture,
                                    MultipartFile profQualityPicture) {
-        //设置状态值 状态4为待审批
-        Byte status = (byte) 4;
+        //设置状态值 状态3为认证未审批
+        Byte status = (byte) 3;
         //上传文件
         String educUrl = FileUtil.uploadFile
                 (educPicture, rootDir, projectDir, educationDir, "education");
@@ -191,7 +202,7 @@ public class TalentServiceImpl implements ITalentService {
 
         //人才表；通过openId获取talent表里唯一的信息
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        talentPO.setStatus((byte) 3);
+        talentPO.setStatus(status);
         talentMapper.updateByPrimaryKeySelective(talentPO);
         Long talentId = talentPO.getTalentId();
 
