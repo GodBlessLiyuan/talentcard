@@ -147,7 +147,7 @@
   </delete>
 
   <!--  根据用户名和角色id查询用户权限列表-->
-  <select id="queryUserRole" resultType="com.talentcard.common.bo.UserRoleBO">
+  <select id="queryUserRole" parameterType="java.util.Map" resultType="com.talentcard.common.bo.UserRoleBO">
     select u.username, u.name, r.name as roleName, u.extra, group_concat(a.name) as authorityName
     from t_user u
     left join t_role r on u.role_id = r.role_id

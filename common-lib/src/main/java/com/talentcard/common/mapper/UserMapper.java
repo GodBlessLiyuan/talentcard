@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import sun.awt.SunHints;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * UserMapper继承基类
  */
@@ -56,9 +59,8 @@ public interface UserMapper extends BaseMapper<UserPO, Long> {
 
     /**
      * 根据用户名和角色名 查询所有用户的权限
-     * @param username
-     * @param roleId
+     * @param map
      * @return
      */
-    UserRoleBO queryUserRole(@Param("username") String username, @Param("roleId") long roleId);
+    List<UserRoleBO> queryUserRole(Map<String, Object> map);
 }
