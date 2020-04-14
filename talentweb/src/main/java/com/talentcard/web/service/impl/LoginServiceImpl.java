@@ -40,23 +40,10 @@ public class LoginServiceImpl implements ILoginService {
 
     @Override
     public ResultVO login(HttpSession session, HttpServletResponse response, String username, String password, String checkCode) {
-
-//         1 .校验验证码，先从session中提取出验证码信息，然后对比用户输入
-//        String code = (String)session.getAttribute(VERIFY_ID);
-        String code = "1234";
-        if (null == code) {
-            // 验证码过期
-            return new ResultVO(1018);
-        }
-        if (!code.equalsIgnoreCase(checkCode)) {
-            //验证码错误
-            return new ResultVO(1019);
-        }
-
-        // 2.首先先根据唯一用户名查询当前用户的信息，得到userId
+        // 1.首先先根据唯一用户名查询当前用户的信息，得到userId
         UserPO userPo = userMapper.queryByName(username);
 //        System.out.println(userPo.getUserId());
-        // 3. 若不为空，则校验密码是否正确，若不对，提示无此用户名
+        // 2. 若不为空，则校验密码是否正确，若不对，提示无此用户名
         if (null!=userPo) {
             // 查询到的编码是加密过的
             String realPassword = userPo.getPassword();
@@ -72,6 +59,17 @@ public class LoginServiceImpl implements ILoginService {
         } else {
             //用户名错误
             return new ResultVO(1021);
+        }
+//        3 .校验验证码，先从session中提取出验证码信息，然后对比用户输入
+//        String code = (String)session.getAttribute(VERIFY_ID);
+        String code = "1234";
+        if (null == code) {
+            // 验证码过期
+            return new ResultVO(1018);
+        }
+        if (!code.equalsIgnoreCase(checkCode)) {
+            //验证码错误
+            return new ResultVO(1019);
         }
         // 4 . 将用户信息存放到session当中
         session.setAttribute("userId",userPo.getUserId());
@@ -91,7 +89,6 @@ public class LoginServiceImpl implements ILoginService {
         RoleAuthorityBO roleAuthorityBO = RoleAuthorityBO.convert(roleAuthortyNameBOS);
         session.setAttribute("userAuthority", roleAuthorityBO);
         session.setMaxInactiveInterval(60 * 60 * 2);
-
         return new ResultVO(1000);
     }
 

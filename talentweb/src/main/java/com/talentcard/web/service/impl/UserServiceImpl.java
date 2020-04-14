@@ -82,8 +82,11 @@ public class UserServiceImpl implements IUserService {
         userBO.setName(name);
         userBO.setRoleId(roleId);
         userBO.setExtra(extra);
-        userMapper.insertUser(userBO);
-
+        int result = userMapper.insertUser(userBO);
+        if (result == 0) {
+            //新建用户失败
+            return new ResultVO(1268);
+        }
         return new ResultVO(1000);
     }
 
@@ -95,8 +98,11 @@ public class UserServiceImpl implements IUserService {
         userBO.setName(name);
         userBO.setRoleId(roleId);
         userBO.setExtra(extra);
-        userMapper.updateByUserName(userBO);
-
+        int result = userMapper.updateByUserName(userBO);
+        if (result == 0) {
+            // 编辑用户失败
+            return new ResultVO(6548);
+        }
         return new ResultVO(1000);
     }
 
@@ -104,7 +110,17 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO adminUpdatePassword(String username, String password){
-        userMapper.adminUpdatePassword(username,password);
+
+        try {
+            password = Md5Util.encodeByMd5(SALT + password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int result = userMapper.adminUpdatePassword(username,password);
+        if (result == 0) {
+            // 管理员更新用户密码失败
+            return new ResultVO(9875);
+        }
         return new ResultVO(1000);
     }
 
@@ -112,7 +128,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO deleteUser(String username){
-        userMapper.deleteUser(username);
+        int result = userMapper.deleteUser(username);
+        if (result == 0) {
+            // 删除用户失败
+            return new ResultVO(6543);
+        }
         return new ResultVO(1000);
     }
 
