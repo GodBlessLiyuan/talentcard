@@ -133,6 +133,7 @@ public class TalentServiceImpl implements ITalentService {
         profQualityPO.setStatus(status);
         profQualityMapper.insertSelective(profQualityPO);
 
+
         return new ResultVO(1000);
     }
 
