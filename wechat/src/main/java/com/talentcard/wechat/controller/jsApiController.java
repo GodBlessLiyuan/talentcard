@@ -29,7 +29,7 @@ public class jsApiController {
      *
      * @return
      */
-    @GetMapping("getSignature")
+    @PostMapping("getSignature")
     public ResultVO getSignature(@RequestParam(value = "url") String url) {
         String noncestr = CommonUtil.getRandomString(8);
         String jsApiTicket = JsApiTicketUtil.getJsApiTicket();
