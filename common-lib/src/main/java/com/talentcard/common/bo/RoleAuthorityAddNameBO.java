@@ -15,5 +15,4 @@ public class RoleAuthorityAddNameBO {
     private Long authorityId;
     private Long roleId;
     private String authorityName;
-
 }

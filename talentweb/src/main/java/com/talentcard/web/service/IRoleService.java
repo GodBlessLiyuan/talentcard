@@ -18,5 +18,5 @@ public interface IRoleService {
      * @param endTime
      * @return
      */
-    ResultVO queryByRole(String roleName, Date startTime, Date endTime);
+    ResultVO queryByRole(String roleName, String startTime, String endTime);
 }

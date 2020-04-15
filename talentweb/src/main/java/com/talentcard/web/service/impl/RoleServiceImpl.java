@@ -1,11 +1,9 @@
 package com.talentcard.web.service.impl;
 
+import com.talentcard.common.bo.RoleAuthorityAddNameBO;
 import com.talentcard.common.bo.RoleAuthorityBO;
-import com.talentcard.common.bo.RoleAuthortyNameBO;
-import com.talentcard.common.mapper.AuthorityMapper;
 import com.talentcard.common.mapper.RoleAuthorityMapper;
 import com.talentcard.common.mapper.RoleMapper;
-import com.talentcard.common.pojo.RoleAuthorityPO;
 import com.talentcard.common.pojo.RolePO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IRoleService;
@@ -29,42 +27,29 @@ public class RoleServiceImpl implements IRoleService {
     RoleMapper roleMapper;
     @Resource
     RoleAuthorityMapper roleAuthorityMapper;
-    @Resource
-    AuthorityMapper authorityMapper;
+
 
     @Override
-    public ResultVO queryByRole(String roleName, Date startTime, Date endTime) {
+    public ResultVO queryByRole(String roleName, String startTime, String endTime) {
         // 1 先在角色基础表中查询当前角色信息
         List<RolePO> rolePOS = roleMapper.queryRoleByTime(roleName,startTime,endTime);
-        if (null == rolePOS) {
+        if (rolePOS.size() == 0) {
             // 角色列表查询失败
-            return new ResultVO(10026);
+            return new ResultVO(2111);
         }
         List<ManageRoleVO> manageRoleVOS = new ArrayList<>();
         // 2 根据角色id在角色权限关联表中，查询其所拥有权限，权限状态码status为1
         for (RolePO rolePO:rolePOS) {
             ManageRoleVO manageRoleVO = new ManageRoleVO();
-            List<RoleAuthortyNameBO> roleAuthortyNameBOS = new ArrayList<>();
             Long roleId = rolePO.getRoleId();
-
-            System.out.println(roleId);
-
-            List<RoleAuthorityPO> roleAuthorityPOS = roleAuthorityMapper.queryByRoleId(roleId);
-            for (RoleAuthorityPO po:roleAuthorityPOS) {
-                RoleAuthortyNameBO roleAuthortyNameBo = new RoleAuthortyNameBO();
-                Long authorityId = po.getAuthorityId();
-                String authorityName = authorityMapper.queryByAuthorityId(authorityId);
-                roleAuthortyNameBo.setAuthorityName(authorityName);
-                roleAuthortyNameBo.setRoleAuthorityPO(po);
-                roleAuthortyNameBOS.add(roleAuthortyNameBo);
-            }
-            RoleAuthorityBO roleAuthorityBO = RoleAuthorityBO.convert(roleAuthortyNameBOS);
+            List<RoleAuthorityAddNameBO> bos = roleAuthorityMapper.queryByRoleIdName(roleId);
+            RoleAuthorityBO roleAuthorityBO = RoleAuthorityBO.convert(bos);
             manageRoleVO.setCreateTime(rolePO.getCreateTime());
             manageRoleVO.setExtra(rolePO.getExtra());
             manageRoleVO.setRoleAuthorityBO(roleAuthorityBO);
             manageRoleVO.setRoleName(rolePO.getName());
             manageRoleVOS.add(manageRoleVO);
         }
-        return new ResultVO(10000,manageRoleVOS);
+        return new ResultVO(1000,manageRoleVOS);
     }
 }

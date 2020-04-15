@@ -6,7 +6,7 @@
     <result column="username" jdbcType="CHAR" property="username" />
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="password" jdbcType="CHAR" property="password" />
-    <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
     <result column="extra" jdbcType="CHAR" property="extra" />
     <result column="role_id" jdbcType="BIGINT" property="roleId" />
@@ -29,7 +29,7 @@
       `password`, create_time, dr, 
       extra, role_id)
     values (#{userId,jdbcType=BIGINT}, #{username,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
-      #{password,jdbcType=CHAR}, #{createTime,jdbcType=DATE}, #{dr,jdbcType=TINYINT}, 
+      #{password,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT},
       #{extra,jdbcType=CHAR}, #{roleId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.UserPO">
@@ -74,7 +74,7 @@
         #{password,jdbcType=CHAR},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=DATE},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="dr != null">
         #{dr,jdbcType=TINYINT},
@@ -100,7 +100,7 @@
         `password` = #{password,jdbcType=CHAR},
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=DATE},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="dr != null">
         dr = #{dr,jdbcType=TINYINT},
@@ -119,7 +119,7 @@
     set username = #{username,jdbcType=CHAR},
       `name` = #{name,jdbcType=CHAR},
       `password` = #{password,jdbcType=CHAR},
-      create_time = #{createTime,jdbcType=DATE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       dr = #{dr,jdbcType=TINYINT},
       extra = #{extra,jdbcType=CHAR},
       role_id = #{roleId,jdbcType=BIGINT}

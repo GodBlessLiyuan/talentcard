@@ -34,7 +34,7 @@ public class AuthorityServiceImpl implements IAuthorityService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO updateAuthority(String roleName, Date createTime, RoleAuthorityBO roleAuthorityBO) {
+    public ResultVO updateAuthority(String roleName, String createTime, RoleAuthorityBO roleAuthorityBO) {
 //        1 . 根据角色名和创建时间，find 角色ID
         Long roleId = roleMapper.queryRoleId(roleName,createTime);
 //        2 . 根据roleId在角色权限表中查询出所有的对象

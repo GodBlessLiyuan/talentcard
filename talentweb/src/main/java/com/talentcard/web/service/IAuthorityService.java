@@ -12,5 +12,5 @@ import java.util.Date;
  * @description:
  */
 public interface IAuthorityService {
-    ResultVO updateAuthority(String roleName, Date createTime, RoleAuthorityBO roleAuthorityBO);
+    ResultVO updateAuthority(String roleName, String createTime, RoleAuthorityBO roleAuthorityBO);
 }

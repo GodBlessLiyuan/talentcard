@@ -19,7 +19,7 @@ public interface RoleMapper extends BaseMapper<RolePO, Long> {
      * @param endTime
      * @return
      */
-    List<RolePO> queryRoleByTime(@Param("roleName") String roleName, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+    List<RolePO> queryRoleByTime(@Param("roleName") String roleName, @Param("startTime") String startTime, @Param("endTime") String endTime);
 
     /**
      * 根据角色名和创建时间查询角色id
@@ -27,5 +27,5 @@ public interface RoleMapper extends BaseMapper<RolePO, Long> {
      * @param createTime
      * @return
      */
-    Long queryRoleId(@Param("roleName") String roleName, @Param("createTime") Date createTime);
+    Long queryRoleId(@Param("roleName") String roleName, @Param("createTime") String createTime);
 }
