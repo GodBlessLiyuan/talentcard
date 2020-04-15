@@ -12,10 +12,6 @@
     <name>wechat</name>
     <description>wechat of talent card</description>
 
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -114,7 +110,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.talentcard.web.WebApplication</mainClass>
+                    <mainClass>com.talentcard.wechat.WechatApplication</mainClass>
                     <layout>ZIP</layout>
                     <includes>
                         <include>
