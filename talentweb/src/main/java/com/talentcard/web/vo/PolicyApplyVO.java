@@ -25,7 +25,7 @@ public class PolicyApplyVO implements Serializable {
     /**
      * 申请时间
      */
-    private String createTime;
+    private String ctime;
     /**
      * 政策权益编号
      */
@@ -67,7 +67,7 @@ public class PolicyApplyVO implements Serializable {
         PolicyApplyVO vo = new PolicyApplyVO();
 
         vo.setPaid(bo.getPaId());
-        vo.setCreateTime(DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD_HMS));
+        vo.setCtime(DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD_HMS));
         vo.setNum(bo.getNum());
         vo.setName(bo.getPolicyName());
         vo.setApply(bo.getTalentName());

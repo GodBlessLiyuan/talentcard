@@ -25,7 +25,7 @@ public class PolicyVO implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private Date ctime;
     /**
      * 政策权益名称
      */
@@ -65,7 +65,7 @@ public class PolicyVO implements Serializable {
         PolicyVO vo = new PolicyVO();
 
         vo.setPid(po.getPolicyId());
-        vo.setCreateTime(po.getCreateTime());
+        vo.setCtime(po.getCreateTime());
         vo.setName(po.getName());
         vo.setNum(po.getNum());
         vo.setApply(po.getApply() == 1 ? "需要" : "不需要");

@@ -3,17 +3,14 @@ package com.talentcard.web.service.impl;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.mapper.PolicyApplyMapper;
-import com.talentcard.common.pojo.PolicyPO;
 import com.talentcard.common.utils.DTPageInfo;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IPolicyApplyService;
+import com.talentcard.web.vo.PolicyApplyDetailVO;
 import com.talentcard.web.vo.PolicyApplyVO;
-import com.talentcard.web.vo.PolicyVO;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,9 +29,6 @@ import java.util.List;
 public class PolicyApplyServiceImpl implements IPolicyApplyService {
     @Resource
     private PolicyApplyMapper policyApplyMapper;
-
-    @Value("${file.publicPath}")
-    private String publicPath;
 
     private static final String[] EXPORT_TITLES = {"序号", "申请时间", "政策权益编号", "政策权益名称", "申请人", "状态", "银行卡号",
             "开户行名", "持卡人"};
@@ -63,7 +57,12 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
 
     @Override
     public ResultVO detail(Long paid) {
-        return null;
+        PolicyApplyBO bo = policyApplyMapper.queryDetail(paid);
+        if (null == bo) {
+            // 数据不存在
+            return new ResultVO(1001);
+        }
+        return new ResultVO<>(1000, PolicyApplyDetailVO.convert(bo));
     }
 
     /**
