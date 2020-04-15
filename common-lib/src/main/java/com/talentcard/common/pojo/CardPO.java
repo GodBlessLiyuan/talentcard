@@ -12,19 +12,23 @@ import lombok.Data;
 public class CardPO implements Serializable {
     private Long cardId;
 
+    private String brandName;
+
     private String title;
-
-    private String name;
-
-    private String initialWord;
-
-    private String initialNum;
 
     private Long currNum;
 
     private String description;
 
     private String picture;
+
+    private String pictureCdn;
+
+    private String prerogative;
+
+    private String initialWord;
+
+    private String initialNum;
 
     private Date createTime;
 
