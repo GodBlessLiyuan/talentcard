@@ -12,6 +12,7 @@
         <module>common-lib</module>
         <module>talentfront</module>
         <module>talentweb</module>
+        <module>wechat</module>
     </modules>
 
     <name>talentcard</name>
