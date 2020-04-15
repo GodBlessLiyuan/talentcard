@@ -26,6 +26,7 @@
             <result column="approval_time" jdbcType="TIMESTAMP" property="createTime"/>
             <result column="type" jdbcType="CHAR" property="type"/>
             <result column="user_id" jdbcType="BIGINT" property="userId"/>
+            <result column="username" jdbcType="CHAR" property="username"/>
             <result column="result" jdbcType="TINYINT" property="result"/>
             <result column="opinion" jdbcType="CHAR" property="opinion"/>
         </collection>
@@ -189,6 +190,7 @@
                pal.approval_id,
                pal.create_time as approval_time,
                pal.type,
+               pal.username,
                pal.result,
                pal.opinion
         from t_policy_apply pa
