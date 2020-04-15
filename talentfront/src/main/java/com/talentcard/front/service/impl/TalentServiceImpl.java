@@ -296,13 +296,13 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setCreateTime(new Date());
         userCardPO.setStatus((byte) 1);
         //发送post请求，激活卡套
-        try {
-            String accessToken = AccessTokenUtil.getAccessToken();
-            String url = "https://api.weixin.qq.com/card/membercard/activate?access_token=" + accessToken;
-            WechatApiUtil.postRequest(url, jsonObject);
-        } catch (WechatException wechatException) {
-            return new ResultVO(6666);
-        }
+//        try {
+//            String accessToken = AccessTokenUtil.getAccessToken();
+//            String url = "https://api.weixin.qq.com/card/membercard/activate?access_token=" + accessToken;
+//            WechatApiUtil.postRequest(url, jsonObject);
+//        } catch (WechatException wechatException) {
+//            return new ResultVO(6666);
+//        }
         cardMapper.updateByPrimaryKeySelective(cardPO);
         userCardMapper.insertSelective(userCardPO);
         return new ResultVO(1000);
