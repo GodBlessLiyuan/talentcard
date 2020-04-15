@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
@@ -51,7 +52,8 @@ public class PolicyApplyController {
                            @RequestParam(value = "num", defaultValue = "") String num,
                            @RequestParam(value = "name", defaultValue = "") String name,
                            @RequestParam(value = "apply", defaultValue = "") String apply,
-                           @RequestParam(value = "status", defaultValue = "0") Byte status) {
+                           @RequestParam(value = "status", defaultValue = "0") Byte status,
+                           HttpServletResponse res) {
         HashMap<String, Object> reqMap = new HashMap<>(6);
         reqMap.put("start", start);
         reqMap.put("end", end);
@@ -60,7 +62,7 @@ public class PolicyApplyController {
         reqMap.put("apply", apply);
         reqMap.put("status", status);
 
-        return service.export(reqMap);
+        return service.export(reqMap, res);
     }
 
     @RequestMapping("approval")

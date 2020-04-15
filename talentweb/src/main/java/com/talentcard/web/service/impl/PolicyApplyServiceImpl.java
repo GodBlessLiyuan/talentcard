@@ -5,15 +5,19 @@ import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.mapper.PolicyApplyMapper;
 import com.talentcard.common.pojo.PolicyPO;
 import com.talentcard.common.utils.DTPageInfo;
+import com.talentcard.common.utils.DateUtil;
+import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IPolicyApplyService;
 import com.talentcard.web.vo.PolicyApplyVO;
 import com.talentcard.web.vo.PolicyVO;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +36,9 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     @Value("${file.publicPath}")
     private String publicPath;
 
+    private static final String[] EXPORT_TITLES = {"序号", "申请时间", "政策权益编号", "政策权益名称", "申请人", "状态", "银行卡号",
+            "开户行名", "持卡人"};
+
     @Override
     public DTPageInfo<PolicyApplyVO> query(int pageNum, int pageSize, HashMap<String, Object> reqMap) {
         Page<PolicyApplyBO> page = PageHelper.startPage(pageNum, pageSize);
@@ -40,8 +47,13 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     }
 
     @Override
-    public ResultVO export(HashMap<String, Object> reqMap) {
-        return null;
+    public ResultVO export(HashMap<String, Object> reqMap, HttpServletResponse res) {
+        List<PolicyApplyBO> bos = policyApplyMapper.query(reqMap);
+
+        //生成Excel表格
+        ExportUtil.exportExcel(null, EXPORT_TITLES, this.buildExcelContents(bos), res);
+
+        return new ResultVO(1000);
     }
 
     @Override
@@ -52,5 +64,33 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     @Override
     public ResultVO detail(Long paid) {
         return null;
+    }
+
+    /**
+     * 根据 bos 构建 导出内容
+     *
+     * @param bos
+     * @return
+     */
+    private String[][] buildExcelContents(List<PolicyApplyBO> bos) {
+        String[][] contents = new String[bos.size()][];
+        int num = 0;
+        for (PolicyApplyBO bo : bos) {
+            String[] content = new String[9];
+            content[0] = String.valueOf(num + 1);
+            content[1] = DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD_HMS);
+            content[2] = bo.getNum();
+            content[3] = bo.getPolicyName();
+            content[4] = bo.getTalentName();
+            content[5] = bo.getStatus() == 1 ? "已通过" : bo.getStatus() == 2 ? "已驳回" : "待审批";
+            content[6] = bo.getBankNum();
+            content[7] = bo.getBankName();
+            if (null != bo.getBankNum() && !"".equals(bo.getBankNum())) {
+                content[8] = bo.getTalentName();
+            }
+            contents[num++] = content;
+        }
+
+        return contents;
     }
 }

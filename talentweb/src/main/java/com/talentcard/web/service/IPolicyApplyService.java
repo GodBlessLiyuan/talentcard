@@ -4,6 +4,7 @@ import com.talentcard.common.utils.DTPageInfo;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.vo.PolicyApplyVO;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
@@ -30,7 +31,7 @@ public interface IPolicyApplyService {
      * @param reqMap
      * @return
      */
-    ResultVO export(HashMap<String, Object> reqMap);
+    ResultVO export(HashMap<String, Object> reqMap, HttpServletResponse res);
 
     /**
      * 审批
