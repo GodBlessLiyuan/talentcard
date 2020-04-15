@@ -8,7 +8,6 @@ import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.AccessTokenUtil;
 import com.talentcard.front.utils.VerificationCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -160,19 +159,6 @@ public class TalentController {
     public ResultVO activate(@RequestParam(value = "openId") String openId,
                              @RequestParam(value = "code") String code) {
         return iTalentService.activate(openId, code);
-    }
-
-    /**
-     * 获取accessToken
-     * @return accessToken
-     */
-    @GetMapping("getAccessToken")
-    public ResultVO getAccessToken() {
-        String accessToken = AccessTokenUtil.getAccessToken();
-        if (accessToken == null || accessToken == "") {
-            return new ResultVO(2200);
-        }
-        return new ResultVO(1000, accessToken);
     }
 
 }
