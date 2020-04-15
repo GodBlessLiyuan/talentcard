@@ -38,7 +38,7 @@ public class AccessTokenUtil {
     @PostConstruct
     public void AccessTokenInitialize() {
         myRedis = redisTemplate;
-        AccessTokenUtil.applyAccessToken();
+        AccessTokenUtil.getAccessToken();
     }
 
     /**
