@@ -97,6 +97,9 @@ public class TalentServiceImpl implements ITalentService {
         talentPO.setPhone(jsonObject.getString("phone"));
         talentPO.setCreateTime(new Date());
         talentPO.setStatus(status);
+        //人才表的初级卡cardId
+        CardPO cardPO = cardMapper.findDefaultCard();
+        talentPO.setCardId(cardPO.getCardId());
         talentMapper.add(talentPO);
         Long talentId = talentPO.getTalentId();
 
@@ -279,11 +282,8 @@ public class TalentServiceImpl implements ITalentService {
         CardPO cardPO = cardMapper.findDefaultCard();
         Long cardId = cardPO.getCardId();
         jsonObject.put("cardId", cardId);
-        //更新人才表的cardId
-        TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        talentPO.setCardId(cardId);
-        talentMapper.updateByPrimaryKeySelective(talentPO);
         //人卡表里设置参数
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
         UserCardPO userCardPO = new UserCardPO();
         userCardPO.setTalentId(talentPO.getTalentId());
         userCardPO.setCardId(cardId);
@@ -292,11 +292,9 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setNum(membershipNumber);
         jsonObject.put("membershipNumber", membershipNumber);
         cardPO.setCurrNum(cardPO.getCurrNum() + 1);
-        cardMapper.updateByPrimaryKeySelective(cardPO);
         //人卡表里设置参数；添加数据
         userCardPO.setCreateTime(new Date());
         userCardPO.setStatus((byte) 1);
-        userCardMapper.insertSelective(userCardPO);
         //发送post请求，激活卡套
         try {
             String accessToken = AccessTokenUtil.getAccessToken();
@@ -305,6 +303,8 @@ public class TalentServiceImpl implements ITalentService {
         } catch (WechatException wechatException) {
             return new ResultVO(6666);
         }
+        cardMapper.updateByPrimaryKeySelective(cardPO);
+        userCardMapper.insertSelective(userCardPO);
         return new ResultVO(1000);
     }
 
