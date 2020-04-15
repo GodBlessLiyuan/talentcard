@@ -38,23 +38,24 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editPassword(HttpSession session, String oldPassword, String newPassword){
-        long userId = (Long) session.getAttribute("userId");
-//        long userId = 1;
-        UserPO userPO = userMapper.selectByPrimaryKey(userId);
-
-        if (null == userPO) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
             // 用户过期
-            return new ResultVO(1024);
+            return new ResultVO(2104);
         }
+//        long userId = 1;
+        UserPO userPo = userMapper.selectByPrimaryKey(userId);
+
+
         try{
             oldPassword = Md5Util.encodeByMd5(SALT+oldPassword);
             newPassword = Md5Util.encodeByMd5(SALT+newPassword);
         }catch (Exception e){
             e.printStackTrace();
         }
-        if (!oldPassword.equals(userPO.getPassword())) {
+        if (!oldPassword.equals(userPo.getPassword())) {
             // 旧密码输入错误
-            return new ResultVO(1025);
+            return new ResultVO(2105);
         }else {
             userMapper.updatePassword(newPassword,userId);
         }
@@ -68,7 +69,7 @@ public class UserServiceImpl implements IUserService {
         UserPO userPo = userMapper.queryByName(username);
         if (null != userPo) {
             //用户名已存在，请重新填写
-            return new ResultVO(1032);
+            return new ResultVO(2106);
         }
         //2.将密码md5加密
         try{
@@ -85,7 +86,7 @@ public class UserServiceImpl implements IUserService {
         int result = userMapper.insertUser(userBO);
         if (result == 0) {
             //新建用户失败
-            return new ResultVO(1268);
+            return new ResultVO(2107);
         }
         return new ResultVO(1000);
     }
@@ -101,7 +102,7 @@ public class UserServiceImpl implements IUserService {
         int result = userMapper.updateByUserName(userBO);
         if (result == 0) {
             // 编辑用户失败
-            return new ResultVO(6548);
+            return new ResultVO(2108);
         }
         return new ResultVO(1000);
     }
@@ -119,7 +120,7 @@ public class UserServiceImpl implements IUserService {
         int result = userMapper.adminUpdatePassword(username,password);
         if (result == 0) {
             // 管理员更新用户密码失败
-            return new ResultVO(9875);
+            return new ResultVO(2109);
         }
         return new ResultVO(1000);
     }
@@ -131,7 +132,7 @@ public class UserServiceImpl implements IUserService {
         int result = userMapper.deleteUser(username);
         if (result == 0) {
             // 删除用户失败
-            return new ResultVO(6543);
+            return new ResultVO(2110);
         }
         return new ResultVO(1000);
     }
@@ -142,10 +143,7 @@ public class UserServiceImpl implements IUserService {
         Page<UserRoleBO> page = PageHelper.startPage(pageNum, pageSize);
 
         List<UserRoleBO> bos = userMapper.queryUserRole(reqData);
-        if (null == bos) {
-            //当前没有任何有系统权限的用户
-            return new ResultVO(1253);
-        }
+
         return new ResultVO(1000,new DTPageInfo<>(draw, page.getTotal(), UserRoleVO.convert(bos)));
     }
 

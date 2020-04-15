@@ -75,30 +75,30 @@ public class RoleAuthorityBO implements Serializable {
      * @param bos
      * @return
      */
-    public static RoleAuthorityBO convert(List<RoleAuthortyNameBO> bos) {
+    public static RoleAuthorityBO convert(List<RoleAuthorityAddNameBO> bos) {
         RoleAuthorityBO vo = new RoleAuthorityBO();
-        for (RoleAuthortyNameBO bo : bos) {
+        for (RoleAuthorityAddNameBO bo : bos) {
             String RoleAuthortyName = bo.getAuthorityName();
             switch (RoleAuthortyName){
-                case "roleQuery": vo.setRoleQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "userCreate": vo.setUserCreate(bo.getRoleAuthorityPO().getStatus());break;
-                case "userUpdate": vo.setUserUpdate(bo.getRoleAuthorityPO().getStatus());break;
-                case "userDelete": vo.setUserDelete(bo.getRoleAuthorityPO().getStatus());break;
-                case "userQuery": vo.setUserQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "userCardUpdate": vo.setUserCardUpdate(bo.getRoleAuthorityPO().getStatus());break;
-                case "userCardDelete": vo.setUserCardDelete(bo.getRoleAuthorityPO().getStatus());break;
-                case "userCardQuery": vo.setUserCardQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "userCardCreate": vo.setUserCardCreate(bo.getRoleAuthorityPO().getStatus());break;
-                case "generalTalentQuery": vo.setGeneralTalentQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "verifiedTalentQuery": vo.setVerifiedTalentQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "approvalTalentQuery": vo.setApprovalTalentQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "approvalTalentAction": vo.setApprovalTalentAction(bo.getRoleAuthorityPO().getStatus());break;
-                case "policyCreate": vo.setPolicyCreate(bo.getRoleAuthorityPO().getStatus());break;
-                case "policyUpdate": vo.setPolicyUpdate(bo.getRoleAuthorityPO().getStatus());break;
-                case "policyDelete": vo.setPolicyDelete(bo.getRoleAuthorityPO().getStatus());break;
-                case "policyQuery": vo.setPolicyQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "approvalPolicyQuery": vo.setApprovalPolicyQuery(bo.getRoleAuthorityPO().getStatus());break;
-                case "approvalPolicyAction": vo.setApprovalPolicyAction(bo.getRoleAuthorityPO().getStatus());break;
+                case "roleQuery": vo.setRoleQuery(bo.getStatus());break;
+                case "userCreate": vo.setUserCreate(bo.getStatus());break;
+                case "userUpdate": vo.setUserUpdate(bo.getStatus());break;
+                case "userDelete": vo.setUserDelete(bo.getStatus());break;
+                case "userQuery": vo.setUserQuery(bo.getStatus());break;
+                case "userCardUpdate": vo.setUserCardUpdate(bo.getStatus());break;
+                case "userCardDelete": vo.setUserCardDelete(bo.getStatus());break;
+                case "userCardQuery": vo.setUserCardQuery(bo.getStatus());break;
+                case "userCardCreate": vo.setUserCardCreate(bo.getStatus());break;
+                case "generalTalentQuery": vo.setGeneralTalentQuery(bo.getStatus());break;
+                case "verifiedTalentQuery": vo.setVerifiedTalentQuery(bo.getStatus());break;
+                case "approvalTalentQuery": vo.setApprovalTalentQuery(bo.getStatus());break;
+                case "approvalTalentAction": vo.setApprovalTalentAction(bo.getStatus());break;
+                case "policyCreate": vo.setPolicyCreate(bo.getStatus());break;
+                case "policyUpdate": vo.setPolicyUpdate(bo.getStatus());break;
+                case "policyDelete": vo.setPolicyDelete(bo.getStatus());break;
+                case "policyQuery": vo.setPolicyQuery(bo.getStatus());break;
+                case "approvalPolicyQuery": vo.setApprovalPolicyQuery(bo.getStatus());break;
+                case "approvalPolicyAction": vo.setApprovalPolicyAction(bo.getStatus());break;
             }
         }
         return vo;
