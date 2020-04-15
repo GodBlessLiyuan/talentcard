@@ -21,6 +21,8 @@ public class PolicyApprovalPO implements Serializable {
 
     private Long userId;
 
+    private String username;
+
     private Date updateTime;
 
     /**
@@ -72,6 +74,14 @@ public class PolicyApprovalPO implements Serializable {
         this.userId = userId;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -113,6 +123,7 @@ public class PolicyApprovalPO implements Serializable {
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
             && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+            && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getResult() == null ? other.getResult() == null : this.getResult().equals(other.getResult()))
             && (this.getOpinion() == null ? other.getOpinion() == null : this.getOpinion().equals(other.getOpinion()));
@@ -127,6 +138,7 @@ public class PolicyApprovalPO implements Serializable {
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getUsername() == null) ? 0 : getUsername().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getResult() == null) ? 0 : getResult().hashCode());
         result = prime * result + ((getOpinion() == null) ? 0 : getOpinion().hashCode());
@@ -144,6 +156,7 @@ public class PolicyApprovalPO implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", type=").append(type);
         sb.append(", userId=").append(userId);
+        sb.append(", username=").append(username);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", result=").append(result);
         sb.append(", opinion=").append(opinion);
