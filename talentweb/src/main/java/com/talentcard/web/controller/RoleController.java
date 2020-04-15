@@ -30,8 +30,8 @@ public class RoleController {
      */
     @RequestMapping("queryByRole")
     public ResultVO queryByRole(@RequestParam(value = "roleName", required = false) String roleName,
-                                @RequestParam(value = "startTime", required = false) Date startTime,
-                                @RequestParam(value = "endTime", required = false) Date endTime) {
+                                @RequestParam(value = "startTime", required = false) String startTime,
+                                @RequestParam(value = "endTime", required = false) String endTime) {
         return roleService.queryByRole(roleName,startTime,endTime);
     }
 }

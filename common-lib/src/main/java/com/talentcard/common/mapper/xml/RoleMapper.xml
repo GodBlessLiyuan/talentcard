@@ -5,7 +5,7 @@
     <id column="role_id" jdbcType="BIGINT" property="roleId" />
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="extra" jdbcType="CHAR" property="extra" />
-    <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
     role_id, `name`, extra, create_time
@@ -24,7 +24,7 @@
     insert into t_role (role_id, `name`, extra, 
       create_time)
     values (#{roleId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{extra,jdbcType=CHAR}, 
-      #{createTime,jdbcType=DATE})
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.RolePO">
     insert into t_role
@@ -53,7 +53,7 @@
         #{extra,jdbcType=CHAR},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=DATE},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -67,7 +67,7 @@
         extra = #{extra,jdbcType=CHAR},
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=DATE},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where role_id = #{roleId,jdbcType=BIGINT}
@@ -76,7 +76,7 @@
     update t_role
     set `name` = #{name,jdbcType=CHAR},
       extra = #{extra,jdbcType=CHAR},
-      create_time = #{createTime,jdbcType=DATE}
+      create_time = #{createTime,jdbcType=TIMESTAMP}
     where role_id = #{roleId,jdbcType=BIGINT}
   </update>
 
@@ -85,13 +85,13 @@
     select r.role_id as roleId,r.create_time as createTime, r.name, r.extra
     from t_role r
     <where>
-      <if test="(startTime != null) and (endTime != null)">
+      <if test="(startTime != null and startTime != '') and (endTime != null and endTime != '')">
         r.create_time between #{startTime} AND #{endTime}
       </if>
-      <if test="(startTime != null) and (endTime == null)">
+      <if test="(startTime != null and startTime != '') and (endTime == null || endTime == '')">
         AND r.create_time &gt;= #{startTime}
       </if>
-      <if test="(startTime == null) and (endTime != null)">
+      <if test="(startTime != null || startTime != '') and (endTime != null and endTime != '')">
         AND r.create_time &lt;= #{endTime}
       </if>
       <if test="roleName != null and roleName != ''">
@@ -104,7 +104,7 @@
   <select id="queryRoleId" resultType="java.lang.Long">
     select r.role_id
     from t_role r
-    where  r.create_time = #{createTime,jdbcType=DATE} and  r.name = #{roleName,jdbcType=CHAR}
+    where  r.create_time = #{createTime,jdbcType=TIMESTAMP} and  r.name = #{roleName,jdbcType=CHAR}
   </select>
 
 </mapper>

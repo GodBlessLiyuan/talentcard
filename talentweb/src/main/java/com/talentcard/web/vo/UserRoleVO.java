@@ -1,7 +1,5 @@
 package com.talentcard.web.vo;
 
-import com.talentcard.common.bo.RoleAuthorityBO;
-import com.talentcard.common.bo.RoleAuthortyNameBO;
 import com.talentcard.common.bo.UserRoleBO;
 import lombok.Data;
 

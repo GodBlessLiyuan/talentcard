@@ -3,11 +3,7 @@ package com.talentcard.web.utils;
 
 import com.talentcard.common.bo.RoleAuthorityAddNameBO;
 import com.talentcard.common.bo.RoleAuthorityBO;
-import com.talentcard.common.bo.RoleAuthortyNameBO;
-import com.talentcard.common.mapper.AuthorityMapper;
 import com.talentcard.common.pojo.RoleAuthorityPO;
-
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
