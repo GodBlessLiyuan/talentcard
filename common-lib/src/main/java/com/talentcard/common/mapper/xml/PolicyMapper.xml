@@ -253,6 +253,7 @@
         <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
         <if test="num != null and num !=''">and num like '%' #{num} '%'</if>
         <if test="apply != null and apply !=0">and apply = #{apply}</if>
+        order by create_time desc
     </select>
     <select id="queryByDr" parameterType="java.lang.Byte" resultMap="BaseResultMap">
         select
