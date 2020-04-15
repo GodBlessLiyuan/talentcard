@@ -3,7 +3,7 @@ package com.talentcard.web.controller;
 import com.talentcard.common.utils.DTPageInfo;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IPolicyApplyService;
-import com.talentcard.web.vo.PolicyVO;
+import com.talentcard.web.vo.PolicyApplyVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,14 +25,14 @@ public class PolicyApplyController {
     private IPolicyApplyService service;
 
     @RequestMapping("query")
-    public DTPageInfo<PolicyVO> query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                                      @RequestParam(value = "start", defaultValue = "") String start,
-                                      @RequestParam(value = "end", defaultValue = "") String end,
-                                      @RequestParam(value = "num", defaultValue = "") String num,
-                                      @RequestParam(value = "name", defaultValue = "") String name,
-                                      @RequestParam(value = "apply", defaultValue = "") String apply,
-                                      @RequestParam(value = "status", defaultValue = "0") Byte status) {
+    public DTPageInfo<PolicyApplyVO> query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                           @RequestParam(value = "start", defaultValue = "") String start,
+                                           @RequestParam(value = "end", defaultValue = "") String end,
+                                           @RequestParam(value = "num", defaultValue = "") String num,
+                                           @RequestParam(value = "name", defaultValue = "") String name,
+                                           @RequestParam(value = "apply", defaultValue = "") String apply,
+                                           @RequestParam(value = "status", defaultValue = "0") Byte status) {
 
         HashMap<String, Object> reqMap = new HashMap<>(6);
         reqMap.put("start", start);

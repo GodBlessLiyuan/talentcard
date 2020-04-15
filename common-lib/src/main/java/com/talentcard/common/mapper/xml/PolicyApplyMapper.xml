@@ -1,169 +1,209 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.PolicyApplyMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PolicyApplyPO">
-    <id column="pa_id" jdbcType="BIGINT" property="paId" />
-    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
-    <result column="talent_name" jdbcType="CHAR" property="talentName" />
-    <result column="policy_id" jdbcType="BIGINT" property="policyId" />
-    <result column="policy_name" jdbcType="CHAR" property="policyName" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-  </resultMap>
-  <resultMap id="DetailResultMap" type="com.talentcard.common.bo.PolicyApplyBO">
-    <id column="pa_id" jdbcType="BIGINT" property="paId" />
-    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
-    <result column="talent_name" jdbcType="CHAR" property="talentName" />
-    <result column="policy_id" jdbcType="BIGINT" property="policyId" />
-    <result column="policy_name" jdbcType="CHAR" property="policyName" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="num" jdbcType="CHAR" property="num" />
-    <result column="bank_num" jdbcType="CHAR" property="bankNum" />
-    <result column="bank_name" jdbcType="CHAR" property="bankName" />
-    <collection property="approval" ofType="com.talentcard.common.pojo.PolicyApprovalPO">
-      <id column="approval_id" jdbcType="BIGINT" property="approvalId" />
-      <result column="approval_time" jdbcType="TIMESTAMP" property="createTime" />
-      <result column="type" jdbcType="CHAR" property="type" />
-      <result column="user_id" jdbcType="BIGINT" property="userId" />
-      <result column="result" jdbcType="TINYINT" property="result" />
-      <result column="opinion" jdbcType="CHAR" property="opinion" />
-    </collection>
-    <collection property="annexes" ofType="com.talentcard.common.pojo.AnnexPO">
-      <id column="annex_id" jdbcType="BIGINT" property="annexId" />
-      <result column="name" jdbcType="CHAR" property="name" />
-      <result column="location" jdbcType="CHAR" property="location" />
-    </collection>
-  </resultMap>
-  <sql id="Base_Column_List">
-    pa_id, talent_id, talent_name, policy_id, policy_name, create_time, `status`
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_policy_apply
-    where pa_id = #{paId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_policy_apply
-    where pa_id = #{paId,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyApplyPO" useGeneratedKeys="true" keyProperty="paId">
-    insert into t_policy_apply (pa_id, talent_id, talent_name,
-      policy_id, policy_name, create_time,
-      `status`)
-    values (#{paId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{talentName,jdbcType=CHAR},
-      #{policyId,jdbcType=BIGINT}, #{policyName,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
-      #{status,jdbcType=TINYINT})
-  </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
-    insert into t_policy_apply
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="paId != null">
-        pa_id,
-      </if>
-      <if test="talentId != null">
-        talent_id,
-      </if>
-      <if test="talentName != null">
-        talent_name,
-      </if>
-      <if test="policyId != null">
-        policy_id,
-      </if>
-      <if test="policyName != null">
-        policy_name,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="status != null">
-        `status`,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="paId != null">
-        #{paId,jdbcType=BIGINT},
-      </if>
-      <if test="talentId != null">
-        #{talentId,jdbcType=BIGINT},
-      </if>
-      <if test="talentName != null">
-        #{talentName,jdbcType=CHAR},
-      </if>
-      <if test="policyId != null">
-        #{policyId,jdbcType=BIGINT},
-      </if>
-      <if test="policyName != null">
-        #{policyName,jdbcType=CHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
-    update t_policy_apply
-    <set>
-      <if test="talentId != null">
-        talent_id = #{talentId,jdbcType=BIGINT},
-      </if>
-      <if test="talentName != null">
-        talent_name = #{talentName,jdbcType=CHAR},
-      </if>
-      <if test="policyId != null">
-        policy_id = #{policyId,jdbcType=BIGINT},
-      </if>
-      <if test="policyName != null">
-        policy_name = #{policyName,jdbcType=CHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=TINYINT},
-      </if>
-    </set>
-    where pa_id = #{paId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
-    update t_policy_apply
-    set talent_id = #{talentId,jdbcType=BIGINT},
-      talent_name = #{talentName,jdbcType=CHAR},
-      policy_id = #{policyId,jdbcType=BIGINT},
-      policy_name = #{policyName,jdbcType=CHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      `status` = #{status,jdbcType=TINYINT}
-    where pa_id = #{paId,jdbcType=BIGINT}
-  </update>
+    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PolicyApplyPO">
+        <id column="pa_id" jdbcType="BIGINT" property="paId"/>
+        <result column="talent_id" jdbcType="BIGINT" property="talentId"/>
+        <result column="talent_name" jdbcType="CHAR" property="talentName"/>
+        <result column="policy_id" jdbcType="BIGINT" property="policyId"/>
+        <result column="policy_name" jdbcType="CHAR" property="policyName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+    </resultMap>
+    <resultMap id="DetailResultMap" type="com.talentcard.common.bo.PolicyApplyBO">
+        <id column="pa_id" jdbcType="BIGINT" property="paId"/>
+        <result column="talent_id" jdbcType="BIGINT" property="talentId"/>
+        <result column="talent_name" jdbcType="CHAR" property="talentName"/>
+        <result column="policy_id" jdbcType="BIGINT" property="policyId"/>
+        <result column="policy_name" jdbcType="CHAR" property="policyName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="num" jdbcType="CHAR" property="num"/>
+        <result column="bank_num" jdbcType="CHAR" property="bankNum"/>
+        <result column="bank_name" jdbcType="CHAR" property="bankName"/>
+        <collection property="approval" ofType="com.talentcard.common.pojo.PolicyApprovalPO">
+            <id column="approval_id" jdbcType="BIGINT" property="approvalId"/>
+            <result column="approval_time" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="type" jdbcType="CHAR" property="type"/>
+            <result column="user_id" jdbcType="BIGINT" property="userId"/>
+            <result column="result" jdbcType="TINYINT" property="result"/>
+            <result column="opinion" jdbcType="CHAR" property="opinion"/>
+        </collection>
+        <collection property="annexes" ofType="com.talentcard.common.pojo.AnnexPO">
+            <id column="annex_id" jdbcType="BIGINT" property="annexId"/>
+            <result column="name" jdbcType="CHAR" property="name"/>
+            <result column="location" jdbcType="CHAR" property="location"/>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        pa_id, talent_id, talent_name, policy_id, policy_name, create_time, `status`
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy_apply
+        where pa_id = #{paId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from t_policy_apply
+        where pa_id = #{paId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyApplyPO" useGeneratedKeys="true"
+            keyProperty="paId">
+        insert into t_policy_apply (pa_id, talent_id, talent_name,
+                                    policy_id, policy_name, create_time,
+                                    `status`)
+        values (#{paId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{talentName,jdbcType=CHAR},
+                #{policyId,jdbcType=BIGINT}, #{policyName,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{status,jdbcType=TINYINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
+        insert into t_policy_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="paId != null">
+                pa_id,
+            </if>
+            <if test="talentId != null">
+                talent_id,
+            </if>
+            <if test="talentName != null">
+                talent_name,
+            </if>
+            <if test="policyId != null">
+                policy_id,
+            </if>
+            <if test="policyName != null">
+                policy_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="paId != null">
+                #{paId,jdbcType=BIGINT},
+            </if>
+            <if test="talentId != null">
+                #{talentId,jdbcType=BIGINT},
+            </if>
+            <if test="talentName != null">
+                #{talentName,jdbcType=CHAR},
+            </if>
+            <if test="policyId != null">
+                #{policyId,jdbcType=BIGINT},
+            </if>
+            <if test="policyName != null">
+                #{policyName,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
+        update t_policy_apply
+        <set>
+            <if test="talentId != null">
+                talent_id = #{talentId,jdbcType=BIGINT},
+            </if>
+            <if test="talentName != null">
+                talent_name = #{talentName,jdbcType=CHAR},
+            </if>
+            <if test="policyId != null">
+                policy_id = #{policyId,jdbcType=BIGINT},
+            </if>
+            <if test="policyName != null">
+                policy_name = #{policyName,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where pa_id = #{paId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
+        update t_policy_apply
+        set talent_id   = #{talentId,jdbcType=BIGINT},
+            talent_name = #{talentName,jdbcType=CHAR},
+            policy_id   = #{policyId,jdbcType=BIGINT},
+            policy_name = #{policyName,jdbcType=CHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            `status`    = #{status,jdbcType=TINYINT}
+        where pa_id = #{paId,jdbcType=BIGINT}
+    </update>
 
-  <select id="queryByTalentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_policy_apply
-    where talent_id = #{talentId,jdbcType=BIGINT}
-  </select>
-  <select id="queryDetail" parameterType="java.lang.Long" resultMap="DetailResultMap">
-    select pa.pa_id, pa.talent_id, pa.talent_name, pa.policy_id, pa.policy_name, pa.create_time, pa.`status`,
-    p.num, b.num as bank_num, b.name as bank_name, a.annex_id, a.name, a.location,
-    pal.approval_id, pal.create_time as approval_time, pal.type, pal.result, pal.opinion
-    from t_policy_apply pa
-    left join t_bank b on pa.pa_id = b.pa_id
-    left join t_policy_approval pal on pa.pa_id = pal.pa_id
-    left join t_annex a on pa.pa_id = a.pa_id
-    left join t_policy p on pa.policy_id = p.policy_id
-    where pa.pa_id = #{paId,jdbcType=BIGINT}
-  </select>
-  <select id="queryByTidAndPidAndMonth" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_policy_apply
-    where talent_id = #{talentId,jdbcType=BIGINT} and policy_id = #{policyId,jdbcType=BIGINT}
-    <if test="month != null and month != 0">
-      and (`status` = 3 or create_time between date_sub(now(), interval #{month,jdbcType=BIGINT}  month) and now())
-    </if>
-  </select>
+    <select id="query" resultMap="DetailResultMap">
+        select pa.pa_id,
+        pa.talent_id,
+        pa.talent_name,
+        pa.policy_id,
+        pa.policy_name,
+        pa.create_time,
+        pa.`status`,
+        p.num,
+        b.num as bank_num,
+        b.name as bank_name
+        from t_policy_apply pa
+        left join t_bank b on pa.pa_id = b.pa_id
+        left join t_policy p on pa.policy_id = p.policy_id
+        <where>
+            <if test="start != null and start !=''">and pa.create_time >= #{start}</if>
+            <if test="end != null and end !=''">and pa.create_time &lt;= #{end}</if>
+            <if test="name != null and name !=''">and pa.policy_name like '%' #{name} '%'</if>
+            <if test="num != null and num !=''">and p.num like '%' #{num} '%'</if>
+            <if test="apply != null and apply !=''">and pa.talent_name = #{apply}</if>
+            <if test="status != null and status !=0">and pa.`status` = #{status,jdbcType=TINYINT}</if>
+        </where>
+    </select>
+    <select id="queryByTalentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy_apply
+        where talent_id = #{talentId,jdbcType=BIGINT}
+    </select>
+    <select id="queryDetail" parameterType="java.lang.Long" resultMap="DetailResultMap">
+        select pa.pa_id,
+               pa.talent_id,
+               pa.talent_name,
+               pa.policy_id,
+               pa.policy_name,
+               pa.create_time,
+               pa.`status`,
+               p.num,
+               b.num           as bank_num,
+               b.name          as bank_name,
+               a.annex_id,
+               a.name,
+               a.location,
+               pal.approval_id,
+               pal.create_time as approval_time,
+               pal.type,
+               pal.result,
+               pal.opinion
+        from t_policy_apply pa
+                 left join t_bank b on pa.pa_id = b.pa_id
+                 left join t_policy_approval pal on pa.pa_id = pal.pa_id
+                 left join t_annex a on pa.pa_id = a.pa_id
+                 left join t_policy p on pa.policy_id = p.policy_id
+        where pa.pa_id = #{paId,jdbcType=BIGINT}
+    </select>
+    <select id="queryByTidAndPidAndMonth" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy_apply
+        where talent_id = #{talentId,jdbcType=BIGINT} and policy_id = #{policyId,jdbcType=BIGINT}
+        <if test="month != null and month != 0">
+            and (`status` = 3 or create_time between date_sub(now(), interval #{month,jdbcType=BIGINT} month) and now())
+        </if>
+    </select>
 </mapper>
