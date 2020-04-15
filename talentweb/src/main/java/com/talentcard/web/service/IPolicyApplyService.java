@@ -2,7 +2,7 @@ package com.talentcard.web.service;
 
 import com.talentcard.common.utils.DTPageInfo;
 import com.talentcard.common.vo.ResultVO;
-import com.talentcard.web.vo.PolicyVO;
+import com.talentcard.web.vo.PolicyApplyVO;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public interface IPolicyApplyService {
      * @param reqMap
      * @return
      */
-    DTPageInfo<PolicyVO> query(int pageNum, int pageSize, HashMap<String, Object> reqMap);
+    DTPageInfo<PolicyApplyVO> query(int pageNum, int pageSize, HashMap<String, Object> reqMap);
 
     /**
      * 导出
