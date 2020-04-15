@@ -3,6 +3,8 @@ package com.talentcard.web.service.impl;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.mapper.PolicyApplyMapper;
+import com.talentcard.common.mapper.PolicyApprovalMapper;
+import com.talentcard.common.pojo.PolicyApprovalPO;
 import com.talentcard.common.utils.DTPageInfo;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExportUtil;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +32,8 @@ import java.util.List;
 public class PolicyApplyServiceImpl implements IPolicyApplyService {
     @Resource
     private PolicyApplyMapper policyApplyMapper;
+    @Resource
+    private PolicyApprovalMapper policyApprovalMapper;
 
     private static final String[] EXPORT_TITLES = {"序号", "申请时间", "政策权益编号", "政策权益名称", "申请人", "状态", "银行卡号",
             "开户行名", "持卡人"};
@@ -52,7 +57,17 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
 
     @Override
     public ResultVO approval(HttpSession session, Long paid, Byte status, String opinion) {
-        return null;
+        PolicyApprovalPO po = new PolicyApprovalPO();
+        po.setPaId(paid);
+        po.setCreateTime(new Date());
+        po.setType((byte) 1);
+        po.setUserId((Long) session.getAttribute("userId"));
+        po.setUsername((String) session.getAttribute("username"));
+        po.setResult(status);
+        po.setOpinion(opinion);
+
+        policyApprovalMapper.insert(po);
+        return new ResultVO(1000);
     }
 
     @Override
