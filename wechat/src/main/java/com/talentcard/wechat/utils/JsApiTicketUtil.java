@@ -27,7 +27,6 @@ public class JsApiTicketUtil {
     @PostConstruct
     public void JsApiTicketInitialize() {
         myRedis = redisTemplate;
-        JsApiTicketUtil.getJsApiTicket();
     }
 
     /**
