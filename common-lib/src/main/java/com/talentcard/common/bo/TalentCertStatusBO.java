@@ -12,6 +12,7 @@ import java.util.Date;
  */
 @Data
 public class TalentCertStatusBO {
+    private Long talentId;
     private String name;
     private Byte sex;
     private Integer education;

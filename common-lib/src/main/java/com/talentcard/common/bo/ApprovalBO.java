@@ -16,6 +16,7 @@ public class ApprovalBO {
     /**
      * 人才基础信息
      */
+    private Long talentId;
     private String name;
     private Byte sex;
     private String idCard;
@@ -24,7 +25,10 @@ public class ApprovalBO {
     private String industry;
     private String workUnit;
     private String CreateTime;
-
+    /**
+     * 认证表
+     */
+    private Long certId;
     /**
      * 人才卡
      */
