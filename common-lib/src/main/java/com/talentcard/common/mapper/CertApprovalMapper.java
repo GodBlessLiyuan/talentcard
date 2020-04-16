@@ -12,9 +12,9 @@ import java.util.List;
 public interface CertApprovalMapper extends BaseMapper<CertApprovalPO, Long> {
 
     /**
-     * 根据人才姓名查询 认证审批表
-     * @param name
+     * 根据人才talentId查询 认证审批表
+     * @param talentId
      * @return
      */
-    List<CertApprovalPO> queryApprovalByName(String name);
+    List<CertApprovalPO> queryApprovalById(Long talentId);
 }

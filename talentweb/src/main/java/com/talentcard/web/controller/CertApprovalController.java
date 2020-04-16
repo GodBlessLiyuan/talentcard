@@ -24,22 +24,23 @@ public class CertApprovalController {
     ICertApprocalService certApprocalService;
 
     @RequestMapping("CertApprovalShow")
-    public ResultVO certApprovalShow(@RequestParam(value = "name", required = false) String name,
-                                     @RequestParam(value = "createTime", required = false) String createTime){
+    public ResultVO certApprovalShow(@RequestParam(value = "talentId", required = false) Long talentId){
 
-        return certApprocalService.certApprovalShowItems(name);
+        return certApprocalService.certApprovalShowItems(talentId);
     }
 
     @RequestMapping("CertConfirm")
     public ResultVO CertConfirm(HttpSession session,
                                 @RequestParam(value = "talentId", required = false) Long talentId,
+                                @RequestParam(value = "certId", required = false) Long certId,
                                 @RequestParam(value = "result", required = false) int result,
                                 @RequestParam(value = "cardId", defaultValue = "普通卡") String cardId,
                                 @RequestParam(value = "category", defaultValue = "基础人才") String category,
                                 @RequestParam(value = "opinion", required = false) String opinion){
 
-        Map<String, Object> reqData = new HashMap<>(5);
+        Map<String, Object> reqData = new HashMap<>(6);
         reqData.put("talentId",talentId);
+        reqData.put("certId",certId);
         reqData.put("result",result);
         reqData.put("cardId",cardId);
         reqData.put("category",category);

@@ -15,10 +15,10 @@ import java.util.Map;
 public interface ICertApprocalService {
     /**
      * 根据人才姓名查询认证清单信息
-     * @param name
+     * @param talentId
      * @return
      */
-    ResultVO certApprovalShowItems(String name);
+    ResultVO certApprovalShowItems(Long talentId);
 
     /**
      * 根据审批的回馈结果进行各个表更新

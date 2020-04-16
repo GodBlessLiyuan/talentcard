@@ -364,4 +364,43 @@
             <if test="card != null and card !=''">and (c.name like '%' #{card} '%' or c.num like '%' #{card} '%')</if>
         </where>
     </select>
+
+    <select id="queryTalentStatus" parameterType="java.util.Map" resultType="com.talentcard.common.bo.TalentCertStatusBO">
+        select t.talent_id as talentId, t.name, t.sex, e.education, pt.category as ptCategory, pq.category as pqCategory, t.status, t.create_time as createTime
+        from t_talent t
+        left join t_education e on t.talent_id = e.talent_id
+        left join t_prof_title pt on t.talent_id = pt.talent_id
+        left join t_prof_quality pq on t.talent_id = pq.talent_id
+        <where>
+            <if test="name != null and name != ''">
+                and t.name like '%' #{name} '%'
+            </if>
+            <if test="sex != null and sex != ''">
+                and t.sex =  #{sex}
+            </if>
+            <if test="education != null and education != ''">
+                and e.education =  #{education}
+            </if>
+            <if test="pqCategory != null and pqCategory != ''">
+                and pq.category =  #{pqCategory}
+            </if>
+            <if test="pqCategory != null and pqCategory != ''">
+                and pt.category =  #{ptCategory}
+            </if>
+            <if test="status != null and status != ''">
+                and t.`status` =  #{status}
+            </if>
+            <if test="(startTime != null and startTime != '') and (endTime != null and endTime != '')">
+                and t.create_time between #{startTime} AND #{endTime}
+            </if>
+            <if test="(startTime != null and startTime != '') and (endTime == null || endTime == '')">
+                AND t.create_time &gt;= #{startTime}
+            </if>
+            <if test="(startTime != null || startTime != '') and (endTime != null and endTime != '')">
+                AND t.create_time &lt;= #{endTime}
+            </if>
+        </where>
+        order by t.create_time asc
+    </select>
+
 </mapper>

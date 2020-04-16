@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.talentcard.common.bo.TalentCertStatusBO;
 import com.talentcard.common.bo.UserRoleBO;
 import com.talentcard.common.mapper.CertificationMapper;
+import com.talentcard.common.mapper.TalentMapper;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ICertService;
 import com.talentcard.web.utils.DTPageInfo;
@@ -25,12 +26,13 @@ import java.util.Map;
 public class CertServiceImpl implements ICertService {
     @Resource
     CertificationMapper certificationMapper;
+    @Resource
+    TalentMapper talentMapper;
 
     @Override
     public ResultVO queryCertStatus(int draw, int pageNum, int pageSize,Map<String, Object> map){
         Page<UserRoleBO> page = PageHelper.startPage(pageNum, pageSize);
-        List<TalentCertStatusBO> bos =  certificationMapper.queryAllCert(map);
-
+        List<TalentCertStatusBO> bos =  talentMapper.queryTalentStatus(map);
         return new ResultVO(1000,new DTPageInfo<>(draw, page.getTotal(), bos));
     }
 }

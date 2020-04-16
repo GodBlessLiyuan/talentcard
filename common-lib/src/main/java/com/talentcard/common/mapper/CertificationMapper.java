@@ -23,9 +23,9 @@ public interface CertificationMapper extends BaseMapper<CertificationPO, Long> {
     List<TalentCertStatusBO> queryAllCert(Map<String, Object> map);
 
     /**
-     * 根据用户姓名查询当前用的认真审批信息
-     * @param name
+     * 根据用户姓名查询当前用的认证审批信息
+     * @param tanlentId
      * @return
      */
-    ApprovalBO queryAllMsg(String name);
+    ApprovalBO queryAllMsg(Long tanlentId);
 }
