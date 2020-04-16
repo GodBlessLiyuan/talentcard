@@ -341,10 +341,18 @@
         where open_id = #{openId,jdbcType=BIGINT}
     </select>
     <select id="query" resultType="com.talentcard.common.bo.TalentBO">
-        select t.talent_id as talentId, t.create_time as createTime, t.`name`, t.sex, uci.education as educ,
-               uci.pt_category as title, uci.pq_category as quality,
+        select t.talent_id     as talentId,
+               t.create_time   as createTime,
+               t.`name`,
+               t.sex,
+               uci.education   as educ,
+               uci.pt_category as title,
+               uci.pq_category as quality,
+               c.name          as cname,
+               c.num           as cnum
         from t_talent t
-        left join t_user_current_info uci on t.talent_id = uci.talent_id
-        left join t_user_card c on t.talent_id on c.
+                 left join t_user_current_info uci on t.talent_id = uci.talent_id
+                 left join t_user_card c on t.talent_id = c.talent_id
+        where c.status != 3
     </select>
 </mapper>
