@@ -8,9 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
@@ -45,18 +43,12 @@ public class AccessTokenUtil {
      * @Description: 申请access_token
      */
     public static void applyAccessToken() throws WechatException {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         //拼接url
         String url = accessTokenRequest + "?grant_type=client_credential"
                 + "&appid=" + appId + "&secret=" + appSecret;
-        JSONObject jsonObject = new JSONObject();
-        HttpEntity<String> entity = new HttpEntity<>(jsonObject.toString(), headers);
-        //exchange方式发送get请求
-        ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url,
-                HttpMethod.GET, entity, JSONObject.class);
-        String applyAccessToken = responseEntity.getBody().getString("access_token");
+        //发送请求
+        JSONObject jsonObject = CommonUtil.getRequest(url);
+        String applyAccessToken = jsonObject.getString("access_token");
         //判断拿到accessToken是否为空，若为空，抛异常
         //不为空，则如下，更新accessToken，且记录当前时间
         if (applyAccessToken != null) {
@@ -74,6 +66,7 @@ public class AccessTokenUtil {
         String accessToken = (String) myRedis.opsForValue().get("accessToken");
         if (accessToken == null || accessToken == "") {
             AccessTokenUtil.applyAccessToken();
+            accessToken = (String) myRedis.opsForValue().get("accessToken");
         }
         return accessToken;
     }

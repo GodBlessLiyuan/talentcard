@@ -74,6 +74,7 @@ public class AccessTokenUtil {
         String accessToken = (String) myRedis.opsForValue().get("accessToken");
         if (accessToken == null || accessToken == "") {
             AccessTokenUtil.applyAccessToken();
+            accessToken = (String) myRedis.opsForValue().get("accessToken");
         }
         return accessToken;
     }

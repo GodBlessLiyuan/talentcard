@@ -34,18 +34,12 @@ public class JsApiTicketUtil {
      * @Description: 申请jsApiTicket
      */
     public static void applyJsApiTicket() throws WechatException {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         //拼接url
         String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="
                 + AccessTokenUtil.getAccessToken() + "&type=jsapi";
-        JSONObject jsonObject = new JSONObject();
-        HttpEntity<String> entity = new HttpEntity<>(jsonObject.toString(), headers);
-        //exchange方式发送get请求
-        ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url,
-                HttpMethod.GET, entity, JSONObject.class);
-        String jsApiTicket = responseEntity.getBody().getString("ticket");
+        //发送请求
+        JSONObject jsonObject = CommonUtil.getRequest(url);
+        String jsApiTicket = jsonObject.getString("ticket");
         //判断拿到jsApiTicket是否为空，若为空，抛异常
         //不为空，则如下，更新jsApiTicket，且记录当前时间
         if (jsApiTicket != null) {
@@ -61,6 +55,7 @@ public class JsApiTicketUtil {
         String jsApiTicket = (String) myRedis.opsForValue().get("jsApiTicket");
         if (jsApiTicket == null || jsApiTicket == "") {
             JsApiTicketUtil.applyJsApiTicket();
+            jsApiTicket = (String) myRedis.opsForValue().get("jsApiTicket");
         }
         return jsApiTicket;
     }
