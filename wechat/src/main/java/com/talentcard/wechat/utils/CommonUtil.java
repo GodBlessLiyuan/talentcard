@@ -47,21 +47,4 @@ public class CommonUtil {
         }
         return sb.toString();
     }
-
-    /**
-     * @Description: getRequest
-     * @param url
-     * @return
-     */
-    public static JSONObject getRequest(String url){
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        JSONObject jsonObject = new JSONObject();
-        HttpEntity<String> entity = new HttpEntity<>(jsonObject.toString(), headers);
-        //exchange方式发送get请求
-        ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url,
-                HttpMethod.GET, entity, JSONObject.class);
-        return responseEntity.getBody();
-    }
 }

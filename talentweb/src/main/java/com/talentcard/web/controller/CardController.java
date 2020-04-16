@@ -5,10 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ICardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping("card")
 @RestController
@@ -17,7 +15,16 @@ public class CardController {
     private ICardService iCardService;
 
     @PostMapping("add")
-    public ResultVO add(@RequestBody JSONObject jsonObject) {
-        return iCardService.add(jsonObject);
+    public ResultVO add(@RequestParam(value = "name") String name,
+                        @RequestParam(value = "title") String title,
+                        @RequestParam(value = "notice") String notice,
+                        @RequestParam(value = "description") String description,
+                        @RequestParam(value = "prerogative") String prerogative,
+                        @RequestParam(value = "background") MultipartFile background,
+                        @RequestParam(value = "initialWord") String initialWord,
+                        @RequestParam(value = "initialNumber") String initialNumber,
+                        @RequestParam(value = "status") Byte status) {
+        return iCardService.add(name, title, notice, description, prerogative,
+                background, initialWord, initialNumber, status);
     }
 }

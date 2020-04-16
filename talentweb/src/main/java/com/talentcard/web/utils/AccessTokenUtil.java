@@ -2,6 +2,7 @@ package com.talentcard.web.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.exception.WechatException;
+import com.talentcard.common.utils.WechatApiUtil;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,18 +46,12 @@ public class AccessTokenUtil {
      * @Description: 申请access_token
      */
     public static void applyAccessToken() throws WechatException {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         //拼接url
         String url = accessTokenRequest + "?grant_type=client_credential"
                 + "&appid=" + appId + "&secret=" + appSecret;
-        JSONObject jsonObject = new JSONObject();
-        HttpEntity<String> entity = new HttpEntity<>(jsonObject.toString(), headers);
-        //exchange方式发送get请求
-        ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url,
-                HttpMethod.GET, entity, JSONObject.class);
-        String applyAccessToken = responseEntity.getBody().getString("access_token");
+        JSONObject jsonObject = WechatApiUtil.getRequest(url);
+        //发送请求
+        String applyAccessToken = jsonObject.getString("access_token");
         //判断拿到accessToken是否为空，若为空，抛异常
         //不为空，则如下，更新accessToken，且记录当前时间
         if (applyAccessToken != null) {

@@ -288,7 +288,17 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setTalentId(talentPO.getTalentId());
         userCardPO.setCardId(cardId);
         //设置当前编号，组合起来，并且更新卡的currentNum
-        String membershipNumber = cardPO.getInitialWord() + cardPO.getCurrNum();
+        String membershipNumber = cardPO.getInitialWord();
+        Integer initialNumLength = cardPO.getInitialNum().length();
+        Integer currentNumlength = cardPO.getCurrNum().toString().length();
+        //补0
+        if ((initialNumLength - currentNumlength) > 0) {
+            for (int i = 0; i < (initialNumLength - currentNumlength); i++) {
+                membershipNumber = membershipNumber + "0";
+            }
+        }
+
+        membershipNumber = membershipNumber + cardPO.getCurrNum();
         userCardPO.setNum(membershipNumber);
         jsonObject.put("membershipNumber", membershipNumber);
         cardPO.setCurrNum(cardPO.getCurrNum() + 1);
@@ -296,13 +306,13 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setCreateTime(new Date());
         userCardPO.setStatus((byte) 1);
         //发送post请求，激活卡套
-//        try {
-//            String accessToken = AccessTokenUtil.getAccessToken();
-//            String url = "https://api.weixin.qq.com/card/membercard/activate?access_token=" + accessToken;
-//            WechatApiUtil.postRequest(url, jsonObject);
-//        } catch (WechatException wechatException) {
-//            return new ResultVO(6666);
-//        }
+        try {
+            String accessToken = AccessTokenUtil.getAccessToken();
+            String url = "https://api.weixin.qq.com/card/membercard/activate?access_token=" + accessToken;
+            WechatApiUtil.postRequest(url, jsonObject);
+        } catch (WechatException wechatException) {
+            return new ResultVO(6666);
+        }
         cardMapper.updateByPrimaryKeySelective(cardPO);
         userCardMapper.insertSelective(userCardPO);
         return new ResultVO(1000);
