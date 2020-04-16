@@ -1,309 +1,350 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.TalentMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentPO">
-    <id column="talent_id" jdbcType="BIGINT" property="talentId" />
-    <result column="open_id" jdbcType="CHAR" property="openId" />
-    <result column="name" jdbcType="CHAR" property="name" />
-    <result column="sex" jdbcType="TINYINT" property="sex" />
-    <result column="id_card" jdbcType="CHAR" property="idCard" />
-    <result column="passport" jdbcType="CHAR" property="passport" />
-    <result column="work_unit" jdbcType="CHAR" property="workUnit" />
-    <result column="industry" jdbcType="CHAR" property="industry" />
-    <result column="phone" jdbcType="CHAR" property="phone" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="category" jdbcType="CHAR" property="category" />
-    <result column="card_id" jdbcType="BIGINT" property="cardId" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentPO">
+        <id column="talent_id" jdbcType="BIGINT" property="talentId"/>
+        <result column="open_id" jdbcType="CHAR" property="openId"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="sex" jdbcType="TINYINT" property="sex"/>
+        <result column="id_card" jdbcType="CHAR" property="idCard"/>
+        <result column="passport" jdbcType="CHAR" property="passport"/>
+        <result column="work_unit" jdbcType="CHAR" property="workUnit"/>
+        <result column="industry" jdbcType="CHAR" property="industry"/>
+        <result column="phone" jdbcType="CHAR" property="phone"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="category" jdbcType="CHAR" property="category"/>
+        <result column="card_id" jdbcType="BIGINT" property="cardId"/>
+    </resultMap>
 
-  <resultMap id="TalentResultMap" type="com.talentcard.common.bo.TalentBO">
-    <id column="t_talent_id" jdbcType="BIGINT" property="talentId" />
-    <result column="open_id" jdbcType="CHAR" property="openId" />
-    <result column="name" jdbcType="CHAR" property="name" />
-    <result column="sex" jdbcType="TINYINT" property="sex" />
-    <result column="id_card" jdbcType="CHAR" property="idCard" />
-    <result column="passport" jdbcType="CHAR" property="passport" />
-    <result column="work_unit" jdbcType="CHAR" property="workUnit" />
-    <result column="industry" jdbcType="CHAR" property="industry" />
-    <result column="phone" jdbcType="CHAR" property="phone" />
-    <result column="t_create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="t_status" jdbcType="TINYINT" property="status" />
-    <result column="t_category" jdbcType="CHAR" property="category" />
-    <result column="t_card_id" jdbcType="BIGINT" property="cardId" />
+    <resultMap id="TalentResultMap" type="com.talentcard.common.bo.TalentBO">
+        <id column="t_talent_id" jdbcType="BIGINT" property="talentId"/>
+        <result column="open_id" jdbcType="CHAR" property="openId"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="sex" jdbcType="TINYINT" property="sex"/>
+        <result column="id_card" jdbcType="CHAR" property="idCard"/>
+        <result column="passport" jdbcType="CHAR" property="passport"/>
+        <result column="work_unit" jdbcType="CHAR" property="workUnit"/>
+        <result column="industry" jdbcType="CHAR" property="industry"/>
+        <result column="phone" jdbcType="CHAR" property="phone"/>
+        <result column="t_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="t_status" jdbcType="TINYINT" property="status"/>
+        <result column="t_category" jdbcType="CHAR" property="category"/>
+        <result column="t_card_id" jdbcType="BIGINT" property="cardId"/>
 
-    <result column="c_cert_id" jdbcType="BIGINT" property="certId" />
-    <result column="c_political" jdbcType="CHAR" property="political" />
-    <result column="c_status" jdbcType="TINYINT" property="certificationStatus" />
-    <result column="current_type" jdbcType="TINYINT" property="currentType" />
+        <result column="c_cert_id" jdbcType="BIGINT" property="certId"/>
+        <result column="c_political" jdbcType="CHAR" property="political"/>
+        <result column="c_status" jdbcType="TINYINT" property="certificationStatus"/>
+        <result column="current_type" jdbcType="TINYINT" property="currentType"/>
 
-    <collection property ="educationPOList" ofType="com.talentcard.common.pojo.EducationPO">
-      <id column="e_educ_id" jdbcType="BIGINT" property="educId" />
-      <result column="e_education" jdbcType="INTEGER" property="education" />
-      <result column="e_school" jdbcType="CHAR" property="school" />
-      <result column="e_first_class" jdbcType="TINYINT" property="firstClass" />
-      <result column="e_major" jdbcType="CHAR" property="major" />
-      <result column="e_educ_picture" jdbcType="CHAR" property="educPicture" />
-      <result column="e_cert_id" jdbcType="BIGINT" property="certId" />
-      <result column="e_talent_id" jdbcType="BIGINT" property="talentId" />
-      <result column="e_status" jdbcType="TINYINT" property="status" />
-    </collection>
-    <collection property ="profTitlePOList" ofType="com.talentcard.common.pojo.ProfTitlePO">
-      <id column="pt_pt_id" jdbcType="BIGINT" property="ptId" />
-      <result column="pt_category" jdbcType="INTEGER" property="category" />
-      <result column="pt_info" jdbcType="CHAR" property="info" />
-      <result column="pt_picture" jdbcType="CHAR" property="picture" />
-      <result column="pt_cert_id" jdbcType="BIGINT" property="certId" />
-      <result column="pt_talent_id" jdbcType="BIGINT" property="talentId" />
-      <result column="pt_status" jdbcType="TINYINT" property="status" />
-    </collection>
-    <collection property ="profQualityPOList" ofType="com.talentcard.common.pojo.ProfQualityPO">
-      <id column="pq_pq_id" jdbcType="BIGINT" property="pqId" />
-      <result column="pq_category" jdbcType="INTEGER" property="category" />
-      <result column="pq_info" jdbcType="CHAR" property="info" />
-      <result column="pq_picture" jdbcType="CHAR" property="picture" />
-      <result column="pq_cert_id" jdbcType="BIGINT" property="certId" />
-      <result column="pq_talent_id" jdbcType="BIGINT" property="talentId" />
-      <result column="pq_status" jdbcType="TINYINT" property="status" />
-    </collection>
-  </resultMap>
-  <sql id="Base_Column_List">
-    talent_id, open_id, `name`, sex, id_card, passport, work_unit, industry, phone, create_time, 
+        <collection property="educationPOList" ofType="com.talentcard.common.pojo.EducationPO">
+            <id column="e_educ_id" jdbcType="BIGINT" property="educId"/>
+            <result column="e_education" jdbcType="INTEGER" property="education"/>
+            <result column="e_school" jdbcType="CHAR" property="school"/>
+            <result column="e_first_class" jdbcType="TINYINT" property="firstClass"/>
+            <result column="e_major" jdbcType="CHAR" property="major"/>
+            <result column="e_educ_picture" jdbcType="CHAR" property="educPicture"/>
+            <result column="e_cert_id" jdbcType="BIGINT" property="certId"/>
+            <result column="e_talent_id" jdbcType="BIGINT" property="talentId"/>
+            <result column="e_status" jdbcType="TINYINT" property="status"/>
+        </collection>
+        <collection property="profTitlePOList" ofType="com.talentcard.common.pojo.ProfTitlePO">
+            <id column="pt_pt_id" jdbcType="BIGINT" property="ptId"/>
+            <result column="pt_category" jdbcType="INTEGER" property="category"/>
+            <result column="pt_info" jdbcType="CHAR" property="info"/>
+            <result column="pt_picture" jdbcType="CHAR" property="picture"/>
+            <result column="pt_cert_id" jdbcType="BIGINT" property="certId"/>
+            <result column="pt_talent_id" jdbcType="BIGINT" property="talentId"/>
+            <result column="pt_status" jdbcType="TINYINT" property="status"/>
+        </collection>
+        <collection property="profQualityPOList" ofType="com.talentcard.common.pojo.ProfQualityPO">
+            <id column="pq_pq_id" jdbcType="BIGINT" property="pqId"/>
+            <result column="pq_category" jdbcType="INTEGER" property="category"/>
+            <result column="pq_info" jdbcType="CHAR" property="info"/>
+            <result column="pq_picture" jdbcType="CHAR" property="picture"/>
+            <result column="pq_cert_id" jdbcType="BIGINT" property="certId"/>
+            <result column="pq_talent_id" jdbcType="BIGINT" property="talentId"/>
+            <result column="pq_status" jdbcType="TINYINT" property="status"/>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        talent_id, open_id, `name`, sex, id_card, passport, work_unit, industry, phone, create_time,
     `status`, category, card_id
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_talent
-    where talent_id = #{talentId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_talent
-    where talent_id = #{talentId,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.TalentPO">
-    insert into t_talent (talent_id, open_id, `name`, 
-      sex, id_card, passport, work_unit, 
-      industry, phone, create_time, 
-      `status`, category, card_id
-      )
-    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
-      #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR}, 
-      #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=TINYINT}, #{category,jdbcType=CHAR}, #{cardId,jdbcType=BIGINT}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentPO">
-    insert into t_talent
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="talentId != null">
-        talent_id,
-      </if>
-      <if test="openId != null">
-        open_id,
-      </if>
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="sex != null">
-        sex,
-      </if>
-      <if test="idCard != null">
-        id_card,
-      </if>
-      <if test="passport != null">
-        passport,
-      </if>
-      <if test="workUnit != null">
-        work_unit,
-      </if>
-      <if test="industry != null">
-        industry,
-      </if>
-      <if test="phone != null">
-        phone,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="status != null">
-        `status`,
-      </if>
-      <if test="category != null">
-        category,
-      </if>
-      <if test="cardId != null">
-        card_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="talentId != null">
-        #{talentId,jdbcType=BIGINT},
-      </if>
-      <if test="openId != null">
-        #{openId,jdbcType=CHAR},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=CHAR},
-      </if>
-      <if test="sex != null">
-        #{sex,jdbcType=TINYINT},
-      </if>
-      <if test="idCard != null">
-        #{idCard,jdbcType=CHAR},
-      </if>
-      <if test="passport != null">
-        #{passport,jdbcType=CHAR},
-      </if>
-      <if test="workUnit != null">
-        #{workUnit,jdbcType=CHAR},
-      </if>
-      <if test="industry != null">
-        #{industry,jdbcType=CHAR},
-      </if>
-      <if test="phone != null">
-        #{phone,jdbcType=CHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="category != null">
-        #{category,jdbcType=CHAR},
-      </if>
-      <if test="cardId != null">
-        #{cardId,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentPO">
-    update t_talent
-    <set>
-      <if test="openId != null">
-        open_id = #{openId,jdbcType=CHAR},
-      </if>
-      <if test="name != null">
-        `name` = #{name,jdbcType=CHAR},
-      </if>
-      <if test="sex != null">
-        sex = #{sex,jdbcType=TINYINT},
-      </if>
-      <if test="idCard != null">
-        id_card = #{idCard,jdbcType=CHAR},
-      </if>
-      <if test="passport != null">
-        passport = #{passport,jdbcType=CHAR},
-      </if>
-      <if test="workUnit != null">
-        work_unit = #{workUnit,jdbcType=CHAR},
-      </if>
-      <if test="industry != null">
-        industry = #{industry,jdbcType=CHAR},
-      </if>
-      <if test="phone != null">
-        phone = #{phone,jdbcType=CHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="category != null">
-        category = #{category,jdbcType=CHAR},
-      </if>
-      <if test="cardId != null">
-        card_id = #{cardId,jdbcType=BIGINT},
-      </if>
-    </set>
-    where talent_id = #{talentId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentPO">
-    update t_talent
-    set open_id = #{openId,jdbcType=CHAR},
-      `name` = #{name,jdbcType=CHAR},
-      sex = #{sex,jdbcType=TINYINT},
-      id_card = #{idCard,jdbcType=CHAR},
-      passport = #{passport,jdbcType=CHAR},
-      work_unit = #{workUnit,jdbcType=CHAR},
-      industry = #{industry,jdbcType=CHAR},
-      phone = #{phone,jdbcType=CHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      `status` = #{status,jdbcType=TINYINT},
-      category = #{category,jdbcType=CHAR},
-      card_id = #{cardId,jdbcType=BIGINT}
-    where talent_id = #{talentId,jdbcType=BIGINT}
-  </update>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_talent
+        where talent_id = #{talentId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from t_talent
+        where talent_id = #{talentId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.talentcard.common.pojo.TalentPO">
+        insert into t_talent (talent_id, open_id, `name`,
+                              sex, id_card, passport, work_unit,
+                              industry, phone, create_time,
+                              `status`, category, card_id)
+        values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
+                #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR},
+                #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{status,jdbcType=TINYINT}, #{category,jdbcType=CHAR}, #{cardId,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentPO">
+        insert into t_talent
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="talentId != null">
+                talent_id,
+            </if>
+            <if test="openId != null">
+                open_id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="idCard != null">
+                id_card,
+            </if>
+            <if test="passport != null">
+                passport,
+            </if>
+            <if test="workUnit != null">
+                work_unit,
+            </if>
+            <if test="industry != null">
+                industry,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="category != null">
+                category,
+            </if>
+            <if test="cardId != null">
+                card_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="talentId != null">
+                #{talentId,jdbcType=BIGINT},
+            </if>
+            <if test="openId != null">
+                #{openId,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=CHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="idCard != null">
+                #{idCard,jdbcType=CHAR},
+            </if>
+            <if test="passport != null">
+                #{passport,jdbcType=CHAR},
+            </if>
+            <if test="workUnit != null">
+                #{workUnit,jdbcType=CHAR},
+            </if>
+            <if test="industry != null">
+                #{industry,jdbcType=CHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="category != null">
+                #{category,jdbcType=CHAR},
+            </if>
+            <if test="cardId != null">
+                #{cardId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentPO">
+        update t_talent
+        <set>
+            <if test="openId != null">
+                open_id = #{openId,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=CHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="idCard != null">
+                id_card = #{idCard,jdbcType=CHAR},
+            </if>
+            <if test="passport != null">
+                passport = #{passport,jdbcType=CHAR},
+            </if>
+            <if test="workUnit != null">
+                work_unit = #{workUnit,jdbcType=CHAR},
+            </if>
+            <if test="industry != null">
+                industry = #{industry,jdbcType=CHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="category != null">
+                category = #{category,jdbcType=CHAR},
+            </if>
+            <if test="cardId != null">
+                card_id = #{cardId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where talent_id = #{talentId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentPO">
+        update t_talent
+        set open_id     = #{openId,jdbcType=CHAR},
+            `name`      = #{name,jdbcType=CHAR},
+            sex         = #{sex,jdbcType=TINYINT},
+            id_card     = #{idCard,jdbcType=CHAR},
+            passport    = #{passport,jdbcType=CHAR},
+            work_unit   = #{workUnit,jdbcType=CHAR},
+            industry    = #{industry,jdbcType=CHAR},
+            phone       = #{phone,jdbcType=CHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            `status`    = #{status,jdbcType=TINYINT},
+            category    = #{category,jdbcType=CHAR},
+            card_id     = #{cardId,jdbcType=BIGINT}
+        where talent_id = #{talentId,jdbcType=BIGINT}
+    </update>
 
-  <!--  insert，且返回主键-->
-  <insert id="add" useGeneratedKeys="true" keyProperty="talentId" parameterType="com.talentcard.common.pojo.TalentPO">
-    insert into t_talent (talent_id, open_id, `name`,
-      sex, id_card, passport, work_unit,
-      industry, phone, create_time,
-      `status`, category, card_id
-      )
-    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
-      #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR},
-      #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
-      #{status,jdbcType=TINYINT}, #{category,jdbcType=CHAR}, #{cardId,jdbcType=BIGINT}
-      )
-  </insert>
-  <select id="findRegisterOne" parameterType="java.lang.String" resultType="java.util.HashMap">
-    select
-    t.talent_id as talentId, `name` , sex, id_card as idCard, passport, work_unit as workUnit, industry, phone,
-    t.`status` as tStatus,
-    political, education, pt_category as ptCategory, pt_info as ptInfo,
-    pq_category as pqCategory, pq_info as pqInfo
-    from t_talent t
-    left join t_user_current_info u
-    on t.talent_id = u.talent_id
-    where t.open_id = #{openId,jdbcType=CHAR}
-  </select>
-  <select id="findOne" parameterType="java.util.HashMap" resultMap="TalentResultMap">
-    select
-    t.talent_id as t_talent_id, open_id, `name`, sex, id_card, passport,
-    work_unit, industry, phone, t.create_time as t_create_time,
-    t.`status` as t_status, t.category as t_category, t.card_id as t_card_id,
+    <!--  insert，且返回主键-->
+    <insert id="add" useGeneratedKeys="true" keyProperty="talentId" parameterType="com.talentcard.common.pojo.TalentPO">
+        insert into t_talent (talent_id, open_id, `name`,
+                              sex, id_card, passport, work_unit,
+                              industry, phone, create_time,
+                              `status`, category, card_id)
+        values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
+                #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR},
+                #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{status,jdbcType=TINYINT}, #{category,jdbcType=CHAR}, #{cardId,jdbcType=BIGINT})
+    </insert>
+    <select id="findRegisterOne" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select t.talent_id as talentId,
+               `name`,
+               sex,
+               id_card     as idCard,
+               passport,
+               work_unit   as workUnit,
+               industry,
+               phone,
+               t.`status`  as tStatus,
+               political,
+               education,
+               pt_category as ptCategory,
+               pt_info     as ptInfo,
+               pq_category as pqCategory,
+               pq_info     as pqInfo
+        from t_talent t
+                 left join t_user_current_info u
+                           on t.talent_id = u.talent_id
+        where t.open_id = #{openId,jdbcType=CHAR}
+    </select>
+    <select id="findOne" parameterType="java.util.HashMap" resultMap="TalentResultMap">
+        select t.talent_id    as t_talent_id,
+               open_id,
+               `name`,
+               sex,
+               id_card,
+               passport,
+               work_unit,
+               industry,
+               phone,
+               t.create_time  as t_create_time,
+               t.`status`     as t_status,
+               t.category     as t_category,
+               t.card_id      as t_card_id,
 
-    c.cert_id as c_cert_id, c.political as c_political, c.status as c_status, current_type,
+               c.cert_id      as c_cert_id,
+               c.political    as c_political,
+               c.status       as c_status,
+               current_type,
 
-    e.educ_id as e_educ_id, e.education as e_education, e.school as e_school,
-    e.first_class as e_first_class, e.major as e_major, e.educ_picture as e_educ_picture,
-    e.cert_id as e_cert_id, e.talent_id as e_talent_id, e.status as e_status,
+               e.educ_id      as e_educ_id,
+               e.education    as e_education,
+               e.school       as e_school,
+               e.first_class  as e_first_class,
+               e.major        as e_major,
+               e.educ_picture as e_educ_picture,
+               e.cert_id      as e_cert_id,
+               e.talent_id    as e_talent_id,
+               e.status       as e_status,
 
-    pt.pt_id as pt_pt_id, pt.category as pt_category, pt.info as pt_info, pt.picture as pt_picture,
-    pt.cert_id as pt_cert_id, pt.talent_id as pt_talent_id, pt.status as pt_status,
+               pt.pt_id       as pt_pt_id,
+               pt.category    as pt_category,
+               pt.info        as pt_info,
+               pt.picture     as pt_picture,
+               pt.cert_id     as pt_cert_id,
+               pt.talent_id   as pt_talent_id,
+               pt.status      as pt_status,
 
-    pq.pq_id as pq_pq_id, pq.category as pq_category, pq.info as pq_info, pq.picture as pq_picture,
-    pq.cert_id as pq_cert_id, pq.talent_id as pq_talent_id, pq.status as pq_status
-    from t_talent t
-    left join t_certification c
-    on  t.talent_id = c.talent_id
-    left join t_education e
-    on c.cert_id = e.cert_id
-    left join t_prof_title pt
-    on c.cert_id = pt.cert_id
-    left join t_prof_quality pq
-    on c.cert_id = pq.cert_id
-    where t.open_id = #{openId,jdbcType=CHAR}
-    and c.status = #{status,jdbcType=TINYINT}
-  </select>
-  <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_talent
-    where open_id = #{openId,jdbcType=BIGINT}
-  </select>
-  <select id="findCardId" parameterType="java.lang.String" resultType="java.lang.String">
-    select
-    c.card_id
-    from t_talent t
-    left join t_user_card uc
-    on t.talent_id = uc.talent_id
-    left join t_card c
-    on uc.card_id = c.card_id
-    where open_id = #{openId,jdbcType=BIGINT}
-  </select>
+               pq.pq_id       as pq_pq_id,
+               pq.category    as pq_category,
+               pq.info        as pq_info,
+               pq.picture     as pq_picture,
+               pq.cert_id     as pq_cert_id,
+               pq.talent_id   as pq_talent_id,
+               pq.status      as pq_status
+        from t_talent t
+                 left join t_certification c
+                           on t.talent_id = c.talent_id
+                 left join t_education e
+                           on c.cert_id = e.cert_id
+                 left join t_prof_title pt
+                           on c.cert_id = pt.cert_id
+                 left join t_prof_quality pq
+                           on c.cert_id = pq.cert_id
+        where t.open_id = #{openId,jdbcType=CHAR}
+          and c.status = #{status,jdbcType=TINYINT}
+    </select>
+    <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_talent
+        where open_id = #{openId,jdbcType=BIGINT}
+    </select>
+    <select id="findCardId" parameterType="java.lang.String" resultType="java.lang.String">
+        select c.card_id
+        from t_talent t
+                 left join t_user_card uc
+                           on t.talent_id = uc.talent_id
+                 left join t_card c
+                           on uc.card_id = c.card_id
+        where open_id = #{openId,jdbcType=BIGINT}
+    </select>
+    <select id="query" resultType="com.talentcard.common.bo.TalentBO">
+        select t.talent_id as talentId, t.create_time as createTime, t.`name`, t.sex, uci.education as educ,
+               uci.pt_category as title, uci.pq_category as quality,
+        from t_talent t
+        left join t_user_current_info uci on t.talent_id = uci.talent_id
+        left join t_user_card c on t.talent_id on c.
+    </select>
 </mapper>

@@ -61,13 +61,16 @@ CREATE TABLE t_bank
 CREATE TABLE t_card
 (
     card_id bigint unsigned NOT NULL AUTO_INCREMENT,
+    name char(16),
+    brand_name char(16) NOT NULL,
     title char(32) NOT NULL,
-    name char(16) NOT NULL,
+    curr_num bigint DEFAULT 0,
+    description varchar(2048) NOT NULL,
+    picture char(255) NOT NULL,
+    picture_cdn char(255),
+    prerogative varchar(2048),
     initial_word char(32),
     initial_num char(32) NOT NULL,
-    curr_num bigint DEFAULT 0,
-    description char(255) NOT NULL,
-    picture char(255) NOT NULL,
     create_time datetime,
     -- 1：默认；2：非默认
     status tinyint COMMENT '1：默认；2：非默认',
@@ -219,8 +222,8 @@ CREATE TABLE t_policy_approval
 CREATE TABLE t_prof_quality
 (
     pq_id bigint unsigned NOT NULL AUTO_INCREMENT,
-    pq_category int,
-    pq_info char(255),
+    category int,
+    info char(255),
     picture char(255),
     cert_id bigint unsigned NOT NULL,
     talent_id bigint unsigned NOT NULL,
@@ -244,8 +247,8 @@ CREATE TABLE t_prof_quality
 CREATE TABLE t_prof_title
 (
     pt_id bigint unsigned NOT NULL AUTO_INCREMENT,
-    pt_category int,
-    pt_info char(255),
+    category int,
+    info char(255),
     picture char(255),
     cert_id bigint unsigned NOT NULL,
     talent_id bigint unsigned NOT NULL,
@@ -348,6 +351,7 @@ CREATE TABLE t_user_card
     uc_id bigint unsigned NOT NULL AUTO_INCREMENT,
     talent_id bigint unsigned NOT NULL,
     card_id bigint unsigned,
+    name char(16),
     num char(32) NOT NULL,
     create_time datetime,
     -- 1 待审批或待激活
@@ -372,6 +376,7 @@ CREATE TABLE t_user_current_info
     pt_info char(255),
     pq_category int,
     pq_info char(255),
+    talent_category char(255),
     PRIMARY KEY (uci_id),
     UNIQUE (uci_id)
 );
