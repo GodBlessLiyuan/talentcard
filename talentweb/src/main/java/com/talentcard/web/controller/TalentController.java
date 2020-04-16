@@ -1,5 +1,6 @@
 package com.talentcard.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.utils.DTPageInfo;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ITalentService;
@@ -45,7 +46,7 @@ public class TalentController {
         reqMap.put("title", title);
         reqMap.put("quality", quality);
         reqMap.put("card", card);
-
+        
         return service.query(pageNum, pageSize, reqMap);
     }
 
