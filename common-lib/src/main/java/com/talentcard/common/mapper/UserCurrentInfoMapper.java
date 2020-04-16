@@ -8,4 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserCurrentInfoMapper extends BaseMapper<UserCurrentInfoPO, Long> {
+
+    int updateCategoryByTalentId(Long talentId,String talentCategory);
 }
