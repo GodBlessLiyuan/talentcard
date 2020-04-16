@@ -6,15 +6,16 @@
     <result column="cert_id" jdbcType="BIGINT" property="certId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="type" jdbcType="TINYINT" property="type" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="card_id" jdbcType="BIGINT" property="cardId" />
     <result column="category" jdbcType="CHAR" property="category" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="result" jdbcType="TINYINT" property="result" />
     <result column="opinion" jdbcType="CHAR" property="opinion" />
   </resultMap>
   <sql id="Base_Column_List">
-    approval_id, cert_id, create_time, `type`, user_id, card_id, category, `result`, 
-    opinion
+    approval_id, cert_id, create_time, `type`, card_id, category, user_id, update_time, 
+    `result`, opinion
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -28,13 +29,13 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.CertApprovalPO">
     insert into t_cert_approval (approval_id, cert_id, create_time, 
-      `type`, user_id, card_id, 
-      category, `result`, opinion
-      )
+      `type`, card_id, category, 
+      user_id, update_time, `result`, 
+      opinion)
     values (#{approvalId,jdbcType=BIGINT}, #{certId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{type,jdbcType=TINYINT}, #{userId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT}, 
-      #{category,jdbcType=CHAR}, #{result,jdbcType=TINYINT}, #{opinion,jdbcType=CHAR}
-      )
+      #{type,jdbcType=TINYINT}, #{cardId,jdbcType=BIGINT}, #{category,jdbcType=CHAR}, 
+      #{userId,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, #{result,jdbcType=TINYINT}, 
+      #{opinion,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CertApprovalPO">
     insert into t_cert_approval
@@ -51,14 +52,17 @@
       <if test="type != null">
         `type`,
       </if>
-      <if test="userId != null">
-        user_id,
-      </if>
       <if test="cardId != null">
         card_id,
       </if>
       <if test="category != null">
         category,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="updateTime != null">
+        update_time,
       </if>
       <if test="result != null">
         `result`,
@@ -80,14 +84,17 @@
       <if test="type != null">
         #{type,jdbcType=TINYINT},
       </if>
-      <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
-      </if>
       <if test="cardId != null">
         #{cardId,jdbcType=BIGINT},
       </if>
       <if test="category != null">
         #{category,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="result != null">
         #{result,jdbcType=TINYINT},
@@ -109,14 +116,17 @@
       <if test="type != null">
         `type` = #{type,jdbcType=TINYINT},
       </if>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=BIGINT},
-      </if>
       <if test="cardId != null">
         card_id = #{cardId,jdbcType=BIGINT},
       </if>
       <if test="category != null">
         category = #{category,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="result != null">
         `result` = #{result,jdbcType=TINYINT},
@@ -132,9 +142,10 @@
     set cert_id = #{certId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       `type` = #{type,jdbcType=TINYINT},
-      user_id = #{userId,jdbcType=BIGINT},
       card_id = #{cardId,jdbcType=BIGINT},
       category = #{category,jdbcType=CHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
       `result` = #{result,jdbcType=TINYINT},
       opinion = #{opinion,jdbcType=CHAR}
     where approval_id = #{approvalId,jdbcType=BIGINT}

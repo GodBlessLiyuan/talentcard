@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class WxCardPO {
-    String card_type;
-    MemberCardPO member_card;
+    private static final String card_type = "MEMBER_CARD";
+    private MemberCardPO member_card;
 }
