@@ -24,11 +24,11 @@ public class RoleAuthorityBO implements Serializable {
      * userDelete 删除用户
      * userQuery 查看用户
      */
-    private byte roleQuery;
-    private byte userCreate;
-    private byte userUpdate;
-    private byte userDelete;
-    private byte userQuery;
+    private Byte roleQuery;
+    private Byte userCreate;
+    private Byte userUpdate;
+    private Byte userDelete;
+    private Byte userQuery;
 
     /**
      * 卡片管理权限，1关闭，2开放
@@ -37,10 +37,10 @@ public class RoleAuthorityBO implements Serializable {
      * userCardQuery 查看卡片
      * userCardCreate 新建卡片
      */
-    private byte userCardUpdate;
-    private byte userCardDelete;
-    private byte userCardQuery;
-    private byte userCardCreate;
+    private Byte userCardUpdate;
+    private Byte userCardDelete;
+    private Byte userCardQuery;
+    private Byte userCardCreate;
 
     /**
      * 人才管理权限，1关闭，2开放
@@ -49,10 +49,10 @@ public class RoleAuthorityBO implements Serializable {
      * approvalTalentQuery 认证审批查看
      * approvalTalentAction 认证审批审批
      */
-    private byte generalTalentQuery;
-    private byte verifiedTalentQuery;
-    private byte approvalTalentQuery;
-    private byte approvalTalentAction;
+    private Byte generalTalentQuery;
+    private Byte verifiedTalentQuery;
+    private Byte approvalTalentQuery;
+    private Byte approvalTalentAction;
 
     /**
      * 人才政策管理权限，1关闭，2开放
@@ -63,12 +63,12 @@ public class RoleAuthorityBO implements Serializable {
      * approvalPolicyQuery 政策审批查看
      * approvalPolicyAction 政策审批审批
      */
-    private byte policyCreate;
-    private byte policyUpdate;
-    private byte policyDelete;
-    private byte policyQuery;
-    private byte approvalPolicyQuery;
-    private byte approvalPolicyAction;
+    private Byte policyCreate;
+    private Byte policyUpdate;
+    private Byte policyDelete;
+    private Byte policyQuery;
+    private Byte approvalPolicyQuery;
+    private Byte approvalPolicyAction;
 
     /**
      * 将角色权限表实体类转换为其VO表示实体类

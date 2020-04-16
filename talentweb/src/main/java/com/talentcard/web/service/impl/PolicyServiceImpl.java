@@ -61,9 +61,7 @@ public class PolicyServiceImpl implements IPolicyService {
             // 数据已被删除
             return new ResultVO(1001);
         }
-
         policyMapper.updateByPrimaryKey(buildPOByDTO(po, dto));
-
         return new ResultVO(1000);
     }
 

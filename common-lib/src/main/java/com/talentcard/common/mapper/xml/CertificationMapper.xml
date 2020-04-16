@@ -112,4 +112,66 @@
       #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{currentType,jdbcType=TINYINT}
       )
   </insert>
+
+
+  <select id="queryAllCert" parameterType="java.util.Map" resultType="com.talentcard.common.bo.TalentCertStatusBO">
+    select t.name, t.sex, e.education, pt.category as ptCategory, pq.category as pqCategory, c.status, c.create_time as createTime
+    from t_certification c
+    left join t_education e on c.cert_id = e.cert_id
+    left join t_prof_title pt on c.cert_id = pt.cert_id
+    left join t_prof_quality pq on c.cert_id = pq.cert_id
+    left join t_talent t on c.talent_id = t.talent_id
+    <where>
+      <if test="name != null and name != ''">
+        and t.name like '%' #{name} '%'
+      </if>
+      <if test="sex != null and sex != ''">
+        and t.sex =  #{sex}
+      </if>
+      <if test="education != null and education != ''">
+        and e.education =  #{education}
+      </if>
+      <if test="pqCategory != null and pqCategory != ''">
+        and pq.category =  #{pqCategory}
+      </if>
+      <if test="pqCategory != null and pqCategory != ''">
+        and pt.category =  #{ptCategory}
+      </if>
+      <if test="status != null and status != ''">
+        and c.`status` =  #{status}
+      </if>
+      <if test="(startTime != null and startTime != '') and (endTime != null and endTime != '')">
+        and c.create_time between #{startTime} AND #{endTime}
+      </if>
+      <if test="(startTime != null and startTime != '') and (endTime == null || endTime == '')">
+        AND c.create_time &gt;= #{startTime}
+      </if>
+      <if test="(startTime != null || startTime != '') and (endTime != null and endTime != '')">
+        AND c.create_time &lt;= #{endTime}
+      </if>
+    </where>
+    order by c.create_time asc
+  </select>
+
+<!--  根据当前人才的姓名查询所有的已有信息-->
+<!--  talent_id, open_id, `name`, sex, id_card, passport, work_unit, industry, phone, create_time,-->
+<!--  `status`, category, card_id-->
+
+<!--  educ_id, education, school, first_class, major, educ_picture, cert_id, talent_id,-->
+<!--  `status`-->
+<!--  pq_id, category, info, picture, cert_id, talent_id, `status`-->
+
+<!--  pt_id, category, info, picture, cert_id, talent_id, `status`-->
+  <select id="queryAllMsg" parameterType="java.lang.String" resultType="com.talentcard.common.bo.ApprovalBO">
+    select t.`name`, t.sex, t.id_card as idCard, t.phone, c.political, t.industry, t.work_unit as workUnit,
+    t.create_time as CreateTime, t.card_id as cardId, e.education, e.school, e.major, e.educ_picture as educPic,
+    pt.category as ptCategory, pt.info as ptInfo, pt.picture as ptPic, pq.category as pqCategory, pq.info as pqInfo
+    from t_certification c
+    left join t_education e on c.cert_id = e.cert_id
+    left join t_prof_title pt on c.cert_id = pt.cert_id
+    left join t_prof_quality pq on c.cert_id = pq.cert_id
+    left join t_talent t on c.talent_id = t.talent_id
+    left join t_cert_approval cp on c.cert_id = cp.cert_id
+    where t.name = #{name,jdbcType=CHAR}
+  </select>
 </mapper>
