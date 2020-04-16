@@ -3,7 +3,7 @@
 <mapper namespace="com.talentcard.common.mapper.CardMapper">
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.CardPO">
     <id column="card_id" jdbcType="BIGINT" property="cardId" />
-    <result column="brand_name" jdbcType="CHAR" property="brandName" />
+    <result column="name" jdbcType="CHAR" property="name" />
     <result column="title" jdbcType="CHAR" property="title" />
     <result column="curr_num" jdbcType="BIGINT" property="currNum" />
     <result column="description" jdbcType="VARCHAR" property="description" />
@@ -14,10 +14,11 @@
     <result column="initial_num" jdbcType="CHAR" property="initialNum" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="brand_name" jdbcType="CHAR" property="brandName" />
   </resultMap>
   <sql id="Base_Column_List">
-    card_id, brand_name, title, curr_num, description, picture, picture_cdn, prerogative, 
-    initial_word, initial_num, create_time, `status`
+    card_id, `name`, title, curr_num, description, picture, picture_cdn, prerogative, 
+    initial_word, initial_num, create_time, `status`, brand_name
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -30,16 +31,16 @@
     where card_id = #{cardId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.CardPO">
-    insert into t_card (card_id, brand_name, title, 
+    insert into t_card (card_id, `name`, title, 
       curr_num, description, picture, 
       picture_cdn, prerogative, initial_word, 
-      initial_num, create_time, `status`
-      )
-    values (#{cardId,jdbcType=BIGINT}, #{brandName,jdbcType=CHAR}, #{title,jdbcType=CHAR}, 
+      initial_num, create_time, `status`, 
+      brand_name)
+    values (#{cardId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{title,jdbcType=CHAR}, 
       #{currNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{picture,jdbcType=CHAR}, 
       #{pictureCdn,jdbcType=CHAR}, #{prerogative,jdbcType=VARCHAR}, #{initialWord,jdbcType=CHAR}, 
-      #{initialNum,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}
-      )
+      #{initialNum,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{brandName,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CardPO">
     insert into t_card
@@ -47,8 +48,8 @@
       <if test="cardId != null">
         card_id,
       </if>
-      <if test="brandName != null">
-        brand_name,
+      <if test="name != null">
+        `name`,
       </if>
       <if test="title != null">
         title,
@@ -80,13 +81,16 @@
       <if test="status != null">
         `status`,
       </if>
+      <if test="brandName != null">
+        brand_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="cardId != null">
         #{cardId,jdbcType=BIGINT},
       </if>
-      <if test="brandName != null">
-        #{brandName,jdbcType=CHAR},
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
       </if>
       <if test="title != null">
         #{title,jdbcType=CHAR},
@@ -118,13 +122,16 @@
       <if test="status != null">
         #{status,jdbcType=TINYINT},
       </if>
+      <if test="brandName != null">
+        #{brandName,jdbcType=CHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.CardPO">
     update t_card
     <set>
-      <if test="brandName != null">
-        brand_name = #{brandName,jdbcType=CHAR},
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
       </if>
       <if test="title != null">
         title = #{title,jdbcType=CHAR},
@@ -156,12 +163,15 @@
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
       </if>
+      <if test="brandName != null">
+        brand_name = #{brandName,jdbcType=CHAR},
+      </if>
     </set>
     where card_id = #{cardId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.CardPO">
     update t_card
-    set brand_name = #{brandName,jdbcType=CHAR},
+    set `name` = #{name,jdbcType=CHAR},
       title = #{title,jdbcType=CHAR},
       curr_num = #{currNum,jdbcType=BIGINT},
       description = #{description,jdbcType=VARCHAR},
@@ -171,7 +181,8 @@
       initial_word = #{initialWord,jdbcType=CHAR},
       initial_num = #{initialNum,jdbcType=CHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      `status` = #{status,jdbcType=TINYINT}
+      `status` = #{status,jdbcType=TINYINT},
+      brand_name = #{brandName,jdbcType=CHAR}
     where card_id = #{cardId,jdbcType=BIGINT}
   </update>
 

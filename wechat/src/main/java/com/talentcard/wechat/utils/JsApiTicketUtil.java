@@ -2,6 +2,7 @@ package com.talentcard.wechat.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.exception.WechatException;
+import com.talentcard.common.utils.WechatApiUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class JsApiTicketUtil {
         String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="
                 + AccessTokenUtil.getAccessToken() + "&type=jsapi";
         //发送请求
-        JSONObject jsonObject = CommonUtil.getRequest(url);
+        JSONObject jsonObject = WechatApiUtil.getRequest(url);
         String jsApiTicket = jsonObject.getString("ticket");
         //判断拿到jsApiTicket是否为空，若为空，抛异常
         //不为空，则如下，更新jsApiTicket，且记录当前时间
