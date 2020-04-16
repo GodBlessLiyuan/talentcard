@@ -15,15 +15,26 @@ import java.util.Map;
 @Mapper
 public interface TalentMapper extends BaseMapper<TalentPO, Long> {
     Integer add(TalentPO talentPO);
+
     HashMap<String, Object> findRegisterOne(String openId);
+
     List<TalentBO> findOne(HashMap<String, Object> hashMap);
+
     TalentPO selectByOpenId(String openId);
+
     String findCardId(String openId);
 
     /**
      * 根据信息检索符合条件的人才信息
+     *
      * @param map
      * @return
      */
     List<TalentCertStatusBO> queryTalentStatus(Map<String, Object> map);
+
+    /**
+     * @param tid 人才ID
+     * @return
+     */
+    TalentBO queryDetail(Long tid);
 }

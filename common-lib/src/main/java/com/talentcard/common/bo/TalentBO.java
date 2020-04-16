@@ -39,6 +39,18 @@ public class TalentBO extends TalentPO {
      * 学校为双一流（原985/211）
      */
     private Byte first;
+    /**
+     * 专业
+     */
+    private String major;
+    /**
+     * 职称信息
+     */
+    private String ptInfo;
+    /**
+     * 职业资格信息
+     */
+    private String pqInfo;
 
     private Long certId;
     private String political;

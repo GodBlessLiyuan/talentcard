@@ -7,6 +7,7 @@ import com.talentcard.common.utils.DTPageInfo;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ITalentService;
+import com.talentcard.web.vo.TalentDetailVO;
 import com.talentcard.web.vo.TalentVO;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,12 @@ public class TalentServiceImpl implements ITalentService {
 
     @Override
     public ResultVO detail(Long tid) {
-        return null;
+        TalentBO bo = talentMapper.queryDetail(tid);
+        if (null == bo) {
+            // 数据不存在
+            return new ResultVO(1001);
+        }
+
+        return new ResultVO<>(1000, TalentDetailVO.convert(bo));
     }
 }

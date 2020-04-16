@@ -1,8 +1,10 @@
 package com.talentcard.web.vo;
 
+import com.talentcard.common.bo.TalentBO;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author: xiahui
@@ -81,5 +83,35 @@ public class TalentDetailVO implements Serializable {
     /**
      * 注册时间
      */
-    private String ctime;
+    private Date ctime;
+
+    /**
+     * bo 转 vo
+     *
+     * @param bo
+     * @return
+     */
+    public static TalentDetailVO convert(TalentBO bo) {
+        TalentDetailVO vo = new TalentDetailVO();
+
+        vo.setName(bo.getName());
+        vo.setSex(bo.getSex());
+        vo.setIdCard(bo.getIdCard());
+        vo.setPhone(bo.getPhone());
+        vo.setCname(bo.getCname());
+        vo.setCnum(bo.getCnum());
+        vo.setEduc(bo.getEduc());
+        vo.setSchool(bo.getSchool());
+        vo.setFirst(bo.getFirst());
+        vo.setMajor(bo.getMajor());
+        vo.setTitle(bo.getTitle());
+        vo.setPtInfo(bo.getPtInfo());
+        vo.setQuality(bo.getQuality());
+        vo.setPqInfo(bo.getPqInfo());
+        vo.setIndustry(bo.getIndustry());
+        vo.setUnit(bo.getWorkUnit());
+        vo.setCtime(bo.getCreateTime());
+
+        return vo;
+    }
 }
