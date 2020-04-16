@@ -67,8 +67,6 @@ public class jsApiController {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        JSONObject jsonObject = new JSONObject();
-        HttpEntity<String> entity = new HttpEntity<>(jsonObject.toString(), headers);
         //exchange方式发送get请求
         JsTokenPO jsTokenPO = restTemplate.getForObject(url, JsTokenPO.class);
         return new ResultVO(1000, jsTokenPO);
