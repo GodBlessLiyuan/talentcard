@@ -43,10 +43,8 @@ public class UserServiceImpl implements IUserService {
             // 用户过期
             return new ResultVO(2104);
         }
-//        long userId = 1;
+//        Long userId = 1L;
         UserPO userPo = userMapper.selectByPrimaryKey(userId);
-
-
         try{
             oldPassword = Md5Util.encodeByMd5(SALT+oldPassword);
             newPassword = Md5Util.encodeByMd5(SALT+newPassword);

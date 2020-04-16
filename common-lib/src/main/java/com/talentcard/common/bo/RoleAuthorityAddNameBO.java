@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class RoleAuthorityAddNameBO {
     private Long raId;
-    private byte status;
+    private Byte status;
     private Long authorityId;
     private Long roleId;
     private String authorityName;
