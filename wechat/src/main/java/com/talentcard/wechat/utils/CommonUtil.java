@@ -1,6 +1,10 @@
 package com.talentcard.wechat.utils;
 
-import java.io.InputStream;
+import com.alibaba.fastjson.JSONObject;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
@@ -33,15 +37,31 @@ public class CommonUtil {
     }
 
     //length用户要求产生字符串的长度
-    public static String getRandomString(int length){
-        String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random random=new Random();
-        StringBuffer sb=new StringBuffer();
-        for(int i=0;i<length;i++){
-            int number=random.nextInt(62);
+    public static String getRandomString(int length) {
+        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(62);
             sb.append(str.charAt(number));
         }
         return sb.toString();
     }
 
+    /**
+     * @Description: getRequest
+     * @param url
+     * @return
+     */
+    public static JSONObject getRequest(String url){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        JSONObject jsonObject = new JSONObject();
+        HttpEntity<String> entity = new HttpEntity<>(jsonObject.toString(), headers);
+        //exchange方式发送get请求
+        ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url,
+                HttpMethod.GET, entity, JSONObject.class);
+        return responseEntity.getBody();
+    }
 }
