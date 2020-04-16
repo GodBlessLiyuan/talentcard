@@ -2,6 +2,7 @@ package com.talentcard.common.mapper;
 
 import com.talentcard.common.pojo.EducationPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,5 +25,5 @@ public interface EducationMapper extends BaseMapper<EducationPO, Long> {
      * @param status
      * @return
      */
-    int updateStatusByCertId(Long certId,Byte status);
+    int updateStatusByCertId(@Param("certId") Long certId, @Param("status") Byte status);
 }

@@ -153,7 +153,8 @@
 
 <!--  根据人才姓名进行认证审批表的查询-->
   <select id="queryApprovalById" parameterType="java.lang.Long" resultType="com.talentcard.common.pojo.CertApprovalPO">
-    select cp.approval_id, cp.cert_id, cp.create_time, cp.`type`, cp.user_id, cp.card_id, cp.category, cp.`result`, cp.opinion
+    select cp.approval_id as approvalId, cp.cert_id as certId, cp.create_time as createTime, cp.`type`,
+    cp.user_id as userId, cp.card_id as cardId, cp.category, cp.`result`, cp.opinion, cp.update_time as updateTime
     from t_cert_approval cp
     left join t_certification c on c.cert_id = cp.cert_id
     left join t_talent t on t.talent_id = c.talent_id

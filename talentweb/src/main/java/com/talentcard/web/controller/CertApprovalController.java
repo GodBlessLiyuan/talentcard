@@ -31,16 +31,14 @@ public class CertApprovalController {
     @RequestMapping("CertConfirm")
     public ResultVO CertConfirm(HttpSession session,
                                 @RequestParam(value = "talentId", required = false) Long talentId,
-                                @RequestParam(value = "createTime", required = false) Date createTime,
                                 @RequestParam(value = "certId", required = false) Long certId,
-                                @RequestParam(value = "result", required = false) int result,
-                                @RequestParam(value = "cardId", defaultValue = "普通卡") String cardId,
-                                @RequestParam(value = "category", defaultValue = "基础人才") String category,
+                                @RequestParam(value = "result", required = false) Byte result,
+                                @RequestParam(value = "cardId", defaultValue = "1") Long cardId,
+                                @RequestParam(value = "category", defaultValue = "1") String category,
                                 @RequestParam(value = "opinion", required = false) String opinion){
 
-        Map<String, Object> reqData = new HashMap<>(7);
+        Map<String, Object> reqData = new HashMap<>(6);
         reqData.put("talentId",talentId);
-        reqData.put("createTime",createTime);
         reqData.put("certId",certId);
         reqData.put("result",result);
         reqData.put("cardId",cardId);

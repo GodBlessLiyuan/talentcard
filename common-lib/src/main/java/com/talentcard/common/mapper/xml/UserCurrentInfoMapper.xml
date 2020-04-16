@@ -175,7 +175,7 @@
     where uci_id = #{uciId,jdbcType=BIGINT}
   </update>
 
-  <update id="updateCategoryByTalentId" parameterType="java.lang.Long">
+  <update id="updateCategoryByTalentId">
     update t_user_current_info
     set talent_category = #{talentCategory,jdbcType=CHAR}
     where talent_id = #{talentId,jdbcType=BIGINT}
