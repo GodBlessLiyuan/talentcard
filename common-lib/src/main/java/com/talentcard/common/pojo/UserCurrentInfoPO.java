@@ -25,5 +25,7 @@ public class UserCurrentInfoPO implements Serializable {
 
     private String pqInfo;
 
+    private String talentCategory;
+
     private static final long serialVersionUID = 1L;
 }
