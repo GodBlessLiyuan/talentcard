@@ -10,11 +10,35 @@ import java.util.List;
 
 @Data
 public class TalentBO extends TalentPO {
+    /**
+     * 学历
+     */
     private Integer educ;
+    /**
+     * 职称
+     */
     private Integer title;
+    /**
+     * 职业资格
+     */
     private Integer quality;
+    /**
+     * 卡片编号
+     */
     private String cnum;
+    /**
+     * 卡片名称
+     */
     private String cname;
+
+    /**
+     * 学校
+     */
+    private String school;
+    /**
+     * 学校为双一流（原985/211）
+     */
+    private Byte first;
 
     private Long certId;
     private String political;

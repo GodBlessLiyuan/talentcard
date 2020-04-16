@@ -22,6 +22,8 @@ public class UserCurrentInfoPO implements Serializable {
      */
     private Byte firstClass;
 
+    private String major;
+
     private Integer ptCategory;
 
     private String ptInfo;
@@ -82,6 +84,14 @@ public class UserCurrentInfoPO implements Serializable {
         this.firstClass = firstClass;
     }
 
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
     public Integer getPtCategory() {
         return ptCategory;
     }
@@ -140,6 +150,7 @@ public class UserCurrentInfoPO implements Serializable {
             && (this.getEducation() == null ? other.getEducation() == null : this.getEducation().equals(other.getEducation()))
             && (this.getSchool() == null ? other.getSchool() == null : this.getSchool().equals(other.getSchool()))
             && (this.getFirstClass() == null ? other.getFirstClass() == null : this.getFirstClass().equals(other.getFirstClass()))
+            && (this.getMajor() == null ? other.getMajor() == null : this.getMajor().equals(other.getMajor()))
             && (this.getPtCategory() == null ? other.getPtCategory() == null : this.getPtCategory().equals(other.getPtCategory()))
             && (this.getPtInfo() == null ? other.getPtInfo() == null : this.getPtInfo().equals(other.getPtInfo()))
             && (this.getPqCategory() == null ? other.getPqCategory() == null : this.getPqCategory().equals(other.getPqCategory()))
@@ -157,6 +168,7 @@ public class UserCurrentInfoPO implements Serializable {
         result = prime * result + ((getEducation() == null) ? 0 : getEducation().hashCode());
         result = prime * result + ((getSchool() == null) ? 0 : getSchool().hashCode());
         result = prime * result + ((getFirstClass() == null) ? 0 : getFirstClass().hashCode());
+        result = prime * result + ((getMajor() == null) ? 0 : getMajor().hashCode());
         result = prime * result + ((getPtCategory() == null) ? 0 : getPtCategory().hashCode());
         result = prime * result + ((getPtInfo() == null) ? 0 : getPtInfo().hashCode());
         result = prime * result + ((getPqCategory() == null) ? 0 : getPqCategory().hashCode());
@@ -177,6 +189,7 @@ public class UserCurrentInfoPO implements Serializable {
         sb.append(", education=").append(education);
         sb.append(", school=").append(school);
         sb.append(", firstClass=").append(firstClass);
+        sb.append(", major=").append(major);
         sb.append(", ptCategory=").append(ptCategory);
         sb.append(", ptInfo=").append(ptInfo);
         sb.append(", pqCategory=").append(pqCategory);

@@ -375,6 +375,7 @@ CREATE TABLE t_user_current_info
     school char(255),
     -- 1£ºÊÇ£»2£º·ñ
     first_class tinyint COMMENT '1£ºÊÇ£»2£º·ñ',
+    major char(255),
     pt_category int,
     pt_info char(255),
     pq_category int,
