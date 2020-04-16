@@ -10,9 +10,11 @@
     <result column="pt_info" jdbcType="CHAR" property="ptInfo" />
     <result column="pq_category" jdbcType="INTEGER" property="pqCategory" />
     <result column="pq_info" jdbcType="CHAR" property="pqInfo" />
+    <result column="talent_category" jdbcType="CHAR" property="talentCategory" />
   </resultMap>
   <sql id="Base_Column_List">
-    uci_id, talent_id, political, education, pt_category, pt_info, pq_category, pq_info
+    uci_id, talent_id, political, education, pt_category, pt_info, pq_category, pq_info, 
+    talent_category
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -27,10 +29,12 @@
   <insert id="insert" parameterType="com.talentcard.common.pojo.UserCurrentInfoPO">
     insert into t_user_current_info (uci_id, talent_id, political, 
       education, pt_category, pt_info, 
-      pq_category, pq_info)
+      pq_category, pq_info, talent_category
+      )
     values (#{uciId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{political,jdbcType=TINYINT}, 
       #{education,jdbcType=INTEGER}, #{ptCategory,jdbcType=INTEGER}, #{ptInfo,jdbcType=CHAR}, 
-      #{pqCategory,jdbcType=INTEGER}, #{pqInfo,jdbcType=CHAR})
+      #{pqCategory,jdbcType=INTEGER}, #{pqInfo,jdbcType=CHAR}, #{talentCategory,jdbcType=CHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.UserCurrentInfoPO">
     insert into t_user_current_info
@@ -59,6 +63,9 @@
       <if test="pqInfo != null">
         pq_info,
       </if>
+      <if test="talentCategory != null">
+        talent_category,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uciId != null">
@@ -84,6 +91,9 @@
       </if>
       <if test="pqInfo != null">
         #{pqInfo,jdbcType=CHAR},
+      </if>
+      <if test="talentCategory != null">
+        #{talentCategory,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
@@ -111,6 +121,9 @@
       <if test="pqInfo != null">
         pq_info = #{pqInfo,jdbcType=CHAR},
       </if>
+      <if test="talentCategory != null">
+        talent_category = #{talentCategory,jdbcType=CHAR},
+      </if>
     </set>
     where uci_id = #{uciId,jdbcType=BIGINT}
   </update>
@@ -122,7 +135,8 @@
       pt_category = #{ptCategory,jdbcType=INTEGER},
       pt_info = #{ptInfo,jdbcType=CHAR},
       pq_category = #{pqCategory,jdbcType=INTEGER},
-      pq_info = #{pqInfo,jdbcType=CHAR}
+      pq_info = #{pqInfo,jdbcType=CHAR},
+      talent_category = #{talentCategory,jdbcType=CHAR}
     where uci_id = #{uciId,jdbcType=BIGINT}
   </update>
 </mapper>
