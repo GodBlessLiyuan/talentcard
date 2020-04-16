@@ -2,6 +2,7 @@ package com.talentcard.common.mapper;
 
 import com.talentcard.common.pojo.ProfTitlePO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,5 +26,5 @@ public interface ProfTitleMapper extends BaseMapper<ProfTitlePO, Long> {
      * @param status
      * @return
      */
-    int updateStatusByCertId(Long certId,Byte status);
+    int updateStatusByCertId(@Param("certId") Long certId, @Param("status") Byte status);
 }

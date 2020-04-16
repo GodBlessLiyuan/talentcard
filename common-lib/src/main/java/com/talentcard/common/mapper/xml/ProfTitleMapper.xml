@@ -121,7 +121,7 @@
     where talent_id = #{talentId,jdbcType=BIGINT} and `status` = 1
   </select>
 
-  <update id="updateStatusByCertId" parameterType="java.lang.Long">
+  <update id="updateStatusByCertId">
     update t_prof_title
     set `status` = #{status,jdbcType=TINYINT}
     where cert_id = #{certId,jdbcType=BIGINT}

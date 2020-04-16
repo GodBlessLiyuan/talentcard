@@ -69,7 +69,7 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
         // 2 代表审批驳回
         //(1) 新增认证审批表
         CertApprovalPO certApprovalPo = new CertApprovalPO();
-        certApprovalPo.setCardId(certId);
+        certApprovalPo.setCertId(certId);
         //将审批类型更新到2审批
         certApprovalPo.setCreateTime((Date) reqData.get("createTime"));
         certApprovalPo.setType((byte) 2);
@@ -79,14 +79,25 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
         certApprovalPo.setUpdateTime(new Date());
         if (result.equals(FAILURE)) {
             certApprovalPo.setResult(FAILURE);
-            int insertResult = certApprovalMapper.insert(certApprovalPo);
+            int insertResult = certApprovalMapper.insertSelective(certApprovalPo);
             if (insertResult == 0) {
                 //新增认证审批表失败
                 return new ResultVO(2365);
             }
+            // 若审批拒绝，则将当前认证表设置为失效状态
+            CertificationPO certificationPo = new CertificationPO();
+            certificationPo.setCertId(certId);
+            certificationPo.setStatus((byte)6);
+            int resultUpdateCertification = certificationMapper.updateByPrimaryKeySelective(certificationPo);
+            if (resultUpdateCertification == 0) {
+                //更新认证审批表失败
+                return new ResultVO(2372);
+            }
+
         }else {
             certApprovalPo.setResult(SUCCESS);
-            int insertResult = certApprovalMapper.insert(certApprovalPo);
+            certApprovalPo.setCardId((Long) reqData.get("cardId"));
+            int insertResult = certApprovalMapper.insertSelective(certApprovalPo);
             if (insertResult == 0) {
                 //新增认证审批表失败
                 return new ResultVO(2365);
@@ -106,25 +117,26 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
             talentPO.setTalentId(talentId);
             talentPO.setStatus((byte)4);
             talentPO.setCardId(certId);
+            talentPO.setCategory((String) reqData.get("category"));
             int resultUpdateTalent = talentMapper.updateByPrimaryKeySelective(talentPO);
             if (resultUpdateTalent == 0) {
                 //更新人才表失败
                 return new ResultVO(2367);
             }
             //(4) 更新学历表的认证状态
-            int resultEducation = educationMapper.updateStatusByCertId(certId,(byte)1);
+            int resultEducation = educationMapper.updateStatusByCertId(certId, (byte) 1);
             if (resultEducation == 0) {
                 //更新学历表状态失败
                 return new ResultVO(2368);
             }
             //(5) 更新职称表的认证状态
-            int resultProfTitle = profTitleMapper.updateStatusByCertId(certId,(byte)1);
+            int resultProfTitle = profTitleMapper.updateStatusByCertId(certId, (byte) 1);
             if (resultProfTitle == 0) {
                 //更新职称表状态失败
                 return new ResultVO(2369);
             }
             //(6) 更新职业资格表的认证状态
-            int resultProfQuality = profQualityMapper.updateStatusByCertId(certId,(byte)1);
+            int resultProfQuality = profQualityMapper.updateStatusByCertId(certId,(byte) 1);
             if (resultProfQuality == 0) {
                 //更新职称表状态失败
                 return new ResultVO(2370);
