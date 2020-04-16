@@ -3,6 +3,7 @@ package com.talentcard.common.bo;
 import com.talentcard.common.pojo.CertApprovalPO;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,6 +55,11 @@ public class ApprovalBO {
      */
     private Integer pqCategory;
     private String pqInfo;
+
+    /**
+     * 审批结束时间
+     */
+    private Date updateTime;
 
 
 }

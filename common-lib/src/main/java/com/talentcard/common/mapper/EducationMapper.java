@@ -17,4 +17,12 @@ public interface EducationMapper extends BaseMapper<EducationPO, Long> {
      * @return
      */
     List<Integer> queryNameByTalentId(Long talentId);
+
+    /**
+     * 根据认证ID更新学历表中的认证状态
+     * @param certId
+     * @param status
+     * @return
+     */
+    int updateStatusByCertId(Long certId,Byte status);
 }

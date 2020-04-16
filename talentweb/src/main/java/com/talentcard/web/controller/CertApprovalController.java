@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,21 +26,21 @@ public class CertApprovalController {
 
     @RequestMapping("CertApprovalShow")
     public ResultVO certApprovalShow(@RequestParam(value = "talentId", required = false) Long talentId){
-
         return certApprocalService.certApprovalShowItems(talentId);
     }
-
     @RequestMapping("CertConfirm")
     public ResultVO CertConfirm(HttpSession session,
                                 @RequestParam(value = "talentId", required = false) Long talentId,
+                                @RequestParam(value = "createTime", required = false) Date createTime,
                                 @RequestParam(value = "certId", required = false) Long certId,
                                 @RequestParam(value = "result", required = false) int result,
                                 @RequestParam(value = "cardId", defaultValue = "普通卡") String cardId,
                                 @RequestParam(value = "category", defaultValue = "基础人才") String category,
                                 @RequestParam(value = "opinion", required = false) String opinion){
 
-        Map<String, Object> reqData = new HashMap<>(6);
+        Map<String, Object> reqData = new HashMap<>(7);
         reqData.put("talentId",talentId);
+        reqData.put("createTime",createTime);
         reqData.put("certId",certId);
         reqData.put("result",result);
         reqData.put("cardId",cardId);
