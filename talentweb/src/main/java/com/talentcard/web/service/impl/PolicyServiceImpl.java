@@ -79,24 +79,7 @@ public class PolicyServiceImpl implements IPolicyService {
             return new ResultVO(1001);
         }
 
-        PolicyDetailVO vo = new PolicyDetailVO();
-        vo.setPid(po.getPolicyId());
-        vo.setName(po.getName());
-        vo.setNum(po.getNum());
-        vo.setDesc(po.getDescription());
-        vo.setCardIds(po.getCards().split(","));
-        vo.setCategoryIds(po.getCategories().split(","));
-        vo.setEducIds(po.getEducations().split(","));
-        vo.setTitleIds(po.getTitles().split(","));
-        vo.setQualityIds(po.getQualities().split(","));
-        vo.setApply(po.getApply());
-        vo.setRate(po.getRate());
-        vo.setUnit(po.getUnit());
-        vo.setTimes(po.getTimes());
-        vo.setBank(po.getBank());
-        vo.setAnnex(po.getAnnex());
-
-        return new ResultVO<>(1000, vo);
+        return new ResultVO<>(1000, PolicyDetailVO.convert(po));
     }
 
     /**
@@ -114,12 +97,12 @@ public class PolicyServiceImpl implements IPolicyService {
         po.setEducations(String.join(",", dto.getEducIds()));
         po.setTitles(String.join(",", dto.getTitleIds()));
         po.setQualities(String.join(",", dto.getQualityIds()));
-        po.setApply(dto.getApply());
-        po.setRate(dto.getRate());
-        po.setUnit(dto.getUnit());
         po.setTimes(dto.getTimes());
         po.setBank(dto.getBank());
         po.setAnnex(dto.getAnnex());
+        po.setApply(dto.getApply());
+        po.setRate(dto.getRate());
+        po.setUnit(dto.getUnit());
 
         return po;
     }
