@@ -5,12 +5,13 @@
     <id column="uc_id" jdbcType="BIGINT" property="ucId" />
     <result column="talent_id" jdbcType="BIGINT" property="talentId" />
     <result column="card_id" jdbcType="BIGINT" property="cardId" />
+    <result column="name" jdbcType="CHAR" property="name" />
     <result column="num" jdbcType="CHAR" property="num" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    uc_id, talent_id, card_id, num, create_time, `status`
+    uc_id, talent_id, card_id, `name`, num, create_time, `status`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,11 +25,11 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.UserCardPO">
     insert into t_user_card (uc_id, talent_id, card_id, 
-      num, create_time, `status`
-      )
+      `name`, num, create_time, 
+      `status`)
     values (#{ucId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT}, 
-      #{num,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}
-      )
+      #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.UserCardPO">
     insert into t_user_card
@@ -41,6 +42,9 @@
       </if>
       <if test="cardId != null">
         card_id,
+      </if>
+      <if test="name != null">
+        `name`,
       </if>
       <if test="num != null">
         num,
@@ -62,6 +66,9 @@
       <if test="cardId != null">
         #{cardId,jdbcType=BIGINT},
       </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
       <if test="num != null">
         #{num,jdbcType=CHAR},
       </if>
@@ -82,6 +89,9 @@
       <if test="cardId != null">
         card_id = #{cardId,jdbcType=BIGINT},
       </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
       <if test="num != null">
         num = #{num,jdbcType=CHAR},
       </if>
@@ -98,6 +108,7 @@
     update t_user_card
     set talent_id = #{talentId,jdbcType=BIGINT},
       card_id = #{cardId,jdbcType=BIGINT},
+      `name` = #{name,jdbcType=CHAR},
       num = #{num,jdbcType=CHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=TINYINT}

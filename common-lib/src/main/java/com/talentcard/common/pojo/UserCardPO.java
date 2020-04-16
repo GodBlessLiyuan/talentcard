@@ -14,13 +14,15 @@ public class UserCardPO implements Serializable {
 
     private Long cardId;
 
+    private String name;
+
     private String num;
 
     private Date createTime;
 
     /**
-     * 1 待激活
-2 激活中
+     * 1 待审批或待激活
+2 已激活，使用中
 3 废弃
      */
     private Byte status;
@@ -49,6 +51,14 @@ public class UserCardPO implements Serializable {
 
     public void setCardId(Long cardId) {
         this.cardId = cardId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getNum() {
@@ -90,6 +100,7 @@ public class UserCardPO implements Serializable {
         return (this.getUcId() == null ? other.getUcId() == null : this.getUcId().equals(other.getUcId()))
             && (this.getTalentId() == null ? other.getTalentId() == null : this.getTalentId().equals(other.getTalentId()))
             && (this.getCardId() == null ? other.getCardId() == null : this.getCardId().equals(other.getCardId()))
+            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getNum() == null ? other.getNum() == null : this.getNum().equals(other.getNum()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()));
@@ -102,6 +113,7 @@ public class UserCardPO implements Serializable {
         result = prime * result + ((getUcId() == null) ? 0 : getUcId().hashCode());
         result = prime * result + ((getTalentId() == null) ? 0 : getTalentId().hashCode());
         result = prime * result + ((getCardId() == null) ? 0 : getCardId().hashCode());
+        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getNum() == null) ? 0 : getNum().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
@@ -117,6 +129,7 @@ public class UserCardPO implements Serializable {
         sb.append(", ucId=").append(ucId);
         sb.append(", talentId=").append(talentId);
         sb.append(", cardId=").append(cardId);
+        sb.append(", name=").append(name);
         sb.append(", num=").append(num);
         sb.append(", createTime=").append(createTime);
         sb.append(", status=").append(status);
