@@ -33,7 +33,6 @@ public class CertServiceImpl implements ICertService {
     public ResultVO queryCertStatus(int draw, int pageNum, int pageSize,Map<String, Object> map){
         Page<UserRoleBO> page = PageHelper.startPage(pageNum, pageSize);
         List<TalentCertStatusBO> bos =  talentMapper.queryTalentStatus(map);
-
         return new ResultVO(1000,new DTPageInfo<>(draw, page.getTotal(), bos));
     }
 }
