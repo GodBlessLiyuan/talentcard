@@ -3,8 +3,10 @@
 <mapper namespace="com.talentcard.common.mapper.CardMapper">
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.CardPO">
     <id column="card_id" jdbcType="BIGINT" property="cardId" />
+    <result column="wx_card_id" jdbcType="CHAR" property="wxCardId" />
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="title" jdbcType="CHAR" property="title" />
+    <result column="member_num" jdbcType="BIGINT" property="memberNum" />
     <result column="curr_num" jdbcType="BIGINT" property="currNum" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="picture" jdbcType="CHAR" property="picture" />
@@ -14,11 +16,10 @@
     <result column="initial_num" jdbcType="CHAR" property="initialNum" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="brand_name" jdbcType="CHAR" property="brandName" />
   </resultMap>
   <sql id="Base_Column_List">
-    card_id, `name`, title, curr_num, description, picture, picture_cdn, prerogative, 
-    initial_word, initial_num, create_time, `status`, brand_name
+    card_id, wx_card_id, `name`, title, member_num, curr_num, description, picture, picture_cdn, 
+    prerogative, initial_word, initial_num, create_time, `status`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -31,16 +32,16 @@
     where card_id = #{cardId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.CardPO">
-    insert into t_card (card_id, `name`, title, 
-      curr_num, description, picture, 
-      picture_cdn, prerogative, initial_word, 
-      initial_num, create_time, `status`, 
-      brand_name)
-    values (#{cardId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{title,jdbcType=CHAR}, 
-      #{currNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{picture,jdbcType=CHAR}, 
-      #{pictureCdn,jdbcType=CHAR}, #{prerogative,jdbcType=VARCHAR}, #{initialWord,jdbcType=CHAR}, 
-      #{initialNum,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
-      #{brandName,jdbcType=CHAR})
+    insert into t_card (card_id, wx_card_id, `name`, 
+      title, member_num, curr_num, 
+      description, picture, picture_cdn, 
+      prerogative, initial_word, initial_num, 
+      create_time, `status`)
+    values (#{cardId,jdbcType=BIGINT}, #{wxCardId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
+      #{title,jdbcType=CHAR}, #{memberNum,jdbcType=BIGINT}, #{currNum,jdbcType=BIGINT}, 
+      #{description,jdbcType=VARCHAR}, #{picture,jdbcType=CHAR}, #{pictureCdn,jdbcType=CHAR}, 
+      #{prerogative,jdbcType=VARCHAR}, #{initialWord,jdbcType=CHAR}, #{initialNum,jdbcType=CHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CardPO">
     insert into t_card
@@ -48,11 +49,17 @@
       <if test="cardId != null">
         card_id,
       </if>
+      <if test="wxCardId != null">
+        wx_card_id,
+      </if>
       <if test="name != null">
         `name`,
       </if>
       <if test="title != null">
         title,
+      </if>
+      <if test="memberNum != null">
+        member_num,
       </if>
       <if test="currNum != null">
         curr_num,
@@ -81,19 +88,22 @@
       <if test="status != null">
         `status`,
       </if>
-      <if test="brandName != null">
-        brand_name,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="cardId != null">
         #{cardId,jdbcType=BIGINT},
+      </if>
+      <if test="wxCardId != null">
+        #{wxCardId,jdbcType=CHAR},
       </if>
       <if test="name != null">
         #{name,jdbcType=CHAR},
       </if>
       <if test="title != null">
         #{title,jdbcType=CHAR},
+      </if>
+      <if test="memberNum != null">
+        #{memberNum,jdbcType=BIGINT},
       </if>
       <if test="currNum != null">
         #{currNum,jdbcType=BIGINT},
@@ -122,19 +132,22 @@
       <if test="status != null">
         #{status,jdbcType=TINYINT},
       </if>
-      <if test="brandName != null">
-        #{brandName,jdbcType=CHAR},
-      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.CardPO">
     update t_card
     <set>
+      <if test="wxCardId != null">
+        wx_card_id = #{wxCardId,jdbcType=CHAR},
+      </if>
       <if test="name != null">
         `name` = #{name,jdbcType=CHAR},
       </if>
       <if test="title != null">
         title = #{title,jdbcType=CHAR},
+      </if>
+      <if test="memberNum != null">
+        member_num = #{memberNum,jdbcType=BIGINT},
       </if>
       <if test="currNum != null">
         curr_num = #{currNum,jdbcType=BIGINT},
@@ -163,16 +176,15 @@
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
       </if>
-      <if test="brandName != null">
-        brand_name = #{brandName,jdbcType=CHAR},
-      </if>
     </set>
     where card_id = #{cardId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.CardPO">
     update t_card
-    set `name` = #{name,jdbcType=CHAR},
+    set wx_card_id = #{wxCardId,jdbcType=CHAR},
+      `name` = #{name,jdbcType=CHAR},
       title = #{title,jdbcType=CHAR},
+      member_num = #{memberNum,jdbcType=BIGINT},
       curr_num = #{currNum,jdbcType=BIGINT},
       description = #{description,jdbcType=VARCHAR},
       picture = #{picture,jdbcType=CHAR},
@@ -181,8 +193,7 @@
       initial_word = #{initialWord,jdbcType=CHAR},
       initial_num = #{initialNum,jdbcType=CHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      `status` = #{status,jdbcType=TINYINT},
-      brand_name = #{brandName,jdbcType=CHAR}
+      `status` = #{status,jdbcType=TINYINT}
     where card_id = #{cardId,jdbcType=BIGINT}
   </update>
 

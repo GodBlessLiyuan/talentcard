@@ -48,13 +48,13 @@ public class CardServiceImpl implements ICardService {
         //创建卡，微信端
         //status=1为基本卡，否则为高级卡
         JSONObject wechatResult;
-        if(status==1) {
+        if (status == 1) {
             wechatResult = CardUtil.addCommonCard(name, title, notice, description, prerogative, pictureCDN);
             if ((wechatResult.getInteger("errcode") == null)
                     || (wechatResult.getInteger("errcode") != 0)) {
                 return new ResultVO(2320, wechatResult);
             }
-        }else{
+        } else {
             wechatResult = CardUtil.addSeniorCard(name, title, notice, description, prerogative, pictureCDN);
             if ((wechatResult.getInteger("errcode") == null)
                     || (wechatResult.getInteger("errcode") != 0)) {
@@ -76,6 +76,7 @@ public class CardServiceImpl implements ICardService {
         cardPO.setInitialNum(initialNumber);
         cardPO.setCreateTime(new Date());
         cardPO.setStatus(status);
+        cardPO.setMemberNum((long) 0);
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
     }

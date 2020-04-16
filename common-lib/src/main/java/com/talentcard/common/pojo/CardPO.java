@@ -12,9 +12,13 @@ import lombok.Data;
 public class CardPO implements Serializable {
     private Long cardId;
 
+    private String wxCardId;
+
     private String name;
 
     private String title;
+
+    private Long memberNum;
 
     private Long currNum;
 
@@ -36,8 +40,6 @@ public class CardPO implements Serializable {
      * 1：默认；2：非默认
      */
     private Byte status;
-
-    private String brandName;
 
     private static final long serialVersionUID = 1L;
 }
