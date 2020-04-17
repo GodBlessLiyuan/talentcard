@@ -1,12 +1,13 @@
 package com.talentcard.wechat.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.wechat.pojo.JsTokenPO;
 import com.talentcard.wechat.utils.CommonUtil;
 import com.talentcard.wechat.utils.JsApiTicketUtil;
+import com.talentcard.wechat.utils.WxMappingJackson2HttpMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -60,6 +61,9 @@ public class jsApiController {
      */
     @PostMapping("getJsToken")
     public ResultVO getJsToken(String code) {
+
+
+
         String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appId
                 + "&secret=" + appSecret
                 + "&code=" + code
@@ -67,7 +71,9 @@ public class jsApiController {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        //exchange方式发送get请求
+
+        restTemplate.getMessageConverters().add(new WxMappingJackson2HttpMessageConverter());
+
         JsTokenPO jsTokenPO = restTemplate.getForObject(url, JsTokenPO.class);
         return new ResultVO(1000, jsTokenPO);
     }
