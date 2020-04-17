@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 @RequestMapping("jsApi")
 @RestController
-public class jsApiController {
+public class JsApiController {
     private static String appId;
     private static String appSecret;
 
@@ -61,9 +61,6 @@ public class jsApiController {
      */
     @PostMapping("getJsToken")
     public ResultVO getJsToken(String code) {
-
-
-
         String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appId
                 + "&secret=" + appSecret
                 + "&code=" + code
@@ -71,20 +68,18 @@ public class jsApiController {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
         restTemplate.getMessageConverters().add(new WxMappingJackson2HttpMessageConverter());
-
         JsTokenPO jsTokenPO = restTemplate.getForObject(url, JsTokenPO.class);
         return new ResultVO(1000, jsTokenPO);
     }
 
     @Value("${wechat.appId}")
     private void setAppId(String appId) {
-        jsApiController.appId = appId;
+        JsApiController.appId = appId;
     }
 
     @Value("${wechat.appSecret}")
     private void setAppSecret(String appSecret) {
-        jsApiController.appSecret = appSecret;
+        JsApiController.appSecret = appSecret;
     }
 }

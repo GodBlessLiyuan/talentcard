@@ -14,7 +14,7 @@ public class BaseInfoPO {
     private final DateInfoPO date_info = new DateInfoPO();
     private final SkuPO sku = new SkuPO();
     private Integer get_limit = 1;
-    private final Boolean use_custom_code = Boolean.FALSE;
+    private final Boolean use_custom_code = Boolean.TRUE;
     private final Boolean can_give_friend = Boolean.FALSE;
     private String center_title;
     private String center_sub_title;

@@ -99,7 +99,8 @@ public class TalentServiceImpl implements ITalentService {
         talentPO.setStatus(status);
         //人才表的初级卡cardId
         CardPO cardPO = cardMapper.findDefaultCard();
-        talentPO.setCardId(cardPO.getCardId());
+        Long cardId = cardPO.getCardId();
+        talentPO.setCardId(cardId);
         talentMapper.add(talentPO);
         Long talentId = talentPO.getTalentId();
 
@@ -153,6 +154,31 @@ public class TalentServiceImpl implements ITalentService {
         userCurrentInfoPO.setPolitical((byte) 0);
         userCurrentInfoMapper.insertSelective(userCurrentInfoPO);
 
+        //人卡表新增；更新card表里currNum（+1）
+        //从card表里，寻找默认卡
+        //人卡表里设置参数
+        UserCardPO userCardPO = new UserCardPO();
+        userCardPO.setTalentId(talentId);
+        userCardPO.setCardId(cardId);
+        //设置当前编号，组合起来，并且更新卡的currentNum
+        String membershipNumber = cardPO.getInitialWord();
+        Integer initialNumLength = cardPO.getInitialNum().length();
+        Integer currentNumlength = cardPO.getCurrNum().toString().length();
+        //补0
+        if ((initialNumLength - currentNumlength) > 0) {
+            for (int i = 0; i < (initialNumLength - currentNumlength); i++) {
+                membershipNumber = membershipNumber + "0";
+            }
+        }
+        membershipNumber = membershipNumber + cardPO.getCurrNum();
+        userCardPO.setNum(membershipNumber);
+        cardPO.setCurrNum(cardPO.getCurrNum() + 1);
+        cardPO.setMemberNum(cardPO.getMemberNum() + 1);
+        //人卡表里设置参数；添加数据
+        userCardPO.setCreateTime(new Date());
+        userCardPO.setStatus((byte) 1);
+        cardMapper.updateByPrimaryKeySelective(cardPO);
+        userCardMapper.insertSelective(userCardPO);
         return new ResultVO(1000);
     }
 
