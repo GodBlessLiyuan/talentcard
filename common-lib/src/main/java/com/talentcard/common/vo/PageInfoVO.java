@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author: xiahui
  * @date: Created in 2019/9/24 19:46
- * @description: 适配前端DataTables分页结构
+ * @description: 分页信息VO
  * @version: 1.0
  */
 @Data
