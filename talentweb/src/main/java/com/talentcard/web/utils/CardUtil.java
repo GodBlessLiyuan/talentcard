@@ -6,14 +6,12 @@ import com.talentcard.common.pojo.wechat.create.CustomCell1PO;
 import com.talentcard.common.pojo.wechat.create.MemberCardPO;
 import com.talentcard.common.pojo.wechat.create.WxCardPO;
 import com.talentcard.common.utils.WechatApiUtil;
+import com.talentcard.common.vo.ResultVO;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 
 @Component
@@ -67,8 +65,8 @@ public class CardUtil {
         String url = "https://api.weixin.qq.com/card/create?access_token="
                 + AccessTokenUtil.getAccessToken();
         JSONObject result = WechatApiUtil.postRequest(url, cardObject);
-//        return result;
-        return cardObject;
+        return result;
+//        return cardObject;
     }
 
 
@@ -123,14 +121,15 @@ public class CardUtil {
      * @return
      */
     public static String uploadPicture(String picture) {
-        String url = "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token="
-                + AccessTokenUtil.getAccessToken();
+        String url = "https://api.weixin.qq.com/cgi-bin/media/uploadimg";
+        String access_token =AccessTokenUtil.getAccessToken();
         RestTemplate restTemplate = new RestTemplate();
         FileSystemResource resource = new FileSystemResource(new File(picture));
-        MultiValueMap<String, Object> param = new LinkedMultiValueMap<>();
-        param.add("buffer", resource);
-        JSONObject jsonObject = restTemplate.postForObject(url, param, JSONObject.class);
-        return jsonObject.getString("url");
+        MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
+        params.add("buffer", resource);
+        params.add("access_token", access_token);
+        String picUrl = restTemplate.postForObject(url, params, String.class);
+        return picUrl;
     }
 
 }
