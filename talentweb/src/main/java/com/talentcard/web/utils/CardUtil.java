@@ -67,8 +67,8 @@ public class CardUtil {
         String url = "https://api.weixin.qq.com/card/create?access_token="
                 + AccessTokenUtil.getAccessToken();
         JSONObject result = WechatApiUtil.postRequest(url, cardObject);
-        return result;
-//        return cardObject;
+//        return result;
+        return cardObject;
     }
 
 

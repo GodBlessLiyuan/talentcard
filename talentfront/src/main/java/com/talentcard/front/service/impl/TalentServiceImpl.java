@@ -210,8 +210,6 @@ public class TalentServiceImpl implements ITalentService {
 
         //人才表；通过openId获取talent表里唯一的信息
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        talentPO.setStatus(status);
-        talentMapper.updateByPrimaryKeySelective(talentPO);
         Long talentId = talentPO.getTalentId();
 
         //认证表
