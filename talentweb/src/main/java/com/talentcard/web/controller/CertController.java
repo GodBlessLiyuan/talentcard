@@ -25,9 +25,8 @@ public class CertController {
     ICertService certService;
 
     @RequestMapping("queryCertStatus")
-    public ResultVO queryCertStatus(@RequestParam(value = "draw", defaultValue = "1") int draw,
-                                    @RequestParam(value = "start", defaultValue = "1") int pageNum,
-                                    @RequestParam(value = "length", defaultValue = "2") int pageSize,
+    public ResultVO queryCertStatus(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                    @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                     @RequestParam(value = "name", required = false) String name,
                                     @RequestParam(value = "sex", required = false) Byte sex,
                                     @RequestParam(value = "pqCategory", required = false) Integer pqCategory,
@@ -46,6 +45,6 @@ public class CertController {
         reqData.put("status",status);
         reqData.put("startTime",startTime);
         reqData.put("endTime",endTime);
-        return certService.queryCertStatus(draw, pageNum, pageSize,reqData);
+        return certService.queryCertStatus(pageNum, pageSize,reqData);
     }
 }
