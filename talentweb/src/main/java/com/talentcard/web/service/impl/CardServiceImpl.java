@@ -40,11 +40,11 @@ public class CardServiceImpl implements ICardService {
         String picture = FileUtil.uploadFile
                 (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
         String pictureUrl = publicPath + picture;
-        String pictureCDN = CardUtil.uploadPicture(pictureUrl);
-        if(Boolean.TRUE){
-            return new ResultVO(1000,pictureCDN);
-        }
-//        String pictureCDN = "http://mmbiz.qpic.cn/sz_mmbiz_png/71tTaLntw0GBRxAmNffmibu6jA2elmQT3zBOCrzXpB7jVicYmlulaWibgUQJ3PJia3LQ62UfoEQUc0fzmxLiaJyx4zw/0";
+//        String pictureCDN1 = CardUtil.uploadPicture(pictureUrl);
+//        if(Boolean.TRUE){
+//            return new ResultVO(1000,pictureCDN1);
+//        }
+       String pictureCDN = "http://mmbiz.qpic.cn/sz_mmbiz_png/71tTaLntw0GBRxAmNffmibu6jA2elmQT3zBOCrzXpB7jVicYmlulaWibgUQJ3PJia3LQ62UfoEQUc0fzmxLiaJyx4zw/0";
         if (pictureCDN == null || pictureCDN == "") {
             return new ResultVO(2321);
         }
