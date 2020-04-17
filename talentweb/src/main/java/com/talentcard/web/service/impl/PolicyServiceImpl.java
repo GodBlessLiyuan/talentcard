@@ -3,7 +3,7 @@ package com.talentcard.web.service.impl;
 import com.github.pagehelper.Page;
 import com.talentcard.common.mapper.PolicyMapper;
 import com.talentcard.common.pojo.PolicyPO;
-import com.talentcard.common.utils.DTPageInfo;
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.PolicyDTO;
@@ -30,10 +30,10 @@ public class PolicyServiceImpl implements IPolicyService {
     private PolicyMapper policyMapper;
 
     @Override
-    public DTPageInfo<PolicyVO> query(int pageNum, int pageSize, Map<String, Object> reqMap) {
+    public PageInfoVO<PolicyVO> query(int pageNum, int pageSize, Map<String, Object> reqMap) {
         Page<PolicyPO> page = PageHelper.startPage(pageNum, pageSize);
         List<PolicyPO> pos = policyMapper.query(reqMap);
-        return new DTPageInfo<>(page.getTotal(), PolicyVO.convert(pos));
+        return new PageInfoVO<>(page.getTotal(), PolicyVO.convert(pos));
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.talentcard.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.talentcard.common.utils.DTPageInfo;
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.vo.TalentVO;
@@ -26,7 +25,7 @@ public class TalentController {
     private ITalentService service;
 
     @RequestMapping("query")
-    public DTPageInfo<TalentVO> query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+    public PageInfoVO<TalentVO> query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                       @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                       @RequestParam(value = "start", defaultValue = "") String start,
                                       @RequestParam(value = "end", defaultValue = "") String end,

@@ -1,6 +1,6 @@
 package com.talentcard.web.service;
 
-import com.talentcard.common.utils.DTPageInfo;
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.vo.PolicyApplyVO;
 
@@ -23,7 +23,7 @@ public interface IPolicyApplyService {
      * @param reqMap
      * @return
      */
-    DTPageInfo<PolicyApplyVO> query(int pageNum, int pageSize, HashMap<String, Object> reqMap);
+    PageInfoVO<PolicyApplyVO> query(int pageNum, int pageSize, HashMap<String, Object> reqMap);
 
     /**
      * 导出

@@ -1,6 +1,6 @@
 package com.talentcard.web.service;
 
-import com.talentcard.common.utils.DTPageInfo;
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.vo.TalentVO;
 
@@ -21,7 +21,7 @@ public interface ITalentService {
      * @param reqMap
      * @return
      */
-    DTPageInfo<TalentVO> query(int pageNum, int pageSize, Map<String, Object> reqMap);
+    PageInfoVO<TalentVO> query(int pageNum, int pageSize, Map<String, Object> reqMap);
 
     /**
      * 查看详情

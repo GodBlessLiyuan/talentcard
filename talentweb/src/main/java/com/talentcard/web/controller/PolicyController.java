@@ -1,6 +1,6 @@
 package com.talentcard.web.controller;
 
-import com.talentcard.common.utils.DTPageInfo;
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.PolicyDTO;
 import com.talentcard.web.service.IPolicyService;
@@ -27,7 +27,7 @@ public class PolicyController {
     private IPolicyService service;
 
     @RequestMapping("query")
-    public DTPageInfo<PolicyVO> query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+    public PageInfoVO<PolicyVO> query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                       @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                       @RequestParam(value = "start", defaultValue = "") String start,
                                       @RequestParam(value = "end", defaultValue = "") String end,

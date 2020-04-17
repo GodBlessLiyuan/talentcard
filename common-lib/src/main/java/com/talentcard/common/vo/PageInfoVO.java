@@ -1,4 +1,4 @@
-package com.talentcard.common.utils;
+package com.talentcard.common.vo;
 
 import lombok.Data;
 
@@ -11,18 +11,15 @@ import java.util.List;
  * @version: 1.0
  */
 @Data
-public class DTPageInfo<T> {
+public class PageInfoVO<T> {
     private long total;
     private List<T> data;
 
-    public DTPageInfo() {
-    }
-
-    public DTPageInfo(long total) {
+    public PageInfoVO(long total) {
         this.total = total;
     }
 
-    public DTPageInfo(long total, List<T> data) {
+    public PageInfoVO(long total, List<T> data) {
         this(total);
         this.data = data;
     }

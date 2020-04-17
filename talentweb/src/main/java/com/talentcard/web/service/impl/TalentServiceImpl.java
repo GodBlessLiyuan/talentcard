@@ -3,7 +3,7 @@ package com.talentcard.web.service.impl;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.mapper.TalentMapper;
-import com.talentcard.common.utils.DTPageInfo;
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ITalentService;
@@ -27,10 +27,10 @@ public class TalentServiceImpl implements ITalentService {
     private TalentMapper talentMapper;
 
     @Override
-    public DTPageInfo<TalentVO> query(int pageNum, int pageSize, Map<String, Object> reqMap) {
+    public PageInfoVO<TalentVO> query(int pageNum, int pageSize, Map<String, Object> reqMap) {
         Page<TalentBO> page = PageHelper.startPage(pageNum, pageSize);
         List<TalentBO> bos = talentMapper.query(reqMap);
-        return new DTPageInfo<>(page.getTotal(), TalentVO.convert(bos));
+        return new PageInfoVO<>(page.getTotal(), TalentVO.convert(bos));
     }
 
     @Override

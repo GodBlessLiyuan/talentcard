@@ -5,7 +5,7 @@ import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.mapper.PolicyApplyMapper;
 import com.talentcard.common.mapper.PolicyApprovalMapper;
 import com.talentcard.common.pojo.PolicyApprovalPO;
-import com.talentcard.common.utils.DTPageInfo;
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.utils.PageHelper;
@@ -39,10 +39,10 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
             "开户行名", "持卡人"};
 
     @Override
-    public DTPageInfo<PolicyApplyVO> query(int pageNum, int pageSize, HashMap<String, Object> reqMap) {
+    public PageInfoVO<PolicyApplyVO> query(int pageNum, int pageSize, HashMap<String, Object> reqMap) {
         Page<PolicyApplyBO> page = PageHelper.startPage(pageNum, pageSize);
         List<PolicyApplyBO> bos = policyApplyMapper.query(reqMap);
-        return new DTPageInfo<>(page.getTotal(), PolicyApplyVO.convert(bos));
+        return new PageInfoVO<>(page.getTotal(), PolicyApplyVO.convert(bos));
     }
 
     @Override
