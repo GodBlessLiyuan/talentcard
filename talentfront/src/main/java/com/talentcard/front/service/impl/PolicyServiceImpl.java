@@ -60,11 +60,11 @@ public class PolicyServiceImpl implements IPolicyService {
     public ResultVO policies(Long talentId) {
         TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
         if (null == talentPO) {
-            // 用户不存在或已被删除
+            // 人才不存在或已被删除
             return new ResultVO(1001);
         }
         if (talentPO.getStatus() == 2) {
-            // 当前用户尚未认证
+            // 当前人才尚未认证
             return new ResultVO(1002);
         }
 
@@ -215,11 +215,13 @@ public class PolicyServiceImpl implements IPolicyService {
     public ResultVO apply(PolicyApplyDTO dto) {
         TalentPO talentPO = talentMapper.selectByPrimaryKey(dto.getTid());
         if (null == talentPO) {
-            return new ResultVO(2000);
+            // 当前人才不存在或已被删除
+            return new ResultVO(1001);
         }
         PolicyPO policyPO = policyMapper.selectByPrimaryKey(dto.getPid());
         if (null == policyPO) {
-            return new ResultVO(2000);
+            // 当前政策不存在或已被删除
+            return new ResultVO(1002);
         }
         PolicyApplyPO applyPO = new PolicyApplyPO();
         applyPO.setTalentId(dto.getTid());

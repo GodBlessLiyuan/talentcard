@@ -60,7 +60,7 @@ public class PolicyAppliesVO implements Serializable {
         vo.setPaId(po.getPaId());
         vo.setApplyDate(DateUtil.date2Str(po.getCreateTime(), DateUtil.YMD));
         vo.setName(po.getPolicyName());
-        vo.setStatus(po.getStatus() == 1 ? "审核通过" : po.getStatus() == 2 ? "审核中" : po.getStatus() == 3 ? "审核驳回" : "无");
+        vo.setStatus(po.getStatus() == 1 ? "审核通过" : po.getStatus() == 2 ? "审核驳回" : po.getStatus() == 3 ? "审核中" : "无");
         return vo;
     }
 }
