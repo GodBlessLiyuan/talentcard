@@ -12,26 +12,18 @@ import java.util.List;
  */
 @Data
 public class DTPageInfo<T> {
-    private int draw;
-    private long recordsTotal;
-    private long recordsFiltered;
+    private long total;
     private List<T> data;
 
     public DTPageInfo() {
     }
 
-    public DTPageInfo(int draw) {
-        this.draw = draw;
+    public DTPageInfo(long total) {
+        this.total = total;
     }
 
-    public DTPageInfo(int draw, long recordsTotal) {
-        this(draw);
-        this.recordsTotal = recordsTotal;
-        this.recordsFiltered = recordsTotal;
-    }
-
-    public DTPageInfo(int draw, long recordsTotal, List<T> data) {
-        this(draw, recordsTotal);
+    public DTPageInfo(long total, List<T> data) {
+        this(total);
         this.data = data;
     }
 }

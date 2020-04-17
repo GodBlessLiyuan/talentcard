@@ -30,7 +30,7 @@ public class TalentServiceImpl implements ITalentService {
     public DTPageInfo<TalentVO> query(int pageNum, int pageSize, Map<String, Object> reqMap) {
         Page<TalentBO> page = PageHelper.startPage(pageNum, pageSize);
         List<TalentBO> bos = talentMapper.query(reqMap);
-        return new DTPageInfo<>(1, page.getTotal(), TalentVO.convert(bos));
+        return new DTPageInfo<>(page.getTotal(), TalentVO.convert(bos));
     }
 
     @Override

@@ -33,7 +33,7 @@ public class PolicyServiceImpl implements IPolicyService {
     public DTPageInfo<PolicyVO> query(int pageNum, int pageSize, Map<String, Object> reqMap) {
         Page<PolicyPO> page = PageHelper.startPage(pageNum, pageSize);
         List<PolicyPO> pos = policyMapper.query(reqMap);
-        return new DTPageInfo<>(1, page.getTotal(), PolicyVO.convert(pos));
+        return new DTPageInfo<>(page.getTotal(), PolicyVO.convert(pos));
     }
 
     @Override
