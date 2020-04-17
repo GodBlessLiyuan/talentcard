@@ -125,4 +125,18 @@
     and
     uc.status = 1
   </select>
+  <select id="findCurrentCard" parameterType="java.lang.String" resultType="java.util.HashMap">
+    select
+    wx_card_id as cardId, num as code
+    from t_user_card uc
+    left join t_talent t
+    on t.talent_id = uc.talent_id
+    left join t_card c
+    on uc.card_id = c.card_id
+    where
+    t.open_id = #{openId,jdbcType=CHAR}
+    and
+    uc.status = 1
+    limit 1
+  </select>
 </mapper>

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -62,7 +62,9 @@ public class JsApiTicketUtil {
     }
 
     /**
+     * 微信 JS 接口签名校验
      * 根据四个参数获得签名
+     *
      * @param noncestr
      * @param jsApiTicket
      * @param timestamp
@@ -71,11 +73,38 @@ public class JsApiTicketUtil {
      */
     public static String getSignature(String noncestr, String jsApiTicket, String timestamp, String url) {
         //1）将token、timestamp、nonce三个参数进行字典序排序
-        String[] strs = new String[]{noncestr, jsApiTicket, timestamp, url};
-        Arrays.sort(strs);
-        //2）将四个参数字符串拼接成一个字符串进行sha1加密
-        String str = strs[0] + strs[1] + strs[2]+strs[3];
+        HashMap hashMap = new HashMap();
+        hashMap.put("noncestr", noncestr);
+        hashMap.put("jsapi_ticket", jsApiTicket);
+        hashMap.put("timestamp", timestamp);
+        hashMap.put("url", url);
+        String str =sort(hashMap);
         String signature = CommonUtil.sha1(str);
         return signature;
+    }
+
+    /**
+     * 生成签名，根据字段名ascii码，从小大到大
+     *
+     * @param info
+     * @return
+     */
+    public static String sort(Map<String, String> info) {
+        List<Map.Entry<String, String>> infoIds = new ArrayList<Map.Entry<String, String>>(info.entrySet());
+        Collections.sort(infoIds, new Comparator<Map.Entry<String, String>>() {
+            @Override
+            public int compare(Map.Entry<String, String> arg0, Map.Entry<String, String> arg1) {
+                return (arg0.getKey()).compareTo(arg1.getKey());
+            }
+        });
+        String ret = "";
+        for (Map.Entry<String, String> entry : infoIds) {
+            ret += entry.getKey();
+            ret += "=";
+            ret += entry.getValue();
+            ret += "&";
+        }
+        ret = ret.substring(0, ret.length() - 1);
+        return ret;
     }
 }

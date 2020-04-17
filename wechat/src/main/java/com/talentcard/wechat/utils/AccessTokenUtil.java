@@ -54,9 +54,7 @@ public class AccessTokenUtil {
         //不为空，则如下，更新accessToken，且记录当前时间
         if (applyAccessToken != null) {
             myRedis.opsForValue().set("accessToken", applyAccessToken, 2L, TimeUnit.MINUTES);
-            logger.info("成功拿到token：{}", applyAccessToken);
-//            String accessToken = (String) myRedis.opsForValue().get("accessToken");
-//            logger.info("成功存入token：{}", accessToken);
+            logger.info("成功拿到accessToken：{}", applyAccessToken);
         } else {
             throw new WechatException("token拿不到");
         }
