@@ -59,8 +59,13 @@ public class PolicyServiceImpl implements IPolicyService {
     @Override
     public ResultVO policies(Long talentId) {
         TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
-        if (null == talentPO || talentPO.getStatus() == 2) {
-            return new ResultVO(1000);
+        if (null == talentPO) {
+            // 用户不存在或已被删除
+            return new ResultVO(1001);
+        }
+        if (talentPO.getStatus() == 2) {
+            // 当前用户尚未认证
+            return new ResultVO(1002);
         }
 
         List<Integer> existEducations = educationMapper.queryNameByTalentId(talentId);
@@ -120,7 +125,7 @@ public class PolicyServiceImpl implements IPolicyService {
             }
             if (!show && null != educations) {
                 for (String educ : educations) {
-                    if (existEducations.contains(educ)) {
+                    if (existEducations.toString().contains(educ)) {
                         show = true;
                         break;
                     }
@@ -128,7 +133,7 @@ public class PolicyServiceImpl implements IPolicyService {
             }
             if (!show && null != titles) {
                 for (String title : titles) {
-                    if (existTitles.contains(title)) {
+                    if (existTitles.toString().contains(title)) {
                         show = true;
                         break;
                     }
@@ -136,7 +141,7 @@ public class PolicyServiceImpl implements IPolicyService {
             }
             if (!show && null != qualities) {
                 for (String quality : qualities) {
-                    if (existQualities.contains(quality)) {
+                    if (existQualities.toString().contains(quality)) {
                         show = true;
                         break;
                     }
@@ -231,14 +236,14 @@ public class PolicyServiceImpl implements IPolicyService {
         approvalPO.setType((byte) 1);
         policyApprovalMapper.insert(approvalPO);
 
-        if (dto.getCard() != null && dto.getBank() != null) {
+        if (dto.getCard() != null && dto.getBank() != null && policyPO.getBank() == 1) {
             BankPO bankPO = new BankPO();
             bankPO.setNum(dto.getCard());
             bankPO.setName(dto.getBank());
             bankPO.setPaId(applyPO.getPaId());
             bankMapper.insert(bankPO);
         }
-        if (null != dto.getFiles() && dto.getFiles().length > 0) {
+        if (null != dto.getFiles() && dto.getFiles().length > 0 && policyPO.getAnnex() == 1) {
             List<AnnexPO> annexPOs = new ArrayList<>();
             for (MultipartFile file : dto.getFiles()) {
                 AnnexPO annexPO = new AnnexPO();
