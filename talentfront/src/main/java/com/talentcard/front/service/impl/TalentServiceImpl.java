@@ -63,11 +63,16 @@ public class TalentServiceImpl implements ITalentService {
 
     @Override
     public ResultVO<TalentPO> findStatus(String openId) {
-        TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        if (talentPO == null) {
-            return new ResultVO(5555, "查无此人");
+        HashMap<String, Object> hashMap = userCardMapper.findCurrentCard(openId);
+        HashMap<String, Object> result = new HashMap();
+        if (hashMap == null) {
+            result.put("status", 2);
+        } else {
+            result.put("status", 1);
+            result.put("cardId", hashMap.get("cardId"));
+            result.put("code", hashMap.get("code"));
         }
-        return new ResultVO(1000, talentPO);
+        return new ResultVO(1000, result);
     }
 
     @Override
