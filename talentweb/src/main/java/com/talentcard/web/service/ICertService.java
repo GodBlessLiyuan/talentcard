@@ -15,11 +15,10 @@ public interface ICertService {
 
     /**
      * 查询人才的审核状态信息
-     * @param draw
      * @param pageNum
      * @param pageSize
      * @param map
      * @return
      */
-    ResultVO queryCertStatus(int draw, int pageNum, int pageSize,Map<String, Object> map);
+    ResultVO queryCertStatus(int pageNum, int pageSize,Map<String, Object> map);
 }

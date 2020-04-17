@@ -115,30 +115,32 @@
 
 
   <select id="queryAllCert" parameterType="java.util.Map" resultType="com.talentcard.common.bo.TalentCertStatusBO">
-    select t.talent_id as talentId, t.name, t.sex, e.education, pt.category as ptCategory, pq.category as pqCategory, c.status, c.create_time as createTime
+    select t.talent_id as talentId, t.name, t.sex, e.education, pt.category as ptCategory,
+    pq.category as pqCategory, ca.result, c.create_time as createTime
     from t_certification c
     left join t_education e on c.cert_id = e.cert_id
     left join t_prof_title pt on c.cert_id = pt.cert_id
     left join t_prof_quality pq on c.cert_id = pq.cert_id
     left join t_talent t on c.talent_id = t.talent_id
+    left join t_cert_approval ca on ca.cert_id = c.cert_id
     <where>
       <if test="name != null and name != ''">
         and t.name like '%' #{name} '%'
       </if>
       <if test="sex != null and sex != ''">
-        and t.sex =  #{sex}
+        and t.sex = #{sex}
       </if>
       <if test="education != null and education != ''">
-        and e.education =  #{education}
+        and e.education = #{education}
       </if>
       <if test="pqCategory != null and pqCategory != ''">
-        and pq.category =  #{pqCategory}
+        and pq.category = #{pqCategory}
       </if>
       <if test="pqCategory != null and pqCategory != ''">
-        and pt.category =  #{ptCategory}
+        and pt.category = #{ptCategory}
       </if>
       <if test="status != null and status != ''">
-        and c.`status` =  #{status}
+        and ca.result = #{result}
       </if>
       <if test="(startTime != null and startTime != '') and (endTime != null and endTime != '')">
         and c.create_time between #{startTime} AND #{endTime}
@@ -150,7 +152,8 @@
         AND c.create_time &lt;= #{endTime}
       </if>
     </where>
-    order by c.create_time asc
+    order by
+    IFNULL(ca.result,0) = 0 desc , c.create_time desc
   </select>
 
 <!--  根据当前人才的姓名查询所有的已有信息-->

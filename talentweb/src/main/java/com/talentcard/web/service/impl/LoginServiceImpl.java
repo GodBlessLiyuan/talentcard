@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import static com.talentcard.web.controller.LoginController.VERIFY_ID;
+
 /**
  * @author: jiangzhaojie
  * @date: Created in 15:42 2020/4/9
@@ -31,7 +33,6 @@ public class LoginServiceImpl implements ILoginService {
     UserMapper userMapper;
     @Resource
     RoleAuthorityMapper roleAuthorityMapper;
-
 
     public static final String SALT = "talentCard";
 
@@ -58,8 +59,8 @@ public class LoginServiceImpl implements ILoginService {
             return new ResultVO(2100);
         }
         //3 .校验验证码，先从session中提取出验证码信息，然后对比用户输入
-        //String code = (String)session.getAttribute(VERIFY_ID);
-        String code = "1234";
+        String code = (String)session.getAttribute(VERIFY_ID);
+//        String code = "1234";
         if (null == code) {
             // 验证码过期
             return new ResultVO(2102);

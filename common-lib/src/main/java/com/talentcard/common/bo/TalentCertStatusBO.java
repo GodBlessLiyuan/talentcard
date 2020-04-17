@@ -25,7 +25,10 @@ public class TalentCertStatusBO {
      */
     private Integer pqCategory;
 
-    private Byte status;
+    /**
+     * 认证审批表中的结果，1：同意  2：拒绝  null:待审批
+     */
+    private Byte result;
 
     private Date createTime;
 }
