@@ -72,6 +72,12 @@ public class TalentServiceImpl implements ITalentService {
             result.put("cardId", hashMap.get("cardId"));
             result.put("code", hashMap.get("code"));
         }
+        Integer ifChangeCard = talentMapper.ifChangeCard(openId);
+        if (ifChangeCard == 0) {
+            result.put("ifChangeCard", 2);
+        } else {
+            result.put("ifChangeCard", 1);
+        }
         return new ResultVO(1000, result);
     }
 
