@@ -37,4 +37,11 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
      * @return
      */
     TalentBO queryDetail(Long tid);
+
+    /**
+     * 根据openId判断是否需要换卡，status=2和4的时候需要换
+     * @param openId
+     * @return
+     */
+    Integer ifChangeCard(String openId);
 }
