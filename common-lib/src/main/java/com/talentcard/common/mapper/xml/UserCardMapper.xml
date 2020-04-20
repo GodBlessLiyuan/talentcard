@@ -139,4 +139,11 @@
     uc.status = 1
     limit 1
   </select>
+  <update id="updateStatusById">
+    update t_user_card u
+    set u.status = #{status}
+    where u.talent_id = #{talentId,jdbcType=BIGINT}
+    and
+    u.status = #{currentStatus,jdbcType=BIGINT}
+  </update>
 </mapper>
