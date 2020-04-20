@@ -183,7 +183,7 @@
       <if test="roleId != null and roleId != ''">
         and u.role_id =  #{roleId}
       </if>
-      group by u.username
+      group by u.user_id
     </where>
     order by u.create_time asc
   </select>
