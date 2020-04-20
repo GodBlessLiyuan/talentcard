@@ -127,7 +127,7 @@
   </select>
   <select id="findCurrentCard" parameterType="java.lang.String" resultType="java.util.HashMap">
     select
-    wx_card_id as cardId, num as code
+    wx_card_id as cardId, num as code, t.talent_id as talentId
     from t_user_card uc
     left join t_talent t
     on t.talent_id = uc.talent_id

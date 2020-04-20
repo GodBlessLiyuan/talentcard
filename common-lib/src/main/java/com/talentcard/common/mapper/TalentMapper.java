@@ -49,13 +49,23 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
     Integer ifChangeCard(String openId);
 
     /**
-     * 根据openId和认证表的status判断：
+     * 根据openId，认证表的status和人卡表的status判断：
      * 第一次激活卡（注册领基本卡）
      * 还是之后的领取或者更新高级卡
      *
      * @param openId
-     * @param status
+     * @param certificationStatus
+     * @param userCardStatus
      * @return
      */
-    ActivcateBO activate(@Param("openId") String openId, @Param("status") Byte status);
+    ActivcateBO activate(@Param("openId") String openId,
+                         @Param("certificationStatus") Byte certificationStatus,
+                         @Param("userCardStatus") Byte userCardStatus);
+
+    /**
+     * 是否存在待领取的卡
+     * @param openId
+     * @return
+     */
+    ActivcateBO ifExistGetCard(@Param("openId") String openId);
 }

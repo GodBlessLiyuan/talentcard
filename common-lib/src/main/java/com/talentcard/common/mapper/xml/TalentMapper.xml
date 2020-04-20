@@ -442,7 +442,8 @@
     <select id="activate" resultType="com.talentcard.common.bo.ActivcateBO">
     select
     t.talent_id as talentId, c.cert_id as certId, uc.uc_id as ucId,
-    uci.uci_id as uciId, card.wx_card_id as cardId, uc.num as code
+    uci.uci_id as uciId, card.wx_card_id as wxCardId, uc.num as code,
+    card.card_id as cardId
     from t_talent t
     left join t_certification c
     on t.talent_id = c.talent_id
@@ -455,7 +456,28 @@
     where
     t.open_id = #{openId, jdbcType=CHAR}
     and
-    c.status = #{status, jdbcType=TINYINT}
+    c.status = #{certificationStatus, jdbcType=TINYINT}
+    and
+    uc.status = #{userCardStatus, jdbcType=TINYINT}
+  </select>
+    <select id="ifExistGetCard" resultType="com.talentcard.common.bo.ActivcateBO">
+    select
+    t.talent_id as talentId, c.cert_id as certId, uc.uc_id as ucId,
+    uci.uci_id as uciId, card.wx_card_id as wxCardId, uc.num as code,
+    card.card_id as cardId
+    from t_talent t
+    left join t_certification c
+    on t.talent_id = c.talent_id
+    left join t_user_card uc
+    on t.talent_id = uc.talent_id
+    left join t_user_current_info uci
+    on t.talent_id = uci.talent_id
+    left join t_card card
+    on uc.card_id =card.card_id
+    where
+    t.open_id = #{openId, jdbcType=CHAR}
+    and
+    ((c.status = 2) or (c.status = 4))
     and
     uc.status = 1
   </select>

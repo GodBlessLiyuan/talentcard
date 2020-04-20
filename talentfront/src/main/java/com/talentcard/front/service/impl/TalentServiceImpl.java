@@ -64,7 +64,7 @@ public class TalentServiceImpl implements ITalentService {
     @Override
     public ResultVO<TalentPO> findStatus(String openId) {
         HashMap<String, Object> hashMap = userCardMapper.findCurrentCard(openId);
-        HashMap<String, Object> result = new HashMap();
+        HashMap<String, Object> result = new HashMap(4);
         if (hashMap == null) {
             result.put("status", 2);
         } else {
