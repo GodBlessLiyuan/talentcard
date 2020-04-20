@@ -17,4 +17,12 @@ public interface CertApprovalMapper extends BaseMapper<CertApprovalPO, Long> {
      * @return
      */
     List<CertApprovalPO> queryApprovalById(Long talentId);
+
+    /**
+     * 根据certId查询 认证审批表type= 2 and result = 1
+     * 找cert_approval表关于审批，且是通过的那条记录
+     * @param certId
+     * @return
+     */
+    CertApprovalPO findByCertId(Long certId);
 }
