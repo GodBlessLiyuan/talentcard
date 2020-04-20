@@ -16,10 +16,11 @@
     <result column="initial_num" jdbcType="CHAR" property="initialNum" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
     card_id, wx_card_id, `name`, title, member_num, curr_num, description, picture, picture_cdn, 
-    prerogative, initial_word, initial_num, create_time, `status`
+    prerogative, initial_word, initial_num, create_time, `status`, dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -36,12 +37,14 @@
       title, member_num, curr_num, 
       description, picture, picture_cdn, 
       prerogative, initial_word, initial_num, 
-      create_time, `status`)
+      create_time, `status`, dr
+      )
     values (#{cardId,jdbcType=BIGINT}, #{wxCardId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
       #{title,jdbcType=CHAR}, #{memberNum,jdbcType=BIGINT}, #{currNum,jdbcType=BIGINT}, 
       #{description,jdbcType=VARCHAR}, #{picture,jdbcType=CHAR}, #{pictureCdn,jdbcType=CHAR}, 
       #{prerogative,jdbcType=VARCHAR}, #{initialWord,jdbcType=CHAR}, #{initialNum,jdbcType=CHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CardPO">
     insert into t_card
@@ -88,6 +91,9 @@
       <if test="status != null">
         `status`,
       </if>
+      <if test="dr != null">
+        dr,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="cardId != null">
@@ -131,6 +137,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -176,6 +185,9 @@
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
       </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
     </set>
     where card_id = #{cardId,jdbcType=BIGINT}
   </update>
@@ -193,7 +205,8 @@
       initial_word = #{initialWord,jdbcType=CHAR},
       initial_num = #{initialNum,jdbcType=CHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      `status` = #{status,jdbcType=TINYINT}
+      `status` = #{status,jdbcType=TINYINT},
+      dr = #{dr,jdbcType=TINYINT}
     where card_id = #{cardId,jdbcType=BIGINT}
   </update>
 

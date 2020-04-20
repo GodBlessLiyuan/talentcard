@@ -13,4 +13,6 @@ public interface ICardService {
     ResultVO add(String name, String title, String notice, String description,
                  String prerogative, MultipartFile background,
                  String initialWord, String initialNumber, Byte status);
+
+    ResultVO delete(Long cardId);
 }
