@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author ChenXU
  * @version 1.0
  * @date Created in 2020/04/20 14:17
- * @description 微信模块：人才的激活等
+ * @description 微信模块：人才的激活、用户的删卡等
  */
 @RequestMapping("talent")
 @RestController
@@ -23,6 +23,7 @@ public class TalentController {
 
     /**
      * 根据openId激活（业务层该表和核销旧卡）
+     *
      * @param openId
      * @return
      */
@@ -30,5 +31,17 @@ public class TalentController {
     public ResultVO<TalentPO> findStatus(@RequestParam String openId) {
         //激活service层接口
         return iCardActivateService.activate(openId);
+    }
+
+    /**
+     * 用户删卡后触发
+     *
+     * @param openId
+     * @return
+     */
+    @PostMapping("delete")
+    public ResultVO<TalentPO> delete(@RequestParam String openId) {
+        //激活service层接口
+        return iCardActivateService.delete(openId);
     }
 }

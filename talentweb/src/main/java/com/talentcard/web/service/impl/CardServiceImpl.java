@@ -42,8 +42,8 @@ public class CardServiceImpl implements ICardService {
         //上传背景图片
         String picture = FileUtil.uploadFile
                 (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
-        String pictureUploadCdnUrl = publicPath + picture;
-//        String pictureUploadCdnUrl = rootDir + picture;
+//        String pictureUploadCdnUrl = publicPath + picture;
+        String pictureUploadCdnUrl = rootDir + picture;
         String pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
         JSONObject jsonObject = JSONObject.parseObject(pictureCDN);
         pictureCDN = jsonObject.getString("url");

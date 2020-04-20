@@ -12,6 +12,7 @@ public class ActivcateBO {
     private Long certId;
     private Long ucId;
     private Long uciId;
-    private String cardId;
+    private String wxCardId;
     private String code;
+    private Long cardId;
 }
