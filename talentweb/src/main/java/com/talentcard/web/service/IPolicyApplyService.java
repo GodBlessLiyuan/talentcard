@@ -51,4 +51,11 @@ public interface IPolicyApplyService {
      * @return
      */
     ResultVO detail(Long paid);
+
+    /**
+     * 待审批数量
+     *
+     * @return
+     */
+    ResultVO count();
 }

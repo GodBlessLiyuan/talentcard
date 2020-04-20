@@ -78,4 +78,8 @@ public class PolicyApplyController {
         return service.detail(paid);
     }
 
+    @RequestMapping("count")
+    public ResultVO count() {
+        return service.count();
+    }
 }
