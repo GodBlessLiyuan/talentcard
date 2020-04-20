@@ -43,7 +43,7 @@ public class CardServiceImpl implements ICardService {
         String pictureUploadCdnUrl = rootDir + picture;
         String pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
         JSONObject jsonObject = JSONObject.parseObject(pictureCDN);
-        pictureCDN  = jsonObject.getString("url");
+        pictureCDN = jsonObject.getString("url");
         if (pictureCDN == null || pictureCDN == "") {
             return new ResultVO(2321);
         }
@@ -82,5 +82,10 @@ public class CardServiceImpl implements ICardService {
         cardPO.setWxCardId(wechatResult.getString("card_id"));
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
+    }
+
+    @Override
+    public ResultVO delete(Long cardId) {
+        return new ResultVO(1000);
     }
 }

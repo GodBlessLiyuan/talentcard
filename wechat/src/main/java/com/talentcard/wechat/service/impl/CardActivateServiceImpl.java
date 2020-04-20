@@ -13,9 +13,11 @@ import com.talentcard.wechat.service.ICardActivateService;
 import com.talentcard.wechat.utils.AccessTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 
+@EnableTransactionManagement
 @Service
 public class CardActivateServiceImpl implements ICardActivateService {
     @Autowired

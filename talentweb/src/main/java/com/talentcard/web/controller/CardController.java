@@ -27,4 +27,9 @@ public class CardController {
         return iCardService.add(name, title, notice, description, prerogative,
                 background, initialWord, initialNumber, status);
     }
+
+    @PostMapping("delete")
+    public ResultVO delete(@RequestParam(value = "cardId") Long cardId) {
+        return iCardService.delete(cardId);
+    }
 }

@@ -41,5 +41,11 @@ public class CardPO implements Serializable {
      */
     private Byte status;
 
+    /**
+     * 1正在使用
+2删除
+     */
+    private Byte dr;
+
     private static final long serialVersionUID = 1L;
 }
