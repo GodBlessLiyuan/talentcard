@@ -187,7 +187,7 @@ public class TalentServiceImpl implements ITalentService {
         cardPO.setMemberNum(cardPO.getMemberNum() + 1);
         //人卡表里设置参数；添加数据
         userCardPO.setCreateTime(new Date());
-        userCardPO.setStatus((byte) 1);
+        userCardPO.setStatus((byte) 2);
         cardMapper.updateByPrimaryKeySelective(cardPO);
         userCardMapper.insertSelective(userCardPO);
         return new ResultVO(1000);

@@ -1,11 +1,14 @@
 package com.talentcard.web.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.mapper.CardMapper;
 import com.talentcard.common.pojo.CardPO;
 import com.talentcard.common.utils.FileUtil;
+import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ICardService;
+import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.CardUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,8 +42,8 @@ public class CardServiceImpl implements ICardService {
         //上传背景图片
         String picture = FileUtil.uploadFile
                 (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
-//        String pictureUploadCdnUrl = publicPath + picture;
-        String pictureUploadCdnUrl = rootDir + picture;
+        String pictureUploadCdnUrl = publicPath + picture;
+//        String pictureUploadCdnUrl = rootDir + picture;
         String pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
         JSONObject jsonObject = JSONObject.parseObject(pictureCDN);
         pictureCDN = jsonObject.getString("url");
@@ -80,12 +83,33 @@ public class CardServiceImpl implements ICardService {
         cardPO.setStatus(status);
         cardPO.setMemberNum((long) 0);
         cardPO.setWxCardId(wechatResult.getString("card_id"));
+        cardPO.setStatus((byte) 1);
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
     }
 
     @Override
     public ResultVO delete(Long cardId) {
+        //判断会员卡人数是否为0，0则不可删除
+        Integer existMember = cardMapper.findIfExistMember(cardId);
+        if (existMember != null && existMember != 0) {
+            return new ResultVO(2322, "会员卡人数不为0，删除失败");
+        }
+        //删除卡服务器
+        CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
+        String wxCardId = cardPO.getWxCardId();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("card_id", wxCardId);
+        String url = "https://api.weixin.qq.com/card/delete?access_token="
+                + AccessTokenUtil.getAccessToken();
+        JSONObject result = WechatApiUtil.postRequest(url, jsonObject);
+
+        if (result.getInteger("errcode") != 0) {
+            return new ResultVO(2323, "会员卡删除失败，微信服务器原因");
+        }
+        //删除卡服务端
+        cardPO.setDr((byte) 2);
+        cardMapper.updateByPrimaryKeySelective(cardPO);
         return new ResultVO(1000);
     }
 }
