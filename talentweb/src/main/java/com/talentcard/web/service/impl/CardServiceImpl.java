@@ -39,12 +39,11 @@ public class CardServiceImpl implements ICardService {
         //上传背景图片
         String picture = FileUtil.uploadFile
                 (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
-        String pictureUrl = publicPath + picture;
-//        String pictureCDN1 = CardUtil.uploadPicture(pictureUrl);
-//        if(Boolean.TRUE){
-//            return new ResultVO(1000,pictureCDN1);
-//        }
-       String pictureCDN = "http://mmbiz.qpic.cn/sz_mmbiz_png/71tTaLntw0GBRxAmNffmibu6jA2elmQT3zBOCrzXpB7jVicYmlulaWibgUQJ3PJia3LQ62UfoEQUc0fzmxLiaJyx4zw/0";
+        String pictureUploadCdnUrl = publicPath + picture;
+//        String pictureUploadCdnUrl = rootDir + picture;
+        String pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
+        JSONObject jsonObject = JSONObject.parseObject(pictureCDN);
+        pictureCDN  = jsonObject.getString("url");
         if (pictureCDN == null || pictureCDN == "") {
             return new ResultVO(2321);
         }

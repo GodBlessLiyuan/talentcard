@@ -223,6 +223,14 @@ public class PolicyServiceImpl implements IPolicyService {
             // 当前政策不存在或已被删除
             return new ResultVO(1002);
         }
+        List<PolicyApplyPO> applyPOs = policyApplyMapper.queryByTidAndPidAndMonth(dto.getTid(), dto.getPid(), null);
+        for (PolicyApplyPO applyPO : applyPOs) {
+            if (applyPO.getStatus() == 3) {
+                // 已有待审批的申请，请勿重复申请
+                return new ResultVO(1003);
+            }
+        }
+
         PolicyApplyPO applyPO = new PolicyApplyPO();
         applyPO.setTalentId(dto.getTid());
         applyPO.setTalentName(talentPO.getName());
