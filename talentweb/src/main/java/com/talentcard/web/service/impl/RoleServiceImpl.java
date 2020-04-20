@@ -11,6 +11,7 @@ import com.talentcard.web.vo.ManageRoleVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -52,4 +53,6 @@ public class RoleServiceImpl implements IRoleService {
         }
         return new ResultVO(1000,manageRoleVOS);
     }
+
+
 }

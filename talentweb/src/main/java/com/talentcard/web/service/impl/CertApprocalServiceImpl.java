@@ -171,6 +171,11 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
              * 人才卡编号根据人才卡当前卡id的总数+1
              */
             CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
+            if (null == cardPO) {
+                // 当前未有人才卡
+                return new ResultVO(2165);
+            }
+
             String membershipNumber = cardPO.getInitialWord();
             Integer initialNumLength = cardPO.getInitialNum().length();
             Integer currentNumlength = cardPO.getCurrNum().toString().length();
@@ -186,8 +191,15 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
             userCardPO.setCreateTime(new Date());
             userCardPO.setStatus((byte) 1);
             cardMapper.updateByPrimaryKeySelective(cardPO);
-            userCardMapper.insert(userCardPO);
+            userCardMapper.insertSelective(userCardPO);
         }
         return new ResultVO(1000);
+    }
+
+
+    @Override
+    public ResultVO queryByNumApproval() {
+        int number = certApprovalMapper.queryWaitApprovalNum();
+        return new ResultVO(1000,number);
     }
 }

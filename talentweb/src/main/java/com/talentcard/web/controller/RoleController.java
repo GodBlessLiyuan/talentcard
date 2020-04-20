@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 /**
@@ -34,4 +35,6 @@ public class RoleController {
                                 @RequestParam(value = "endTime", required = false) String endTime) {
         return roleService.queryByRole(roleName,startTime,endTime);
     }
+
+
 }

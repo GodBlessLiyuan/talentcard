@@ -46,11 +46,13 @@ public class RoleAuthorityBO implements Serializable {
      * 人才管理权限，1关闭，2开放
      * generalTalentQuery 普通用户查看
      * verifiedTalentQuery 认证用户查看
+     * verifiedTalentUpdate 认证用户修改
      * approvalTalentQuery 认证审批查看
      * approvalTalentAction 认证审批审批
      */
     private Byte generalTalentQuery;
     private Byte verifiedTalentQuery;
+    private Byte verifiedTalentUpdate;
     private Byte approvalTalentQuery;
     private Byte approvalTalentAction;
 
@@ -91,6 +93,7 @@ public class RoleAuthorityBO implements Serializable {
                 case "userCardCreate": vo.setUserCardCreate(bo.getStatus());break;
                 case "generalTalentQuery": vo.setGeneralTalentQuery(bo.getStatus());break;
                 case "verifiedTalentQuery": vo.setVerifiedTalentQuery(bo.getStatus());break;
+                case "verifiedTalentUpdate": vo.setVerifiedTalentUpdate(bo.getStatus());break;
                 case "approvalTalentQuery": vo.setApprovalTalentQuery(bo.getStatus());break;
                 case "approvalTalentAction": vo.setApprovalTalentAction(bo.getStatus());break;
                 case "policyCreate": vo.setPolicyCreate(bo.getStatus());break;
@@ -102,31 +105,5 @@ public class RoleAuthorityBO implements Serializable {
             }
         }
         return vo;
-    }
-
-
-    @Override
-    public String toString() {
-        return "RoleAuthorityBO{" +
-                "roleQuery=" + roleQuery +
-                ", userCreate=" + userCreate +
-                ", userUpdate=" + userUpdate +
-                ", userDelete=" + userDelete +
-                ", userQuery=" + userQuery +
-                ", userCardUpdate=" + userCardUpdate +
-                ", userCardDelete=" + userCardDelete +
-                ", userCardQuery=" + userCardQuery +
-                ", userCardCreate=" + userCardCreate +
-                ", generalTalentQuery=" + generalTalentQuery +
-                ", verifiedTalentQuery=" + verifiedTalentQuery +
-                ", approvalTalentQuery=" + approvalTalentQuery +
-                ", approvalTalentAction=" + approvalTalentAction +
-                ", policyCreate=" + policyCreate +
-                ", policyUpdate=" + policyUpdate +
-                ", policyDelete=" + policyDelete +
-                ", policyQuery=" + policyQuery +
-                ", approvalPolicyQuery=" + approvalPolicyQuery +
-                ", approvalPolicyAction=" + approvalPolicyAction +
-                '}';
     }
 }

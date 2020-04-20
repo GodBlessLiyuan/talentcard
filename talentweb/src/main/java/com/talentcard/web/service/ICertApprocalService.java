@@ -26,4 +26,6 @@ public interface ICertApprocalService {
      * @return
      */
     ResultVO confirmCert(HttpSession session, Map<String, Object> reqData);
+
+    ResultVO queryByNumApproval();
 }

@@ -17,4 +17,7 @@ public interface CertApprovalMapper extends BaseMapper<CertApprovalPO, Long> {
      * @return
      */
     List<CertApprovalPO> queryApprovalById(Long talentId);
+
+
+    int queryWaitApprovalNum();
 }

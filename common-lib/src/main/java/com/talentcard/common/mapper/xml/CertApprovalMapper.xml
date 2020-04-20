@@ -161,4 +161,11 @@
     where t.talent_id = #{talentId,jdbcType=BIGINT}
     order by cp.create_time asc
   </select>
+
+<!--  查询所有待审批的认证数目-->
+  <select id="queryWaitApprovalNum" resultType="java.lang.Integer">
+    SELECT COUNT(*)
+    FROM t_cert_approval
+    where type = 1
+  </select>
 </mapper>
