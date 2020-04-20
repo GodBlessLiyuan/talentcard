@@ -45,6 +45,15 @@ public class WxCardController {
             System.out.println("=============================");
             logger.info("接收消息成功",requestMap);
 
+            //准备回复的数据
+            String respxml = wxCardService.getResponse(requestMap);
+            System.out.println(respxml);
+            PrintWriter out = response.getWriter();
+            out.print(respxml);
+            out.flush();
+            out.close();
+            logger.info("回复成功",respxml);
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("接收消息失败");

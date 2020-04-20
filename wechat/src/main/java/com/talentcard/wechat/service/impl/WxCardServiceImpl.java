@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.talentcard.wechat.dto.BaseMessageDto;
 import com.talentcard.wechat.service.WxCardService;
 import com.talentcard.wechat.utils.CommonUtil;
+import com.talentcard.wechat.utils.XmlUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -79,5 +79,55 @@ public class WxCardServiceImpl implements WxCardService {
         return  mgsig.equalsIgnoreCase(signature);
     }
 
+    /**
+     * 被动回复消息
+     * @param requestMap
+     * @return
+     */
+    public  String getResponse(Map<String,String> requestMap){
+        BaseMessageDto msg=null;
+        String msgType =requestMap.get("MsgType");
+        switch(msgType){
+            case "text":
 
+                break;
+            case "image":
+
+                break;
+            case "voice":
+
+                break;
+            case "video":
+
+                break;
+            case "music":
+
+                break;
+            case "news":
+
+                break;
+            case "event":
+                msg = dealEvent(requestMap);
+                break;
+        }
+
+        //把消息对象处理为xml数据包
+        return beanToXml(msg);
+    }
+
+    //处理event推送
+    public static BaseMessageDto dealEvent(Map<String,String> requestMap){
+        String event = requestMap.get("Event");
+        BaseMessageDto msg=null;
+        if(event.equalsIgnoreCase("CLICK")){
+//            msg= dealClick(requestMap);
+        }
+        return msg;
+    }
+
+    //把对象处理为xml数据包
+    private  static  String beanToXml(BaseMessageDto msg){
+        String str = XmlUtils.toXml(msg);
+        return str;
+    }
 }
