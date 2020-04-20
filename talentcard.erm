@@ -12,7 +12,7 @@
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
 	<x>0</x>
-	<y>0</y>
+	<y>387</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2020-04-08 11:16:39</creation_date>
-			<updated_date>2020-04-18 15:15:36</updated_date>
+			<updated_date>2020-04-18 15:56:44</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -1511,7 +1511,7 @@
 			<binary>false</binary>
 			<args></args>
 			<char_semantics>false</char_semantics>
-			<description>1.正常使用&#x0D;&#x0A;2.注册没领卡/领卡未认证&#x0D;&#x0A;3.认证未审批/待审批&#x0D;&#x0A;4.已有卡，且审批通过但未领卡&#x0D;&#x0A;5.失效</description>
+			<description>1.正常使用/领卡未认证&#x0D;&#x0A;2.注册没领卡（待领卡）&#x0D;&#x0A;3.认证未审批/待审批&#x0D;&#x0A;4.已有卡，且审批通过但未领卡（待领卡）&#x0D;&#x0A;5.失效</description>
 			<logical_name>认证状态</logical_name>
 			<physical_name>status</physical_name>
 			<type>tinyint</type>

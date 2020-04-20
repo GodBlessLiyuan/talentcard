@@ -162,6 +162,17 @@
     order by cp.create_time asc
   </select>
 
+  <select id="findByCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_cert_approval
+    where cert_id = #{certId,jdbcType=BIGINT}
+    and
+    `type` = 2
+    and
+    result = 1
+  </select>
+
 <!--  查询所有待审批的认证数目-->
   <select id="queryWaitApprovalNum" resultType="java.lang.Integer">
     SELECT COUNT(*)

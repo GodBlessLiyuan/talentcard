@@ -2,6 +2,7 @@ package com.talentcard.common.mapper;
 
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.pojo.PolicyApplyPO;
+import com.talentcard.common.vo.ResultVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -36,4 +37,12 @@ public interface PolicyApplyMapper extends BaseMapper<PolicyApplyPO, Long> {
      * @return
      */
     List<PolicyApplyPO> queryByTidAndPidAndMonth(@Param("talentId") Long talentId, @Param("policyId") Long policyId, @Param("month") Integer month);
+
+    /**
+     * 计算相关状态的数量
+     *
+     * @param status
+     * @return
+     */
+    Long countByStatus(Byte status);
 }

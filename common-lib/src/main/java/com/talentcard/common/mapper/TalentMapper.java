@@ -1,9 +1,11 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.bo.TalentCertStatusBO;
 import com.talentcard.common.pojo.TalentPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,8 +42,20 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
 
     /**
      * 根据openId判断是否需要换卡，status=2和4的时候需要换
+     *
      * @param openId
      * @return
      */
     Integer ifChangeCard(String openId);
+
+    /**
+     * 根据openId和认证表的status判断：
+     * 第一次激活卡（注册领基本卡）
+     * 还是之后的领取或者更新高级卡
+     *
+     * @param openId
+     * @param status
+     * @return
+     */
+    ActivcateBO activate(@Param("openId") String openId, @Param("status") Byte status);
 }

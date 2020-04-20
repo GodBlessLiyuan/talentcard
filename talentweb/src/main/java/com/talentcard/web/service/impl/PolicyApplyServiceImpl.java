@@ -80,6 +80,12 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         return new ResultVO<>(1000, PolicyApplyDetailVO.convert(bo));
     }
 
+    @Override
+    public ResultVO count() {
+        Long count = policyApplyMapper.countByStatus((byte) 3);
+        return new ResultVO<>(1000, count);
+    }
+
     /**
      * 根据 bos 构建 导出内容
      *
