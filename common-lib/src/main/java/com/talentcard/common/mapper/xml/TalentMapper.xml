@@ -386,7 +386,7 @@
         from t_talent t
                  left join t_user_current_info uci on t.talent_id = uci.talent_id
                  left join t_user_card c on t.talent_id = c.talent_id
-        where t.talent_id = #{tid,jdbcType=BIGINT}
+        where t.talent_id = #{tid,jdbcType=BIGINT} limit 1
     </select>
 
     <select id="queryTalentStatus" parameterType="java.util.Map"
