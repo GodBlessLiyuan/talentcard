@@ -13,4 +13,6 @@ public interface WxCardService {
     public Map<String,String> parseRequest(HttpServletRequest request);
 
     public boolean check(String timestamp,String nonce,String signature);
+
+    public  String getResponse(Map<String,String> requestMap);
 }
