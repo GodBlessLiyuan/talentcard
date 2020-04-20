@@ -2,6 +2,7 @@ package com.talentcard.web.service;
 
 import com.talentcard.common.vo.ResultVO;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 /**
@@ -19,4 +20,5 @@ public interface IRoleService {
      * @return
      */
     ResultVO queryByRole(String roleName, String startTime, String endTime);
+
 }

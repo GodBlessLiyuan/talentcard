@@ -172,4 +172,11 @@
     and
     result = 1
   </select>
+
+<!--  查询所有待审批的认证数目-->
+  <select id="queryWaitApprovalNum" resultType="java.lang.Integer">
+    SELECT COUNT(*)
+    FROM t_cert_approval
+    where type = 1
+  </select>
 </mapper>

@@ -50,4 +50,14 @@ public class CertApprovalController {
         return certApprocalService.confirmCert(session,reqData);
     }
 
+    /**
+     * 若拥有认证审批权限，则查询当前所有待审批数目
+     * @param session
+     * @return
+     */
+    @RequestMapping("queryByNumApproval")
+    public ResultVO queryByNumApproval(HttpSession session) {
+        return certApprocalService.queryByNumApproval();
+    }
+
 }

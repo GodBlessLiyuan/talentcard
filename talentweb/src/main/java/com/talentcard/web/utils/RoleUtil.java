@@ -58,6 +58,9 @@ public class RoleUtil {
                 case "verifiedTalentQuery":
                     raBo.setStatus(bo.getVerifiedTalentQuery());
                     break;
+                case "verifiedTalentUpdate":
+                    raBo.setStatus(bo.getVerifiedTalentUpdate());
+                    break;
                 case "approvalTalentQuery":
                     raBo.setStatus(bo.getApprovalTalentQuery());
                     break;

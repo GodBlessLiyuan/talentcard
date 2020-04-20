@@ -77,7 +77,7 @@ public class LoginServiceImpl implements ILoginService {
         RoleAuthorityBO roleAuthorityBO = RoleAuthorityBO.convert(bos);
         session.setAttribute("userAuthority", roleAuthorityBO);
         session.setMaxInactiveInterval(60 * 60 * 2);
-        return new ResultVO(1000);
+        return new ResultVO(1000,username);
     }
 
     /**
