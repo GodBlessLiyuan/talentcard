@@ -1,6 +1,5 @@
 package com.talentcard.web.service;
 
-import com.talentcard.web.vo.ConfirmMsgVO;
 import com.talentcard.common.vo.ResultVO;
 
 import javax.servlet.http.HttpSession;
