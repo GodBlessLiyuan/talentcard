@@ -2,7 +2,7 @@ package com.talentcard.wechat.service.impl;
 
 import com.talentcard.wechat.dto.TemplateDataDto;
 import com.talentcard.wechat.dto.WeChatTemDto;
-import com.talentcard.wechat.service.TempMesService;
+import com.talentcard.wechat.service.MessageService;
 import com.talentcard.wechat.utils.AccessTokenUtil;
 import com.talentcard.wechat.utils.RequestUtil;
 import net.sf.json.JSONObject;
@@ -18,7 +18,7 @@ import java.util.Map;
  * @version: 1.0
  */
 @Service
-public class TempMesServiceImpl implements TempMesService {
+public class MessageServiceImpl implements MessageService {
 
     public String sendTemplateMessage(String openid){
         String at = AccessTokenUtil.getAccessToken();

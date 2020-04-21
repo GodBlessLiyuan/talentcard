@@ -6,6 +6,6 @@ package com.talentcard.wechat.service;
  * @description: TODO
  * @version: 1.0
  */
-public interface TempMesService {
+public interface MessageService {
     public String sendTemplateMessage(String openid);
 }

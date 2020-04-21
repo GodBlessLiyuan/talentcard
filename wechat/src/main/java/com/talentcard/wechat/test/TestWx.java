@@ -1,6 +1,6 @@
 package com.talentcard.wechat.test;
 
-import com.talentcard.wechat.service.TempMesService;
+import com.talentcard.wechat.service.MessageService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,12 +15,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class TestWx {
 
     @Autowired
-    private TempMesService tempMesService;
+    private MessageService messageService;
 
     @Test
     public void sendTemplateMessage(){
         String openid = "oQetQ1SPRw04AxmI9OR55jOaNKQ8";
-        System.out.println(tempMesService.sendTemplateMessage(openid));
+        System.out.println(messageService.sendTemplateMessage(openid));
     }
 
 
