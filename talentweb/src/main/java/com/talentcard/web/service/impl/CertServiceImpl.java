@@ -4,14 +4,10 @@ import com.github.pagehelper.Page;
 import com.talentcard.common.bo.TalentCertStatusBO;
 import com.talentcard.common.bo.UserRoleBO;
 import com.talentcard.common.mapper.CertificationMapper;
-import com.talentcard.common.mapper.TalentMapper;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ICertService;
-import com.talentcard.web.utils.DTPageInfo;
-import com.talentcard.web.vo.PolicyVO;
-import com.talentcard.web.vo.UserRoleVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,8 +24,7 @@ import java.util.Map;
 public class CertServiceImpl implements ICertService {
     @Resource
     CertificationMapper certificationMapper;
-    @Resource
-    TalentMapper talentMapper;
+
 
     @Override
     public ResultVO queryCertStatus(int pageNum, int pageSize,Map<String, Object> map){

@@ -1,6 +1,5 @@
 package com.talentcard.web.service;
 
-import com.talentcard.common.bo.TalentCertStatusBO;
 import com.talentcard.common.vo.ResultVO;
 
 import java.util.Map;

@@ -2,8 +2,6 @@ package com.talentcard.web.service;
 
 import com.talentcard.common.vo.ResultVO;
 
-import javax.servlet.http.HttpSession;
-import java.util.Date;
 
 /**
  * @author: jiangzhaojie

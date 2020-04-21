@@ -1,10 +1,10 @@
 package com.talentcard.common.bo;
 
-import com.talentcard.common.pojo.CertApprovalPO;
+
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
+
 
 /**
  * @author: jiangzhaojie

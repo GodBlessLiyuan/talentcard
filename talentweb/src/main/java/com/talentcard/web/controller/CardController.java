@@ -1,7 +1,6 @@
 package com.talentcard.web.controller;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ICardService;
 import org.springframework.beans.factory.annotation.Autowired;
