@@ -12,13 +12,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
 import java.io.File;
 
 @Component
 public class CardUtil {
     public static JSONObject addCommonCard(String brandName, String title, String notice,
                                            String description, String prerogative,
-                                           String background) {
+                                           String background, String logoUrl) {
         /**
          * 1. 实体类或集合转JSON串
          * String jsonString = JSONObject.toJSONString(实体类);
@@ -33,7 +34,7 @@ public class CardUtil {
 
         memberCardPO.setBackground_pic_url(background);
         BaseInfoPO baseInfoPO = new BaseInfoPO();
-        baseInfoPO.setLogo_url("http://mmbiz.qpic.cn/mmbiz/iaL1LJM1mF9aRKPZ/0");
+        baseInfoPO.setLogo_url(logoUrl);
         baseInfoPO.setBrand_name(brandName);
         baseInfoPO.setCode_type("CODE_TYPE_TEXT");
         baseInfoPO.setTitle(title);
@@ -72,14 +73,14 @@ public class CardUtil {
 
     public static JSONObject addSeniorCard(String brandName, String title, String notice,
                                            String description, String prerogative,
-                                           String background) {
+                                           String background, String logoUrl) {
         WxCardPO wxCardPO = new WxCardPO();
 
         MemberCardPO memberCardPO = new MemberCardPO();
 
         memberCardPO.setBackground_pic_url(background);
         BaseInfoPO baseInfoPO = new BaseInfoPO();
-        baseInfoPO.setLogo_url("http://mmbiz.qpic.cn/mmbiz/iaL1LJM1mF9aRKPZ/0");
+        baseInfoPO.setLogo_url(logoUrl);
         baseInfoPO.setBrand_name(brandName);
         baseInfoPO.setCode_type("CODE_TYPE_TEXT");
         baseInfoPO.setTitle(title);
@@ -122,7 +123,7 @@ public class CardUtil {
      */
     public static String uploadPicture(String picture) {
         String url = "https://api.weixin.qq.com/cgi-bin/media/uploadimg";
-        String access_token =AccessTokenUtil.getAccessToken();
+        String access_token = AccessTokenUtil.getAccessToken();
         RestTemplate restTemplate = new RestTemplate();
         FileSystemResource resource = new FileSystemResource(new File(picture));
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
