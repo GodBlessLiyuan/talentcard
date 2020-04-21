@@ -1,26 +1,21 @@
-package com.talentcard.wechat.service.impl;
+package com.talentcard.web.utils;
 
-import com.talentcard.wechat.dto.TemplateDataDto;
-import com.talentcard.wechat.dto.WeChatTemDto;
-import com.talentcard.wechat.service.MessageService;
-import com.talentcard.wechat.utils.AccessTokenUtil;
-import com.talentcard.wechat.utils.RequestUtil;
+import com.talentcard.web.dto.TemplateDataDto;
+import com.talentcard.web.dto.WeChatTemDto;
 import net.sf.json.JSONObject;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author: jiangenyong
- * @date: Created in 2020-04-21 9:31
+ * @date: Created in 2020-04-21 14:01
  * @description: TODO
  * @version: 1.0
  */
-@Service
-public class MessageServiceImpl implements MessageService {
+public class MessageUtil {
 
-    public String sendTemplateMessage(String openid){
+    public  static String sendTemplateMessage(String openid){
         String at = AccessTokenUtil.getAccessToken();
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+at;
         WeChatTemDto weChatTemDto = new WeChatTemDto();

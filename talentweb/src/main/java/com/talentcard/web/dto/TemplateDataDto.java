@@ -1,4 +1,4 @@
-package com.talentcard.wechat.dto;
+package com.talentcard.web.dto;
 
 /**
  * @author: jiangenyong
