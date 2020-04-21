@@ -3,11 +3,31 @@ package com.talentcard.common.mapper;
 import com.talentcard.common.pojo.CardPO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * CardMapper继承基类
  */
 @Mapper
 public interface CardMapper extends BaseMapper<CardPO, Long> {
+    /**
+     * 查找基本卡信息
+     * @return
+     */
     CardPO findDefaultCard();
+
+    /**
+     * 判断该卡是否存在成员，决定是否能够删卡
+     * @param cardId
+     * @return
+     */
     Integer findIfExistMember(Long cardId);
+
+    /**
+     * 根据对应条件查询
+     * @param hashMap
+     * @return
+     */
+    List<CardPO> findByFactor (HashMap<String, Object> hashMap);
 }

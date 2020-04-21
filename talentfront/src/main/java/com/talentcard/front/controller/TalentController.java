@@ -5,7 +5,6 @@ import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ISmsService;
 import com.talentcard.front.service.ITalentService;
-import com.talentcard.front.utils.AccessTokenUtil;
 import com.talentcard.front.utils.VerificationCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
