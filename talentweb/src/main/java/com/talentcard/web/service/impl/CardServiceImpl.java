@@ -37,6 +37,8 @@ public class CardServiceImpl implements ICardService {
     private String projectDir;
     @Value("${file.cardBackgroundDir}")
     private String cardBackgroundDir;
+    @Value("${wechat.logoUrl}")
+    private String logoUrl;
     @Autowired
     private CardMapper cardMapper;
     @Autowired
@@ -53,22 +55,29 @@ public class CardServiceImpl implements ICardService {
 //        String pictureUploadCdnUrl = publicPath + picture;
         String pictureUploadCdnUrl = rootDir + picture;
         String pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
-        JSONObject jsonObject = JSONObject.parseObject(pictureCDN);
-        pictureCDN = jsonObject.getString("url");
+        JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
+        pictureCDN = pictureObject.getString("url");
         if (pictureCDN == null || pictureCDN == "") {
             return new ResultVO(2321);
+        }
+        //上传logo图片
+        String logoCDN = CardUtil.uploadPicture(logoUrl);
+        JSONObject logoObject = JSONObject.parseObject(logoCDN);
+        logoCDN = logoObject.getString("url");
+        if (logoCDN == null || logoCDN == "") {
+            return new ResultVO(2325);
         }
         //创建卡，微信端
         //status=1为基本卡，否则为高级卡
         JSONObject wechatResult;
         if (status == 1) {
-            wechatResult = CardUtil.addCommonCard(name, title, notice, description, prerogative, pictureCDN);
+            wechatResult = CardUtil.addCommonCard(name, title, notice, description, prerogative, pictureCDN, logoCDN);
             if ((wechatResult.getInteger("errcode") == null)
                     || (wechatResult.getInteger("errcode") != 0)) {
                 return new ResultVO(2320, wechatResult);
             }
         } else {
-            wechatResult = CardUtil.addSeniorCard(name, title, notice, description, prerogative, pictureCDN);
+            wechatResult = CardUtil.addSeniorCard(name, title, notice, description, prerogative, pictureCDN, logoCDN);
             if ((wechatResult.getInteger("errcode") == null)
                     || (wechatResult.getInteger("errcode") != 0)) {
                 return new ResultVO(2320, wechatResult);
