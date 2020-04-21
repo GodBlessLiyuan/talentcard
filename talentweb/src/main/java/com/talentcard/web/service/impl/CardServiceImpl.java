@@ -1,8 +1,11 @@
 package com.talentcard.web.service.impl;
 
+
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.mapper.CardMapper;
+import com.talentcard.common.mapper.PolicyMapper;
 import com.talentcard.common.pojo.CardPO;
+import com.talentcard.common.pojo.PolicyPO;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.vo.ResultVO;
@@ -16,7 +19,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.smartcardio.Card;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 
 @Service
@@ -32,6 +39,8 @@ public class CardServiceImpl implements ICardService {
     private String cardBackgroundDir;
     @Autowired
     private CardMapper cardMapper;
+    @Autowired
+    private PolicyMapper policyMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -85,6 +94,95 @@ public class CardServiceImpl implements ICardService {
         cardPO.setStatus((byte) 1);
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
+    }
+
+    @Override
+    public ResultVO edit(Long cardId, String title, String description, MultipartFile background) {
+        if (title == "" && description == null && background == null) {
+            return new ResultVO(2324, "会员卡编辑失败，啥参数都没给啊");
+        }
+        CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
+        //上传背景图片
+        String pictureCDN = "";
+        if (background != null) {
+            String picture = FileUtil.uploadFile
+                    (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
+//        String pictureUploadCdnUrl = publicPath + picture;
+            String pictureUploadCdnUrl = rootDir + picture;
+            pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
+            JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
+            pictureCDN = pictureObject.getString("url");
+            if (pictureCDN == null || pictureCDN == "") {
+                return new ResultVO(2321);
+            }
+            cardPO.setPicture(picture);
+        }
+        //根据cardId找到wx的cardId
+        String wxCardId = cardPO.getWxCardId();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("card_id", wxCardId);
+        JSONObject memberCard = new JSONObject();
+        JSONObject baseInfo = new JSONObject();
+        if (pictureCDN != "") {
+            memberCard.put("background_pic_url", pictureCDN);
+            cardPO.setPictureCdn(pictureCDN);
+        }
+        if (title != null && title != "") {
+            baseInfo.put("title", title);
+            cardPO.setTitle(title);
+        }
+        if (description != null && description != "") {
+            baseInfo.put("description", description);
+            cardPO.setDescription(description);
+        }
+        memberCard.put("base_info", baseInfo);
+        paramObject.put("member_card", memberCard);
+
+        String url = "https://api.weixin.qq.com/card/update?access_token="
+                + AccessTokenUtil.getAccessToken();
+        JSONObject result = WechatApiUtil.postRequest(url, paramObject);
+        cardMapper.updateByPrimaryKeySelective(cardPO);
+        return new ResultVO(1000, result);
+    }
+
+    @Override
+    public ResultVO query(HashMap<String, Object> hashMap) {
+        List<CardPO> cardPOList = cardMapper.findByFactor(hashMap);
+        //添加功public path
+        for (CardPO cardPO : cardPOList) {
+            String pictureUrl = cardPO.getPicture();
+            if (pictureUrl != null && pictureUrl != "") {
+                cardPO.setPicture(publicPath + pictureUrl);
+            }
+        }
+        return new ResultVO(1000, cardPOList);
+    }
+
+    @Override
+    public ResultVO findOne(Long cardId) {
+        HashMap<String, Object> result = new HashMap<>();
+        ArrayList<String> resultPolicyList = new ArrayList<>();
+        CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
+        String cardIdString = cardId.toString();
+        //取得全部权益数据
+        List<PolicyPO> policyPOList = policyMapper.queryByDr((byte) 1);
+        //用逗号拆分，判断权益表的cards是否有当前cardId
+        for (PolicyPO policyPO : policyPOList) {
+            String[] policys = policyPO.getCards().split(",");
+            for (String policy : policys) {
+                if (cardIdString.equals(policy)) {
+                    resultPolicyList.add(policyPO.getName());
+                }
+            }
+        }
+        //添加功public path
+        String pictureUrl = cardPO.getPicture();
+        if (pictureUrl != null && pictureUrl != "") {
+            cardPO.setPicture(publicPath + pictureUrl);
+        }
+        result.put("cardInfo", cardPO);
+        result.put("policyInfo", resultPolicyList);
+        return new ResultVO(1000, result);
     }
 
     @Override

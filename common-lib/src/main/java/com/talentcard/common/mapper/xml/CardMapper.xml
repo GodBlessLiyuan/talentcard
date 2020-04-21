@@ -227,4 +227,22 @@
     where c.card_id = #{cardId,jdbcType=BIGINT}
     and (uc.status != 3)
   </select>
+    <select id="findByFactor" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_card c
+        where c.dr=1
+        <if test="title != null and title != ''">
+            and trim(replace(c.title,' ','')) like trim(replace ('%' #{title,jdbcType=CHAR} '%' ,' ',''))
+        </if>
+        <if test="startTime != null">
+            and <![CDATA[ c.create_time >= #{startTime,jdbcType=DATE}]]>
+        </if>
+        <if test="endTime != null">
+            and <![CDATA[ c.create_time <= #{endTime,jdbcType=DATE}]]>
+        </if>
+        <if test="cardNum != null and cardNum != ''">
+            and trim(replace(c.initial_num,' ','')) like trim(replace ('%' #{cardNum,jdbcType=CHAR} '%' ,' ',''))
+        </if>
+    </select>
 </mapper>
