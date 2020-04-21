@@ -13,8 +13,12 @@ import java.util.HashMap;
 public interface UserCardMapper extends BaseMapper<UserCardPO, Long> {
     Integer findUserCardExist(String openId);
 
-    HashMap<String, Object> findCurrentCard(String openId);
-
+    /**
+     * 根据openId和uc的状态值，找这个用户当前使用的卡或者待领取的卡信息
+     * @param openId
+     * @return
+     */
+    HashMap<String, Object> findCurrentCard(String openId, Byte status);
     /**
      * 根据ucId更改对应的人卡表状态值，1是待使用，2是使用，3是失效
      * 用于卡券的激活接口

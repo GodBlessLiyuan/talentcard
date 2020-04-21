@@ -62,15 +62,26 @@ public class TalentServiceImpl implements ITalentService {
     private String profQualityDir;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO<TalentPO> findStatus(String openId) {
-        HashMap<String, Object> hashMap = userCardMapper.findCurrentCard(openId);
+        //待领取的卡
+        HashMap<String, Object> getCard = userCardMapper.findCurrentCard(openId, (byte) 1);
+        //正在使用的卡
+        HashMap<String, Object> currentCard = userCardMapper.findCurrentCard(openId, (byte) 2);
         HashMap<String, Object> result = new HashMap(4);
-        if (hashMap == null) {
+        if (getCard == null && currentCard == null) {
+            //都为空，说明这个人没有卡，需要注册
             result.put("status", 2);
-        } else {
+        } else if (getCard != null) {
+            //说明存在待领取的卡，优先给待领取的
             result.put("status", 1);
-            result.put("cardId", hashMap.get("cardId"));
-            result.put("code", hashMap.get("code"));
+            result.put("cardId", getCard.get("cardId"));
+            result.put("code", getCard.get("code"));
+        }else{
+            //实在不行，给正在使用的卡
+            result.put("status", 1);
+            result.put("cardId", currentCard.get("cardId"));
+            result.put("code", currentCard.get("code"));
         }
         Integer ifChangeCard = talentMapper.ifChangeCard(openId);
         if (ifChangeCard == 0) {
