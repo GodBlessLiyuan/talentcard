@@ -41,6 +41,7 @@ public class WxCardController {
         try {
             //接收消息
             Map<String, String> requestMap = wxCardService.parseRequest(request);
+            String openId = requestMap.get("FromUserName");
             System.out.println(requestMap);
             System.out.println("=============================");
             logger.info("接收消息成功",requestMap);
