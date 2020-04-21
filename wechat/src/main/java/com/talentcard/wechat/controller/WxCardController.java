@@ -46,6 +46,8 @@ public class WxCardController {
             String openId = requestMap.get("FromUserName");
             //用户领取卡事件，激活接口
             iEventService.activate(openId);
+            //用户删除卡券事件，删除接口
+//            iEventService.delete(openId);
 //            System.out.println(requestMap);
 //            System.out.println("=============================");
             logger.info("接收消息成功", requestMap);
