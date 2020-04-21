@@ -1,4 +1,4 @@
-package com.talentcard.wechat.utils;
+package com.talentcard.web.utils;
 
 import java.io.InputStream;
 import java.io.OutputStream;
