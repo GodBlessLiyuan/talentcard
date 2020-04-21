@@ -17,6 +17,6 @@ public class SpringMVCConfig implements WebMvcConfigurer {
     private FilterConfig filterConfig;
     @Override
     public void addInterceptors(InterceptorRegistry registry){
-        registry.addInterceptor(filterConfig).addPathPatterns("/**");
+//        registry.addInterceptor(filterConfig).addPathPatterns("/**");
     }
 }

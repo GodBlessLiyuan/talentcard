@@ -8,6 +8,7 @@ import com.talentcard.common.pojo.RolePO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IRoleService;
 import com.talentcard.web.vo.ManageRoleVO;
+import com.talentcard.web.vo.RoleNameIdVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -54,5 +55,13 @@ public class RoleServiceImpl implements IRoleService {
         return new ResultVO(1000,manageRoleVOS);
     }
 
-
+    @Override
+    public ResultVO queryRoleNameIdMsg() {
+        List<RoleNameIdVO> vos = RoleNameIdVO.convert(roleMapper.queryRoleNameMsg());
+        if (vos.size() == 0) {
+            // 当前无任何角色
+            return new ResultVO(2666);
+        }
+        return new ResultVO(1000,vos);
+    }
 }
