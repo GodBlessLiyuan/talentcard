@@ -353,16 +353,40 @@
         from t_talent t
         left join t_user_current_info uci on t.talent_id = uci.talent_id
         left join t_user_card c on t.talent_id = c.talent_id
-        <where>
-            <if test="start != null and start !=''">and t.create_time >= #{start}</if>
-            <if test="end != null and end !=''">and t.create_time &lt;= #{end}</if>
-            <if test="name != null and name !=''">and t.`name` like '%' #{name} '%'</if>
-            <if test="sex != null and sex !=0">and t.sex = #{sex}</if>
-            <if test="educ != null and educ !=0">and uci.education = #{educ}</if>
-            <if test="title != null and title !=0">and uci.pt_category = #{title}</if>
-            <if test="quality != null and quality !=0">and uci.pq_category = #{quality}</if>
-            <if test="card != null and card !=''">and (c.name like '%' #{card} '%' or c.num like '%' #{card} '%')</if>
-        </where>
+        where t.status != 1
+        <if test="start != null and start !=''">and t.create_time >= #{start}</if>
+        <if test="end != null and end !=''">and t.create_time &lt;= #{end}</if>
+        <if test="name != null and name !=''">and t.`name` like '%' #{name} '%'</if>
+        <if test="sex != null and sex !=0">and t.sex = #{sex}</if>
+        <if test="educ != null and educ !=0">and uci.education = #{educ}</if>
+        <if test="title != null and title !=0">and uci.pt_category = #{title}</if>
+        <if test="quality != null and quality !=0">and uci.pq_category = #{quality}</if>
+        <if test="card != null and card !=''">and (c.name like '%' #{card} '%' or c.num like '%' #{card} '%')</if>
+    </select>
+    <select id="queryCert" resultType="com.talentcard.common.bo.TalentBO">
+        select t.talent_id as talentId,
+        t.create_time as createTime,
+        t.`name`,
+        t.sex,
+        uci.education as educ,
+        uci.pt_category as title,
+        uci.pq_category as quality,
+        c.name as cname,
+        c.num as cnum,
+        uci.talent_category as category
+        from t_talent t
+        left join t_user_current_info uci on t.talent_id = uci.talent_id
+        left join t_user_card c on t.talent_id = c.talent_id
+        where t.status = 1
+        <if test="start != null and start !=''">and t.create_time >= #{start}</if>
+        <if test="end != null and end !=''">and t.create_time &lt;= #{end}</if>
+        <if test="name != null and name !=''">and t.`name` like '%' #{name} '%'</if>
+        <if test="sex != null and sex !=0">and t.sex = #{sex}</if>
+        <if test="educ != null and educ !=0">and uci.education = #{educ}</if>
+        <if test="title != null and title !=0">and uci.pt_category = #{title}</if>
+        <if test="quality != null and quality !=0">and uci.pq_category = #{quality}</if>
+        <if test="card != null and card !=''">and (c.name like '%' #{card} '%' or c.num like '%' #{card} '%')</if>
+        <if test="category != null and category !=0">and uci.talent_category = #{quality}</if>
     </select>
     <select id="queryDetail" parameterType="java.lang.Long" resultType="com.talentcard.common.bo.TalentBO">
         select t.talent_id     as talentId,
@@ -386,7 +410,8 @@
         from t_talent t
                  left join t_user_current_info uci on t.talent_id = uci.talent_id
                  left join t_user_card c on t.talent_id = c.talent_id
-        where t.talent_id = #{tid,jdbcType=BIGINT} limit 1
+        where t.talent_id = #{tid,jdbcType=BIGINT}
+        limit 1
     </select>
 
     <select id="queryTalentStatus" parameterType="java.util.Map"
@@ -429,56 +454,53 @@
         order by t.create_time asc
     </select>
     <select id="ifChangeCard" resultType="java.lang.Integer">
-    select
-    count(t.talent_id)
-    from t_talent t
-    left join t_certification c
-    on t.talent_id = c.talent_id
-    where
-    t.open_id = #{openId,jdbcType=CHAR}
-    and
-    (c.status = 2 or c.status = 4)
-  </select>
+        select count(t.talent_id)
+        from t_talent t
+                 left join t_certification c
+                           on t.talent_id = c.talent_id
+        where t.open_id = #{openId,jdbcType=CHAR}
+          and (c.status = 2 or c.status = 4)
+    </select>
     <select id="activate" resultType="com.talentcard.common.bo.ActivcateBO">
-    select
-    t.talent_id as talentId, c.cert_id as certId, uc.uc_id as ucId,
-    uci.uci_id as uciId, card.wx_card_id as wxCardId, uc.num as code,
-    card.card_id as cardId
-    from t_talent t
-    left join t_certification c
-    on t.talent_id = c.talent_id
-    left join t_user_card uc
-    on t.talent_id = uc.talent_id
-    left join t_user_current_info uci
-    on t.talent_id = uci.talent_id
-    left join t_card card
-    on uc.card_id =card.card_id
-    where
-    t.open_id = #{openId, jdbcType=CHAR}
-    and
-    c.status = #{certificationStatus, jdbcType=TINYINT}
-    and
-    uc.status = #{userCardStatus, jdbcType=TINYINT}
-  </select>
+        select t.talent_id     as talentId,
+               c.cert_id       as certId,
+               uc.uc_id        as ucId,
+               uci.uci_id      as uciId,
+               card.wx_card_id as wxCardId,
+               uc.num          as code,
+               card.card_id    as cardId
+        from t_talent t
+                 left join t_certification c
+                           on t.talent_id = c.talent_id
+                 left join t_user_card uc
+                           on t.talent_id = uc.talent_id
+                 left join t_user_current_info uci
+                           on t.talent_id = uci.talent_id
+                 left join t_card card
+                           on uc.card_id = card.card_id
+        where t.open_id = #{openId, jdbcType=CHAR}
+          and c.status = #{certificationStatus, jdbcType=TINYINT}
+          and uc.status = #{userCardStatus, jdbcType=TINYINT}
+    </select>
     <select id="ifExistGetCard" resultType="com.talentcard.common.bo.ActivcateBO">
-    select
-    t.talent_id as talentId, c.cert_id as certId, uc.uc_id as ucId,
-    uci.uci_id as uciId, card.wx_card_id as wxCardId, uc.num as code,
-    card.card_id as cardId
-    from t_talent t
-    left join t_certification c
-    on t.talent_id = c.talent_id
-    left join t_user_card uc
-    on t.talent_id = uc.talent_id
-    left join t_user_current_info uci
-    on t.talent_id = uci.talent_id
-    left join t_card card
-    on uc.card_id =card.card_id
-    where
-    t.open_id = #{openId, jdbcType=CHAR}
-    and
-    ((c.status = 2) or (c.status = 4))
-    and
-    uc.status = 1
-  </select>
+        select t.talent_id     as talentId,
+               c.cert_id       as certId,
+               uc.uc_id        as ucId,
+               uci.uci_id      as uciId,
+               card.wx_card_id as wxCardId,
+               uc.num          as code,
+               card.card_id    as cardId
+        from t_talent t
+                 left join t_certification c
+                           on t.talent_id = c.talent_id
+                 left join t_user_card uc
+                           on t.talent_id = uc.talent_id
+                 left join t_user_current_info uci
+                           on t.talent_id = uci.talent_id
+                 left join t_card card
+                           on uc.card_id = card.card_id
+        where t.open_id = #{openId, jdbcType=CHAR}
+          and ((c.status = 2) or (c.status = 4))
+          and uc.status = 1
+    </select>
 </mapper>

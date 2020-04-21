@@ -64,8 +64,17 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
 
     /**
      * 是否存在待领取的卡
+     *
      * @param openId
      * @return
      */
     ActivcateBO ifExistGetCard(@Param("openId") String openId);
+
+    /**
+     * 查询已认证用户
+     *
+     * @param reqMap
+     * @return
+     */
+    List<TalentBO> queryCert(Map<String, Object> reqMap);
 }

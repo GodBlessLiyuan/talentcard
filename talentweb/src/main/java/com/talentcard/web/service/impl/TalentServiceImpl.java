@@ -43,4 +43,11 @@ public class TalentServiceImpl implements ITalentService {
 
         return new ResultVO<>(1000, TalentDetailVO.convert(bo));
     }
+
+    @Override
+    public PageInfoVO<TalentVO> queryCert(int pageNum, int pageSize, Map<String, Object> reqMap) {
+        Page<TalentBO> page = PageHelper.startPage(pageNum, pageSize);
+        List<TalentBO> bos = talentMapper.queryCert(reqMap);
+        return new PageInfoVO<>(page.getTotal(), TalentVO.convert(bos));
+    }
 }

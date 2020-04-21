@@ -54,6 +54,10 @@ public class TalentVO implements Serializable {
      * 人才卡名称
      */
     private String cname;
+    /**
+     * 人才类别
+     */
+    private String category;
 
     /**
      * bos 转 vos
