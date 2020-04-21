@@ -107,4 +107,11 @@
     where  r.create_time = #{createTime,jdbcType=TIMESTAMP} and  r.name = #{roleName,jdbcType=CHAR}
   </select>
 
+
+  <select id="queryRoleNameMsg" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_role
+  </select>
+
 </mapper>

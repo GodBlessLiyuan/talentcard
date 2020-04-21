@@ -37,4 +37,8 @@ public class RoleController {
     }
 
 
+    @RequestMapping("queryRoleIdMsg")
+    public ResultVO queryRoleIdMsg() {
+        return roleService.queryRoleNameIdMsg();
+    }
 }

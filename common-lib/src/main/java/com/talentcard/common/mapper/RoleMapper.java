@@ -28,4 +28,10 @@ public interface RoleMapper extends BaseMapper<RolePO, Long> {
      * @return
      */
     Long queryRoleId(@Param("roleName") String roleName, @Param("createTime") String createTime);
+
+    /**
+     * 查询所有角色信息
+     * @return
+     */
+    List<RolePO> queryRoleNameMsg();
 }

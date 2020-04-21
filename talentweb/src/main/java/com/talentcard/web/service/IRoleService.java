@@ -21,4 +21,5 @@ public interface IRoleService {
      */
     ResultVO queryByRole(String roleName, String startTime, String endTime);
 
+    ResultVO queryRoleNameIdMsg();
 }
