@@ -6,6 +6,7 @@ import com.talentcard.wechat.service.TempMesService;
 import com.talentcard.wechat.utils.AccessTokenUtil;
 import com.talentcard.wechat.utils.RequestUtil;
 import net.sf.json.JSONObject;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ import java.util.Map;
  * @description: TODO
  * @version: 1.0
  */
+@Service
 public class TempMesServiceImpl implements TempMesService {
 
     public String sendTemplateMessage(String openid){
