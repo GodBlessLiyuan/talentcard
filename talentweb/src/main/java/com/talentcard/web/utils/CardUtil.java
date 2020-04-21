@@ -35,7 +35,7 @@ public class CardUtil {
         BaseInfoPO baseInfoPO = new BaseInfoPO();
         baseInfoPO.setLogo_url("http://mmbiz.qpic.cn/mmbiz/iaL1LJM1mF9aRKPZ/0");
         baseInfoPO.setBrand_name(brandName);
-        baseInfoPO.setCode_type("CODE_TYPE_NONE");
+        baseInfoPO.setCode_type("CODE_TYPE_TEXT");
         baseInfoPO.setTitle(title);
         baseInfoPO.setColor("Color070");
         baseInfoPO.setNotice(notice);
@@ -81,7 +81,7 @@ public class CardUtil {
         BaseInfoPO baseInfoPO = new BaseInfoPO();
         baseInfoPO.setLogo_url("http://mmbiz.qpic.cn/mmbiz/iaL1LJM1mF9aRKPZ/0");
         baseInfoPO.setBrand_name(brandName);
-        baseInfoPO.setCode_type("CODE_TYPE_NONE");
+        baseInfoPO.setCode_type("CODE_TYPE_TEXT");
         baseInfoPO.setTitle(title);
         baseInfoPO.setColor("Color070");
         baseInfoPO.setNotice(notice);

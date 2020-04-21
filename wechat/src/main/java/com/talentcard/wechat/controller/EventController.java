@@ -2,7 +2,7 @@ package com.talentcard.wechat.controller;
 
 import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
-import com.talentcard.wechat.service.ICardActivateService;
+import com.talentcard.wechat.service.IEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequestMapping("talent")
 @RestController
-public class TalentController {
+public class EventController {
     @Autowired
-    private ICardActivateService iCardActivateService;
+    private IEventService iEventService;
 
     /**
      * 根据openId激活（业务层该表和核销旧卡）
@@ -30,7 +30,7 @@ public class TalentController {
     @PostMapping("activate")
     public ResultVO<TalentPO> findStatus(@RequestParam String openId) {
         //激活service层接口
-        return iCardActivateService.activate(openId);
+        return iEventService.activate(openId);
     }
 
     /**
@@ -42,6 +42,6 @@ public class TalentController {
     @PostMapping("delete")
     public ResultVO<TalentPO> delete(@RequestParam String openId) {
         //激活service层接口
-        return iCardActivateService.delete(openId);
+        return iEventService.delete(openId);
     }
 }

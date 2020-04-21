@@ -6,19 +6,17 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.vo.ResultVO;
-import com.talentcard.wechat.service.ICardActivateService;
+import com.talentcard.wechat.service.IEventService;
 import com.talentcard.wechat.utils.AccessTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-
 
 @EnableTransactionManagement
 @Service
-public class CardActivateServiceImpl implements ICardActivateService {
+public class EventServiceImpl implements IEventService {
     @Autowired
     private TalentMapper talentMapper;
     @Autowired
