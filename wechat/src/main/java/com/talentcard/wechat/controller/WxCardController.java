@@ -1,5 +1,6 @@
 package com.talentcard.wechat.controller;
 
+import com.talentcard.wechat.service.IEventService;
 import com.talentcard.wechat.service.WxCardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +25,11 @@ import java.util.Map;
 @RequestMapping("WxCard")
 @RestController
 public class WxCardController {
-
     private static final Logger logger = LoggerFactory.getLogger(WxCardController.class);
     @Autowired
     private WxCardService wxCardService;
+    @Autowired
+    private IEventService iEventService;
 
 
     //接收消息和事件推送
@@ -42,18 +44,20 @@ public class WxCardController {
             //接收消息
             Map<String, String> requestMap = wxCardService.parseRequest(request);
             String openId = requestMap.get("FromUserName");
-            System.out.println(requestMap);
-            System.out.println("=============================");
-            logger.info("接收消息成功",requestMap);
+            //用户领取卡事件，激活接口
+            iEventService.activate(openId);
+//            System.out.println(requestMap);
+//            System.out.println("=============================");
+            logger.info("接收消息成功", requestMap);
 
             //准备回复的数据
             String respxml = wxCardService.getResponse(requestMap);
-            System.out.println(respxml);
+//            System.out.println(respxml);
             PrintWriter out = response.getWriter();
             out.print(respxml);
             out.flush();
             out.close();
-            logger.info("回复成功",respxml);
+            logger.info("回复成功", respxml);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,7 +79,7 @@ public class WxCardController {
         String echostr = request.getParameter("echostr");
 
         //校验请求
-        if(wxCardService.check(timestamp,nonce,signature)){
+        if (wxCardService.check(timestamp, nonce, signature)) {
             PrintWriter out = response.getWriter();
             //原样返回
             out.print(echostr);
@@ -83,7 +87,7 @@ public class WxCardController {
             out.close();
             logger.info("连接服务器成功");
 
-        }else{
+        } else {
             logger.info("连接服务器失败");
         }
 

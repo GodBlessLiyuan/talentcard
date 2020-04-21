@@ -35,7 +35,7 @@ public class CardController {
     @PostMapping("add")
     public ResultVO add(@RequestParam(value = "name") String name,
                         @RequestParam(value = "title") String title,
-                        @RequestParam(value = "notice") String notice,
+                        @RequestParam(value = "notice", required = false, defaultValue = "") String notice,
                         @RequestParam(value = "description") String description,
                         @RequestParam(value = "prerogative") String prerogative,
                         @RequestParam(value = "background") MultipartFile background,
