@@ -28,11 +28,12 @@ public class VerificationCodeUtil {
     @PostConstruct
     public void VerificationCodeInitialize() {
         myRedis = redisTemplate;
+        //默认后门手机号和验证码123
+        myRedis.opsForValue().set("123", "123");
     }
 
     public static void setCode(String phone, String verificationCode) {
         myRedis.opsForValue().set(phone, verificationCode, 5L, TimeUnit.MINUTES);
-//        String newCode = (String) myRedis.opsForValue().get("verificationCode");
         logger.info("验证码：{}", verificationCode);
     }
 
