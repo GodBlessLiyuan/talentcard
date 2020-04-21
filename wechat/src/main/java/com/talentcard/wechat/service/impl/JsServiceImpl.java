@@ -18,7 +18,7 @@ public class JsServiceImpl implements IJsSdkService {
 
     @Override
     public ResultVO getSignature(String openId) {
-        HashMap hashMap = userCardMapper.findCurrentCard(openId);
+        HashMap hashMap = userCardMapper.findCurrentCard(openId, (byte) 1);
         String apiTicket = JsSdkUtil.getApiTicket();
         String timeStamp = String.valueOf((System.currentTimeMillis() / 1000));
         String cardId = (String) hashMap.get("cardId");
