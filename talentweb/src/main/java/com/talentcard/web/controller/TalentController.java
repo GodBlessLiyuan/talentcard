@@ -53,4 +53,30 @@ public class TalentController {
     public ResultVO detail(@RequestParam(value = "tid") Long tid) {
         return service.detail(tid);
     }
+
+    @RequestMapping("queryCert")
+    public PageInfoVO<TalentVO> queryCert(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                              @RequestParam(value = "start", defaultValue = "") String start,
+                              @RequestParam(value = "end", defaultValue = "") String end,
+                              @RequestParam(value = "name", defaultValue = "") String name,
+                              @RequestParam(value = "sex", defaultValue = "") Byte sex,
+                              @RequestParam(value = "educ", defaultValue = "") Integer educ,
+                              @RequestParam(value = "title", defaultValue = "") Integer title,
+                              @RequestParam(value = "quality", defaultValue = "") Integer quality,
+                              @RequestParam(value = "card", defaultValue = "") String card,
+                              @RequestParam(value = "category", defaultValue = "") String category) {
+        Map<String, Object> reqMap = new HashMap<>(8);
+        reqMap.put("start", start);
+        reqMap.put("end", end);
+        reqMap.put("name", name);
+        reqMap.put("sex", sex);
+        reqMap.put("educ", educ);
+        reqMap.put("title", title);
+        reqMap.put("quality", quality);
+        reqMap.put("card", card);
+        reqMap.put("category", category);
+
+        return service.queryCert(pageNum, pageSize, reqMap);
+    }
 }

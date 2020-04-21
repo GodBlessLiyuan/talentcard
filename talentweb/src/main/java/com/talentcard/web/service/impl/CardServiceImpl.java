@@ -1,6 +1,5 @@
 package com.talentcard.web.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.mapper.CardMapper;
 import com.talentcard.common.pojo.CardPO;
@@ -42,8 +41,8 @@ public class CardServiceImpl implements ICardService {
         //上传背景图片
         String picture = FileUtil.uploadFile
                 (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
-        String pictureUploadCdnUrl = publicPath + picture;
-//        String pictureUploadCdnUrl = rootDir + picture;
+//        String pictureUploadCdnUrl = publicPath + picture;
+        String pictureUploadCdnUrl = rootDir + picture;
         String pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
         JSONObject jsonObject = JSONObject.parseObject(pictureCDN);
         pictureCDN = jsonObject.getString("url");

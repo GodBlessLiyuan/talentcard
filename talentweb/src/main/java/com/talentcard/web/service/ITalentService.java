@@ -30,4 +30,14 @@ public interface ITalentService {
      * @return
      */
     ResultVO detail(Long tid);
+
+    /**
+     * 产看认证人才
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param reqMap
+     * @return
+     */
+    PageInfoVO<TalentVO> queryCert(int pageNum, int pageSize, Map<String, Object> reqMap);
 }

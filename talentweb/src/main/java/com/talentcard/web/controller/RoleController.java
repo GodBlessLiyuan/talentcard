@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-import java.util.Date;
 
 /**
  * @author: jiangzhaojie
@@ -37,4 +35,8 @@ public class RoleController {
     }
 
 
+    @RequestMapping("queryRoleIdMsg")
+    public ResultVO queryRoleIdMsg() {
+        return roleService.queryRoleNameIdMsg();
+    }
 }

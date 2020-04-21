@@ -4,7 +4,6 @@ import com.talentcard.common.pojo.RolePO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,4 +27,10 @@ public interface RoleMapper extends BaseMapper<RolePO, Long> {
      * @return
      */
     Long queryRoleId(@Param("roleName") String roleName, @Param("createTime") String createTime);
+
+    /**
+     * 查询所有角色信息
+     * @return
+     */
+    List<RolePO> queryRoleNameMsg();
 }
