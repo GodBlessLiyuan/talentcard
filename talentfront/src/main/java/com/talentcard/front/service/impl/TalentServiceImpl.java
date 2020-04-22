@@ -78,7 +78,7 @@ public class TalentServiceImpl implements ITalentService {
             result.put("status", 1);
             result.put("cardId", getCard.get("cardId"));
             result.put("code", getCard.get("code"));
-        }else{
+        } else {
             //实在不行，给正在使用的卡
             result.put("status", 1);
             result.put("cardId", currentCard.get("cardId"));
@@ -248,13 +248,22 @@ public class TalentServiceImpl implements ITalentService {
         //设置状态值 状态3为认证未审批
         Byte status = (byte) 3;
         //上传文件
-        String educUrl = FileUtil.uploadFile
-                (educPicture, rootDir, projectDir, educationDir, "education");
-        String profTitleUrl = FileUtil.uploadFile
-                (profTitlePicture, rootDir, projectDir, profTitleDir, "profTitle");
-        String profQualityUrl = FileUtil.uploadFile
-                (profQualityPicture, rootDir, projectDir, profQualityDir, "profQuality");
-        if (educUrl == "" || profTitleUrl == "" || profQualityUrl == "") {
+        String educUrl = "";
+        String profTitleUrl = "";
+        String profQualityUrl = "";
+        if (educPicture != null) {
+            educUrl = FileUtil.uploadFile
+                    (educPicture, rootDir, projectDir, educationDir, "education");
+        }
+        if (profTitlePicture != null) {
+            profTitleUrl = FileUtil.uploadFile
+                    (profTitlePicture, rootDir, projectDir, profTitleDir, "profTitle");
+        }
+        if (profQualityPicture != null) {
+            profQualityUrl = FileUtil.uploadFile
+                    (profQualityPicture, rootDir, projectDir, profQualityDir, "profQuality");
+        }
+        if (educUrl == "" && profTitleUrl == "" && profQualityUrl == "") {
             return new ResultVO(2304, "上传文件失败");
         }
 
