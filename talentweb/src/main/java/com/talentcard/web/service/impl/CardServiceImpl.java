@@ -12,6 +12,8 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ICardService;
 import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.CardUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ import java.util.List;
 @Service
 @EnableTransactionManagement
 public class CardServiceImpl implements ICardService {
+    private static final Logger logger = LoggerFactory.getLogger(CardServiceImpl.class);
     @Value("${file.publicPath}")
     private String publicPath;
     @Value("${file.rootDir}")
@@ -52,8 +55,8 @@ public class CardServiceImpl implements ICardService {
         //上传背景图片
         String picture = FileUtil.uploadFile
                 (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
-        String pictureUploadCdnUrl = publicPath + picture;
-//        String pictureUploadCdnUrl = rootDir + picture;
+//        String pictureUploadCdnUrl = publicPath + picture;
+        String pictureUploadCdnUrl = rootDir + picture;
         String pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
         JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
         pictureCDN = pictureObject.getString("url");
@@ -63,8 +66,8 @@ public class CardServiceImpl implements ICardService {
         //上传logo图片
         String publicLogoUrl = publicPath + logoUrl;
         String serverLogoUrl = rootDir + logoUrl;
-        String logoCDN = CardUtil.uploadPicture(publicLogoUrl);
-//        String logoCDN = CardUtil.uploadPicture(serverLogoUrl);
+//        String logoCDN = CardUtil.uploadPicture(publicLogoUrl);
+        String logoCDN = CardUtil.uploadPicture(serverLogoUrl);
         JSONObject logoObject = JSONObject.parseObject(logoCDN);
         logoCDN = logoObject.getString("url");
         if (logoCDN == null || logoCDN == "") {
