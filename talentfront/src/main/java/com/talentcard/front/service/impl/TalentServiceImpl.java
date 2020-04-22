@@ -83,7 +83,7 @@ public class TalentServiceImpl implements ITalentService {
             result.put("cardId", currentCard.get("cardId"));
             result.put("code", currentCard.get("code"));
         }
-        Integer ifChangeCard = talentMapper.ifChangeCard(openId);
+        Integer ifChangeCard = talentMapper.ifExistGetCard(openId);
         if (ifChangeCard == 0) {
             result.put("ifChangeCard", 2);
         } else {
