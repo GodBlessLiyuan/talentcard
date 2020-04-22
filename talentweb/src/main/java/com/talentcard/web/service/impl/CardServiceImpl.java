@@ -101,6 +101,7 @@ public class CardServiceImpl implements ICardService {
         cardPO.setMemberNum((long) 0);
         cardPO.setWxCardId(wechatResult.getString("card_id"));
         cardPO.setStatus((byte) 1);
+        cardPO.setDr((byte)1);
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
     }

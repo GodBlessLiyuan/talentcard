@@ -24,7 +24,7 @@ public class MessageUtil {
         weChatTemDto.setUrl("");
         Map<String, TemplateDataDto> map = new HashMap<>();
         TemplateDataDto first = new TemplateDataDto();
-        first.setValue("大傻");
+        first.setValue("用户");
         first.setColor("#173177");
         map.put("first",first);
         TemplateDataDto businessType = new TemplateDataDto();
@@ -32,7 +32,7 @@ public class MessageUtil {
         businessType.setColor("#173177");
         map.put("businessType",businessType);
         TemplateDataDto business = new TemplateDataDto();
-        business.setValue("入户申请");
+        business.setValue("领卡");
         business.setColor("#173177");
         map.put("business",business);
         TemplateDataDto order = new TemplateDataDto();
