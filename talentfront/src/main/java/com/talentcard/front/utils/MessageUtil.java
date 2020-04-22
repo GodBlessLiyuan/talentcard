@@ -24,7 +24,7 @@ public class MessageUtil {
         weChatTemDto.setUrl("");
         Map<String, TemplateDataDto> map = new HashMap<>();
         TemplateDataDto first = new TemplateDataDto();
-        first.setValue("用户");
+        first.setValue("张三");
         first.setColor("#173177");
         map.put("first",first);
         TemplateDataDto businessType = new TemplateDataDto();
