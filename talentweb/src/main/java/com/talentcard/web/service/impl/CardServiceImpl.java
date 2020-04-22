@@ -57,6 +57,7 @@ public class CardServiceImpl implements ICardService {
                 (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
 //        String pictureUploadCdnUrl = publicPath + picture;
         String pictureUploadCdnUrl = rootDir + picture;
+        logger.info("pictureUploadCdnUrl", pictureUploadCdnUrl);
         String pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
         JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
         pictureCDN = pictureObject.getString("url");
@@ -67,6 +68,7 @@ public class CardServiceImpl implements ICardService {
         String publicLogoUrl = publicPath + logoUrl;
         String serverLogoUrl = rootDir + logoUrl;
 //        String logoCDN = CardUtil.uploadPicture(publicLogoUrl);
+        logger.info("serverLogoUrl", serverLogoUrl);
         String logoCDN = CardUtil.uploadPicture(serverLogoUrl);
         JSONObject logoObject = JSONObject.parseObject(logoCDN);
         logoCDN = logoObject.getString("url");
