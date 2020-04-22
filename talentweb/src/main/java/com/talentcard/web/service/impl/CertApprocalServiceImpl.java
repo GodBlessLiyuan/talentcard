@@ -3,6 +3,7 @@ package com.talentcard.web.service.impl;
 import com.talentcard.common.bo.ApprovalBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.vo.ApprovalItemsVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ICertApprocalService;
@@ -94,7 +95,6 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
                 //更新认证审批表失败
                 return new ResultVO(2114);
             }
-
             //(4) 更新学历表的认证状态
             int resultEducation = educationMapper.updateStatusByCertId(certId, (byte) 5);
             if (resultEducation == 0) {
@@ -113,7 +113,6 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
                 //更新职称表状态失败
                 return new ResultVO(2370);
             }
-
         }else {
             certApprovalPo.setResult(SUCCESS);
             certApprovalPo.setCardId(cardId);
@@ -190,6 +189,12 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
             userCardPO.setStatus((byte) 1);
             cardMapper.updateByPrimaryKeySelective(cardPO);
             userCardMapper.insertSelective(userCardPO);
+
+            /**
+             * 根据openid 发送领卡通知
+             */
+            String  openid = talentMapper.selectByPrimaryKey(talentId).getOpenId();
+            String notice = MessageUtil.sendTemplateMessage(openid);
         }
         return new ResultVO(1000);
     }

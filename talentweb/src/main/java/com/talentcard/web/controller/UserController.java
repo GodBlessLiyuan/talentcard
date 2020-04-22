@@ -1,7 +1,9 @@
 package com.talentcard.web.controller;
 
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IUserService;
+import com.talentcard.web.vo.UserRoleVO;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -91,15 +93,14 @@ public class UserController {
      * @return
      */
     @RequestMapping("queryByUser")
-    public ResultVO queryByUser(HttpSession session,
-                                @RequestParam(value = "draw", defaultValue = "1") int draw,
-                                @RequestParam(value = "start", defaultValue = "1") int pageNum,
-                                @RequestParam(value = "length", defaultValue = "10") int pageSize,
-                                @RequestParam(value = "username", required = false) String username,
-                                @RequestParam(value = "roleId", required = false) Long roleId) {
+    public PageInfoVO<UserRoleVO> queryByUser(HttpSession session,
+                                              @RequestParam(value = "start", defaultValue = "1") int pageNum,
+                                              @RequestParam(value = "length", defaultValue = "10") int pageSize,
+                                              @RequestParam(value = "username", required = false) String username,
+                                              @RequestParam(value = "roleId", required = false) Long roleId) {
         Map<String, Object> reqData = new HashMap<>(2);
         reqData.put("username", username.replaceAll(" ", ""));
         reqData.put("roleId", roleId);
-        return userService.queryUserRole(draw, pageNum, pageSize, reqData);
+        return userService.queryUserRole(pageNum, pageSize, reqData);
     }
 }
