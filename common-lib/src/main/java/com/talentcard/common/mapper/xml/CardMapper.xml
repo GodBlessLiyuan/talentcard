@@ -214,7 +214,10 @@
         select
         <include refid="Base_Column_List"/>
         from t_card
-        where status = 1
+        where
+        status = 1
+        and
+        dr = 1
         limit 1
     </select>
     <select id="findIfExistMember" parameterType="java.lang.Long" resultType="java.lang.Integer">
