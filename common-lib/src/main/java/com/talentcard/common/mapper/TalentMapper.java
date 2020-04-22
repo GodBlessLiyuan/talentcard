@@ -16,15 +16,35 @@ import java.util.Map;
  */
 @Mapper
 public interface TalentMapper extends BaseMapper<TalentPO, Long> {
+    /**
+     * insert，且返回主键
+     * @param talentPO
+     * @return
+     */
     Integer add(TalentPO talentPO);
 
+    /**
+     * 根据openId用uci表回填基本信息
+     * @param openId
+     * @return
+     */
     HashMap<String, Object> findRegisterOne(String openId);
 
+    /**
+     * 根据openId和c表状态决定一条完整的记录，带4表的所有信息
+     * @param hashMap
+     * @return
+     */
     List<TalentBO> findOne(HashMap<String, Object> hashMap);
 
+    /**
+     * 根据openId，返回相应的talentPO
+     * @param openId
+     * @return
+     */
     TalentPO selectByOpenId(String openId);
 
-    String findCardId(String openId);
+//    String findCardId(String openId);
 
     /**
      * 根据信息检索符合条件的人才信息

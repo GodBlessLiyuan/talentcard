@@ -331,15 +331,15 @@
         from t_talent
         where open_id = #{openId,jdbcType=BIGINT}
     </select>
-    <select id="findCardId" parameterType="java.lang.String" resultType="java.lang.String">
-        select c.card_id
-        from t_talent t
-                 left join t_user_card uc
-                           on t.talent_id = uc.talent_id
-                 left join t_card c
-                           on uc.card_id = c.card_id
-        where open_id = #{openId,jdbcType=BIGINT}
-    </select>
+<!--    <select id="findCardId" parameterType="java.lang.String" resultType="java.lang.String">-->
+<!--        select c.card_id-->
+<!--        from t_talent t-->
+<!--                 left join t_user_card uc-->
+<!--                           on t.talent_id = uc.talent_id-->
+<!--                 left join t_card c-->
+<!--                           on uc.card_id = c.card_id-->
+<!--        where open_id = #{openId,jdbcType=BIGINT}-->
+<!--    </select>-->
     <select id="query" resultType="com.talentcard.common.bo.TalentBO">
         select t.talent_id as talentId,
         t.create_time as createTime,
