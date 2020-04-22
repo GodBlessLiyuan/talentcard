@@ -11,6 +11,11 @@ import java.util.HashMap;
  */
 @Mapper
 public interface UserCardMapper extends BaseMapper<UserCardPO, Long> {
+    /**
+     * 判断人卡表里是否已经有待审批的
+     * @param openId
+     * @return
+     */
     Integer findUserCardExist(String openId);
 
     /**

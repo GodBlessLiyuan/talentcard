@@ -15,6 +15,11 @@ import java.util.Map;
  */
 @Mapper
 public interface CertificationMapper extends BaseMapper<CertificationPO, Long> {
+    /**
+     * insert返回主键
+     * @param certificationPO
+     * @return
+     */
     Integer add(CertificationPO certificationPO);
 
     /**
@@ -41,5 +46,10 @@ public interface CertificationMapper extends BaseMapper<CertificationPO, Long> {
     int updateStatusById(@Param("talentId") Long talentId,
                          @Param("currentStatus") Byte currentStatus, @Param("status") Byte status);
 
+    /**
+     * 根据talentId，找到c表里status=1，正常使用的信息
+     * @param talentId
+     * @return
+     */
     CertificationPO findCurrentCertification(@Param("talentId") Long talentId);
 }
