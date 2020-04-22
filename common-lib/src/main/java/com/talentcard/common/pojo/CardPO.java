@@ -28,6 +28,8 @@ public class CardPO implements Serializable {
 
     private String pictureCdn;
 
+    private String logoUrl;
+
     private String prerogative;
 
     private String initialWord;

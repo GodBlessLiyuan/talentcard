@@ -8,7 +8,7 @@ import com.thoughtworks.xstream.XStream;
  * @description: TODO
  * @version: 1.0
  */
-public class XmlUtils {
+public class ToXmlUtils {
 
     private static final XStream xStream = XStreamFactory.getXStream();
     /**

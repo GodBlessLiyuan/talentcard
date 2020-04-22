@@ -12,6 +12,8 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ICardService;
 import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.CardUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ import java.util.List;
 @Service
 @EnableTransactionManagement
 public class CardServiceImpl implements ICardService {
+    private static final Logger logger = LoggerFactory.getLogger(CardServiceImpl.class);
     @Value("${file.publicPath}")
     private String publicPath;
     @Value("${file.rootDir}")
@@ -54,6 +57,7 @@ public class CardServiceImpl implements ICardService {
                 (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
 //        String pictureUploadCdnUrl = publicPath + picture;
         String pictureUploadCdnUrl = rootDir + picture;
+        logger.info("pictureUploadCdnUrl", pictureUploadCdnUrl);
         String pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
         JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
         pictureCDN = pictureObject.getString("url");
@@ -61,7 +65,11 @@ public class CardServiceImpl implements ICardService {
             return new ResultVO(2321);
         }
         //上传logo图片
-        String logoCDN = CardUtil.uploadPicture(logoUrl);
+        String publicLogoUrl = publicPath + logoUrl;
+        String serverLogoUrl = rootDir + logoUrl;
+//        String logoCDN = CardUtil.uploadPicture(publicLogoUrl);
+        logger.info("serverLogoUrl", serverLogoUrl);
+        String logoCDN = CardUtil.uploadPicture(serverLogoUrl);
         JSONObject logoObject = JSONObject.parseObject(logoCDN);
         logoCDN = logoObject.getString("url");
         if (logoCDN == null || logoCDN == "") {
@@ -91,7 +99,7 @@ public class CardServiceImpl implements ICardService {
         cardPO.setTitle(title);
         cardPO.setCurrNum(Long.valueOf(initialNumber));
         cardPO.setDescription(description);
-        cardPO.setPicture(picture);
+        cardPO.setPicture(publicPath + picture);
         cardPO.setPictureCdn(pictureCDN);
         cardPO.setPrerogative(prerogative);
         cardPO.setInitialWord(initialWord);
@@ -101,6 +109,8 @@ public class CardServiceImpl implements ICardService {
         cardPO.setMemberNum((long) 0);
         cardPO.setWxCardId(wechatResult.getString("card_id"));
         cardPO.setStatus((byte) 1);
+        cardPO.setDr((byte) 1);
+        cardPO.setLogoUrl(publicLogoUrl);
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
     }
