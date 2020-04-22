@@ -10,6 +10,7 @@ import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.AccessTokenUtil;
+import com.talentcard.front.utils.MessageUtil;
 import com.talentcard.front.utils.TalentUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -201,6 +202,7 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setStatus((byte) 2);
         cardMapper.updateByPrimaryKeySelective(cardPO);
         userCardMapper.insertSelective(userCardPO);
+        MessageUtil.sendTemplateMessage(openId);
         return new ResultVO(1000);
     }
 
