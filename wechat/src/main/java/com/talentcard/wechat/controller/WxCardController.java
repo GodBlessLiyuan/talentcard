@@ -44,17 +44,16 @@ public class WxCardController {
             //接收消息
             Map<String, String> requestMap = wxCardService.parseRequest(request);
             String openId = requestMap.get("FromUserName");
+//            String event = requestMap.get("Event");
             //用户领取卡事件，激活接口
             iEventService.activate(openId);
             //用户删除卡券事件，删除接口
 //            iEventService.delete(openId);
-//            System.out.println(requestMap);
-//            System.out.println("=============================");
+
             logger.info("接收消息成功", requestMap);
 
             //准备回复的数据
             String respxml = wxCardService.getResponse(requestMap);
-//            System.out.println(respxml);
             PrintWriter out = response.getWriter();
             out.print(respxml);
             out.flush();
