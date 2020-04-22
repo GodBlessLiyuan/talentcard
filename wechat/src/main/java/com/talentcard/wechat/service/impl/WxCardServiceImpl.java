@@ -10,7 +10,7 @@ import java.util.Map;
 import com.talentcard.wechat.dto.BaseMessageDto;
 import com.talentcard.wechat.service.WxCardService;
 import com.talentcard.wechat.utils.CommonUtil;
-import com.talentcard.wechat.utils.XmlUtils;
+import com.talentcard.wechat.utils.ToXmlUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -127,7 +127,7 @@ public class WxCardServiceImpl implements WxCardService {
 
     //把对象处理为xml数据包
     private  static  String beanToXml(BaseMessageDto msg){
-        String str = XmlUtils.toXml(msg);
+        String str = ToXmlUtils.toXml(msg);
         return str;
     }
 }
