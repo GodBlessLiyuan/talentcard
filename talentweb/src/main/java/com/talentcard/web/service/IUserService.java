@@ -1,6 +1,8 @@
 package com.talentcard.web.service;
 
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.vo.UserRoleVO;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
@@ -59,12 +61,11 @@ public interface IUserService {
 
     /**
      * 根据用户名和角色id获取当前用户系统权限列表，需要分页展示
-     * @param draw
      * @param pageNum
      * @param pageSize
      * @param reqData
      * @return
      */
-    ResultVO queryUserRole(int draw, int pageNum, int pageSize, Map<String, Object> reqData);
+    PageInfoVO<UserRoleVO> queryUserRole(int pageNum, int pageSize, Map<String, Object> reqData);
 
 }
