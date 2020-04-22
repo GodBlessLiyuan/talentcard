@@ -52,8 +52,8 @@ public class CardServiceImpl implements ICardService {
         //上传背景图片
         String picture = FileUtil.uploadFile
                 (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
-//        String pictureUploadCdnUrl = publicPath + picture;
-        String pictureUploadCdnUrl = rootDir + picture;
+        String pictureUploadCdnUrl = publicPath + picture;
+//        String pictureUploadCdnUrl = rootDir + picture;
         String pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
         JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
         pictureCDN = pictureObject.getString("url");
@@ -61,7 +61,10 @@ public class CardServiceImpl implements ICardService {
             return new ResultVO(2321);
         }
         //上传logo图片
-        String logoCDN = CardUtil.uploadPicture(logoUrl);
+        String publicLogoUrl = publicPath + logoUrl;
+        String serverLogoUrl = rootDir + logoUrl;
+        String logoCDN = CardUtil.uploadPicture(publicLogoUrl);
+//        String logoCDN = CardUtil.uploadPicture(serverLogoUrl);
         JSONObject logoObject = JSONObject.parseObject(logoCDN);
         logoCDN = logoObject.getString("url");
         if (logoCDN == null || logoCDN == "") {
@@ -91,7 +94,7 @@ public class CardServiceImpl implements ICardService {
         cardPO.setTitle(title);
         cardPO.setCurrNum(Long.valueOf(initialNumber));
         cardPO.setDescription(description);
-        cardPO.setPicture(picture);
+        cardPO.setPicture(publicPath + picture);
         cardPO.setPictureCdn(pictureCDN);
         cardPO.setPrerogative(prerogative);
         cardPO.setInitialWord(initialWord);
@@ -101,7 +104,8 @@ public class CardServiceImpl implements ICardService {
         cardPO.setMemberNum((long) 0);
         cardPO.setWxCardId(wechatResult.getString("card_id"));
         cardPO.setStatus((byte) 1);
-        cardPO.setDr((byte)1);
+        cardPO.setDr((byte) 1);
+        cardPO.setLogoUrl(publicLogoUrl);
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
     }

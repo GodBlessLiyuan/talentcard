@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -57,13 +59,21 @@ public class CardController {
 
     @PostMapping("query")
     public ResultVO query(@RequestParam(value = "title", required = false, defaultValue = "") String title,
-                          @RequestParam(value = "startTime", required = false) Date startTime,
-                          @RequestParam(value = "endTime", required = false) Date endTime,
-                          @RequestParam(value = "cardNum", required = false, defaultValue = "") String cardNum) {
+                          @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
+                          @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime,
+                          @RequestParam(value = "cardNum", required = false, defaultValue = "") String cardNum) throws ParseException {
         HashMap<String, Object> hashMap = new HashMap<>();
+        //String转Date
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//注意月份是MM
+        if (!startTime.equals("")) {
+            Date sTime = simpleDateFormat.parse(startTime);
+            hashMap.put("startTime", sTime);
+        }
+        if (!endTime.equals("")) {
+            Date eTime = simpleDateFormat.parse(endTime);
+            hashMap.put("endTime", eTime);
+        }
         hashMap.put("title", title);
-        hashMap.put("startTime", startTime);
-        hashMap.put("endTime", endTime);
         hashMap.put("cardNum", cardNum);
         return iCardService.query(hashMap);
     }
