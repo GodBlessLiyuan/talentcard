@@ -4,12 +4,14 @@ import com.talentcard.common.bo.UserBO;
 import com.talentcard.common.bo.UserRoleBO;
 import com.talentcard.common.mapper.UserMapper;
 import com.talentcard.common.pojo.UserPO;
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IUserService;
 import com.talentcard.web.utils.DTPageInfo;
 import com.talentcard.web.utils.Md5Util;
 import com.talentcard.web.utils.PageHelper;
 import com.github.pagehelper.Page;
+import com.talentcard.web.vo.PolicyVO;
 import com.talentcard.web.vo.UserRoleVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -136,13 +138,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ResultVO queryUserRole(int draw, int pageNum, int pageSize, Map<String, Object> reqData){
-
+    public PageInfoVO<UserRoleVO> queryUserRole(int pageNum, int pageSize, Map<String, Object> reqData){
         Page<UserRoleBO> page = PageHelper.startPage(pageNum, pageSize);
-
         List<UserRoleBO> bos = userMapper.queryUserRole(reqData);
-
-        return new ResultVO(1000,new DTPageInfo<>(draw, page.getTotal(), UserRoleVO.convert(bos)));
+        return new PageInfoVO<>(page.getTotal(), UserRoleVO.convert(bos));
     }
 
 

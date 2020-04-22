@@ -15,6 +15,11 @@ import java.util.Map;
  */
 @Mapper
 public interface CertificationMapper extends BaseMapper<CertificationPO, Long> {
+    /**
+     * insert返回主键
+     * @param certificationPO
+     * @return
+     */
     Integer add(CertificationPO certificationPO);
 
     /**
@@ -41,5 +46,19 @@ public interface CertificationMapper extends BaseMapper<CertificationPO, Long> {
     int updateStatusById(@Param("talentId") Long talentId,
                          @Param("currentStatus") Byte currentStatus, @Param("status") Byte status);
 
+    /**
+     * 根据talentId，找到c表里status=1，正常使用的信息
+     * @param talentId
+     * @return
+     */
     CertificationPO findCurrentCertification(@Param("talentId") Long talentId);
+
+    /**
+     * 判断旧卡是基本卡还是高级卡，基本卡就改为失效9，高级卡改为失效10
+     * 查询状态=9的数量，如果是0，说明这个是注册的基本卡换高级卡
+     * 如果不为0，说明这个是高级卡换高级卡
+     * @param talentId
+     * @return
+     */
+    Integer ifOldCardIsBaseCard(@Param("talentId") Long talentId);
 }

@@ -125,7 +125,7 @@
     and
     uc.status = 1
   </select>
-  <select id="findCurrentCard" parameterType="java.lang.String" resultType="java.util.HashMap">
+  <select id="findCurrentCard" resultType="java.util.HashMap">
     select
     wx_card_id as cardId, num as code, t.talent_id as talentId
     from t_user_card uc
@@ -136,8 +136,7 @@
     where
     t.open_id = #{openId,jdbcType=CHAR}
     and
-    uc.status = 1
-    limit 1
+    uc.status = #{status,jdbcType=TINYINT}
   </select>
   <update id="updateStatusById">
     update t_user_card u

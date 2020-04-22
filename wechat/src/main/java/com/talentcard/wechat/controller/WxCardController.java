@@ -55,6 +55,7 @@ public class WxCardController {
                 logger.info("用户删除卡成功", requestMap);
             }
 
+
             //准备回复的数据
             String respxml = wxCardService.getResponse(requestMap);
             PrintWriter out = response.getWriter();

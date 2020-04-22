@@ -15,6 +15,8 @@ import java.util.List;
 @Data
 public class UserRoleVO {
 
+    private Long roleId;
+
     private String username;
 
     private String name;
@@ -34,6 +36,7 @@ public class UserRoleVO {
         List<UserRoleVO> userRoleVOS = new ArrayList<>();
         for (UserRoleBO bo : userRoleBOS) {
             UserRoleVO vo = new UserRoleVO();
+            vo.setRoleId(bo.getRoleId());
             vo.setAuthorityName(bo.getAuthorityName());
             vo.setExtra(bo.getExtra());
             vo.setName(bo.getName());

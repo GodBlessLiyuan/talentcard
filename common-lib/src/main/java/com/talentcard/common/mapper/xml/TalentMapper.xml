@@ -331,15 +331,15 @@
         from t_talent
         where open_id = #{openId,jdbcType=BIGINT}
     </select>
-    <select id="findCardId" parameterType="java.lang.String" resultType="java.lang.String">
-        select c.card_id
-        from t_talent t
-                 left join t_user_card uc
-                           on t.talent_id = uc.talent_id
-                 left join t_card c
-                           on uc.card_id = c.card_id
-        where open_id = #{openId,jdbcType=BIGINT}
-    </select>
+<!--    <select id="findCardId" parameterType="java.lang.String" resultType="java.lang.String">-->
+<!--        select c.card_id-->
+<!--        from t_talent t-->
+<!--                 left join t_user_card uc-->
+<!--                           on t.talent_id = uc.talent_id-->
+<!--                 left join t_card c-->
+<!--                           on uc.card_id = c.card_id-->
+<!--        where open_id = #{openId,jdbcType=BIGINT}-->
+<!--    </select>-->
     <select id="query" resultType="com.talentcard.common.bo.TalentBO">
         select t.talent_id as talentId,
         t.create_time as createTime,
@@ -453,14 +453,6 @@
         </where>
         order by t.create_time asc
     </select>
-    <select id="ifChangeCard" resultType="java.lang.Integer">
-        select count(t.talent_id)
-        from t_talent t
-                 left join t_certification c
-                           on t.talent_id = c.talent_id
-        where t.open_id = #{openId,jdbcType=CHAR}
-          and (c.status = 2 or c.status = 4)
-    </select>
     <select id="activate" resultType="com.talentcard.common.bo.ActivcateBO">
         select t.talent_id     as talentId,
                c.cert_id       as certId,
@@ -482,7 +474,15 @@
           and c.status = #{certificationStatus, jdbcType=TINYINT}
           and uc.status = #{userCardStatus, jdbcType=TINYINT}
     </select>
-    <select id="ifExistGetCard" resultType="com.talentcard.common.bo.ActivcateBO">
+    <select id="ifExistGetCard" resultType="java.lang.Integer">
+        select count(t.talent_id)
+        from t_talent t
+                 left join t_certification c
+                           on t.talent_id = c.talent_id
+        where t.open_id = #{openId,jdbcType=CHAR}
+          and (c.status = 2 or c.status = 4)
+    </select>
+    <select id="findGetCard" resultType="com.talentcard.common.bo.ActivcateBO">
         select t.talent_id     as talentId,
                c.cert_id       as certId,
                uc.uc_id        as ucId,
