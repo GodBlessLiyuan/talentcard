@@ -453,14 +453,6 @@
         </where>
         order by t.create_time asc
     </select>
-    <select id="ifChangeCard" resultType="java.lang.Integer">
-        select count(t.talent_id)
-        from t_talent t
-                 left join t_certification c
-                           on t.talent_id = c.talent_id
-        where t.open_id = #{openId,jdbcType=CHAR}
-          and (c.status = 2 or c.status = 4)
-    </select>
     <select id="activate" resultType="com.talentcard.common.bo.ActivcateBO">
         select t.talent_id     as talentId,
                c.cert_id       as certId,
@@ -482,7 +474,15 @@
           and c.status = #{certificationStatus, jdbcType=TINYINT}
           and uc.status = #{userCardStatus, jdbcType=TINYINT}
     </select>
-    <select id="ifExistGetCard" resultType="com.talentcard.common.bo.ActivcateBO">
+    <select id="ifExistGetCard" resultType="java.lang.Integer">
+        select count(t.talent_id)
+        from t_talent t
+                 left join t_certification c
+                           on t.talent_id = c.talent_id
+        where t.open_id = #{openId,jdbcType=CHAR}
+          and (c.status = 2 or c.status = 4)
+    </select>
+    <select id="findGetCard" resultType="com.talentcard.common.bo.ActivcateBO">
         select t.talent_id     as talentId,
                c.cert_id       as certId,
                uc.uc_id        as ucId,

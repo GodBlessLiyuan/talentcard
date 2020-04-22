@@ -158,14 +158,6 @@
     </select>
 
     <!--  根据当前人才的姓名查询所有的已有信息-->
-    <!--  talent_id, open_id, `name`, sex, id_card, passport, work_unit, industry, phone, create_time,-->
-    <!--  `status`, category, card_id-->
-
-    <!--  educ_id, education, school, first_class, major, educ_picture, cert_id, talent_id,-->
-    <!--  `status`-->
-    <!--  pq_id, category, info, picture, cert_id, talent_id, `status`-->
-
-    <!--  pt_id, category, info, picture, cert_id, talent_id, `status`-->
     <select id="queryAllMsg" parameterType="java.lang.Long" resultType="com.talentcard.common.bo.ApprovalBO">
     select t.talent_id as talentId, t.`name`, t.sex, t.id_card as idCard, t.phone, c.cert_id as certId, c.political, t.industry, t.work_unit as workUnit,
     t.create_time as CreateTime, t.card_id as cardId, e.education, e.school, e.major, e.educ_picture as educPic,

@@ -20,6 +20,7 @@ public interface UserCardMapper extends BaseMapper<UserCardPO, Long> {
 
     /**
      * 根据openId和uc的状态值，找这个用户当前使用的卡或者待领取的卡信息
+     * uc status=1和2分别最多有一条
      * @param openId
      * @return
      */

@@ -116,7 +116,7 @@ public class EventServiceImpl implements IEventService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO delete(String openId) {
         //找到记录，uc表status=1，c表status=2或者4，来判断当前是否有待领取的卡
-        ActivcateBO ifExistGetCard = talentMapper.ifExistGetCard(openId);
+        ActivcateBO ifExistGetCard = talentMapper.findGetCard(openId);
         //c表status=1，uc表status=2
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         if (ifExistGetCard != null) {

@@ -137,7 +137,6 @@
     t.open_id = #{openId,jdbcType=CHAR}
     and
     uc.status = #{status,jdbcType=TINYINT}
-    limit 1
   </select>
   <update id="updateStatusById">
     update t_user_card u
