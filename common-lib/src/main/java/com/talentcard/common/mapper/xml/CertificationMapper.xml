@@ -186,4 +186,11 @@
     where c.talent_id = #{talentId,jdbcType=BIGINT}
     and c.status= 1
   </select>
+    <select id="ifOldCardIsBaseCard" resultType="java.lang.Integer">
+        select
+        count(cert_id)
+        from t_certification c
+        where c.talent_id = #{talentId,jdbcType=BIGINT}
+        and c.status= 9
+    </select>
 </mapper>

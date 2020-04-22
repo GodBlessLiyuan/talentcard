@@ -47,14 +47,14 @@ public class EventServiceImpl implements IEventService {
     public ResultVO activate(String openId) {
         //判断是第一次激活还是第二次激活
         ActivcateBO firstActivate = talentMapper.activate(openId, (byte) 2, (byte) 1);
-        //0代表没有认证表status=1的数据，说明没有正在使用的卡，即第一次激活注册
+        //不为null代表存在c表状态2，uc表状态1，即为待领取的卡是基本卡。
         if (firstActivate != null) {
             //第一次激活
             Long certId = firstActivate.getCertId();
             //更新认证表
             CertificationPO certificationPO = certificationMapper.selectByPrimaryKey(certId);
-            //certification表和三表，更新status=1:正在使用
-            Byte status = 1;
+            //certification表和三表，更新status=5:基础卡正在使用
+            Byte status = 5;
             certificationPO.setStatus(status);
             certificationMapper.updateByPrimaryKeySelective(certificationPO);
             //更新三表
@@ -84,14 +84,29 @@ public class EventServiceImpl implements IEventService {
             userCardMapper.updateStatusById(activateInfo.getTalentId(), (byte) 2, (byte) 3);
             //4.user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
             userCardMapper.updateStatusById(activateInfo.getTalentId(), (byte) 1, (byte) 2);
-            //更新talent表status从2变为1，意为已认证
-            TalentPO talentPO = talentMapper.selectByPrimaryKey(activateInfo.getTalentId());
-            talentPO.setStatus((byte) 1);
-            talentMapper.updateByPrimaryKeySelective(talentPO);
             //旧卡数量-1
             CardPO cardPO = cardMapper.selectByPrimaryKey(activateInfo.getCardId());
             cardPO.setMemberNum(cardPO.getMemberNum() - 1);
             cardMapper.updateByPrimaryKeySelective(cardPO);
+            //旧卡（基本卡）更改状态：c表状态1，uc表状态2，即为正在使用的卡
+            ActivcateBO oldCard = talentMapper.activate(openId, (byte) 1, (byte) 2);
+            Long oldTalentId = oldCard.getTalentId();
+            Long oldCertId = oldCard.getCertId();
+            Byte oldStatus;
+            //判断旧卡是基本卡还是高级卡，基本卡就改为失效9，高级卡改为失效10
+            Integer ifOldCardIsBaseCard = certificationMapper.ifOldCardIsBaseCard(oldTalentId);
+            if (ifOldCardIsBaseCard == 0) {
+                //说明c表里找不到状态9的，代表这是基本卡换高级卡
+                oldStatus = 9;
+            } else {
+                //找到了状态9的，说明这是高级卡换高级卡
+                oldStatus = 10;
+            }
+            //旧卡从状态1改为状态10
+            certificationMapper.updateStatusById(oldTalentId, (byte) 1, oldStatus);
+            educationMapper.updateStatusByCertId(oldCertId, oldStatus);
+            profTitleMapper.updateStatusByCertId(oldCertId, oldStatus);
+            profQualityMapper.updateStatusByCertId(oldCertId, oldStatus);
             //设置旧卡券失效
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("code", activateInfo.getCode());
@@ -124,19 +139,14 @@ public class EventServiceImpl implements IEventService {
             Long talentId = activcateBO.getTalentId();
             //c表status=1找正在使用的certId
             Long certId = activcateBO.getCertId();
-            Byte status = 5;
-            //4表，status从1改为5
-            certificationMapper.updateStatusById(talentId, (byte) 1, (byte) 5);
+            Byte status = 10;
+            //4表，status从1改为10
+            certificationMapper.updateStatusById(talentId, (byte) 1, status);
             educationMapper.updateStatusByCertId(certId, status);
             profTitleMapper.updateStatusByCertId(certId, status);
             profQualityMapper.updateStatusByCertId(certId, status);
             //uc表，status从2改为3
             userCardMapper.updateStatusById(talentId, (byte) 2, (byte) 3);
-            //旧卡数量-1
-            CardPO cardPO = cardMapper.selectByPrimaryKey(activcateBO.getCardId());
-            cardPO.setMemberNum(cardPO.getMemberNum() - 1);
-            cardMapper.updateByPrimaryKeySelective(cardPO);
-
         } else {
             //没有待领取的卡，则把正在使用的卡改为待领取
             Long talentId = activcateBO.getTalentId();
@@ -158,6 +168,10 @@ public class EventServiceImpl implements IEventService {
             profTitleMapper.updateStatusByCertId(certId, status);
             profQualityMapper.updateStatusByCertId(certId, status);
         }
+        //无论是有待领取的卡，还是没有待领取的卡，正在使用的卡都数量-1
+        CardPO cardPO = cardMapper.selectByPrimaryKey(activcateBO.getCardId());
+        cardPO.setMemberNum(cardPO.getMemberNum() - 1);
+        cardMapper.updateByPrimaryKeySelective(cardPO);
         //修改状态
         return new ResultVO(1000);
     }
