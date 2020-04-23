@@ -6,8 +6,11 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.wechat.controller.WxCardController;
 import com.talentcard.wechat.service.IEventService;
 import com.talentcard.wechat.utils.AccessTokenUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableTransactionManagement
 @Service
 public class EventServiceImpl implements IEventService {
+    private static final Logger logger = LoggerFactory.getLogger(EventServiceImpl.class);
     @Autowired
     private TalentMapper talentMapper;
     @Autowired
@@ -49,6 +53,7 @@ public class EventServiceImpl implements IEventService {
         ActivcateBO firstActivate = talentMapper.activate(openId, (byte) 2, (byte) 1);
         //不为null代表存在c表状态2，uc表状态1，即为待领取的卡是基本卡。
         if (firstActivate != null) {
+            logger.info("第一次激活");
             //第一次激活
             Long certId = firstActivate.getCertId();
             //更新认证表
@@ -64,6 +69,7 @@ public class EventServiceImpl implements IEventService {
             //user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
             userCardMapper.updateStatusById(firstActivate.getTalentId(), (byte) 1, (byte) 2);
         } else {
+            logger.info("第二次激活");
             //第二次激活
             ActivcateBO activateInfo = talentMapper.activate(openId, (byte) 4, (byte) 1);
             //1.cert_approval里的人才类别信息更新user_current_info表
