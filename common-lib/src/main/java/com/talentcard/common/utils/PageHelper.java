@@ -20,7 +20,6 @@ public class PageHelper extends com.github.pagehelper.PageHelper {
      * @return
      */
     public static <E> Page<E> startPage(int pageNum, int pageSize) {
-        pageNum = pageNum / pageSize + 1;
         return PageMethod.startPage(pageNum, pageSize);
     }
 }
