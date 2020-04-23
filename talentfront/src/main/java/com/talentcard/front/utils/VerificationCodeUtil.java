@@ -29,7 +29,8 @@ public class VerificationCodeUtil {
     public void VerificationCodeInitialize() {
         myRedis = redisTemplate;
         //默认后门手机号和验证码
-        myRedis.opsForValue().set("11111111111", "123456");
+        myRedis.opsForValue().set("123", "123");
+        myRedis.opsForValue().set("18616500998", "123");
     }
 
     public static void setCode(String phone, String verificationCode) {
