@@ -88,7 +88,7 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
      * @param hashMap
      * @return
      */
-    List<TalentBO> findOne(HashMap<String, Object> hashMap);
+    TalentBO findOne(HashMap<String, Object> hashMap);
 
     /**
      * 根据openId和c表状态决定一条完整的记录，带4表的所有信息

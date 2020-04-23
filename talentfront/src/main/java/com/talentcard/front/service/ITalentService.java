@@ -31,17 +31,12 @@ public interface ITalentService {
 
     /**
      * 根据OpenId查找认证完成之前的基本信息
+     * 或者认证之后的信息
      * @param openId
      * @return
      */
-    ResultVO findCurrentInfo(String openId);
+    ResultVO findInfo(String openId);
 
-    /**
-     * 根据OpenId回填注册时的信息和查询未认证的信息
-     * @param openId
-     * @return
-     */
-    ResultVO findRegisterOne(String openId);
     /**
      * @param openId
      * @param political

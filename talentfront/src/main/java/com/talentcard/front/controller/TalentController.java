@@ -82,17 +82,6 @@ public class TalentController {
     }
 
     /**
-     * 回填注册时的信息
-     *
-     * @param openId
-     * @return
-     */
-    @PostMapping("findRegisterOne")
-    public ResultVO findRegisterOne(@RequestParam(value = "openId") String openId) {
-        return iTalentService.findRegisterOne(openId);
-    }
-
-    /**
      * 用户认证模块
      *
      * @param openId
@@ -130,13 +119,13 @@ public class TalentController {
     }
 
     /**
-     * 根据openId返回认证通过之后的全部信息
-     *
+     * 根据OpenId查找认证完成之前的基本信息
+     * 或者认证之后的信息
      * @param openId
      * @return
      */
-    @PostMapping("findCurrentInfo")
-    public ResultVO findCurrentInfo(@RequestParam(value = "openId") String openId) {
-        return iTalentService.findCurrentInfo(openId);
+    @PostMapping("findInfo")
+    public ResultVO findInfo(@RequestParam(value = "openId") String openId) {
+        return iTalentService.findInfo(openId);
     }
 }
