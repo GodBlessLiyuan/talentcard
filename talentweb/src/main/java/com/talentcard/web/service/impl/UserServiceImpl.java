@@ -7,7 +7,6 @@ import com.talentcard.common.pojo.UserPO;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IUserService;
-import com.talentcard.web.utils.DTPageInfo;
 import com.talentcard.web.utils.Md5Util;
 import com.talentcard.web.utils.PageHelper;
 import com.github.pagehelper.Page;
