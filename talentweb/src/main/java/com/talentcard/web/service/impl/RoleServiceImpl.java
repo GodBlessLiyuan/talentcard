@@ -33,7 +33,7 @@ public class RoleServiceImpl implements IRoleService {
         // 1 先在角色基础表中查询当前角色信息
         List<RolePO> rolePOS = roleMapper.queryRoleByTime(roleName,startTime,endTime);
         if (rolePOS.size() == 0) {
-            // 角色列表查询失败
+            // 角色列表查询当前为空
             return new ResultVO(2111);
         }
         List<ManageRoleVO> manageRoleVOS = new ArrayList<>();

@@ -96,8 +96,8 @@ public class UserController {
     public PageInfoVO<UserRoleVO> queryByUser(HttpSession session,
                                               @RequestParam(value = "start", defaultValue = "1") int pageNum,
                                               @RequestParam(value = "length", defaultValue = "10") int pageSize,
-                                              @RequestParam(value = "username", required = false) String username,
-                                              @RequestParam(value = "roleId", required = false) Long roleId) {
+                                              @RequestParam(value = "username", defaultValue = "") String username,
+                                              @RequestParam(value = "roleId", defaultValue = "") Long roleId) {
         Map<String, Object> reqData = new HashMap<>(2);
         reqData.put("username", username.replaceAll(" ", ""));
         reqData.put("roleId", roleId);

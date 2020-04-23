@@ -31,9 +31,9 @@ public interface UserMapper extends BaseMapper<UserPO, Long> {
 
     /**
      * 新增用户
-     * @param userBO
+     * @param userPO
      */
-    int insertUser(UserBO userBO);
+    int insertUser(UserPO userPO);
 
     /**
      * 编辑用户

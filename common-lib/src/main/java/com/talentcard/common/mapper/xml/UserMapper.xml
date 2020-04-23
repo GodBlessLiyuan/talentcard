@@ -141,11 +141,12 @@
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
 
-  <insert id="insertUser" parameterType="com.talentcard.common.bo.UserBO">
+  <insert id="insertUser" parameterType="com.talentcard.common.pojo.UserPO">
     insert into t_user (username, `name`,
-    `password`, extra, role_id)
+    `password`, extra, role_id ,create_time, dr)
     values (#{username,jdbcType=CHAR}, #{name,jdbcType=CHAR},
-      #{password,jdbcType=CHAR}, #{extra,jdbcType=CHAR}, #{roleId,jdbcType=BIGINT})
+      #{password,jdbcType=CHAR}, #{extra,jdbcType=CHAR}, #{roleId,jdbcType=BIGINT},
+       #{createTime,jdbcType=TIMESTAMP}, 1)
    </insert>
   <!--  根据用户名（唯一）编辑用户信息，更改使用者姓名，角色，备注-->
   <update id="updateByUserName" parameterType="com.talentcard.common.bo.UserBO">
