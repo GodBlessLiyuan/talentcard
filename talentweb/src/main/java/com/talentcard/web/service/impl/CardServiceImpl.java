@@ -76,9 +76,15 @@ public class CardServiceImpl implements ICardService {
             return new ResultVO(2325);
         }
         //创建卡，微信端
+        CardPO cardPO = new CardPO();
         //status=1为基本卡，否则为高级卡
         JSONObject wechatResult;
         if (status == 1) {
+            CardPO defaultCard = cardMapper.findDefaultCard();
+            //已存在基本卡，最多1张
+            if (defaultCard != null) {
+                return new ResultVO(2326, "已存在基础卡");
+            }
             wechatResult = CardUtil.addCommonCard(name, title, notice, description, prerogative, pictureCDN, logoCDN);
             if ((wechatResult.getInteger("errcode") == null)
                     || (wechatResult.getInteger("errcode") != 0)) {
@@ -90,11 +96,8 @@ public class CardServiceImpl implements ICardService {
                     || (wechatResult.getInteger("errcode") != 0)) {
                 return new ResultVO(2320, wechatResult);
             }
-
         }
-
         //创建卡，服务端
-        CardPO cardPO = new CardPO();
         cardPO.setName(name);
         cardPO.setTitle(title);
         cardPO.setCurrNum(Long.valueOf(initialNumber));
@@ -108,7 +111,6 @@ public class CardServiceImpl implements ICardService {
         cardPO.setStatus(status);
         cardPO.setMemberNum((long) 0);
         cardPO.setWxCardId(wechatResult.getString("card_id"));
-        cardPO.setStatus((byte) 1);
         cardPO.setDr((byte) 1);
         cardPO.setLogoUrl(logoUrl);
         cardMapper.insertSelective(cardPO);
