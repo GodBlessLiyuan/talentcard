@@ -83,7 +83,7 @@ public class UserServiceImpl implements IUserService {
         userPO.setRoleId(roleId);
         userPO.setExtra(extra);
         userPO.setCreateTime(new Date());
-        int result = userMapper.insertSelective(userPO);
+        int result = userMapper.insertUser(userPO);
         if (result == 0) {
             //新建用户失败
             return new ResultVO(2107);
