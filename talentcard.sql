@@ -318,6 +318,7 @@ CREATE TABLE t_talent
 	passport char(32),
 	work_unit char(255) NOT NULL,
 	industry int unsigned,
+	industry_second int unsigned,
 	phone char(32) NOT NULL,
 	create_time datetime,
 	category char(255),
@@ -326,6 +327,10 @@ CREATE TABLE t_talent
 	status tinyint DEFAULT 2 COMMENT '1 认证通过
 2 认证没通过',
 	card_id bigint unsigned,
+	-- 1正在使用
+	-- 2删除
+	dr tinyint unsigned COMMENT '1正在使用
+2删除',
 	PRIMARY KEY (talent_id),
 	UNIQUE (talent_id),
 	UNIQUE (id_card)

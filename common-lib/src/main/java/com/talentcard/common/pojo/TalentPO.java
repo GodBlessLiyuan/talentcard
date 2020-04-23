@@ -29,6 +29,8 @@ public class TalentPO implements Serializable {
 
     private Integer industry;
 
+    private Integer industrySecond;
+
     private String phone;
 
     private Date createTime;
@@ -36,17 +38,18 @@ public class TalentPO implements Serializable {
     private String category;
 
     /**
-     * 1 正常使用
-2 注册未认证
-3 认证未审批/待审批
-4 已有卡，且审批通过但未领卡
-5 未注册
-6 失效
-用户当前的卡套号，状态2、3为基本卡；状态4为要换的新卡、状态1为当前持有卡；状态5、6无卡
+     * 1 认证通过
+2 认证没通过
      */
     private Byte status;
 
     private Long cardId;
+
+    /**
+     * 1正在使用
+2删除
+     */
+    private Byte dr;
 
     private static final long serialVersionUID = 1L;
 }

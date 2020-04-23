@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * @author: ChenXU
  * @date: Created in 2020/4/23 13:00
@@ -27,6 +28,7 @@ public class TalentVO {
     private String passport;
     private String workUnit;
     private Integer industry;
+    private Integer industrySecond;
     private String phone;
     private Byte talentStatus;
     private String talentCategory;
@@ -54,6 +56,7 @@ public class TalentVO {
 //        talentVO.setPassport(talentBO.getPassport());
         talentVO.setWorkUnit(talentBO.getWorkUnit());
         talentVO.setIndustry(talentBO.getIndustry());
+        talentVO.setIndustrySecond(talentBO.getIndustrySecond());
         talentVO.setPhone(talentBO.getPhone());
         talentVO.setTalentStatus(talentBO.getStatus());
         talentVO.setTalentCategory(talentBO.getCategory());
