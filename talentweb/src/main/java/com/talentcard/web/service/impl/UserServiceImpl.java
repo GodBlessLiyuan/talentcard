@@ -11,13 +11,12 @@ import com.talentcard.web.utils.DTPageInfo;
 import com.talentcard.web.utils.Md5Util;
 import com.talentcard.web.utils.PageHelper;
 import com.github.pagehelper.Page;
-import com.talentcard.web.vo.PolicyVO;
 import com.talentcard.web.vo.UserRoleVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -77,13 +76,14 @@ public class UserServiceImpl implements IUserService {
         }catch (Exception e){
             e.printStackTrace();
         }
-        UserBO userBO = new UserBO();
-        userBO.setUsername(username);
-        userBO.setPassword(password);
-        userBO.setName(name);
-        userBO.setRoleId(roleId);
-        userBO.setExtra(extra);
-        int result = userMapper.insertUser(userBO);
+        UserPO userPO = new UserPO();
+        userPO.setUsername(username);
+        userPO.setPassword(password);
+        userPO.setName(name);
+        userPO.setRoleId(roleId);
+        userPO.setExtra(extra);
+        userPO.setCreateTime(new Date());
+        int result = userMapper.insertSelective(userPO);
         if (result == 0) {
             //新建用户失败
             return new ResultVO(2107);
