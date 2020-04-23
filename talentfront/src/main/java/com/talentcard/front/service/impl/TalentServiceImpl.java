@@ -105,8 +105,8 @@ public class TalentServiceImpl implements ITalentService {
         }
         //身份证唯一性校验
         Integer idCardExist = talentMapper.idCardIfUnique(jsonObject.getString("idCard"));
-        if(idCardExist!=0){
-            return new ResultVO(2306,"该身份证号已被注册");
+        if (idCardExist != 0) {
+            return new ResultVO(2306, "该身份证号已被注册");
         }
         //设置状态值 状态3为注册中
         Byte status = (byte) 2;
@@ -123,9 +123,11 @@ public class TalentServiceImpl implements ITalentService {
         talentPO.setPassport(jsonObject.getString("passport"));
         talentPO.setWorkUnit(jsonObject.getString("workUnit"));
         talentPO.setIndustry(jsonObject.getInteger("industry"));
+        talentPO.setIndustrySecond(jsonObject.getInteger("industrySecond"));
         talentPO.setPhone(jsonObject.getString("phone"));
         talentPO.setCreateTime(new Date());
         talentPO.setStatus(status);
+        talentPO.setDr((byte) 1);
         //人才表的初级卡cardId
         CardPO cardPO = cardMapper.findDefaultCard();
         Long cardId = cardPO.getCardId();
