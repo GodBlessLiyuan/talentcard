@@ -47,7 +47,7 @@ public class CardUtil {
         baseInfoPO.setCenter_url("http://dev.localcards.gov.vbooster.cn/wx/#not_certified");
         //我的信息
         baseInfoPO.setCustom_url_name("我的信息");
-        baseInfoPO.setCustom_url("http://dev.localcards.gov.vbooster.cn/wx/#my_info");
+        baseInfoPO.setCustom_url("http://dev.localcards.gov.vbooster.cn/wx/#my_info_not");
         baseInfoPO.setCustom_url_sub_title("");
         //我的权益
         baseInfoPO.setPromotion_url_name("我的权益");
@@ -97,7 +97,7 @@ public class CardUtil {
 //        baseInfoPO.setCenter_url("http://dev.localcards.gov.vbooster.cn/wx/#not_certified");
         //我的信息
         baseInfoPO.setCustom_url_name("我的信息");
-        baseInfoPO.setCustom_url("http://dev.localcards.gov.vbooster.cn/wx/#my_info");
+        baseInfoPO.setCustom_url("http://dev.localcards.gov.vbooster.cn/wx/#my_info_already");
         baseInfoPO.setCustom_url_sub_title("");
         //我的权益
         baseInfoPO.setPromotion_url_name("我的权益");
