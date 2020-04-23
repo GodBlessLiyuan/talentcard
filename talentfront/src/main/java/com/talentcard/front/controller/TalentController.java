@@ -82,32 +82,14 @@ public class TalentController {
     }
 
     /**
-     * 回填信息
+     * 回填注册时的信息
      *
      * @param openId
      * @return
      */
     @PostMapping("findRegisterOne")
     public ResultVO findRegisterOne(@RequestParam(value = "openId") String openId) {
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("openId", openId);
         return iTalentService.findRegisterOne(openId);
-    }
-
-    /**
-     * 返回信息
-     *
-     * @param openId
-     * @param status 1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃
-     * @return
-     */
-    @PostMapping("findOne")
-    public ResultVO findOne(@RequestParam(value = "openId") String openId,
-                            @RequestParam(value = "status") String status) {
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("openId", openId);
-        hashMap.put("status", status);
-        return iTalentService.findOne(hashMap);
     }
 
     /**
@@ -148,16 +130,13 @@ public class TalentController {
     }
 
     /**
-     * 第一次申请认证后激活卡套
+     * 根据openId返回认证通过之后的全部信息
      *
      * @param openId
-     * @param code
      * @return
      */
-    @PostMapping("activate")
-    public ResultVO activate(@RequestParam(value = "openId") String openId,
-                             @RequestParam(value = "code") String code) {
-        return iTalentService.activate(openId, code);
+    @PostMapping("findCurrentInfo")
+    public ResultVO findCurrentInfo(@RequestParam(value = "openId") String openId) {
+        return iTalentService.findCurrentInfo(openId);
     }
-
 }

@@ -90,6 +90,16 @@ public class TalentServiceImpl implements ITalentService {
         } else {
             result.put("ifChangeCard", 1);
         }
+        //根据openId和c表status=9是否有数据来判断是否认证过
+        //status=9说明基本卡已经作废，证明认证完成
+        Integer ifCertificate = talentMapper.ifCertificate(openId);
+        if (ifCertificate != 0) {
+            //有作废的基础卡，说明认证通过
+            result.put("ifCertificate", 1);
+        } else {
+            //没有作废的基础卡，说明认证未通过
+            result.put("ifCertificate", 2);
+        }
         return new ResultVO(1000, result);
     }
 
@@ -207,24 +217,33 @@ public class TalentServiceImpl implements ITalentService {
     }
 
     @Override
-    public ResultVO findOne(HashMap<String, Object> hashMap) {
-        TalentBO talentBO = talentMapper.findOne(hashMap).get(0);
+    public ResultVO findRegisterOne(String openId) {
+        TalentBO talentBO = talentMapper.findRegisterOne(openId);
+        if (talentBO == null) {
+            return new ResultVO(2500, "查无此人");
+        }
         //学历
-        for (EducationPO educationPO : talentBO.getEducationPOList()) {
-            if (educationPO.getEducPicture() != null) {
-                educationPO.setEducPicture(publicPath + educationPO.getEducPicture());
+        if (talentBO.getEducationPOList() != null) {
+            for (EducationPO educationPO : talentBO.getEducationPOList()) {
+                if (educationPO.getEducPicture() != null) {
+                    educationPO.setEducPicture(publicPath + educationPO.getEducPicture());
+                }
             }
         }
         //职称
-        for (ProfTitlePO profTitlePO : talentBO.getProfTitlePOList()) {
-            if (profTitlePO.getPicture() != null) {
-                profTitlePO.setPicture(publicPath + profTitlePO.getPicture());
+        if (talentBO.getProfTitlePOList() != null) {
+            for (ProfTitlePO profTitlePO : talentBO.getProfTitlePOList()) {
+                if (profTitlePO.getPicture() != null) {
+                    profTitlePO.setPicture(publicPath + profTitlePO.getPicture());
+                }
             }
         }
         //职业资格
-        for (ProfQualityPO profQualityPO : talentBO.getProfQualityPOList()) {
-            if (profQualityPO.getPicture() != null) {
-                profQualityPO.setPicture(publicPath + profQualityPO.getPicture());
+        if (talentBO.getProfQualityPOList() != null) {
+            for (ProfQualityPO profQualityPO : talentBO.getProfQualityPOList()) {
+                if (profQualityPO.getPicture() != null) {
+                    profQualityPO.setPicture(publicPath + profQualityPO.getPicture());
+                }
             }
         }
         return new ResultVO(1000, talentBO);
@@ -325,59 +344,10 @@ public class TalentServiceImpl implements ITalentService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public ResultVO activate(String openId, String code) {
-        //判断人卡表里是否已经有待审批的，如果有，错误代码
-        Integer ifExist = userCardMapper.findUserCardExist(openId);
-        if (ifExist != 0) {
-            return new ResultVO(2310);
-        }
-
-        //从card表里，寻找默认卡
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", code);
-        CardPO cardPO = cardMapper.findDefaultCard();
-        Long cardId = cardPO.getCardId();
-        jsonObject.put("cardId", cardId);
-        //人卡表里设置参数
-        TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        UserCardPO userCardPO = new UserCardPO();
-        userCardPO.setTalentId(talentPO.getTalentId());
-        userCardPO.setCardId(cardId);
-        //设置当前编号，组合起来，并且更新卡的currentNum
-        String membershipNumber = cardPO.getInitialWord();
-        Integer initialNumLength = cardPO.getInitialNum().length();
-        Integer currentNumlength = cardPO.getCurrNum().toString().length();
-        //补0
-        if ((initialNumLength - currentNumlength) > 0) {
-            for (int i = 0; i < (initialNumLength - currentNumlength); i++) {
-                membershipNumber = membershipNumber + "0";
-            }
-        }
-
-        membershipNumber = membershipNumber + cardPO.getCurrNum();
-        userCardPO.setNum(membershipNumber);
-        jsonObject.put("membershipNumber", membershipNumber);
-        cardPO.setCurrNum(cardPO.getCurrNum() + 1);
-        cardPO.setMemberNum(cardPO.getMemberNum() + 1);
-        //人卡表里设置参数；添加数据
-        userCardPO.setCreateTime(new Date());
-        userCardPO.setStatus((byte) 1);
-        //发送post请求，激活卡套
-        try {
-            String accessToken = AccessTokenUtil.getAccessToken();
-            String url = "https://api.weixin.qq.com/card/membercard/activate?access_token=" + accessToken;
-            WechatApiUtil.postRequest(url, jsonObject);
-        } catch (WechatException wechatException) {
-            return new ResultVO(6666);
-        }
-        cardMapper.updateByPrimaryKeySelective(cardPO);
-        userCardMapper.insertSelective(userCardPO);
-        return new ResultVO(1000);
-    }
-
-    @Override
-    public ResultVO findRegisterOne(String openId) {
-        return new ResultVO(1000, talentMapper.findRegisterOne(openId));
+    public ResultVO findCurrentInfo(String openId) {
+        HashMap<String, Object> hashMap = new HashMap();
+        hashMap.put("openId", openId);
+        hashMap.put("status", (byte) 1);
+        return new ResultVO(1000, talentMapper.findOne(hashMap));
     }
 }
