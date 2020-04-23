@@ -317,7 +317,7 @@ CREATE TABLE t_talent
 	id_card char(18) NOT NULL,
 	passport char(32),
 	work_unit char(255) NOT NULL,
-	industry char(255) NOT NULL,
+	industry int unsigned,
 	phone char(32) NOT NULL,
 	create_time datetime,
 	category char(255),

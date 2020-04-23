@@ -12,6 +12,7 @@ import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.AccessTokenUtil;
 import com.talentcard.front.utils.MessageUtil;
 import com.talentcard.front.utils.TalentUtil;
+import com.talentcard.front.vo.TalentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -90,16 +91,6 @@ public class TalentServiceImpl implements ITalentService {
         } else {
             result.put("ifChangeCard", 1);
         }
-        //根据openId和c表status=9是否有数据来判断是否认证过
-        //status=9说明基本卡已经作废，证明认证完成
-        Integer ifCertificate = talentMapper.ifCertificate(openId);
-        if (ifCertificate != 0) {
-            //有作废的基础卡，说明认证通过
-            result.put("ifCertificate", 1);
-        } else {
-            //没有作废的基础卡，说明认证未通过
-            result.put("ifCertificate", 2);
-        }
         return new ResultVO(1000, result);
     }
 
@@ -126,7 +117,7 @@ public class TalentServiceImpl implements ITalentService {
         talentPO.setIdCard(idCard);
         talentPO.setPassport(jsonObject.getString("passport"));
         talentPO.setWorkUnit(jsonObject.getString("workUnit"));
-        talentPO.setIndustry(jsonObject.getString("industry"));
+        talentPO.setIndustry(jsonObject.getInteger("industry"));
         talentPO.setPhone(jsonObject.getString("phone"));
         talentPO.setCreateTime(new Date());
         talentPO.setStatus(status);
@@ -214,39 +205,6 @@ public class TalentServiceImpl implements ITalentService {
         userCardMapper.insertSelective(userCardPO);
         MessageUtil.sendTemplateMessage(openId);
         return new ResultVO(1000);
-    }
-
-    @Override
-    public ResultVO findRegisterOne(String openId) {
-        TalentBO talentBO = talentMapper.findRegisterOne(openId);
-        if (talentBO == null) {
-            return new ResultVO(2500, "查无此人");
-        }
-        //学历
-        if (talentBO.getEducationPOList() != null) {
-            for (EducationPO educationPO : talentBO.getEducationPOList()) {
-                if (educationPO.getEducPicture() != null) {
-                    educationPO.setEducPicture(publicPath + educationPO.getEducPicture());
-                }
-            }
-        }
-        //职称
-        if (talentBO.getProfTitlePOList() != null) {
-            for (ProfTitlePO profTitlePO : talentBO.getProfTitlePOList()) {
-                if (profTitlePO.getPicture() != null) {
-                    profTitlePO.setPicture(publicPath + profTitlePO.getPicture());
-                }
-            }
-        }
-        //职业资格
-        if (talentBO.getProfQualityPOList() != null) {
-            for (ProfQualityPO profQualityPO : talentBO.getProfQualityPOList()) {
-                if (profQualityPO.getPicture() != null) {
-                    profQualityPO.setPicture(publicPath + profQualityPO.getPicture());
-                }
-            }
-        }
-        return new ResultVO(1000, talentBO);
     }
 
     @Override
@@ -344,10 +302,29 @@ public class TalentServiceImpl implements ITalentService {
     }
 
     @Override
-    public ResultVO findCurrentInfo(String openId) {
-        HashMap<String, Object> hashMap = new HashMap();
-        hashMap.put("openId", openId);
-        hashMap.put("status", (byte) 1);
-        return new ResultVO(1000, talentMapper.findOne(hashMap));
+    public ResultVO findInfo(String openId) {
+        //根据openId和c表status=9是否有数据来判断是否认证过
+        //status=9说明基本卡已经作废，证明认证完成
+        Integer ifCertificate = talentMapper.ifCertificate(openId);
+        TalentBO talentBO;
+        if (ifCertificate != 0) {
+            //有作废的基础卡，说明认证通过
+            HashMap<String, Object> hashMap = new HashMap();
+            hashMap.put("openId", openId);
+            hashMap.put("status", (byte) 1);
+            talentBO = talentMapper.findOne(hashMap);
+            if (talentBO == null) {
+                return new ResultVO(2500, "查无此人");
+            }
+        } else {
+            //没有作废的基础卡，说明认证未通过
+            talentBO = talentMapper.findRegisterOne(openId);
+            if (talentBO == null) {
+                return new ResultVO(2500, "查无此人");
+            }
+        }
+        TalentVO talentVO = TalentVO.convert(talentBO);
+        return new ResultVO(1000, talentVO);
+
     }
 }

@@ -99,7 +99,7 @@ public class CardServiceImpl implements ICardService {
         cardPO.setTitle(title);
         cardPO.setCurrNum(Long.valueOf(initialNumber));
         cardPO.setDescription(description);
-        cardPO.setPicture(publicPath + picture);
+        cardPO.setPicture(picture);
         cardPO.setPictureCdn(pictureCDN);
         cardPO.setPrerogative(prerogative);
         cardPO.setInitialWord(initialWord);
@@ -110,7 +110,7 @@ public class CardServiceImpl implements ICardService {
         cardPO.setWxCardId(wechatResult.getString("card_id"));
         cardPO.setStatus((byte) 1);
         cardPO.setDr((byte) 1);
-        cardPO.setLogoUrl(publicLogoUrl);
+        cardPO.setLogoUrl(logoUrl);
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
     }
@@ -122,9 +122,10 @@ public class CardServiceImpl implements ICardService {
         }
         CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
         //上传背景图片
+        String picture = "";
         String pictureCDN = "";
         if (background != null) {
-            String picture = FileUtil.uploadFile
+            picture = FileUtil.uploadFile
                     (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
 //        String pictureUploadCdnUrl = publicPath + picture;
             String pictureUploadCdnUrl = rootDir + picture;
@@ -144,6 +145,7 @@ public class CardServiceImpl implements ICardService {
         JSONObject baseInfo = new JSONObject();
         if (pictureCDN != "") {
             memberCard.put("background_pic_url", pictureCDN);
+            cardPO.setPicture(picture);
             cardPO.setPictureCdn(pictureCDN);
         }
         if (title != null && title != "") {
@@ -172,6 +174,10 @@ public class CardServiceImpl implements ICardService {
             String pictureUrl = cardPO.getPicture();
             if (pictureUrl != null && pictureUrl != "") {
                 cardPO.setPicture(publicPath + pictureUrl);
+            }
+            String logoUrl = cardPO.getLogoUrl();
+            if (logoUrl != null && logoUrl != "") {
+                cardPO.setLogoUrl(publicPath + logoUrl);
             }
         }
         return new ResultVO(1000, cardPOList);

@@ -9,14 +9,13 @@
         <result column="id_card" jdbcType="CHAR" property="idCard"/>
         <result column="passport" jdbcType="CHAR" property="passport"/>
         <result column="work_unit" jdbcType="CHAR" property="workUnit"/>
-        <result column="industry" jdbcType="CHAR" property="industry"/>
+        <result column="industry" jdbcType="INTEGER" property="industry"/>
         <result column="phone" jdbcType="CHAR" property="phone"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="category" jdbcType="CHAR" property="category"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="card_id" jdbcType="BIGINT" property="cardId"/>
     </resultMap>
-
     <resultMap id="TalentResultMap" type="com.talentcard.common.bo.TalentBO">
         <id column="t_talent_id" jdbcType="BIGINT" property="talentId"/>
         <result column="open_id" jdbcType="CHAR" property="openId"/>
@@ -68,9 +67,9 @@
         </collection>
     </resultMap>
     <sql id="Base_Column_List">
-        talent_id, open_id, `name`, sex, id_card, passport, work_unit, industry, phone, create_time,
-    `status`, category, card_id
-    </sql>
+    talent_id, open_id, `name`, sex, id_card, passport, work_unit, industry, phone, create_time, 
+    category, `status`, card_id
+  </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -78,20 +77,21 @@
         where talent_id = #{talentId,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete
-        from t_talent
-        where talent_id = #{talentId,jdbcType=BIGINT}
-    </delete>
+    delete from t_talent
+    where talent_id = #{talentId,jdbcType=BIGINT}
+  </delete>
     <insert id="insert" parameterType="com.talentcard.common.pojo.TalentPO">
-        insert into t_talent (talent_id, open_id, `name`,
-                              sex, id_card, passport, work_unit,
-                              industry, phone, create_time,
-                              `status`, category, card_id)
-        values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
-                #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR},
-                #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
-                #{status,jdbcType=TINYINT}, #{category,jdbcType=CHAR}, #{cardId,jdbcType=BIGINT})
-    </insert>
+    insert into t_talent (talent_id, open_id, `name`, 
+      sex, id_card, passport, work_unit, 
+      industry, phone, create_time, 
+      category, `status`, card_id
+      )
+    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
+      #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR}, 
+      #{industry,jdbcType=INTEGER}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{category,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{cardId,jdbcType=BIGINT}
+      )
+  </insert>
     <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentPO">
         insert into t_talent
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -125,11 +125,11 @@
             <if test="createTime != null">
                 create_time,
             </if>
-            <if test="status != null">
-                `status`,
-            </if>
             <if test="category != null">
                 category,
+            </if>
+            <if test="status != null">
+                `status`,
             </if>
             <if test="cardId != null">
                 card_id,
@@ -158,7 +158,7 @@
                 #{workUnit,jdbcType=CHAR},
             </if>
             <if test="industry != null">
-                #{industry,jdbcType=CHAR},
+                #{industry,jdbcType=INTEGER},
             </if>
             <if test="phone != null">
                 #{phone,jdbcType=CHAR},
@@ -166,11 +166,11 @@
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="status != null">
-                #{status,jdbcType=TINYINT},
-            </if>
             <if test="category != null">
                 #{category,jdbcType=CHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
             </if>
             <if test="cardId != null">
                 #{cardId,jdbcType=BIGINT},
@@ -199,7 +199,7 @@
                 work_unit = #{workUnit,jdbcType=CHAR},
             </if>
             <if test="industry != null">
-                industry = #{industry,jdbcType=CHAR},
+                industry = #{industry,jdbcType=INTEGER},
             </if>
             <if test="phone != null">
                 phone = #{phone,jdbcType=CHAR},
@@ -207,11 +207,11 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="status != null">
-                `status` = #{status,jdbcType=TINYINT},
-            </if>
             <if test="category != null">
                 category = #{category,jdbcType=CHAR},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
             </if>
             <if test="cardId != null">
                 card_id = #{cardId,jdbcType=BIGINT},
@@ -220,21 +220,22 @@
         where talent_id = #{talentId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentPO">
-        update t_talent
-        set open_id     = #{openId,jdbcType=CHAR},
-            `name`      = #{name,jdbcType=CHAR},
-            sex         = #{sex,jdbcType=TINYINT},
-            id_card     = #{idCard,jdbcType=CHAR},
-            passport    = #{passport,jdbcType=CHAR},
-            work_unit   = #{workUnit,jdbcType=CHAR},
-            industry    = #{industry,jdbcType=CHAR},
-            phone       = #{phone,jdbcType=CHAR},
-            create_time = #{createTime,jdbcType=TIMESTAMP},
-            `status`    = #{status,jdbcType=TINYINT},
-            category    = #{category,jdbcType=CHAR},
-            card_id     = #{cardId,jdbcType=BIGINT}
-        where talent_id = #{talentId,jdbcType=BIGINT}
-    </update>
+    update t_talent
+    set open_id = #{openId,jdbcType=CHAR},
+      `name` = #{name,jdbcType=CHAR},
+      sex = #{sex,jdbcType=TINYINT},
+      id_card = #{idCard,jdbcType=CHAR},
+      passport = #{passport,jdbcType=CHAR},
+      work_unit = #{workUnit,jdbcType=CHAR},
+      industry = #{industry,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      category = #{category,jdbcType=CHAR},
+      `status` = #{status,jdbcType=TINYINT},
+      card_id = #{cardId,jdbcType=BIGINT}
+    where talent_id = #{talentId,jdbcType=BIGINT}
+  </update>
+
 
     <!--  insert，且返回主键-->
     <insert id="add" useGeneratedKeys="true" keyProperty="talentId" parameterType="com.talentcard.common.pojo.TalentPO">
@@ -247,27 +248,27 @@
                 #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{status,jdbcType=TINYINT}, #{category,jdbcType=CHAR}, #{cardId,jdbcType=BIGINT})
     </insert>
-<!--    <select id="findBaseInfo" parameterType="java.lang.String" resultType="java.util.HashMap">-->
-<!--        select t.talent_id as talentId,-->
-<!--               `name`,-->
-<!--               sex,-->
-<!--               id_card     as idCard,-->
-<!--               passport,-->
-<!--               work_unit   as workUnit,-->
-<!--               industry,-->
-<!--               phone,-->
-<!--               t.`status`  as tStatus,-->
-<!--               political,-->
-<!--               education,-->
-<!--               pt_category as ptCategory,-->
-<!--               pt_info     as ptInfo,-->
-<!--               pq_category as pqCategory,-->
-<!--               pq_info     as pqInfo-->
-<!--        from t_talent t-->
-<!--                 left join t_user_current_info u-->
-<!--                           on t.talent_id = u.talent_id-->
-<!--        where t.open_id = #{openId,jdbcType=CHAR}-->
-<!--    </select>-->
+    <!--    <select id="findBaseInfo" parameterType="java.lang.String" resultType="java.util.HashMap">-->
+    <!--        select t.talent_id as talentId,-->
+    <!--               `name`,-->
+    <!--               sex,-->
+    <!--               id_card     as idCard,-->
+    <!--               passport,-->
+    <!--               work_unit   as workUnit,-->
+    <!--               industry,-->
+    <!--               phone,-->
+    <!--               t.`status`  as tStatus,-->
+    <!--               political,-->
+    <!--               education,-->
+    <!--               pt_category as ptCategory,-->
+    <!--               pt_info     as ptInfo,-->
+    <!--               pq_category as pqCategory,-->
+    <!--               pq_info     as pqInfo-->
+    <!--        from t_talent t-->
+    <!--                 left join t_user_current_info u-->
+    <!--                           on t.talent_id = u.talent_id-->
+    <!--        where t.open_id = #{openId,jdbcType=CHAR}-->
+    <!--    </select>-->
     <select id="findOne" parameterType="java.util.HashMap" resultMap="TalentResultMap">
         select t.talent_id    as t_talent_id,
                open_id,
