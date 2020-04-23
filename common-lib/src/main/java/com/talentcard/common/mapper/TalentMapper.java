@@ -114,4 +114,10 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
 //     */
 //    HashMap<String, Object> findBase(String openId);
 
+    /**
+     * 身份证唯一性校验
+     * @param idCard
+     * @return
+     */
+    Integer idCardIfUnique(String idCard);
 }

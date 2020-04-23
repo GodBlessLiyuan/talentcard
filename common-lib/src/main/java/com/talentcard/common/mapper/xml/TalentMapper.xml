@@ -496,7 +496,7 @@
           and ((c.status = 2) or (c.status = 4))
           and uc.status = 1
     </select>
-    <select id="findRegisterOne" parameterType="java.util.HashMap" resultMap="TalentResultMap">
+    <select id="findRegisterOne" parameterType="java.lang.String" resultMap="TalentResultMap">
         select t.talent_id    as t_talent_id,
                open_id,
                `name`,
@@ -554,12 +554,18 @@
           and (c.status = 2 or c.status = 5 or c.status = 9)
     </select>
 
-    <select id="ifCertificate" resultType="java.lang.Integer">
+    <select id="ifCertificate" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(t.talent_id)
         from t_talent t
         left join t_certification c
         on t.talent_id = c.talent_id
         where t.open_id = #{openId, jdbcType=CHAR}
         and c.status = 9
+    </select>
+
+    <select id="idCardIfUnique" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(t.talent_id)
+        from t_talent t
+        where t.id_card = #{idCard, jdbcType=CHAR}
     </select>
 </mapper>
