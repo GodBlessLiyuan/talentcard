@@ -41,23 +41,27 @@ public class CardUtil {
         baseInfoPO.setColor("Color070");
         baseInfoPO.setNotice(notice);
         baseInfoPO.setDescription(description);
-        baseInfoPO.setCenter_title("我是center");
-        baseInfoPO.setCenter_sub_title("centerT");
-        baseInfoPO.setCenter_url("www.baidu.com");
-        baseInfoPO.setCustom_url_name("我是custom");
-        baseInfoPO.setCustom_url("www.baidu.com");
-        baseInfoPO.setCustom_url_sub_title("我是customTitle");
-        baseInfoPO.setPromotion_url_name("我是pUrlName");
-        baseInfoPO.setPromotion_url("www.sohu.com");
+        //立即认证
+        baseInfoPO.setCenter_title("立即认证");
+        baseInfoPO.setCenter_sub_title("");
+        baseInfoPO.setCenter_url("http://dev.localcards.gov.vbooster.cn/wx/#not_certified");
+        //我的信息
+        baseInfoPO.setCustom_url_name("我的信息");
+        baseInfoPO.setCustom_url("http://dev.localcards.gov.vbooster.cn/wx/#my_info_not");
+        baseInfoPO.setCustom_url_sub_title("");
+        //我的权益
+        baseInfoPO.setPromotion_url_name("我的权益");
+        baseInfoPO.setPromotion_url("http://dev.localcards.gov.vbooster.cn/wx/#my_equity");
 
         memberCardPO.setBase_info(baseInfoPO);
         memberCardPO.setPrerogative(prerogative);
 
-        CustomCell1PO customCell1PO = new CustomCell1PO();
-        customCell1PO.setName("CellName");
-        customCell1PO.setTips("CellTips");
-        customCell1PO.setUrl("www.sina.com.cn");
-        memberCardPO.setCustom_cell1(customCell1PO);
+        //基础卡没有我的申请
+//        CustomCell1PO customCell1PO = new CustomCell1PO();
+//        customCell1PO.setName("我的申请");
+//        customCell1PO.setTips("");
+//        customCell1PO.setUrl("http://dev.localcards.gov.vbooster.cn/wx/#my_apply");
+//        memberCardPO.setCustom_cell1(customCell1PO);
         wxCardPO.setMember_card(memberCardPO);
         JSONObject cardObject = new JSONObject();
         cardObject.put("card", wxCardPO);
@@ -87,22 +91,27 @@ public class CardUtil {
         baseInfoPO.setColor("Color070");
         baseInfoPO.setNotice(notice);
         baseInfoPO.setDescription(description);
-        baseInfoPO.setCenter_title("我是center");
-        baseInfoPO.setCenter_sub_title("centerT");
-        baseInfoPO.setCenter_url("www.baidu.com");
-        baseInfoPO.setCustom_url_name("我是custom");
-        baseInfoPO.setCustom_url("www.baidu.com");
-        baseInfoPO.setCustom_url_sub_title("我是customTitle");
-        baseInfoPO.setPromotion_url_name("我是pUrlName");
-        baseInfoPO.setPromotion_url("www.sohu.com");
+        //高级卡没有立即认证
+//        baseInfoPO.setCenter_title("立即认证");
+//        baseInfoPO.setCenter_sub_title("");
+//        baseInfoPO.setCenter_url("http://dev.localcards.gov.vbooster.cn/wx/#not_certified");
+        //我的信息
+        baseInfoPO.setCustom_url_name("我的信息");
+        baseInfoPO.setCustom_url("http://dev.localcards.gov.vbooster.cn/wx/#my_info_already");
+        baseInfoPO.setCustom_url_sub_title("");
+        //我的权益
+        baseInfoPO.setPromotion_url_name("我的权益");
+        baseInfoPO.setPromotion_url("http://dev.localcards.gov.vbooster.cn/wx/#my_equity");
 
         memberCardPO.setBase_info(baseInfoPO);
         memberCardPO.setPrerogative(prerogative);
 
+        //我的申请
         CustomCell1PO customCell1PO = new CustomCell1PO();
-        customCell1PO.setName("CellName");
-        customCell1PO.setTips("CellTips");
-        customCell1PO.setUrl("www.sina.com.cn");
+        customCell1PO.setName("我的申请");
+        customCell1PO.setTips("");
+        customCell1PO.setUrl("http://dev.localcards.gov.vbooster.cn/wx/#my_apply");
+
         memberCardPO.setCustom_cell1(customCell1PO);
         wxCardPO.setMember_card(memberCardPO);
         JSONObject cardObject = new JSONObject();

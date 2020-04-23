@@ -33,4 +33,7 @@ public interface RoleMapper extends BaseMapper<RolePO, Long> {
      * @return
      */
     List<RolePO> queryRoleNameMsg();
+
+
+    RolePO queryRoleNameHave(String roleName);
 }

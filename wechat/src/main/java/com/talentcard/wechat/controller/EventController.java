@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date Created in 2020/04/20 14:17
  * @description 微信模块：人才的激活、用户的删卡等
  */
-@RequestMapping("talent")
+@RequestMapping("event")
 @RestController
 public class EventController {
     @Autowired

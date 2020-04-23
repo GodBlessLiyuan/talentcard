@@ -9,7 +9,6 @@ import java.util.Date;
  * @author 
  */
 public class UserPO implements Serializable {
-    @NotNull(message = "用户id不为空")
     private Long userId;
 
     private String username;

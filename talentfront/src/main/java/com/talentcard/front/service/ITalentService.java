@@ -30,19 +30,13 @@ public interface ITalentService {
     ResultVO register(JSONObject jsonObject);
 
     /**
-     * 根据对应条件查找一个
-     *
-     * @param hashMap
-     * @return
-     */
-    ResultVO findOne(HashMap<String, Object> hashMap);
-
-    /**
-     * 根据OpenId回填对应信息
+     * 根据OpenId查找认证完成之前的基本信息
+     * 或者认证之后的信息
      * @param openId
      * @return
      */
-    ResultVO findRegisterOne(String openId);
+    ResultVO findInfo(String openId);
+
     /**
      * @param openId
      * @param political
@@ -72,12 +66,4 @@ public interface ITalentService {
                             MultipartFile educPicture,
                             MultipartFile profTitlePicture,
                             MultipartFile profQualityPicture);
-
-    /**
-     * 激活
-     * @param openId
-     * @param code
-     * @return
-     */
-    ResultVO activate(String openId, String code);
 }

@@ -12,6 +12,7 @@ import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.AccessTokenUtil;
 import com.talentcard.front.utils.MessageUtil;
 import com.talentcard.front.utils.TalentUtil;
+import com.talentcard.front.vo.TalentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -78,7 +79,7 @@ public class TalentServiceImpl implements ITalentService {
             result.put("status", 1);
             result.put("cardId", getCard.get("cardId"));
             result.put("code", getCard.get("code"));
-        }else{
+        } else {
             //实在不行，给正在使用的卡
             result.put("status", 1);
             result.put("cardId", currentCard.get("cardId"));
@@ -102,6 +103,11 @@ public class TalentServiceImpl implements ITalentService {
         if (ifExist != null) {
             return new ResultVO(2305);
         }
+        //身份证唯一性校验
+        Integer idCardExist = talentMapper.idCardIfUnique(jsonObject.getString("idCard"));
+        if (idCardExist != 0) {
+            return new ResultVO(2306, "该身份证号已被注册");
+        }
         //设置状态值 状态3为注册中
         Byte status = (byte) 2;
         //通过currentType判定第一次注册填写的哪一个
@@ -116,10 +122,12 @@ public class TalentServiceImpl implements ITalentService {
         talentPO.setIdCard(idCard);
         talentPO.setPassport(jsonObject.getString("passport"));
         talentPO.setWorkUnit(jsonObject.getString("workUnit"));
-        talentPO.setIndustry(jsonObject.getString("industry"));
+        talentPO.setIndustry(jsonObject.getInteger("industry"));
+        talentPO.setIndustrySecond(jsonObject.getInteger("industrySecond"));
         talentPO.setPhone(jsonObject.getString("phone"));
         talentPO.setCreateTime(new Date());
         talentPO.setStatus(status);
+        talentPO.setDr((byte) 1);
         //人才表的初级卡cardId
         CardPO cardPO = cardMapper.findDefaultCard();
         Long cardId = cardPO.getCardId();
@@ -207,30 +215,6 @@ public class TalentServiceImpl implements ITalentService {
     }
 
     @Override
-    public ResultVO findOne(HashMap<String, Object> hashMap) {
-        TalentBO talentBO = talentMapper.findOne(hashMap).get(0);
-        //学历
-        for (EducationPO educationPO : talentBO.getEducationPOList()) {
-            if (educationPO.getEducPicture() != null) {
-                educationPO.setEducPicture(publicPath + educationPO.getEducPicture());
-            }
-        }
-        //职称
-        for (ProfTitlePO profTitlePO : talentBO.getProfTitlePOList()) {
-            if (profTitlePO.getPicture() != null) {
-                profTitlePO.setPicture(publicPath + profTitlePO.getPicture());
-            }
-        }
-        //职业资格
-        for (ProfQualityPO profQualityPO : talentBO.getProfQualityPOList()) {
-            if (profQualityPO.getPicture() != null) {
-                profQualityPO.setPicture(publicPath + profQualityPO.getPicture());
-            }
-        }
-        return new ResultVO(1000, talentBO);
-    }
-
-    @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO identification(String openId,
                                    Byte political,
@@ -248,13 +232,22 @@ public class TalentServiceImpl implements ITalentService {
         //设置状态值 状态3为认证未审批
         Byte status = (byte) 3;
         //上传文件
-        String educUrl = FileUtil.uploadFile
-                (educPicture, rootDir, projectDir, educationDir, "education");
-        String profTitleUrl = FileUtil.uploadFile
-                (profTitlePicture, rootDir, projectDir, profTitleDir, "profTitle");
-        String profQualityUrl = FileUtil.uploadFile
-                (profQualityPicture, rootDir, projectDir, profQualityDir, "profQuality");
-        if (educUrl == "" || profTitleUrl == "" || profQualityUrl == "") {
+        String educUrl = "";
+        String profTitleUrl = "";
+        String profQualityUrl = "";
+        if (educPicture != null) {
+            educUrl = FileUtil.uploadFile
+                    (educPicture, rootDir, projectDir, educationDir, "education");
+        }
+        if (profTitlePicture != null) {
+            profTitleUrl = FileUtil.uploadFile
+                    (profTitlePicture, rootDir, projectDir, profTitleDir, "profTitle");
+        }
+        if (profQualityPicture != null) {
+            profQualityUrl = FileUtil.uploadFile
+                    (profQualityPicture, rootDir, projectDir, profQualityDir, "profQuality");
+        }
+        if (educUrl == "" && profTitleUrl == "" && profQualityUrl == "") {
             return new ResultVO(2304, "上传文件失败");
         }
 
@@ -316,59 +309,29 @@ public class TalentServiceImpl implements ITalentService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public ResultVO activate(String openId, String code) {
-        //判断人卡表里是否已经有待审批的，如果有，错误代码
-        Integer ifExist = userCardMapper.findUserCardExist(openId);
-        if (ifExist != 0) {
-            return new ResultVO(2310);
-        }
-
-        //从card表里，寻找默认卡
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", code);
-        CardPO cardPO = cardMapper.findDefaultCard();
-        Long cardId = cardPO.getCardId();
-        jsonObject.put("cardId", cardId);
-        //人卡表里设置参数
-        TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        UserCardPO userCardPO = new UserCardPO();
-        userCardPO.setTalentId(talentPO.getTalentId());
-        userCardPO.setCardId(cardId);
-        //设置当前编号，组合起来，并且更新卡的currentNum
-        String membershipNumber = cardPO.getInitialWord();
-        Integer initialNumLength = cardPO.getInitialNum().length();
-        Integer currentNumlength = cardPO.getCurrNum().toString().length();
-        //补0
-        if ((initialNumLength - currentNumlength) > 0) {
-            for (int i = 0; i < (initialNumLength - currentNumlength); i++) {
-                membershipNumber = membershipNumber + "0";
+    public ResultVO findInfo(String openId) {
+        //根据openId和c表status=9是否有数据来判断是否认证过
+        //status=9说明基本卡已经作废，证明认证完成
+        Integer ifCertificate = talentMapper.ifCertificate(openId);
+        TalentBO talentBO;
+        if (ifCertificate != 0) {
+            //有作废的基础卡，说明认证通过
+            HashMap<String, Object> hashMap = new HashMap();
+            hashMap.put("openId", openId);
+            hashMap.put("status", (byte) 1);
+            talentBO = talentMapper.findOne(hashMap);
+            if (talentBO == null) {
+                return new ResultVO(2500, "查无此人");
+            }
+        } else {
+            //没有作废的基础卡，说明认证未通过
+            talentBO = talentMapper.findRegisterOne(openId);
+            if (talentBO == null) {
+                return new ResultVO(2500, "查无此人");
             }
         }
+        TalentVO talentVO = TalentVO.convert(talentBO);
+        return new ResultVO(1000, talentVO);
 
-        membershipNumber = membershipNumber + cardPO.getCurrNum();
-        userCardPO.setNum(membershipNumber);
-        jsonObject.put("membershipNumber", membershipNumber);
-        cardPO.setCurrNum(cardPO.getCurrNum() + 1);
-        cardPO.setMemberNum(cardPO.getMemberNum() + 1);
-        //人卡表里设置参数；添加数据
-        userCardPO.setCreateTime(new Date());
-        userCardPO.setStatus((byte) 1);
-        //发送post请求，激活卡套
-        try {
-            String accessToken = AccessTokenUtil.getAccessToken();
-            String url = "https://api.weixin.qq.com/card/membercard/activate?access_token=" + accessToken;
-            WechatApiUtil.postRequest(url, jsonObject);
-        } catch (WechatException wechatException) {
-            return new ResultVO(6666);
-        }
-        cardMapper.updateByPrimaryKeySelective(cardPO);
-        userCardMapper.insertSelective(userCardPO);
-        return new ResultVO(1000);
-    }
-
-    @Override
-    public ResultVO findRegisterOne(String openId) {
-        return new ResultVO(1000, talentMapper.findRegisterOne(openId));
     }
 }

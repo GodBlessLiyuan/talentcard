@@ -76,9 +76,15 @@ public class CardServiceImpl implements ICardService {
             return new ResultVO(2325);
         }
         //创建卡，微信端
+        CardPO cardPO = new CardPO();
         //status=1为基本卡，否则为高级卡
         JSONObject wechatResult;
         if (status == 1) {
+            CardPO defaultCard = cardMapper.findDefaultCard();
+            //已存在基本卡，最多1张
+            if (defaultCard != null) {
+                return new ResultVO(2326, "已存在基础卡");
+            }
             wechatResult = CardUtil.addCommonCard(name, title, notice, description, prerogative, pictureCDN, logoCDN);
             if ((wechatResult.getInteger("errcode") == null)
                     || (wechatResult.getInteger("errcode") != 0)) {
@@ -90,16 +96,13 @@ public class CardServiceImpl implements ICardService {
                     || (wechatResult.getInteger("errcode") != 0)) {
                 return new ResultVO(2320, wechatResult);
             }
-
         }
-
         //创建卡，服务端
-        CardPO cardPO = new CardPO();
         cardPO.setName(name);
         cardPO.setTitle(title);
         cardPO.setCurrNum(Long.valueOf(initialNumber));
         cardPO.setDescription(description);
-        cardPO.setPicture(publicPath + picture);
+        cardPO.setPicture(picture);
         cardPO.setPictureCdn(pictureCDN);
         cardPO.setPrerogative(prerogative);
         cardPO.setInitialWord(initialWord);
@@ -108,9 +111,8 @@ public class CardServiceImpl implements ICardService {
         cardPO.setStatus(status);
         cardPO.setMemberNum((long) 0);
         cardPO.setWxCardId(wechatResult.getString("card_id"));
-        cardPO.setStatus((byte) 1);
         cardPO.setDr((byte) 1);
-        cardPO.setLogoUrl(publicLogoUrl);
+        cardPO.setLogoUrl(logoUrl);
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
     }
@@ -122,9 +124,10 @@ public class CardServiceImpl implements ICardService {
         }
         CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
         //上传背景图片
+        String picture = "";
         String pictureCDN = "";
         if (background != null) {
-            String picture = FileUtil.uploadFile
+            picture = FileUtil.uploadFile
                     (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
 //        String pictureUploadCdnUrl = publicPath + picture;
             String pictureUploadCdnUrl = rootDir + picture;
@@ -144,6 +147,7 @@ public class CardServiceImpl implements ICardService {
         JSONObject baseInfo = new JSONObject();
         if (pictureCDN != "") {
             memberCard.put("background_pic_url", pictureCDN);
+            cardPO.setPicture(picture);
             cardPO.setPictureCdn(pictureCDN);
         }
         if (title != null && title != "") {
@@ -172,6 +176,10 @@ public class CardServiceImpl implements ICardService {
             String pictureUrl = cardPO.getPicture();
             if (pictureUrl != null && pictureUrl != "") {
                 cardPO.setPicture(publicPath + pictureUrl);
+            }
+            String logoUrl = cardPO.getLogoUrl();
+            if (logoUrl != null && logoUrl != "") {
+                cardPO.setLogoUrl(publicPath + logoUrl);
             }
         }
         return new ResultVO(1000, cardPOList);

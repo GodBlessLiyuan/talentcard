@@ -24,27 +24,12 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
     Integer add(TalentPO talentPO);
 
     /**
-     * 根据openId用uci表回填基本信息
-     * @param openId
-     * @return
-     */
-    HashMap<String, Object> findRegisterOne(String openId);
-
-    /**
-     * 根据openId和c表状态决定一条完整的记录，带4表的所有信息
-     * @param hashMap
-     * @return
-     */
-    List<TalentBO> findOne(HashMap<String, Object> hashMap);
-
-    /**
      * 根据openId，返回相应的talentPO
      * @param openId
      * @return
      */
     TalentPO selectByOpenId(String openId);
 
-//    String findCardId(String openId);
 
     /**
      * 根据信息检索符合条件的人才信息
@@ -97,4 +82,42 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
      * @return
      */
     List<TalentBO> queryCert(Map<String, Object> reqMap);
+
+    /**
+     * 根据openId和c表状态决定一条完整的记录，带4表的所有信息
+     * @param hashMap
+     * @return
+     */
+    TalentBO findOne(HashMap<String, Object> hashMap);
+
+    /**
+     * 根据openId和c表状态决定一条完整的记录，带4表的所有信息
+     * status=2 or 5 or 9
+     * 注册时基本卡信息完整的一生
+     * @param openId
+     * @return
+     */
+    TalentBO findRegisterOne(String openId);
+
+    /**
+     * 根据openId和c表status=9是否有数据来判断是否认证过
+     * status=9说明基本卡已经作废，证明认证完成
+     * @param openId
+     * @return
+     */
+    Integer ifCertificate(String openId);
+
+//    /**
+//     * 根据openId用uci表查找当前的基本信息
+//     * @param openId
+//     * @return
+//     */
+//    HashMap<String, Object> findBase(String openId);
+
+    /**
+     * 身份证唯一性校验
+     * @param idCard
+     * @return
+     */
+    Integer idCardIfUnique(String idCard);
 }

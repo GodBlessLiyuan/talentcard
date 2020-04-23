@@ -114,4 +114,11 @@
     from t_role
   </select>
 
+  <select id="queryRoleNameHave" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_role
+    where `name` = #{roleName,jdbcType=CHAR}
+  </select>
+
 </mapper>

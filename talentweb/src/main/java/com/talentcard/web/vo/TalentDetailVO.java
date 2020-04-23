@@ -75,7 +75,7 @@ public class TalentDetailVO implements Serializable {
     /**
      * 所在行业
      */
-    private String industry;
+    private Integer industry;
     /**
      * 现工作单位
      */

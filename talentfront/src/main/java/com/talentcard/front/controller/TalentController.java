@@ -82,35 +82,6 @@ public class TalentController {
     }
 
     /**
-     * 回填信息
-     *
-     * @param openId
-     * @return
-     */
-    @PostMapping("findRegisterOne")
-    public ResultVO findRegisterOne(@RequestParam(value = "openId") String openId) {
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("openId", openId);
-        return iTalentService.findRegisterOne(openId);
-    }
-
-    /**
-     * 返回信息
-     *
-     * @param openId
-     * @param status 1：已同意使用中；2：已驳回；3：注册中 4：待审批；5废弃
-     * @return
-     */
-    @PostMapping("findOne")
-    public ResultVO findOne(@RequestParam(value = "openId") String openId,
-                            @RequestParam(value = "status") String status) {
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("openId", openId);
-        hashMap.put("status", status);
-        return iTalentService.findOne(hashMap);
-    }
-
-    /**
      * 用户认证模块
      *
      * @param openId
@@ -129,35 +100,32 @@ public class TalentController {
      * @return
      */
     @PostMapping("identification")
-    public ResultVO identification(@RequestParam(value = "openId") String openId,
-                                   @RequestParam(value = "political") Byte political,
-                                   @RequestParam(value = "education") Integer education,
-                                   @RequestParam(value = "school") String school,
-                                   @RequestParam(value = "firstClass") Byte firstClass,
-                                   @RequestParam(value = "major") String major,
-                                   @RequestParam(value = "profQualityCategory") Integer profQualityCategory,
-                                   @RequestParam(value = "profQualityInfo") String profQualityInfo,
-                                   @RequestParam(value = "profTitleCategory") Integer profTitleCategory,
-                                   @RequestParam(value = "profTitleInfo") String profTitleInfo,
-                                   @RequestParam(value = "educPicture") MultipartFile educPicture,
-                                   @RequestParam(value = "profTitlePicture") MultipartFile profTitlePicture,
-                                   @RequestParam(value = "profQualityPicture") MultipartFile profQualityPicture) {
+    public ResultVO identification(@RequestParam(value = "openId", required = false) String openId,
+                                   @RequestParam(value = "political", required = false) Byte political,
+                                   @RequestParam(value = "education", required = false) Integer education,
+                                   @RequestParam(value = "school", required = false) String school,
+                                   @RequestParam(value = "firstClass", required = false) Byte firstClass,
+                                   @RequestParam(value = "major", required = false) String major,
+                                   @RequestParam(value = "profQualityCategory", required = false) Integer profQualityCategory,
+                                   @RequestParam(value = "profQualityInfo", required = false) String profQualityInfo,
+                                   @RequestParam(value = "profTitleCategory", required = false) Integer profTitleCategory,
+                                   @RequestParam(value = "profTitleInfo", required = false) String profTitleInfo,
+                                   @RequestParam(value = "educPicture", required = false) MultipartFile educPicture,
+                                   @RequestParam(value = "profTitlePicture", required = false) MultipartFile profTitlePicture,
+                                   @RequestParam(value = "profQualityPicture", required = false) MultipartFile profQualityPicture) {
         return iTalentService.identification(openId, political, education, school, firstClass,
                 major, profQualityCategory, profQualityInfo, profTitleCategory, profTitleInfo,
                 educPicture, profTitlePicture, profQualityPicture);
     }
 
     /**
-     * 第一次申请认证后激活卡套
-     *
+     * 根据OpenId查找认证完成之前的基本信息
+     * 或者认证之后的信息
      * @param openId
-     * @param code
      * @return
      */
-    @PostMapping("activate")
-    public ResultVO activate(@RequestParam(value = "openId") String openId,
-                             @RequestParam(value = "code") String code) {
-        return iTalentService.activate(openId, code);
+    @PostMapping("findInfo")
+    public ResultVO findInfo(@RequestParam(value = "openId") String openId) {
+        return iTalentService.findInfo(openId);
     }
-
 }
