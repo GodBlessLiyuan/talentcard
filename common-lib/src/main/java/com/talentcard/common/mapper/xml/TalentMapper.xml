@@ -247,27 +247,27 @@
                 #{industry,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
                 #{status,jdbcType=TINYINT}, #{category,jdbcType=CHAR}, #{cardId,jdbcType=BIGINT})
     </insert>
-    <select id="findRegisterOne" parameterType="java.lang.String" resultType="java.util.HashMap">
-        select t.talent_id as talentId,
-               `name`,
-               sex,
-               id_card     as idCard,
-               passport,
-               work_unit   as workUnit,
-               industry,
-               phone,
-               t.`status`  as tStatus,
-               political,
-               education,
-               pt_category as ptCategory,
-               pt_info     as ptInfo,
-               pq_category as pqCategory,
-               pq_info     as pqInfo
-        from t_talent t
-                 left join t_user_current_info u
-                           on t.talent_id = u.talent_id
-        where t.open_id = #{openId,jdbcType=CHAR}
-    </select>
+<!--    <select id="findBaseInfo" parameterType="java.lang.String" resultType="java.util.HashMap">-->
+<!--        select t.talent_id as talentId,-->
+<!--               `name`,-->
+<!--               sex,-->
+<!--               id_card     as idCard,-->
+<!--               passport,-->
+<!--               work_unit   as workUnit,-->
+<!--               industry,-->
+<!--               phone,-->
+<!--               t.`status`  as tStatus,-->
+<!--               political,-->
+<!--               education,-->
+<!--               pt_category as ptCategory,-->
+<!--               pt_info     as ptInfo,-->
+<!--               pq_category as pqCategory,-->
+<!--               pq_info     as pqInfo-->
+<!--        from t_talent t-->
+<!--                 left join t_user_current_info u-->
+<!--                           on t.talent_id = u.talent_id-->
+<!--        where t.open_id = #{openId,jdbcType=CHAR}-->
+<!--    </select>-->
     <select id="findOne" parameterType="java.util.HashMap" resultMap="TalentResultMap">
         select t.talent_id    as t_talent_id,
                open_id,
@@ -331,15 +331,7 @@
         from t_talent
         where open_id = #{openId,jdbcType=BIGINT}
     </select>
-<!--    <select id="findCardId" parameterType="java.lang.String" resultType="java.lang.String">-->
-<!--        select c.card_id-->
-<!--        from t_talent t-->
-<!--                 left join t_user_card uc-->
-<!--                           on t.talent_id = uc.talent_id-->
-<!--                 left join t_card c-->
-<!--                           on uc.card_id = c.card_id-->
-<!--        where open_id = #{openId,jdbcType=BIGINT}-->
-<!--    </select>-->
+
     <select id="query" resultType="com.talentcard.common.bo.TalentBO">
         select t.talent_id as talentId,
         t.create_time as createTime,
@@ -502,5 +494,71 @@
         where t.open_id = #{openId, jdbcType=CHAR}
           and ((c.status = 2) or (c.status = 4))
           and uc.status = 1
+    </select>
+    <select id="findRegisterOne" parameterType="java.util.HashMap" resultMap="TalentResultMap">
+        select t.talent_id    as t_talent_id,
+               open_id,
+               `name`,
+               sex,
+               id_card,
+               passport,
+               work_unit,
+               industry,
+               phone,
+               t.create_time  as t_create_time,
+               t.`status`     as t_status,
+               t.category     as t_category,
+               t.card_id      as t_card_id,
+
+               c.cert_id      as c_cert_id,
+               c.political    as c_political,
+               c.status       as c_status,
+               current_type,
+
+               e.educ_id      as e_educ_id,
+               e.education    as e_education,
+               e.school       as e_school,
+               e.first_class  as e_first_class,
+               e.major        as e_major,
+               e.educ_picture as e_educ_picture,
+               e.cert_id      as e_cert_id,
+               e.talent_id    as e_talent_id,
+               e.status       as e_status,
+
+               pt.pt_id       as pt_pt_id,
+               pt.category    as pt_category,
+               pt.info        as pt_info,
+               pt.picture     as pt_picture,
+               pt.cert_id     as pt_cert_id,
+               pt.talent_id   as pt_talent_id,
+               pt.status      as pt_status,
+
+               pq.pq_id       as pq_pq_id,
+               pq.category    as pq_category,
+               pq.info        as pq_info,
+               pq.picture     as pq_picture,
+               pq.cert_id     as pq_cert_id,
+               pq.talent_id   as pq_talent_id,
+               pq.status      as pq_status
+        from t_talent t
+                 left join t_certification c
+                           on t.talent_id = c.talent_id
+                 left join t_education e
+                           on c.cert_id = e.cert_id
+                 left join t_prof_title pt
+                           on c.cert_id = pt.cert_id
+                 left join t_prof_quality pq
+                           on c.cert_id = pq.cert_id
+        where t.open_id = #{openId,jdbcType=CHAR}
+          and (c.status = 2 or c.status = 5 or c.status = 9)
+    </select>
+
+    <select id="ifCertificate" resultType="java.lang.Integer">
+        select count(t.talent_id)
+        from t_talent t
+        left join t_certification c
+        on t.talent_id = c.talent_id
+        where t.open_id = #{openId, jdbcType=CHAR}
+        and c.status = 9
     </select>
 </mapper>
