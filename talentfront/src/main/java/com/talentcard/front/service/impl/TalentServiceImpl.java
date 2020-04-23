@@ -103,6 +103,11 @@ public class TalentServiceImpl implements ITalentService {
         if (ifExist != null) {
             return new ResultVO(2305);
         }
+        //身份证唯一性校验
+        Integer idCardExist = talentMapper.idCardIfUnique(jsonObject.getString("idCard"));
+        if(idCardExist!=0){
+            return new ResultVO(2306,"该身份证号已被注册");
+        }
         //设置状态值 状态3为注册中
         Byte status = (byte) 2;
         //通过currentType判定第一次注册填写的哪一个
