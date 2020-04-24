@@ -86,7 +86,7 @@ public class CardUtil {
         BaseInfoPO baseInfoPO = new BaseInfoPO();
         baseInfoPO.setLogo_url(logoUrl);
         baseInfoPO.setBrand_name(brandName);
-        baseInfoPO.setCode_type("CODE_TYPE_TEXT");
+        baseInfoPO.setCode_type("CODE_TYPE_QRCODE");
         baseInfoPO.setTitle(title);
         baseInfoPO.setColor("Color070");
         baseInfoPO.setNotice(notice);
