@@ -7,7 +7,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+/**
+ * @author ChenXU
+ * @version 1.0
+ * @date Created in 2020/04/10 09:28
+ * @description jsSdk签名，根据openId，获取卡券相关的签名
+ */
 @RequestMapping("jsSdk")
 @RestController
 public class JsSdkController {

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author ChenXU
  * @version 1.0
  * @date Created in 2020/04/20 14:17
- * @description 微信模块：人才的激活、用户的删卡等
+ * @description 微信模块：人才的领卡和删除事件等
  */
 @RequestMapping("event")
 @RestController

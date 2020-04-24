@@ -12,7 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-
+/**
+ * @author ChenXU
+ * @version 1.0
+ * @date Created in 2020/04/10 09:28
+ * @description jsApi url获取签名和权限
+ */
 @RequestMapping("jsApi")
 @RestController
 public class JsApiController {
