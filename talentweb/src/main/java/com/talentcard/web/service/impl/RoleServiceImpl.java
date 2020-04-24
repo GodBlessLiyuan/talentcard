@@ -11,7 +11,10 @@ import com.talentcard.web.vo.ManageRoleVO;
 import com.talentcard.web.vo.RoleNameIdVO;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +33,8 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public ResultVO queryByRole(String roleName, String startTime, String endTime) {
+        startTime = startTime + " 00:00:00";
+        endTime = endTime + " 24:00:00";
         // 1 先在角色基础表中查询当前角色信息
         List<RolePO> rolePOS = roleMapper.queryRoleByTime(roleName,startTime,endTime);
         if (rolePOS.size() == 0) {
