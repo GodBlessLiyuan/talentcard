@@ -370,8 +370,7 @@ CREATE TABLE t_user_card
 2 已领卡，使用中
 3 废弃',
 	PRIMARY KEY (uc_id),
-	UNIQUE (uc_id),
-	UNIQUE (num)
+	UNIQUE (uc_id)
 );
 
 
