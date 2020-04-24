@@ -2,14 +2,11 @@ package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.TalentBO;
-import com.talentcard.common.exception.WechatException;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.FileUtil;
-import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ITalentService;
-import com.talentcard.front.utils.AccessTokenUtil;
 import com.talentcard.front.utils.MessageUtil;
 import com.talentcard.front.utils.TalentUtil;
 import com.talentcard.front.vo.TalentVO;
@@ -101,7 +98,7 @@ public class TalentServiceImpl implements ITalentService {
         String openId = jsonObject.getString("openId");
         TalentPO ifExist = talentMapper.selectByOpenId(openId);
         if (ifExist != null) {
-            return new ResultVO(2305);
+            return new ResultVO(2305, "该openId已被注册");
         }
         //身份证唯一性校验
         Integer idCardExist = talentMapper.idCardIfUnique(jsonObject.getString("idCard"));

@@ -27,6 +27,7 @@
         <result column="passport" jdbcType="CHAR" property="passport"/>
         <result column="work_unit" jdbcType="CHAR" property="workUnit"/>
         <result column="industry" jdbcType="CHAR" property="industry"/>
+        <result column="industry_second" jdbcType="INTEGER" property="industrySecond"/>
         <result column="phone" jdbcType="CHAR" property="phone"/>
         <result column="t_create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="t_status" jdbcType="TINYINT" property="status"/>
@@ -302,6 +303,7 @@
                passport,
                work_unit,
                industry,
+               industry_second,
                phone,
                t.create_time  as t_create_time,
                t.`status`     as t_status,
@@ -536,6 +538,7 @@
                passport,
                work_unit,
                industry,
+               industry_second,
                phone,
                t.create_time  as t_create_time,
                t.`status`     as t_status,

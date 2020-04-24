@@ -26,8 +26,8 @@ public class CardController {
      * @param name
      * @param title
      * @param notice
-     * @param description
-     * @param prerogative
+     * @param description 可以不给
+     * @param prerogative 必须给
      * @param background
      * @param initialWord
      * @param initialNumber
@@ -38,8 +38,8 @@ public class CardController {
     public ResultVO add(@RequestParam(value = "name") String name,
                         @RequestParam(value = "title") String title,
                         @RequestParam(value = "notice", required = false, defaultValue = "") String notice,
-                        @RequestParam(value = "description") String description,
-                        @RequestParam(value = "prerogative") String prerogative,
+                        @RequestParam(value = "description", required = false, defaultValue = "") String description,
+                        @RequestParam(value = "prerogative", required = false, defaultValue = "我是特权") String prerogative,
                         @RequestParam(value = "background") MultipartFile background,
                         @RequestParam(value = "initialWord") String initialWord,
                         @RequestParam(value = "initialNumber") String initialNumber,
