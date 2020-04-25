@@ -19,6 +19,13 @@ public interface ICertApprocalService {
      */
     ResultVO certApprovalShowItems(Long talentId);
 
+    /**
+     * 查看详情
+     * @param talentId
+     * @return
+     */
+    ResultVO detailsLookItems(Long talentId);
+
 
     /**
      * 根据审批的回馈结果进行各个表更新
