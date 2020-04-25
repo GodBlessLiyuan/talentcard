@@ -51,6 +51,10 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
     @Override
     public ResultVO certApprovalShowItems(Long talentId) {
         ApprovalBO bo = certificationMapper.queryAllMsg(talentId);
+        if (null == bo) {
+            //当前用户没有审批需求
+            return new ResultVO(2215);
+        }
         List<CertApprovalPO> pos = certApprovalMapper.queryApprovalById(talentId);
         ApprovalItemsVO approvalItemsVO = new ApprovalItemsVO();
         approvalItemsVO.setApprovalBO(bo);
@@ -77,6 +81,15 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
         Long certId = (Long) reqData.get("certId");
         Long talentId = (Long) reqData.get("talentId");
         Long cardId = (Long) reqData.get("cardId");
+        /**
+         * 人才卡编号根据人才卡当前卡id的总数+1
+         */
+        CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
+        if (null == cardPO) {
+            // 当前未有人才卡
+            return new ResultVO(2165);
+        }
+
         // 2 代表审批驳回
         //(1) 新增认证审批表
         CertApprovalPO certApprovalPo = new CertApprovalPO();
@@ -119,7 +132,7 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
             //(6) 更新职业资格表的认证状态
             int resultProfQuality = profQualityMapper.updateStatusByCertId(certId,(byte) 10);
             if (resultProfQuality == 0) {
-                //更新职称表状态失败
+                //更新职业资格表状态失败
                 return new ResultVO(2370);
             }
         }else {
@@ -173,14 +186,7 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
             userCardPO.setTalentId(talentId);
             userCardPO.setCardId(cardId);
 
-            /**
-             * 人才卡编号根据人才卡当前卡id的总数+1
-             */
-            CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
-            if (null == cardPO) {
-                // 当前未有人才卡
-                return new ResultVO(2165);
-            }
+
 
             String membershipNumber = cardPO.getInitialWord();
             Integer initialNumLength = cardPO.getInitialNum().length();
