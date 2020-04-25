@@ -605,4 +605,13 @@
         where t.id_card = #{idCard, jdbcType=CHAR}
         and t.dr!=2
     </select>
+    <select id="ifInAudit" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(t.talent_id)
+        from t_talent t
+        left join t_certification c
+        on t.talent_id = c.talent_id
+        where t.open_id = #{openId, jdbcType=CHAR}
+        and c.status = 3
+        and t.dr!=2
+    </select>
 </mapper>
