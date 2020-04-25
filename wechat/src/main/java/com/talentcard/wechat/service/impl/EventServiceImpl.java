@@ -73,8 +73,6 @@ public class EventServiceImpl implements IEventService {
             //第二次激活
             //待领取的卡
             ActivcateBO newCard = talentMapper.activate(openId, (byte) 4, (byte) 1);
-            //正在使用的卡（旧卡）
-            ActivcateBO oldCard = talentMapper.activate(openId, (byte) 1, (byte) 2);
             //1.cert_approval里的人才类别信息更新user_current_info表
             CertApprovalPO certApprovalPO = certApprovalMapper.findByCertId(newCard.getCertId());
             UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByPrimaryKey(newCard.getUciId());
@@ -94,23 +92,30 @@ public class EventServiceImpl implements IEventService {
             //4.user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
             userCardMapper.updateStatusById(newCard.getTalentId(), (byte) 1, (byte) 2);
 
+
+            Byte oldStatus;
+            ActivcateBO oldCard;
+            //判断旧卡是基本卡还是高级卡，基本卡就改为失效9，高级卡改为失效10
+            Integer ifOldCardIsBaseCard = certificationMapper.ifOldCardIsBaseCard(openId);
+            if (ifOldCardIsBaseCard == 0) {
+                //正在使用的卡（旧卡）是基本卡
+                oldCard = talentMapper.activate(openId, (byte) 5, (byte) 2);
+                //说明c表里找不到状态9的，代表这是基本卡换高级卡
+                oldStatus = 9;
+            } else {
+                //正在使用的卡（旧卡）是高级卡
+                oldCard = talentMapper.activate(openId, (byte) 1, (byte) 2);
+                //找到了状态9的，说明这是高级卡换高级卡
+                oldStatus = 10;
+            }
+            //取出旧卡的talentId和certId
+            Long oldTalentId = oldCard.getTalentId();
+            Long oldCertId = oldCard.getCertId();
             //旧卡数量-1
             CardPO cardPO = cardMapper.selectByPrimaryKey(oldCard.getCardId());
             cardPO.setMemberNum(cardPO.getMemberNum() - 1);
             cardMapper.updateByPrimaryKeySelective(cardPO);
             //旧卡（基本卡）更改状态：c表状态1，uc表状态2，即为正在使用的卡
-            Long oldTalentId = oldCard.getTalentId();
-            Long oldCertId = oldCard.getCertId();
-            Byte oldStatus;
-            //判断旧卡是基本卡还是高级卡，基本卡就改为失效9，高级卡改为失效10
-            Integer ifOldCardIsBaseCard = certificationMapper.ifOldCardIsBaseCard(oldTalentId);
-            if (ifOldCardIsBaseCard == 0) {
-                //说明c表里找不到状态9的，代表这是基本卡换高级卡
-                oldStatus = 9;
-            } else {
-                //找到了状态9的，说明这是高级卡换高级卡
-                oldStatus = 10;
-            }
             //旧卡从状态1改为状态9或10
             certificationMapper.updateStatusById(oldTalentId, (byte) 1, oldStatus);
             educationMapper.updateStatusByCertId(oldCertId, oldStatus);
