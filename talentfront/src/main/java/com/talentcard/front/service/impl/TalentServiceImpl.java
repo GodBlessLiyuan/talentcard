@@ -90,13 +90,13 @@ public class TalentServiceImpl implements ITalentService {
         } else {
             result.put("ifChangeCard", 1);
         }
-        Integer ifCertificate = talentMapper.ifCertificate(openId);
-        if (ifCertificate != 0) {
-            //找到基本卡销毁的，已认证
-            result.put("ifCertificate", 1);
+        Integer ifInAudit = talentMapper.ifInAudit(openId);
+        if (ifInAudit != 0) {
+            //找到待审批的
+            result.put("ifInAudit", 1);
         } else {
-            //找不到基本卡销毁的，未认证
-            result.put("ifCertificate", 2);
+            //找不到待审批的
+            result.put("ifInAudit", 2);
         }
         return new ResultVO(1000, result);
     }

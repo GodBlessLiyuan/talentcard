@@ -87,11 +87,6 @@ public class EventServiceImpl implements IEventService {
             educationMapper.updateStatusByCertId(certId, status);
             profTitleMapper.updateStatusByCertId(certId, status);
             profQualityMapper.updateStatusByCertId(certId, status);
-            //3.user_card更新（查询status=2的卡，改为status=3）（之前正在使用的旧卡变为废弃）
-            userCardMapper.updateStatusById(newCard.getTalentId(), (byte) 2, (byte) 3);
-            //4.user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
-            userCardMapper.updateStatusById(newCard.getTalentId(), (byte) 1, (byte) 2);
-
 
             Byte oldStatus;
             ActivcateBO oldCard;
@@ -121,6 +116,11 @@ public class EventServiceImpl implements IEventService {
             educationMapper.updateStatusByCertId(oldCertId, oldStatus);
             profTitleMapper.updateStatusByCertId(oldCertId, oldStatus);
             profQualityMapper.updateStatusByCertId(oldCertId, oldStatus);
+
+            //user_card更新（查询status=2的卡，改为status=3）（之前正在使用的旧卡变为废弃）
+            userCardMapper.updateStatusById(newCard.getTalentId(), (byte) 2, (byte) 3);
+            //user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
+            userCardMapper.updateStatusById(newCard.getTalentId(), (byte) 1, (byte) 2);
             //设置旧卡券失效
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("code", oldCard.getCode());
