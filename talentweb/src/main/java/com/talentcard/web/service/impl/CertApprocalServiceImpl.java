@@ -163,7 +163,7 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
             UserCardPO userCardPO = new UserCardPO();
             userCardPO.setTalentId(talentId);
             userCardPO.setCardId(cardId);
-            userCardPO.setName((String) reqData.get("cardName"));
+
             /**
              * 人才卡编号根据人才卡当前卡id的总数+1
              */
@@ -183,6 +183,7 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
             }
             membershipNumber = membershipNumber + cardPO.getCurrNum();
             userCardPO.setNum(membershipNumber);
+            userCardPO.setName(cardPO.getName());
             cardPO.setCurrNum(cardPO.getCurrNum() + 1);
             cardPO.setMemberNum(cardPO.getMemberNum() + 1);
             userCardPO.setCreateTime(new Date());
