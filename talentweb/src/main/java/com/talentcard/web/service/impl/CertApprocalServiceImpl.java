@@ -194,7 +194,7 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
              * 根据openid 发送领卡通知
              */
             String  openid = talentMapper.selectByPrimaryKey(talentId).getOpenId();
-            String notice = MessageUtil.sendTemplateMessage(openid);
+//            String notice = MessageUtil.sendTemplateMessage(openid);
         }
         return new ResultVO(1000);
     }
