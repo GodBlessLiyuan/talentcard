@@ -1,8 +1,10 @@
 package com.talentcard.web.utils;
 
+import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.dto.TemplateDataDto;
 import com.talentcard.web.dto.WeChatTemDto;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,45 +17,51 @@ import java.util.Map;
  */
 public class MessageUtil {
 
-    public  static String sendTemplateMessage(String openid){
+
+    private static String templateId;
+
+    @Value("${wechat.template_id}")
+    public void setTemplateId(String templateId) {
+        MessageUtil.templateId = templateId;
+    }
+
+    //注册完，审批完
+    public static String sendTemplateMessage(MessageDTO messageDTO) {
         String at = AccessTokenUtil.getAccessToken();
-        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+at;
+        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + at;
         WeChatTemDto weChatTemDto = new WeChatTemDto();
-        weChatTemDto.setTouser(openid);
-        weChatTemDto.setTemplate_id("WOzusH7NSzDlVZMsQSiaZnnTUdcMgGChUVjPA-NjCw0");
+        weChatTemDto.setTouser(messageDTO.getOpenid());
+        weChatTemDto.setTemplate_id(templateId);
         weChatTemDto.setUrl("");
         Map<String, TemplateDataDto> map = new HashMap<>();
         TemplateDataDto first = new TemplateDataDto();
-        first.setValue("张三");
+        first.setValue(messageDTO.getFirst());
         first.setColor("#173177");
-        map.put("first",first);
-        TemplateDataDto businessType = new TemplateDataDto();
-        businessType.setValue("业务类型");
-        businessType.setColor("#173177");
-        map.put("businessType",businessType);
-        TemplateDataDto business = new TemplateDataDto();
-        business.setValue("入户申请");
-        business.setColor("#173177");
-        map.put("business",business);
-        TemplateDataDto order = new TemplateDataDto();
-        order.setValue("1234232332");
-        order.setColor("#173177");
-        map.put("order",order);
-        TemplateDataDto time = new TemplateDataDto();
-        time.setValue("2020年4月22日8：00-10:00");
-        time.setColor("#173177");
-        TemplateDataDto address = new TemplateDataDto();
-        address.setValue("柯城区城西派出所");
-        address.setColor("#173177");
-        map.put("address",address);
+        map.put("first", first);
+        TemplateDataDto keyword1 = new TemplateDataDto();
+        keyword1.setValue(messageDTO.getKeyword1());
+        keyword1.setColor("#173177");
+        map.put("keyword1", keyword1);
+        TemplateDataDto keyword2 = new TemplateDataDto();
+        keyword2.setValue(messageDTO.getKeyword2());
+        keyword2.setColor("#173177");
+        map.put("keyword2", keyword2);
+        TemplateDataDto keyword3 = new TemplateDataDto();
+        keyword3.setValue(messageDTO.getKeyword3());
+        keyword3.setColor("#173177");
+        map.put("keyword3", keyword3);
+        TemplateDataDto keyword4 = new TemplateDataDto();
+        keyword4.setValue(messageDTO.getKeyword4());
+        keyword4.setColor("#173177");
+        map.put("keyword4", keyword4);
         TemplateDataDto remark = new TemplateDataDto();
-        remark.setValue("请您带上身份证以及相关证件");
+        remark.setValue(messageDTO.getRemark());
         remark.setColor("#173177");
-        map.put("remark",remark);
+        map.put("remark", remark);
         weChatTemDto.setData(map);
         JSONObject jsonObject = JSONObject.fromObject(weChatTemDto);
         String data = jsonObject.toString();
-        String result = RequestUtil.post(url,data);
+        String result = RequestUtil.post(url, data);
         return result;
     }
 }
