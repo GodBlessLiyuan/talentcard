@@ -215,7 +215,7 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setStatus((byte) 1);
         cardMapper.updateByPrimaryKeySelective(cardPO);
         userCardMapper.insertSelective(userCardPO);
-        MessageUtil.sendTemplateMessage(openId);
+//        MessageUtil.sendTemplateMessage(openId);
         return new ResultVO(1000);
     }
 
