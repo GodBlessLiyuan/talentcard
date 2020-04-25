@@ -185,9 +185,11 @@
   </select>
     <select id="ifOldCardIsBaseCard" resultType="java.lang.Integer">
         select
-        count(cert_id)
+        count(c.cert_id)
         from t_certification c
-        where c.talent_id = #{talentId,jdbcType=BIGINT}
+        left join t_talent t
+        on c.talent_id = t.talent_id
+        where t.open_id = #{openId,jdbcType=BIGINT}
         and c.status= 9
     </select>
 </mapper>

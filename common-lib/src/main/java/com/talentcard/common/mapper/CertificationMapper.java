@@ -57,8 +57,8 @@ public interface CertificationMapper extends BaseMapper<CertificationPO, Long> {
      * 判断旧卡是基本卡还是高级卡，基本卡就改为失效9，高级卡改为失效10
      * 查询状态=9的数量，如果是0，说明这个是注册的基本卡换高级卡
      * 如果不为0，说明这个是高级卡换高级卡
-     * @param talentId
+     * @param openId
      * @return
      */
-    Integer ifOldCardIsBaseCard(@Param("talentId") Long talentId);
+    Integer ifOldCardIsBaseCard(@Param("openId") String openId);
 }
