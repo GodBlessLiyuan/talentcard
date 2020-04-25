@@ -89,26 +89,26 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
             // 若审批拒绝，则将当前认证表设置为失效状态
             CertificationPO certificationPo = new CertificationPO();
             certificationPo.setCertId(certId);
-            certificationPo.setStatus((byte)5);
+            certificationPo.setStatus((byte)10);
             int resultUpdateCertification = certificationMapper.updateByPrimaryKeySelective(certificationPo);
             if (resultUpdateCertification == 0) {
                 //更新认证审批表失败
                 return new ResultVO(2114);
             }
             //(4) 更新学历表的认证状态
-            int resultEducation = educationMapper.updateStatusByCertId(certId, (byte) 5);
+            int resultEducation = educationMapper.updateStatusByCertId(certId, (byte) 10);
             if (resultEducation == 0) {
                 //更新学历表状态失败
                 return new ResultVO(2368);
             }
             //(5) 更新职称表的认证状态
-            int resultProfTitle = profTitleMapper.updateStatusByCertId(certId, (byte) 5);
+            int resultProfTitle = profTitleMapper.updateStatusByCertId(certId, (byte) 10);
             if (resultProfTitle == 0) {
                 //更新职称表状态失败
                 return new ResultVO(2369);
             }
             //(6) 更新职业资格表的认证状态
-            int resultProfQuality = profQualityMapper.updateStatusByCertId(certId,(byte) 5);
+            int resultProfQuality = profQualityMapper.updateStatusByCertId(certId,(byte) 10);
             if (resultProfQuality == 0) {
                 //更新职称表状态失败
                 return new ResultVO(2370);

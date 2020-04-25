@@ -34,11 +34,11 @@ public class CertApprovalController {
                                 @RequestParam(value = "talentId", required = false) Long talentId,
                                 @RequestParam(value = "certId", required = false) Long certId,
                                 @RequestParam(value = "result", required = false) Byte result,
-                                @RequestParam(value = "cardId", defaultValue = "1") Long cardId,
-                                @RequestParam(value = "category", defaultValue = "") String category,
+                                @RequestParam(value = "cardId",required = false) Long cardId,
+                                @RequestParam(value = "category",defaultValue = "",required = false) String category,
                                 @RequestParam(value = "opinion", required = false) String opinion){
-        System.out.println(category);
-        Map<String, Object> reqData = new HashMap<>(7);
+
+        Map<String, Object> reqData = new HashMap<>(6);
         reqData.put("talentId",talentId);
         reqData.put("certId",certId);
         reqData.put("result",result);

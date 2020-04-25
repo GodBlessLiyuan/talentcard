@@ -124,7 +124,7 @@
         left join t_prof_title pt on ce.cert_id = pt.cert_id
         left join t_prof_quality pq on ce.cert_id = pq.cert_id
         left join (select cert_id,MAX(create_time),result from t_cert_approval group by cert_id) as ca ON ca.cert_id = ce.cert_id
-        where ce.status = 1 or ce.status = 3 or ce.status = 10
+        where ce.status = 1 or ce.status = 3 or ce.status = 10 or ce.status = 4
             <if test="name != null and name != ''">
                 and t.name like '%' #{name} '%'
             </if>
@@ -161,12 +161,12 @@
     select t.talent_id as talentId, t.`name`, t.sex, t.id_card as idCard, t.phone, c.cert_id as certId, c.political, t.industry, t.work_unit as workUnit,
     t.create_time as createTime, t.card_id as cardId, e.education, e.school, e.major, e.educ_picture as educPic,
     pt.category as ptCategory, pt.info as ptInfo, pt.picture as ptPic, pq.category as pqCategory, pq.info as pqInfo
-    from t_certification c
-    left join t_education e on c.cert_id = e.cert_id
-    left join t_prof_title pt on c.cert_id = pt.cert_id
-    left join t_prof_quality pq on c.cert_id = pq.cert_id
-    left join t_talent t on c.talent_id = t.talent_id
-    where t.talent_id = #{talentId,jdbcType=BIGINT}
+    from t_talent t
+    left join t_education e on t.talent_id = e.talent_id
+    left join t_prof_title pt on t.talent_id = pt.talent_id
+    left join t_prof_quality pq on t.talent_id = pq.talent_id
+    left join t_certification c on t.talent_id = c.talent_id
+    where t.talent_id = #{talentId,jdbcType=BIGINT} and c.`status` = 3 and e.`status` = 3 and pt.`status` = 3 and pq.`status` = 3
   </select>
 
   <update id="updateStatusById">
