@@ -6,6 +6,7 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.MessageUtil;
 import com.talentcard.front.utils.TalentUtil;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -108,8 +110,15 @@ public class TalentServiceImpl implements ITalentService {
         if (ifExist != null) {
             return new ResultVO(2305, "该openId已被注册");
         }
+        //身份证18位校验
+        String idCard = jsonObject.getString("idCard");
+        //判断身份证号倒数第二位是否是数字
+        Boolean strResult = Character.isDigit(idCard.charAt(16));
+        if (idCard.length() != 18 || strResult == false) {
+            return new ResultVO(2306, "身份证不是18位或者倒数第二位不是数字");
+        }
         //身份证唯一性校验
-        Integer idCardExist = talentMapper.idCardIfUnique(jsonObject.getString("idCard"));
+        Integer idCardExist = talentMapper.idCardIfUnique(idCard);
         if (idCardExist != 0) {
             return new ResultVO(2306, "该身份证号已被注册");
         }
@@ -122,7 +131,6 @@ public class TalentServiceImpl implements ITalentService {
         talentPO.setOpenId(openId);
         talentPO.setName(jsonObject.getString("name"));
         //通过身份证号判断性别
-        String idCard = jsonObject.getString("idCard");
         talentPO.setSex(TalentUtil.judgeGenderUtil(idCard));
         talentPO.setIdCard(idCard);
         talentPO.setPassport(jsonObject.getString("passport"));
@@ -215,7 +223,25 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setStatus((byte) 1);
         cardMapper.updateByPrimaryKeySelective(cardPO);
         userCardMapper.insertSelective(userCardPO);
-//        MessageUtil.sendTemplateMessage(openId);
+
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //开头
+        messageDTO.setFirst("您好，请您领取衢江区人才卡");
+        //姓名
+        messageDTO.setKeyword1(talentPO.getName());
+        //身份证号，屏蔽八位
+        messageDTO.setKeyword2(talentPO.getIdCard());
+        messageDTO.setKeyword3("个人");
+        //领卡机构
+        //通知时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = formatter.format(new Date());
+
+        messageDTO.setKeyword4(currentTime);
+        //结束
+        messageDTO.setRemark("领取后可享受多项人才权益哦");
+        MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
 

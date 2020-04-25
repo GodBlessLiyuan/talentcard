@@ -12,7 +12,7 @@ public class TalentUtil {
      * @return
      */
     public static Byte judgeGenderUtil(String idCard) {
-        Integer num = idCard.charAt(17) - '0';
+        Integer num = idCard.charAt(16) - '0';
         if (num == 1 || num == 3 || num == 5 || num == 7 || num == 9) {
             return (byte) 1;
         } else {
