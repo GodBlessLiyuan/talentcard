@@ -25,7 +25,7 @@ public class ApprovalBO {
     private Byte political;
     private String industry;
     private String workUnit;
-    private String CreateTime;
+    private String createTime;
     /**
      * 认证表
      */

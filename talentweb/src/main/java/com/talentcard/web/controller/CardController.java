@@ -87,4 +87,10 @@ public class CardController {
     public ResultVO delete(@RequestParam(value = "cardId") Long cardId) {
         return iCardService.delete(cardId);
     }
+
+
+//    @RequestMapping("queryCardIdAndName")
+//    public ResultVO queryCardIdAndName(){
+//        return iCardService.queryCardIdAndName();
+//    }
 }

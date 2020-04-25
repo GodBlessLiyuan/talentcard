@@ -27,22 +27,22 @@ public class CertApprovalController {
     public ResultVO certApprovalShow(@RequestParam(value = "talentId", required = false) Long talentId){
         return certApprocalService.certApprovalShowItems(talentId);
     }
+
+
     @RequestMapping("CertConfirm")
     public ResultVO CertConfirm(HttpSession session,
                                 @RequestParam(value = "talentId", required = false) Long talentId,
                                 @RequestParam(value = "certId", required = false) Long certId,
                                 @RequestParam(value = "result", required = false) Byte result,
                                 @RequestParam(value = "cardId", defaultValue = "1") Long cardId,
-                                @RequestParam(value = "cardName", required = false) String cardName,
-                                @RequestParam(value = "category", defaultValue = "1") String category,
+                                @RequestParam(value = "category", defaultValue = "") String category,
                                 @RequestParam(value = "opinion", required = false) String opinion){
-
+        System.out.println(category);
         Map<String, Object> reqData = new HashMap<>(7);
         reqData.put("talentId",talentId);
         reqData.put("certId",certId);
         reqData.put("result",result);
         reqData.put("cardId",cardId);
-        reqData.put("cardName",cardName);
         reqData.put("category",category);
         reqData.put("opinion",opinion);
 

@@ -259,4 +259,10 @@
             and trim(replace(c.initial_num,' ','')) like trim(replace ('%' #{cardNum,jdbcType=CHAR} '%' ,' ',''))
         </if>
     </select>
+
+
+  <select id="queryCardIdAndName" resultType="com.talentcard.common.bo.CardIdAndNameBO">
+    select card_id as cardId, `name` as cardName
+    from t_card
+  </select>
 </mapper>
