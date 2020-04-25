@@ -28,6 +28,11 @@ public class CertApprovalController {
         return certApprocalService.certApprovalShowItems(talentId);
     }
 
+    @RequestMapping("DetailsLookItems")
+    public ResultVO detailsLookItems(@RequestParam(value = "talentId", required = false) Long talentId){
+        return certApprocalService.detailsLookItems(talentId);
+    }
+
 
     @RequestMapping("CertConfirm")
     public ResultVO CertConfirm(HttpSession session,

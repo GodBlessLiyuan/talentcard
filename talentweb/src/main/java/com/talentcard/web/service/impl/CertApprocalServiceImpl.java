@@ -57,6 +57,15 @@ public class CertApprocalServiceImpl implements ICertApprocalService {
         approvalItemsVO.setApprovalItems(pos);
         return new ResultVO(1000, approvalItemsVO);
     }
+    @Override
+    public ResultVO detailsLookItems(Long talentId){
+        ApprovalBO bo = certificationMapper.queryAllMsgLook(talentId);
+        List<CertApprovalPO> pos = certApprovalMapper.queryApprovalById(talentId);
+        ApprovalItemsVO approvalItemsVO = new ApprovalItemsVO();
+        approvalItemsVO.setApprovalBO(bo);
+        approvalItemsVO.setApprovalItems(pos);
+        return new ResultVO(1000, approvalItemsVO);
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)

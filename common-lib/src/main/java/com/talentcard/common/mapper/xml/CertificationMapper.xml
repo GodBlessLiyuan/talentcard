@@ -156,7 +156,7 @@
         IFNULL(ca.result,0) = 0 desc, ce.create_time desc
     </select>
 
-    <!--  根据当前人才的talentid查询所有的已有信息-->
+    <!--  根据当前人才的talentid待审批的所有的已有信息-->
     <select id="queryAllMsg" parameterType="java.lang.Long" resultType="com.talentcard.common.bo.ApprovalBO">
     select t.talent_id as talentId, t.`name`, t.sex, t.id_card as idCard, t.phone, c.cert_id as certId, c.political, t.industry, t.work_unit as workUnit,
     t.create_time as createTime, t.card_id as cardId, e.education, e.school, e.major, e.educ_picture as educPic,
@@ -167,6 +167,19 @@
     left join t_prof_quality pq on t.talent_id = pq.talent_id
     left join t_certification c on t.talent_id = c.talent_id
     where t.talent_id = #{talentId,jdbcType=BIGINT} and c.`status` = 3 and e.`status` = 3 and pt.`status` = 3 and pq.`status` = 3
+  </select>
+
+<!--    审批查看详情的接口-->
+    <select id="queryAllMsgLook" parameterType="java.lang.Long" resultType="com.talentcard.common.bo.ApprovalBO">
+    select t.talent_id as talentId, t.`name`, t.sex, t.id_card as idCard, t.phone, c.cert_id as certId, c.political, t.industry, t.work_unit as workUnit,
+    t.create_time as createTime, t.card_id as cardId, e.education, e.school, e.major, e.educ_picture as educPic,
+    pt.category as ptCategory, pt.info as ptInfo, pt.picture as ptPic, pq.category as pqCategory, pq.info as pqInfo
+    from t_talent t
+    left join t_education e on t.talent_id = e.talent_id
+    left join t_prof_title pt on t.talent_id = pt.talent_id
+    left join t_prof_quality pq on t.talent_id = pq.talent_id
+    left join t_certification c on t.talent_id = c.talent_id
+    where t.talent_id = #{talentId,jdbcType=BIGINT} limit 1
   </select>
 
   <update id="updateStatusById">
