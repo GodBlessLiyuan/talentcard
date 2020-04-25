@@ -67,6 +67,8 @@ public class TalentVO {
         talentVO.setEducationPOList(talentBO.getEducationPOList());
         talentVO.setProfTitlePOList(talentBO.getProfTitlePOList());
         talentVO.setProfQualityPOList(talentBO.getProfQualityPOList());
+        talentVO.setSex(talentBO.getSex());
+
         //学历文件
         if (talentBO.getEducationPOList() != null) {
             for (EducationPO educationPO : talentBO.getEducationPOList()) {
