@@ -4,5 +4,6 @@ import com.talentcard.common.vo.ResultVO;
 
 public interface IEventService {
     ResultVO activate(String openId);
-    ResultVO delete(String openId);
+
+    ResultVO delete(String openId, String eventCardId);
 }

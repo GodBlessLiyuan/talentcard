@@ -611,7 +611,7 @@
         left join t_certification c
         on t.talent_id = c.talent_id
         where t.open_id = #{openId, jdbcType=CHAR}
-        and c.status = 3
+        and (c.status = 3 or c.status = 4)
         and t.dr!=2
     </select>
 </mapper>

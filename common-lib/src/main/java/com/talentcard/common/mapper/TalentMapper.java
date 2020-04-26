@@ -122,7 +122,7 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
     Integer idCardIfUnique(String idCard);
 
     /**
-     * 根据openId和c表status=3是否有数据来判断是否在审核状态中
+     * 根据openId和c表status=3或者4是否有数据来判断是否在审核状态中，或者是审核成功待领卡
      * status=3说明待审批
      * @param openId
      * @return
