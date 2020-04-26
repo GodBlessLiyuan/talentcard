@@ -11,7 +11,7 @@ import java.util.Map;
  * @version: 1.0.0
  * @description:
  */
-public interface ICertApprocalService {
+public interface ICertApprovalService {
     /**
      * 根据人才姓名查询认证清单信息
      * @param talentId

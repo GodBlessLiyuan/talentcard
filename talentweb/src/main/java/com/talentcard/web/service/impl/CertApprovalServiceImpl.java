@@ -3,10 +3,9 @@ package com.talentcard.web.service.impl;
 import com.talentcard.common.bo.ApprovalBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
-import com.talentcard.web.utils.MessageUtil;
+import com.talentcard.web.service.ICertApprovalService;
 import com.talentcard.web.vo.ApprovalItemsVO;
 import com.talentcard.common.vo.ResultVO;
-import com.talentcard.web.service.ICertApprocalService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +22,7 @@ import java.util.Map;
  * @description:
  */
 @Service
-public class CertApprocalServiceImpl implements ICertApprocalService {
+public class CertApprovalServiceImpl implements ICertApprovalService {
     @Resource
     CertApprovalMapper certApprovalMapper;
     @Resource

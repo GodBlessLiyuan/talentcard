@@ -1,7 +1,7 @@
 package com.talentcard.web.controller;
 
 import com.talentcard.common.vo.ResultVO;
-import com.talentcard.web.service.ICertApprocalService;
+import com.talentcard.web.service.ICertApprovalService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,16 +21,16 @@ import java.util.Map;
 @RequestMapping("certApproval")
 public class CertApprovalController {
     @Resource
-    ICertApprocalService certApprocalService;
+    ICertApprovalService certApprovalService;
 
     @RequestMapping("CertApprovalShow")
     public ResultVO certApprovalShow(@RequestParam(value = "talentId", required = false) Long talentId){
-        return certApprocalService.certApprovalShowItems(talentId);
+        return certApprovalService.certApprovalShowItems(talentId);
     }
 
     @RequestMapping("DetailsLookItems")
     public ResultVO detailsLookItems(@RequestParam(value = "talentId", required = false) Long talentId){
-        return certApprocalService.detailsLookItems(talentId);
+        return certApprovalService.detailsLookItems(talentId);
     }
 
 
@@ -51,7 +51,7 @@ public class CertApprovalController {
         reqData.put("category",category);
         reqData.put("opinion",opinion);
 
-        return certApprocalService.confirmCert(session,reqData);
+        return certApprovalService.confirmCert(session,reqData);
     }
 
     /**
@@ -61,7 +61,7 @@ public class CertApprovalController {
      */
     @RequestMapping("queryByNumApproval")
     public ResultVO queryByNumApproval(HttpSession session) {
-        return certApprocalService.queryByNumApproval();
+        return certApprovalService.queryByNumApproval();
     }
 
 }
