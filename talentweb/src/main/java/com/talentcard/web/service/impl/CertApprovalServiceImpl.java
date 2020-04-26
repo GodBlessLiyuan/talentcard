@@ -5,10 +5,13 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ICertApprovalService;
+import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.ApprovalItemsVO;
 import com.talentcard.common.vo.ResultVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +30,7 @@ import java.util.Map;
  */
 @Service
 public class CertApprovalServiceImpl implements ICertApprovalService {
+    private static final Logger logger = LoggerFactory.getLogger(CertApprovalServiceImpl.class);
     @Resource
     CertApprovalMapper certApprovalMapper;
     @Resource
@@ -208,7 +212,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             userCardPO.setStatus((byte) 1);
             cardMapper.updateByPrimaryKeySelective(cardPO);
             userCardMapper.insertSelective(userCardPO);
-
+            logger.info("发通知之前");
             /**
              * 根据openId 发送领卡通知
              */
@@ -232,7 +236,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             messageDTO.setKeyword4(currentTime);
             //结束
             messageDTO.setRemark("领取后可享受多项人才权益哦");
+            logger.info("getIndexUrl之前");
             messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+            logger.info("getIndexUrl之前");
             MessageUtil.sendTemplateMessage(messageDTO);
             return new ResultVO(1000);
         }
