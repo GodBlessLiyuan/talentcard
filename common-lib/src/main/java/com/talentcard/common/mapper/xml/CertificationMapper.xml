@@ -179,7 +179,10 @@
     left join t_prof_title pt on t.talent_id = pt.talent_id
     left join t_prof_quality pq on t.talent_id = pq.talent_id
     left join t_certification c on t.talent_id = c.talent_id
-    where t.talent_id = #{talentId,jdbcType=BIGINT} limit 1
+    where t.talent_id = #{talentId,jdbcType=BIGINT} and (c.status = 1 or c.status = 3 or c.status = 10 or c.status = 4) and
+    (e.status = 1 or e.status = 3 or e.status = 10 or e.status = 4) and
+    (pt.status = 1 or pt.status = 3 or pt.status = 10 or pt.status = 4) and
+    (pq.status = 1 or pq.status = 3 or pq.status = 10 or pq.status = 4) limit 1
   </select>
 
   <update id="updateStatusById">

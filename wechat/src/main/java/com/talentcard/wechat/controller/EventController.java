@@ -40,8 +40,8 @@ public class EventController {
      * @return
      */
     @PostMapping("delete")
-    public ResultVO<TalentPO> delete(@RequestParam String openId) {
+    public ResultVO<TalentPO> delete(@RequestParam String openId, @RequestParam String eventCardId) {
         //激活service层接口
-        return iEventService.delete(openId);
+        return iEventService.delete(openId, eventCardId);
     }
 }
