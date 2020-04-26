@@ -113,6 +113,7 @@ public class CardServiceImpl implements ICardService {
         cardPO.setWxCardId(wechatResult.getString("card_id"));
         cardPO.setDr((byte) 1);
         cardPO.setLogoUrl(logoUrl);
+        cardPO.setWaitingMemberNum((long) 0);
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
     }
@@ -135,7 +136,7 @@ public class CardServiceImpl implements ICardService {
             JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
             pictureCDN = pictureObject.getString("url");
             if (pictureCDN == null || pictureCDN == "") {
-                return new ResultVO(2321,"会员卡背景图上传失败");
+                return new ResultVO(2321, "会员卡背景图上传失败");
             }
             cardPO.setPicture(picture);
         }
