@@ -140,7 +140,7 @@
             <if test="pqCategory != null and pqCategory != ''">
                 and pt.category = #{ptCategory}
             </if>
-            <if test="status != null and status != ''">
+            <if test="result != null and result != ''">
                 and ca.result = #{result}
             </if>
             <if test="(startTime != null and startTime != '') and (endTime != null and endTime != '')">
