@@ -227,6 +227,8 @@ public class TalentServiceImpl implements ITalentService {
 
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(openId);
         //开头
         messageDTO.setFirst("您好，请您领取衢江区人才卡");
         //姓名

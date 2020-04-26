@@ -68,6 +68,7 @@ public class EventServiceImpl implements IEventService {
             profQualityMapper.updateStatusByCertId(certId, status);
             //user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
             userCardMapper.updateStatusById(firstActivate.getTalentId(), (byte) 1, (byte) 2);
+            return new ResultVO(1000, "基本卡领取成功");
         } else {
             logger.info("第二次激活");
             //第二次激活
@@ -111,8 +112,8 @@ public class EventServiceImpl implements IEventService {
             cardPO.setMemberNum(cardPO.getMemberNum() - 1);
             cardMapper.updateByPrimaryKeySelective(cardPO);
             //旧卡（基本卡）更改状态：c表状态1，uc表状态2，即为正在使用的卡
-            //旧卡从状态1改为状态9或10
-            certificationMapper.updateStatusById(oldTalentId, (byte) 1, oldStatus);
+            //旧卡从状态5改为状态9或10
+            certificationMapper.updateStatusById(oldTalentId, (byte) 5, oldStatus);
             educationMapper.updateStatusByCertId(oldCertId, oldStatus);
             profTitleMapper.updateStatusByCertId(oldCertId, oldStatus);
             profQualityMapper.updateStatusByCertId(oldCertId, oldStatus);
@@ -131,8 +132,9 @@ public class EventServiceImpl implements IEventService {
             if (result.getInteger("errcode") != 0) {
                 return new ResultVO(2330, "激活失败");
             }
+            logger.info("销毁旧卡", result);
+            return new ResultVO(1000, result);
         }
-        return new ResultVO(1000);
     }
 
     /**
