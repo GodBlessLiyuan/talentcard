@@ -52,7 +52,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         ApprovalBO bo = certificationMapper.queryAllMsg(talentId);
         if (null == bo) {
             //当前用户没有审批需求
-            return new ResultVO(2215);
+            return new ResultVO(2115);
         }
         List<CertApprovalPO> pos = certApprovalMapper.queryApprovalById(talentId);
         ApprovalItemsVO approvalItemsVO = new ApprovalItemsVO();
@@ -113,7 +113,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             certificationPo.setStatus((byte)10);
             int resultUpdateCertification = certificationMapper.updateByPrimaryKeySelective(certificationPo);
             if (resultUpdateCertification == 0) {
-                //更新认证审批表失败
+                //更新认证表失败
                 return new ResultVO(2114);
             }
             //(4) 更新学历表的认证状态
@@ -140,7 +140,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             int insertResult = certApprovalMapper.insertSelective(certApprovalPo);
             if (insertResult == 0) {
                 //新增认证审批表失败
-                return new ResultVO(2365);
+                return new ResultVO(2112);
             }
             // (2) 更新认证表
             CertificationPO certificationPo = new CertificationPO();
@@ -148,8 +148,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             certificationPo.setStatus((byte)4);
             int resultUpdateCertification = certificationMapper.updateByPrimaryKeySelective(certificationPo);
             if (resultUpdateCertification == 0) {
-                //更新认证审批表失败
-                return new ResultVO(2366);
+                //更新认证表失败
+                return new ResultVO(2114);
             }
             //(3) 更新人才表
             TalentPO talentPO = new TalentPO();
@@ -160,7 +160,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             int resultUpdateTalent = talentMapper.updateByPrimaryKeySelective(talentPO);
             if (resultUpdateTalent == 0) {
                 //更新人才表失败
-                return new ResultVO(2367);
+                return new ResultVO(2113);
             }
             //(4) 更新学历表的认证状态
             int resultEducation = educationMapper.updateStatusByCertId(certId, (byte) 4);
