@@ -44,14 +44,14 @@ public class CardUtil {
         //立即认证
         baseInfoPO.setCenter_title("立即认证");
         baseInfoPO.setCenter_sub_title("");
-        baseInfoPO.setCenter_url("http://dev.localcards.gov.vbooster.cn/wx/#not_certified");
+        baseInfoPO.setCenter_url(WebParameterUtil.getCertificateUrl());
         //我的信息
         baseInfoPO.setCustom_url_name("我的信息");
-        baseInfoPO.setCustom_url("http://dev.localcards.gov.vbooster.cn/wx/#my_info_not");
+        baseInfoPO.setCustom_url(WebParameterUtil.getMyInfoNotCertificateUrl());
         baseInfoPO.setCustom_url_sub_title("");
         //我的权益
         baseInfoPO.setPromotion_url_name("我的权益");
-        baseInfoPO.setPromotion_url("http://dev.localcards.gov.vbooster.cn/wx/#my_equity");
+        baseInfoPO.setPromotion_url(WebParameterUtil.getMyRightUrl());
 
         memberCardPO.setBase_info(baseInfoPO);
         memberCardPO.setPrerogative(prerogative);
@@ -97,11 +97,11 @@ public class CardUtil {
 //        baseInfoPO.setCenter_url("http://dev.localcards.gov.vbooster.cn/wx/#not_certified");
         //我的信息
         baseInfoPO.setCustom_url_name("我的信息");
-        baseInfoPO.setCustom_url("http://dev.localcards.gov.vbooster.cn/wx/#my_info_already");
+        baseInfoPO.setCustom_url(WebParameterUtil.getMyInfoAlreadyCertificateUrl());
         baseInfoPO.setCustom_url_sub_title("");
         //我的权益
         baseInfoPO.setPromotion_url_name("我的权益");
-        baseInfoPO.setPromotion_url("http://dev.localcards.gov.vbooster.cn/wx/#my_equity");
+        baseInfoPO.setPromotion_url(WebParameterUtil.getMyRightUrl());
 
         memberCardPO.setBase_info(baseInfoPO);
         memberCardPO.setPrerogative(prerogative);
@@ -110,7 +110,7 @@ public class CardUtil {
         CustomCell1PO customCell1PO = new CustomCell1PO();
         customCell1PO.setName("我的申请");
         customCell1PO.setTips("");
-        customCell1PO.setUrl("http://dev.localcards.gov.vbooster.cn/wx/#my_apply");
+        customCell1PO.setUrl(WebParameterUtil.getMyApplicationUrl());
 
         memberCardPO.setCustom_cell1(customCell1PO);
         wxCardPO.setMember_card(memberCardPO);

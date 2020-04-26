@@ -3,7 +3,10 @@ package com.talentcard.web.service.impl;
 import com.talentcard.common.bo.ApprovalBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ICertApprovalService;
+import com.talentcard.web.utils.MessageUtil;
+import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.ApprovalItemsVO;
 import com.talentcard.common.vo.ResultVO;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -206,10 +210,31 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             userCardMapper.insertSelective(userCardPO);
 
             /**
-             * 根据openid 发送领卡通知
+             * 根据openId 发送领卡通知
              */
-            String  openid = talentMapper.selectByPrimaryKey(talentId).getOpenId();
-//            String notice = MessageUtil.sendTemplateMessage(openid);
+            String  openId = talentMapper.selectByPrimaryKey(talentId).getOpenId();
+            //用消息模板推送微信消息
+            MessageDTO messageDTO = new MessageDTO();
+            //openId
+            messageDTO.setOpenid(openId);
+            //开头
+            messageDTO.setFirst("您好，请您领取衢江区人才卡");
+            //姓名
+            messageDTO.setKeyword1(talentPO.getName());
+            //身份证号，屏蔽八位
+            String encryptionIdCard = talentPO.getIdCard().substring(0, 9) + "********";
+            messageDTO.setKeyword2(encryptionIdCard);
+            messageDTO.setKeyword3("个人");
+            //领卡机构
+            //通知时间
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+            String currentTime = formatter.format(new Date());
+            messageDTO.setKeyword4(currentTime);
+            //结束
+            messageDTO.setRemark("领取后可享受多项人才权益哦");
+            MessageUtil.sendTemplateMessage(messageDTO);
+            messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+            return new ResultVO(1000);
         }
         return new ResultVO(1000);
     }
