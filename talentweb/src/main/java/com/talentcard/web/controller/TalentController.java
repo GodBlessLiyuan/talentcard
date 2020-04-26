@@ -37,6 +37,9 @@ public class TalentController {
                                       @RequestParam(value = "card", defaultValue = "") String card) {
 
         Map<String, Object> reqMap = new HashMap<>(8);
+        if (!"".equals(end)) {
+            end = end + " 23:59:59";
+        }
         reqMap.put("start", start);
         reqMap.put("end", end);
         reqMap.put("name", name);
@@ -45,7 +48,7 @@ public class TalentController {
         reqMap.put("title", title);
         reqMap.put("quality", quality);
         reqMap.put("card", card);
-        
+
         return service.query(pageNum, pageSize, reqMap);
     }
 
@@ -56,17 +59,20 @@ public class TalentController {
 
     @RequestMapping("queryCert")
     public PageInfoVO<TalentVO> queryCert(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                              @RequestParam(value = "start", defaultValue = "") String start,
-                              @RequestParam(value = "end", defaultValue = "") String end,
-                              @RequestParam(value = "name", defaultValue = "") String name,
-                              @RequestParam(value = "sex", defaultValue = "") Byte sex,
-                              @RequestParam(value = "educ", defaultValue = "") Integer educ,
-                              @RequestParam(value = "title", defaultValue = "") Integer title,
-                              @RequestParam(value = "quality", defaultValue = "") Integer quality,
-                              @RequestParam(value = "card", defaultValue = "") String card,
-                              @RequestParam(value = "category", defaultValue = "") String category) {
+                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                          @RequestParam(value = "start", defaultValue = "") String start,
+                                          @RequestParam(value = "end", defaultValue = "") String end,
+                                          @RequestParam(value = "name", defaultValue = "") String name,
+                                          @RequestParam(value = "sex", defaultValue = "") Byte sex,
+                                          @RequestParam(value = "educ", defaultValue = "") Integer educ,
+                                          @RequestParam(value = "title", defaultValue = "") Integer title,
+                                          @RequestParam(value = "quality", defaultValue = "") Integer quality,
+                                          @RequestParam(value = "card", defaultValue = "") String card,
+                                          @RequestParam(value = "category", defaultValue = "") String category) {
         Map<String, Object> reqMap = new HashMap<>(8);
+        if (!"".equals(end)) {
+            end = end + " 23:59:59";
+        }
         reqMap.put("start", start);
         reqMap.put("end", end);
         reqMap.put("name", name);
