@@ -145,12 +145,12 @@ public class EventServiceImpl implements IEventService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO delete(String openId) {
+    public ResultVO delete(String openId, String eventCardId) {
         //找到记录，uc表status=1，c表status=2或者4，来判断当前是否有待领取的卡
         ActivcateBO ifExistGetCard = talentMapper.findGetCard(openId);
         //c表status=1，uc表status=2
         //判断正在使用的卡是基本卡还是高级卡
-        ActivcateBO activcateBO;
+        ActivcateBO currentCard;
         //基本卡
         ActivcateBO baseCard = talentMapper.activate(openId, (byte) 5, (byte) 2);
         //高级卡
@@ -161,22 +161,26 @@ public class EventServiceImpl implements IEventService {
         Byte getStatus;
         if (baseCard != null) {
             //基本卡
-            activcateBO = baseCard;
+            currentCard = baseCard;
             dropStatus = 9;
             getStatus = 2;
         } else if (highCard != null) {
             //高级卡
-            activcateBO = highCard;
+            currentCard = highCard;
             dropStatus = 10;
             getStatus = 4;
         } else {
             return new ResultVO(2210, "没有正在使用的卡");
         }
+        //判断删卡事件的wxCardId是否和数据库里的一致
+        if(currentCard.getWxCardId()!=eventCardId){
+            return new ResultVO(2211, "当前正在使用的卡和内部卡不一致！");
+        }
         if (ifExistGetCard != null) {
             //有待领取的卡，把正在使用的卡改为失效
-            Long talentId = activcateBO.getTalentId();
+            Long talentId = currentCard.getTalentId();
             //c表status=1找正在使用的certId
-            Long certId = activcateBO.getCertId();
+            Long certId = currentCard.getCertId();
             //4表，status从1或者5改成10或者9
             CertificationPO certificationPO = certificationMapper.selectByPrimaryKey(certId);
             certificationPO.setStatus(dropStatus);
@@ -188,9 +192,9 @@ public class EventServiceImpl implements IEventService {
             userCardMapper.updateStatusById(talentId, (byte) 2, (byte) 3);
         } else {
             //没有待领取的卡，则把正在使用的卡改为待领取
-            Long talentId = activcateBO.getTalentId();
-            Long certId = activcateBO.getCertId();
-            CardPO cardPO = cardMapper.selectByPrimaryKey(activcateBO.getCardId());
+            Long talentId = currentCard.getTalentId();
+            Long certId = currentCard.getCertId();
+            CardPO cardPO = cardMapper.selectByPrimaryKey(currentCard.getCardId());
             Byte cardType = cardPO.getStatus();
             //uc的status=2的改为=1
             userCardMapper.updateStatusById(talentId, (byte) 2, (byte) 1);
@@ -203,7 +207,7 @@ public class EventServiceImpl implements IEventService {
             profQualityMapper.updateStatusByCertId(certId, getStatus);
         }
         //无论是有待领取的卡，还是没有待领取的卡，正在使用的卡都数量-1
-        CardPO cardPO = cardMapper.selectByPrimaryKey(activcateBO.getCardId());
+        CardPO cardPO = cardMapper.selectByPrimaryKey(currentCard.getCardId());
         cardPO.setMemberNum(cardPO.getMemberNum() - 1);
         cardMapper.updateByPrimaryKeySelective(cardPO);
         //修改状态
