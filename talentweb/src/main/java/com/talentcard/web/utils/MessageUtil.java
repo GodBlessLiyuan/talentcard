@@ -34,7 +34,7 @@ public class MessageUtil {
         WeChatTemDto weChatTemDto = new WeChatTemDto();
         weChatTemDto.setTouser(messageDTO.getOpenid());
         weChatTemDto.setTemplate_id(templateId);
-        weChatTemDto.setUrl("");
+        weChatTemDto.setUrl(messageDTO.getUrl());
         Map<String, TemplateDataDto> map = new HashMap<>();
         TemplateDataDto first = new TemplateDataDto();
         first.setValue(messageDTO.getFirst());
