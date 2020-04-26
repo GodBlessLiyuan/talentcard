@@ -88,9 +88,24 @@ public class CardController {
         return iCardService.delete(cardId);
     }
 
-
-//    @RequestMapping("queryCardIdAndName")
-//    public ResultVO queryCardIdAndName(){
-//        return iCardService.queryCardIdAndName();
-//    }
+    @PostMapping("findSeniorCard")
+    public ResultVO findSeniorCard(@RequestParam(value = "title", required = false, defaultValue = "") String title,
+                          @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
+                          @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime,
+                          @RequestParam(value = "cardNum", required = false, defaultValue = "") String cardNum) throws ParseException {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        //String转Date
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//注意月份是MM
+        if (!startTime.equals("")) {
+            Date sTime = simpleDateFormat.parse(startTime);
+            hashMap.put("startTime", sTime);
+        }
+        if (!endTime.equals("")) {
+            Date eTime = simpleDateFormat.parse(endTime);
+            hashMap.put("endTime", eTime);
+        }
+        hashMap.put("title", title);
+        hashMap.put("cardNum", cardNum);
+        return iCardService.findSeniorCard(hashMap);
+    }
 }

@@ -24,4 +24,6 @@ public interface ICardService {
 
     ResultVO delete(Long cardId);
 
+    ResultVO findSeniorCard(HashMap<String, Object> hashMap);
+
 }

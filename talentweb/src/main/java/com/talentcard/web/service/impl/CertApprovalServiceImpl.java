@@ -212,17 +212,17 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             /**
              * 根据openId 发送领卡通知
              */
-            String  openId = talentMapper.selectByPrimaryKey(talentId).getOpenId();
+            TalentPO currentTalent = talentMapper.selectByPrimaryKey(talentId);
             //用消息模板推送微信消息
             MessageDTO messageDTO = new MessageDTO();
             //openId
-            messageDTO.setOpenid(openId);
+            messageDTO.setOpenid(currentTalent.getOpenId());
             //开头
             messageDTO.setFirst("您好，请您领取衢江区人才卡");
             //姓名
-            messageDTO.setKeyword1(talentPO.getName());
+            messageDTO.setKeyword1(currentTalent.getName());
             //身份证号，屏蔽八位
-            String encryptionIdCard = talentPO.getIdCard().substring(0, 9) + "********";
+            String encryptionIdCard = currentTalent.getIdCard().substring(0, 9) + "********";
             messageDTO.setKeyword2(encryptionIdCard);
             messageDTO.setKeyword3("个人");
             //领卡机构
