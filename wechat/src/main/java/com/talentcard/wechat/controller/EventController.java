@@ -28,7 +28,7 @@ public class EventController {
      * @return
      */
     @PostMapping("activate")
-    public ResultVO<TalentPO> findStatus(@RequestParam String openId) {
+    public ResultVO<TalentPO> activate(@RequestParam String openId) {
         //激活service层接口
         return iEventService.activate(openId);
     }

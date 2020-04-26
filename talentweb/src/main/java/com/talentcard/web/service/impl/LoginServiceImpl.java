@@ -53,9 +53,9 @@ public class LoginServiceImpl implements ILoginService {
                 //密码错误
                 return new ResultVO(2101);
             }
-        } else {
-            //用户名错误
+        } else { //用户名错误
             return new ResultVO(2100);
+
         }
         //3 .校验验证码，先从session中提取出验证码信息，然后对比用户输入
         String code = (String)session.getAttribute(VERIFY_ID);

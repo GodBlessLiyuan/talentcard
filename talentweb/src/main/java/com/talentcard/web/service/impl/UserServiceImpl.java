@@ -38,12 +38,13 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editPassword(HttpSession session, String oldPassword, String newPassword){
+        //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             // 用户过期
             return new ResultVO(2104);
         }
-//        Long userId = 1L;
+        //根据id,检索到当前用户，以便获得password
         UserPO userPo = userMapper.selectByPrimaryKey(userId);
         try{
             oldPassword = Md5Util.encodeByMd5(SALT+oldPassword);
@@ -51,10 +52,12 @@ public class UserServiceImpl implements IUserService {
         }catch (Exception e){
             e.printStackTrace();
         }
+        // 比较输入旧密码是否等于用户本身存在数据库的密码
         if (!oldPassword.equals(userPo.getPassword())) {
             // 旧密码输入错误
             return new ResultVO(2105);
         }else {
+            // 如果没有问题，则将当前userId用户更新密码
             userMapper.updatePassword(newPassword,userId);
         }
         return new ResultVO(1000);
@@ -110,7 +113,6 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO adminUpdatePassword(String username, String password){
-
         try {
             password = Md5Util.encodeByMd5(SALT + password);
         } catch (Exception e) {

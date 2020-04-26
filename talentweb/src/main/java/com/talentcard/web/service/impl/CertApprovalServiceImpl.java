@@ -199,7 +199,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             userCardPO.setNum(membershipNumber);
             userCardPO.setName(cardPO.getName());
             cardPO.setCurrNum(cardPO.getCurrNum() + 1);
-            cardPO.setMemberNum(cardPO.getMemberNum() + 1);
+            cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
             userCardPO.setCreateTime(new Date());
             userCardPO.setStatus((byte) 1);
             cardMapper.updateByPrimaryKeySelective(cardPO);

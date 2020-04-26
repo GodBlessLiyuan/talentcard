@@ -46,15 +46,16 @@ public class WxCardController {
             String openId = requestMap.get("FromUserName");
             String event = requestMap.get("Event");
             String cardId = requestMap.get("CardId");
-            if(event.equalsIgnoreCase("user_get_card")){
+            logger.info("cardId：", cardId);
+            if (event.equalsIgnoreCase("user_get_card")) {
                 //用户领取卡事件，激活接口
                 logger.info("用户开始领卡");
                 iEventService.activate(openId);
                 logger.info("用户领取卡成功");
-            }else if(event.equalsIgnoreCase("user_del_card")){
+            } else if (event.equalsIgnoreCase("user_del_card")) {
                 //用户删除卡券事件，删除接口
                 logger.info("用户开始删卡");
-                iEventService.delete(openId,cardId);
+                iEventService.delete(openId, cardId);
                 logger.info("用户删除卡成功");
             }
 

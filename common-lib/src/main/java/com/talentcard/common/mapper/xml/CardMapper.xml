@@ -7,6 +7,7 @@
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="title" jdbcType="CHAR" property="title" />
     <result column="member_num" jdbcType="BIGINT" property="memberNum" />
+    <result column="waiting_member_num" jdbcType="BIGINT" property="waitingMemberNum" />
     <result column="curr_num" jdbcType="BIGINT" property="currNum" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="picture" jdbcType="CHAR" property="picture" />
@@ -20,8 +21,9 @@
     <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
-    card_id, wx_card_id, `name`, title, member_num, curr_num, description, picture, picture_cdn, 
-    logo_url, prerogative, initial_word, initial_num, create_time, `status`, dr
+    card_id, wx_card_id, `name`, title, member_num, waiting_member_num, curr_num, description, 
+    picture, picture_cdn, logo_url, prerogative, initial_word, initial_num, create_time, 
+    `status`, dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -35,17 +37,17 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.CardPO">
     insert into t_card (card_id, wx_card_id, `name`, 
-      title, member_num, curr_num, 
-      description, picture, picture_cdn, 
-      logo_url, prerogative, initial_word, 
-      initial_num, create_time, `status`, 
-      dr)
+      title, member_num, waiting_member_num, 
+      curr_num, description, picture, 
+      picture_cdn, logo_url, prerogative, 
+      initial_word, initial_num, create_time, 
+      `status`, dr)
     values (#{cardId,jdbcType=BIGINT}, #{wxCardId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
-      #{title,jdbcType=CHAR}, #{memberNum,jdbcType=BIGINT}, #{currNum,jdbcType=BIGINT}, 
-      #{description,jdbcType=VARCHAR}, #{picture,jdbcType=CHAR}, #{pictureCdn,jdbcType=VARCHAR}, 
-      #{logoUrl,jdbcType=CHAR}, #{prerogative,jdbcType=VARCHAR}, #{initialWord,jdbcType=CHAR}, 
-      #{initialNum,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
-      #{dr,jdbcType=TINYINT})
+      #{title,jdbcType=CHAR}, #{memberNum,jdbcType=BIGINT}, #{waitingMemberNum,jdbcType=BIGINT}, 
+      #{currNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{picture,jdbcType=CHAR}, 
+      #{pictureCdn,jdbcType=VARCHAR}, #{logoUrl,jdbcType=CHAR}, #{prerogative,jdbcType=VARCHAR}, 
+      #{initialWord,jdbcType=CHAR}, #{initialNum,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CardPO">
     insert into t_card
@@ -64,6 +66,9 @@
       </if>
       <if test="memberNum != null">
         member_num,
+      </if>
+      <if test="waitingMemberNum != null">
+        waiting_member_num,
       </if>
       <if test="currNum != null">
         curr_num,
@@ -115,6 +120,9 @@
       <if test="memberNum != null">
         #{memberNum,jdbcType=BIGINT},
       </if>
+      <if test="waitingMemberNum != null">
+        #{waitingMemberNum,jdbcType=BIGINT},
+      </if>
       <if test="currNum != null">
         #{currNum,jdbcType=BIGINT},
       </if>
@@ -165,6 +173,9 @@
       <if test="memberNum != null">
         member_num = #{memberNum,jdbcType=BIGINT},
       </if>
+      <if test="waitingMemberNum != null">
+        waiting_member_num = #{waitingMemberNum,jdbcType=BIGINT},
+      </if>
       <if test="currNum != null">
         curr_num = #{currNum,jdbcType=BIGINT},
       </if>
@@ -207,6 +218,7 @@
       `name` = #{name,jdbcType=CHAR},
       title = #{title,jdbcType=CHAR},
       member_num = #{memberNum,jdbcType=BIGINT},
+      waiting_member_num = #{waitingMemberNum,jdbcType=BIGINT},
       curr_num = #{currNum,jdbcType=BIGINT},
       description = #{description,jdbcType=VARCHAR},
       picture = #{picture,jdbcType=CHAR},
@@ -259,10 +271,4 @@
             and trim(replace(c.initial_num,' ','')) like trim(replace ('%' #{cardNum,jdbcType=CHAR} '%' ,' ',''))
         </if>
     </select>
-
-
-  <select id="queryCardIdAndName" resultType="com.talentcard.common.bo.CardIdAndNameBO">
-    select card_id as cardId, `name` as cardName
-    from t_card
-  </select>
 </mapper>
