@@ -36,6 +36,9 @@ public class PolicyController {
                                       @RequestParam(value = "apply", defaultValue = "0") Byte apply) {
 
         HashMap<String, Object> hashMap = new HashMap<>(6);
+        if (!"".equals(end)) {
+            end = end + " 23:59:59";
+        }
         hashMap.put("start", start);
         hashMap.put("end", end);
         hashMap.put("name", name);
