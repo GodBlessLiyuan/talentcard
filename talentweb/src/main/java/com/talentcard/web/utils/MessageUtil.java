@@ -5,6 +5,7 @@ import com.talentcard.web.dto.TemplateDataDto;
 import com.talentcard.web.dto.WeChatTemDto;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Map;
  * @description: TODO
  * @version: 1.0
  */
+@Component
 public class MessageUtil {
 
 
