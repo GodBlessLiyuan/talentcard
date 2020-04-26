@@ -232,8 +232,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             messageDTO.setKeyword4(currentTime);
             //结束
             messageDTO.setRemark("领取后可享受多项人才权益哦");
-            MessageUtil.sendTemplateMessage(messageDTO);
             messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+            MessageUtil.sendTemplateMessage(messageDTO);
             return new ResultVO(1000);
         }
         return new ResultVO(1000);
