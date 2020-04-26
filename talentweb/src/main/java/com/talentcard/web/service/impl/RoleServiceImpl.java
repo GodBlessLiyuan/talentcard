@@ -33,14 +33,15 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public ResultVO queryByRole(String roleName, String startTime, String endTime) {
-
+        // 前端传过来的是年月日格式的时间数据，因此要给开始时间拼接00:00:00,给
+        // 结束时间拼接23:59:59。一为了和数据库时间格式对应年月日 时分秒，以便查询 二 防止
+        // 日期为同一天，若不加前后限制，则检索不出数据
         if (!"".equals(startTime)) {
             startTime = startTime + " 00:00:00";
         }
         if (!"".equals(endTime)) {
             endTime = endTime + " 23:59:59";
         }
-
         // 1 先在角色基础表中查询当前角色信息
         List<RolePO> rolePOS = roleMapper.queryRoleByTime(roleName,startTime,endTime);
         if (rolePOS.size() == 0) {
@@ -48,7 +49,7 @@ public class RoleServiceImpl implements IRoleService {
             return new ResultVO(2111);
         }
         List<ManageRoleVO> manageRoleVOS = new ArrayList<>();
-        // 2 根据角色id在角色权限关联表中，查询其所拥有权限，权限状态码status为1
+        // 2 根据角色id在角色权限关联表中，查询其所拥有权限，若拥有权限状态码status为1
         for (RolePO rolePO:rolePOS) {
             ManageRoleVO manageRoleVO = new ManageRoleVO();
             Long roleId = rolePO.getRoleId();
