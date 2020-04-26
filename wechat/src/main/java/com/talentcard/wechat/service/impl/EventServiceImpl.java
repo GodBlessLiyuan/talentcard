@@ -173,7 +173,7 @@ public class EventServiceImpl implements IEventService {
             return new ResultVO(2210, "没有正在使用的卡");
         }
         //判断删卡事件的wxCardId是否和数据库里的一致
-        if(currentCard.getWxCardId()!=eventCardId){
+        if (!currentCard.getWxCardId().equals(eventCardId)) {
             return new ResultVO(2211, "当前正在使用的卡和内部卡不一致！");
         }
         if (ifExistGetCard != null) {
