@@ -81,6 +81,7 @@ public class EventServiceImpl implements IEventService {
             } else {
                 return new ResultVO(2212, "卡当前数量是0，不能再减少了！");
             }
+            cardMapper.updateByPrimaryKeySelective(newCardPO);
             return new ResultVO(1000, "基本卡领取成功");
         } else {
             /**
@@ -90,6 +91,9 @@ public class EventServiceImpl implements IEventService {
             //第二次激活
             //待领取的卡
             ActivcateBO newCard = talentMapper.activate(openId, (byte) 4, (byte) 1);
+            if (newCard == null) {
+                return new ResultVO(2600, "数据库无待领取的卡");
+            }
             //1.cert_approval里的人才类别信息更新user_current_info表
             CertApprovalPO certApprovalPO = certApprovalMapper.findByCertId(newCard.getCertId());
             UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByPrimaryKey(newCard.getUciId());
@@ -114,6 +118,7 @@ public class EventServiceImpl implements IEventService {
             } else {
                 return new ResultVO(2212, "卡当前数量是0，不能再减少了！");
             }
+            cardMapper.updateByPrimaryKeySelective(newCardPO);
 
             /**
              * 旧卡操作
