@@ -71,7 +71,11 @@ public class PolicyVO implements Serializable {
         vo.setApply(po.getApply() == 1 ? "需要" : "不需要");
         String frequency = "无";
         if (null != po.getRate() && null != po.getUnit() && null != po.getTimes()) {
-            frequency = po.getRate() + (po.getUnit() == 1 ? "年/" : po.getUnit() == 2 ? "季/" : "月/") + po.getTimes() + "次";
+            if (po.getUnit() == 4) {
+                frequency = "终身" + po.getTimes() + "次";
+            } else {
+                frequency = po.getRate() + (po.getUnit() == 1 ? "年/" : po.getUnit() == 2 ? "季/" : "月/") + po.getTimes() + "次";
+            }
         }
         vo.setFrequency(frequency);
         vo.setDesc(po.getDescription());
