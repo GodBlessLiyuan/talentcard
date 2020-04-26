@@ -217,7 +217,7 @@ public class TalentServiceImpl implements ITalentService {
         membershipNumber = membershipNumber + cardPO.getCurrNum();
         userCardPO.setNum(membershipNumber);
         cardPO.setCurrNum(cardPO.getCurrNum() + 1);
-        cardPO.setMemberNum(cardPO.getMemberNum() + 1);
+        cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
         //人卡表里设置参数；添加数据
         userCardPO.setCreateTime(new Date());
         userCardPO.setStatus((byte) 1);

@@ -62,7 +62,7 @@ public class CardServiceImpl implements ICardService {
         JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
         pictureCDN = pictureObject.getString("url");
         if (pictureCDN == null || pictureCDN == "") {
-            return new ResultVO(2321);
+            return new ResultVO(2321, "会员卡背景图上传失败");
         }
         //上传logo图片
         String publicLogoUrl = publicPath + logoUrl;
@@ -135,7 +135,7 @@ public class CardServiceImpl implements ICardService {
             JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
             pictureCDN = pictureObject.getString("url");
             if (pictureCDN == null || pictureCDN == "") {
-                return new ResultVO(2321);
+                return new ResultVO(2321,"会员卡背景图上传失败");
             }
             cardPO.setPicture(picture);
         }

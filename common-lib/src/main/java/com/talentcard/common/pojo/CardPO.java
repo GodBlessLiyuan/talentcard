@@ -20,6 +20,8 @@ public class CardPO implements Serializable {
 
     private Long memberNum;
 
+    private Long waitingMemberNum;
+
     private Long currNum;
 
     private String description;
