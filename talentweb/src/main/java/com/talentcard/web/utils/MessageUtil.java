@@ -5,6 +5,7 @@ import com.talentcard.web.dto.TemplateDataDto;
 import com.talentcard.web.dto.WeChatTemDto;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Map;
  * @description: TODO
  * @version: 1.0
  */
+@Component
 public class MessageUtil {
 
 
@@ -32,7 +34,7 @@ public class MessageUtil {
         WeChatTemDto weChatTemDto = new WeChatTemDto();
         weChatTemDto.setTouser(messageDTO.getOpenid());
         weChatTemDto.setTemplate_id(templateId);
-        weChatTemDto.setUrl("");
+        weChatTemDto.setUrl(messageDTO.getUrl());
         Map<String, TemplateDataDto> map = new HashMap<>();
         TemplateDataDto first = new TemplateDataDto();
         first.setValue(messageDTO.getFirst());

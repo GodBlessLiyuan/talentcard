@@ -165,7 +165,7 @@
             <if test="apply != null and apply !=''">and pa.talent_name = #{apply}</if>
             <if test="status != null and status !=0">and pa.`status` = #{status,jdbcType=TINYINT}</if>
         </where>
-        order by pa.create_time desc
+        order by pa.`status` desc, pa.create_time desc
     </select>
     <select id="queryByTalentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select

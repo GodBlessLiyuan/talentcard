@@ -36,6 +36,10 @@ public class PolicyApplyController {
                                            @RequestParam(value = "status", defaultValue = "0") Byte status) {
 
         HashMap<String, Object> reqMap = new HashMap<>(6);
+        if (!"".equals(end)) {
+            end = end + " 23:59:59";
+        }
+
         reqMap.put("start", start);
         reqMap.put("end", end);
         reqMap.put("num", num);
