@@ -46,6 +46,11 @@ public class MessageDTO {
      */
     private String remark;
 
+    /**
+     * url
+     */
+    private String url;
+
 
 
 
