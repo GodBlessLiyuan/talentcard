@@ -15,19 +15,14 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 
+/**
+ * 基本卡
+ */
 @Component
 public class CardUtil {
     public static JSONObject addCommonCard(String brandName, String title, String notice,
                                            String description, String prerogative,
                                            String background, String logoUrl) {
-        /**
-         * 1. 实体类或集合转JSON串
-         * String jsonString = JSONObject.toJSONString(实体类);
-         * 2.JSON串转JSONObject
-         * JSONObject jsonObject = JSONObject.parseObject(jsonString);
-         * setBackground_pic_url; setLogo_url;
-         *
-         */
         WxCardPO wxCardPO = new WxCardPO();
 
         MemberCardPO memberCardPO = new MemberCardPO();
@@ -51,7 +46,7 @@ public class CardUtil {
         baseInfoPO.setCustom_url_sub_title("");
         //我的权益
         baseInfoPO.setPromotion_url_name("我的权益");
-        baseInfoPO.setPromotion_url(WebParameterUtil.getMyRightUrl());
+        baseInfoPO.setPromotion_url(WebParameterUtil.getMyBaseRightUrl());
 
         memberCardPO.setBase_info(baseInfoPO);
         memberCardPO.setPrerogative(prerogative);
@@ -74,7 +69,18 @@ public class CardUtil {
 //        return cardObject;
     }
 
-
+    /**
+     * 高级卡
+     *
+     * @param brandName
+     * @param title
+     * @param notice
+     * @param description
+     * @param prerogative
+     * @param background
+     * @param logoUrl
+     * @return
+     */
     public static JSONObject addSeniorCard(String brandName, String title, String notice,
                                            String description, String prerogative,
                                            String background, String logoUrl) {
@@ -101,7 +107,7 @@ public class CardUtil {
         baseInfoPO.setCustom_url_sub_title("");
         //我的权益
         baseInfoPO.setPromotion_url_name("我的权益");
-        baseInfoPO.setPromotion_url(WebParameterUtil.getMyRightUrl());
+        baseInfoPO.setPromotion_url(WebParameterUtil.getMySeniorRightUrl());
 
         memberCardPO.setBase_info(baseInfoPO);
         memberCardPO.setPrerogative(prerogative);

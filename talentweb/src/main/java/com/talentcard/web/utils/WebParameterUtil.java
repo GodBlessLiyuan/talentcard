@@ -14,7 +14,8 @@ public class WebParameterUtil {
     private static String indexUrl;
     private static String certificateUrl;
     private static String myInfoNotCertificateUrl;
-    private static String myRightUrl;
+    private static String myBaseRightUrl;
+    private static String mySeniorRightUrl;
     private static String myInfoAlreadyCertificateUrl;
     private static String myApplicationUrl;
 
@@ -30,8 +31,12 @@ public class WebParameterUtil {
         return myInfoNotCertificateUrl;
     }
 
-    public static String getMyRightUrl() {
-        return myRightUrl;
+    public static String getMyBaseRightUrl() {
+        return myBaseRightUrl;
+    }
+
+    public static String getMySeniorRightUrl() {
+        return mySeniorRightUrl;
     }
 
     public static String getMyInfoAlreadyCertificateUrl() {
@@ -57,9 +62,14 @@ public class WebParameterUtil {
         WebParameterUtil.myInfoNotCertificateUrl = myInfoNotCertificateUrl;
     }
 
-    @Value("${project.myRightUrl}")
-    public void setMyRightUrl(String myRightUrl) {
-        WebParameterUtil.myRightUrl = myRightUrl;
+    @Value("${project.myBaseRightUrl}")
+    public void setMyRightUrl(String myBaseRightUrl) {
+        WebParameterUtil.myBaseRightUrl = myBaseRightUrl;
+    }
+
+    @Value("${project.mySeniorRightUrl}")
+    public void mySeniorRightUrl(String mySeniorRightUrl) {
+        WebParameterUtil.mySeniorRightUrl = mySeniorRightUrl;
     }
 
     @Value("${project.myInfoAlreadyCertificateUrl}")
