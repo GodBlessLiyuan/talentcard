@@ -60,7 +60,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         PolicyApprovalPO po = new PolicyApprovalPO();
         po.setPaId(paid);
         po.setCreateTime(new Date());
-        po.setType((byte) 1);
+        po.setType((byte) 2);
         po.setUserId((Long) session.getAttribute("userId"));
         po.setUsername((String) session.getAttribute("username"));
         po.setResult(status);
