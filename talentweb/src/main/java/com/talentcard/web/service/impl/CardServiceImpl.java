@@ -52,33 +52,42 @@ public class CardServiceImpl implements ICardService {
     public ResultVO add(String name, String title, String notice,
                         String description, String prerogative, MultipartFile background,
                         String initialWord, String initialNumber, Byte status) {
-        //上传背景图片
+        //上传背景图片到服务器上
         String picture = FileUtil.uploadFile
                 (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
 //        String pictureUploadCdnUrl = publicPath + picture;
         String pictureUploadCdnUrl = rootDir + picture;
         logger.info("pictureUploadCdnUrl", pictureUploadCdnUrl);
+        //服务器到cdn上
         String pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
+        //转为json格式，再转为url，去掉反斜线
         JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
         pictureCDN = pictureObject.getString("url");
         if (pictureCDN == null || pictureCDN == "") {
             return new ResultVO(2321, "会员卡背景图上传失败");
         }
         //上传logo图片
+        //公网访问url
         String publicLogoUrl = publicPath + logoUrl;
+        //服务器url
         String serverLogoUrl = rootDir + logoUrl;
 //        String logoCDN = CardUtil.uploadPicture(publicLogoUrl);
         logger.info("serverLogoUrl", serverLogoUrl);
+        //服务器到cdn上
         String logoCDN = CardUtil.uploadPicture(serverLogoUrl);
+        //转为json格式，再转为url，去掉反斜线
         JSONObject logoObject = JSONObject.parseObject(logoCDN);
         logoCDN = logoObject.getString("url");
         if (logoCDN == null || logoCDN == "") {
-            return new ResultVO(2325);
+            return new ResultVO(2325, "会员卡logo图CDN上传失败");
         }
         //创建卡，微信端
         CardPO cardPO = new CardPO();
         //status=1为基本卡，否则为高级卡
         JSONObject wechatResult;
+        /**
+         * 基本卡
+         */
         if (status == 1) {
             CardPO defaultCard = cardMapper.findDefaultCard();
             //已存在基本卡，最多1张
@@ -91,6 +100,9 @@ public class CardServiceImpl implements ICardService {
                 return new ResultVO(2320, wechatResult);
             }
         } else {
+            /**
+             * 高级卡
+             */
             wechatResult = CardUtil.addSeniorCard(name, title, notice, description, prerogative, pictureCDN, logoCDN);
             if ((wechatResult.getInteger("errcode") == null)
                     || (wechatResult.getInteger("errcode") != 0)) {
@@ -132,6 +144,7 @@ public class CardServiceImpl implements ICardService {
                     (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
 //        String pictureUploadCdnUrl = publicPath + picture;
             String pictureUploadCdnUrl = rootDir + picture;
+            //背景图上传到cdn上
             pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
             JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
             pictureCDN = pictureObject.getString("url");
@@ -146,6 +159,7 @@ public class CardServiceImpl implements ICardService {
         paramObject.put("card_id", wxCardId);
         JSONObject memberCard = new JSONObject();
         JSONObject baseInfo = new JSONObject();
+        //根据编辑条件，决定传的json参数
         if (pictureCDN != "") {
             memberCard.put("background_pic_url", pictureCDN);
             cardPO.setPicture(picture);

@@ -16,10 +16,23 @@ import org.springframework.web.client.RestTemplate;
 import java.io.File;
 
 /**
- * 基本卡
+ * @Author：chenXU
+ * @Date: Created in 2020/04/17 14:33
+ * @Description: 卡的创建接口
  */
 @Component
 public class CardUtil {
+    /**
+     * 基本卡
+     * @param brandName
+     * @param title
+     * @param notice
+     * @param description
+     * @param prerogative
+     * @param background
+     * @param logoUrl
+     * @return
+     */
     public static JSONObject addCommonCard(String brandName, String title, String notice,
                                            String description, String prerogative,
                                            String background, String logoUrl) {

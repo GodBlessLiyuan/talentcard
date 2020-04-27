@@ -37,6 +37,7 @@ public class AccessTokenUtil {
     @PostConstruct
     public void AccessTokenInitialize() {
         myRedis = redisTemplate;
+        logger.info("access_token: " + getAccessToken());
     }
 
     /**
