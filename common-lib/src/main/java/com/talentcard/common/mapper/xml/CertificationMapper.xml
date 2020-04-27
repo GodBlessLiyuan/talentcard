@@ -208,4 +208,5 @@
         where t.open_id = #{openId,jdbcType=BIGINT}
         and c.status= 9
     </select>
+
 </mapper>

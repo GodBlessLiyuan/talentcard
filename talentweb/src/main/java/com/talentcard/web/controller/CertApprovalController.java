@@ -42,7 +42,6 @@ public class CertApprovalController {
                                 @RequestParam(value = "cardId",required = false) Long cardId,
                                 @RequestParam(value = "category",defaultValue = "",required = false) String category,
                                 @RequestParam(value = "opinion", required = false) String opinion){
-
         Map<String, Object> reqData = new HashMap<>(6);
         reqData.put("talentId",talentId);
         reqData.put("certId",certId);
