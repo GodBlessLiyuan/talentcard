@@ -3,14 +3,21 @@ package com.talentcard.web.service.impl;
 import com.talentcard.common.bo.ApprovalBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ICertApprovalService;
+import com.talentcard.web.utils.AccessTokenUtil;
+import com.talentcard.web.utils.MessageUtil;
+import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.ApprovalItemsVO;
 import com.talentcard.common.vo.ResultVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +30,7 @@ import java.util.Map;
  */
 @Service
 public class CertApprovalServiceImpl implements ICertApprovalService {
+    private static final Logger logger = LoggerFactory.getLogger(CertApprovalServiceImpl.class);
     @Resource
     CertApprovalMapper certApprovalMapper;
     @Resource
@@ -52,7 +60,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         ApprovalBO bo = certificationMapper.queryAllMsg(talentId);
         if (null == bo) {
             //当前用户没有审批需求
-            return new ResultVO(2215);
+            return new ResultVO(2115);
         }
         List<CertApprovalPO> pos = certApprovalMapper.queryApprovalById(talentId);
         ApprovalItemsVO approvalItemsVO = new ApprovalItemsVO();
@@ -113,7 +121,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             certificationPo.setStatus((byte)10);
             int resultUpdateCertification = certificationMapper.updateByPrimaryKeySelective(certificationPo);
             if (resultUpdateCertification == 0) {
-                //更新认证审批表失败
+                //更新认证表失败
                 return new ResultVO(2114);
             }
             //(4) 更新学历表的认证状态
@@ -140,7 +148,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             int insertResult = certApprovalMapper.insertSelective(certApprovalPo);
             if (insertResult == 0) {
                 //新增认证审批表失败
-                return new ResultVO(2365);
+                return new ResultVO(2112);
             }
             // (2) 更新认证表
             CertificationPO certificationPo = new CertificationPO();
@@ -148,8 +156,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             certificationPo.setStatus((byte)4);
             int resultUpdateCertification = certificationMapper.updateByPrimaryKeySelective(certificationPo);
             if (resultUpdateCertification == 0) {
-                //更新认证审批表失败
-                return new ResultVO(2366);
+                //更新认证表失败
+                return new ResultVO(2114);
             }
             //(3) 更新人才表
             TalentPO talentPO = new TalentPO();
@@ -160,7 +168,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             int resultUpdateTalent = talentMapper.updateByPrimaryKeySelective(talentPO);
             if (resultUpdateTalent == 0) {
                 //更新人才表失败
-                return new ResultVO(2367);
+                return new ResultVO(2113);
             }
             //(4) 更新学历表的认证状态
             int resultEducation = educationMapper.updateStatusByCertId(certId, (byte) 4);
@@ -204,12 +212,35 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             userCardPO.setStatus((byte) 1);
             cardMapper.updateByPrimaryKeySelective(cardPO);
             userCardMapper.insertSelective(userCardPO);
-
+            logger.info("发通知之前");
             /**
-             * 根据openid 发送领卡通知
+             * 根据openId 发送领卡通知
              */
-            String  openid = talentMapper.selectByPrimaryKey(talentId).getOpenId();
-//            String notice = MessageUtil.sendTemplateMessage(openid);
+            TalentPO currentTalent = talentMapper.selectByPrimaryKey(talentId);
+            //用消息模板推送微信消息
+            MessageDTO messageDTO = new MessageDTO();
+            //openId
+            messageDTO.setOpenid(currentTalent.getOpenId());
+            //开头
+            messageDTO.setFirst("您好，请您领取衢江区人才卡");
+            //姓名
+            messageDTO.setKeyword1(currentTalent.getName());
+            //身份证号，屏蔽八位
+            String encryptionIdCard = currentTalent.getIdCard().substring(0, 9) + "********";
+            messageDTO.setKeyword2(encryptionIdCard);
+            messageDTO.setKeyword3("个人");
+            //领卡机构
+            //通知时间
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+            String currentTime = formatter.format(new Date());
+            messageDTO.setKeyword4(currentTime);
+            //结束
+            messageDTO.setRemark("领取后可享受多项人才权益哦");
+            logger.info("getIndexUrl之前");
+            messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+            logger.info("getIndexUrl之前");
+            MessageUtil.sendTemplateMessage(messageDTO);
+            return new ResultVO(1000);
         }
         return new ResultVO(1000);
     }

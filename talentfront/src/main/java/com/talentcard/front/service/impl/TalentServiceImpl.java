@@ -8,6 +8,7 @@ import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.ITalentService;
+import com.talentcard.front.utils.FrontParameterUtil;
 import com.talentcard.front.utils.MessageUtil;
 import com.talentcard.front.utils.TalentUtil;
 import com.talentcard.front.vo.TalentVO;
@@ -234,16 +235,17 @@ public class TalentServiceImpl implements ITalentService {
         //姓名
         messageDTO.setKeyword1(talentPO.getName());
         //身份证号，屏蔽八位
-        messageDTO.setKeyword2(talentPO.getIdCard());
+        String encryptionIdCard = talentPO.getIdCard().substring(0, 9) + "********";
+        messageDTO.setKeyword2(encryptionIdCard);
         messageDTO.setKeyword3("个人");
         //领卡机构
         //通知时间
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         String currentTime = formatter.format(new Date());
-
         messageDTO.setKeyword4(currentTime);
         //结束
         messageDTO.setRemark("领取后可享受多项人才权益哦");
+        messageDTO.setUrl(FrontParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }

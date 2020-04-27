@@ -237,4 +237,22 @@ public class CardServiceImpl implements ICardService {
         cardMapper.updateByPrimaryKeySelective(cardPO);
         return new ResultVO(1000);
     }
+
+    @Override
+    public ResultVO findSeniorCard(HashMap<String, Object> hashMap) {
+        List<CardPO> cardPOList = cardMapper.findSeniorCard(hashMap);
+        //添加功public path
+        for (CardPO cardPO : cardPOList) {
+            String pictureUrl = cardPO.getPicture();
+            if (pictureUrl != null && pictureUrl != "") {
+                cardPO.setPicture(publicPath + pictureUrl);
+            }
+            String logoUrl = cardPO.getLogoUrl();
+            if (logoUrl != null && logoUrl != "") {
+                cardPO.setLogoUrl(publicPath + logoUrl);
+            }
+        }
+        return new ResultVO(1000, cardPOList);
+    }
+
 }

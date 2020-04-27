@@ -30,4 +30,11 @@ public interface CardMapper extends BaseMapper<CardPO, Long> {
      * @return
      */
     List<CardPO> findByFactor (HashMap<String, Object> hashMap);
+
+    /**
+     * 查询高级卡
+     * @param hashMap
+     * @return
+     */
+    List<CardPO> findSeniorCard (HashMap<String, Object> hashMap);
 }
