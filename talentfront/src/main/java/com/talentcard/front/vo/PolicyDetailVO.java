@@ -23,6 +23,10 @@ public class PolicyDetailVO implements Serializable {
      */
     private String name;
     /**
+     * 人才名称
+     */
+    private String tname;
+    /**
      * 权益描述
      */
     private String desc;

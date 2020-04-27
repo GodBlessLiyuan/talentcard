@@ -159,6 +159,7 @@ public class PolicyServiceImpl implements IPolicyService {
             PolicyDetailVO vo = new PolicyDetailVO();
             vo.setPid(po.getPolicyId());
             vo.setName(po.getName());
+            vo.setTname(talentPO.getName());
             vo.setDesc(po.getDescription());
             vo.setBank(po.getBank());
             vo.setAnnex(po.getAnnex());
