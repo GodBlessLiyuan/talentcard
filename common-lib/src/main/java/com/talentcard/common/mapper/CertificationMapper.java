@@ -68,4 +68,11 @@ public interface CertificationMapper extends BaseMapper<CertificationPO, Long> {
      * @return
      */
     Integer ifOldCardIsBaseCard(@Param("openId") String openId);
+
+    /**
+     * 查询status=3的数据，查看是否已经拥有待审批数据了
+     * @param openId
+     * @return
+     */
+    Integer ifWaitingApproval(@Param("openId") String openId);
 }

@@ -208,4 +208,13 @@
         where t.open_id = #{openId,jdbcType=BIGINT}
         and c.status= 9
     </select>
+    <select id="ifWaitingApproval" resultType="java.lang.Integer">
+        select
+        count(c.cert_id)
+        from t_certification c
+        left join t_talent t
+        on c.talent_id = t.talent_id
+        where t.open_id = #{openId,jdbcType=BIGINT}
+        and c.status= 3
+    </select>
 </mapper>
