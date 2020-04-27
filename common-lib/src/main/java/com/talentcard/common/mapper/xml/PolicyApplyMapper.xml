@@ -162,7 +162,7 @@
         <if test="end != null and end !=''">and pa.create_time &lt;= #{end}</if>
         <if test="name != null and name !=''">and pa.policy_name like '%' #{name} '%'</if>
         <if test="num != null and num !=''">and p.num like '%' #{num} '%'</if>
-        <if test="apply != null and apply !=''">and pa.talent_name = #{apply}</if>
+        <if test="apply != null and apply !=''">and pa.talent_name like '%' #{apply} '%'</if>
         <if test="status != null and status !=0">and pa.`status` = #{status,jdbcType=TINYINT}</if>
         order by pa.`status` desc, pa.create_time desc
     </select>
