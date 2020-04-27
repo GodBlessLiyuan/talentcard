@@ -208,6 +208,7 @@
         where t.open_id = #{openId,jdbcType=BIGINT}
         and c.status= 9
     </select>
+
     <select id="ifWaitingApproval" resultType="java.lang.Integer">
         select
         count(c.cert_id)

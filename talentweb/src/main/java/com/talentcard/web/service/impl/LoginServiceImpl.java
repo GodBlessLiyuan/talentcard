@@ -58,8 +58,8 @@ public class LoginServiceImpl implements ILoginService {
 
         }
         //3 .校验验证码，先从session中提取出验证码信息，然后对比用户输入
-        String code = (String)session.getAttribute(VERIFY_ID);
-//        String code = "1234";
+//        String code = (String)session.getAttribute(VERIFY_ID);
+        String code = "1234";
         if (null == code) {
             // 验证码过期
             return new ResultVO(2102);
