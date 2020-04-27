@@ -351,14 +351,14 @@
                            on c.cert_id = pq.cert_id
         where t.open_id = #{openId,jdbcType=CHAR}
           and c.status = #{status,jdbcType=TINYINT}
-          and t.dr!=2
+          and t.dr=1
     </select>
     <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_talent t
         where t.open_id = #{openId,jdbcType=BIGINT}
-        and t.dr!=2
+        and t.dr=1
     </select>
 
     <select id="query" resultType="com.talentcard.common.bo.TalentBO">
@@ -375,7 +375,7 @@
         left join t_user_current_info uci on t.talent_id = uci.talent_id
         left join t_user_card c on t.talent_id = c.talent_id
         where t.status != 1 and c.status != 3
-        and t.dr!=2
+        and t.dr=1
         <if test="start != null and start !=''">and t.create_time >= #{start}</if>
         <if test="end != null and end !=''">and t.create_time &lt;= #{end}</if>
         <if test="name != null and name !=''">and t.`name` like '%' #{name} '%'</if>
@@ -400,7 +400,7 @@
         left join t_user_current_info uci on t.talent_id = uci.talent_id
         left join t_user_card c on t.talent_id = c.talent_id
         where t.status = 1 and c.status != 3
-        and t.dr!=2
+        and t.dr=1
         <if test="start != null and start !=''">and t.create_time >= #{start}</if>
         <if test="end != null and end !=''">and t.create_time &lt;= #{end}</if>
         <if test="name != null and name !=''">and t.`name` like '%' #{name} '%'</if>
@@ -434,7 +434,7 @@
                  left join t_user_current_info uci on t.talent_id = uci.talent_id
                  left join t_user_card c on t.talent_id = c.talent_id
         where t.talent_id = #{tid,jdbcType=BIGINT}
-        and t.dr!=2
+        and t.dr=1
         limit 1
     </select>
 
@@ -446,7 +446,7 @@
         left join t_education e on t.talent_id = e.talent_id
         left join t_prof_title pt on t.talent_id = pt.talent_id
         left join t_prof_quality pq on t.talent_id = pq.talent_id
-        where t.dr!=2
+        where t.dr=1
         <if test="name != null and name != ''">
             and t.name like '%' #{name} '%'
         </if>
@@ -496,7 +496,7 @@
         where t.open_id = #{openId, jdbcType=CHAR}
           and c.status = #{certificationStatus, jdbcType=TINYINT}
           and uc.status = #{userCardStatus, jdbcType=TINYINT}
-          and t.dr!=2
+          and t.dr=1
     </select>
     <select id="ifExistGetCard" resultType="java.lang.Integer">
         select count(t.talent_id)
@@ -505,7 +505,7 @@
                            on t.talent_id = c.talent_id
         where t.open_id = #{openId,jdbcType=CHAR}
           and (c.status = 2 or c.status = 4)
-          and t.dr!=2
+          and t.dr=1
     </select>
     <select id="findGetCard" resultType="com.talentcard.common.bo.ActivcateBO">
         select t.talent_id     as talentId,
@@ -527,7 +527,7 @@
         where t.open_id = #{openId, jdbcType=CHAR}
           and ((c.status = 2) or (c.status = 4))
           and uc.status = 1
-          and t.dr!=2
+          and t.dr=1
     </select>
     <select id="findRegisterOne" parameterType="java.lang.String" resultMap="TalentResultMap">
         select t.talent_id    as t_talent_id,
@@ -586,7 +586,7 @@
                            on c.cert_id = pq.cert_id
         where t.open_id = #{openId,jdbcType=CHAR}
           and (c.status = 2 or c.status = 5 or c.status = 9)
-          and t.dr!=2
+          and t.dr=1
     </select>
 
     <select id="ifCertificate" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -596,14 +596,14 @@
         on t.talent_id = c.talent_id
         where t.open_id = #{openId, jdbcType=CHAR}
         and c.status = 9
-        and t.dr!=2
+        and t.dr=1
     </select>
 
     <select id="idCardIfUnique" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(t.talent_id)
         from t_talent t
         where t.id_card = #{idCard, jdbcType=CHAR}
-        and t.dr!=2
+        and t.dr=1
     </select>
     <select id="ifInAudit" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(t.talent_id)
@@ -612,6 +612,6 @@
         on t.talent_id = c.talent_id
         where t.open_id = #{openId, jdbcType=CHAR}
         and (c.status = 3 or c.status = 4)
-        and t.dr!=2
+        and t.dr=1
     </select>
 </mapper>

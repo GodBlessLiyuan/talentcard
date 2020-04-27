@@ -54,7 +54,7 @@ public class EventServiceImpl implements IEventService {
         //不为null代表存在c表状态2，uc表状态1，即为待领取的卡是基本卡。
         if (firstActivate != null) {
             /**
-             * 新卡操作
+             * 基本卡
              */
             logger.info("第一次激活");
             //第一次激活
@@ -85,7 +85,7 @@ public class EventServiceImpl implements IEventService {
             return new ResultVO(1000, "基本卡领取成功");
         } else {
             /**
-             * 新卡操作
+             * 高级卡
              */
             logger.info("第二次激活");
             //第二次激活
