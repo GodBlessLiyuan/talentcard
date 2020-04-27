@@ -63,7 +63,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
             return new ResultVO(1001);
         }
         applyPO.setStatus(status);
-        policyApplyMapper.insert(applyPO);
+        policyApplyMapper.updateByPrimaryKey(applyPO);
 
         PolicyApprovalPO po = new PolicyApprovalPO();
         po.setPaId(paid);
