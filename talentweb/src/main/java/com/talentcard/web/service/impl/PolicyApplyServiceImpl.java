@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.mapper.PolicyApplyMapper;
 import com.talentcard.common.mapper.PolicyApprovalMapper;
+import com.talentcard.common.pojo.PolicyApplyPO;
 import com.talentcard.common.pojo.PolicyApprovalPO;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.utils.DateUtil;
@@ -57,6 +58,13 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
 
     @Override
     public ResultVO approval(HttpSession session, Long paid, Byte status, String opinion) {
+        PolicyApplyPO applyPO = policyApplyMapper.selectByPrimaryKey(paid);
+        if (null == applyPO) {
+            return new ResultVO(1001);
+        }
+        applyPO.setStatus(status);
+        policyApplyMapper.insert(applyPO);
+
         PolicyApprovalPO po = new PolicyApprovalPO();
         po.setPaId(paid);
         po.setCreateTime(new Date());
@@ -65,8 +73,8 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         po.setUsername((String) session.getAttribute("username"));
         po.setResult(status);
         po.setOpinion(opinion);
-
         policyApprovalMapper.insert(po);
+
         return new ResultVO(1000);
     }
 
