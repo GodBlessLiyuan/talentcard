@@ -265,6 +265,11 @@ public class TalentServiceImpl implements ITalentService {
                                    MultipartFile educPicture,
                                    MultipartFile profTitlePicture,
                                    MultipartFile profQualityPicture) {
+        //校验数据库是否存在状态3的数据
+        Integer ifWaitingApproval = certificationMapper.ifWaitingApproval(openId);
+        if (ifWaitingApproval != null && ifWaitingApproval != 0) {
+            return new ResultVO(2308, "该用户已有待审批数据");
+        }
         //设置状态值 状态3为认证未审批
         Byte status = (byte) 3;
         //上传文件

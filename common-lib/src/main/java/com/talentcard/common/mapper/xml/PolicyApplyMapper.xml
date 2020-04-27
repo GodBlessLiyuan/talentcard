@@ -157,14 +157,13 @@
         from t_policy_apply pa
         left join t_bank b on pa.pa_id = b.pa_id
         left join t_policy p on pa.policy_id = p.policy_id
-        <where>
-            <if test="start != null and start !=''">and pa.create_time >= #{start}</if>
-            <if test="end != null and end !=''">and pa.create_time &lt;= #{end}</if>
-            <if test="name != null and name !=''">and pa.policy_name like '%' #{name} '%'</if>
-            <if test="num != null and num !=''">and p.num like '%' #{num} '%'</if>
-            <if test="apply != null and apply !=''">and pa.talent_name = #{apply}</if>
-            <if test="status != null and status !=0">and pa.`status` = #{status,jdbcType=TINYINT}</if>
-        </where>
+        where p.dr = 1
+        <if test="start != null and start !=''">and pa.create_time >= #{start}</if>
+        <if test="end != null and end !=''">and pa.create_time &lt;= #{end}</if>
+        <if test="name != null and name !=''">and pa.policy_name like '%' #{name} '%'</if>
+        <if test="num != null and num !=''">and p.num like '%' #{num} '%'</if>
+        <if test="apply != null and apply !=''">and pa.talent_name = #{apply}</if>
+        <if test="status != null and status !=0">and pa.`status` = #{status,jdbcType=TINYINT}</if>
         order by pa.`status` desc, pa.create_time desc
     </select>
     <select id="queryByTalentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
