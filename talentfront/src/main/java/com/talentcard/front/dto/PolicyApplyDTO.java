@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class PolicyApplyDTO implements Serializable {
     private static final long SerialVersionUID = 1L;
 
-    private Long tid;
+    private String openid;
     private Long pid;
     private String card;
     private String bank;

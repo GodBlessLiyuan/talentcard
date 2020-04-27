@@ -18,6 +18,7 @@ import java.util.Map;
 public interface TalentMapper extends BaseMapper<TalentPO, Long> {
     /**
      * insert，且返回主键
+     *
      * @param talentPO
      * @return
      */
@@ -25,6 +26,7 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
 
     /**
      * 根据openId，返回相应的talentPO
+     *
      * @param openId
      * @return
      */
@@ -85,6 +87,7 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
 
     /**
      * 根据openId和c表状态决定一条完整的记录，带4表的所有信息
+     *
      * @param hashMap
      * @return
      */
@@ -94,6 +97,7 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
      * 根据openId和c表状态决定一条完整的记录，带4表的所有信息
      * status=2 or 5 or 9
      * 注册时基本卡信息完整的一生
+     *
      * @param openId
      * @return
      */
@@ -102,6 +106,7 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
     /**
      * 根据openId和c表status=9是否有数据来判断是否认证过
      * status=9说明基本卡已经作废，证明认证完成
+     *
      * @param openId
      * @return
      */
@@ -116,6 +121,7 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
 
     /**
      * 身份证唯一性校验
+     *
      * @param idCard
      * @return
      */
@@ -124,8 +130,17 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
     /**
      * 根据openId和c表status=3或者4是否有数据来判断是否在审核状态中，或者是审核成功待领卡
      * status=3说明待审批
+     *
      * @param openId
      * @return
      */
     Integer ifInAudit(String openId);
+
+    /**
+     * 根据openid查询
+     *
+     * @param openid
+     * @return
+     */
+    TalentPO queryByOpenid(String openid);
 }

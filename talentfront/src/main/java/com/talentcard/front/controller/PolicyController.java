@@ -22,17 +22,17 @@ public class PolicyController {
     /**
      * 我的权益
      *
-     * @param tid
+     * @param openid
      * @return
      */
     @RequestMapping("policies")
-    public ResultVO policies(@RequestParam(name = "tid") Long tid) {
-        return service.policies(tid);
+    public ResultVO policies(@RequestParam(name = "openid") String openid) {
+        return service.policies(openid);
     }
 
     /**
      * 我的权益 - 申请
-     * @param tid 人才Id
+     * @param openid 人才Id
      * @param pid 政策Id
      * @param card 银行卡号
      * @param bank 开户行号
@@ -40,12 +40,12 @@ public class PolicyController {
      * @return
      */
     @RequestMapping("apply")
-    public ResultVO apply(@RequestParam(name = "tid") Long tid,
+    public ResultVO apply(@RequestParam(name = "openid") String openid,
                           @RequestParam(name = "pid") Long pid,
                           @RequestParam(name = "card", required = false) String card,
                           @RequestParam(name = "bank", required = false) String bank,
                           @RequestParam(value = "files", required = false) MultipartFile[] files) {
-        PolicyApplyDTO dto = new PolicyApplyDTO(tid, pid, card, bank, files);
+        PolicyApplyDTO dto = new PolicyApplyDTO(openid, pid, card, bank, files);
         return service.apply(dto);
     }
 
@@ -53,12 +53,12 @@ public class PolicyController {
     /**
      * 我的申请
      *
-     * @param tid 人才ID
+     * @param openid 人才ID
      * @return
      */
     @RequestMapping("applies")
-    public ResultVO applies(@RequestParam(name = "tid") Long tid) {
-        return service.applies(tid);
+    public ResultVO applies(@RequestParam(name = "openid") String openid) {
+        return service.applies(openid);
     }
 
     /**

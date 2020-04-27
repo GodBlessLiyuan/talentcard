@@ -57,8 +57,8 @@ public class PolicyServiceImpl implements IPolicyService {
     private String annexDir;
 
     @Override
-    public ResultVO policies(Long talentId) {
-        TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
+    public ResultVO policies(String openid) {
+        TalentPO talentPO = talentMapper.queryByOpenid(openid);
         if (null == talentPO) {
             // 人才不存在或已被删除
             return new ResultVO(1001);
@@ -68,6 +68,7 @@ public class PolicyServiceImpl implements IPolicyService {
             return new ResultVO(1002);
         }
 
+        Long talentId = talentPO.getTalentId();
         List<Integer> existEducations = educationMapper.queryNameByTalentId(talentId);
         List<Integer> existTitles = profTitleMapper.queryNameByTalentId(talentId);
         List<Integer> existQualities = profQualityMapper.queryNameByTalentId(talentId);
@@ -213,7 +214,7 @@ public class PolicyServiceImpl implements IPolicyService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVO apply(PolicyApplyDTO dto) {
-        TalentPO talentPO = talentMapper.selectByPrimaryKey(dto.getTid());
+        TalentPO talentPO = talentMapper.queryByOpenid(dto.getOpenid());
         if (null == talentPO) {
             // 当前人才不存在或已被删除
             return new ResultVO(1001);
@@ -223,7 +224,7 @@ public class PolicyServiceImpl implements IPolicyService {
             // 当前政策不存在或已被删除
             return new ResultVO(1002);
         }
-        List<PolicyApplyPO> applyPOs = policyApplyMapper.queryByTidAndPidAndMonth(dto.getTid(), dto.getPid(), null);
+        List<PolicyApplyPO> applyPOs = policyApplyMapper.queryByTidAndPidAndMonth(talentPO.getTalentId(), dto.getPid(), null);
         for (PolicyApplyPO applyPO : applyPOs) {
             if (applyPO.getStatus() == 3) {
                 // 已有待审批的申请，请勿重复申请
@@ -232,7 +233,7 @@ public class PolicyServiceImpl implements IPolicyService {
         }
 
         PolicyApplyPO applyPO = new PolicyApplyPO();
-        applyPO.setTalentId(dto.getTid());
+        applyPO.setTalentId(talentPO.getTalentId());
         applyPO.setTalentName(talentPO.getName());
         applyPO.setPolicyId(dto.getPid());
         applyPO.setPolicyName(policyPO.getName());
@@ -269,8 +270,13 @@ public class PolicyServiceImpl implements IPolicyService {
     }
 
     @Override
-    public ResultVO applies(Long tid) {
-        List<PolicyApplyPO> pos = policyApplyMapper.queryByTalentId(tid);
+    public ResultVO applies(String openid) {
+        TalentPO talentPO = talentMapper.queryByOpenid(openid);
+        if (null == talentPO) {
+            return new ResultVO(1001);
+        }
+
+        List<PolicyApplyPO> pos = policyApplyMapper.queryByTalentId(talentPO.getTalentId());
         return new ResultVO<>(1000, PolicyAppliesVO.convert(pos));
     }
 

@@ -14,10 +14,10 @@ public interface IPolicyService {
     /**
      * 我的权益
      *
-     * @param tid
+     * @param openid
      * @return
      */
-    ResultVO policies(Long tid);
+    ResultVO policies(String openid);
 
     /**
      * 我的权益 - 申请
@@ -30,10 +30,10 @@ public interface IPolicyService {
     /**
      * 我的申请
      *
-     * @param tid 人才ID
+     * @param openid 人才ID
      * @return
      */
-    ResultVO applies(Long tid);
+    ResultVO applies(String openid);
 
     /**
      * 我的申请 - 详情
