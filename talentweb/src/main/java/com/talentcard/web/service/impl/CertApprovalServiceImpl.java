@@ -5,7 +5,6 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ICertApprovalService;
-import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.ApprovalItemsVO;
@@ -251,4 +250,5 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         int number = certApprovalMapper.queryWaitApprovalNum();
         return new ResultVO(1000,number);
     }
+
 }
