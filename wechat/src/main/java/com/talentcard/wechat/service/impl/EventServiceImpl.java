@@ -133,10 +133,19 @@ public class EventServiceImpl implements IEventService {
                 //说明c表里找不到状态9的，代表这是基本卡换高级卡
                 oldStatus = 9;
             } else {
-                //正在使用的卡（旧卡）是高级卡
+                //正在使用的卡（旧卡）是高级卡，高级卡换高级卡
                 oldCard = talentMapper.activate(openId, (byte) 1, (byte) 2);
                 //找到了状态9的，说明这是高级卡换高级卡
                 oldStatus = 10;
+            }
+            /**
+             * 如果找不到旧卡，则是用户弱智把当前高级卡删了！！！
+             */
+            if (oldCard == null) {
+                //user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
+                userCardMapper.updateStatusById(newCard.getTalentId(), (byte) 1, (byte) 2);
+                return new ResultVO(1000, "这货把当前卡删了，真蠢");
+
             }
             //取出旧卡的talentId和certId
             Long oldTalentId = oldCard.getTalentId();
