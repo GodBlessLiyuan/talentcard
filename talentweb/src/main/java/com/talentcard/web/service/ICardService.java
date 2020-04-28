@@ -26,4 +26,6 @@ public interface ICardService {
 
     ResultVO findSeniorCard(HashMap<String, Object> hashMap);
 
+    ResultVO queryCardIdName();
+
 }

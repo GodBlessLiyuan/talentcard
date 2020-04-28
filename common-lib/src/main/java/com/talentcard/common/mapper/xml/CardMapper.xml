@@ -291,4 +291,10 @@
             and trim(replace(c.initial_num,' ','')) like trim(replace ('%' #{cardNum,jdbcType=CHAR} '%' ,' ',''))
         </if>
     </select>
+
+    <select id="queryCardIdName" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_card
+    </select>
 </mapper>

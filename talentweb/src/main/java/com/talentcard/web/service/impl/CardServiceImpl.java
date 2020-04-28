@@ -12,6 +12,7 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ICardService;
 import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.CardUtil;
+import com.talentcard.web.vo.CardIdAndNameVO;
 import com.talentcard.web.vo.CardVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.smartcardio.Card;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -254,6 +254,13 @@ public class CardServiceImpl implements ICardService {
         //PO转VO
         List<CardVO> cardVOList = CardVO.convert(cardPOList);
         return new ResultVO(1000, cardVOList);
+    }
+
+    @Override
+    public ResultVO queryCardIdName() {
+        List<CardPO> pos = cardMapper.queryCardIdName();
+        List<CardIdAndNameVO> vo = CardIdAndNameVO.convert(pos);
+        return new ResultVO(1000,vo);
     }
 
 }
