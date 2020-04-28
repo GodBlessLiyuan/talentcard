@@ -13,6 +13,8 @@
         <module>talentfront</module>
         <module>talentweb</module>
         <module>wechat</module>
+        <module>talentadmin</module>
+        <module>talenteureka</module>
     </modules>
 
     <name>talentcard</name>
