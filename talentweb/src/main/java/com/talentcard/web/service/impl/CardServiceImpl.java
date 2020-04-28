@@ -12,6 +12,7 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ICardService;
 import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.CardUtil;
+import com.talentcard.web.vo.CardVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -190,25 +191,17 @@ public class CardServiceImpl implements ICardService {
     @Override
     public ResultVO query(HashMap<String, Object> hashMap) {
         List<CardPO> cardPOList = cardMapper.findByFactor(hashMap);
-        //添加功public path
-        for (CardPO cardPO : cardPOList) {
-            String pictureUrl = cardPO.getPicture();
-            if (pictureUrl != null && pictureUrl != "") {
-                cardPO.setPicture(publicPath + pictureUrl);
-            }
-            String logoUrl = cardPO.getLogoUrl();
-            if (logoUrl != null && logoUrl != "") {
-                cardPO.setLogoUrl(publicPath + logoUrl);
-            }
-        }
-        return new ResultVO(1000, cardPOList);
+        //PO转VO
+        List<CardVO> cardVOList = CardVO.convert(cardPOList);
+        return new ResultVO(1000, cardVOList);
     }
 
     @Override
     public ResultVO findOne(Long cardId) {
-        HashMap<String, Object> result = new HashMap<>();
-        ArrayList<String> resultPolicyList = new ArrayList<>();
         CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
+        CardVO cardVO = CardVO.convert(cardPO);
+        ArrayList<String> policyInfo = new ArrayList<>();
+        //取得卡号的String类型
         String cardIdString = cardId.toString();
         //取得全部权益数据
         List<PolicyPO> policyPOList = policyMapper.queryByDr((byte) 1);
@@ -217,7 +210,7 @@ public class CardServiceImpl implements ICardService {
             String[] policys = policyPO.getCards().split(",");
             for (String policy : policys) {
                 if (cardIdString.equals(policy)) {
-                    resultPolicyList.add(policyPO.getName());
+                    policyInfo.add(policyPO.getName());
                 }
             }
         }
@@ -226,9 +219,8 @@ public class CardServiceImpl implements ICardService {
         if (pictureUrl != null && pictureUrl != "") {
             cardPO.setPicture(publicPath + pictureUrl);
         }
-        result.put("cardInfo", cardPO);
-        result.put("policyInfo", resultPolicyList);
-        return new ResultVO(1000, result);
+        cardVO.setPolicyInfo(policyInfo);
+        return new ResultVO(1000, cardVO);
     }
 
     @Override
@@ -259,18 +251,9 @@ public class CardServiceImpl implements ICardService {
     @Override
     public ResultVO findSeniorCard(HashMap<String, Object> hashMap) {
         List<CardPO> cardPOList = cardMapper.findSeniorCard(hashMap);
-        //添加功public path
-        for (CardPO cardPO : cardPOList) {
-            String pictureUrl = cardPO.getPicture();
-            if (pictureUrl != null && pictureUrl != "") {
-                cardPO.setPicture(publicPath + pictureUrl);
-            }
-            String logoUrl = cardPO.getLogoUrl();
-            if (logoUrl != null && logoUrl != "") {
-                cardPO.setLogoUrl(publicPath + logoUrl);
-            }
-        }
-        return new ResultVO(1000, cardPOList);
+        //PO转VO
+        List<CardVO> cardVOList = CardVO.convert(cardPOList);
+        return new ResultVO(1000, cardVOList);
     }
 
 }

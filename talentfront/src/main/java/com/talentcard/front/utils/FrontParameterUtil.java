@@ -13,13 +13,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class FrontParameterUtil {
     private static String indexUrl;
+    private static String publicPath;
 
     public static String getIndexUrl() {
         return indexUrl;
     }
 
+    public static String getPublicPath() {
+        return publicPath;
+    }
+
     @Value("${project.indexUrl}")
     private void setIndexUrl(String indexUrl) {
         FrontParameterUtil.indexUrl = indexUrl;
+    }
+
+
+    @Value("${file.publicPath}")
+    private void setPublicPath(String publicPath) {
+        FrontParameterUtil.publicPath = publicPath;
     }
 }

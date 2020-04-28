@@ -1,5 +1,6 @@
 package com.talentcard.web.utils;
 
+import com.talentcard.web.vo.TalentVO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ public class WebParameterUtil {
     private static String mySeniorRightUrl;
     private static String myInfoAlreadyCertificateUrl;
     private static String myApplicationUrl;
+    private static String publicPath;
 
     public static String getIndexUrl() {
         return indexUrl;
@@ -45,6 +47,10 @@ public class WebParameterUtil {
 
     public static String getMyApplicationUrl() {
         return myApplicationUrl;
+    }
+
+    public static String getPublicPath() {
+        return publicPath;
     }
 
     @Value("${project.indexUrl}")
@@ -82,4 +88,8 @@ public class WebParameterUtil {
         WebParameterUtil.myApplicationUrl = myApplicationUrl;
     }
 
+    @Value("${file.publicPath}")
+    private void setPublicPath(String publicPath) {
+        WebParameterUtil.publicPath = publicPath;
+    }
 }
