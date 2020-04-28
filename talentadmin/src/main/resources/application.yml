@@ -4,7 +4,7 @@ spring:
   security:
     user:
       name: "admin"
-      password: "admin"
+      password: "123456"
 server:
   port: 8769
 eureka:
@@ -14,8 +14,8 @@ eureka:
   instance:
     health-check-url-path: /actuator/health
     metadata-map:
-      user.name: admin #${spring.security.user.name}
-      user.password: admin #${spring.security.user.password}
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
 management:
   endpoints:
     web:
