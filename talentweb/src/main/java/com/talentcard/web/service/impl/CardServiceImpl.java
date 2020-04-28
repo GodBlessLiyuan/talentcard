@@ -151,7 +151,6 @@ public class CardServiceImpl implements ICardService {
             if (pictureCDN == null || pictureCDN == "") {
                 return new ResultVO(2321, "会员卡背景图上传失败");
             }
-            cardPO.setPicture(picture);
         }
         //根据cardId找到wx的cardId
         String wxCardId = cardPO.getWxCardId();
@@ -159,16 +158,21 @@ public class CardServiceImpl implements ICardService {
         paramObject.put("card_id", wxCardId);
         JSONObject memberCard = new JSONObject();
         JSONObject baseInfo = new JSONObject();
-        //根据编辑条件，决定传的json参数
-        if (pictureCDN != "") {
+        /**
+         * 根据编辑条件，决定传的json参数
+         */
+        //背景图
+        if (pictureCDN == null || pictureCDN != "") {
             memberCard.put("background_pic_url", pictureCDN);
             cardPO.setPicture(picture);
             cardPO.setPictureCdn(pictureCDN);
         }
+        //卡片标题
         if (title != null && title != "") {
             baseInfo.put("title", title);
             cardPO.setTitle(title);
         }
+        //卡片会员卡详情---使用须知
         if (description != null && description != "") {
             baseInfo.put("description", description);
             cardPO.setDescription(description);
@@ -249,7 +253,7 @@ public class CardServiceImpl implements ICardService {
         //删除卡服务端
         cardPO.setDr((byte) 2);
         cardMapper.updateByPrimaryKeySelective(cardPO);
-        return new ResultVO(1000);
+        return new ResultVO(1000, result);
     }
 
     @Override
