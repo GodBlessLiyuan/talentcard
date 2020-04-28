@@ -108,4 +108,10 @@ public class CardController {
         hashMap.put("cardNum", cardNum);
         return iCardService.findSeniorCard(hashMap);
     }
+
+    @RequestMapping("queryCardIdName")
+    public ResultVO queryCardIdName() {
+        return iCardService.queryCardIdName();
+    }
+
 }

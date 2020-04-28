@@ -80,6 +80,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO confirmCert(HttpSession session, Map<String, Object> reqData) {
+
         // 判断审批结果，如果审批通过，需要多表更新；审批不通过则只新增认证审批表的信息
         //首先获取审批人的用户id
         Long userId = (Long) session.getAttribute("userId");

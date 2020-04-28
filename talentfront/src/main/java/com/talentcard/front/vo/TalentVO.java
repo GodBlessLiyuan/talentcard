@@ -4,6 +4,7 @@ import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.pojo.EducationPO;
 import com.talentcard.common.pojo.ProfQualityPO;
 import com.talentcard.common.pojo.ProfTitlePO;
+import com.talentcard.front.utils.FrontParameterUtil;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -39,7 +40,6 @@ public class TalentVO {
     List<EducationPO> educationPOList;
     List<ProfTitlePO> profTitlePOList;
     List<ProfQualityPO> profQualityPOList;
-    private static String publicPath;
 
     /**
      * Bo转VO
@@ -72,24 +72,24 @@ public class TalentVO {
         //学历文件
         if (talentBO.getEducationPOList() != null) {
             for (EducationPO educationPO : talentBO.getEducationPOList()) {
-                if (educationPO.getEducPicture() != null) {
-                    educationPO.setEducPicture(publicPath + educationPO.getEducPicture());
+                if (educationPO.getEducPicture() != null && educationPO.getEducPicture() != "") {
+                    educationPO.setEducPicture(FrontParameterUtil.getPublicPath() + educationPO.getEducPicture());
                 }
             }
         }
         //职称文件
         if (talentBO.getProfTitlePOList() != null) {
             for (ProfTitlePO profTitlePO : talentBO.getProfTitlePOList()) {
-                if (profTitlePO.getPicture() != null) {
-                    profTitlePO.setPicture(publicPath + profTitlePO.getPicture());
+                if (profTitlePO.getPicture() != null && profTitlePO.getPicture() != "") {
+                    profTitlePO.setPicture(FrontParameterUtil.getPublicPath() + profTitlePO.getPicture());
                 }
             }
         }
         //职业资格文件
         if (talentBO.getProfQualityPOList() != null) {
             for (ProfQualityPO profQualityPO : talentBO.getProfQualityPOList()) {
-                if (profQualityPO.getPicture() != null) {
-                    profQualityPO.setPicture(publicPath + profQualityPO.getPicture());
+                if (profQualityPO.getPicture() != null && profQualityPO.getPicture() != "") {
+                    profQualityPO.setPicture(FrontParameterUtil.getPublicPath() + profQualityPO.getPicture());
                 }
             }
         }
@@ -110,10 +110,5 @@ public class TalentVO {
 
 
         return talentVOList;
-    }
-
-    @Value("${file.publicPath}")
-    private void setPublicPath(String publicPath) {
-        TalentVO.publicPath = publicPath;
     }
 }
