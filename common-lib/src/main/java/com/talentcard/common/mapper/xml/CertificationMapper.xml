@@ -124,7 +124,7 @@
         left join t_prof_title pt on ce.cert_id = pt.cert_id
         left join t_prof_quality pq on ce.cert_id = pq.cert_id
         left join (select a.cert_id, a.create_time, a.result from t_cert_approval a inner join ( select cert_id, max(create_time) as maxcreatetime  from t_cert_approval group by cert_id) b on a.cert_id = b.cert_id and a.create_time = b.maxcreatetime) as ca ON ca.cert_id = ce.cert_id
-        where ce.status = 1 or ce.status = 3 or ce.status = 10 or ce.status = 4
+        where (ce.status = 1 or ce.status = 3 or ce.status = 10 or ce.status = 4)
             <if test="name != null and name != ''">
                 and t.name like '%' #{name} '%'
             </if>
