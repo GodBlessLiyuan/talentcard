@@ -50,15 +50,16 @@ public class EventServiceImpl implements IEventService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO activate(String openId) {
         //判断是第一次激活还是第二次激活
-        ActivcateBO firstActivate = talentMapper.activate(openId, (byte) 2, (byte) 1);
+        ActivcateBO newCard = talentMapper.activate(openId, (byte) 2, (byte) 1);
+        JSONObject result = new JSONObject();
         //不为null代表存在c表状态2，uc表状态1，即为待领取的卡是基本卡。
-        if (firstActivate != null) {
+        if (newCard != null) {
             /**
              * 基本卡
              */
             logger.info("第一次激活");
             //第一次激活
-            Long certId = firstActivate.getCertId();
+            Long certId = newCard.getCertId();
             //更新认证表
             CertificationPO certificationPO = certificationMapper.selectByPrimaryKey(certId);
             //certification表和三表，更新status=5:基础卡正在使用
@@ -70,10 +71,10 @@ public class EventServiceImpl implements IEventService {
             profTitleMapper.updateStatusByCertId(certId, status);
             profQualityMapper.updateStatusByCertId(certId, status);
             //user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
-            userCardMapper.updateStatusById(firstActivate.getTalentId(), (byte) 1, (byte) 2);
+            userCardMapper.updateStatusById(newCard.getTalentId(), (byte) 1, (byte) 2);
 
             //新卡card会员数量+1，待领卡数量-1
-            CardPO newCardPO = cardMapper.selectByPrimaryKey(firstActivate.getCardId());
+            CardPO newCardPO = cardMapper.selectByPrimaryKey(newCard.getCardId());
             newCardPO.setMemberNum(newCardPO.getMemberNum() + 1);
             //判断当前数量是否是0，是0不能再减少了
             if (newCardPO.getWaitingMemberNum() > 0) {
@@ -82,7 +83,6 @@ public class EventServiceImpl implements IEventService {
                 return new ResultVO(2212, "卡当前数量是0，不能再减少了！");
             }
             cardMapper.updateByPrimaryKeySelective(newCardPO);
-            return new ResultVO(1000, "基本卡领取成功");
         } else {
             /**
              * 高级卡
@@ -90,7 +90,7 @@ public class EventServiceImpl implements IEventService {
             logger.info("第二次激活");
             //第二次激活
             //待领取的卡
-            ActivcateBO newCard = talentMapper.activate(openId, (byte) 4, (byte) 1);
+            newCard = talentMapper.activate(openId, (byte) 4, (byte) 1);
             if (newCard == null) {
                 return new ResultVO(2600, "数据库无待领取的卡");
             }
@@ -177,13 +177,23 @@ public class EventServiceImpl implements IEventService {
             jsonObject.put("card_id", oldCard.getWxCardId());
             String url = "https://api.weixin.qq.com/card/code/unavailable?access_token="
                     + AccessTokenUtil.getAccessToken();
-            JSONObject result = WechatApiUtil.postRequest(url, jsonObject);
+            result = WechatApiUtil.postRequest(url, jsonObject);
             if (result.getInteger("errcode") != 0) {
                 return new ResultVO(2330, "激活失败");
             }
             logger.info("销毁旧卡", result);
-            return new ResultVO(1000, result);
         }
+        //激活，更改持卡人信息
+        String cardHolderUrl = "https://api.weixin.qq.com/card/membercard/updateuser?access_token="
+                + AccessTokenUtil.getAccessToken();
+        JSONObject customField1 = new JSONObject();
+        customField1.put("code", newCard.getCode());
+        customField1.put("card_id", newCard.getWxCardId());
+        //持卡人姓名
+        TalentPO cardHolder = talentMapper.selectByPrimaryKey(newCard.getTalentId());
+        customField1.put("custom_field_value1", cardHolder.getName());
+        WechatApiUtil.postRequest(cardHolderUrl, customField1);
+        return new ResultVO(1000, result);
     }
 
     /**

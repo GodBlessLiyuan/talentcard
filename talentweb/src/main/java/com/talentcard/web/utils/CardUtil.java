@@ -46,7 +46,7 @@ public class CardUtil {
         baseInfoPO.setBrand_name(brandName);
         baseInfoPO.setCode_type("CODE_TYPE_TEXT");
         baseInfoPO.setTitle(title);
-        baseInfoPO.setColor("Color070");
+        baseInfoPO.setColor("Color030");
         baseInfoPO.setNotice(notice);
         baseInfoPO.setDescription(description);
         //立即认证
