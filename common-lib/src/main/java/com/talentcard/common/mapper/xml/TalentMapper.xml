@@ -384,6 +384,7 @@
         <if test="title != null and title !=0">and uci.pt_category = #{title}</if>
         <if test="quality != null and quality !=0">and uci.pq_category = #{quality}</if>
         <if test="card != null and card !=''">and (c.name like '%' #{card} '%' or c.num like '%' #{card} '%')</if>
+        order by t.create_time desc
     </select>
     <select id="queryCert" resultType="com.talentcard.common.bo.TalentBO">
         select t.talent_id as talentId,
@@ -410,6 +411,7 @@
         <if test="quality != null and quality !=0">and uci.pq_category = #{quality}</if>
         <if test="card != null and card !=''">and (c.name like '%' #{card} '%' or c.num like '%' #{card} '%')</if>
         <if test="category != null and category !=0">and uci.talent_category = #{quality}</if>
+        order by t.create_time desc
     </select>
     <select id="queryDetail" parameterType="java.lang.Long" resultType="com.talentcard.common.bo.TalentBO">
         select t.talent_id     as talentId,
