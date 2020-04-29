@@ -10,5 +10,6 @@ public class MemberCardPO {
     private final Boolean supply_balance = Boolean.FALSE;
     private String prerogative;
     private final Boolean auto_activate = Boolean.TRUE;
+    private final CustomFiled1PO custom_field1 = new CustomFiled1PO();
     private CustomCell1PO custom_cell1;
 }
