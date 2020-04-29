@@ -270,6 +270,14 @@ public class TalentServiceImpl implements ITalentService {
         if (ifWaitingApproval != null && ifWaitingApproval != 0) {
             return new ResultVO(2308, "该用户已有待审批数据");
         }
+        /**
+         * 校验数据库是否存在状态9的数据
+         * 以后应该会删！！！！！！！！
+         */
+        Integer ifOldCardIsBaseCard = certificationMapper.ifOldCardIsBaseCard(openId);
+        if (ifOldCardIsBaseCard != null && ifOldCardIsBaseCard != 0) {
+            return new ResultVO(2309, "该用户已成功审批过基本卡");
+        }
         //设置状态值 状态3为认证未审批
         Byte status = (byte) 3;
         //上传文件

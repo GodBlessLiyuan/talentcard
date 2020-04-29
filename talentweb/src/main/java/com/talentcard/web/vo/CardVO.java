@@ -32,6 +32,7 @@ public class CardVO {
     private String prerogative;
     private String initialWord;
     private String initialNum;
+    private Date createTime;
     private List<String> policyInfo;
 
     /**
@@ -55,6 +56,8 @@ public class CardVO {
         cardVO.setPrerogative(cardPO.getPrerogative());
         cardVO.setInitialWord(cardPO.getInitialWord());
         cardVO.setInitialNum(cardPO.getInitialNum());
+        cardVO.setCreateTime(cardPO.getCreateTime());
+
         //背景图
         if (cardVO.getPicture() != null && cardVO.getPicture() != "") {
             cardVO.setPicture(WebParameterUtil.getPublicPath() + cardVO.getPicture());

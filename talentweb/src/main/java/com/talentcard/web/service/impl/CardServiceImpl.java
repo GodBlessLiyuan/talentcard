@@ -52,7 +52,7 @@ public class CardServiceImpl implements ICardService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO add(String name, String title, String notice,
                         String description, String prerogative, MultipartFile background,
-                        String initialWord, String initialNumber, Byte status) {
+                        String initialWord, String initialNumber, Byte status, String color) {
         //上传背景图片到服务器上
         String picture = FileUtil.uploadFile
                 (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
@@ -95,7 +95,7 @@ public class CardServiceImpl implements ICardService {
             if (defaultCard != null) {
                 return new ResultVO(2326, "已存在基础卡");
             }
-            wechatResult = CardUtil.addCommonCard(name, title, notice, description, prerogative, pictureCDN, logoCDN);
+            wechatResult = CardUtil.addCommonCard(name, title, notice, description, prerogative, pictureCDN, logoCDN, color);
             if ((wechatResult.getInteger("errcode") == null)
                     || (wechatResult.getInteger("errcode") != 0)) {
                 return new ResultVO(2320, wechatResult);
@@ -104,7 +104,7 @@ public class CardServiceImpl implements ICardService {
             /**
              * 高级卡
              */
-            wechatResult = CardUtil.addSeniorCard(name, title, notice, description, prerogative, pictureCDN, logoCDN);
+            wechatResult = CardUtil.addSeniorCard(name, title, notice, description, prerogative, pictureCDN, logoCDN, color);
             if ((wechatResult.getInteger("errcode") == null)
                     || (wechatResult.getInteger("errcode") != 0)) {
                 return new ResultVO(2320, wechatResult);
@@ -260,7 +260,7 @@ public class CardServiceImpl implements ICardService {
     public ResultVO queryCardIdName() {
         List<CardPO> pos = cardMapper.queryCardIdName();
         List<CardIdAndNameVO> vo = CardIdAndNameVO.convert(pos);
-        return new ResultVO(1000,vo);
+        return new ResultVO(1000, vo);
     }
 
 }

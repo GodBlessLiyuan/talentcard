@@ -22,7 +22,7 @@ public class CardIdAndNameVO {
         for (CardPO po : pos) {
             CardIdAndNameVO vo = new CardIdAndNameVO();
             vo.setCardId(po.getCardId());
-            vo.setCardName(po.getName());
+            vo.setCardName(po.getName()+po.getInitialWord()+po.getInitialNum());
             vos.add(vo);
         }
         return vos;
