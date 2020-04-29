@@ -292,9 +292,10 @@
         </if>
     </select>
 
-    <select id="queryCardIdName" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="queryCardIdName"  resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_card
+        where dr = 1 and status = 2
     </select>
 </mapper>
