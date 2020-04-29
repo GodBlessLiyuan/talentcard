@@ -14,7 +14,7 @@ import java.util.HashMap;
 public interface ICardService {
     ResultVO add(String name, String title, String notice, String description,
                  String prerogative, MultipartFile background,
-                 String initialWord, String initialNumber, Byte status);
+                 String initialWord, String initialNumber, Byte status, String color);
 
     ResultVO edit(Long cardId, String title, String description, MultipartFile background);
 

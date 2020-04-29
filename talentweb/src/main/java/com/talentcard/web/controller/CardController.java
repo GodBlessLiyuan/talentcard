@@ -26,8 +26,8 @@ public class CardController {
      * @param name
      * @param title
      * @param notice
-     * @param description 可以不给
-     * @param prerogative 必须给
+     * @param description   可以不给
+     * @param prerogative   必须给
      * @param background
      * @param initialWord
      * @param initialNumber
@@ -43,9 +43,10 @@ public class CardController {
                         @RequestParam(value = "background") MultipartFile background,
                         @RequestParam(value = "initialWord") String initialWord,
                         @RequestParam(value = "initialNumber") String initialNumber,
-                        @RequestParam(value = "status") Byte status) {
+                        @RequestParam(value = "status") Byte status,
+                        @RequestParam(value = "color", required = false, defaultValue = "Color030") String color) {
         return iCardService.add(name, title, notice, description, prerogative,
-                background, initialWord, initialNumber, status);
+                background, initialWord, initialNumber, status, color);
     }
 
 
@@ -90,9 +91,9 @@ public class CardController {
 
     @PostMapping("findSeniorCard")
     public ResultVO findSeniorCard(@RequestParam(value = "title", required = false, defaultValue = "") String title,
-                          @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
-                          @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime,
-                          @RequestParam(value = "cardNum", required = false, defaultValue = "") String cardNum) throws ParseException {
+                                   @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
+                                   @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime,
+                                   @RequestParam(value = "cardNum", required = false, defaultValue = "") String cardNum) throws ParseException {
         HashMap<String, Object> hashMap = new HashMap<>();
         //String转Date
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//注意月份是MM

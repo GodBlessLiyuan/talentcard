@@ -35,7 +35,7 @@ public class CardUtil {
      */
     public static JSONObject addCommonCard(String brandName, String title, String notice,
                                            String description, String prerogative,
-                                           String background, String logoUrl) {
+                                           String background, String logoUrl, String color) {
         WxCardPO wxCardPO = new WxCardPO();
 
         MemberCardPO memberCardPO = new MemberCardPO();
@@ -46,7 +46,7 @@ public class CardUtil {
         baseInfoPO.setBrand_name(brandName);
         baseInfoPO.setCode_type("CODE_TYPE_TEXT");
         baseInfoPO.setTitle(title);
-        baseInfoPO.setColor("Color030");
+        baseInfoPO.setColor(color);
         baseInfoPO.setNotice(notice);
         baseInfoPO.setDescription(description);
         //立即认证
@@ -96,7 +96,7 @@ public class CardUtil {
      */
     public static JSONObject addSeniorCard(String brandName, String title, String notice,
                                            String description, String prerogative,
-                                           String background, String logoUrl) {
+                                           String background, String logoUrl, String color) {
         WxCardPO wxCardPO = new WxCardPO();
 
         MemberCardPO memberCardPO = new MemberCardPO();
@@ -107,7 +107,7 @@ public class CardUtil {
         baseInfoPO.setBrand_name(brandName);
         baseInfoPO.setCode_type("CODE_TYPE_QRCODE");
         baseInfoPO.setTitle(title);
-        baseInfoPO.setColor("Color030");
+        baseInfoPO.setColor(color);
         baseInfoPO.setNotice(notice);
         baseInfoPO.setDescription(description);
         //高级卡没有立即认证
