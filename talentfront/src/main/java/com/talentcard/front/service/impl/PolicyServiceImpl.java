@@ -196,7 +196,7 @@ public class PolicyServiceImpl implements IPolicyService {
                         if (null == po.getUnit()) {
                             vo.setRight((byte) 1);
                         } else {
-                            if (applyNum >= po.getUnit()) {
+                            if (applyNum >= po.getTimes()) {
                                 vo.setRight((byte) 3);
                             } else {
                                 vo.setRight((byte) 1);
