@@ -13,7 +13,7 @@ spring:
     admin:
       notify:
         mail:
-          to: hui.xia@vbooster.cn
+          to: javaweb@vbooster.cn
           from: 984550199@qq.com
 server:
   port: 8769
