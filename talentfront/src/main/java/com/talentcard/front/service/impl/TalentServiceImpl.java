@@ -372,6 +372,9 @@ public class TalentServiceImpl implements ITalentService {
             }
         }
         TalentVO talentVO = TalentVO.convert(talentBO);
+        //身份证号打星星
+        String starIdCard = talentVO.getIdCard().substring(0, 9) + "********";
+        talentVO.setIdCard(starIdCard);
         return new ResultVO(1000, talentVO);
 
     }
