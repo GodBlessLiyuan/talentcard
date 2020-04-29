@@ -39,7 +39,7 @@ public interface CardMapper extends BaseMapper<CardPO, Long> {
     List<CardPO> findSeniorCard (HashMap<String, Object> hashMap);
 
     /**
-     * 根据卡片id获得当前卡片id和其对应name
+     * 根据高级卡卡片id获得当前卡片id和其对应name
      * @return
      */
     List<CardPO> queryCardIdName();
