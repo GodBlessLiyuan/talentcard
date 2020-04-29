@@ -107,7 +107,7 @@ public class CardUtil {
         baseInfoPO.setBrand_name(brandName);
         baseInfoPO.setCode_type("CODE_TYPE_QRCODE");
         baseInfoPO.setTitle(title);
-        baseInfoPO.setColor("Color070");
+        baseInfoPO.setColor("Color030");
         baseInfoPO.setNotice(notice);
         baseInfoPO.setDescription(description);
         //高级卡没有立即认证
