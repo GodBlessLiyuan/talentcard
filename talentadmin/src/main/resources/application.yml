@@ -5,6 +5,15 @@ spring:
     user:
       name: "admin"
       password: "123456"
+  mail:
+    host: pop3.mxhichina.com
+    username: Javaweb@vbooster.cn
+    password: Vbooster@123
+  boot:
+    admin:
+      notify:
+        mail:
+          to: Javaweb@vbooster.cn
 server:
   port: 8769
 eureka:
