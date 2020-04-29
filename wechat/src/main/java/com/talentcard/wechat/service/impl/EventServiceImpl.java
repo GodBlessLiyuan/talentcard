@@ -95,10 +95,10 @@ public class EventServiceImpl implements IEventService {
                 return new ResultVO(2600, "数据库无待领取的卡");
             }
             //1.cert_approval里的人才类别信息更新user_current_info表
-            CertApprovalPO certApprovalPO = certApprovalMapper.findByCertId(newCard.getCertId());
-            UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByPrimaryKey(newCard.getUciId());
-            userCurrentInfoPO.setTalentCategory(certApprovalPO.getCategory());
-            userCurrentInfoMapper.updateByPrimaryKeySelective(userCurrentInfoPO);
+//            CertApprovalPO certApprovalPO = certApprovalMapper.findByCertId(newCard.getCertId());
+//            UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByPrimaryKey(newCard.getUciId());
+//            userCurrentInfoPO.setTalentCategory(certApprovalPO.getCategory());
+//            userCurrentInfoMapper.updateByPrimaryKeySelective(userCurrentInfoPO);
 
             //新卡card会员数量+1，待领卡数量-1
             CardPO newCardPO = cardMapper.selectByPrimaryKey(newCard.getCardId());
