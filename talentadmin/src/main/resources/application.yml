@@ -6,14 +6,15 @@ spring:
       name: "admin"
       password: "123456"
   mail:
-    host: pop3.mxhichina.com
-    username: Javaweb@vbooster.cn
-    password: Vbooster@123
+    host: smtp.qq.com
+    username: 984550199@qq.com
+    password: lihqaphmgbfjbcii
   boot:
     admin:
       notify:
         mail:
-          to: Javaweb@vbooster.cn
+          to: hui.xia@vbooster.cn
+          from: 984550199@qq.com
 server:
   port: 8769
 eureka:
@@ -29,7 +30,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: '*'
   endpoint:
     health:
       show-details: ALWAYS
