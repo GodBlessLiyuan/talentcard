@@ -2,6 +2,8 @@ package com.talentcard.web.vo;
 
 import com.talentcard.common.bo.ApprovalBO;
 import com.talentcard.common.pojo.CertApprovalPO;
+import com.talentcard.common.pojo.EducationPO;
+import com.talentcard.web.utils.FrontParameterUtil;
 import lombok.Data;
 
 import java.util.List;
@@ -20,4 +22,15 @@ public class ApprovalItemsVO {
      * 审批记录清单items
      */
     private List<CertApprovalPO> approvalItems;
+
+    public static ApprovalItemsVO convert(ApprovalItemsVO vo) {
+
+        if (vo.getApprovalBO().getPtPic()!=null && !("").equals(vo.getApprovalBO().getPtPic())) {
+            vo.getApprovalBO().setPtPic(FrontParameterUtil.getPublicPath()+vo.getApprovalBO().getPtPic());
+        }
+        if (vo.getApprovalBO().getEducPic()!=null && !("").equals(vo.getApprovalBO().getEducPic())) {
+            vo.getApprovalBO().setEducPic(FrontParameterUtil.getPublicPath()+vo.getApprovalBO().getEducPic());
+        }
+        return vo;
+    }
 }

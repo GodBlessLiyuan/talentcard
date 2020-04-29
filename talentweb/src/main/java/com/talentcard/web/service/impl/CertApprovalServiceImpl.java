@@ -65,7 +65,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         ApprovalItemsVO approvalItemsVO = new ApprovalItemsVO();
         approvalItemsVO.setApprovalBO(bo);
         approvalItemsVO.setApprovalItems(pos);
-        return new ResultVO(1000, approvalItemsVO);
+        ApprovalItemsVO vo = ApprovalItemsVO.convert(approvalItemsVO);
+        return new ResultVO(1000, vo);
     }
     @Override
     public ResultVO detailsLookItems(Long talentId){
@@ -74,7 +75,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         ApprovalItemsVO approvalItemsVO = new ApprovalItemsVO();
         approvalItemsVO.setApprovalBO(bo);
         approvalItemsVO.setApprovalItems(pos);
-        return new ResultVO(1000, approvalItemsVO);
+        ApprovalItemsVO vo = ApprovalItemsVO.convert(approvalItemsVO);
+        return new ResultVO(1000, vo);
     }
 
     @Override
