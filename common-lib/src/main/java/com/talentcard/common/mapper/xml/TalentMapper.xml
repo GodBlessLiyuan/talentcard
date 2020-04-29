@@ -400,7 +400,7 @@
         from t_talent t
         left join t_user_current_info uci on t.talent_id = uci.talent_id
         left join t_user_card c on t.talent_id = c.talent_id
-        where t.status = 1 and c.status != 3
+        where t.status = 1 and c.status = 2
         and t.dr=1
         <if test="start != null and start !=''">and t.create_time >= #{start}</if>
         <if test="end != null and end !=''">and t.create_time &lt;= #{end}</if>
