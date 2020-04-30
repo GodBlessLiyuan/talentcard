@@ -27,17 +27,17 @@ public class MessageDTO {
     private String keyword1;
 
     /**
-     * 身份证号
+     * 时间
      */
     private String keyword2;
 
     /**
-     * 领卡机构
+     * 审核状态
      */
     private String keyword3;
 
     /**
-     * 通知时间
+     * 原因说明
      */
     private String keyword4;
 

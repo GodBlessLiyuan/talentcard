@@ -268,7 +268,8 @@
             and <![CDATA[ c.create_time <= #{endTime,jdbcType=DATE}]]>
         </if>
         <if test="cardNum != null and cardNum != ''">
-            and trim(replace(c.initial_num,' ','')) like trim(replace ('%' #{cardNum,jdbcType=CHAR} '%' ,' ',''))
+            and trim(replace(concat(c.initial_word, c.initial_num),' ',''))
+            like trim(replace ('%' #{cardNum,jdbcType=CHAR} '%' ,' ',''))
         </if>
     </select>
 
