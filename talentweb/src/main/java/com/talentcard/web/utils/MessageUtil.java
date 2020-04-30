@@ -30,7 +30,7 @@ public class MessageUtil {
     }
 
     @Value("${wechat.template_id2}")
-    public void setTemplateId2(String templateId2){
+    public void setTemplateId2(String templateId2) {
         MessageUtil.templateId2 = templateId2;
     }
 
@@ -40,10 +40,13 @@ public class MessageUtil {
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + at;
         WeChatTemDto weChatTemDto = new WeChatTemDto();
         weChatTemDto.setTouser(messageDTO.getOpenid());
-        if(messageDTO.getKeyword3().equals("未通过")){
-            weChatTemDto.setTemplate_id(templateId2);
-        }else {
+        //判断用哪一种模板
+        if (messageDTO.getTemplateId() == 1) {
+            //领卡通知
             weChatTemDto.setTemplate_id(templateId);
+        } else {
+            //驳回通知
+            weChatTemDto.setTemplate_id(templateId2);
         }
         weChatTemDto.setUrl(messageDTO.getUrl());
         Map<String, TemplateDataDto> map = new HashMap<>();

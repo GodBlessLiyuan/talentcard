@@ -10,6 +10,7 @@ import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.ApprovalItemsVO;
 import com.talentcard.common.vo.ResultVO;
+import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -115,10 +116,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         String currentTime = formatter.format(new Date());
         messageDTO.setKeyword4(currentTime);
-        //结束
 
-
-        // 2 代表审批驳回
         //(1) 新增认证审批表
         CertApprovalPO certApprovalPo = new CertApprovalPO();
         certApprovalPo.setCertId(certId);
@@ -130,6 +128,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         certApprovalPo.setOpinion((String) reqData.get("opinion"));
         certApprovalPo.setUpdateTime(new Date());
         if (result.equals(FAILURE)) {
+            /**
+             * 驳回
+             */
             certApprovalPo.setResult(FAILURE);
             int insertResult = certApprovalMapper.insertSelective(certApprovalPo);
             if (insertResult == 0) {
@@ -163,6 +164,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 //更新职业资格表状态失败
                 return new ResultVO(2370);
             }
+            //模版编号
+            messageDTO.setTemplateId(2);
             //推送驳回微信消息
             logger.info("发通知之前");
             messageDTO.setKeyword3("未通过");
@@ -171,8 +174,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
 
         }else {
             /**
-             * 人才卡编号根据人才卡当前卡id的总数+1
+             * 审批通过
              */
+            //人才卡编号根据人才卡当前卡id的总数+1
             CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
             if (null == cardPO) {
                 // 当前未有人才卡
@@ -265,6 +269,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             messageDTO.setUrl(WebParameterUtil.getIndexUrl());
             logger.info("getIndexUrl之前");
             messageDTO.setFirst("您好，请您领取衢江区人才卡");
+            //模版编号
+            messageDTO.setTemplateId(1);
             MessageUtil.sendTemplateMessage(messageDTO);
             return new ResultVO(1000);
         }

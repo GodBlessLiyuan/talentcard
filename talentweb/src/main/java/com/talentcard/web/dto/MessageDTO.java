@@ -52,6 +52,9 @@ public class MessageDTO {
     private String url;
 
 
+    /**
+     * 模版编号
+     */
 
-
+    private Integer templateId;
 }

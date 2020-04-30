@@ -243,6 +243,8 @@ public class TalentServiceImpl implements ITalentService {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         String currentTime = formatter.format(new Date());
         messageDTO.setKeyword4(currentTime);
+        //模版编号
+        messageDTO.setTemplateId(1);
         //结束
         messageDTO.setRemark("领取后可享受多项人才权益哦");
         messageDTO.setUrl(FrontParameterUtil.getIndexUrl());
