@@ -1,7 +1,9 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.bo.CertApprovalBO;
 import com.talentcard.common.pojo.CertApprovalPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ public interface CertApprovalMapper extends BaseMapper<CertApprovalPO, Long> {
      * @param talentId
      * @return
      */
-    List<CertApprovalPO> queryApprovalById(Long talentId);
+    List<CertApprovalBO> queryApprovalById(@Param("talentId")Long talentId, @Param("certId")Long certId);
 
 
     int queryWaitApprovalNum();
