@@ -88,7 +88,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         // 判断审批结果，如果审批通过，需要多表更新；审批不通过则只新增认证审批表的信息
         //首先获取审批人的用户id
         Long userId = (Long) session.getAttribute("userId");
-
+        System.out.println("新的session"+session);
+        System.out.println("审批人的名字"+userId);
         Byte result = (Byte) reqData.get("result");
         Long certId = (Long) reqData.get("certId");
         Long talentId = (Long) reqData.get("talentId");
@@ -109,7 +110,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         //身份证号，屏蔽八位
         String encryptionIdCard = currentTalent.getIdCard().substring(0, 9) + "********";
         messageDTO.setKeyword2(encryptionIdCard);
-        messageDTO.setKeyword3("个人");
+
         //领卡机构
         //通知时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
@@ -164,7 +165,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 return new ResultVO(2370);
             }
             //推送驳回微信消息
-            messageDTO.setFirst("您的认证信息未通过审批，可进入微信小程序重新提交");
+            messageDTO.setKeyword3("未通过");
+            messageDTO.setFirst("您提交的认证信息与本人真实情况存在不符，请修改后重新提交。");
             MessageUtil.sendTemplateMessage(messageDTO);
 
         }else {
@@ -257,6 +259,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 return new ResultVO(2373);
             }
             //推送审批通过微信消息
+            messageDTO.setKeyword3("个人");
             messageDTO.setRemark("领取后可享受多项人才权益哦");
             logger.info("getIndexUrl之前");
             messageDTO.setUrl(WebParameterUtil.getIndexUrl());

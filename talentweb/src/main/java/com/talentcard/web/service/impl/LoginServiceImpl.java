@@ -71,6 +71,7 @@ public class LoginServiceImpl implements ILoginService {
         // 4 . 将用户信息存放到session当中
         session.setAttribute("userId",userPo.getUserId());
         session.setAttribute("username",userPo.getUsername());
+        System.out.println("这里的session"+session);
         // 5 . 获取当前用户权限，决定展示内容区别
         List<RoleAuthorityAddNameBO> bos = roleAuthorityMapper.queryByRoleIdName(userPo.getRoleId());
         RoleAuthorityBO roleAuthorityBO = RoleAuthorityBO.convert(bos);
