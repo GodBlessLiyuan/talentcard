@@ -46,5 +46,9 @@ public class PolicyDetailVO implements Serializable {
      * 是否需要附件 1: 需要； 2：不需要
      */
     private Byte annex;
+    /**
+     * 提示文案
+     */
+    private String title;
 
 }

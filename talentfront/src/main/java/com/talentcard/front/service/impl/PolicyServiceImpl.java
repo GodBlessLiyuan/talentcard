@@ -164,6 +164,9 @@ public class PolicyServiceImpl implements IPolicyService {
             vo.setBank(po.getBank());
             vo.setAnnex(po.getAnnex());
             vo.setApply(po.getApply());
+            po.getTimes();
+            po.getUnit();
+            po.getRate();
 
             if (null != po.getApply() && po.getApply() == 1) {
                 // 根据频次计算相隔月份
@@ -198,6 +201,7 @@ public class PolicyServiceImpl implements IPolicyService {
                         } else {
                             if (applyNum >= po.getTimes()) {
                                 vo.setRight((byte) 3);
+                                vo.setTitle(genTitle(po));
                             } else {
                                 vo.setRight((byte) 1);
                             }
@@ -210,6 +214,34 @@ public class PolicyServiceImpl implements IPolicyService {
         }
 
         return new ResultVO<>(1000, vos);
+    }
+
+    /**
+     * 生成提示文案
+     *
+     * @param po
+     * @return
+     */
+    private String genTitle(PolicyPO po) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("当前政策");
+        if (po.getUnit() == 4) {
+            sb.append("终身");
+        } else {
+            if (po.getRate() == 1) {
+                sb.append("每");
+            } else {
+                sb.append(po.getRate());
+            }
+
+            sb.append(po.getUnit() == 1 ? "年" : po.getUnit() == 2 ? "季" : "月");
+        }
+
+        sb.append("仅能申请");
+        sb.append(po.getTimes());
+        sb.append("次，请勿重复申请");
+
+        return sb.toString();
     }
 
     @Transactional(rollbackFor = Exception.class)
