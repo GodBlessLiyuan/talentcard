@@ -133,7 +133,8 @@ public class CardServiceImpl implements ICardService {
 
     @Override
     public ResultVO edit(Long cardId, String title, String description, MultipartFile background) {
-        if (title == "" && description == null && background == null) {
+        if ((title == null || title.equals(""))
+                && (description == null || description.equals("")) && background == null) {
             return new ResultVO(2324, "会员卡编辑失败，啥参数都没给啊");
         }
         CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
