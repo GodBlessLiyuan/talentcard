@@ -88,11 +88,34 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         // 判断审批结果，如果审批通过，需要多表更新；审批不通过则只新增认证审批表的信息
         //首先获取审批人的用户id
         Long userId = (Long) session.getAttribute("userId");
+
         Byte result = (Byte) reqData.get("result");
         Long certId = (Long) reqData.get("certId");
         Long talentId = (Long) reqData.get("talentId");
         Long cardId = (Long) reqData.get("cardId");
         String category =(String) reqData.get("category");
+
+        logger.info("发通知之前");
+        /**
+         * 根据openId 发送领卡通知
+         */
+        TalentPO currentTalent = talentMapper.selectByPrimaryKey(talentId);
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(currentTalent.getOpenId());
+        //姓名
+        messageDTO.setKeyword1(currentTalent.getName());
+        //身份证号，屏蔽八位
+        String encryptionIdCard = currentTalent.getIdCard().substring(0, 9) + "********";
+        messageDTO.setKeyword2(encryptionIdCard);
+        messageDTO.setKeyword3("个人");
+        //领卡机构
+        //通知时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        String currentTime = formatter.format(new Date());
+        messageDTO.setKeyword4(currentTime);
+        //结束
 
 
         // 2 代表审批驳回
@@ -140,6 +163,10 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 //更新职业资格表状态失败
                 return new ResultVO(2370);
             }
+            //推送驳回微信消息
+            messageDTO.setFirst("您的认证信息未通过审批，可进入微信小程序重新提交");
+            MessageUtil.sendTemplateMessage(messageDTO);
+
         }else {
             /**
              * 人才卡编号根据人才卡当前卡id的总数+1
@@ -229,33 +256,12 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 //新增人才卡状态失败
                 return new ResultVO(2373);
             }
-            logger.info("发通知之前");
-            /**
-             * 根据openId 发送领卡通知
-             */
-            TalentPO currentTalent = talentMapper.selectByPrimaryKey(talentId);
-            //用消息模板推送微信消息
-            MessageDTO messageDTO = new MessageDTO();
-            //openId
-            messageDTO.setOpenid(currentTalent.getOpenId());
-            //开头
-            messageDTO.setFirst("您好，请您领取衢江区人才卡");
-            //姓名
-            messageDTO.setKeyword1(currentTalent.getName());
-            //身份证号，屏蔽八位
-            String encryptionIdCard = currentTalent.getIdCard().substring(0, 9) + "********";
-            messageDTO.setKeyword2(encryptionIdCard);
-            messageDTO.setKeyword3("个人");
-            //领卡机构
-            //通知时间
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
-            String currentTime = formatter.format(new Date());
-            messageDTO.setKeyword4(currentTime);
-            //结束
+            //推送审批通过微信消息
             messageDTO.setRemark("领取后可享受多项人才权益哦");
             logger.info("getIndexUrl之前");
             messageDTO.setUrl(WebParameterUtil.getIndexUrl());
             logger.info("getIndexUrl之前");
+            messageDTO.setFirst("您好，请您领取衢江区人才卡");
             MessageUtil.sendTemplateMessage(messageDTO);
             return new ResultVO(1000);
         }
