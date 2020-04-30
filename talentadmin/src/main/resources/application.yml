@@ -17,8 +17,6 @@ spring:
           from: 984550199@qq.com
 server:
   port: 8769
-  servlet:
-    context-path: /sba
 eureka:
   client:
     service-url:
@@ -26,8 +24,6 @@ eureka:
   instance:
     health-check-url-path: /actuator/health
     metadata-map:
-      management:
-        context-path: ${server.servlet.context-path}/actuator
       user.name: ${spring.security.user.name}
       user.password: ${spring.security.user.password}
 management:
