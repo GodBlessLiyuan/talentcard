@@ -60,6 +60,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
 
     @Override
     public ResultVO certApprovalShowItems(Long talentId,Long certId) {
+        // 根据人才id和认证id连表查询所有信息
         ApprovalBO bo = certificationMapper.queryAllMsg(talentId,certId);
         if (null == bo) {
             //当前用户没有审批需求

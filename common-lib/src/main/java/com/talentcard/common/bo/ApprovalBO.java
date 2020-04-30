@@ -33,7 +33,8 @@ public class ApprovalBO {
     /**
      * 人才卡
      */
-    private Long cardId;
+    private String cardName;
+    private String cardNum;
 
     /**
      * 学历信息
