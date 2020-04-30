@@ -123,6 +123,7 @@
         left join t_education e on ce.cert_id = e.cert_id
         left join t_prof_title pt on ce.cert_id = pt.cert_id
         left join t_prof_quality pq on ce.cert_id = pq.cert_id
+        <!--找出相同cert_id最新的时间记录-->
         left join (select a.cert_id, a.create_time, a.result from t_cert_approval a inner join
         ( select cert_id, max(create_time) as maxcreatetime  from t_cert_approval group by cert_id) b
         on a.cert_id = b.cert_id and a.create_time = b.maxcreatetime) as ca ON ca.cert_id = ce.cert_id
@@ -142,6 +143,7 @@
             <if test="ptCategory != null and ptCategory != ''">
                 and pt.category = #{ptCategory}
             </if>
+        <!--处理待审批result==null 的情况-->
             <if test="result != null and result != ''">
                 <choose>
                     <when test="flag != null and flag != ''">
@@ -162,10 +164,11 @@
                 AND ce.create_time &lt;= #{endTime}
             </if>
         order by
+        <!--  将待审批的记录置顶，按时间排序-->
         IFNULL(ca.result,0) = 0 desc, ce.create_time desc
     </select>
 
-    <!--  根据当前人才的talentid待审批的所有的已有信息-->
+    <!--  待审批的查看和审批接口（两个是一个接口），status=3  人才卡status=2使用中状态-->
     <select id="queryAllMsg" resultType="com.talentcard.common.bo.ApprovalBO">
     select t.talent_id as talentId, t.`name`, t.sex, t.id_card as idCard, t.phone, c.cert_id as certId, c.political, t.industry, t.work_unit as workUnit,
     t.create_time as createTime, e.education, e.school, e.major, e.educ_picture as educPic, uc.`name` as cardName, uc.num as cardNum,
@@ -180,7 +183,7 @@
     and uc.`status` = 2
   </select>
 
-<!--    审批查看详情的接口-->
+<!--  审批查看详情的接口,状态码要保持1，3，10，4. 人才卡status=2使用中状态-->
     <select id="queryAllMsgLook" resultType="com.talentcard.common.bo.ApprovalBO">
     select t.talent_id as talentId, t.`name`, t.sex, t.id_card as idCard, t.phone, c.cert_id as certId, c.political, t.industry, t.work_unit as workUnit,
     t.create_time as createTime,  e.education, e.school, e.major, e.educ_picture as educPic,uc.`name` as cardName, uc.num as cardNum,
