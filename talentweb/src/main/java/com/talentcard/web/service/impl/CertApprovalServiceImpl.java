@@ -93,14 +93,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         Long talentId = (Long) reqData.get("talentId");
         Long cardId = (Long) reqData.get("cardId");
         String category =(String) reqData.get("category");
-        /**
-         * 人才卡编号根据人才卡当前卡id的总数+1
-         */
-        CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
-        if (null == cardPO) {
-            // 当前未有人才卡
-            return new ResultVO(2165);
-        }
+
 
         // 2 代表审批驳回
         //(1) 新增认证审批表
@@ -148,6 +141,15 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 return new ResultVO(2370);
             }
         }else {
+            /**
+             * 人才卡编号根据人才卡当前卡id的总数+1
+             */
+            CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
+            if (null == cardPO) {
+                // 当前未有人才卡
+                return new ResultVO(2165);
+            }
+
             certApprovalPo.setResult(SUCCESS);
             certApprovalPo.setCardId(cardId);
             int insertResult = certApprovalMapper.insertSelective(certApprovalPo);
