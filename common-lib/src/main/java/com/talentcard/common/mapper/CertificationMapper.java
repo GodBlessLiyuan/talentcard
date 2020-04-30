@@ -34,14 +34,14 @@ public interface CertificationMapper extends BaseMapper<CertificationPO, Long> {
      * @param tanlentId
      * @return
      */
-    ApprovalBO queryAllMsg(Long tanlentId);
+    ApprovalBO queryAllMsg(@Param("talentId")Long tanlentId,@Param("certId")Long certId);
 
     /**
      * 查看详情
      * @param tanlentId
      * @return
      */
-    ApprovalBO queryAllMsgLook(Long tanlentId);
+    ApprovalBO queryAllMsgLook(@Param("talentId")Long tanlentId,@Param("certId")Long certId);
 
     /**
      * 根据talentId，更新认证表从一个状态更新到另一个状态

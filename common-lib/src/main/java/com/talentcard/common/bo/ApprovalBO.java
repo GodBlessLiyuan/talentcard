@@ -55,6 +55,7 @@ public class ApprovalBO {
      */
     private Integer pqCategory;
     private String pqInfo;
+    private String pqPic;
 
     /**
      * 审批结束时间

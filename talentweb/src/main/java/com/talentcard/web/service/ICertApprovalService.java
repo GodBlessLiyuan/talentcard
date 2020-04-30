@@ -17,14 +17,14 @@ public interface ICertApprovalService {
      * @param talentId
      * @return
      */
-    ResultVO certApprovalShowItems(Long talentId);
+    ResultVO certApprovalShowItems(Long talentId,Long certId);
 
     /**
      * 查看详情
      * @param talentId
      * @return
      */
-    ResultVO detailsLookItems(Long talentId);
+    ResultVO detailsLookItems(Long talentId,Long certId);
 
 
     /**

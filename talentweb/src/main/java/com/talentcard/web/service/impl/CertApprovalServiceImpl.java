@@ -1,6 +1,7 @@
 package com.talentcard.web.service.impl;
 
 import com.talentcard.common.bo.ApprovalBO;
+import com.talentcard.common.bo.CertApprovalBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.web.dto.MessageDTO;
@@ -57,13 +58,13 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
 
 
     @Override
-    public ResultVO certApprovalShowItems(Long talentId) {
-        ApprovalBO bo = certificationMapper.queryAllMsg(talentId);
+    public ResultVO certApprovalShowItems(Long talentId,Long certId) {
+        ApprovalBO bo = certificationMapper.queryAllMsg(talentId,certId);
         if (null == bo) {
             //当前用户没有审批需求
             return new ResultVO(2115);
         }
-        List<CertApprovalPO> pos = certApprovalMapper.queryApprovalById(talentId);
+        List<CertApprovalBO> pos = certApprovalMapper.queryApprovalById(talentId,certId);
         ApprovalItemsVO approvalItemsVO = new ApprovalItemsVO();
         approvalItemsVO.setApprovalBO(bo);
         approvalItemsVO.setApprovalItems(pos);
@@ -71,9 +72,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         return new ResultVO(1000, vo);
     }
     @Override
-    public ResultVO detailsLookItems(Long talentId){
-        ApprovalBO bo = certificationMapper.queryAllMsgLook(talentId);
-        List<CertApprovalPO> pos = certApprovalMapper.queryApprovalById(talentId);
+    public ResultVO detailsLookItems(Long talentId,Long certId){
+        ApprovalBO bo = certificationMapper.queryAllMsgLook(talentId,certId);
+        List<CertApprovalBO> pos = certApprovalMapper.queryApprovalById(talentId,certId);
         ApprovalItemsVO approvalItemsVO = new ApprovalItemsVO();
         approvalItemsVO.setApprovalBO(bo);
         approvalItemsVO.setApprovalItems(pos);
@@ -88,15 +89,13 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         // 判断审批结果，如果审批通过，需要多表更新；审批不通过则只新增认证审批表的信息
         //首先获取审批人的用户id
         Long userId = (Long) session.getAttribute("userId");
-        System.out.println("新的session"+session);
-        System.out.println("审批人的名字"+userId);
         Byte result = (Byte) reqData.get("result");
         Long certId = (Long) reqData.get("certId");
         Long talentId = (Long) reqData.get("talentId");
         Long cardId = (Long) reqData.get("cardId");
         String category =(String) reqData.get("category");
 
-        logger.info("发通知之前");
+
         /**
          * 根据openId 发送领卡通知
          */
@@ -165,6 +164,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 return new ResultVO(2370);
             }
             //推送驳回微信消息
+            logger.info("发通知之前");
             messageDTO.setKeyword3("未通过");
             messageDTO.setFirst("您提交的认证信息与本人真实情况存在不符，请修改后重新提交。");
             MessageUtil.sendTemplateMessage(messageDTO);

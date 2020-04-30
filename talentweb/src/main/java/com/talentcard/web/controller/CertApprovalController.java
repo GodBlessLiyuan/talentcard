@@ -25,13 +25,15 @@ public class CertApprovalController {
     ICertApprovalService certApprovalService;
 
     @RequestMapping("CertApprovalShow")
-    public ResultVO certApprovalShow(@RequestParam(value = "talentId", required = false) Long talentId){
-        return certApprovalService.certApprovalShowItems(talentId);
+    public ResultVO certApprovalShow(@RequestParam(value = "talentId", required = false) Long talentId,
+                                     @RequestParam(value = "certId", required = false) Long certId){
+        return certApprovalService.certApprovalShowItems(talentId,certId);
     }
 
     @RequestMapping("DetailsLookItems")
-    public ResultVO detailsLookItems(@RequestParam(value = "talentId", required = false) Long talentId){
-        return certApprovalService.detailsLookItems(talentId);
+    public ResultVO detailsLookItems(@RequestParam(value = "talentId", required = false) Long talentId,
+                                     @RequestParam(value = "certId", required = false) Long certId){
+        return certApprovalService.detailsLookItems(talentId,certId);
     }
 
 
