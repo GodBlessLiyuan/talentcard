@@ -145,4 +145,10 @@
     and
     u.status = #{currentStatus,jdbcType=BIGINT}
   </update>
+
+  <update id="updateStatusByTalentId" parameterType="com.talentcard.common.pojo.UserCardPO">
+     update t_user_card
+     set `status` = #{status}
+     where talent_id = #{talentId,jdbcType=BIGINT} and card_id = #{cardId,jdbcType=BIGINT}
+  </update>
 </mapper>

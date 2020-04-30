@@ -46,6 +46,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     UserCardMapper userCardMapper;
     @Resource
     CardMapper cardMapper;
+    @Resource
+    UserCurrentInfoMapper userCurrentInfoMapper;
 
     /**
      * 审批result的值含义
@@ -90,6 +92,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         Long certId = (Long) reqData.get("certId");
         Long talentId = (Long) reqData.get("talentId");
         Long cardId = (Long) reqData.get("cardId");
+        String category =(String) reqData.get("category");
         /**
          * 人才卡编号根据人才卡当前卡id的总数+1
          */
@@ -106,7 +109,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         //将审批类型更新到2审批
         certApprovalPo.setCreateTime(new Date());
         certApprovalPo.setType((byte) 2);
-        certApprovalPo.setCategory((String) reqData.get("category"));
+        certApprovalPo.setCategory(category);
         certApprovalPo.setUserId(userId);
         certApprovalPo.setOpinion((String) reqData.get("opinion"));
         certApprovalPo.setUpdateTime(new Date());
@@ -166,7 +169,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             talentPO.setTalentId(talentId);
             talentPO.setStatus((byte)1);
             talentPO.setCardId(cardId);
-            talentPO.setCategory((String) reqData.get("category"));
+            talentPO.setCategory(category);
             int resultUpdateTalent = talentMapper.updateByPrimaryKeySelective(talentPO);
             if (resultUpdateTalent == 0) {
                 //更新人才表失败
@@ -190,12 +193,20 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 //更新职称表状态失败
                 return new ResultVO(2370);
             }
+
+            //(7) 将人才类别更新到t_user_current_info当中
+            int resultUserCurrentInfo = userCurrentInfoMapper.updateCategoryByTalentId(talentId,category);
+            if (resultUserCurrentInfo == 0) {
+                //更新人才用户信息状态失败
+                return new ResultVO(2372);
+            }
+
             //(7) 人卡表新增新增（status=1）（代表待领卡）
             UserCardPO userCardPO = new UserCardPO();
             userCardPO.setTalentId(talentId);
             userCardPO.setCardId(cardId);
-
-
+            userCardPO.setStatus((byte)1);
+            userCardPO.setCreateTime(new Date());
 
             String membershipNumber = cardPO.getInitialWord();
             Integer initialNumLength = cardPO.getInitialNum().length();
@@ -210,10 +221,12 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             userCardPO.setName(cardPO.getName());
             cardPO.setCurrNum(cardPO.getCurrNum() + 1);
             cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
-            userCardPO.setCreateTime(new Date());
-            userCardPO.setStatus((byte) 1);
             cardMapper.updateByPrimaryKeySelective(cardPO);
-            userCardMapper.insertSelective(userCardPO);
+            int resultUserCard = userCardMapper.insertSelective(userCardPO);
+            if (resultUserCard == 0) {
+                //新增人才卡状态失败
+                return new ResultVO(2373);
+            }
             logger.info("发通知之前");
             /**
              * 根据openId 发送领卡通知
