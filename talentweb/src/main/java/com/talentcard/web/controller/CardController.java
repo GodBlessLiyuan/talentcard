@@ -39,7 +39,7 @@ public class CardController {
                         @RequestParam(value = "title") String title,
                         @RequestParam(value = "notice", required = false, defaultValue = "") String notice,
                         @RequestParam(value = "description", required = false, defaultValue = "") String description,
-                        @RequestParam(value = "prerogative", required = false, defaultValue = "我是特权") String prerogative,
+                        @RequestParam(value = "prerogative", required = false, defaultValue = "可享受多项人才权益，如免费旅游，免费公交，人才公寓申请，机场VIP，高铁VIP等") String prerogative,
                         @RequestParam(value = "background") MultipartFile background,
                         @RequestParam(value = "initialWord") String initialWord,
                         @RequestParam(value = "initialNumber") String initialNumber,
