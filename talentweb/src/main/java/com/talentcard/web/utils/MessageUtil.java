@@ -40,7 +40,7 @@ public class MessageUtil {
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + at;
         WeChatTemDto weChatTemDto = new WeChatTemDto();
         weChatTemDto.setTouser(messageDTO.getOpenid());
-        if(messageDTO.getKeyword2().equals("未通过")){
+        if(messageDTO.getKeyword3().equals("未通过")){
             weChatTemDto.setTemplate_id(templateId2);
         }else {
             weChatTemDto.setTemplate_id(templateId);
