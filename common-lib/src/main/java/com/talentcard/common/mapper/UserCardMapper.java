@@ -40,4 +40,11 @@ public interface UserCardMapper extends BaseMapper<UserCardPO, Long> {
      */
     int updateStatusById(@Param("talentId") Long talentId,
                          @Param("currentStatus") Byte currentStatus, @Param("status") Byte status);
+
+    /**
+     * 根据talentId和cardId更新status
+     * @param po
+     * @return
+     */
+    int updateStatusByTalentId(UserCardPO po);
 }

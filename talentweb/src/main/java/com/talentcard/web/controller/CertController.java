@@ -30,19 +30,31 @@ public class CertController {
                                     @RequestParam(value = "pqCategory", required = false) Integer pqCategory,
                                     @RequestParam(value = "ptCategory", required = false) Integer ptCategory,
                                     @RequestParam(value = "education", required = false) Integer education,
-                                    @RequestParam(value = "status", required = false) Byte status,
+                                    @RequestParam(value = "result", required = false) String result,
                                     @RequestParam(value = "startTime", required = false) String startTime,
                                     @RequestParam(value = "endTime", required = false) String endTime){
-
-        Map<String, Object> reqData = new HashMap<>(8);
+        if (!"".equals(startTime)) {
+            startTime = startTime + " 00:00:00";
+        }
+        if (!"".equals(endTime)) {
+            endTime = endTime + " 23:59:59";
+        }
+        String flag = "";
+        switch (result) {
+            case "0": flag = "";  break;
+            case "1": flag = "1"; break;
+            case "2": flag = "2"; break;
+        }
+        Map<String, Object> reqData = new HashMap<>(9);
         reqData.put("name",name);
         reqData.put("sex",sex);
         reqData.put("pqCategory",pqCategory);
         reqData.put("ptCategory",ptCategory);
         reqData.put("education",education);
-        reqData.put("status",status);
+        reqData.put("result",result);
         reqData.put("startTime",startTime);
         reqData.put("endTime",endTime);
+        reqData.put("flag",flag);
         return certService.queryCertStatus(pageNum, pageSize,reqData);
     }
 }
