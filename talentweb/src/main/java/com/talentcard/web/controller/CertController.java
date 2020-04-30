@@ -40,10 +40,12 @@ public class CertController {
             endTime = endTime + " 23:59:59";
         }
         String flag = "";
-        switch (result) {
-            case "0": flag = "";  break;
-            case "1": flag = "1"; break;
-            case "2": flag = "2"; break;
+        if (result != null) {
+            switch (result) {
+                case "0": flag = "";  break;
+                case "1": flag = "1"; break;
+                case "2": flag = "2"; break;
+            }
         }
         Map<String, Object> reqData = new HashMap<>(9);
         reqData.put("name",name);
