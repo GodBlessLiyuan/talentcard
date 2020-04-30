@@ -171,6 +171,7 @@
         <include refid="Base_Column_List"/>
         from t_policy_apply
         where talent_id = #{talentId,jdbcType=BIGINT}
+        order by create_time desc
     </select>
     <select id="queryDetail" parameterType="java.lang.Long" resultMap="DetailResultMap">
         select pa.pa_id,
