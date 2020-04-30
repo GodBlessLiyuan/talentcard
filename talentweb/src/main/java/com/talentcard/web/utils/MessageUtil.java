@@ -22,9 +22,16 @@ public class MessageUtil {
 
     private static String templateId;
 
+    private static String templateId2;
+
     @Value("${wechat.template_id}")
     public void setTemplateId(String templateId) {
         MessageUtil.templateId = templateId;
+    }
+
+    @Value("${wechat.template_id2}")
+    public void setTemplateId2(String templateId2){
+        MessageUtil.templateId2 = templateId2;
     }
 
     //注册完，审批完
@@ -33,7 +40,11 @@ public class MessageUtil {
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + at;
         WeChatTemDto weChatTemDto = new WeChatTemDto();
         weChatTemDto.setTouser(messageDTO.getOpenid());
-        weChatTemDto.setTemplate_id(templateId);
+        if(messageDTO.getKeyword2().equals("未通过")){
+            weChatTemDto.setTemplate_id(templateId2);
+        }else {
+            weChatTemDto.setTemplate_id(templateId);
+        }
         weChatTemDto.setUrl(messageDTO.getUrl());
         Map<String, TemplateDataDto> map = new HashMap<>();
         TemplateDataDto first = new TemplateDataDto();
