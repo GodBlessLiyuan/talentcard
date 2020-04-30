@@ -55,6 +55,10 @@ public class TalentBO extends TalentPO {
      * 人才类别
      */
     private String category;
+    /**
+     *
+     */
+    private Byte cstatus;
 
     private Long certId;
     private String political;

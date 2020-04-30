@@ -70,9 +70,9 @@
         </collection>
     </resultMap>
     <sql id="Base_Column_List">
-    talent_id, open_id, `name`, sex, id_card, passport, work_unit, industry, industry_second, 
+        talent_id, open_id, `name`, sex, id_card, passport, work_unit, industry, industry_second,
     phone, create_time, category, `status`, card_id, dr
-  </sql>
+    </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -80,21 +80,22 @@
         where talent_id = #{talentId,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_talent
-    where talent_id = #{talentId,jdbcType=BIGINT}
-  </delete>
+        delete
+        from t_talent
+        where talent_id = #{talentId,jdbcType=BIGINT}
+    </delete>
     <insert id="insert" parameterType="com.talentcard.common.pojo.TalentPO">
-    insert into t_talent (talent_id, open_id, `name`, 
-      sex, id_card, passport, work_unit, 
-      industry, industry_second, phone, 
-      create_time, category, `status`, 
-      card_id, dr)
-    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
-      #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR}, 
-      #{industry,jdbcType=INTEGER}, #{industrySecond,jdbcType=INTEGER}, #{phone,jdbcType=CHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{category,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, 
-      #{cardId,jdbcType=BIGINT}, #{dr,jdbcType=TINYINT})
-  </insert>
+        insert into t_talent (talent_id, open_id, `name`,
+                              sex, id_card, passport, work_unit,
+                              industry, industry_second, phone,
+                              create_time, category, `status`,
+                              card_id, dr)
+        values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
+                #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR},
+                #{industry,jdbcType=INTEGER}, #{industrySecond,jdbcType=INTEGER}, #{phone,jdbcType=CHAR},
+                #{createTime,jdbcType=TIMESTAMP}, #{category,jdbcType=CHAR}, #{status,jdbcType=TINYINT},
+                #{cardId,jdbcType=BIGINT}, #{dr,jdbcType=TINYINT})
+    </insert>
     <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentPO">
         insert into t_talent
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -241,38 +242,38 @@
         where talent_id = #{talentId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentPO">
-    update t_talent
-    set open_id = #{openId,jdbcType=CHAR},
-      `name` = #{name,jdbcType=CHAR},
-      sex = #{sex,jdbcType=TINYINT},
-      id_card = #{idCard,jdbcType=CHAR},
-      passport = #{passport,jdbcType=CHAR},
-      work_unit = #{workUnit,jdbcType=CHAR},
-      industry = #{industry,jdbcType=INTEGER},
-      industry_second = #{industrySecond,jdbcType=INTEGER},
-      phone = #{phone,jdbcType=CHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      category = #{category,jdbcType=CHAR},
-      `status` = #{status,jdbcType=TINYINT},
-      card_id = #{cardId,jdbcType=BIGINT},
-      dr = #{dr,jdbcType=TINYINT}
-    where talent_id = #{talentId,jdbcType=BIGINT}
-  </update>
+        update t_talent
+        set open_id         = #{openId,jdbcType=CHAR},
+            `name`          = #{name,jdbcType=CHAR},
+            sex             = #{sex,jdbcType=TINYINT},
+            id_card         = #{idCard,jdbcType=CHAR},
+            passport        = #{passport,jdbcType=CHAR},
+            work_unit       = #{workUnit,jdbcType=CHAR},
+            industry        = #{industry,jdbcType=INTEGER},
+            industry_second = #{industrySecond,jdbcType=INTEGER},
+            phone           = #{phone,jdbcType=CHAR},
+            create_time     = #{createTime,jdbcType=TIMESTAMP},
+            category        = #{category,jdbcType=CHAR},
+            `status`        = #{status,jdbcType=TINYINT},
+            card_id         = #{cardId,jdbcType=BIGINT},
+            dr              = #{dr,jdbcType=TINYINT}
+        where talent_id = #{talentId,jdbcType=BIGINT}
+    </update>
 
 
     <!--  insert，且返回主键-->
-    <insert id="add" useGeneratedKeys="true" keyProperty="talentId"  parameterType="com.talentcard.common.pojo.TalentPO">
-    insert into t_talent (talent_id, open_id, `name`,
-      sex, id_card, passport, work_unit,
-      industry, industry_second, phone,
-      create_time, category, `status`,
-      card_id, dr)
-    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
-      #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR},
-      #{industry,jdbcType=INTEGER}, #{industrySecond,jdbcType=INTEGER}, #{phone,jdbcType=CHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{category,jdbcType=CHAR}, #{status,jdbcType=TINYINT},
-      #{cardId,jdbcType=BIGINT}, #{dr,jdbcType=TINYINT})
-  </insert>
+    <insert id="add" useGeneratedKeys="true" keyProperty="talentId" parameterType="com.talentcard.common.pojo.TalentPO">
+        insert into t_talent (talent_id, open_id, `name`,
+                              sex, id_card, passport, work_unit,
+                              industry, industry_second, phone,
+                              create_time, category, `status`,
+                              card_id, dr)
+        values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
+                #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{workUnit,jdbcType=CHAR},
+                #{industry,jdbcType=INTEGER}, #{industrySecond,jdbcType=INTEGER}, #{phone,jdbcType=CHAR},
+                #{createTime,jdbcType=TIMESTAMP}, #{category,jdbcType=CHAR}, #{status,jdbcType=TINYINT},
+                #{cardId,jdbcType=BIGINT}, #{dr,jdbcType=TINYINT})
+    </insert>
     <!--    <select id="findBaseInfo" parameterType="java.lang.String" resultType="java.util.HashMap">-->
     <!--        select t.talent_id as talentId,-->
     <!--               `name`,-->
@@ -351,7 +352,7 @@
                            on c.cert_id = pq.cert_id
         where t.open_id = #{openId,jdbcType=CHAR}
           and c.status = #{status,jdbcType=TINYINT}
-          and t.dr=1
+          and t.dr = 1
     </select>
     <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -396,11 +397,12 @@
         uci.pq_category as quality,
         c.name as cname,
         c.num as cnum,
-        uci.talent_category as category
+        uci.talent_category as category,
+        c.status as cstatus
         from t_talent t
         left join t_user_current_info uci on t.talent_id = uci.talent_id
         left join t_user_card c on t.talent_id = c.talent_id
-        where t.status = 1 and c.status = 2
+        where t.status = 1 and c.status != 3
         and t.dr=1
         <if test="start != null and start !=''">and t.create_time >= #{start}</if>
         <if test="end != null and end !=''">and t.create_time &lt;= #{end}</if>
@@ -436,7 +438,7 @@
                  left join t_user_current_info uci on t.talent_id = uci.talent_id
                  left join t_user_card c on t.talent_id = c.talent_id
         where t.talent_id = #{tid,jdbcType=BIGINT}
-        and t.dr=1
+          and t.dr = 1
         limit 1
     </select>
 
@@ -498,7 +500,7 @@
         where t.open_id = #{openId, jdbcType=CHAR}
           and c.status = #{certificationStatus, jdbcType=TINYINT}
           and uc.status = #{userCardStatus, jdbcType=TINYINT}
-          and t.dr=1
+          and t.dr = 1
     </select>
     <select id="ifExistGetCard" resultType="java.lang.Integer">
         select count(t.talent_id)
@@ -507,7 +509,7 @@
                            on t.talent_id = c.talent_id
         where t.open_id = #{openId,jdbcType=CHAR}
           and (c.status = 2 or c.status = 4)
-          and t.dr=1
+          and t.dr = 1
     </select>
     <select id="findGetCard" resultType="com.talentcard.common.bo.ActivcateBO">
         select t.talent_id     as talentId,
@@ -529,7 +531,7 @@
         where t.open_id = #{openId, jdbcType=CHAR}
           and ((c.status = 2) or (c.status = 4))
           and uc.status = 1
-          and t.dr=1
+          and t.dr = 1
     </select>
     <select id="findRegisterOne" parameterType="java.lang.String" resultMap="TalentResultMap">
         select t.talent_id    as t_talent_id,
@@ -588,33 +590,33 @@
                            on c.cert_id = pq.cert_id
         where t.open_id = #{openId,jdbcType=CHAR}
           and (c.status = 2 or c.status = 5 or c.status = 9)
-          and t.dr=1
+          and t.dr = 1
     </select>
 
     <select id="ifCertificate" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(t.talent_id)
         from t_talent t
-        left join t_certification c
-        on t.talent_id = c.talent_id
+                 left join t_certification c
+                           on t.talent_id = c.talent_id
         where t.open_id = #{openId, jdbcType=CHAR}
-        and c.status = 9
-        and t.dr=1
+          and c.status = 9
+          and t.dr = 1
     </select>
 
     <select id="idCardIfUnique" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(t.talent_id)
         from t_talent t
         where t.id_card = #{idCard, jdbcType=CHAR}
-        and t.dr=1
+          and t.dr = 1
     </select>
     <select id="ifInAudit" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(t.talent_id)
         from t_talent t
-        left join t_certification c
-        on t.talent_id = c.talent_id
+                 left join t_certification c
+                           on t.talent_id = c.talent_id
         where t.open_id = #{openId, jdbcType=CHAR}
-        and (c.status = 3 or c.status = 4)
-        and t.dr=1
+          and (c.status = 3 or c.status = 4)
+          and t.dr = 1
     </select>
     <select id="queryByOpenid" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
