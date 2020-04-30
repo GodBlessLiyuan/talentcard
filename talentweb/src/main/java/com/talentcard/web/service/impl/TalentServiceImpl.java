@@ -50,18 +50,18 @@ public class TalentServiceImpl implements ITalentService {
     public PageInfoVO<TalentVO> queryCert(int pageNum, int pageSize, Map<String, Object> reqMap) {
         Page<TalentBO> page = PageHelper.startPage(pageNum, pageSize);
         List<TalentBO> bos = talentMapper.queryCert(reqMap);
-        // 当状态1和2同时存在时，返回状态为1的数据
-        Map<Long, TalentBO> boMap = new HashMap<>();
-        for (TalentBO bo : bos) {
-            Long key = bo.getTalentId();
-            if (boMap.containsKey(key)) {
-                if (bo.getCstatus() == 1) {
-                    boMap.put(key, bo);
-                }
-            } else {
-                boMap.put(key, bo);
-            }
-        }
-        return new PageInfoVO<>(page.getTotal(), TalentVO.convert(new ArrayList<>(boMap.values())));
+//        // 当状态1和2同时存在时，返回状态为1的数据
+//        Map<Long, TalentBO> boMap = new HashMap<>();
+//        for (TalentBO bo : bos) {
+//            Long key = bo.getTalentId();
+//            if (boMap.containsKey(key)) {
+//                if (bo.getCstatus() == 1) {
+//                    boMap.put(key, bo);
+//                }
+//            } else {
+//                boMap.put(key, bo);
+//            }
+//        }
+        return new PageInfoVO<>(page.getTotal(), TalentVO.convert(bos));
     }
 }
