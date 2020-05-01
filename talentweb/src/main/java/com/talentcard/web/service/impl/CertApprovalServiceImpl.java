@@ -60,20 +60,24 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
 
     @Override
     public ResultVO certApprovalShowItems(Long talentId,Long certId) {
+        // 根据人才id和认证id连表查询所有信息
         ApprovalBO bo = certificationMapper.queryAllMsg(talentId,certId);
         if (null == bo) {
             //当前用户没有审批需求
             return new ResultVO(2115);
         }
+        // 根据talentId 和 certId 查询 当前certId在certApproval表中的审批记录
         List<CertApprovalBO> pos = certApprovalMapper.queryApprovalById(talentId,certId);
         ApprovalItemsVO approvalItemsVO = new ApprovalItemsVO();
         approvalItemsVO.setApprovalBO(bo);
         approvalItemsVO.setApprovalItems(pos);
+        // 作学历，职称等的路径拼接
         ApprovalItemsVO vo = ApprovalItemsVO.convert(approvalItemsVO);
         return new ResultVO(1000, vo);
     }
     @Override
     public ResultVO detailsLookItems(Long talentId,Long certId){
+        // 和上面的检索status不同
         ApprovalBO bo = certificationMapper.queryAllMsgLook(talentId,certId);
         List<CertApprovalBO> pos = certApprovalMapper.queryApprovalById(talentId,certId);
         ApprovalItemsVO approvalItemsVO = new ApprovalItemsVO();

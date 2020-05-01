@@ -25,7 +25,6 @@ public class ApprovalItemsVO {
     private List<CertApprovalBO> approvalItems;
 
     public static ApprovalItemsVO convert(ApprovalItemsVO vo) {
-
         if (vo.getApprovalBO().getPtPic()!=null && !("").equals(vo.getApprovalBO().getPtPic())) {
             vo.getApprovalBO().setPtPic(FrontParameterUtil.getPublicPath()+vo.getApprovalBO().getPtPic());
         }

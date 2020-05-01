@@ -151,7 +151,7 @@
     where approval_id = #{approvalId,jdbcType=BIGINT}
   </update>
 
-<!--  根据人才姓名进行认证审批表的查询-->
+<!--  根据人才id和 认证id进行认证审批表的查询-->
   <select id="queryApprovalById" resultType="com.talentcard.common.bo.CertApprovalBO">
     select cp.approval_id as approvalId, cp.cert_id as certId, cp.create_time as createTime, cp.`type`,
      cp.card_id as cardId, cp.category, cp.`result`, cp.opinion, cp.update_time as updateTime, u.username as name

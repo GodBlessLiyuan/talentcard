@@ -39,7 +39,6 @@ public class LoginServiceImpl implements ILoginService {
     public ResultVO login(HttpSession session, HttpServletResponse response, String username, String password, String checkCode) {
         // 1.首先先根据唯一用户名查询当前用户的信息，得到userId
         UserPO userPo = userMapper.queryByName(username);
-        //System.out.println(userPo.getUserId());
         // 2. 若不为空，则校验密码是否正确，若不对，提示无此用户名
         if (null!=userPo) {
             // 查询到的编码是加密过的
@@ -85,6 +84,7 @@ public class LoginServiceImpl implements ILoginService {
      */
     @Override
     public ResultVO quit(HttpServletRequest request) {
+        // 遍历request中的session，作删除
         Enumeration em = request.getSession().getAttributeNames();
         while (em.hasMoreElements()) {
             request.getSession().removeAttribute(em.nextElement().toString());
