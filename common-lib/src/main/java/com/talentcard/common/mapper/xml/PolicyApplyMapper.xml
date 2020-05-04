@@ -164,8 +164,7 @@
         <if test="num != null and num !=''">and p.num like '%' #{num} '%'</if>
         <if test="apply != null and apply !=''">and pa.talent_name like '%' #{apply} '%'</if>
         <if test="status != null and status !=0">and pa.`status` = #{status,jdbcType=TINYINT}</if>
-        when (pa.`status` = 1) then 1 else 0
-        order by pa.`status` desc, pa.create_time desc
+        order by pa.`status` = 3 desc, pa.create_time desc
     </select>
     <select id="queryByTalentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
