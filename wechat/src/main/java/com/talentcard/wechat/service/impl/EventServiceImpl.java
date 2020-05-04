@@ -199,7 +199,11 @@ public class EventServiceImpl implements IEventService {
         customField1.put("card_id", newCard.getWxCardId());
         //持卡人姓名
         TalentPO cardHolder = talentMapper.selectByPrimaryKey(newCard.getTalentId());
-        customField1.put("custom_field_value1", cardHolder.getName());
+        String cardHolderName = cardHolder.getName();
+        if (cardHolderName.length() > 4) {
+            cardHolderName = cardHolderName.substring(0, 3);
+        }
+        customField1.put("custom_field_value1", cardHolderName);
         WechatApiUtil.postRequest(cardHolderUrl, customField1);
         return new ResultVO(1000, result);
     }
