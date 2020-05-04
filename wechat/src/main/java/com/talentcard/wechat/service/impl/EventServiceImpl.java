@@ -201,7 +201,7 @@ public class EventServiceImpl implements IEventService {
         TalentPO cardHolder = talentMapper.selectByPrimaryKey(newCard.getTalentId());
         String cardHolderName = cardHolder.getName();
         if (cardHolderName.length() > 4) {
-            cardHolderName = cardHolderName.substring(0, 3);
+            cardHolderName = cardHolderName.substring(0, 4);
         }
         customField1.put("custom_field_value1", cardHolderName);
         WechatApiUtil.postRequest(cardHolderUrl, customField1);
