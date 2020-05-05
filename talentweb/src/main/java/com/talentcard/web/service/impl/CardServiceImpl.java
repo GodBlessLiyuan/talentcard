@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -52,7 +53,8 @@ public class CardServiceImpl implements ICardService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO add(String name, String title, String notice,
                         String description, String prerogative, MultipartFile background,
-                        String initialWord, String initialNumber, Byte status, String color) {
+                        String initialWord, String initialNumber, Byte status, String color,
+                        HttpSession httpSession) {
         //判断是否已经存在该初始字段
         Integer ifExistInitialWord = cardMapper.ifExistInitialWord(initialWord);
         if (ifExistInitialWord != null && ifExistInitialWord != 0) {
@@ -115,7 +117,7 @@ public class CardServiceImpl implements ICardService {
                 return new ResultVO(2320, wechatResult);
             }
         }
-        //创建卡，服务端
+        //创建卡，本地服务端
         cardPO.setName(name);
         cardPO.setTitle(title);
         cardPO.setCurrNum(Long.valueOf(initialNumber));
@@ -132,12 +134,17 @@ public class CardServiceImpl implements ICardService {
         cardPO.setDr((byte) 1);
         cardPO.setLogoUrl(logoUrl);
         cardPO.setWaitingMemberNum((long) 0);
+        //从session里取出创建者信息
+        String createPerson = (String) httpSession.getAttribute("userName");
+        cardPO.setCreatePerson(createPerson);
+        cardPO.setUpatePerson(createPerson);
+        cardPO.setUpdateTime(new Date());
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
     }
 
     @Override
-    public ResultVO edit(Long cardId, String title, String description, MultipartFile background) {
+    public ResultVO edit(Long cardId, String title, String description, MultipartFile background, HttpSession httpSession) {
         if ((title == null || title.equals(""))
                 && (description == null || description.equals("")) && background == null) {
             return new ResultVO(2324, "会员卡编辑失败，啥参数都没给啊");
@@ -190,6 +197,10 @@ public class CardServiceImpl implements ICardService {
         String url = "https://api.weixin.qq.com/card/update?access_token="
                 + AccessTokenUtil.getAccessToken();
         JSONObject result = WechatApiUtil.postRequest(url, paramObject);
+        //从session里取出更新者信息
+        String updatePerson = (String) httpSession.getAttribute("userName");
+        cardPO.setUpatePerson(updatePerson);
+        cardPO.setUpdateTime(new Date());
         cardMapper.updateByPrimaryKeySelective(cardPO);
         return new ResultVO(1000, result);
     }

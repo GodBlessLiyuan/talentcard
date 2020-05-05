@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+
 
 /**
  * 卡的增删改查相关
@@ -44,9 +46,10 @@ public class CardController {
                         @RequestParam(value = "initialWord") String initialWord,
                         @RequestParam(value = "initialNumber") String initialNumber,
                         @RequestParam(value = "status") Byte status,
-                        @RequestParam(value = "color", required = false, defaultValue = "Color030") String color) {
+                        @RequestParam(value = "color", required = false, defaultValue = "Color030") String color,
+                        HttpSession httpSession) {
         return iCardService.add(name, title, notice, description, prerogative,
-                background, initialWord, initialNumber, status, color);
+                background, initialWord, initialNumber, status, color, httpSession);
     }
 
 
@@ -54,8 +57,9 @@ public class CardController {
     public ResultVO edit(@RequestParam(value = "cardId") Long cardId,
                          @RequestParam(value = "title", required = false, defaultValue = "") String title,
                          @RequestParam(value = "description", required = false, defaultValue = "") String description,
-                         @RequestParam(value = "background", required = false) MultipartFile background) {
-        return iCardService.edit(cardId, title, description, background);
+                         @RequestParam(value = "background", required = false) MultipartFile background,
+                         HttpSession httpSession) {
+        return iCardService.edit(cardId, title, description, background, httpSession);
     }
 
     @PostMapping("query")
