@@ -80,7 +80,7 @@ public class CardServiceImpl implements ICardService {
         //服务器url
         String serverLogoUrl = rootDir + logoUrl;
 //        String logoCDN = CardUtil.uploadPicture(publicLogoUrl);
-        logger.info("serverLogoUrl", serverLogoUrl);
+        logger.info("serverLogoUrl: {}", serverLogoUrl);
         //服务器到cdn上
         String logoCDN = CardUtil.uploadPicture(serverLogoUrl);
         //转为json格式，再转为url，去掉反斜线
@@ -135,9 +135,9 @@ public class CardServiceImpl implements ICardService {
         cardPO.setLogoUrl(logoUrl);
         cardPO.setWaitingMemberNum((long) 0);
         //从session里取出创建者信息
-        logger.info("session", httpSession);
+        logger.info("session: {}", httpSession);
         String createPerson = (String) httpSession.getAttribute("username");
-        logger.info("username", createPerson);
+        logger.info("username: {}", createPerson);
         cardPO.setCreatePerson(createPerson);
         cardPO.setUpdatePerson(createPerson);
         cardPO.setUpdateTime(new Date());
