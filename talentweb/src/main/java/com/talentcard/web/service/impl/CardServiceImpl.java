@@ -135,7 +135,9 @@ public class CardServiceImpl implements ICardService {
         cardPO.setLogoUrl(logoUrl);
         cardPO.setWaitingMemberNum((long) 0);
         //从session里取出创建者信息
+        logger.info("session", httpSession);
         String createPerson = (String) httpSession.getAttribute("username");
+        logger.info("username", createPerson);
         cardPO.setCreatePerson(createPerson);
         cardPO.setUpdatePerson(createPerson);
         cardPO.setUpdateTime(new Date());
