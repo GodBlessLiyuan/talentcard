@@ -262,10 +262,10 @@
             and trim(replace(c.title,' ','')) like trim(replace ('%' #{title,jdbcType=CHAR} '%' ,' ',''))
         </if>
         <if test="startTime != null">
-            and <![CDATA[ c.create_time >= #{startTime,jdbcType=DATE}]]>
+            and <![CDATA[ c.create_time >= #{startTime,jdbcType=TIMESTAMP}]]>
         </if>
         <if test="endTime != null">
-            and <![CDATA[ c.create_time <= #{endTime,jdbcType=DATE}]]>
+            and <![CDATA[ c.create_time <= #{endTime,jdbcType=TIMESTAMP}]]>
         </if>
         <if test="cardNum != null and cardNum != ''">
             and trim(replace(concat(c.initial_word, c.initial_num),' ',''))
