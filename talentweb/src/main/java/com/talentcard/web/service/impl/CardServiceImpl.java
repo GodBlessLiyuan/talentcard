@@ -53,6 +53,11 @@ public class CardServiceImpl implements ICardService {
     public ResultVO add(String name, String title, String notice,
                         String description, String prerogative, MultipartFile background,
                         String initialWord, String initialNumber, Byte status, String color) {
+        //判断是否已经存在该初始字段
+        Integer ifExistInitialWord = cardMapper.ifExistInitialWord(initialWord);
+        if (ifExistInitialWord != null && ifExistInitialWord != 0) {
+            return new ResultVO(2328, "已存在该初始字段");
+        }
         //上传背景图片到服务器上
         String picture = FileUtil.uploadFile
                 (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");

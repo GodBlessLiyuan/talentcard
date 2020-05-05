@@ -299,4 +299,11 @@
         from t_card
         where dr = 1 and status = 2
     </select>
+
+    <select id="ifExistInitialWord"  resultType="java.lang.Integer">
+        select
+        count(card_id)
+        from t_card c
+        where dr = 1 and c.initial_word = #{initialWord,jdbcType=CHAR}
+    </select>
 </mapper>

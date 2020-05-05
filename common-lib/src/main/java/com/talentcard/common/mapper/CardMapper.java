@@ -2,6 +2,8 @@ package com.talentcard.common.mapper;
 
 import com.talentcard.common.pojo.CardPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,4 +45,11 @@ public interface CardMapper extends BaseMapper<CardPO, Long> {
      * @return
      */
     List<CardPO> queryCardIdName();
+
+    /**
+     * 判断是否已经存在该初始字段
+     * @param initialWord
+     * @return
+     */
+    Integer ifExistInitialWord(@Param("initialWord") String initialWord);
 }
