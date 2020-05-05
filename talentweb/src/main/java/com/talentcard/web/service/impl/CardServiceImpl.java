@@ -137,7 +137,7 @@ public class CardServiceImpl implements ICardService {
         //从session里取出创建者信息
         String createPerson = (String) httpSession.getAttribute("username");
         cardPO.setCreatePerson(createPerson);
-        cardPO.setUpatePerson(createPerson);
+        cardPO.setUpdatePerson(createPerson);
         cardPO.setUpdateTime(new Date());
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
@@ -199,7 +199,7 @@ public class CardServiceImpl implements ICardService {
         JSONObject result = WechatApiUtil.postRequest(url, paramObject);
         //从session里取出更新者信息
         String updatePerson = (String) httpSession.getAttribute("username");
-        cardPO.setUpatePerson(updatePerson);
+        cardPO.setUpdatePerson(updatePerson);
         cardPO.setUpdateTime(new Date());
         cardMapper.updateByPrimaryKeySelective(cardPO);
         return new ResultVO(1000, result);

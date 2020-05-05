@@ -45,7 +45,7 @@ public class CardPO implements Serializable {
 
     private String createPerson;
 
-    private String upatePerson;
+    private String updatePerson;
 
     private Date createTime;
 
