@@ -57,10 +57,10 @@ public class CardController {
     @PostMapping("edit")
     public ResultVO edit(@RequestParam(value = "cardId") Long cardId,
                          @RequestParam(value = "title", required = false, defaultValue = "") String title,
-                         @RequestParam(value = "description", required = false, defaultValue = "") String description,
+                         @RequestParam(value = "businessDescription", required = false, defaultValue = "") String businessDescription,
                          @RequestParam(value = "background", required = false) MultipartFile background,
                          HttpSession httpSession) {
-        return iCardService.edit(cardId, title, description, background, httpSession);
+        return iCardService.edit(cardId, title, businessDescription, background, httpSession);
     }
 
     @PostMapping("query")

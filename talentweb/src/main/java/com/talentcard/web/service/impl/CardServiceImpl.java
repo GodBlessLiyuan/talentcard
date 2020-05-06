@@ -147,9 +147,8 @@ public class CardServiceImpl implements ICardService {
     }
 
     @Override
-    public ResultVO edit(Long cardId, String title, String description, MultipartFile background, HttpSession httpSession) {
-        if ((title == null || title.equals(""))
-                && (description == null || description.equals("")) && background == null) {
+    public ResultVO edit(Long cardId, String title, String businessDescription, MultipartFile background, HttpSession httpSession) {
+        if ((title == null || title.equals("")) && background == null) {
             return new ResultVO(2324, "会员卡编辑失败，啥参数都没给啊");
         }
         CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
@@ -189,11 +188,7 @@ public class CardServiceImpl implements ICardService {
             baseInfo.put("title", title);
             cardPO.setTitle(title);
         }
-        //卡片会员卡详情---使用须知
-        if (description != null && description != "") {
-            baseInfo.put("description", description);
-            cardPO.setDescription(description);
-        }
+
         memberCard.put("base_info", baseInfo);
         paramObject.put("member_card", memberCard);
 
@@ -204,6 +199,7 @@ public class CardServiceImpl implements ICardService {
         String updatePerson = (String) httpSession.getAttribute("username");
         cardPO.setUpdatePerson(updatePerson);
         cardPO.setUpdateTime(new Date());
+        cardPO.setBusinessDescription(businessDescription);
         cardMapper.updateByPrimaryKeySelective(cardPO);
         return new ResultVO(1000, result);
     }
