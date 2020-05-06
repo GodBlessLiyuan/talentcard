@@ -118,10 +118,11 @@
     <insert id="add" useGeneratedKeys="true" keyProperty="certId"
             parameterType="com.talentcard.common.pojo.CertificationPO">
     insert into t_certification (cert_id, talent_id, political,
-      create_time, `status`, current_type
+      create_time, `status`, current_type, `type`
       )
     values (#{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{political,jdbcType=CHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{currentType,jdbcType=TINYINT}
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{currentType,jdbcType=TINYINT},
+      #{type,jdbcType=TINYINT}
       )
   </insert>
 
