@@ -148,7 +148,9 @@ public class CardServiceImpl implements ICardService {
 
     @Override
     public ResultVO edit(Long cardId, String title, String businessDescription, MultipartFile background, HttpSession httpSession) {
-        if ((title == null || title.equals("")) && background == null) {
+        if ((title == null || title.equals(""))
+                && (businessDescription == null || businessDescription.equals(""))
+                && background == null) {
             return new ResultVO(2324, "会员卡编辑失败，啥参数都没给啊");
         }
         CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
@@ -178,13 +180,13 @@ public class CardServiceImpl implements ICardService {
          * 根据编辑条件，决定传的json参数
          */
         //背景图
-        if (pictureCDN == null || pictureCDN != "") {
+        if (pictureCDN != null && !pictureCDN.equals("")) {
             memberCard.put("background_pic_url", pictureCDN);
             cardPO.setPicture(picture);
             cardPO.setPictureCdn(pictureCDN);
         }
         //卡片标题
-        if (title != null && title != "") {
+        if (title != null && !title.equals("")) {
             baseInfo.put("title", title);
             cardPO.setTitle(title);
         }
@@ -194,14 +196,17 @@ public class CardServiceImpl implements ICardService {
 
         String url = "https://api.weixin.qq.com/card/update?access_token="
                 + AccessTokenUtil.getAccessToken();
-        JSONObject result = WechatApiUtil.postRequest(url, paramObject);
+        if ((pictureCDN != null && !pictureCDN.equals(""))
+                || (title != null && !title.equals(""))) {
+            JSONObject result = WechatApiUtil.postRequest(url, paramObject);
+        }
         //从session里取出更新者信息
         String updatePerson = (String) httpSession.getAttribute("username");
         cardPO.setUpdatePerson(updatePerson);
         cardPO.setUpdateTime(new Date());
         cardPO.setBusinessDescription(businessDescription);
         cardMapper.updateByPrimaryKeySelective(cardPO);
-        return new ResultVO(1000, result);
+        return new ResultVO(1000);
     }
 
     @Override
