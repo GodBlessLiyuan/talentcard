@@ -9,6 +9,7 @@ import lombok.Data;
  * @description
  */
 @Data
-public class CustomFiled1PO {
-    private final String name = "持卡人";
+public class CustomFiledPO {
+    private String name;
+    private String url;
 }

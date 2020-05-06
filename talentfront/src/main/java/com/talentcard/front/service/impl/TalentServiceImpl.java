@@ -193,6 +193,9 @@ public class TalentServiceImpl implements ITalentService {
         UserCurrentInfoPO userCurrentInfoPO = new UserCurrentInfoPO();
         userCurrentInfoPO.setTalentId(talentId);
         userCurrentInfoPO.setEducation(jsonObject.getInteger("education"));
+        userCurrentInfoPO.setSchool(jsonObject.getString("school"));
+        userCurrentInfoPO.setFirstClass(jsonObject.getByte("firstClass"));
+        userCurrentInfoPO.setMajor(jsonObject.getString("major"));
         userCurrentInfoPO.setPtCategory(jsonObject.getInteger("profTitleCategory"));
         userCurrentInfoPO.setPtInfo(jsonObject.getString("profTitleInfo"));
         userCurrentInfoPO.setPqCategory(jsonObject.getInteger("profQualityCategory"));
