@@ -117,6 +117,12 @@ CREATE TABLE t_certification
 2 职称
 3 职业资格
 4 全都有',
+	-- 1 基础卡
+	-- 2 基础卡换的高级卡
+	-- 3 高级卡换的高级卡
+	type tinyint COMMENT '1 基础卡
+2 基础卡换的高级卡
+3 高级卡换的高级卡',
 	PRIMARY KEY (cert_id),
 	UNIQUE (cert_id)
 );

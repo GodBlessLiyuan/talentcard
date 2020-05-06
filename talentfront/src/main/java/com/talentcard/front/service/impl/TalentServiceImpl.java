@@ -155,6 +155,7 @@ public class TalentServiceImpl implements ITalentService {
         certificationPO.setStatus(status);
         certificationPO.setTalentId(talentId);
         certificationPO.setCurrentType(currentType);
+        certificationPO.setType((byte) 1);
         certificationMapper.add(certificationPO);
         Long certificationId = certificationPO.getCertId();
 
@@ -313,6 +314,7 @@ public class TalentServiceImpl implements ITalentService {
         certificationPO.setStatus(status);
         certificationPO.setTalentId(talentId);
         certificationPO.setCurrentType((byte) 4);
+        certificationPO.setType((byte) 2);
         certificationMapper.add(certificationPO);
         Long certificationId = certificationPO.getCertId();
 

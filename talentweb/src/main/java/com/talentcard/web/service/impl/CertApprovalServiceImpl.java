@@ -59,15 +59,15 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
 
 
     @Override
-    public ResultVO certApprovalShowItems(Long talentId,Long certId) {
+    public ResultVO certApprovalShowItems(Long talentId, Long certId) {
         // 根据人才id和认证id连表查询所有信息
-        ApprovalBO bo = certificationMapper.queryAllMsg(talentId,certId);
+        ApprovalBO bo = certificationMapper.queryAllMsg(talentId, certId);
         if (null == bo) {
             //当前用户没有审批需求
             return new ResultVO(2115);
         }
         // 根据talentId 和 certId 查询 当前certId在certApproval表中的审批记录
-        List<CertApprovalBO> pos = certApprovalMapper.queryApprovalById(talentId,certId);
+        List<CertApprovalBO> pos = certApprovalMapper.queryApprovalById(talentId, certId);
         ApprovalItemsVO approvalItemsVO = new ApprovalItemsVO();
         approvalItemsVO.setApprovalBO(bo);
         approvalItemsVO.setApprovalItems(pos);
@@ -75,11 +75,12 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         ApprovalItemsVO vo = ApprovalItemsVO.convert(approvalItemsVO);
         return new ResultVO(1000, vo);
     }
+
     @Override
-    public ResultVO detailsLookItems(Long talentId,Long certId){
+    public ResultVO detailsLookItems(Long talentId, Long certId) {
         // 和上面的检索status不同
-        ApprovalBO bo = certificationMapper.queryAllMsgLook(talentId,certId);
-        List<CertApprovalBO> pos = certApprovalMapper.queryApprovalById(talentId,certId);
+        ApprovalBO bo = certificationMapper.queryAllMsgLook(talentId, certId);
+        List<CertApprovalBO> pos = certApprovalMapper.queryApprovalById(talentId, certId);
         ApprovalItemsVO approvalItemsVO = new ApprovalItemsVO();
         approvalItemsVO.setApprovalBO(bo);
         approvalItemsVO.setApprovalItems(pos);
@@ -98,7 +99,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         Long certId = (Long) reqData.get("certId");
         Long talentId = (Long) reqData.get("talentId");
         Long cardId = (Long) reqData.get("cardId");
-        String category =(String) reqData.get("category");
+        String category = (String) reqData.get("category");
 
 
         /**
@@ -144,7 +145,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             // 若审批拒绝，则将当前认证表设置为失效状态
             CertificationPO certificationPo = new CertificationPO();
             certificationPo.setCertId(certId);
-            certificationPo.setStatus((byte)10);
+            certificationPo.setStatus((byte) 10);
             int resultUpdateCertification = certificationMapper.updateByPrimaryKeySelective(certificationPo);
             if (resultUpdateCertification == 0) {
                 //更新认证表失败
@@ -163,7 +164,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 return new ResultVO(2369);
             }
             //(6) 更新职业资格表的认证状态
-            int resultProfQuality = profQualityMapper.updateStatusByCertId(certId,(byte) 10);
+            int resultProfQuality = profQualityMapper.updateStatusByCertId(certId, (byte) 10);
             if (resultProfQuality == 0) {
                 //更新职业资格表状态失败
                 return new ResultVO(2370);
@@ -176,7 +177,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             messageDTO.setFirst("您提交的认证信息与本人真实情况存在不符，请修改后重新提交。");
             MessageUtil.sendTemplateMessage(messageDTO);
 
-        }else {
+        } else {
             /**
              * 审批通过
              */
@@ -197,7 +198,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             // (2) 更新认证表
             CertificationPO certificationPo = new CertificationPO();
             certificationPo.setCertId(certId);
-            certificationPo.setStatus((byte)4);
+            certificationPo.setStatus((byte) 4);
             int resultUpdateCertification = certificationMapper.updateByPrimaryKeySelective(certificationPo);
             if (resultUpdateCertification == 0) {
                 //更新认证表失败
@@ -206,7 +207,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             //(3) 更新人才表
             TalentPO talentPO = new TalentPO();
             talentPO.setTalentId(talentId);
-            talentPO.setStatus((byte)1);
+            talentPO.setStatus((byte) 1);
             talentPO.setCardId(cardId);
             talentPO.setCategory(category);
             int resultUpdateTalent = talentMapper.updateByPrimaryKeySelective(talentPO);
@@ -227,14 +228,14 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 return new ResultVO(2369);
             }
             //(6) 更新职业资格表的认证状态
-            int resultProfQuality = profQualityMapper.updateStatusByCertId(certId,(byte) 4);
+            int resultProfQuality = profQualityMapper.updateStatusByCertId(certId, (byte) 4);
             if (resultProfQuality == 0) {
                 //更新职称表状态失败
                 return new ResultVO(2370);
             }
 
             //(7) 将人才类别更新到t_user_current_info当中
-            int resultUserCurrentInfo = userCurrentInfoMapper.updateCategoryByTalentId(talentId,category);
+            int resultUserCurrentInfo = userCurrentInfoMapper.updateCategoryByTalentId(talentId, category);
             if (resultUserCurrentInfo == 0) {
                 //更新人才用户信息状态失败
                 return new ResultVO(2372);
@@ -244,7 +245,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             UserCardPO userCardPO = new UserCardPO();
             userCardPO.setTalentId(talentId);
             userCardPO.setCardId(cardId);
-            userCardPO.setStatus((byte)1);
+            userCardPO.setStatus((byte) 1);
             userCardPO.setCreateTime(new Date());
 
             String membershipNumber = cardPO.getInitialWord();
@@ -284,8 +285,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
 
     @Override
     public ResultVO queryByNumApproval() {
-        int number = certApprovalMapper.queryWaitApprovalNum();
-        return new ResultVO(1000,number);
+        int number = certificationMapper.findWaitApprovalNum();
+        return new ResultVO(1000, number);
     }
 
 }

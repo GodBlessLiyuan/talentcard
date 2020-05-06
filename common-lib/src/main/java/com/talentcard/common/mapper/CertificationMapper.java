@@ -75,4 +75,13 @@ public interface CertificationMapper extends BaseMapper<CertificationPO, Long> {
      * @return
      */
     Integer ifWaitingApproval(@Param("openId") String openId);
+
+    /**
+     * 查询当前待审批记录的数量
+     * 后台左侧栏位的小红点
+     * c表status=3：待审批
+     * type=2：初级卡换高级卡
+     * @return
+     */
+    Integer findWaitApprovalNum();
 }
