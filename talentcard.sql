@@ -77,7 +77,7 @@ CREATE TABLE t_card
 	initial_word char(32) NOT NULL,
 	initial_num char(32) NOT NULL,
 	create_person char(16),
-	upate_person char(16),
+	update_person char(16),
 	create_time datetime,
 	update_time datetime,
 	-- 1正在使用
@@ -176,7 +176,7 @@ CREATE TABLE t_policy
 	policy_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	name char(32) NOT NULL,
 	num char(32) NOT NULL,
-	description char(255) NOT NULL,
+	description text NOT NULL,
 	cards char(255),
 	categories char(255),
 	educations char(255),
