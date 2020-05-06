@@ -45,11 +45,12 @@ public class CardController {
                         @RequestParam(value = "background") MultipartFile background,
                         @RequestParam(value = "initialWord") String initialWord,
                         @RequestParam(value = "initialNumber") String initialNumber,
+                        @RequestParam(value = "businessDescription", required = false, defaultValue = "") String businessDescription,
                         @RequestParam(value = "status") Byte status,
                         @RequestParam(value = "color", required = false, defaultValue = "Color030") String color,
                         HttpSession httpSession) {
         return iCardService.add(name, title, notice, description, prerogative,
-                background, initialWord, initialNumber, status, color, httpSession);
+                background, initialWord, initialNumber, businessDescription, status, color, httpSession);
     }
 
 

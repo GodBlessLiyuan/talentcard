@@ -32,11 +32,13 @@ public class CardVO {
     private String prerogative;
     private String initialWord;
     private String initialNum;
+    private String businessDescription;
     private List<String> policyInfo;
     private String createPerson;
     private String updatePerson;
     private Date createTime;
     private Date updateTime;
+
 
     /**
      * PO转VO
@@ -59,6 +61,7 @@ public class CardVO {
         cardVO.setPrerogative(cardPO.getPrerogative());
         cardVO.setInitialWord(cardPO.getInitialWord());
         cardVO.setInitialNum(cardPO.getInitialNum());
+        cardVO.setBusinessDescription(cardPO.getBusinessDescription());
         cardVO.setCreatePerson(cardPO.getCreatePerson());
         cardVO.setUpdatePerson(cardPO.getUpdatePerson());
         cardVO.setCreateTime(cardPO.getCreateTime());

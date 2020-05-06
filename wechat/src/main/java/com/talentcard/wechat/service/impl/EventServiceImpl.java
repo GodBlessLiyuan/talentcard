@@ -103,15 +103,23 @@ public class EventServiceImpl implements IEventService {
             EducationPO newCardEducationPO = educationMapper.selectByCertId(newCardCertId);
             ProfTitlePO newCardProfTitlePO = profTitleMapper.selectByCertId(newCardCertId);
             ProfQualityPO newCardProfQualityPO = profQualityMapper.selectByCertId(newCardCertId);
-            userCurrentInfoPO.setEducation(newCardEducationPO.getEducation());
-            userCurrentInfoPO.setSchool(newCardEducationPO.getSchool());
-            userCurrentInfoPO.setFirstClass(newCardEducationPO.getFirstClass());
-            userCurrentInfoPO.setMajor(newCardEducationPO.getMajor());
-            userCurrentInfoPO.setPtCategory(newCardProfTitlePO.getCategory());
-            userCurrentInfoPO.setPtInfo(newCardProfTitlePO.getInfo());
-            userCurrentInfoPO.setPqCategory(newCardProfQualityPO.getCategory());
-            userCurrentInfoPO.setPqInfo(newCardProfQualityPO.getInfo());
-            userCurrentInfoPO.setPolitical(newCardCertificationPO.getPolitical());
+            if (newCardEducationPO != null) {
+                userCurrentInfoPO.setEducation(newCardEducationPO.getEducation());
+                userCurrentInfoPO.setSchool(newCardEducationPO.getSchool());
+                userCurrentInfoPO.setFirstClass(newCardEducationPO.getFirstClass());
+                userCurrentInfoPO.setMajor(newCardEducationPO.getMajor());
+            }
+            if (newCardProfTitlePO != null) {
+                userCurrentInfoPO.setPtCategory(newCardProfTitlePO.getCategory());
+                userCurrentInfoPO.setPtInfo(newCardProfTitlePO.getInfo());
+            }
+            if (newCardProfQualityPO != null) {
+                userCurrentInfoPO.setPqCategory(newCardProfQualityPO.getCategory());
+                userCurrentInfoPO.setPqInfo(newCardProfQualityPO.getInfo());
+            }
+            if (newCardCertificationPO != null) {
+                userCurrentInfoPO.setPolitical(newCardCertificationPO.getPolitical());
+            }
             userCurrentInfoMapper.updateByPrimaryKeySelective(userCurrentInfoPO);
 
             //新卡card会员数量+1，待领卡数量-1

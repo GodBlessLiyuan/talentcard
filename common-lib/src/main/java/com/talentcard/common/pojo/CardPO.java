@@ -43,6 +43,8 @@ public class CardPO implements Serializable {
 
     private String initialNum;
 
+    private String businessDescription;
+
     private String createPerson;
 
     private String updatePerson;

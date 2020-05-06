@@ -53,7 +53,7 @@ public class CardServiceImpl implements ICardService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO add(String name, String title, String notice,
                         String description, String prerogative, MultipartFile background,
-                        String initialWord, String initialNumber, Byte status, String color,
+                        String initialWord, String initialNumber, String businessDescription, Byte status, String color,
                         HttpSession httpSession) {
         //判断是否已经存在该初始字段
         Integer ifExistInitialWord = cardMapper.ifExistInitialWord(initialWord);
@@ -134,6 +134,7 @@ public class CardServiceImpl implements ICardService {
         cardPO.setDr((byte) 1);
         cardPO.setLogoUrl(logoUrl);
         cardPO.setWaitingMemberNum((long) 0);
+        cardPO.setBusinessDescription(businessDescription);
         //从session里取出创建者信息
         logger.info("session: {}", httpSession);
         String createPerson = (String) httpSession.getAttribute("username");
