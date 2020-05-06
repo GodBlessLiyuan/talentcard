@@ -3,6 +3,7 @@ package com.talentcard.web.service;
 import com.talentcard.common.vo.ResultVO;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -14,9 +15,10 @@ import java.util.HashMap;
 public interface ICardService {
     ResultVO add(String name, String title, String notice, String description,
                  String prerogative, MultipartFile background,
-                 String initialWord, String initialNumber, Byte status, String color);
+                 String initialWord, String initialNumber, Byte status, String color,
+                 HttpSession httpSession);
 
-    ResultVO edit(Long cardId, String title, String description, MultipartFile background);
+    ResultVO edit(Long cardId, String title, String description, MultipartFile background, HttpSession httpSession);
 
     ResultVO query(HashMap<String, Object> hashMap);
 

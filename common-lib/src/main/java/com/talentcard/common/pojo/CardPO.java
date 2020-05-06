@@ -18,6 +18,11 @@ public class CardPO implements Serializable {
 
     private String title;
 
+    /**
+     * 1：默认；2：非默认
+     */
+    private Byte status;
+
     private Long memberNum;
 
     private Long waitingMemberNum;
@@ -38,12 +43,13 @@ public class CardPO implements Serializable {
 
     private String initialNum;
 
+    private String createPerson;
+
+    private String updatePerson;
+
     private Date createTime;
 
-    /**
-     * 1：默认；2：非默认
-     */
-    private Byte status;
+    private Date updateTime;
 
     /**
      * 1正在使用

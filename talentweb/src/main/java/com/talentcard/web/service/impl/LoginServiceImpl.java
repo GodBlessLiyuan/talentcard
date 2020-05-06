@@ -9,6 +9,8 @@ import com.talentcard.common.pojo.UserPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ILoginService;
 import com.talentcard.web.utils.Md5Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,6 +34,7 @@ public class LoginServiceImpl implements ILoginService {
     UserMapper userMapper;
     @Resource
     RoleAuthorityMapper roleAuthorityMapper;
+    private static final Logger logger = LoggerFactory.getLogger(LoginServiceImpl.class);
 
     public static final String SALT = "talentCard";
 
@@ -69,6 +72,7 @@ public class LoginServiceImpl implements ILoginService {
         // 4 . 将用户信息存放到session当中
         session.setAttribute("userId",userPo.getUserId());
         session.setAttribute("username",userPo.getUsername());
+        logger.info("username: {}", userPo.getUsername());
         // 5 . 获取当前用户权限，决定展示内容区别
         List<RoleAuthorityAddNameBO> bos = roleAuthorityMapper.queryByRoleIdName(userPo.getRoleId());
         RoleAuthorityBO roleAuthorityBO = RoleAuthorityBO.convert(bos);
