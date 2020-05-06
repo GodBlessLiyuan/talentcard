@@ -36,7 +36,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     @Resource
     private PolicyApprovalMapper policyApprovalMapper;
 
-    private static final String[] EXPORT_TITLES = {"序号", "申请时间", "政策权益编号", "政策权益名称", "申请人", "状态", "银行卡号",
+    private static final String[] EXPORT_TITLES = {"序号", "政策名称", "政策编号", "申请人", "申请时间", "状态", "银行卡号",
             "开户行名", "持卡人"};
 
     @Override
@@ -106,10 +106,10 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         for (PolicyApplyBO bo : bos) {
             String[] content = new String[9];
             content[0] = String.valueOf(num + 1);
-            content[1] = DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD_HMS);
+            content[1] = bo.getPolicyName();
             content[2] = bo.getNum();
-            content[3] = bo.getPolicyName();
-            content[4] = bo.getTalentName();
+            content[3] = bo.getTalentName();
+            content[4] = DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD_HMS);
             content[5] = bo.getStatus() == 1 ? "已通过" : bo.getStatus() == 2 ? "已驳回" : "待审批";
             content[6] = bo.getBankNum();
             content[7] = bo.getBankName();
