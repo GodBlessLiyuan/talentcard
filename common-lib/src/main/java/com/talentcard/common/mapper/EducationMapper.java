@@ -26,4 +26,11 @@ public interface EducationMapper extends BaseMapper<EducationPO, Long> {
      * @return
      */
     int updateStatusByCertId(@Param("certId") Long certId, @Param("status") Byte status);
+
+    /**
+     * 根据certId查找对应教育表信息
+     * @param certId
+     * @return
+     */
+    EducationPO selectByCertId(@Param("certId") Long certId);
 }

@@ -89,16 +89,30 @@ public class EventServiceImpl implements IEventService {
              */
             logger.info("第二次激活");
             //第二次激活
-            //待领取的卡
+            /**
+             * 新卡操作：待领取的卡
+             */
             newCard = talentMapper.activate(openId, (byte) 4, (byte) 1);
             if (newCard == null) {
                 return new ResultVO(2600, "数据库无待领取的卡");
             }
-            //1.cert_approval里的人才类别信息更新user_current_info表
-//            CertApprovalPO certApprovalPO = certApprovalMapper.findByCertId(newCard.getCertId());
-//            UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByPrimaryKey(newCard.getUciId());
-//            userCurrentInfoPO.setTalentCategory(certApprovalPO.getCategory());
-//            userCurrentInfoMapper.updateByPrimaryKeySelective(userCurrentInfoPO);
+            //更新user_current_info表
+            UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByPrimaryKey(newCard.getUciId());
+            Long newCardCertId = newCard.getCertId();
+            CertificationPO newCardCertificationPO = certificationMapper.selectByPrimaryKey(newCardCertId);
+            EducationPO newCardEducationPO = educationMapper.selectByCertId(newCardCertId);
+            ProfTitlePO newCardProfTitlePO = profTitleMapper.selectByCertId(newCardCertId);
+            ProfQualityPO newCardProfQualityPO = profQualityMapper.selectByCertId(newCardCertId);
+            userCurrentInfoPO.setEducation(newCardEducationPO.getEducation());
+            userCurrentInfoPO.setSchool(newCardEducationPO.getSchool());
+            userCurrentInfoPO.setFirstClass(newCardEducationPO.getFirstClass());
+            userCurrentInfoPO.setMajor(newCardEducationPO.getMajor());
+            userCurrentInfoPO.setPtCategory(newCardProfTitlePO.getCategory());
+            userCurrentInfoPO.setPtInfo(newCardProfTitlePO.getInfo());
+            userCurrentInfoPO.setPqCategory(newCardProfQualityPO.getCategory());
+            userCurrentInfoPO.setPqInfo(newCardProfQualityPO.getInfo());
+            userCurrentInfoPO.setPolitical(newCardCertificationPO.getPolitical());
+            userCurrentInfoMapper.updateByPrimaryKeySelective(userCurrentInfoPO);
 
             //新卡card会员数量+1，待领卡数量-1
             CardPO newCardPO = cardMapper.selectByPrimaryKey(newCard.getCardId());
@@ -162,7 +176,6 @@ public class EventServiceImpl implements IEventService {
             profQualityMapper.updateStatusByCertId(oldCertId, oldCardStatus);
 
             //2.certification表和三表，更新status=1:正在使用
-            Long newCardCertId = newCard.getCertId();
             Byte newCardStatus = 1;
             //新卡4表状态从4变为1
             certificationMapper.updateStatusById(oldTalentId, (byte) 4, newCardStatus);

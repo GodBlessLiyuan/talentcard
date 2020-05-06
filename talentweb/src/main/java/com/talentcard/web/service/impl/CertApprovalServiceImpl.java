@@ -250,9 +250,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
 
             String membershipNumber = cardPO.getInitialWord();
             Integer initialNumLength = cardPO.getInitialNum().length();
-            Integer currentNumlength = cardPO.getCurrNum().toString().length();
-            if ((initialNumLength - currentNumlength) > 0) {
-                for (int i = 0; i < (initialNumLength - currentNumlength); i++) {
+            Integer currentNumLength = cardPO.getCurrNum().toString().length();
+            if ((initialNumLength - currentNumLength) > 0) {
+                for (int i = 0; i < (initialNumLength - currentNumLength); i++) {
                     membershipNumber = membershipNumber + "0";
                 }
             }

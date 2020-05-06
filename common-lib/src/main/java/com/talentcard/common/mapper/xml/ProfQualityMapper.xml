@@ -126,4 +126,11 @@
     set `status` = #{status,jdbcType=TINYINT}
     where cert_id = #{certId,jdbcType=BIGINT}
   </update>
+
+  <select id="selectByCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_prof_quality
+    where cert_id = #{certId,jdbcType=BIGINT}
+  </select>
 </mapper>
