@@ -2,13 +2,13 @@ package com.talentcard.web.service.impl;
 
 import com.talentcard.common.bo.RoleAuthorityAddNameBO;
 import com.talentcard.common.bo.RoleAuthorityBO;
-import com.talentcard.common.mapper.AuthorityMapper;
 import com.talentcard.common.mapper.RoleAuthorityMapper;
 import com.talentcard.common.mapper.UserMapper;
 import com.talentcard.common.pojo.UserPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ILoginService;
 import com.talentcard.web.utils.Md5Util;
+import com.talentcard.web.vo.LoginVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
 import java.util.List;
-
-import static com.talentcard.web.controller.LoginController.VERIFY_ID;
 
 /**
  * @author: jiangzhaojie
@@ -43,7 +41,7 @@ public class LoginServiceImpl implements ILoginService {
         // 1.首先先根据唯一用户名查询当前用户的信息，得到userId
         UserPO userPo = userMapper.queryByName(username);
         // 2. 若不为空，则校验密码是否正确，若不对，提示无此用户名
-        if (null!=userPo) {
+        if (null != userPo) {
             // 查询到的编码是加密过的
             String realPassword = userPo.getPassword();
             try {
@@ -70,19 +68,24 @@ public class LoginServiceImpl implements ILoginService {
             return new ResultVO(2103);
         }
         // 4 . 将用户信息存放到session当中
-        session.setAttribute("userId",userPo.getUserId());
-        session.setAttribute("username",userPo.getUsername());
+        session.setAttribute("userId", userPo.getUserId());
+        session.setAttribute("username", userPo.getUsername());
         logger.info("username: {}", userPo.getUsername());
         // 5 . 获取当前用户权限，决定展示内容区别
         List<RoleAuthorityAddNameBO> bos = roleAuthorityMapper.queryByRoleIdName(userPo.getRoleId());
         RoleAuthorityBO roleAuthorityBO = RoleAuthorityBO.convert(bos);
         session.setAttribute("userAuthority", roleAuthorityBO);
         session.setMaxInactiveInterval(60 * 60 * 2);
-        return new ResultVO(1000,username);
+
+        LoginVO vo = new LoginVO();
+        vo.setUsername(username);
+        vo.setRole(roleAuthorityBO);
+        return new ResultVO<>(1000, vo);
     }
 
     /**
      * 退出登录
+     *
      * @param request
      * @return
      */
