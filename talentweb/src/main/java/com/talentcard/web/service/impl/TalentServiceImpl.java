@@ -97,7 +97,7 @@ public class TalentServiceImpl implements ITalentService {
         }
         Long currentCardId = Integer.valueOf(oldCard.get("cardId").toString()).longValue();
         if (!cardId.equals(currentCardId)) {
-            this.changeTalentCard(talentId,cardId);
+            this.changeTalentCard(talentId, cardId);
         }
         return new ResultVO(1000);
     }
@@ -122,6 +122,7 @@ public class TalentServiceImpl implements ITalentService {
         CertificationPO oldCertificationPO = certificationMapper.selectByPrimaryKey(oldCertId);
         oldCertificationPO.setCertId(null);
         oldCertificationPO.setStatus(newCStatus);
+        oldCertificationPO.setType((byte) 3);
         certificationMapper.add(oldCertificationPO);
         Long newCertId = oldCertificationPO.getCertId();
         //学历
