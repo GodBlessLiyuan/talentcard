@@ -53,7 +53,7 @@ public class CardServiceImpl implements ICardService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO add(String name, String title, String notice,
                         String description, String prerogative, MultipartFile background,
-                        String initialWord, String initialNumber, Byte status, String color,
+                        String initialWord, String initialNumber, String businessDescription, Byte status, String color,
                         HttpSession httpSession) {
         //判断是否已经存在该初始字段
         Integer ifExistInitialWord = cardMapper.ifExistInitialWord(initialWord);
@@ -134,6 +134,7 @@ public class CardServiceImpl implements ICardService {
         cardPO.setDr((byte) 1);
         cardPO.setLogoUrl(logoUrl);
         cardPO.setWaitingMemberNum((long) 0);
+        cardPO.setBusinessDescription(businessDescription);
         //从session里取出创建者信息
         logger.info("session: {}", httpSession);
         String createPerson = (String) httpSession.getAttribute("username");
@@ -146,9 +147,10 @@ public class CardServiceImpl implements ICardService {
     }
 
     @Override
-    public ResultVO edit(Long cardId, String title, String description, MultipartFile background, HttpSession httpSession) {
+    public ResultVO edit(Long cardId, String title, String businessDescription, MultipartFile background, HttpSession httpSession) {
         if ((title == null || title.equals(""))
-                && (description == null || description.equals("")) && background == null) {
+                && (businessDescription == null || businessDescription.equals(""))
+                && background == null) {
             return new ResultVO(2324, "会员卡编辑失败，啥参数都没给啊");
         }
         CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
@@ -178,33 +180,33 @@ public class CardServiceImpl implements ICardService {
          * 根据编辑条件，决定传的json参数
          */
         //背景图
-        if (pictureCDN == null || pictureCDN != "") {
+        if (pictureCDN != null && !pictureCDN.equals("")) {
             memberCard.put("background_pic_url", pictureCDN);
             cardPO.setPicture(picture);
             cardPO.setPictureCdn(pictureCDN);
         }
         //卡片标题
-        if (title != null && title != "") {
+        if (title != null && !title.equals("")) {
             baseInfo.put("title", title);
             cardPO.setTitle(title);
         }
-        //卡片会员卡详情---使用须知
-        if (description != null && description != "") {
-            baseInfo.put("description", description);
-            cardPO.setDescription(description);
-        }
+
         memberCard.put("base_info", baseInfo);
         paramObject.put("member_card", memberCard);
 
         String url = "https://api.weixin.qq.com/card/update?access_token="
                 + AccessTokenUtil.getAccessToken();
-        JSONObject result = WechatApiUtil.postRequest(url, paramObject);
+        if ((pictureCDN != null && !pictureCDN.equals(""))
+                || (title != null && !title.equals(""))) {
+            JSONObject result = WechatApiUtil.postRequest(url, paramObject);
+        }
         //从session里取出更新者信息
         String updatePerson = (String) httpSession.getAttribute("username");
         cardPO.setUpdatePerson(updatePerson);
         cardPO.setUpdateTime(new Date());
+        cardPO.setBusinessDescription(businessDescription);
         cardMapper.updateByPrimaryKeySelective(cardPO);
-        return new ResultVO(1000, result);
+        return new ResultVO(1000);
     }
 
     @Override

@@ -151,4 +151,11 @@
     set e.`status` = #{status}
     where e.cert_id = #{certId,jdbcType=BIGINT}
   </update>
+
+  <select id="selectByCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_education
+    where cert_id = #{certId,jdbcType=BIGINT}
+  </select>
 </mapper>

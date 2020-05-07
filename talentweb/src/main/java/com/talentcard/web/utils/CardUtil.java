@@ -1,10 +1,7 @@
 package com.talentcard.web.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.talentcard.common.pojo.wechat.create.BaseInfoPO;
-import com.talentcard.common.pojo.wechat.create.CustomCell1PO;
-import com.talentcard.common.pojo.wechat.create.MemberCardPO;
-import com.talentcard.common.pojo.wechat.create.WxCardPO;
+import com.talentcard.common.pojo.wechat.create.*;
 import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.vo.ResultVO;
 import org.springframework.core.io.FileSystemResource;
@@ -24,6 +21,7 @@ import java.io.File;
 public class CardUtil {
     /**
      * 基本卡
+     *
      * @param brandName
      * @param title
      * @param notice
@@ -63,6 +61,13 @@ public class CardUtil {
 
         memberCardPO.setBase_info(baseInfoPO);
         memberCardPO.setPrerogative(prerogative);
+        /**
+         * custom_field 1、2、3
+         * 持卡人等，会员卡下面的三个
+         */
+        CustomFiledPO customFiled1 = new CustomFiledPO();
+        customFiled1.setName("持卡人");
+        memberCardPO.setCustom_field1(customFiled1);
 
         //基础卡没有我的申请
 //        CustomCell1PO customCell1PO = new CustomCell1PO();
@@ -124,6 +129,20 @@ public class CardUtil {
 
         memberCardPO.setBase_info(baseInfoPO);
         memberCardPO.setPrerogative(prerogative);
+
+        /**
+         * custom_field 1、2、3
+         * 持卡人等，会员卡下面的三个
+         */
+        CustomFiledPO customFiled1 = new CustomFiledPO();
+        customFiled1.setName("持卡人");
+        CustomFiledPO customFiled2 = new CustomFiledPO();
+        customFiled2.setName("测试用1");
+        CustomFiledPO customFiled3 = new CustomFiledPO();
+        customFiled3.setName("测试用2");
+        memberCardPO.setCustom_field1(customFiled1);
+        memberCardPO.setCustom_field2(customFiled2);
+        memberCardPO.setCustom_field3(customFiled3);
 
         //我的申请
         CustomCell1PO customCell1PO = new CustomCell1PO();

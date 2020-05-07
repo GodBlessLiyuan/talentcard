@@ -155,6 +155,7 @@ public class TalentServiceImpl implements ITalentService {
         certificationPO.setStatus(status);
         certificationPO.setTalentId(talentId);
         certificationPO.setCurrentType(currentType);
+        certificationPO.setType((byte) 1);
         certificationMapper.add(certificationPO);
         Long certificationId = certificationPO.getCertId();
 
@@ -192,6 +193,9 @@ public class TalentServiceImpl implements ITalentService {
         UserCurrentInfoPO userCurrentInfoPO = new UserCurrentInfoPO();
         userCurrentInfoPO.setTalentId(talentId);
         userCurrentInfoPO.setEducation(jsonObject.getInteger("education"));
+        userCurrentInfoPO.setSchool(jsonObject.getString("school"));
+        userCurrentInfoPO.setFirstClass(jsonObject.getByte("firstClass"));
+        userCurrentInfoPO.setMajor(jsonObject.getString("major"));
         userCurrentInfoPO.setPtCategory(jsonObject.getInteger("profTitleCategory"));
         userCurrentInfoPO.setPtInfo(jsonObject.getString("profTitleInfo"));
         userCurrentInfoPO.setPqCategory(jsonObject.getInteger("profQualityCategory"));
@@ -313,6 +317,7 @@ public class TalentServiceImpl implements ITalentService {
         certificationPO.setStatus(status);
         certificationPO.setTalentId(talentId);
         certificationPO.setCurrentType((byte) 4);
+        certificationPO.setType((byte) 2);
         certificationMapper.add(certificationPO);
         Long certificationId = certificationPO.getCertId();
 

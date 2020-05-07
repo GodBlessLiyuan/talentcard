@@ -8,9 +8,10 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="current_type" jdbcType="TINYINT" property="currentType"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
     </resultMap>
     <sql id="Base_Column_List">
-    cert_id, talent_id, political, create_time, `status`, current_type
+    cert_id, talent_id, political, create_time, `status`, current_type, `type`
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -24,11 +25,11 @@
   </delete>
     <insert id="insert" parameterType="com.talentcard.common.pojo.CertificationPO">
     insert into t_certification (cert_id, talent_id, political, 
-      create_time, `status`, current_type
-      )
+      create_time, `status`, current_type, 
+      `type`)
     values (#{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{political,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{currentType,jdbcType=TINYINT}
-      )
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{currentType,jdbcType=TINYINT}, 
+      #{type,jdbcType=TINYINT})
   </insert>
     <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CertificationPO">
         insert into t_certification
@@ -51,6 +52,9 @@
             <if test="currentType != null">
                 current_type,
             </if>
+            <if test="type != null">
+                `type`,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="certId != null">
@@ -70,6 +74,9 @@
             </if>
             <if test="currentType != null">
                 #{currentType,jdbcType=TINYINT},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=TINYINT},
             </if>
         </trim>
     </insert>
@@ -91,6 +98,9 @@
             <if test="currentType != null">
                 current_type = #{currentType,jdbcType=TINYINT},
             </if>
+            <if test="type != null">
+                `type` = #{type,jdbcType=TINYINT},
+            </if>
         </set>
         where cert_id = #{certId,jdbcType=BIGINT}
     </update>
@@ -100,23 +110,25 @@
       political = #{political,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=TINYINT},
-      current_type = #{currentType,jdbcType=TINYINT}
+      current_type = #{currentType,jdbcType=TINYINT},
+      `type` = #{type,jdbcType=TINYINT}
     where cert_id = #{certId,jdbcType=BIGINT}
   </update>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="certId"
             parameterType="com.talentcard.common.pojo.CertificationPO">
     insert into t_certification (cert_id, talent_id, political,
-      create_time, `status`, current_type
+      create_time, `status`, current_type, `type`
       )
     values (#{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{political,jdbcType=CHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{currentType,jdbcType=TINYINT}
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{currentType,jdbcType=TINYINT},
+      #{type,jdbcType=TINYINT}
       )
   </insert>
 
 
     <select id="queryAllCert" parameterType="java.util.Map" resultType="com.talentcard.common.bo.TalentCertStatusBO">
-        select  t.talent_id as talentId, t.name, t.sex, e.education, pt.category as ptCategory,
+        select t.talent_id as talentId, t.name, t.sex, e.education, pt.category as ptCategory,
         pq.category as pqCategory, ca.result, ce.create_time as createTime, ce.cert_id as certId
         from t_talent t
         left join t_certification ce on t.talent_id = ce.talent_id
@@ -125,44 +137,44 @@
         left join t_prof_quality pq on ce.cert_id = pq.cert_id
         <!--找出相同cert_id最新的时间记录-->
         left join (select a.cert_id, a.create_time, a.result from t_cert_approval a inner join
-        ( select cert_id, max(create_time) as maxcreatetime  from t_cert_approval group by cert_id) b
+        ( select cert_id, max(create_time) as maxcreatetime from t_cert_approval group by cert_id) b
         on a.cert_id = b.cert_id and a.create_time = b.maxcreatetime) as ca ON ca.cert_id = ce.cert_id
         where (ce.status = 1 or ce.status = 3 or ce.status = 10 or ce.status = 4)
-            <if test="name != null and name != ''">
-                and t.name like '%' #{name} '%'
-            </if>
-            <if test="sex != null and sex != ''">
-                and t.sex = #{sex}
-            </if>
-            <if test="education != null and education != ''">
-                and e.education = #{education}
-            </if>
-            <if test="pqCategory != null and pqCategory != ''">
-                and pq.category = #{pqCategory}
-            </if>
-            <if test="ptCategory != null and ptCategory != ''">
-                and pt.category = #{ptCategory}
-            </if>
+        <if test="name != null and name != ''">
+            and t.name like '%' #{name} '%'
+        </if>
+        <if test="sex != null and sex != ''">
+            and t.sex = #{sex}
+        </if>
+        <if test="education != null and education != ''">
+            and e.education = #{education}
+        </if>
+        <if test="pqCategory != null and pqCategory != ''">
+            and pq.category = #{pqCategory}
+        </if>
+        <if test="ptCategory != null and ptCategory != ''">
+            and pt.category = #{ptCategory}
+        </if>
         <!--处理待审批result==null 的情况-->
-            <if test="result != null and result != ''">
-                <choose>
-                    <when test="flag != null and flag != ''">
-                        and ca.result = #{flag}
-                    </when>
-                    <otherwise>
-                        and ca.result is null
-                    </otherwise>
-                </choose>
-            </if>
-            <if test="(startTime != null and startTime != '') and (endTime != null and endTime != '')">
-                and ce.create_time between #{startTime} AND #{endTime}
-            </if>
-            <if test="(startTime != null and startTime != '') and (endTime == null || endTime == '')">
-                AND ce.create_time &gt;= #{startTime}
-            </if>
-            <if test="(startTime != null || startTime != '') and (endTime != null and endTime != '')">
-                AND ce.create_time &lt;= #{endTime}
-            </if>
+        <if test="result != null and result != ''">
+            <choose>
+                <when test="flag != null and flag != ''">
+                    and ca.result = #{flag}
+                </when>
+                <otherwise>
+                    and ca.result is null
+                </otherwise>
+            </choose>
+        </if>
+        <if test="(startTime != null and startTime != '') and (endTime != null and endTime != '')">
+            and ce.create_time between #{startTime} AND #{endTime}
+        </if>
+        <if test="(startTime != null and startTime != '') and (endTime == null || endTime == '')">
+            AND ce.create_time &gt;= #{startTime}
+        </if>
+        <if test="(startTime != null || startTime != '') and (endTime != null and endTime != '')">
+            AND ce.create_time &lt;= #{endTime}
+        </if>
         order by
         <!--  将待审批的记录置顶，按时间排序-->
         IFNULL(ca.result,0) = 0 desc, ce.create_time desc
@@ -183,7 +195,7 @@
     and uc.`status` = 2
   </select>
 
-<!--  审批查看详情的接口,状态码要保持1，3，10，4. 人才卡status=2使用中状态-->
+    <!--  审批查看详情的接口,状态码要保持1，3，10，4. 人才卡status=2使用中状态-->
     <select id="queryAllMsgLook" resultType="com.talentcard.common.bo.ApprovalBO">
     select t.talent_id as talentId, t.`name`, t.sex, t.id_card as idCard, t.phone, c.cert_id as certId, c.political, t.industry, t.work_unit as workUnit,
     t.create_time as createTime,  e.education, e.school, e.major, e.educ_picture as educPic,uc.`name` as cardName, uc.num as cardNum,
@@ -200,20 +212,21 @@
     (pq.status = 1 or pq.status = 3 or pq.status = 10 or pq.status = 4) and uc.`status` = 2 limit 1
   </select>
 
-  <update id="updateStatusById">
+    <update id="updateStatusById">
     update t_certification cert
     set cert.status = #{status}
     where cert.talent_id = #{talentId,jdbcType=BIGINT}
     and
     cert.status = #{currentStatus,jdbcType=BIGINT}
   </update>
-  <select id="findCurrentCertification" parameterType="java.lang.Long" resultType="com.talentcard.common.pojo.CertificationPO">
-    select
-    <include refid="Base_Column_List"/>
-    from t_certification c
-    where c.talent_id = #{talentId,jdbcType=BIGINT}
-    and c.status= 1
-  </select>
+    <select id="findCurrentCertification" parameterType="java.lang.Long"
+            resultType="com.talentcard.common.pojo.CertificationPO">
+        select
+        <include refid="Base_Column_List"/>
+        from t_certification c
+        where c.talent_id = #{talentId,jdbcType=BIGINT}
+        and c.status= 1
+    </select>
     <select id="ifOldCardIsBaseCard" resultType="java.lang.Integer">
         select
         count(c.cert_id)
@@ -233,4 +246,12 @@
         where t.open_id = #{openId,jdbcType=BIGINT}
         and c.status= 3
     </select>
+
+    <!--  查询所有待审批的认证数目-->
+    <select id="findWaitApprovalNum" resultType="java.lang.Integer">
+    SELECT COUNT(c.cert_id)
+    FROM t_certification c
+    where c.status = 3
+    and c.type = 2
+  </select>
 </mapper>

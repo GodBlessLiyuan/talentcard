@@ -45,21 +45,22 @@ public class CardController {
                         @RequestParam(value = "background") MultipartFile background,
                         @RequestParam(value = "initialWord") String initialWord,
                         @RequestParam(value = "initialNumber") String initialNumber,
+                        @RequestParam(value = "businessDescription", required = false, defaultValue = "") String businessDescription,
                         @RequestParam(value = "status") Byte status,
                         @RequestParam(value = "color", required = false, defaultValue = "Color030") String color,
                         HttpSession httpSession) {
         return iCardService.add(name, title, notice, description, prerogative,
-                background, initialWord, initialNumber, status, color, httpSession);
+                background, initialWord, initialNumber, businessDescription, status, color, httpSession);
     }
 
 
     @PostMapping("edit")
     public ResultVO edit(@RequestParam(value = "cardId") Long cardId,
                          @RequestParam(value = "title", required = false, defaultValue = "") String title,
-                         @RequestParam(value = "description", required = false, defaultValue = "") String description,
+                         @RequestParam(value = "businessDescription", required = false, defaultValue = "") String businessDescription,
                          @RequestParam(value = "background", required = false) MultipartFile background,
                          HttpSession httpSession) {
-        return iCardService.edit(cardId, title, description, background, httpSession);
+        return iCardService.edit(cardId, title, businessDescription, background, httpSession);
     }
 
     @PostMapping("query")

@@ -15,10 +15,10 @@ import java.util.HashMap;
 public interface ICardService {
     ResultVO add(String name, String title, String notice, String description,
                  String prerogative, MultipartFile background,
-                 String initialWord, String initialNumber, Byte status, String color,
+                 String initialWord, String initialNumber, String businessDescription, Byte status, String color,
                  HttpSession httpSession);
 
-    ResultVO edit(Long cardId, String title, String description, MultipartFile background, HttpSession httpSession);
+    ResultVO edit(Long cardId, String title, String businessDescription, MultipartFile background, HttpSession httpSession);
 
     ResultVO query(HashMap<String, Object> hashMap);
 
