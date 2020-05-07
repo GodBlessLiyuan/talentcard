@@ -113,9 +113,12 @@ public class TalentServiceImpl implements ITalentService {
         }
         //身份证18位校验
         String idCard = jsonObject.getString("idCard");
+        if (idCard.length() != 18) {
+            return new ResultVO(2306, "身份证不是18位或者倒数第二位不是数字");
+        }
         //判断身份证号倒数第二位是否是数字
         Boolean strResult = Character.isDigit(idCard.charAt(16));
-        if (idCard.length() != 18 || strResult == false) {
+        if (strResult == false) {
             return new ResultVO(2306, "身份证不是18位或者倒数第二位不是数字");
         }
         //身份证唯一性校验
