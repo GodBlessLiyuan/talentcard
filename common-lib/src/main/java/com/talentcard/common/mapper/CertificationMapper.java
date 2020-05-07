@@ -84,4 +84,12 @@ public interface CertificationMapper extends BaseMapper<CertificationPO, Long> {
      * @return
      */
     Integer findWaitApprovalNum();
+
+    /**
+     * 根据认证ID更新C表中的认证状态
+     * @param certId
+     * @param status
+     * @return
+     */
+    int updateStatusByCertId(@Param("certId") Long certId, @Param("status") Byte status);
 }

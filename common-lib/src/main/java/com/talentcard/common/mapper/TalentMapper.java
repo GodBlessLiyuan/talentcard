@@ -143,4 +143,11 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
      * @return
      */
     TalentPO queryByOpenid(String openid);
+
+    /***
+     * 根据talentId查找当前使用的高级 旧卡
+     * status=1的卡
+     * @param talentId
+     */
+    HashMap<String, Object> findCurrentSeniorCard(@Param("talentId") Long talentId);
 }

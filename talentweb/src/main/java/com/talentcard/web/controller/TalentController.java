@@ -22,7 +22,7 @@ import java.util.Map;
 @RestController
 public class TalentController {
     @Autowired
-    private ITalentService service;
+    private ITalentService iTalentService;
 
     @RequestMapping("query")
     public PageInfoVO<TalentVO> query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -49,12 +49,12 @@ public class TalentController {
         reqMap.put("quality", quality);
         reqMap.put("card", card);
 
-        return service.query(pageNum, pageSize, reqMap);
+        return iTalentService.query(pageNum, pageSize, reqMap);
     }
 
     @RequestMapping("detail")
     public ResultVO detail(@RequestParam(value = "tid") Long tid) {
-        return service.detail(tid);
+        return iTalentService.detail(tid);
     }
 
     @RequestMapping("queryCert")
@@ -83,6 +83,13 @@ public class TalentController {
         reqMap.put("card", card);
         reqMap.put("category", category);
 
-        return service.queryCert(pageNum, pageSize, reqMap);
+        return iTalentService.queryCert(pageNum, pageSize, reqMap);
+    }
+
+    @RequestMapping("edit")
+    public ResultVO edit(@RequestParam(value = "talentId") Long talentId,
+                         @RequestParam(value = "cardId") Long cardId) {
+        iTalentService.edit(talentId, cardId);
+        return new ResultVO(1000);
     }
 }

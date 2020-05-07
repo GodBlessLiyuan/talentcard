@@ -20,6 +20,7 @@ public class WebParameterUtil {
     private static String myInfoAlreadyCertificateUrl;
     private static String myApplicationUrl;
     private static String publicPath;
+    private static String freeBenefitsUrl;
 
     public static String getIndexUrl() {
         return indexUrl;
@@ -51,6 +52,10 @@ public class WebParameterUtil {
 
     public static String getPublicPath() {
         return publicPath;
+    }
+
+    public static String getFreeBenefitsUrl() {
+        return freeBenefitsUrl;
     }
 
     @Value("${project.indexUrl}")
@@ -91,5 +96,10 @@ public class WebParameterUtil {
     @Value("${file.publicPath}")
     private void setPublicPath(String publicPath) {
         WebParameterUtil.publicPath = publicPath;
+    }
+
+    @Value("${project.freeBenefitsUrl}")
+    private void setFreeBenefitsUrl(String freeBenefitsUrl) {
+        WebParameterUtil.freeBenefitsUrl = freeBenefitsUrl;
     }
 }

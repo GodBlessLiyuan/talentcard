@@ -100,16 +100,14 @@ public class CardController {
                                    @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime,
                                    @RequestParam(value = "cardNum", required = false, defaultValue = "") String cardNum) throws ParseException {
         HashMap<String, Object> hashMap = new HashMap<>();
-        //String转Date
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//注意月份是MM
         if (!startTime.equals("")) {
-            Date sTime = simpleDateFormat.parse(startTime);
-            hashMap.put("startTime", sTime);
+            startTime = startTime + " 00:00:00";
         }
         if (!endTime.equals("")) {
-            Date eTime = simpleDateFormat.parse(endTime);
-            hashMap.put("endTime", eTime);
+            endTime = endTime + " 23:59:59";
         }
+        hashMap.put("startTime", startTime);
+        hashMap.put("endTime", endTime);
         hashMap.put("title", title);
         hashMap.put("cardNum", cardNum);
         return iCardService.findSeniorCard(hashMap);

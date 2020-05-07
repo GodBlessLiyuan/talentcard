@@ -6,9 +6,9 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.vo.ResultVO;
-import com.talentcard.wechat.controller.WxCardController;
 import com.talentcard.wechat.service.IEventService;
 import com.talentcard.wechat.utils.AccessTokenUtil;
+import com.talentcard.wechat.utils.TalentInfoUpdateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,16 +60,9 @@ public class EventServiceImpl implements IEventService {
             logger.info("第一次激活");
             //第一次激活
             Long certId = newCard.getCertId();
-            //更新认证表
-            CertificationPO certificationPO = certificationMapper.selectByPrimaryKey(certId);
-            //certification表和三表，更新status=5:基础卡正在使用
+            //4表，更新status=5:基础卡正在使用
             Byte status = 5;
-            certificationPO.setStatus(status);
-            certificationMapper.updateByPrimaryKeySelective(certificationPO);
-            //更新三表
-            educationMapper.updateStatusByCertId(certId, status);
-            profTitleMapper.updateStatusByCertId(certId, status);
-            profQualityMapper.updateStatusByCertId(certId, status);
+            TalentInfoUpdateUtil.fourTableUpdate(certId, status);
             //user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
             userCardMapper.updateStatusById(newCard.getTalentId(), (byte) 1, (byte) 2);
 
@@ -83,6 +76,10 @@ public class EventServiceImpl implements IEventService {
                 return new ResultVO(2212, "卡当前数量是0，不能再减少了！");
             }
             cardMapper.updateByPrimaryKeySelective(newCardPO);
+            Long newCardTalentId = newCard.getTalentId();
+            //更新customField
+            TalentInfoUpdateUtil.updateJuniorCardCustomField(newCard.getCode(),
+                    newCard.getWxCardId(), newCardTalentId);
         } else {
             /**
              * 高级卡
@@ -96,6 +93,7 @@ public class EventServiceImpl implements IEventService {
             if (newCard == null) {
                 return new ResultVO(2600, "数据库无待领取的卡");
             }
+            Long newCardTalentId = newCard.getTalentId();
             //更新user_current_info表
             UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByPrimaryKey(newCard.getUciId());
             Long newCardCertId = newCard.getCertId();
@@ -141,30 +139,33 @@ public class EventServiceImpl implements IEventService {
             ActivcateBO oldCard;
             //判断旧卡是基本卡还是高级卡，基本卡就改为失效9，高级卡改为失效10
             Integer ifOldCardIsBaseCard = certificationMapper.ifOldCardIsBaseCard(openId);
+            //说明c表里找不到状态9的，代表这是基本卡换高级卡
             if (ifOldCardIsBaseCard == 0) {
                 //正在使用的卡（旧卡）是基本卡
                 oldCardFormerStatus = 5;
                 oldCardStatus = 9;
                 oldCard = talentMapper.activate(openId, oldCardFormerStatus, (byte) 2);
-                //说明c表里找不到状态9的，代表这是基本卡换高级卡
+                //找到了状态9的，说明这是高级卡换高级卡
             } else {
                 //正在使用的卡（旧卡）是高级卡，高级卡换高级卡
                 oldCardFormerStatus = 1;
                 oldCardStatus = 10;
                 oldCard = talentMapper.activate(openId, oldCardFormerStatus, (byte) 2);
-                //找到了状态9的，说明这是高级卡换高级卡
             }
             /**
-             * 如果找不到旧卡，则是用户弱智把当前高级卡删了！！！
+             * 如果找不到旧卡，则是用户弱智把当前卡删了！！！
+             * 或者高级卡更换高级卡
              */
             if (oldCard == null) {
                 //user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
                 userCardMapper.updateStatusById(newCard.getTalentId(), (byte) 1, (byte) 2);
-                return new ResultVO(1000, "这货把当前卡删了，真蠢");
-
+                TalentInfoUpdateUtil.fourTableUpdate(newCardCertId, (byte) 1);
+                //更新customField
+                TalentInfoUpdateUtil.updateSeniorCardCustomField(newCard.getCode(),
+                        newCard.getWxCardId(), newCardTalentId);
+                return new ResultVO(1000, "虽然是领取高级卡，但没有操作，用户删卡或者高级卡更换");
             }
             //取出旧卡的talentId和certId
-            Long oldTalentId = oldCard.getTalentId();
             Long oldCertId = oldCard.getCertId();
 
             //取出旧卡oldCardPO
@@ -178,19 +179,12 @@ public class EventServiceImpl implements IEventService {
             //旧卡数量-1
             cardMapper.updateByPrimaryKeySelective(oldCardPO);
             //旧卡4表从状态5或者1改为状态9或10
-            certificationMapper.updateStatusById(oldTalentId, oldCardFormerStatus, oldCardStatus);
-            educationMapper.updateStatusByCertId(oldCertId, oldCardStatus);
-            profTitleMapper.updateStatusByCertId(oldCertId, oldCardStatus);
-            profQualityMapper.updateStatusByCertId(oldCertId, oldCardStatus);
+            TalentInfoUpdateUtil.fourTableUpdate(oldCertId, oldCardStatus);
 
             //2.certification表和三表，更新status=1:正在使用
             Byte newCardStatus = 1;
             //新卡4表状态从4变为1
-            certificationMapper.updateStatusById(oldTalentId, (byte) 4, newCardStatus);
-            educationMapper.updateStatusByCertId(newCardCertId, newCardStatus);
-            profTitleMapper.updateStatusByCertId(newCardCertId, newCardStatus);
-            profQualityMapper.updateStatusByCertId(newCardCertId, newCardStatus);
-
+            TalentInfoUpdateUtil.fourTableUpdate(newCardCertId, newCardStatus);
             //user_card更新（查询status=2的卡，改为status=3）（之前正在使用的旧卡变为废弃）
             userCardMapper.updateStatusById(newCard.getTalentId(), (byte) 2, (byte) 3);
             //user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
@@ -209,23 +203,10 @@ public class EventServiceImpl implements IEventService {
                 return new ResultVO(2330, "激活失败");
             }
             logger.info("销毁旧卡", result);
+            //更新customField
+            TalentInfoUpdateUtil.updateSeniorCardCustomField(newCard.getCode(),
+                    newCard.getWxCardId(), newCardTalentId);
         }
-        /**
-         * 激活，更改持卡人信息
-         */
-        String cardHolderUrl = "https://api.weixin.qq.com/card/membercard/updateuser?access_token="
-                + AccessTokenUtil.getAccessToken();
-        JSONObject customField1 = new JSONObject();
-        customField1.put("code", newCard.getCode());
-        customField1.put("card_id", newCard.getWxCardId());
-        //持卡人姓名
-        TalentPO cardHolder = talentMapper.selectByPrimaryKey(newCard.getTalentId());
-        String cardHolderName = cardHolder.getName();
-        if (cardHolderName.length() > 4) {
-            cardHolderName = cardHolderName.substring(0, 4);
-        }
-        customField1.put("custom_field_value1", cardHolderName);
-        WechatApiUtil.postRequest(cardHolderUrl, customField1);
         return new ResultVO(1000, result);
     }
 
@@ -250,17 +231,17 @@ public class EventServiceImpl implements IEventService {
         //正在使用的卡改为废弃的状态：9 or 10。9是基本卡废弃；10是高级卡废弃
         Byte dropCardStatus;
         //正在使用的卡改为待领取的状态：2 or 4。2是基本卡待领取；4是高级卡待领取
-        Byte oldCardStatus;
+        Byte waitingReceiveCardStatus;
         if (baseCard != null) {
-            //基本卡
+            //正在使用的是基本卡
             currentCard = baseCard;
             dropCardStatus = 9;
-            oldCardStatus = 2;
+            waitingReceiveCardStatus = 2;
         } else if (highCard != null) {
-            //高级卡
+            //正在使用的是高级卡
             currentCard = highCard;
             dropCardStatus = 10;
-            oldCardStatus = 4;
+            waitingReceiveCardStatus = 4;
         } else {
             return new ResultVO(2210, "没有正在使用的卡");
         }
@@ -269,33 +250,27 @@ public class EventServiceImpl implements IEventService {
             return new ResultVO(2211, "当前正在使用的卡和内部卡不一致！");
         }
         if (ifExistGetCard != null) {
-            //有待领取的卡，把正在使用的卡改为失效
+            /**
+             * 有待领取的卡，把正在使用的卡改为失效
+             */
             Long talentId = currentCard.getTalentId();
             //c表status=1找正在使用的certId
             Long certId = currentCard.getCertId();
             //4表，status从1或者5改成10或者9
-            CertificationPO certificationPO = certificationMapper.selectByPrimaryKey(certId);
-            certificationPO.setStatus(dropCardStatus);
-            certificationMapper.updateByPrimaryKeySelective(certificationPO);
-            educationMapper.updateStatusByCertId(certId, dropCardStatus);
-            profTitleMapper.updateStatusByCertId(certId, dropCardStatus);
-            profQualityMapper.updateStatusByCertId(certId, dropCardStatus);
+            TalentInfoUpdateUtil.fourTableUpdate(certId, dropCardStatus);
             //uc表，status从2改为3
             userCardMapper.updateStatusById(talentId, (byte) 2, (byte) 3);
         } else {
-            //没有待领取的卡，则把正在使用的卡改为待领取
+            /**
+             * 没有待领取的卡，则把正在使用的卡改为待领取
+             */
             Long talentId = currentCard.getTalentId();
             Long certId = currentCard.getCertId();
             CardPO cardPO = cardMapper.selectByPrimaryKey(currentCard.getCardId());
             //uc的status=2的改为=1
             userCardMapper.updateStatusById(talentId, (byte) 2, (byte) 1);
             //4表status=5的改为=2或者4
-            CertificationPO certificationPO = certificationMapper.selectByPrimaryKey(certId);
-            certificationPO.setStatus(oldCardStatus);
-            certificationMapper.updateByPrimaryKeySelective(certificationPO);
-            educationMapper.updateStatusByCertId(certId, oldCardStatus);
-            profTitleMapper.updateStatusByCertId(certId, oldCardStatus);
-            profQualityMapper.updateStatusByCertId(certId, oldCardStatus);
+            TalentInfoUpdateUtil.fourTableUpdate(certId, waitingReceiveCardStatus);
         }
         //无论是有待领取的卡，还是没有待领取的卡，正在使用的卡都数量-1，待领取数量+1
         CardPO cardPO = cardMapper.selectByPrimaryKey(currentCard.getCardId());

@@ -54,6 +54,8 @@ public class MessageDTO {
 
     /**
      * 模版编号
+     * 1是领卡
+     * 2是驳回
      */
 
     private Integer templateId;

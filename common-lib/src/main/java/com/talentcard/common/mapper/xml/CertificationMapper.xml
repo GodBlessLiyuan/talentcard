@@ -254,4 +254,10 @@
     where c.status = 3
     and c.type = 2
   </select>
+
+    <update id="updateStatusByCertId">
+    update t_certification c
+    set c.`status` = #{status}
+    where c.cert_id = #{certId,jdbcType=BIGINT}
+  </update>
 </mapper>

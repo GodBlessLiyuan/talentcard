@@ -212,10 +212,10 @@ public class TalentServiceImpl implements ITalentService {
         //设置当前编号，组合起来，并且更新卡的currentNum
         String membershipNumber = cardPO.getInitialWord();
         Integer initialNumLength = cardPO.getInitialNum().length();
-        Integer currentNumlength = cardPO.getCurrNum().toString().length();
+        Integer currentNumLength = cardPO.getCurrNum().toString().length();
         //补0
-        if ((initialNumLength - currentNumlength) > 0) {
-            for (int i = 0; i < (initialNumLength - currentNumlength); i++) {
+        if ((initialNumLength - currentNumLength) > 0) {
+            for (int i = 0; i < (initialNumLength - currentNumLength); i++) {
                 membershipNumber = membershipNumber + "0";
             }
         }

@@ -624,4 +624,17 @@
         from t_talent
         where open_id = #{openId,jdbcType=CHAR} and dr = 1
     </select>
+
+    <select id="findCurrentSeniorCard" resultType="java.util.HashMap">
+        select t.talent_id as talentId, c.cert_id as certId, uc.card_id as cardId,
+        uc.uc_id as ucId
+        from t_talent t
+        left join t_certification c
+        on t.talent_id = c.talent_id
+        left join t_user_card uc
+        on t.talent_id = uc.talent_id
+        where t.talent_id = #{talentId,jdbcType=BIGINT}
+        and c.status = 1
+        and uc.status = 2
+    </select>
 </mapper>

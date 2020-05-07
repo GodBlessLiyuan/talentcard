@@ -76,6 +76,7 @@ CREATE TABLE t_card
 	prerogative varchar(2048),
 	initial_word char(32) NOT NULL,
 	initial_num char(32) NOT NULL,
+	business_description varchar(2048),
 	create_person char(16),
 	update_person char(16),
 	create_time datetime,

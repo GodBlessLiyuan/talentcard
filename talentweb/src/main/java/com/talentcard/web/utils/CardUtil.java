@@ -137,9 +137,11 @@ public class CardUtil {
         CustomFiledPO customFiled1 = new CustomFiledPO();
         customFiled1.setName("持卡人");
         CustomFiledPO customFiled2 = new CustomFiledPO();
-        customFiled2.setName("测试用1");
+        customFiled2.setName("性别");
+        customFiled2.setUrl(WebParameterUtil.getMyInfoAlreadyCertificateUrl());
         CustomFiledPO customFiled3 = new CustomFiledPO();
-        customFiled3.setName("测试用2");
+        customFiled3.setName("免费权益");
+        customFiled3.setUrl(WebParameterUtil.getFreeBenefitsUrl());
         memberCardPO.setCustom_field1(customFiled1);
         memberCardPO.setCustom_field2(customFiled2);
         memberCardPO.setCustom_field3(customFiled3);

@@ -31,8 +31,8 @@ public class CertController {
                                     @RequestParam(value = "ptCategory", required = false) Integer ptCategory,
                                     @RequestParam(value = "education", required = false) Integer education,
                                     @RequestParam(value = "result", required = false) String result,
-                                    @RequestParam(value = "startTime", required = false) String startTime,
-                                    @RequestParam(value = "endTime", required = false) String endTime){
+                                    @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
+                                    @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime){
         if (!"".equals(startTime)) {
             startTime = startTime + " 00:00:00";
         }

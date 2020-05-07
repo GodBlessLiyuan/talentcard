@@ -40,4 +40,6 @@ public interface ITalentService {
      * @return
      */
     PageInfoVO<TalentVO> queryCert(int pageNum, int pageSize, Map<String, Object> reqMap);
+
+    ResultVO edit(Long talentId, Long cardId);
 }

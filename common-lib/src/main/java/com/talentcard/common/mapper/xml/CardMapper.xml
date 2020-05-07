@@ -330,11 +330,11 @@
         <if test="title != null and title != ''">
             and trim(replace(c.title,' ','')) like trim(replace ('%' #{title,jdbcType=CHAR} '%' ,' ',''))
         </if>
-        <if test="startTime != null">
-            and <![CDATA[ c.create_time >= #{startTime,jdbcType=DATE}]]>
+        <if test="startTime != null and startTime != ''">
+            and <![CDATA[ c.create_time >= #{startTime}]]>
         </if>
-        <if test="endTime != null">
-            and <![CDATA[ c.create_time <= #{endTime,jdbcType=DATE}]]>
+        <if test="endTime != null and endTime != ''">
+            and <![CDATA[ c.create_time <= #{endTime}]]>
         </if>
         <if test="cardNum != null and cardNum != ''">
             and trim(replace(c.initial_num,' ','')) like trim(replace ('%' #{cardNum,jdbcType=CHAR} '%' ,' ',''))
