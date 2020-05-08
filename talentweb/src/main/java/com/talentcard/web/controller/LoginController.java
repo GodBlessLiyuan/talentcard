@@ -61,7 +61,7 @@ public class LoginController {
      * @throws IOException
      */
     @RequestMapping("/getCodeImg")
-    public String getCodeImg(HttpSession session, HttpServletResponse response) throws IOException {
+    public ResultVO getCodeImg(HttpSession session, HttpServletResponse response) throws IOException {
         //服务器通知浏览器不要缓存
         response.setHeader("pragma", "no-cache");
         response.setHeader("cache-control", "no-cache");
@@ -84,6 +84,6 @@ public class LoginController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return png_base64;
+        return new ResultVO<>(1000, png_base64);
     }
 }
