@@ -40,4 +40,6 @@ public class CertApprovalBO {
     private Byte result;
 
     private String opinion;
+
+    private String cardName;
 }

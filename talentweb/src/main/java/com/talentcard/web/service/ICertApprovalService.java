@@ -35,4 +35,6 @@ public interface ICertApprovalService {
     ResultVO confirmCert(HttpSession session, Map<String, Object> reqData);
 
     ResultVO queryByNumApproval();
+
+    ResultVO findOne(Long talentId,Long certId);
 }

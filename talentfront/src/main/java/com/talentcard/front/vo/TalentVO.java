@@ -37,9 +37,9 @@ public class TalentVO {
     private String political;
     private Byte certificationStatus;
     private Byte currentType;
-    List<EducationPO> educationPOList;
-    List<ProfTitlePO> profTitlePOList;
-    List<ProfQualityPO> profQualityPOList;
+    private List<EducationPO> educationPOList;
+    private List<ProfTitlePO> profTitlePOList;
+    private List<ProfQualityPO> profQualityPOList;
 
     /**
      * Bo转VO
@@ -64,35 +64,37 @@ public class TalentVO {
         talentVO.setPolitical(talentBO.getPolitical());
         talentVO.setCertificationStatus(talentBO.getCertificationStatus());
         talentVO.setCurrentType(talentBO.getCurrentType());
-        talentVO.setEducationPOList(talentBO.getEducationPOList());
-        talentVO.setProfTitlePOList(talentBO.getProfTitlePOList());
-        talentVO.setProfQualityPOList(talentBO.getProfQualityPOList());
         talentVO.setSex(talentBO.getSex());
 
         //学历文件
         if (talentBO.getEducationPOList() != null) {
             for (EducationPO educationPO : talentBO.getEducationPOList()) {
-                if (educationPO.getEducPicture() != null && educationPO.getEducPicture() != "") {
+                if (educationPO.getEducPicture() != null && !educationPO.getEducPicture().equals("")) {
                     educationPO.setEducPicture(FrontParameterUtil.getPublicPath() + educationPO.getEducPicture());
                 }
             }
         }
+
         //职称文件
         if (talentBO.getProfTitlePOList() != null) {
             for (ProfTitlePO profTitlePO : talentBO.getProfTitlePOList()) {
-                if (profTitlePO.getPicture() != null && profTitlePO.getPicture() != "") {
+                if (profTitlePO.getPicture() != null && !profTitlePO.getPicture().equals("")) {
                     profTitlePO.setPicture(FrontParameterUtil.getPublicPath() + profTitlePO.getPicture());
                 }
             }
         }
+
         //职业资格文件
         if (talentBO.getProfQualityPOList() != null) {
             for (ProfQualityPO profQualityPO : talentBO.getProfQualityPOList()) {
-                if (profQualityPO.getPicture() != null && profQualityPO.getPicture() != "") {
+                if (profQualityPO.getPicture() != null && !profQualityPO.getPicture().equals("")) {
                     profQualityPO.setPicture(FrontParameterUtil.getPublicPath() + profQualityPO.getPicture());
                 }
             }
         }
+        talentVO.setEducationPOList(talentBO.getEducationPOList());
+        talentVO.setProfTitlePOList(talentBO.getProfTitlePOList());
+        talentVO.setProfQualityPOList(talentBO.getProfQualityPOList());
         return talentVO;
     }
 

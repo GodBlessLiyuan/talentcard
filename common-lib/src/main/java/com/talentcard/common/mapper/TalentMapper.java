@@ -150,4 +150,12 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
      * @param talentId
      */
     HashMap<String, Object> findCurrentSeniorCard(@Param("talentId") Long talentId);
+
+    /**
+     * 认证审批里，点查看/编辑，一个的详情
+     *
+     * @param certId
+     * @return
+     */
+    TalentBO certApprovalDetail(@Param("certId") Long certId);
 }

@@ -9,16 +9,13 @@ import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ITalentService;
-import com.talentcard.web.utils.FrontParameterUtil;
 import com.talentcard.web.utils.MessageUtil;
-import com.talentcard.web.utils.TalentInfoUpdateUtil;
+import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.TalentDetailVO;
 import com.talentcard.web.vo.TalentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -193,7 +190,7 @@ public class TalentServiceImpl implements ITalentService {
         messageDTO.setTemplateId(1);
         //结束
         messageDTO.setRemark("领取后可享受多项人才权益哦");
-        messageDTO.setUrl(FrontParameterUtil.getIndexUrl());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }

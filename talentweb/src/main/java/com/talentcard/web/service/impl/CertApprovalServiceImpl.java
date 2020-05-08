@@ -2,6 +2,7 @@ package com.talentcard.web.service.impl;
 
 import com.talentcard.common.bo.ApprovalBO;
 import com.talentcard.common.bo.CertApprovalBO;
+import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.web.dto.MessageDTO;
@@ -10,7 +11,7 @@ import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.ApprovalItemsVO;
 import com.talentcard.common.vo.ResultVO;
-import org.apache.poi.ss.formula.functions.T;
+import com.talentcard.web.vo.ApprovalTalentVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -132,6 +133,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         certApprovalPo.setUserId(userId);
         certApprovalPo.setOpinion((String) reqData.get("opinion"));
         certApprovalPo.setUpdateTime(new Date());
+        certApprovalPo.setUserId(userId);
         if (result.equals(FAILURE)) {
             /**
              * 驳回
@@ -287,6 +289,15 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     public ResultVO queryByNumApproval() {
         int number = certificationMapper.findWaitApprovalNum();
         return new ResultVO(1000, number);
+    }
+
+    @Override
+    public ResultVO findOne(Long talentId, Long certId) {
+        // 和上面的检索status不同
+        TalentBO talentBO = talentMapper.certApprovalDetail(certId);
+        List<CertApprovalBO> certApprovalBOList = certApprovalMapper.queryApprovalById(talentId, certId);
+        ApprovalTalentVO approvalTalentVO = ApprovalTalentVO.convert(talentBO, certApprovalBOList);
+        return new ResultVO(1000, approvalTalentVO);
     }
 
 }

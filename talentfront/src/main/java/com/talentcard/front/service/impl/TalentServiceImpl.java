@@ -192,7 +192,7 @@ public class TalentServiceImpl implements ITalentService {
         profQualityPO.setStatus(status);
         profQualityMapper.insertSelective(profQualityPO);
 
-        //更新基本信息表
+        //插入基本信息表
         UserCurrentInfoPO userCurrentInfoPO = new UserCurrentInfoPO();
         userCurrentInfoPO.setTalentId(talentId);
         userCurrentInfoPO.setEducation(jsonObject.getInteger("education"));

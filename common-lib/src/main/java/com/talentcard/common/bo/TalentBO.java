@@ -64,7 +64,7 @@ public class TalentBO extends TalentPO {
     private String political;
     private Byte certificationStatus;
     private Byte currentType;
-    List<EducationPO> educationPOList;
-    List<ProfTitlePO> profTitlePOList;
-    List<ProfQualityPO> profQualityPOList;
+    private List<EducationPO> educationPOList;
+    private List<ProfTitlePO> profTitlePOList;
+    private List<ProfQualityPO> profQualityPOList;
 }

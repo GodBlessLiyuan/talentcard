@@ -64,4 +64,16 @@ public class CertApprovalController {
         return certApprovalService.queryByNumApproval();
     }
 
+    /**
+     * 认证审批
+     * 编辑/查看
+     * @param talentId
+     * @param certId
+     * @return
+     */
+    @RequestMapping("findOne")
+    public ResultVO findOne(@RequestParam(value = "talentId", required = false) Long talentId,
+                            @RequestParam(value = "certId", required = false) Long certId){
+        return certApprovalService.findOne(talentId,certId);
+    }
 }

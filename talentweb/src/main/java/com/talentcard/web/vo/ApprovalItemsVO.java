@@ -2,9 +2,7 @@ package com.talentcard.web.vo;
 
 import com.talentcard.common.bo.ApprovalBO;
 import com.talentcard.common.bo.CertApprovalBO;
-import com.talentcard.common.pojo.CertApprovalPO;
-import com.talentcard.common.pojo.EducationPO;
-import com.talentcard.web.utils.FrontParameterUtil;
+import com.talentcard.web.utils.WebParameterUtil;
 import lombok.Data;
 
 import java.util.List;
@@ -26,13 +24,13 @@ public class ApprovalItemsVO {
 
     public static ApprovalItemsVO convert(ApprovalItemsVO vo) {
         if (vo.getApprovalBO().getPtPic()!=null && !("").equals(vo.getApprovalBO().getPtPic())) {
-            vo.getApprovalBO().setPtPic(FrontParameterUtil.getPublicPath()+vo.getApprovalBO().getPtPic());
+            vo.getApprovalBO().setPtPic(WebParameterUtil.getPublicPath()+vo.getApprovalBO().getPtPic());
         }
         if (vo.getApprovalBO().getEducPic()!=null && !("").equals(vo.getApprovalBO().getEducPic())) {
-            vo.getApprovalBO().setEducPic(FrontParameterUtil.getPublicPath()+vo.getApprovalBO().getEducPic());
+            vo.getApprovalBO().setEducPic(WebParameterUtil.getPublicPath()+vo.getApprovalBO().getEducPic());
         }
         if (vo.getApprovalBO().getPqPic()!=null && !("").equals(vo.getApprovalBO().getPqPic())) {
-            vo.getApprovalBO().setPqPic(FrontParameterUtil.getPublicPath()+vo.getApprovalBO().getPqPic());
+            vo.getApprovalBO().setPqPic(WebParameterUtil.getPublicPath()+vo.getApprovalBO().getPqPic());
         }
         return vo;
     }
