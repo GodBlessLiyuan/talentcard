@@ -183,8 +183,8 @@ public class TalentServiceImpl implements ITalentService {
         //身份证号，屏蔽八位
         String encryptionIdCard = talentPO.getIdCard().substring(0, 9) + "********";
         messageDTO.setKeyword2(encryptionIdCard);
-        messageDTO.setKeyword3("个人");
         //领卡机构
+        messageDTO.setKeyword3("个人");
         //通知时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         String currentTime = formatter.format(new Date());
