@@ -8,15 +8,6 @@ TRUNCATE TABLE t_role;
 TRUNCATE TABLE t_authority;
 TRUNCATE TABLE t_role_authority;
 
-
-/*用户：超级管理员角色*/
-INSERT INTO `t_user`(`user_id`, `username`, `name`, `password`, `create_time`, `dr`, `extra`, `role_id`) VALUES
- (1, 'admin', 'admin', '15a162a79e4f467350be58833cdd8c66', '2020-04-22 10:57:40', 1, '222', 1);
-/*用户：运营人员角色*/
-INSERT INTO `t_user`(`user_id`, `username`, `name`, `password`, `create_time`, `dr`, `extra`, `role_id`) VALUES 
-(2, 'Operation', 'Operation', '15a162a79e4f467350be58833cdd8c66', '2020-04-22 16:09:32', 1, 'fawaikuantu', 2);
-
-
 /*权限：所有权限展示*/
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (1, 'roleQuery');
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (2, 'userCreate');
@@ -86,6 +77,12 @@ INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VAL
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (39, 1, 19, 2);
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (40, 1, 20, 2);
 
+/*用户：超级管理员角色*/
+INSERT INTO `t_user`(`user_id`, `username`, `name`, `password`, `create_time`, `dr`, `extra`, `role_id`) VALUES
+(1, 'admin', 'admin', '15a162a79e4f467350be58833cdd8c66', '2020-04-22 10:57:40', 1, '222', 1);
+/*用户：运营人员角色*/
+INSERT INTO `t_user`(`user_id`, `username`, `name`, `password`, `create_time`, `dr`, `extra`, `role_id`) VALUES
+(2, 'Operation', 'Operation', '15a162a79e4f467350be58833cdd8c66', '2020-04-22 16:09:32', 1, 'fawaikuantu', 2);
 
 INSERT INTO `t_policy` VALUES (1,'A类人才政策','QJZC000001','中国科学院、中国工程院院士等顶尖人才（A类人才，具体类型详见附件），给予为期五年每人每年60万元的购房补贴，一次性安家补助100万元，每年发放12万元人才津贴；','2','10','','','',1,1,1,1,1,1,NULL,'2020-04-30 09:00:48',1),
                               (2,'B类人才政策','QJZC000002','“长江学者奖励计划”教授等国家级领军人才（B类人才，不含国家“千人计划”人才），给予为期五年每人每年40万元的购房补贴，一次性安家补助60万元，每年发放6万元人才津贴；','','8','','','',1,1,1,1,1,1,NULL,'2020-04-30 09:29:12',1),
