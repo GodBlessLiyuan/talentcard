@@ -47,6 +47,7 @@ public class JsApiTicketUtil {
             myRedis.opsForValue().set("jsApiTicket", jsApiTicket, 100L, TimeUnit.MINUTES);
             logger.info("成功拿到jsApiTicket：{}", jsApiTicket);
         } else {
+            logger.info("jsApiTicket拿不到报错：{}", jsonObject.toString());
             throw new WechatException("jsApiTicket拿不到");
         }
     }
@@ -78,7 +79,7 @@ public class JsApiTicketUtil {
         hashMap.put("jsapi_ticket", jsApiTicket);
         hashMap.put("timestamp", timestamp);
         hashMap.put("url", url);
-        String str =sort(hashMap);
+        String str = sort(hashMap);
         String signature = CommonUtil.sha1(str);
         return signature;
     }
