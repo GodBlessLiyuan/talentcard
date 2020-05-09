@@ -139,11 +139,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public PageInfoVO<UserRoleVO> queryUserRole(int pageNum, int pageSize, Map<String, Object> reqData){
+    public ResultVO queryUserRole(int pageNum, int pageSize, Map<String, Object> reqData){
         Page<UserRoleBO> page = PageHelper.startPage(pageNum, pageSize);
         // 根据username 和 roleId 查询
         List<UserRoleBO> bos = userMapper.queryUserRole(reqData);
-        return new PageInfoVO<>(page.getTotal(), UserRoleVO.convert(bos));
+        return new ResultVO<>(1000,new PageInfoVO<>(page.getTotal(), UserRoleVO.convert(bos)));
     }
 
 

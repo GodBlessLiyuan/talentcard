@@ -66,6 +66,6 @@ public interface IUserService {
      * @param reqData
      * @return
      */
-    PageInfoVO<UserRoleVO> queryUserRole(int pageNum, int pageSize, Map<String, Object> reqData);
+    ResultVO queryUserRole(int pageNum, int pageSize, Map<String, Object> reqData);
 
 }

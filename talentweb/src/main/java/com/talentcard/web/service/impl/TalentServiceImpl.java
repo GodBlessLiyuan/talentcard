@@ -47,10 +47,10 @@ public class TalentServiceImpl implements ITalentService {
     private UserCurrentInfoMapper userCurrentInfoMapper;
 
     @Override
-    public PageInfoVO<TalentVO> query(int pageNum, int pageSize, Map<String, Object> reqMap) {
+    public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
         Page<TalentBO> page = PageHelper.startPage(pageNum, pageSize);
         List<TalentBO> bos = talentMapper.query(reqMap);
-        return new PageInfoVO<>(page.getTotal(), TalentVO.convert(bos));
+        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), TalentVO.convert(bos)));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class TalentServiceImpl implements ITalentService {
     }
 
     @Override
-    public PageInfoVO<TalentVO> queryCert(int pageNum, int pageSize, Map<String, Object> reqMap) {
+    public ResultVO queryCert(int pageNum, int pageSize, Map<String, Object> reqMap) {
         Page<TalentBO> page = PageHelper.startPage(pageNum, pageSize);
         List<TalentBO> bos = talentMapper.queryCert(reqMap);
 //        // 当状态1和2同时存在时，返回状态为1的数据
@@ -80,7 +80,7 @@ public class TalentServiceImpl implements ITalentService {
 //                boMap.put(key, bo);
 //            }
 //        }
-        return new PageInfoVO<>(page.getTotal(), TalentVO.convert(bos));
+        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), TalentVO.convert(bos)));
     }
 
 

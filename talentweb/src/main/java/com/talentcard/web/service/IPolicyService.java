@@ -23,7 +23,7 @@ public interface IPolicyService {
      * @param hashMap
      * @return
      */
-    PageInfoVO<PolicyVO> query(int pageNum, int pageSize, Map<String, Object> hashMap);
+    ResultVO query(int pageNum, int pageSize, Map<String, Object> hashMap);
 
     /**
      * 插入

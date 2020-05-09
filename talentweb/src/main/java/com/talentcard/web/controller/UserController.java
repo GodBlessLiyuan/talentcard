@@ -93,7 +93,7 @@ public class UserController {
      * @return
      */
     @RequestMapping("queryByUser")
-    public PageInfoVO<UserRoleVO> queryByUser(HttpSession session,
+    public ResultVO queryByUser(HttpSession session,
                                               @RequestParam(value = "start", defaultValue = "1") int pageNum,
                                               @RequestParam(value = "length", defaultValue = "10") int pageSize,
                                               @RequestParam(value = "username", defaultValue = "") String username,

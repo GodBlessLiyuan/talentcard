@@ -27,7 +27,7 @@ public class PolicyController {
     private IPolicyService service;
 
     @RequestMapping("query")
-    public PageInfoVO<PolicyVO> query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+    public ResultVO query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                       @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                       @RequestParam(value = "start", defaultValue = "") String start,
                                       @RequestParam(value = "end", defaultValue = "") String end,

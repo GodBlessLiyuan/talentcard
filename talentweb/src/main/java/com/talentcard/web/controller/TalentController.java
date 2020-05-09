@@ -25,7 +25,7 @@ public class TalentController {
     private ITalentService iTalentService;
 
     @RequestMapping("query")
-    public PageInfoVO<TalentVO> query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+    public ResultVO query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                       @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                       @RequestParam(value = "start", defaultValue = "") String start,
                                       @RequestParam(value = "end", defaultValue = "") String end,
@@ -58,7 +58,7 @@ public class TalentController {
     }
 
     @RequestMapping("queryCert")
-    public PageInfoVO<TalentVO> queryCert(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+    public ResultVO queryCert(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                           @RequestParam(value = "start", defaultValue = "") String start,
                                           @RequestParam(value = "end", defaultValue = "") String end,

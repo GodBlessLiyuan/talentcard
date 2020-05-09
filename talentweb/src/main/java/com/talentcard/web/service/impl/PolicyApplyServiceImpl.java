@@ -40,10 +40,10 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
             "开户行名", "持卡人"};
 
     @Override
-    public PageInfoVO<PolicyApplyVO> query(int pageNum, int pageSize, HashMap<String, Object> reqMap) {
+    public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap) {
         Page<PolicyApplyBO> page = PageHelper.startPage(pageNum, pageSize);
         List<PolicyApplyBO> bos = policyApplyMapper.query(reqMap);
-        return new PageInfoVO<>(page.getTotal(), PolicyApplyVO.convert(bos));
+        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), PolicyApplyVO.convert(bos)));
     }
 
     @Override

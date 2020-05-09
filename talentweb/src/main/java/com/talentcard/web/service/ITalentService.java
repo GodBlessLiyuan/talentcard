@@ -21,7 +21,7 @@ public interface ITalentService {
      * @param reqMap
      * @return
      */
-    PageInfoVO<TalentVO> query(int pageNum, int pageSize, Map<String, Object> reqMap);
+    ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap);
 
     /**
      * 查看详情
@@ -39,7 +39,7 @@ public interface ITalentService {
      * @param reqMap
      * @return
      */
-    PageInfoVO<TalentVO> queryCert(int pageNum, int pageSize, Map<String, Object> reqMap);
+    ResultVO queryCert(int pageNum, int pageSize, Map<String, Object> reqMap);
 
     ResultVO edit(Long talentId, Long cardId);
 }

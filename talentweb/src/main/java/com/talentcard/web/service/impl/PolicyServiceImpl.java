@@ -30,10 +30,10 @@ public class PolicyServiceImpl implements IPolicyService {
     private PolicyMapper policyMapper;
 
     @Override
-    public PageInfoVO<PolicyVO> query(int pageNum, int pageSize, Map<String, Object> reqMap) {
+    public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
         Page<PolicyPO> page = PageHelper.startPage(pageNum, pageSize);
         List<PolicyPO> pos = policyMapper.query(reqMap);
-        return new PageInfoVO<>(page.getTotal(), PolicyVO.convert(pos));
+        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), PolicyVO.convert(pos)));
     }
 
     @Override
