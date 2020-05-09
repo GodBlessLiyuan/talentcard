@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.ScenicEnjoyMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ScenicEnjoyPO">
+    <id column="sg_id" jdbcType="BIGINT" property="sgId" />
+    <result column="scenic_id" jdbcType="BIGINT" property="scenicId" />
+    <result column="card_id" jdbcType="BIGINT" property="cardId" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="education_id" jdbcType="BIGINT" property="educationId" />
+    <result column="title_id" jdbcType="BIGINT" property="titleId" />
+    <result column="quality" jdbcType="BIGINT" property="quality" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sg_id, scenic_id, card_id, category_id, education_id, title_id, quality, `type`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_scenic_enjoy
+    where sg_id = #{sgId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_scenic_enjoy
+    where sg_id = #{sgId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.ScenicEnjoyPO">
+    insert into t_scenic_enjoy (sg_id, scenic_id, card_id, 
+      category_id, education_id, title_id, 
+      quality, `type`)
+    values (#{sgId,jdbcType=BIGINT}, #{scenicId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT}, 
+      #{categoryId,jdbcType=BIGINT}, #{educationId,jdbcType=BIGINT}, #{titleId,jdbcType=BIGINT}, 
+      #{quality,jdbcType=BIGINT}, #{type,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ScenicEnjoyPO">
+    insert into t_scenic_enjoy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sgId != null">
+        sg_id,
+      </if>
+      <if test="scenicId != null">
+        scenic_id,
+      </if>
+      <if test="cardId != null">
+        card_id,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="educationId != null">
+        education_id,
+      </if>
+      <if test="titleId != null">
+        title_id,
+      </if>
+      <if test="quality != null">
+        quality,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sgId != null">
+        #{sgId,jdbcType=BIGINT},
+      </if>
+      <if test="scenicId != null">
+        #{scenicId,jdbcType=BIGINT},
+      </if>
+      <if test="cardId != null">
+        #{cardId,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="educationId != null">
+        #{educationId,jdbcType=BIGINT},
+      </if>
+      <if test="titleId != null">
+        #{titleId,jdbcType=BIGINT},
+      </if>
+      <if test="quality != null">
+        #{quality,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.ScenicEnjoyPO">
+    update t_scenic_enjoy
+    <set>
+      <if test="scenicId != null">
+        scenic_id = #{scenicId,jdbcType=BIGINT},
+      </if>
+      <if test="cardId != null">
+        card_id = #{cardId,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="educationId != null">
+        education_id = #{educationId,jdbcType=BIGINT},
+      </if>
+      <if test="titleId != null">
+        title_id = #{titleId,jdbcType=BIGINT},
+      </if>
+      <if test="quality != null">
+        quality = #{quality,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+    </set>
+    where sg_id = #{sgId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.ScenicEnjoyPO">
+    update t_scenic_enjoy
+    set scenic_id = #{scenicId,jdbcType=BIGINT},
+      card_id = #{cardId,jdbcType=BIGINT},
+      category_id = #{categoryId,jdbcType=BIGINT},
+      education_id = #{educationId,jdbcType=BIGINT},
+      title_id = #{titleId,jdbcType=BIGINT},
+      quality = #{quality,jdbcType=BIGINT},
+      `type` = #{type,jdbcType=TINYINT}
+    where sg_id = #{sgId,jdbcType=BIGINT}
+  </update>
+</mapper>

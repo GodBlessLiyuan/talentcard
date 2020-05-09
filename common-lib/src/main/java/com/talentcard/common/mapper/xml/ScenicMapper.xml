@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.ScenicMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ScenicPO">
+    <id column="scenic_id" jdbcType="BIGINT" property="scenicId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="rate" jdbcType="INTEGER" property="rate" />
+    <result column="unit" jdbcType="TINYINT" property="unit" />
+    <result column="times" jdbcType="INTEGER" property="times" />
+    <result column="avatar" jdbcType="CHAR" property="avatar" />
+    <result column="description" jdbcType="CHAR" property="description" />
+    <result column="extra" jdbcType="CHAR" property="extra" />
+    <result column="qr_code" jdbcType="CHAR" property="qrCode" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    scenic_id, `name`, rate, unit, times, avatar, description, extra, qr_code, `status`, 
+    create_time, dr
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_scenic
+    where scenic_id = #{scenicId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_scenic
+    where scenic_id = #{scenicId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.ScenicPO">
+    insert into t_scenic (scenic_id, `name`, rate, 
+      unit, times, avatar, description, 
+      extra, qr_code, `status`, create_time, 
+      dr)
+    values (#{scenicId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{rate,jdbcType=INTEGER}, 
+      #{unit,jdbcType=TINYINT}, #{times,jdbcType=INTEGER}, #{avatar,jdbcType=CHAR}, #{description,jdbcType=CHAR}, 
+      #{extra,jdbcType=CHAR}, #{qrCode,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{dr,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ScenicPO">
+    insert into t_scenic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="scenicId != null">
+        scenic_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="rate != null">
+        rate,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="times != null">
+        times,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="extra != null">
+        extra,
+      </if>
+      <if test="qrCode != null">
+        qr_code,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="dr != null">
+        dr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="scenicId != null">
+        #{scenicId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="rate != null">
+        #{rate,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=TINYINT},
+      </if>
+      <if test="times != null">
+        #{times,jdbcType=INTEGER},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=CHAR},
+      </if>
+      <if test="extra != null">
+        #{extra,jdbcType=CHAR},
+      </if>
+      <if test="qrCode != null">
+        #{qrCode,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.ScenicPO">
+    update t_scenic
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="rate != null">
+        rate = #{rate,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=TINYINT},
+      </if>
+      <if test="times != null">
+        times = #{times,jdbcType=INTEGER},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=CHAR},
+      </if>
+      <if test="extra != null">
+        extra = #{extra,jdbcType=CHAR},
+      </if>
+      <if test="qrCode != null">
+        qr_code = #{qrCode,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
+    </set>
+    where scenic_id = #{scenicId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.ScenicPO">
+    update t_scenic
+    set `name` = #{name,jdbcType=CHAR},
+      rate = #{rate,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=TINYINT},
+      times = #{times,jdbcType=INTEGER},
+      avatar = #{avatar,jdbcType=CHAR},
+      description = #{description,jdbcType=CHAR},
+      extra = #{extra,jdbcType=CHAR},
+      qr_code = #{qrCode,jdbcType=CHAR},
+      `status` = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      dr = #{dr,jdbcType=TINYINT}
+    where scenic_id = #{scenicId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -23,12 +23,13 @@ DROP TABLE IF EXISTS t_user;
 DROP TABLE IF EXISTS t_role;
 DROP TABLE IF EXISTS t_scenic_enjoy;
 DROP TABLE IF EXISTS t_scenic_picture;
-DROP TABLE IF EXISTS t_scenic;
-DROP TABLE IF EXISTS t_staff_farmhouse;
 DROP TABLE IF EXISTS t_staff_trip;
-DROP TABLE IF EXISTS t_talent_farmhouse;
 DROP TABLE IF EXISTS t_talent_trip;
 DROP TABLE IF EXISTS t_trip_group_authority;
+DROP TABLE IF EXISTS t_scenic;
+DROP TABLE IF EXISTS t_staff;
+DROP TABLE IF EXISTS t_staff_farmhouse;
+DROP TABLE IF EXISTS t_talent_farmhouse;
 
 
 
@@ -333,10 +334,10 @@ CREATE TABLE t_scenic
     rate int,
     -- 1：年；2：季；3：月
     unit tinyint COMMENT '1：年；2：季；3：月',
-    times tinyint,
+    times int,
     avatar char(255),
-    description char(255),
-    extra char(255),
+    description text,
+    extra text,
     qr_code char(255),
     -- 1：上架；2：下架
     status tinyint COMMENT '1：上架；2：下架',
@@ -376,6 +377,25 @@ CREATE TABLE t_scenic_picture
 );
 
 
+CREATE TABLE t_staff
+(
+    staff_id bigint unsigned NOT NULL AUTO_INCREMENT,
+    open_id char(128),
+    name char(32),
+    -- 1：男；2：女
+    sex tinyint COMMENT '1：男；2：女',
+    id_card char(18),
+    phone char(32),
+    create_time datetime,
+    -- 1正在使用
+    -- 2删除
+    dr tinyint unsigned COMMENT '1正在使用
+2删除',
+    PRIMARY KEY (staff_id),
+    UNIQUE (staff_id)
+);
+
+
 CREATE TABLE t_staff_farmhouse
 (
 
@@ -384,7 +404,14 @@ CREATE TABLE t_staff_farmhouse
 
 CREATE TABLE t_staff_trip
 (
-
+    scenic_id bigint unsigned NOT NULL,
+    staff_id bigint unsigned NOT NULL,
+    create_time datetime,
+    status tinyint unsigned,
+    -- 1 未删除  2 已删除
+    dr tinyint COMMENT '1 未删除  2 已删除',
+    UNIQUE (scenic_id),
+    UNIQUE (staff_id)
 );
 
 
@@ -428,15 +455,28 @@ CREATE TABLE t_talent_trip
 (
     tt_id bigint unsigned NOT NULL AUTO_INCREMENT,
     open_id char(128) NOT NULL,
+    scenic_id bigint unsigned NOT NULL,
+    staff_id bigint unsigned NOT NULL,
+    create_time datetime,
+    status tinyint unsigned,
+    -- 1 未删除  2 已删除
+    dr tinyint COMMENT '1 未删除  2 已删除',
     PRIMARY KEY (tt_id),
     UNIQUE (tt_id),
-    UNIQUE (open_id)
+    UNIQUE (open_id),
+    UNIQUE (scenic_id),
+    UNIQUE (staff_id)
 );
 
 
 CREATE TABLE t_trip_group_authority
 (
-
+    tga_id bigint unsigned NOT NULL AUTO_INCREMENT,
+    scenic_id bigint unsigned NOT NULL,
+    authority_code char(128),
+    PRIMARY KEY (tga_id),
+    UNIQUE (tga_id),
+    UNIQUE (scenic_id)
 );
 
 
@@ -623,6 +663,46 @@ ALTER TABLE t_scenic_enjoy
 ALTER TABLE t_scenic_picture
     ADD FOREIGN KEY (scenic_id)
         REFERENCES t_scenic (scenic_id)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_staff_trip
+    ADD FOREIGN KEY (scenic_id)
+        REFERENCES t_scenic (scenic_id)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_talent_trip
+    ADD FOREIGN KEY (scenic_id)
+        REFERENCES t_scenic (scenic_id)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_trip_group_authority
+    ADD FOREIGN KEY (scenic_id)
+        REFERENCES t_scenic (scenic_id)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_staff_trip
+    ADD FOREIGN KEY (staff_id)
+        REFERENCES t_staff (staff_id)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_talent_trip
+    ADD FOREIGN KEY (staff_id)
+        REFERENCES t_staff (staff_id)
         ON UPDATE RESTRICT
         ON DELETE RESTRICT
 ;
