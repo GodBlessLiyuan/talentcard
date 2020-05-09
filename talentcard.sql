@@ -335,8 +335,8 @@ CREATE TABLE t_scenic
     unit tinyint COMMENT '1：年；2：季；3：月',
     times tinyint,
     avatar char(255),
-    desc char,
-    extra char,
+    desc char(255),
+    extra char(255),
     qr_code char(255),
     -- 1：上架；2：下架
     status tinyint COMMENT '1：上架；2：下架',
