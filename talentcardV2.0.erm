@@ -12,7 +12,7 @@
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
 	<x>0</x>
-	<y>1111</y>
+	<y>1134</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2020-04-08 11:16:39</creation_date>
-			<updated_date>2020-05-09 15:45:39</updated_date>
+			<updated_date>2020-05-09 15:47:59</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -558,22 +558,6 @@
 		</word>
 		<word>
 			<id>24</id>
-			<length>255</length>
-			<decimal>null</decimal>
-			<array>false</array>
-			<array_dimension>null</array_dimension>
-			<unsigned>false</unsigned>
-			<zerofill>false</zerofill>
-			<binary>false</binary>
-			<args></args>
-			<char_semantics>false</char_semantics>
-			<description></description>
-			<logical_name>景区介绍信息</logical_name>
-			<physical_name>desc</physical_name>
-			<type>character(n)</type>
-		</word>
-		<word>
-			<id>25</id>
 			<length>2048</length>
 			<decimal>null</decimal>
 			<array>false</array>
@@ -589,7 +573,7 @@
 			<type>varchar(n)</type>
 		</word>
 		<word>
-			<id>26</id>
+			<id>25</id>
 			<length>null</length>
 			<decimal>null</decimal>
 			<array>false</array>
@@ -603,6 +587,22 @@
 			<logical_name>政策详细描述</logical_name>
 			<physical_name>description</physical_name>
 			<type>text</type>
+		</word>
+		<word>
+			<id>26</id>
+			<length>255</length>
+			<decimal>null</decimal>
+			<array>false</array>
+			<array_dimension>null</array_dimension>
+			<unsigned>false</unsigned>
+			<zerofill>false</zerofill>
+			<binary>false</binary>
+			<args></args>
+			<char_semantics>false</char_semantics>
+			<description></description>
+			<logical_name>景区介绍信息</logical_name>
+			<physical_name>description</physical_name>
+			<type>character(n)</type>
 		</word>
 		<word>
 			<id>27</id>
@@ -5281,7 +5281,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>25</word_id>
+					<word_id>24</word_id>
 					<id>72</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -5833,7 +5833,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>26</word_id>
+					<word_id>25</word_id>
 					<id>87</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -8984,7 +8984,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>24</word_id>
+					<word_id>26</word_id>
 					<id>161</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
