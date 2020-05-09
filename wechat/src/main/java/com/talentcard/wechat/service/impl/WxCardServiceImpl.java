@@ -1,5 +1,6 @@
 package com.talentcard.wechat.service.impl;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import com.talentcard.wechat.utils.ToXmlUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,8 +27,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class WxCardServiceImpl implements WxCardService {
 
-    private static final String TOKEN ="godinsec";
-
+    private static String TOKEN;
 
     /**
      * 接收用户消息
@@ -34,6 +35,7 @@ public class WxCardServiceImpl implements WxCardService {
      * @return
      * @throws Exception
      */
+    @Override
     @SuppressWarnings("unchecked")
     public  Map<String,String> parseRequest(HttpServletRequest request){
         Map<String,String> map = new HashMap<>();
@@ -63,7 +65,8 @@ public class WxCardServiceImpl implements WxCardService {
      * @param signature
      * @return
      */
-    public boolean check(String timestamp,String nonce,String signature){
+    @Override
+    public boolean check(String timestamp, String nonce, String signature){
        /* 开发者通过检验signature对请求进行校验（下面有校验方式）。
         若确认此次GET请求来自微信服务器，请原样返回echostr参数内容，则接入生效，成为开发者成功，否则接入失败。加密/校验流程如下：
 
@@ -84,6 +87,7 @@ public class WxCardServiceImpl implements WxCardService {
      * @param requestMap
      * @return
      */
+    @Override
     public  String getResponse(Map<String,String> requestMap){
         BaseMessageDto msg=null;
         String msgType =requestMap.get("MsgType");
@@ -129,5 +133,11 @@ public class WxCardServiceImpl implements WxCardService {
     private  static  String beanToXml(BaseMessageDto msg){
         String str = ToXmlUtils.toXml(msg);
         return str;
+    }
+
+
+    @Value("${wechat.serverToken}")
+    private void setToken(String token) {
+        WxCardServiceImpl.TOKEN = token;
     }
 }
