@@ -1,71 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.ScenicPictureMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ScenicPicturePO">
-    <id column="sp_id" jdbcType="BIGINT" property="spId" />
-    <result column="scenic_id" jdbcType="BIGINT" property="scenicId" />
-    <result column="picture" jdbcType="CHAR" property="picture" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    sp_id, scenic_id, picture
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_scenic_picture
-    where sp_id = #{spId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_scenic_picture
-    where sp_id = #{spId,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.ScenicPicturePO">
-    insert into t_scenic_picture (sp_id, scenic_id, picture
-      )
-    values (#{spId,jdbcType=BIGINT}, #{scenicId,jdbcType=BIGINT}, #{picture,jdbcType=CHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ScenicPicturePO">
-    insert into t_scenic_picture
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="spId != null">
-        sp_id,
-      </if>
-      <if test="scenicId != null">
-        scenic_id,
-      </if>
-      <if test="picture != null">
-        picture,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="spId != null">
-        #{spId,jdbcType=BIGINT},
-      </if>
-      <if test="scenicId != null">
-        #{scenicId,jdbcType=BIGINT},
-      </if>
-      <if test="picture != null">
-        #{picture,jdbcType=CHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.ScenicPicturePO">
-    update t_scenic_picture
-    <set>
-      <if test="scenicId != null">
-        scenic_id = #{scenicId,jdbcType=BIGINT},
-      </if>
-      <if test="picture != null">
-        picture = #{picture,jdbcType=CHAR},
-      </if>
-    </set>
-    where sp_id = #{spId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.ScenicPicturePO">
-    update t_scenic_picture
-    set scenic_id = #{scenicId,jdbcType=BIGINT},
-      picture = #{picture,jdbcType=CHAR}
-    where sp_id = #{spId,jdbcType=BIGINT}
-  </update>
+    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ScenicPicturePO">
+        <id column="sp_id" jdbcType="BIGINT" property="spId"/>
+        <result column="scenic_id" jdbcType="BIGINT" property="scenicId"/>
+        <result column="picture" jdbcType="CHAR" property="picture"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        sp_id, scenic_id, picture
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_scenic_picture
+        where sp_id = #{spId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from t_scenic_picture
+        where sp_id = #{spId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.talentcard.common.pojo.ScenicPicturePO">
+        insert into t_scenic_picture (sp_id, scenic_id, picture)
+        values (#{spId,jdbcType=BIGINT}, #{scenicId,jdbcType=BIGINT}, #{picture,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ScenicPicturePO">
+        insert into t_scenic_picture
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="spId != null">
+                sp_id,
+            </if>
+            <if test="scenicId != null">
+                scenic_id,
+            </if>
+            <if test="picture != null">
+                picture,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="spId != null">
+                #{spId,jdbcType=BIGINT},
+            </if>
+            <if test="scenicId != null">
+                #{scenicId,jdbcType=BIGINT},
+            </if>
+            <if test="picture != null">
+                #{picture,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.ScenicPicturePO">
+        update t_scenic_picture
+        <set>
+            <if test="scenicId != null">
+                scenic_id = #{scenicId,jdbcType=BIGINT},
+            </if>
+            <if test="picture != null">
+                picture = #{picture,jdbcType=CHAR},
+            </if>
+        </set>
+        where sp_id = #{spId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.ScenicPicturePO">
+        update t_scenic_picture
+        set scenic_id = #{scenicId,jdbcType=BIGINT},
+            picture   = #{picture,jdbcType=CHAR}
+        where sp_id = #{spId,jdbcType=BIGINT}
+    </update>
+
+    <insert id="batchInsert" parameterType="com.talentcard.common.pojo.ScenicPicturePO">
+        insert into t_scenic_picture (sp_id, scenic_id, picture)
+        values
+        <foreach collection="pos" separator="," item="po">
+            (#{po.spId,jdbcType=BIGINT}, #{po.scenicId,jdbcType=BIGINT}, #{po.picture,jdbcType=CHAR})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByScenicId" parameterType="java.lang.Long">
+        delete
+        from t_scenic_picture
+        where scenic_id = #{scenicId,jdbcType=BIGINT}
+    </delete>
 </mapper>

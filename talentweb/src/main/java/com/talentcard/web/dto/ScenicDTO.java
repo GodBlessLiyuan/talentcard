@@ -1,9 +1,13 @@
 package com.talentcard.web.dto;
 
+import com.talentcard.common.pojo.ScenicEnjoyPO;
 import com.talentcard.common.pojo.ScenicPO;
+import com.talentcard.common.pojo.ScenicPicturePO;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author: xiahui
@@ -43,27 +47,27 @@ public class ScenicDTO implements Serializable {
     /**
      * 可查看与申请此景区的人才卡IDs
      */
-    private String[] cardIds;
+    private Long[] cardIds;
 
     /**
      * 可查看与申请此政策权益的人才类别IDs
      */
-    private String[] categoryIds;
+    private Long[] categoryIds;
 
     /**
      * 可查看与申请此景区的人才学历IDs
      */
-    private String[] educIds;
+    private Long[] educIds;
 
     /**
      * 可查看与申请此景区的人才职称IDs
      */
-    private String[] titleIds;
+    private Long[] titleIds;
 
     /**
      * 可查看与申请此景区的人才职业资格IDs
      */
-    private String[] qualityIds;
+    private Long[] qualityIds;
 
     /**
      * 景区头图
@@ -84,4 +88,94 @@ public class ScenicDTO implements Serializable {
      * 备注
      */
     private String extra;
+
+    /**
+     * 根据 dto 设置 po
+     *
+     * @param po
+     * @param dto
+     */
+    public static ScenicPO buildPO(ScenicPO po, ScenicDTO dto) {
+        po.setName(dto.getName());
+        po.setRate(dto.getRate());
+        po.setUnit(dto.getUnit());
+        po.setTimes(dto.getTimes());
+        po.setAvatar(dto.getAvatar());
+        po.setDescription(dto.getDesc());
+        po.setExtra(dto.getExtra());
+
+        return po;
+    }
+
+    /**
+     * 根据 dto 构建 enjoyPOs
+     *
+     * @param dto
+     * @param scenicId
+     * @return
+     */
+    public static List<ScenicEnjoyPO> buildEnjoyPOs(ScenicDTO dto, Long scenicId) {
+        List<ScenicEnjoyPO> pos = new ArrayList<>();
+
+        if (null != dto.getCardIds() && dto.getCardIds().length > 0) {
+            for (Long cardId : dto.getCardIds()) {
+                ScenicEnjoyPO po = new ScenicEnjoyPO();
+                po.setScenicId(scenicId);
+                po.setCardId(cardId);
+                po.setType((byte) 1);
+                pos.add(po);
+            }
+        }
+        if (null != dto.getCategoryIds() && dto.getCategoryIds().length > 0) {
+            for (Long category : dto.getCategoryIds()) {
+                ScenicEnjoyPO po = new ScenicEnjoyPO();
+                po.setScenicId(scenicId);
+                po.setCategoryId(category);
+                po.setType((byte) 2);
+                pos.add(po);
+            }
+        }
+        if (null != dto.getEducIds() && dto.getEducIds().length > 0) {
+            for (Long educId : dto.getEducIds()) {
+                ScenicEnjoyPO po = new ScenicEnjoyPO();
+                po.setScenicId(scenicId);
+                po.setCategoryId(educId);
+                po.setType((byte) 3);
+                pos.add(po);
+            }
+        }
+        if (null != dto.getTitleIds() && dto.getTitleIds().length > 0) {
+            for (Long titleId : dto.getTitleIds()) {
+                ScenicEnjoyPO po = new ScenicEnjoyPO();
+                po.setScenicId(scenicId);
+                po.setCategoryId(titleId);
+                po.setType((byte) 4);
+                pos.add(po);
+            }
+        }
+        if (null != dto.getQualityIds() && dto.getQualityIds().length > 0) {
+            for (Long qualityId : dto.getQualityIds()) {
+                ScenicEnjoyPO po = new ScenicEnjoyPO();
+                po.setScenicId(scenicId);
+                po.setCategoryId(qualityId);
+                po.setType((byte) 5);
+                pos.add(po);
+            }
+        }
+
+        return pos;
+    }
+
+    public static List<ScenicPicturePO> buildPicturePOs(ScenicDTO dto, Long scenicId) {
+        List<ScenicPicturePO> pos = new ArrayList<>();
+        if (null != dto.getPicture() && dto.getPicture().length > 0) {
+            for (String picture : dto.getPicture()) {
+                ScenicPicturePO po = new ScenicPicturePO();
+                po.setScenicId(scenicId);
+                po.setPicture(picture);
+                pos.add(po);
+            }
+        }
+        return pos;
+    }
 }
