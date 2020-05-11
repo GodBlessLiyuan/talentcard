@@ -6,9 +6,9 @@
     <result column="farmhouse_id" jdbcType="BIGINT" property="farmhouseId" />
     <result column="card_id" jdbcType="BIGINT" property="cardId" />
     <result column="category_id" jdbcType="BIGINT" property="categoryId" />
-    <result column="education_id" jdbcType="BIGINT" property="educationId" />
-    <result column="title_id" jdbcType="BIGINT" property="titleId" />
-    <result column="quality" jdbcType="BIGINT" property="quality" />
+    <result column="education_id" jdbcType="INTEGER" property="educationId" />
+    <result column="title_id" jdbcType="INTEGER" property="titleId" />
+    <result column="quality" jdbcType="INTEGER" property="quality" />
     <result column="type" jdbcType="TINYINT" property="type" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -29,8 +29,8 @@
       category_id, education_id, title_id, 
       quality, `type`)
     values (#{feId,jdbcType=BIGINT}, #{farmhouseId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT}, 
-      #{categoryId,jdbcType=BIGINT}, #{educationId,jdbcType=BIGINT}, #{titleId,jdbcType=BIGINT}, 
-      #{quality,jdbcType=BIGINT}, #{type,jdbcType=TINYINT})
+      #{categoryId,jdbcType=BIGINT}, #{educationId,jdbcType=INTEGER}, #{titleId,jdbcType=INTEGER}, 
+      #{quality,jdbcType=INTEGER}, #{type,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FarmhouseEnjoyPO">
     insert into t_farmhouse_enjoy
@@ -74,13 +74,13 @@
         #{categoryId,jdbcType=BIGINT},
       </if>
       <if test="educationId != null">
-        #{educationId,jdbcType=BIGINT},
+        #{educationId,jdbcType=INTEGER},
       </if>
       <if test="titleId != null">
-        #{titleId,jdbcType=BIGINT},
+        #{titleId,jdbcType=INTEGER},
       </if>
       <if test="quality != null">
-        #{quality,jdbcType=BIGINT},
+        #{quality,jdbcType=INTEGER},
       </if>
       <if test="type != null">
         #{type,jdbcType=TINYINT},
@@ -100,13 +100,13 @@
         category_id = #{categoryId,jdbcType=BIGINT},
       </if>
       <if test="educationId != null">
-        education_id = #{educationId,jdbcType=BIGINT},
+        education_id = #{educationId,jdbcType=INTEGER},
       </if>
       <if test="titleId != null">
-        title_id = #{titleId,jdbcType=BIGINT},
+        title_id = #{titleId,jdbcType=INTEGER},
       </if>
       <if test="quality != null">
-        quality = #{quality,jdbcType=BIGINT},
+        quality = #{quality,jdbcType=INTEGER},
       </if>
       <if test="type != null">
         `type` = #{type,jdbcType=TINYINT},
@@ -119,9 +119,9 @@
     set farmhouse_id = #{farmhouseId,jdbcType=BIGINT},
       card_id = #{cardId,jdbcType=BIGINT},
       category_id = #{categoryId,jdbcType=BIGINT},
-      education_id = #{educationId,jdbcType=BIGINT},
-      title_id = #{titleId,jdbcType=BIGINT},
-      quality = #{quality,jdbcType=BIGINT},
+      education_id = #{educationId,jdbcType=INTEGER},
+      title_id = #{titleId,jdbcType=INTEGER},
+      quality = #{quality,jdbcType=INTEGER},
       `type` = #{type,jdbcType=TINYINT}
     where fe_id = #{feId,jdbcType=BIGINT}
   </update>

@@ -11,13 +11,7 @@ import lombok.Data;
 public class TripGroupAuthorityPO implements Serializable {
     private Long tgaId;
 
-    /**
-     * 1 旅游
-2 农家乐
-     */
-    private Long activityFirstContentId;
-
-    private Long activitySecondContentId;
+    private Long scenicId;
 
     private String authorityCode;
 
