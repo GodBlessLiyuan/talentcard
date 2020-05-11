@@ -2,6 +2,7 @@ package com.talentcard.web.service;
 
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.ScenicDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -19,4 +20,6 @@ public interface IScenicService {
     ResultVO status(Long scenicId, Long status);
 
     ResultVO detail(Long scenicId);
+
+    ResultVO upload(MultipartFile file);
 }

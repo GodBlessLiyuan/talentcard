@@ -8,6 +8,7 @@ import com.talentcard.common.mapper.ScenicPictureMapper;
 import com.talentcard.common.pojo.ScenicEnjoyPO;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.ScenicPicturePO;
+import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.ScenicDTO;
@@ -15,9 +16,11 @@ import com.talentcard.web.service.IScenicService;
 import com.talentcard.web.vo.ScenicDetailVO;
 import com.talentcard.web.vo.ScenicVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,6 +42,15 @@ public class ScenicServiceImpl implements IScenicService {
     private ScenicEnjoyMapper scenicEnjoyMapper;
     @Autowired
     private ScenicPictureMapper scenicPictureMapper;
+
+    @Value("${file.publicPath}")
+    private String publicPath;
+    @Value("${file.rootDir}")
+    private String rootDir;
+    @Value("${file.projectDir}")
+    private String projectDir;
+    @Value("${file.scenicDir}")
+    private String scenicDir;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -128,10 +140,14 @@ public class ScenicServiceImpl implements IScenicService {
         vo.setRate(scenicPO.getRate());
         vo.setUnit(scenicPO.getUnit());
         vo.setTimes(scenicPO.getTimes());
-        vo.setAvatar(scenicPO.getAvatar());
+        if (null != scenicPO.getAvatar()) {
+            vo.setAvatar(publicPath + scenicPO.getAvatar());
+        }
         vo.setDesc(scenicPO.getDescription());
         vo.setExtra(scenicPO.getExtra());
-        vo.setQrCode(scenicPO.getQrCode());
+        if (null != scenicPO.getQrCode()) {
+            vo.setQrCode(publicPath + scenicPO.getQrCode());
+        }
 
         List<ScenicEnjoyPO> enjoyPOs = scenicEnjoyMapper.queryByScenicId(scenicId);
         List<Long> cardIds = new ArrayList<>();
@@ -163,10 +179,16 @@ public class ScenicServiceImpl implements IScenicService {
         List<ScenicPicturePO> picPOs = scenicPictureMapper.queryByScenicId(scenicId);
         List<String> picture = new ArrayList<>();
         for (ScenicPicturePO po : picPOs) {
-            picture.add(po.getPicture());
+            picture.add(publicPath + po.getPicture());
         }
         vo.setPicture(picture);
 
         return new ResultVO<>(1000, vo);
+    }
+
+    @Override
+    public ResultVO upload(MultipartFile file) {
+        String picture = FileUtil.uploadFile(file, rootDir, projectDir, scenicDir, "scenic");
+        return new ResultVO<>(1000, publicPath + picture);
     }
 }

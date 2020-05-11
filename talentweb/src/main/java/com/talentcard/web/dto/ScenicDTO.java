@@ -4,6 +4,8 @@ import com.talentcard.common.pojo.ScenicEnjoyPO;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.ScenicPicturePO;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.List;
  * @description: 景区
  * @version: 1.0
  */
+@Component
 @Data
 public class ScenicDTO implements Serializable {
     private static final long SerialVersionUID = 1L;
@@ -89,6 +92,13 @@ public class ScenicDTO implements Serializable {
      */
     private String extra;
 
+    private static String publicPath;
+
+    @Value("${file.publicPath}")
+    private void setPublicPath(String publicPath) {
+        ScenicDTO.publicPath = publicPath;
+    }
+
     /**
      * 根据 dto 设置 po
      *
@@ -100,7 +110,9 @@ public class ScenicDTO implements Serializable {
         po.setRate(dto.getRate());
         po.setUnit(dto.getUnit());
         po.setTimes(dto.getTimes());
-        po.setAvatar(dto.getAvatar());
+        if (null != dto.getAvatar()) {
+            po.setAvatar(dto.getAvatar().split(publicPath)[1]);
+        }
         po.setDescription(dto.getDesc());
         po.setExtra(dto.getExtra());
 
@@ -172,7 +184,7 @@ public class ScenicDTO implements Serializable {
             for (String picture : dto.getPicture()) {
                 ScenicPicturePO po = new ScenicPicturePO();
                 po.setScenicId(scenicId);
-                po.setPicture(picture);
+                po.setPicture(picture.split(publicPath)[1]);
                 pos.add(po);
             }
         }
