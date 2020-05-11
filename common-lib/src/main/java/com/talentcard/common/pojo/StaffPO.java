@@ -2,13 +2,11 @@ package com.talentcard.common.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import lombok.Data;
 
 /**
  * t_staff
- *
- * @author
+ * @author 
  */
 @Data
 public class StaffPO implements Serializable {
@@ -20,11 +18,13 @@ public class StaffPO implements Serializable {
 
     /**
      * 1 旅游
-     * 2 农家乐
+2 农家乐
      */
     private Long activityFirstContent;
 
     private Long activitySecondContent;
+
+    private String activitySecondContentName;
 
     /**
      * 1：男；2：女
@@ -39,7 +39,7 @@ public class StaffPO implements Serializable {
 
     /**
      * 1正在使用
-     * 2删除
+2删除
      */
     private Byte dr;
 

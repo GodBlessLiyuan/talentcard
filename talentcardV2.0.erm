@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2020-04-08 11:16:39</creation_date>
-			<updated_date>2020-05-11 15:50:20</updated_date>
+			<updated_date>2020-05-11 15:58:46</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -185,7 +185,7 @@
 			<char_semantics>false</char_semantics>
 			<description>1 旅游&#x0D;&#x0A;2 农家乐</description>
 			<logical_name>活动一级目录</logical_name>
-			<physical_name>activity_first_content</physical_name>
+			<physical_name>activity_first_content_id</physical_name>
 			<type>bigint</type>
 		</word>
 		<word>
@@ -10250,7 +10250,7 @@
 					<description></description>
 					<unique_key_name></unique_key_name>
 					<logical_name>活动二级目录</logical_name>
-					<physical_name>activity_second_content</physical_name>
+					<physical_name>activity_second_content_id</physical_name>
 					<type>bigint</type>
 					<constraint></constraint>
 					<default_value></default_value>

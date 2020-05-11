@@ -1,12 +1,12 @@
 package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.talentcard.common.bo.StaffTripBO;
+import com.talentcard.common.mapper.ScenicMapper;
 import com.talentcard.common.mapper.StaffMapper;
+import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.StaffPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IStaffService;
-import com.talentcard.front.vo.StaffVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +24,8 @@ import java.util.HashMap;
 public class StaffServiceImpl implements IStaffService {
     @Autowired
     private StaffMapper staffMapper;
+    @Autowired
+    private ScenicMapper scenicMapper;
 
     @Override
     public ResultVO ifEnableRegister(String openId, Long activityFirstContent, Long activitySecondContent) {
@@ -47,7 +49,7 @@ public class StaffServiceImpl implements IStaffService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO register(JSONObject jsonObject) {
         String openId = jsonObject.getString("openId");
-        Long scenicId = jsonObject.getLong("scenicId");
+        Long activitySecondContent = jsonObject.getLong("activitySecondContent");
         StaffPO ifExistStaff = staffMapper.findOneByOpenId(openId);
         if (ifExistStaff != null) {
             return new ResultVO(2501, "当前openId已经成为员工");
@@ -60,7 +62,9 @@ public class StaffServiceImpl implements IStaffService {
         staffPO.setCreateTime(new Date());
         staffPO.setDr((byte) 1);
         staffPO.setActivityFirstContent((long) 1);
-        staffPO.setActivitySecondContent(scenicId);
+        staffPO.setActivitySecondContent(activitySecondContent);
+        ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContent);
+        staffPO.setActivitySecondContentName(scenicPO.getName());
         staffMapper.insertSelective(staffPO);
 
         return new ResultVO(1000);
@@ -72,9 +76,8 @@ public class StaffServiceImpl implements IStaffService {
         if (staffPO == null) {
             return new ResultVO(1100, null);
         }
-        if(staffPO.getActivityFirstContent()==1) {
-            StaffTripBO staffTripBO = staffMapper.findOne(openId);
-        }
+//        StaffBO staffBO = staffMapper.findOne(openId);
+
 //        StaffVO staffVO = StaffVO.convert(staffTripBO);
         return new ResultVO(1000, null);
     }

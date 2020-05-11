@@ -1,6 +1,6 @@
 package com.talentcard.front.vo;
 
-import com.talentcard.common.bo.StaffTripBO;
+import com.talentcard.common.bo.StaffBO;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
  * @createTime 2020-05-11 14:34
  * @description 员工端绑定-使用扫描验证
  * 公众号下方：企业服务
- *
  */
 @Component
 @Data
@@ -22,23 +21,24 @@ public class StaffVO {
     private String phone;
     private Long activityFirstContent;
     private Long activitySecondContent;
-    private String activityName;
+    private String activitySecondContentName;
 
     /**
      * Bo转VO
      *
-     * @param staffTripBO
+     * @param staffBO
      * @return
      */
-    public static StaffVO convert(StaffTripBO staffTripBO) {
+    public static StaffVO convert(StaffBO staffBO) {
         StaffVO staffVO = new StaffVO();
-        staffVO.setStaffId(staffTripBO.getStaffId());
-        staffVO.setOpenId(staffTripBO.getOpenId());
-        staffVO.setStaffName(staffTripBO.getStaffName());
-        staffVO.setSex(staffTripBO.getSex());
-        staffVO.setPhone(staffTripBO.getPhone());
-        staffVO.setActivityFirstContent(staffTripBO.getActivityFirstContent());
-        staffVO.setActivitySecondContent(staffTripBO.getActivitySecondContent());
+        staffVO.setStaffId(staffBO.getStaffId());
+        staffVO.setOpenId(staffBO.getOpenId());
+        staffVO.setStaffName(staffBO.getStaffName());
+        staffVO.setSex(staffBO.getSex());
+        staffVO.setPhone(staffBO.getPhone());
+        staffVO.setActivityFirstContent(staffBO.getActivityFirstContent());
+        staffVO.setActivitySecondContent(staffBO.getActivitySecondContent());
+        staffVO.setActivitySecondContentName(staffBO.getActivitySecondContentName());
         return staffVO;
     }
 }
