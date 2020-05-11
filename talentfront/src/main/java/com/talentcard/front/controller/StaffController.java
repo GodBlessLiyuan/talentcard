@@ -26,9 +26,9 @@ public class StaffController {
      */
     @RequestMapping("ifEnableRegister")
     public ResultVO ifEnableRegister(@RequestParam(value = "openId") String openId,
-                                     @RequestParam(value = "activityFirstContent") Long activityFirstContent,
-                                     @RequestParam(value = "activitySecondContent") Long activitySecondContent) {
-        return iStaffService.ifEnableRegister(openId, activityFirstContent, activitySecondContent);
+                                     @RequestParam(value = "activityFirstContentId") Long activityFirstContentId,
+                                     @RequestParam(value = "activitySecondContentId") Long activitySecondContentId) {
+        return iStaffService.ifEnableRegister(openId, activityFirstContentId, activitySecondContentId);
     }
 
     /**

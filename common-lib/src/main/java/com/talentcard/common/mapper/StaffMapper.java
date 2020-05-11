@@ -1,9 +1,12 @@
 package com.talentcard.common.mapper;
 
-import com.talentcard.common.bo.StaffTripBO;
+import com.talentcard.common.bo.StaffBO;
 import com.talentcard.common.pojo.StaffPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * StaffMapper继承基类
@@ -21,15 +24,17 @@ public interface StaffMapper extends BaseMapper<StaffPO, Long> {
     /**
      * 根据一级和二级目录查找特定活动员工存在的人数
      *
-     * @param activityFirstContent
-     * @param activitySecondContent
+     * @param activityFirstContentId
+     * @param activitySecondContentId
      * @return
      */
-    Integer findStaffNum(@Param("activityFirstContent") Long activityFirstContent,
-                         @Param("activitySecondContent") Long activitySecondContent);
+    Integer findStaffNum(@Param("activityFirstContentId") Long activityFirstContentId,
+                         @Param("activitySecondContentId") Long activitySecondContentId);
 
     /**
      * 查找旅游员工信息
      */
-    StaffTripBO findOne(@Param("openId") String openId);
+    StaffPO findOne(@Param("openId") String openId);
+
+    List<StaffPO> findStaffByFactor(HashMap<String, Object> hashMap);
 }

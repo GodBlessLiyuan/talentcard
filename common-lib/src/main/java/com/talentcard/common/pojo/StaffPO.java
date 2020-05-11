@@ -20,9 +20,9 @@ public class StaffPO implements Serializable {
      * 1 旅游
 2 农家乐
      */
-    private Long activityFirstContent;
+    private Long activityFirstContentId;
 
-    private Long activitySecondContent;
+    private Long activitySecondContentId;
 
     private String activitySecondContentName;
 

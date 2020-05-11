@@ -1,6 +1,7 @@
 package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.bo.StaffBO;
 import com.talentcard.common.mapper.ScenicMapper;
 import com.talentcard.common.mapper.StaffMapper;
 import com.talentcard.common.pojo.ScenicPO;
@@ -28,10 +29,10 @@ public class StaffServiceImpl implements IStaffService {
     private ScenicMapper scenicMapper;
 
     @Override
-    public ResultVO ifEnableRegister(String openId, Long activityFirstContent, Long activitySecondContent) {
+    public ResultVO ifEnableRegister(String openId, Long activityFirstContentId, Long activitySecondContentId) {
         Byte status;
         StaffPO staffPO = staffMapper.findOneByOpenId(openId);
-        Integer staffNum = staffMapper.findStaffNum(activityFirstContent, activitySecondContent);
+        Integer staffNum = staffMapper.findStaffNum(activityFirstContentId, activitySecondContentId);
         if (staffPO != null) {
             //存在当前员工，已经绑定
             status = 1;
@@ -49,7 +50,7 @@ public class StaffServiceImpl implements IStaffService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO register(JSONObject jsonObject) {
         String openId = jsonObject.getString("openId");
-        Long activitySecondContent = jsonObject.getLong("activitySecondContent");
+        Long activitySecondContentId = jsonObject.getLong("activitySecondContentId");
         StaffPO ifExistStaff = staffMapper.findOneByOpenId(openId);
         if (ifExistStaff != null) {
             return new ResultVO(2501, "当前openId已经成为员工");
@@ -61,9 +62,9 @@ public class StaffServiceImpl implements IStaffService {
         staffPO.setPhone(jsonObject.getString("phone"));
         staffPO.setCreateTime(new Date());
         staffPO.setDr((byte) 1);
-        staffPO.setActivityFirstContent((long) 1);
-        staffPO.setActivitySecondContent(activitySecondContent);
-        ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContent);
+        staffPO.setActivityFirstContentId((long) 1);
+        staffPO.setActivitySecondContentId(activitySecondContentId);
+        ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
         staffPO.setActivitySecondContentName(scenicPO.getName());
         staffMapper.insertSelective(staffPO);
 
@@ -71,14 +72,12 @@ public class StaffServiceImpl implements IStaffService {
     }
 
     @Override
-    public ResultVO findStaffBusinessService(String openId) {
+    public ResultVO findOne(String openId) {
         StaffPO staffPO = staffMapper.findOneByOpenId(openId);
         if (staffPO == null) {
             return new ResultVO(1100, null);
         }
-//        StaffBO staffBO = staffMapper.findOne(openId);
-
-//        StaffVO staffVO = StaffVO.convert(staffTripBO);
-        return new ResultVO(1000, null);
+        StaffBO staffBO = staffMapper.findOne(openId);
+        return new ResultVO(1000, staffBO);
     }
 }

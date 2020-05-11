@@ -16,7 +16,7 @@ public interface IStaffService {
      * 2. 是否达到绑定上限
      * @return
      */
-    ResultVO ifEnableRegister(String openId, Long activityFirstContent, Long activitySecondContent);
+    ResultVO ifEnableRegister(String openId, Long activityFirstContentId, Long activitySecondContentId);
 
     /**
      * 旅游员工注册
@@ -31,5 +31,5 @@ public interface IStaffService {
      * @param openId
      * @return
      */
-    ResultVO findStaffBusinessService(String openId);
+    ResultVO findOne(String openId);
 }
