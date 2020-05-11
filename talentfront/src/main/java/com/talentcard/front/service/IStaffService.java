@@ -34,13 +34,4 @@ public interface IStaffService {
      * @return
      */
     ResultVO findOne(String openId);
-
-    /**
-     * 查询
-     * @param pageNum
-     * @param pageSize
-     * @param hashMap
-     * @return
-     */
-    ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap);
 }

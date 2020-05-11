@@ -180,10 +180,10 @@
     and dr =1
   </select>
 
-    <select id="findStaffByFactor" parameterType="java.util.HashMap" resultType="com.talentcard.common.pojo.StaffPO">
+    <select id="findStaffByFactor" parameterType="java.util.HashMap" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from staff
+        from t_staff
         where
         dr =1
         <if test="activitySecondContentName != null and activitySecondContentName != ''">

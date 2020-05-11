@@ -3,11 +3,12 @@
 <mapper namespace="com.talentcard.common.mapper.TripGroupAuthorityMapper">
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TripGroupAuthorityPO">
     <id column="tga_id" jdbcType="BIGINT" property="tgaId" />
-    <result column="scenic_id" jdbcType="BIGINT" property="scenicId" />
+    <result column="activity_first_content_id" jdbcType="BIGINT" property="activityFirstContentId" />
+    <result column="activity_second_content_id" jdbcType="BIGINT" property="activitySecondContentId" />
     <result column="authority_code" jdbcType="CHAR" property="authorityCode" />
   </resultMap>
   <sql id="Base_Column_List">
-    tga_id, scenic_id, authority_code
+    tga_id, activity_first_content_id, activity_second_content_id, authority_code
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -20,10 +21,10 @@
     where tga_id = #{tgaId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.TripGroupAuthorityPO">
-    insert into t_trip_group_authority (tga_id, scenic_id, authority_code
-      )
-    values (#{tgaId,jdbcType=BIGINT}, #{scenicId,jdbcType=BIGINT}, #{authorityCode,jdbcType=CHAR}
-      )
+    insert into t_trip_group_authority (tga_id, activity_first_content_id, activity_second_content_id, 
+      authority_code)
+    values (#{tgaId,jdbcType=BIGINT}, #{activityFirstContentId,jdbcType=BIGINT}, #{activitySecondContentId,jdbcType=BIGINT}, 
+      #{authorityCode,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TripGroupAuthorityPO">
     insert into t_trip_group_authority
@@ -31,8 +32,11 @@
       <if test="tgaId != null">
         tga_id,
       </if>
-      <if test="scenicId != null">
-        scenic_id,
+      <if test="activityFirstContentId != null">
+        activity_first_content_id,
+      </if>
+      <if test="activitySecondContentId != null">
+        activity_second_content_id,
       </if>
       <if test="authorityCode != null">
         authority_code,
@@ -42,8 +46,11 @@
       <if test="tgaId != null">
         #{tgaId,jdbcType=BIGINT},
       </if>
-      <if test="scenicId != null">
-        #{scenicId,jdbcType=BIGINT},
+      <if test="activityFirstContentId != null">
+        #{activityFirstContentId,jdbcType=BIGINT},
+      </if>
+      <if test="activitySecondContentId != null">
+        #{activitySecondContentId,jdbcType=BIGINT},
       </if>
       <if test="authorityCode != null">
         #{authorityCode,jdbcType=CHAR},
@@ -53,8 +60,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TripGroupAuthorityPO">
     update t_trip_group_authority
     <set>
-      <if test="scenicId != null">
-        scenic_id = #{scenicId,jdbcType=BIGINT},
+      <if test="activityFirstContentId != null">
+        activity_first_content_id = #{activityFirstContentId,jdbcType=BIGINT},
+      </if>
+      <if test="activitySecondContentId != null">
+        activity_second_content_id = #{activitySecondContentId,jdbcType=BIGINT},
       </if>
       <if test="authorityCode != null">
         authority_code = #{authorityCode,jdbcType=CHAR},
@@ -64,7 +74,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TripGroupAuthorityPO">
     update t_trip_group_authority
-    set scenic_id = #{scenicId,jdbcType=BIGINT},
+    set activity_first_content_id = #{activityFirstContentId,jdbcType=BIGINT},
+      activity_second_content_id = #{activitySecondContentId,jdbcType=BIGINT},
       authority_code = #{authorityCode,jdbcType=CHAR}
     where tga_id = #{tgaId,jdbcType=BIGINT}
   </update>
