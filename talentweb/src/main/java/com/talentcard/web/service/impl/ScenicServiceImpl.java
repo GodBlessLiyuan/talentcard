@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +58,9 @@ public class ScenicServiceImpl implements IScenicService {
             }
 
             ScenicPO scenicPO = ScenicDTO.buildPO(new ScenicPO(), dto);
+            scenicPO.setCreateTime(new Date());
+            scenicPO.setStatus((byte) 2);
+            scenicPO.setDr((byte) 1);
             scenicMapper.insert(scenicPO);
 
             List<ScenicEnjoyPO> enjoyPOs = ScenicDTO.buildEnjoyPOs(dto, scenicPO.getScenicId());
@@ -72,6 +76,7 @@ public class ScenicServiceImpl implements IScenicService {
             return new ResultVO(1000);
         }
 
+        // 编辑
         ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(dto.getScenicId());
         if (null == scenicPO) {
             return new ResultVO(1102);
@@ -96,7 +101,6 @@ public class ScenicServiceImpl implements IScenicService {
             scenicPictureMapper.batchInsert(picPOs);
         }
 
-        // 编辑
         return new ResultVO(1000);
     }
 
@@ -129,7 +133,7 @@ public class ScenicServiceImpl implements IScenicService {
         vo.setExtra(scenicPO.getExtra());
         vo.setQrCode(scenicPO.getQrCode());
 
-        List<ScenicEnjoyPO> enjoyPOs = scenicEnjoyMapper.queryBySecnicId(scenicId);
+        List<ScenicEnjoyPO> enjoyPOs = scenicEnjoyMapper.queryByScenicId(scenicId);
         List<Long> cardIds = new ArrayList<>();
         List<Long> categoryIds = new ArrayList<>();
         List<Long> educIds = new ArrayList<>();

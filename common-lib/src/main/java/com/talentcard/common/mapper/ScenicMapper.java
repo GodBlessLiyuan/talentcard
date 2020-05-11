@@ -2,6 +2,7 @@ package com.talentcard.common.mapper;
 
 import com.talentcard.common.pojo.ScenicPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * ScenicMapper继承基类
@@ -22,5 +23,5 @@ public interface ScenicMapper extends BaseMapper<ScenicPO, Long> {
      * @param scenicId
      * @param status
      */
-    void updateStatus(Long scenicId, Long status);
+    void updateStatus(@Param("scenicId") Long scenicId, @Param("status") Long status);
 }

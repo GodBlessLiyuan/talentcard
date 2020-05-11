@@ -71,7 +71,7 @@
     <insert id="batchInsert" parameterType="com.talentcard.common.pojo.ScenicPicturePO">
         insert into t_scenic_picture (sp_id, scenic_id, picture)
         values
-        <foreach collection="pos" separator="," item="po">
+        <foreach collection="list" separator="," item="po">
             (#{po.spId,jdbcType=BIGINT}, #{po.scenicId,jdbcType=BIGINT}, #{po.picture,jdbcType=CHAR})
         </foreach>
     </insert>

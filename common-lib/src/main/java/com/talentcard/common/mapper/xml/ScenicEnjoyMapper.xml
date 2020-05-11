@@ -132,7 +132,7 @@
         category_id, education_id, title_id,
         quality, `type`)
         values
-        <foreach collection="pos" separator="," item="po">
+        <foreach collection="list" separator="," item="po">
             (#{po.sgId,jdbcType=BIGINT}, #{po.scenicId,jdbcType=BIGINT}, #{po.cardId,jdbcType=BIGINT},
             #{po.categoryId,jdbcType=BIGINT}, #{po.educationId,jdbcType=BIGINT}, #{po.titleId,jdbcType=BIGINT},
             #{po.quality,jdbcType=BIGINT}, #{po.type,jdbcType=TINYINT})

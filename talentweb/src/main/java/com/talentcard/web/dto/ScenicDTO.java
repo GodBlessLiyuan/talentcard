@@ -139,7 +139,7 @@ public class ScenicDTO implements Serializable {
             for (Long educId : dto.getEducIds()) {
                 ScenicEnjoyPO po = new ScenicEnjoyPO();
                 po.setScenicId(scenicId);
-                po.setCategoryId(educId);
+                po.setEducationId(educId);
                 po.setType((byte) 3);
                 pos.add(po);
             }
@@ -148,7 +148,7 @@ public class ScenicDTO implements Serializable {
             for (Long titleId : dto.getTitleIds()) {
                 ScenicEnjoyPO po = new ScenicEnjoyPO();
                 po.setScenicId(scenicId);
-                po.setCategoryId(titleId);
+                po.setTitleId(titleId);
                 po.setType((byte) 4);
                 pos.add(po);
             }
@@ -157,7 +157,7 @@ public class ScenicDTO implements Serializable {
             for (Long qualityId : dto.getQualityIds()) {
                 ScenicEnjoyPO po = new ScenicEnjoyPO();
                 po.setScenicId(scenicId);
-                po.setCategoryId(qualityId);
+                po.setQuality(qualityId);
                 po.setType((byte) 5);
                 pos.add(po);
             }

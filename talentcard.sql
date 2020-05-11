@@ -372,8 +372,7 @@ CREATE TABLE t_scenic_picture
     scenic_id bigint unsigned NOT NULL,
     picture char(255),
     PRIMARY KEY (sp_id),
-    UNIQUE (sp_id),
-    UNIQUE (scenic_id)
+    UNIQUE (sp_id)
 );
 
 

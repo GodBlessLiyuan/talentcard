@@ -13,9 +13,9 @@ public interface ScenicEnjoyMapper extends BaseMapper<ScenicEnjoyPO, Long> {
     /**
      * 批量插入
      *
-     * @param enjoyPOs
+     * @param pos
      */
-    void batchInsert(List<ScenicEnjoyPO> enjoyPOs);
+    void batchInsert(List<ScenicEnjoyPO> pos);
 
     /**
      * 根据 scenic id 删除
@@ -30,5 +30,5 @@ public interface ScenicEnjoyMapper extends BaseMapper<ScenicEnjoyPO, Long> {
      * @param scenicId
      * @return
      */
-    List<ScenicEnjoyPO> queryBySecnicId(Long scenicId);
+    List<ScenicEnjoyPO> queryByScenicId(Long scenicId);
 }

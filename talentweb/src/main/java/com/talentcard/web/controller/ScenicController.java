@@ -51,7 +51,7 @@ public class ScenicController {
         }
         reqMap.put("start", start);
         reqMap.put("end", end);
-        reqMap.put("apply", status);
+        reqMap.put("status", status);
 
         return scenicService.query(pageNum, pageSize, reqMap);
     }
