@@ -1,8 +1,8 @@
 package com.talentcard.web.dto;
 
-import com.talentcard.common.pojo.ScenicEnjoyPO;
-import com.talentcard.common.pojo.ScenicPO;
-import com.talentcard.common.pojo.ScenicPicturePO;
+import com.talentcard.common.pojo.FarmhouseEnjoyPO;
+import com.talentcard.common.pojo.FarmhousePO;
+import com.talentcard.common.pojo.FarmhousePicturePO;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,42 +13,32 @@ import java.util.List;
 
 /**
  * @author: xiahui
- * @date: Created in 2020/5/9 16:05
- * @description: 景区
+ * @date: Created in 2020/5/11 18:48
+ * @description: 农家乐
  * @version: 1.0
  */
 @Component
 @Data
-public class ScenicDTO implements Serializable {
+public class FarmhouseDTO implements Serializable {
     private static final long SerialVersionUID = 1L;
 
     /**
-     * 景区ID
+     * 农家乐ID
      */
-    private Long scenicId;
+    private Long farmhouseId;
 
     /**
-     * 景区名称
+     * 农家乐名称
      */
     private String name;
 
     /**
-     * 入园限制 - 频
+     * 优惠折扣
      */
-    private Integer rate;
+    private Double discount;
 
     /**
-     * 入园限制 - 单位； 1：年；2：季；3：月
-     */
-    private Byte unit;
-
-    /**
-     * 入园限制 - 次
-     */
-    private Integer times;
-
-    /**
-     * 可查看与申请此景区的人才卡IDs
+     * 可查看与申请此农家乐的人才卡IDs
      */
     private Long[] cardIds;
 
@@ -58,32 +48,32 @@ public class ScenicDTO implements Serializable {
     private Long[] categoryIds;
 
     /**
-     * 可查看与申请此景区的人才学历IDs
+     * 可查看与申请此农家乐的人才学历IDs
      */
     private Long[] educIds;
 
     /**
-     * 可查看与申请此景区的人才职称IDs
+     * 可查看与申请此农家乐的人才职称IDs
      */
     private Long[] titleIds;
 
     /**
-     * 可查看与申请此景区的人才职业资格IDs
+     * 可查看与申请此农家乐的人才职业资格IDs
      */
     private Long[] qualityIds;
 
     /**
-     * 景区头图
+     * 农家乐头图
      */
     private String avatar;
 
     /**
-     * 景区轮播图
+     * 农家乐轮播图
      */
     private String[] picture;
 
     /**
-     * 景区介绍信息
+     * 农家乐介绍信息
      */
     private String desc;
 
@@ -96,7 +86,7 @@ public class ScenicDTO implements Serializable {
 
     @Value("${file.publicPath}")
     private void setPublicPath(String publicPath) {
-        ScenicDTO.publicPath = publicPath;
+        FarmhouseDTO.publicPath = publicPath;
     }
 
     /**
@@ -105,11 +95,9 @@ public class ScenicDTO implements Serializable {
      * @param po
      * @param dto
      */
-    public static ScenicPO buildPO(ScenicPO po, ScenicDTO dto) {
+    public static FarmhousePO buildPO(FarmhousePO po, FarmhouseDTO dto) {
         po.setName(dto.getName());
-        po.setRate(dto.getRate());
-        po.setUnit(dto.getUnit());
-        po.setTimes(dto.getTimes());
+        po.setDiscount(dto.getDiscount());
         if (null != dto.getAvatar()) {
             po.setAvatar(dto.getAvatar().split(publicPath)[1]);
         }
@@ -123,16 +111,16 @@ public class ScenicDTO implements Serializable {
      * 根据 dto 构建 enjoyPOs
      *
      * @param dto
-     * @param scenicId
+     * @param farmhouseId
      * @return
      */
-    public static List<ScenicEnjoyPO> buildEnjoyPOs(ScenicDTO dto, Long scenicId) {
-        List<ScenicEnjoyPO> pos = new ArrayList<>();
+    public static List<FarmhouseEnjoyPO> buildEnjoyPOs(FarmhouseDTO dto, Long farmhouseId) {
+        List<FarmhouseEnjoyPO> pos = new ArrayList<>();
 
         if (null != dto.getCardIds() && dto.getCardIds().length > 0) {
             for (Long cardId : dto.getCardIds()) {
-                ScenicEnjoyPO po = new ScenicEnjoyPO();
-                po.setScenicId(scenicId);
+                FarmhouseEnjoyPO po = new FarmhouseEnjoyPO();
+                po.setFarmhouseId(farmhouseId);
                 po.setCardId(cardId);
                 po.setType((byte) 1);
                 pos.add(po);
@@ -140,8 +128,8 @@ public class ScenicDTO implements Serializable {
         }
         if (null != dto.getCategoryIds() && dto.getCategoryIds().length > 0) {
             for (Long category : dto.getCategoryIds()) {
-                ScenicEnjoyPO po = new ScenicEnjoyPO();
-                po.setScenicId(scenicId);
+                FarmhouseEnjoyPO po = new FarmhouseEnjoyPO();
+                po.setFarmhouseId(farmhouseId);
                 po.setCategoryId(category);
                 po.setType((byte) 2);
                 pos.add(po);
@@ -149,8 +137,8 @@ public class ScenicDTO implements Serializable {
         }
         if (null != dto.getEducIds() && dto.getEducIds().length > 0) {
             for (Long educId : dto.getEducIds()) {
-                ScenicEnjoyPO po = new ScenicEnjoyPO();
-                po.setScenicId(scenicId);
+                FarmhouseEnjoyPO po = new FarmhouseEnjoyPO();
+                po.setFarmhouseId(farmhouseId);
                 po.setEducationId(educId);
                 po.setType((byte) 3);
                 pos.add(po);
@@ -158,8 +146,8 @@ public class ScenicDTO implements Serializable {
         }
         if (null != dto.getTitleIds() && dto.getTitleIds().length > 0) {
             for (Long titleId : dto.getTitleIds()) {
-                ScenicEnjoyPO po = new ScenicEnjoyPO();
-                po.setScenicId(scenicId);
+                FarmhouseEnjoyPO po = new FarmhouseEnjoyPO();
+                po.setFarmhouseId(farmhouseId);
                 po.setTitleId(titleId);
                 po.setType((byte) 4);
                 pos.add(po);
@@ -167,8 +155,8 @@ public class ScenicDTO implements Serializable {
         }
         if (null != dto.getQualityIds() && dto.getQualityIds().length > 0) {
             for (Long qualityId : dto.getQualityIds()) {
-                ScenicEnjoyPO po = new ScenicEnjoyPO();
-                po.setScenicId(scenicId);
+                FarmhouseEnjoyPO po = new FarmhouseEnjoyPO();
+                po.setFarmhouseId(farmhouseId);
                 po.setQuality(qualityId);
                 po.setType((byte) 5);
                 pos.add(po);
@@ -182,15 +170,15 @@ public class ScenicDTO implements Serializable {
      * 根据 dto 构建 picturePOs
      *
      * @param dto
-     * @param scenicId
+     * @param farmhouseId
      * @return
      */
-    public static List<ScenicPicturePO> buildPicturePOs(ScenicDTO dto, Long scenicId) {
-        List<ScenicPicturePO> pos = new ArrayList<>();
+    public static List<FarmhousePicturePO> buildPicturePOs(FarmhouseDTO dto, Long farmhouseId) {
+        List<FarmhousePicturePO> pos = new ArrayList<>();
         if (null != dto.getPicture() && dto.getPicture().length > 0) {
             for (String picture : dto.getPicture()) {
-                ScenicPicturePO po = new ScenicPicturePO();
-                po.setScenicId(scenicId);
+                FarmhousePicturePO po = new FarmhousePicturePO();
+                po.setFarmhouseId(farmhouseId);
                 po.setPicture(picture.split(publicPath)[1]);
                 pos.add(po);
             }
