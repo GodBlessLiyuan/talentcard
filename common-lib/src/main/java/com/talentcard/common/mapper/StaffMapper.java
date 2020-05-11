@@ -1,5 +1,6 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.bo.StaffTripBO;
 import com.talentcard.common.pojo.StaffPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -10,16 +11,25 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface StaffMapper extends BaseMapper<StaffPO, Long> {
     /**
-     * 新增，且设置主键
-     * @param staffPO
-     * @return
-     */
-    int add(StaffPO staffPO);
-
-    /**
      * 判断staff表是否存已经存在该openId
+     *
      * @param openId
      * @return
      */
-    StaffPO ifExistStaff(@Param("openId") String openId);
+    StaffPO findOneByOpenId(@Param("openId") String openId);
+
+    /**
+     * 根据一级和二级目录查找特定活动员工存在的人数
+     *
+     * @param activityFirstContent
+     * @param activitySecondContent
+     * @return
+     */
+    Integer findStaffNum(@Param("activityFirstContent") Long activityFirstContent,
+                         @Param("activitySecondContent") Long activitySecondContent);
+
+    /**
+     * 查找旅游员工信息
+     */
+    StaffTripBO findOne(@Param("openId") String openId);
 }
