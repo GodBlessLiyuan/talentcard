@@ -23,4 +23,12 @@ public interface ScenicEnjoyMapper extends BaseMapper<ScenicEnjoyPO, Long> {
      * @param scenicId
      */
     void deleteByScenicId(Long scenicId);
+
+    /**
+     * 根据 scenic id 查询
+     *
+     * @param scenicId
+     * @return
+     */
+    List<ScenicEnjoyPO> queryBySecnicId(Long scenicId);
 }

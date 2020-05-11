@@ -23,4 +23,12 @@ public interface ScenicPictureMapper extends BaseMapper<ScenicPicturePO, Long> {
      * @param scenicId
      */
     void deleteByScenicId(Long scenicId);
+
+    /**
+     * 根据 scenic id 查询
+     *
+     * @param scenicId
+     * @return
+     */
+    List<ScenicPicturePO> queryByScenicId(Long scenicId);
 }

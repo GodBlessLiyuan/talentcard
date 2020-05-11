@@ -12,12 +12,14 @@ import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.ScenicDTO;
 import com.talentcard.web.service.IScenicService;
+import com.talentcard.web.vo.ScenicDetailVO;
 import com.talentcard.web.vo.ScenicVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -100,11 +102,67 @@ public class ScenicServiceImpl implements IScenicService {
 
     @Override
     public ResultVO status(Long scenicId, Long status) {
-        return null;
+        ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(scenicId);
+        if (null == scenicPO) {
+            return new ResultVO(1102);
+        }
+
+        scenicMapper.updateStatus(scenicId, status);
+        return new ResultVO(1000);
     }
 
     @Override
     public ResultVO detail(Long scenicId) {
-        return null;
+        ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(scenicId);
+        if (null == scenicPO) {
+            return new ResultVO(1102);
+        }
+
+        ScenicDetailVO vo = new ScenicDetailVO();
+        vo.setScenicId(scenicPO.getScenicId());
+        vo.setName(scenicPO.getName());
+        vo.setRate(scenicPO.getRate());
+        vo.setUnit(scenicPO.getUnit());
+        vo.setTimes(scenicPO.getTimes());
+        vo.setAvatar(scenicPO.getAvatar());
+        vo.setDesc(scenicPO.getDescription());
+        vo.setExtra(scenicPO.getExtra());
+        vo.setQrCode(scenicPO.getQrCode());
+
+        List<ScenicEnjoyPO> enjoyPOs = scenicEnjoyMapper.queryBySecnicId(scenicId);
+        List<Long> cardIds = new ArrayList<>();
+        List<Long> categoryIds = new ArrayList<>();
+        List<Long> educIds = new ArrayList<>();
+        List<Long> titleIds = new ArrayList<>();
+        List<Long> qualityIds = new ArrayList<>();
+        for (ScenicEnjoyPO po : enjoyPOs) {
+            Byte type = po.getType();
+            if (type == 1) {
+                cardIds.add(po.getCardId());
+            } else if (type == 2) {
+                categoryIds.add(po.getCategoryId());
+            } else if (type == 3) {
+                educIds.add(po.getEducationId());
+            } else if (type == 4) {
+                titleIds.add(po.getTitleId());
+            } else if (type == 5) {
+                qualityIds.add(po.getQuality());
+            }
+        }
+
+        vo.setCardIds(cardIds);
+        vo.setCategoryIds(categoryIds);
+        vo.setEducIds(educIds);
+        vo.setTitleIds(titleIds);
+        vo.setQualityIds(qualityIds);
+
+        List<ScenicPicturePO> picPOs = scenicPictureMapper.queryByScenicId(scenicId);
+        List<String> picture = new ArrayList<>();
+        for (ScenicPicturePO po : picPOs) {
+            picture.add(po.getPicture());
+        }
+        vo.setPicture(picture);
+
+        return new ResultVO<>(1000, vo);
     }
 }

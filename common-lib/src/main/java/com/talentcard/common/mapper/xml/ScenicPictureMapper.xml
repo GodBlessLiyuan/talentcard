@@ -81,4 +81,10 @@
         from t_scenic_picture
         where scenic_id = #{scenicId,jdbcType=BIGINT}
     </delete>
+    <select id="queryByScenicId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_scenic_picture
+        where scenic_id = #{scenicId,jdbcType=BIGINT}
+    </select>
 </mapper>

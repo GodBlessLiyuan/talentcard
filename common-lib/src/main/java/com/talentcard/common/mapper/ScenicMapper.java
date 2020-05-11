@@ -15,4 +15,12 @@ public interface ScenicMapper extends BaseMapper<ScenicPO, Long> {
      * @return
      */
     ScenicPO queryByName(String name);
+
+    /**
+     * 根据scenicId 跟新 status
+     *
+     * @param scenicId
+     * @param status
+     */
+    void updateStatus(Long scenicId, Long status);
 }
