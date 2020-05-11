@@ -68,4 +68,24 @@
       picture = #{picture,jdbcType=CHAR}
     where fp_id = #{fpId,jdbcType=BIGINT}
   </update>
+
+  <insert id="batchInsert" parameterType="com.talentcard.common.pojo.FarmhousePicturePO">
+    insert into t_farmhouse_picture (fp_id, farmhouse_id, picture)
+    values
+    <foreach collection="list" separator="," item="po">
+      (#{po.fpId,jdbcType=BIGINT}, #{po.farmhouseId,jdbcType=BIGINT}, #{po.picture,jdbcType=CHAR})
+    </foreach>
+  </insert>
+
+  <delete id="deleteByFarmhouseId" parameterType="java.lang.Long">
+    delete
+    from t_farmhouse_picture
+    where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
+  </delete>
+  <select id="queryByFarmhouseId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_farmhouse_picture
+    where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
+  </select>
 </mapper>

@@ -22,7 +22,7 @@ public interface FarmhousePictureMapper extends BaseMapper<FarmhousePicturePO, L
      *
      * @param farmhouseId
      */
-    void deleteByScenicId(Long farmhouseId);
+    void deleteByFarmhouseId(Long farmhouseId);
 
     /**
      * 根据 farmhouseId 查询
@@ -30,5 +30,5 @@ public interface FarmhousePictureMapper extends BaseMapper<FarmhousePicturePO, L
      * @param farmhouseId
      * @return
      */
-    List<FarmhousePicturePO> queryByScenicId(Long farmhouseId);
+    List<FarmhousePicturePO> queryByFarmhouseId(Long farmhouseId);
 }

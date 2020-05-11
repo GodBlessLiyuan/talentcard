@@ -111,13 +111,13 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
         FarmhouseDTO.buildPO(farmhousePO, dto);
         farmhouseMapper.updateByPrimaryKey(farmhousePO);
 
-        farmhouseEnjoyMapper.deleteByScenicId(dto.getFarmhouseId());
+        farmhouseEnjoyMapper.deleteByFarmhouseId(dto.getFarmhouseId());
         List<FarmhouseEnjoyPO> enjoyPOs = FarmhouseDTO.buildEnjoyPOs(dto, farmhousePO.getFarmhouseId());
         if (enjoyPOs.size() > 0) {
             farmhouseEnjoyMapper.batchInsert(enjoyPOs);
         }
 
-        farmhousePictureMapper.deleteByScenicId(dto.getFarmhouseId());
+        farmhousePictureMapper.deleteByFarmhouseId(dto.getFarmhouseId());
         List<FarmhousePicturePO> picPOs = FarmhouseDTO.buildPicturePOs(dto, farmhousePO.getFarmhouseId());
         if (picPOs.size() > 0) {
             farmhousePictureMapper.batchInsert(picPOs);
@@ -138,13 +138,13 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
     }
 
     @Override
-    public ResultVO detail(Long scenicId) {
-        FarmhousePO farmhousePO = farmhouseMapper.selectByPrimaryKey(scenicId);
+    public ResultVO detail(Long farmhouseId) {
+        FarmhousePO farmhousePO = farmhouseMapper.selectByPrimaryKey(farmhouseId);
         if (null == farmhousePO) {
             return new ResultVO(1102);
         }
-        List<FarmhouseEnjoyPO> enjoyPOs = farmhouseEnjoyMapper.queryByScenicId(scenicId);
-        List<FarmhousePicturePO> picPOs = farmhousePictureMapper.queryByScenicId(scenicId);
+        List<FarmhouseEnjoyPO> enjoyPOs = farmhouseEnjoyMapper.queryByFarmhouseId(farmhouseId);
+        List<FarmhousePicturePO> picPOs = farmhousePictureMapper.queryByFarmhouseId(farmhouseId);
 
         FarmhouseDetailVO vo = FarmhouseDetailVO.build(farmhousePO,enjoyPOs,picPOs);
         return new ResultVO<>(1000, vo);
@@ -152,7 +152,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
 
     @Override
     public ResultVO upload(MultipartFile file) {
-        String picture = FileUtil.uploadFile(file, rootDir, projectDir, farmhouseDir, "scenic");
+        String picture = FileUtil.uploadFile(file, rootDir, projectDir, farmhouseDir, "farmhouse");
         return new ResultVO<>(1000, publicPath + picture);
     }
 }

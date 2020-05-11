@@ -125,4 +125,29 @@
       `type` = #{type,jdbcType=TINYINT}
     where fe_id = #{feId,jdbcType=BIGINT}
   </update>
+
+  <insert id="batchInsert" parameterType="com.talentcard.common.pojo.FarmhouseEnjoyPO">
+    insert into t_farmhouse_enjoy (fe_id, farmhouse_id, card_id,
+    category_id, education_id, title_id,
+    quality, `type`)
+    values
+    <foreach collection="list" separator="," item="po">
+      (#{po.feId,jdbcType=BIGINT}, #{po.farmhouseId,jdbcType=BIGINT}, #{po.cardId,jdbcType=BIGINT},
+      #{po.categoryId,jdbcType=BIGINT}, #{po.educationId,jdbcType=INTEGER}, #{po.titleId,jdbcType=INTEGER},
+      #{po.quality,jdbcType=INTEGER}, #{po.type,jdbcType=TINYINT})
+    </foreach>
+  </insert>
+
+  <delete id="deleteByFarmhouseId" parameterType="java.lang.Long">
+    delete
+    from t_farmhouse_enjoy
+    where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
+  </delete>
+
+  <select id="queryByFarmhouseId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_farmhouse_enjoy
+    where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
+  </select>
 </mapper>

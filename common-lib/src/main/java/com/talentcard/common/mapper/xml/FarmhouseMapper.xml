@@ -150,4 +150,29 @@
       dr = #{dr,jdbcType=TINYINT}
     where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
   </update>
+
+  <select id="query" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_farmhouse
+    where dr = 1
+    <if test="start != null and start !=''">and create_time >= #{start}</if>
+    <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
+    <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
+    <if test="status != null and status !=0">and `status` = #{status}</if>
+    order by create_time asc
+  </select>
+
+  <select id="queryByName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_farmhouse
+    where `name` = #{name,jdbcType=CHAR} and dr = 1
+  </select>
+
+  <update id="updateStatus">
+    update t_farmhouse
+    set `status` = #{status,jdbcType=TINYINT}
+    where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
+  </update>
 </mapper>
