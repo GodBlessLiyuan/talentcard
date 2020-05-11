@@ -179,32 +179,27 @@
     and s.activity_second_content_id = #{activitySecondContentId,jdbcType=BIGINT}
     and dr =1
   </select>
-    <select id="findOne" resultType="com.talentcard.common.pojo.StaffPO">
+
+    <select id="findStaffByFactor" parameterType="java.util.HashMap" resultType="com.talentcard.common.pojo.StaffPO">
         select
         <include refid="Base_Column_List"/>
-        from staff s on st.staff_id = s.staff_id
+        from staff
         where
         dr =1
-        and s.open_id = #{openId,jdbcType=CHAR}
-   </select>
-
-  <select id="findStaffByFactor" parameterType="java.util.HashMap" resultType="com.talentcard.common.pojo.StaffPO">
-        select
-        s.staff_id as staffId, s.open_id as openId, s.name as staffName,
-        s.activity_first_content_id as activityFirstContentId,
-        s.activity_second_content_id as activitySecondContentId,
-        s.sex as sex, s.idCard as idCard, s.phone as phone, s.create_time as staffCreateTime,
-        s.activity_second_content_name as activitySecondContentName
-
-        sc.scenic_id as scenicId, sc.name as senicName, sc.rate as rate, sc.unit as unit, sc.times as times,
-        sc.avatar as avatar, sc.description as description, sc.extra as extra, sc.qrCode as qrCode,
-        sc.status as scenicStatus, sc.create_time as scenicCreateTime
-
-        from staff s on st.staff_id = s.staff_id
-        left join scenic sc on sc.scenic_id = st.scenic_id
-        where
-        dr =1
-        and s.open_id = #{openId,jdbcType=CHAR}
-   </select>
-
+        <if test="activitySecondContentName != null and activitySecondContentName != ''">
+            and activity_second_content_name = #{activitySecondContentName,jdbcType=CHAR}
+        </if>
+        <if test="activityFirstContentId != null ">
+            and activity_first_content_id = #{activityFirstContentId,jdbcType=BIGINT}
+        </if>
+        <if test="name != null and name != ''">
+            and `name` = #{name,jdbcType=CHAR}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and <![CDATA[ create_time >= #{startTime}]]>
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and <![CDATA[ create_time <= #{endTime}]]>
+        </if>
+    </select>
 </mapper>

@@ -6,6 +6,8 @@ import com.talentcard.front.service.IStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 /**
  * @author ChenXU
  * @version 1.0
@@ -43,14 +45,38 @@ public class StaffController {
     }
 
     /**
-     * 根据openId，企业服务里查找已经存在的员工
+     * 根据openId，查找员工
      * 返回：活动景区名称、员工姓名等信息
      *
      * @param openId
      * @return
      */
-    @RequestMapping("findStaffBusinessService")
-    public ResultVO findStaffBusinessService(String openId) {
-        return iStaffService.findStaffBusinessService(openId);
+    @RequestMapping("findOne")
+    public ResultVO findOne(@RequestParam("openId") String openId) {
+        return iStaffService.findOne(openId);
+    }
+
+
+    @RequestMapping("query")
+    public ResultVO query(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
+                          @RequestParam(value = "activitySecondContentName", required = false) String activitySecondContentName,
+                          @RequestParam(value = "activityFirstContentId", required = false) Integer activityFirstContentId,
+                          @RequestParam(value = "name", required = false) String name,
+                          @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
+                          @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        if (!startTime.equals("")) {
+            startTime = startTime + " 00:00:00";
+        }
+        if (!endTime.equals("")) {
+            endTime = endTime + " 23:59:59";
+        }
+        hashMap.put("activitySecondContentName", activitySecondContentName);
+        hashMap.put("activityFirstContentId", activityFirstContentId);
+        hashMap.put("name", name);
+        hashMap.put("startTime", startTime);
+        hashMap.put("endTime", endTime);
+        return iStaffService.query(pageNum, pageSize, hashMap);
     }
 }

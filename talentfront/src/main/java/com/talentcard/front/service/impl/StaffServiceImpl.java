@@ -1,11 +1,15 @@
 package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.talentcard.common.bo.StaffBO;
+import com.github.pagehelper.Page;
+import com.talentcard.common.bo.TalentCertStatusBO;
+import com.talentcard.common.bo.UserRoleBO;
 import com.talentcard.common.mapper.ScenicMapper;
 import com.talentcard.common.mapper.StaffMapper;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.StaffPO;
+import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author ChenXU
@@ -74,10 +79,13 @@ public class StaffServiceImpl implements IStaffService {
     @Override
     public ResultVO findOne(String openId) {
         StaffPO staffPO = staffMapper.findOneByOpenId(openId);
-        if (staffPO == null) {
-            return new ResultVO(1100, null);
-        }
-        StaffBO staffBO = staffMapper.findOne(openId);
-        return new ResultVO(1000, staffBO);
+        return new ResultVO(1000, staffPO);
+    }
+
+    @Override
+    public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
+        Page<StaffPO> page = PageHelper.startPage(pageNum, pageSize);
+        List<StaffPO> staffPOList = staffMapper.query(hashMap);
+        return new ResultVO(1000, new PageInfoVO<>(page.getTotal(), staffPOList));
     }
 }

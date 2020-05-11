@@ -30,10 +30,5 @@ public interface StaffMapper extends BaseMapper<StaffPO, Long> {
     Integer findStaffNum(@Param("activityFirstContentId") Long activityFirstContentId,
                          @Param("activitySecondContentId") Long activitySecondContentId);
 
-    /**
-     * 查找旅游员工信息
-     */
-    StaffPO findOne(@Param("openId") String openId);
-
     List<StaffPO> findStaffByFactor(HashMap<String, Object> hashMap);
 }

@@ -3,6 +3,8 @@ package com.talentcard.front.service;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.vo.ResultVO;
 
+import java.util.HashMap;
+
 /**
  * @author ChenXU
  * @version 1.0
@@ -32,4 +34,13 @@ public interface IStaffService {
      * @return
      */
     ResultVO findOne(String openId);
+
+    /**
+     * 查询
+     * @param pageNum
+     * @param pageSize
+     * @param hashMap
+     * @return
+     */
+    ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap);
 }
