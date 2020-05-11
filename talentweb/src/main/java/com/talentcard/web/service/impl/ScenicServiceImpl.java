@@ -9,6 +9,7 @@ import com.talentcard.common.pojo.ScenicEnjoyPO;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.ScenicPicturePO;
 import com.talentcard.common.utils.FileUtil;
+import com.talentcard.common.utils.QrCodeUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.ScenicDTO;
@@ -51,6 +52,8 @@ public class ScenicServiceImpl implements IScenicService {
     private String projectDir;
     @Value("${file.scenicDir}")
     private String scenicDir;
+    @Value("${file.qrCodeDir}")
+    private String qrCodeDir;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -69,10 +72,18 @@ public class ScenicServiceImpl implements IScenicService {
                 return new ResultVO(1101);
             }
 
+            String qrCode = null;
+            try {
+                qrCode = QrCodeUtil.encode("http://www.baidu.com", null, rootDir, projectDir, qrCodeDir, true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             ScenicPO scenicPO = ScenicDTO.buildPO(new ScenicPO(), dto);
             scenicPO.setCreateTime(new Date());
             scenicPO.setStatus((byte) 2);
             scenicPO.setDr((byte) 1);
+            scenicPO.setQrCode(qrCode);
             scenicMapper.insert(scenicPO);
 
             List<ScenicEnjoyPO> enjoyPOs = ScenicDTO.buildEnjoyPOs(dto, scenicPO.getScenicId());
