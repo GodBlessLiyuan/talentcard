@@ -28,11 +28,11 @@ DROP TABLE IF EXISTS t_role;
 DROP TABLE IF EXISTS t_scenic_enjoy;
 DROP TABLE IF EXISTS t_scenic_picture;
 DROP TABLE IF EXISTS t_talent_trip;
+DROP TABLE IF EXISTS t_trip_group_authority;
 DROP TABLE IF EXISTS t_scenic;
 DROP TABLE IF EXISTS t_staff;
 DROP TABLE IF EXISTS t_staff_farmhouse;
 DROP TABLE IF EXISTS t_talent_farmhouse;
-DROP TABLE IF EXISTS t_trip_group_authority;
 
 
 
@@ -239,11 +239,11 @@ CREATE TABLE t_farmhouse_group_authority
 
 CREATE TABLE t_farmhouse_picture
 (
-    sp_id bigint unsigned NOT NULL AUTO_INCREMENT,
+    fp_id bigint unsigned NOT NULL AUTO_INCREMENT,
     farmhouse_id bigint unsigned NOT NULL,
     picture char(255),
-    PRIMARY KEY (sp_id),
-    UNIQUE (sp_id)
+    PRIMARY KEY (fp_id),
+    UNIQUE (fp_id)
 );
 
 
@@ -428,11 +428,11 @@ CREATE TABLE t_scenic_enjoy
 
 CREATE TABLE t_scenic_picture
 (
-    sp_id bigint unsigned NOT NULL AUTO_INCREMENT,
+    fp_id bigint unsigned NOT NULL AUTO_INCREMENT,
     scenic_id bigint unsigned NOT NULL,
     picture char(255),
-    PRIMARY KEY (sp_id),
-    UNIQUE (sp_id)
+    PRIMARY KEY (fp_id),
+    UNIQUE (fp_id)
 );
 
 
@@ -524,14 +524,11 @@ CREATE TABLE t_talent_trip
 CREATE TABLE t_trip_group_authority
 (
     tga_id bigint unsigned NOT NULL AUTO_INCREMENT,
-    -- 1 旅游
-    -- 2 农家乐
-    activity_first_content_id bigint unsigned COMMENT '1 旅游
-2 农家乐',
-    activity_second_content_id bigint unsigned,
+    scenic_id bigint unsigned NOT NULL,
     authority_code char(128),
     PRIMARY KEY (tga_id),
-    UNIQUE (tga_id)
+    UNIQUE (tga_id),
+    UNIQUE (scenic_id)
 );
 
 
@@ -740,6 +737,14 @@ ALTER TABLE t_scenic_picture
 
 
 ALTER TABLE t_talent_trip
+    ADD FOREIGN KEY (scenic_id)
+        REFERENCES t_scenic (scenic_id)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_trip_group_authority
     ADD FOREIGN KEY (scenic_id)
         REFERENCES t_scenic (scenic_id)
         ON UPDATE RESTRICT
