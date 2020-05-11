@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.FarmhouseEnjoyMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.FarmhouseEnjoyPO">
+    <id column="fe_id" jdbcType="BIGINT" property="feId" />
+    <result column="farmhouse_id" jdbcType="BIGINT" property="farmhouseId" />
+    <result column="card_id" jdbcType="BIGINT" property="cardId" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="education_id" jdbcType="BIGINT" property="educationId" />
+    <result column="title_id" jdbcType="BIGINT" property="titleId" />
+    <result column="quality" jdbcType="BIGINT" property="quality" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    fe_id, farmhouse_id, card_id, category_id, education_id, title_id, quality, `type`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_farmhouse_enjoy
+    where fe_id = #{feId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_farmhouse_enjoy
+    where fe_id = #{feId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhouseEnjoyPO">
+    insert into t_farmhouse_enjoy (fe_id, farmhouse_id, card_id, 
+      category_id, education_id, title_id, 
+      quality, `type`)
+    values (#{feId,jdbcType=BIGINT}, #{farmhouseId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT}, 
+      #{categoryId,jdbcType=BIGINT}, #{educationId,jdbcType=BIGINT}, #{titleId,jdbcType=BIGINT}, 
+      #{quality,jdbcType=BIGINT}, #{type,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FarmhouseEnjoyPO">
+    insert into t_farmhouse_enjoy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="feId != null">
+        fe_id,
+      </if>
+      <if test="farmhouseId != null">
+        farmhouse_id,
+      </if>
+      <if test="cardId != null">
+        card_id,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="educationId != null">
+        education_id,
+      </if>
+      <if test="titleId != null">
+        title_id,
+      </if>
+      <if test="quality != null">
+        quality,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="feId != null">
+        #{feId,jdbcType=BIGINT},
+      </if>
+      <if test="farmhouseId != null">
+        #{farmhouseId,jdbcType=BIGINT},
+      </if>
+      <if test="cardId != null">
+        #{cardId,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="educationId != null">
+        #{educationId,jdbcType=BIGINT},
+      </if>
+      <if test="titleId != null">
+        #{titleId,jdbcType=BIGINT},
+      </if>
+      <if test="quality != null">
+        #{quality,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.FarmhouseEnjoyPO">
+    update t_farmhouse_enjoy
+    <set>
+      <if test="farmhouseId != null">
+        farmhouse_id = #{farmhouseId,jdbcType=BIGINT},
+      </if>
+      <if test="cardId != null">
+        card_id = #{cardId,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="educationId != null">
+        education_id = #{educationId,jdbcType=BIGINT},
+      </if>
+      <if test="titleId != null">
+        title_id = #{titleId,jdbcType=BIGINT},
+      </if>
+      <if test="quality != null">
+        quality = #{quality,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+    </set>
+    where fe_id = #{feId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.FarmhouseEnjoyPO">
+    update t_farmhouse_enjoy
+    set farmhouse_id = #{farmhouseId,jdbcType=BIGINT},
+      card_id = #{cardId,jdbcType=BIGINT},
+      category_id = #{categoryId,jdbcType=BIGINT},
+      education_id = #{educationId,jdbcType=BIGINT},
+      title_id = #{titleId,jdbcType=BIGINT},
+      quality = #{quality,jdbcType=BIGINT},
+      `type` = #{type,jdbcType=TINYINT}
+    where fe_id = #{feId,jdbcType=BIGINT}
+  </update>
+</mapper>

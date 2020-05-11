@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.FarmhousePictureMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.FarmhousePicturePO">
+    <id column="fp_id" jdbcType="BIGINT" property="fpId" />
+    <result column="farmhouse_id" jdbcType="BIGINT" property="farmhouseId" />
+    <result column="picture" jdbcType="CHAR" property="picture" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    fp_id, farmhouse_id, picture
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_farmhouse_picture
+    where fp_id = #{fpId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_farmhouse_picture
+    where fp_id = #{fpId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhousePicturePO">
+    insert into t_farmhouse_picture (fp_id, farmhouse_id, picture
+      )
+    values (#{fpId,jdbcType=BIGINT}, #{farmhouseId,jdbcType=BIGINT}, #{picture,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FarmhousePicturePO">
+    insert into t_farmhouse_picture
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fpId != null">
+        fp_id,
+      </if>
+      <if test="farmhouseId != null">
+        farmhouse_id,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fpId != null">
+        #{fpId,jdbcType=BIGINT},
+      </if>
+      <if test="farmhouseId != null">
+        #{farmhouseId,jdbcType=BIGINT},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.FarmhousePicturePO">
+    update t_farmhouse_picture
+    <set>
+      <if test="farmhouseId != null">
+        farmhouse_id = #{farmhouseId,jdbcType=BIGINT},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=CHAR},
+      </if>
+    </set>
+    where fp_id = #{fpId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.FarmhousePicturePO">
+    update t_farmhouse_picture
+    set farmhouse_id = #{farmhouseId,jdbcType=BIGINT},
+      picture = #{picture,jdbcType=CHAR}
+    where fp_id = #{fpId,jdbcType=BIGINT}
+  </update>
+</mapper>
