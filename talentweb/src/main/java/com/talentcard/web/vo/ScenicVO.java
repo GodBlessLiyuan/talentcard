@@ -78,7 +78,12 @@ public class ScenicVO implements Serializable {
         ScenicVO vo = new ScenicVO();
         vo.setScenicId(po.getScenicId());
         vo.setName(po.getName());
-        vo.setLimit(null);
+        String limit = po.getRate() +
+                (po.getUnit() == 1 ? "年" : po.getUnit() == 2 ? "月" : "日") +
+                "/" +
+                po.getTimes() +
+                "次";
+        vo.setLimit(limit);
         vo.setStatus(po.getStatus());
         vo.setCtime(po.getCreateTime());
         if (null != po.getQrCode()) {
