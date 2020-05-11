@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.TripGroupAuthorityMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TripGroupAuthorityPO">
+    <id column="tga_id" jdbcType="BIGINT" property="tgaId" />
+    <result column="scenic_id" jdbcType="BIGINT" property="scenicId" />
+    <result column="authority_code" jdbcType="CHAR" property="authorityCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tga_id, scenic_id, authority_code
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_trip_group_authority
+    where tga_id = #{tgaId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_trip_group_authority
+    where tga_id = #{tgaId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.TripGroupAuthorityPO">
+    insert into t_trip_group_authority (tga_id, scenic_id, authority_code
+      )
+    values (#{tgaId,jdbcType=BIGINT}, #{scenicId,jdbcType=BIGINT}, #{authorityCode,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TripGroupAuthorityPO">
+    insert into t_trip_group_authority
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tgaId != null">
+        tga_id,
+      </if>
+      <if test="scenicId != null">
+        scenic_id,
+      </if>
+      <if test="authorityCode != null">
+        authority_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tgaId != null">
+        #{tgaId,jdbcType=BIGINT},
+      </if>
+      <if test="scenicId != null">
+        #{scenicId,jdbcType=BIGINT},
+      </if>
+      <if test="authorityCode != null">
+        #{authorityCode,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TripGroupAuthorityPO">
+    update t_trip_group_authority
+    <set>
+      <if test="scenicId != null">
+        scenic_id = #{scenicId,jdbcType=BIGINT},
+      </if>
+      <if test="authorityCode != null">
+        authority_code = #{authorityCode,jdbcType=CHAR},
+      </if>
+    </set>
+    where tga_id = #{tgaId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TripGroupAuthorityPO">
+    update t_trip_group_authority
+    set scenic_id = #{scenicId,jdbcType=BIGINT},
+      authority_code = #{authorityCode,jdbcType=CHAR}
+    where tga_id = #{tgaId,jdbcType=BIGINT}
+  </update>
+</mapper>

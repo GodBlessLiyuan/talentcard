@@ -9,6 +9,7 @@ import com.talentcard.web.utils.WebParameterUtil;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,6 +34,8 @@ public class ApprovalTalentVO {
     private Long cardId;
     private Long certId;
     private String political;
+    private Date createTime;
+    private Date completeCertificationTime;
     /**
      * 三个表信息
      */
@@ -52,7 +55,7 @@ public class ApprovalTalentVO {
      * @param talentBO
      * @return
      */
-    public static ApprovalTalentVO convert(TalentBO talentBO,  List<CertApprovalBO> certApprovalBOList) {
+    public static ApprovalTalentVO convert(TalentBO talentBO, List<CertApprovalBO> certApprovalBOList) {
         ApprovalTalentVO approvalTalentVO = new ApprovalTalentVO();
         approvalTalentVO.setTalentId(talentBO.getTalentId());
         approvalTalentVO.setOpenId(talentBO.getOpenId());
@@ -65,6 +68,7 @@ public class ApprovalTalentVO {
         approvalTalentVO.setCertId(talentBO.getCertId());
         approvalTalentVO.setPolitical(talentBO.getPolitical());
         approvalTalentVO.setSex(talentBO.getSex());
+        approvalTalentVO.setCreateTime(talentBO.getCreateTime());
 
         //学历文件
         if (talentBO.getEducationPOList() != null) {
@@ -95,6 +99,13 @@ public class ApprovalTalentVO {
         approvalTalentVO.setProfQualityPOList(talentBO.getProfQualityPOList());
 
         approvalTalentVO.setCertApprovalBOList(certApprovalBOList);
+
+        for (CertApprovalBO certApprovalBO : certApprovalBOList) {
+            //认证完成时间 审批通过/驳回的时间
+            if (certApprovalBO.getCertId().equals(talentBO.getCertId())) {
+                approvalTalentVO.setCompleteCertificationTime(certApprovalBO.getUpdateTime());
+            }
+        }
         return approvalTalentVO;
     }
 }

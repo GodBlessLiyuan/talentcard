@@ -102,7 +102,6 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         Long cardId = (Long) reqData.get("cardId");
         String category = (String) reqData.get("category");
 
-
         /**
          * 根据openId 发送领卡通知
          */
@@ -260,7 +259,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             }
             membershipNumber = membershipNumber + cardPO.getCurrNum();
             userCardPO.setNum(membershipNumber);
-            userCardPO.setName(cardPO.getName());
+            userCardPO.setName(cardPO.getTitle());
             cardPO.setCurrNum(cardPO.getCurrNum() + 1);
             cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
             cardMapper.updateByPrimaryKeySelective(cardPO);
@@ -281,6 +280,12 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             MessageUtil.sendTemplateMessage(messageDTO);
             return new ResultVO(1000);
         }
+        /**
+         * 更新认证审批表，发起认证（提交）的updateTime
+         */
+        CertApprovalPO oldCertApprovalPO = certApprovalMapper.findByCertId(certId, (byte) 1, null);
+        oldCertApprovalPO.setUpdateTime(new Date());
+        certApprovalMapper.updateByPrimaryKeySelective(oldCertApprovalPO);
         return new ResultVO(1000);
     }
 
