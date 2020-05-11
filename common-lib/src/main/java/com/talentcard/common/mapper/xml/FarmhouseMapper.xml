@@ -21,13 +21,14 @@
     select 
     <include refid="Base_Column_List" />
     from t_farmhouse
-    where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
+    where farmhouse_id = #{farmhouseId,jdbcType=BIGINT} and dr = 1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_farmhouse
     where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhousePO">
+  <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhousePO" useGeneratedKeys="true"
+          keyProperty="farmhouseId">
     insert into t_farmhouse (farmhouse_id, `name`, discount, 
       avatar, description, extra, 
       qr_code, `status`, create_time, 
