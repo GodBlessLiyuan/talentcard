@@ -1,5 +1,9 @@
 package com.talentcard.web.controller;
 
+import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.service.IConfigService;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,4 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("config")
 @RestController
 public class ConfigController {
+    @Autowired
+    private IConfigService configService;
+
+    @RequestMapping("query")
+    public ResultVO query(@Param("key") String key) {
+        return configService.query(key);
+    }
+
+    @RequestMapping("edit")
+    public ResultVO edit(@Param("key") String key, @Param("value") String value) {
+        return configService.edit(key, value);
+    }
 }

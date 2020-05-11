@@ -1,6 +1,5 @@
 package com.talentcard.common.mapper;
 
-import com.talentcard.common.bo.StaffBO;
 import com.talentcard.common.pojo.StaffPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
