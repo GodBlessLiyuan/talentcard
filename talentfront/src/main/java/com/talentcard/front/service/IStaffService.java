@@ -1,5 +1,6 @@
 package com.talentcard.front.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.vo.ResultVO;
 
 /**
@@ -9,5 +10,26 @@ import com.talentcard.common.vo.ResultVO;
  * @description
  */
 public interface IStaffService {
-    ResultVO findStaff(String openId);
+    /**
+     * 判断旅游员工状态
+     * 1. 是否已经绑定景区/农家乐
+     * 2. 是否达到绑定上限
+     * @return
+     */
+    ResultVO ifEnableRegister(String openId, Long activityFirstContent, Long activitySecondContent);
+
+    /**
+     * 旅游员工注册
+     * @param jsonObject
+     * @return
+     */
+    ResultVO register(JSONObject jsonObject);
+
+    /**
+     * 根据openId，企业服务里查找已经存在的员工
+     * 返回：活动景区名称、员工姓名等信息
+     * @param openId
+     * @return
+     */
+    ResultVO findStaffBusinessService(String openId);
 }
