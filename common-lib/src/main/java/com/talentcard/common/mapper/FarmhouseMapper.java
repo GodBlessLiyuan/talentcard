@@ -23,5 +23,5 @@ public interface FarmhouseMapper extends BaseMapper<FarmhousePO, Long> {
      * @param farmhouseId
      * @param status
      */
-    void updateStatus(@Param("scenicId") Long farmhouseId, @Param("status") Long status);
+    void updateStatus(@Param("farmhouseId") Long farmhouseId, @Param("status") Long status);
 }
