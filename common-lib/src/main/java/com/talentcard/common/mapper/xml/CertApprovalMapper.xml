@@ -165,14 +165,15 @@
     order by cp.create_time asc
   </select>
 
-  <select id="findByCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="findByCertId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_cert_approval
     where cert_id = #{certId,jdbcType=BIGINT}
     and
-    `type` = 2
-    and
-    result = 1
+    `type` = #{type,jdbcType=TINYINT}
+    <if test="result != null">
+    and  result = #{result,jdbcType=TINYINT}
+    </if>
   </select>
 </mapper>

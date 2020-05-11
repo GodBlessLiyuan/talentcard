@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.StaffTripMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.StaffTripPO">
+    <id column="st_id" jdbcType="BIGINT" property="stId" />
+    <result column="scenic_id" jdbcType="BIGINT" property="scenicId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    st_id, scenic_id, staff_id, create_time, `status`, dr
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_staff_trip
+    where st_id = #{stId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_staff_trip
+    where st_id = #{stId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.StaffTripPO">
+    insert into t_staff_trip (st_id, scenic_id, staff_id, 
+      create_time, `status`, dr
+      )
+    values (#{stId,jdbcType=BIGINT}, #{scenicId,jdbcType=BIGINT}, #{staffId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.StaffTripPO">
+    insert into t_staff_trip
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stId != null">
+        st_id,
+      </if>
+      <if test="scenicId != null">
+        scenic_id,
+      </if>
+      <if test="staffId != null">
+        staff_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="dr != null">
+        dr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stId != null">
+        #{stId,jdbcType=BIGINT},
+      </if>
+      <if test="scenicId != null">
+        #{scenicId,jdbcType=BIGINT},
+      </if>
+      <if test="staffId != null">
+        #{staffId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.StaffTripPO">
+    update t_staff_trip
+    <set>
+      <if test="scenicId != null">
+        scenic_id = #{scenicId,jdbcType=BIGINT},
+      </if>
+      <if test="staffId != null">
+        staff_id = #{staffId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
+    </set>
+    where st_id = #{stId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.StaffTripPO">
+    update t_staff_trip
+    set scenic_id = #{scenicId,jdbcType=BIGINT},
+      staff_id = #{staffId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=TINYINT},
+      dr = #{dr,jdbcType=TINYINT}
+    where st_id = #{stId,jdbcType=BIGINT}
+  </update>
+  <select id="findStaffNum" resultMap="BaseResultMap">
+    select
+    count(st.st_id)
+    from t_staff_trip st
+    where st.scenic_id = #{scenicId,jdbcType=BIGINT}
+    and dr =1
+  </select>
+</mapper>

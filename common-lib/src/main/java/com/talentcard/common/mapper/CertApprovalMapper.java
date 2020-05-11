@@ -15,16 +15,19 @@ public interface CertApprovalMapper extends BaseMapper<CertApprovalPO, Long> {
 
     /**
      * 根据人才talentId查询 认证审批表
+     *
      * @param talentId
      * @return
      */
-    List<CertApprovalBO> queryApprovalById(@Param("talentId")Long talentId, @Param("certId")Long certId);
+    List<CertApprovalBO> queryApprovalById(@Param("talentId") Long talentId, @Param("certId") Long certId);
 
     /**
      * 根据certId查询 认证审批表type= 2 and result = 1
      * 找cert_approval表关于审批，且是通过的那条记录
+     *
      * @param certId
      * @return
      */
-    CertApprovalPO findByCertId(Long certId);
+    CertApprovalPO findByCertId(@Param("certId") Long certId,
+                                @Param("type") Byte type, @Param("result") Byte result);
 }
