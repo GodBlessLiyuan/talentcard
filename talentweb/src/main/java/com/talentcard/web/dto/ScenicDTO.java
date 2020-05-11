@@ -60,17 +60,17 @@ public class ScenicDTO implements Serializable {
     /**
      * 可查看与申请此景区的人才学历IDs
      */
-    private Long[] educIds;
+    private Integer[] educIds;
 
     /**
      * 可查看与申请此景区的人才职称IDs
      */
-    private Long[] titleIds;
+    private Integer[] titleIds;
 
     /**
      * 可查看与申请此景区的人才职业资格IDs
      */
-    private Long[] qualityIds;
+    private Integer[] qualityIds;
 
     /**
      * 景区头图
@@ -148,7 +148,7 @@ public class ScenicDTO implements Serializable {
             }
         }
         if (null != dto.getEducIds() && dto.getEducIds().length > 0) {
-            for (Long educId : dto.getEducIds()) {
+            for (Integer educId : dto.getEducIds()) {
                 ScenicEnjoyPO po = new ScenicEnjoyPO();
                 po.setScenicId(scenicId);
                 po.setEducationId(educId);
@@ -157,7 +157,7 @@ public class ScenicDTO implements Serializable {
             }
         }
         if (null != dto.getTitleIds() && dto.getTitleIds().length > 0) {
-            for (Long titleId : dto.getTitleIds()) {
+            for (Integer titleId : dto.getTitleIds()) {
                 ScenicEnjoyPO po = new ScenicEnjoyPO();
                 po.setScenicId(scenicId);
                 po.setTitleId(titleId);
@@ -166,7 +166,7 @@ public class ScenicDTO implements Serializable {
             }
         }
         if (null != dto.getQualityIds() && dto.getQualityIds().length > 0) {
-            for (Long qualityId : dto.getQualityIds()) {
+            for (Integer qualityId : dto.getQualityIds()) {
                 ScenicEnjoyPO po = new ScenicEnjoyPO();
                 po.setScenicId(scenicId);
                 po.setQuality(qualityId);

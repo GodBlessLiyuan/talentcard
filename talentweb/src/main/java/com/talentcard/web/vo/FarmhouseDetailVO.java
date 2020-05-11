@@ -50,17 +50,17 @@ public class FarmhouseDetailVO implements Serializable {
     /**
      * 可查看与申请此农家乐的人才学历IDs
      */
-    private List<Long> educIds;
+    private List<Integer> educIds;
 
     /**
      * 可查看与申请此农家乐的人才职称IDs
      */
-    private List<Long> titleIds;
+    private List<Integer> titleIds;
 
     /**
      * 可查看与申请此农家乐的人才职业资格IDs
      */
-    private List<Long> qualityIds;
+    private List<Integer> qualityIds;
 
     /**
      * 农家乐头图
@@ -119,9 +119,9 @@ public class FarmhouseDetailVO implements Serializable {
 
         List<Long> cardIds = new ArrayList<>();
         List<Long> categoryIds = new ArrayList<>();
-        List<Long> educIds = new ArrayList<>();
-        List<Long> titleIds = new ArrayList<>();
-        List<Long> qualityIds = new ArrayList<>();
+        List<Integer> educIds = new ArrayList<>();
+        List<Integer> titleIds = new ArrayList<>();
+        List<Integer> qualityIds = new ArrayList<>();
         for (FarmhouseEnjoyPO po : enjoyPOs) {
             Byte type = po.getType();
             if (type == 1) {

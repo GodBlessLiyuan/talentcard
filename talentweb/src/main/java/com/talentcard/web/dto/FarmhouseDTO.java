@@ -50,17 +50,17 @@ public class FarmhouseDTO implements Serializable {
     /**
      * 可查看与申请此农家乐的人才学历IDs
      */
-    private Long[] educIds;
+    private Integer[] educIds;
 
     /**
      * 可查看与申请此农家乐的人才职称IDs
      */
-    private Long[] titleIds;
+    private Integer[] titleIds;
 
     /**
      * 可查看与申请此农家乐的人才职业资格IDs
      */
-    private Long[] qualityIds;
+    private Integer[] qualityIds;
 
     /**
      * 农家乐头图
@@ -136,7 +136,7 @@ public class FarmhouseDTO implements Serializable {
             }
         }
         if (null != dto.getEducIds() && dto.getEducIds().length > 0) {
-            for (Long educId : dto.getEducIds()) {
+            for (Integer educId : dto.getEducIds()) {
                 FarmhouseEnjoyPO po = new FarmhouseEnjoyPO();
                 po.setFarmhouseId(farmhouseId);
                 po.setEducationId(educId);
@@ -145,7 +145,7 @@ public class FarmhouseDTO implements Serializable {
             }
         }
         if (null != dto.getTitleIds() && dto.getTitleIds().length > 0) {
-            for (Long titleId : dto.getTitleIds()) {
+            for (Integer titleId : dto.getTitleIds()) {
                 FarmhouseEnjoyPO po = new FarmhouseEnjoyPO();
                 po.setFarmhouseId(farmhouseId);
                 po.setTitleId(titleId);
@@ -154,7 +154,7 @@ public class FarmhouseDTO implements Serializable {
             }
         }
         if (null != dto.getQualityIds() && dto.getQualityIds().length > 0) {
-            for (Long qualityId : dto.getQualityIds()) {
+            for (Integer qualityId : dto.getQualityIds()) {
                 FarmhouseEnjoyPO po = new FarmhouseEnjoyPO();
                 po.setFarmhouseId(farmhouseId);
                 po.setQuality(qualityId);

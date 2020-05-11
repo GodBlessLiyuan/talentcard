@@ -53,17 +53,17 @@ public class ScenicDetailVO implements Serializable {
     /**
      * 可查看与申请此景区的人才学历IDs
      */
-    private List<Long> educIds;
+    private List<Integer> educIds;
 
     /**
      * 可查看与申请此景区的人才职称IDs
      */
-    private List<Long> titleIds;
+    private List<Integer> titleIds;
 
     /**
      * 可查看与申请此景区的人才职业资格IDs
      */
-    private List<Long> qualityIds;
+    private List<Integer> qualityIds;
 
     /**
      * 景区头图

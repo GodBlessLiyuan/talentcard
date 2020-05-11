@@ -163,9 +163,9 @@ public class ScenicServiceImpl implements IScenicService {
         List<ScenicEnjoyPO> enjoyPOs = scenicEnjoyMapper.queryByScenicId(scenicId);
         List<Long> cardIds = new ArrayList<>();
         List<Long> categoryIds = new ArrayList<>();
-        List<Long> educIds = new ArrayList<>();
-        List<Long> titleIds = new ArrayList<>();
-        List<Long> qualityIds = new ArrayList<>();
+        List<Integer> educIds = new ArrayList<>();
+        List<Integer> titleIds = new ArrayList<>();
+        List<Integer> qualityIds = new ArrayList<>();
         for (ScenicEnjoyPO po : enjoyPOs) {
             Byte type = po.getType();
             if (type == 1) {
