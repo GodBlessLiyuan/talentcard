@@ -2,6 +2,7 @@ package com.talentcard.web.service.impl;
 
 import com.talentcard.common.mapper.ConfigMapper;
 import com.talentcard.common.pojo.ConfigPO;
+import com.talentcard.common.utils.RedisUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class ConfigServiceImpl implements IConfigService {
 
     @Override
     public ResultVO query(String key) {
-        ConfigPO po = configMapper.selectByPrimaryKey(key);
-        return new ResultVO<>(1000, null == po ? null : po.getConfigValue());
+//        ConfigPO po = configMapper.selectByPrimaryKey(key);
+        return new ResultVO<>(1000, RedisUtil.getConfigValue(key));
     }
 
     @Override
@@ -40,6 +41,8 @@ public class ConfigServiceImpl implements IConfigService {
             po.setUpdateTime(new Date());
             configMapper.updateByPrimaryKey(po);
         }
+
+        RedisUtil.setConfigValue(key, value);
 
         return new ResultVO(1000);
     }
