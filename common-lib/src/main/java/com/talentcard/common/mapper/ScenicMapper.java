@@ -4,6 +4,8 @@ import com.talentcard.common.pojo.ScenicPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * ScenicMapper继承基类
  */
@@ -24,4 +26,10 @@ public interface ScenicMapper extends BaseMapper<ScenicPO, Long> {
      * @param status
      */
     void updateStatus(@Param("scenicId") Long scenicId, @Param("status") Long status);
+
+    /**
+     * 查询符合条件的景区
+     * @param scenicIdList
+     */
+    List<ScenicPO> findEnjoyScenic(@Param("scenicIdList") List<Long> scenicIdList);
 }

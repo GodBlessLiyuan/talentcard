@@ -153,7 +153,7 @@
     </select>
     <select id="findSecondContent" resultType="java.lang.Long">
         select
-        se_id
+        scenic_id
         from t_scenic_enjoy
         where card_id = #{cardId,jdbcType=BIGINT}
         <if test="categoryList != null">

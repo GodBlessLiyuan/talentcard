@@ -7,6 +7,7 @@ import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.StaffPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IStaffService;
+import com.talentcard.front.utils.StaffActivityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +50,7 @@ public class StaffServiceImpl implements IStaffService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO register(JSONObject jsonObject) {
         String openId = jsonObject.getString("openId");
+        Long activityFirstContentId = jsonObject.getLong("activityFirstContentId");
         Long activitySecondContentId = jsonObject.getLong("activitySecondContentId");
         StaffPO ifExistStaff = staffMapper.findOneByOpenId(openId);
         if (ifExistStaff != null) {
@@ -63,13 +65,18 @@ public class StaffServiceImpl implements IStaffService {
         staffPO.setIdCard(jsonObject.getString("idCard"));
         staffPO.setCreateTime(new Date());
         staffPO.setDr((byte) 1);
-        staffPO.setActivityFirstContentId((long) 1);
+        staffPO.setActivityFirstContentId(activityFirstContentId);
         staffPO.setActivitySecondContentId(activitySecondContentId);
-        ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
-        if(scenicPO==null){
-            return new ResultVO(2502,"没有此活动");
+        /**
+         * 设置二级目录名字，用工具类
+         * 在这里扩展
+         */
+        String activitySecondContentName = StaffActivityUtil.getActivitySecondContentName(activityFirstContentId,
+                activitySecondContentId);
+        if (activitySecondContentName == "") {
+            return new ResultVO(2502, "没有此活动");
         }
-        staffPO.setActivitySecondContentName(scenicPO.getName());
+        staffPO.setActivitySecondContentName(activitySecondContentName);
         staffMapper.insertSelective(staffPO);
         return new ResultVO(1000);
     }

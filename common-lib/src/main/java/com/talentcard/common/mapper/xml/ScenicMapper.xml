@@ -201,4 +201,15 @@
         set `status` = #{status,jdbcType=TINYINT}
         where scenic_id = #{scenicId,jdbcType=BIGINT}
     </update>
+
+    <select id="findEnjoyScenic" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_scenic
+        where
+        1 = 1
+        <foreach collection="scenicIdList" item="scenicId">
+            or scenic_id = #{scenicId, jdbcType=BIGINT}
+        </foreach>
+    </select>
 </mapper>

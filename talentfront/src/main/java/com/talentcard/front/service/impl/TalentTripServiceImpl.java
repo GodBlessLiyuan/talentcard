@@ -1,17 +1,23 @@
 package com.talentcard.front.service.impl;
 
 import com.talentcard.common.mapper.ScenicEnjoyMapper;
+import com.talentcard.common.mapper.ScenicMapper;
 import com.talentcard.common.mapper.TalentMapper;
 import com.talentcard.common.mapper.UserCurrentInfoMapper;
+import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.pojo.UserCurrentInfoPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ITalentTripService;
 import com.talentcard.front.utils.TalentActivityUtil;
+import com.talentcard.front.vo.ScenicVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -20,6 +26,7 @@ import java.util.List;
  * @createTime 2020-05-11 18:24
  * @description
  */
+@Service
 public class TalentTripServiceImpl implements ITalentTripService {
     @Autowired
     private TalentMapper talentMapper;
@@ -27,6 +34,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
     private UserCurrentInfoMapper userCurrentInfoMapper;
     @Autowired
     private ScenicEnjoyMapper scenicEnjoyMapper;
+    @Autowired
+    private ScenicMapper scenicMapper;
 
     @Override
     public ResultVO findSecondContent(String openId) {
@@ -44,13 +53,19 @@ public class TalentTripServiceImpl implements ITalentTripService {
         Integer education = userCurrentInfoPO.getEducation();
         Integer title = userCurrentInfoPO.getPtCategory();
         Integer quality = userCurrentInfoPO.getPqCategory();
-        ArrayList<Long> resultList = new ArrayList();
-
-        //景区idList
-        List<Long> scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
-        if (scenicIdList.size() > 0) {
-            resultList.add((long) 1);
+        List<Long> scenicIdList = null;
+        //景区idList，去大表查询
+        scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
+        if (scenicIdList == null) {
+            return new ResultVO(2504, "查无景区！");
         }
-        return new ResultVO(1000, resultList);
+        scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
+        List<ScenicPO> scenicPOList = scenicMapper.findEnjoyScenic(scenicIdList);
+        List<ScenicVO> scenicVOList = ScenicVO.convert(scenicPOList);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        Integer benefitNum = 10000;
+        hashMap.put("scenicList", scenicVOList);
+        hashMap.put("benefitNum", benefitNum);
+        return new ResultVO(1000, hashMap);
     }
 }

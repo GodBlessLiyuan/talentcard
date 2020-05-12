@@ -70,6 +70,7 @@
 2501：当前openId已经成为员工
 2502：没有此活动，activitySecondContentId找不到对应信息
 2503：没有此员工
+2504：查无景区
 
 
 
