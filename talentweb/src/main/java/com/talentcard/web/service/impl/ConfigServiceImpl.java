@@ -30,7 +30,7 @@ public class ConfigServiceImpl implements IConfigService {
 
     @Override
     public ResultVO edit(String key, String value) {
-        
+
         ConfigPO po = configMapper.selectByPrimaryKey(key);
         if (null == po) {
             po = new ConfigPO();
@@ -45,7 +45,7 @@ public class ConfigServiceImpl implements IConfigService {
         }
 
         RedisUtil.setConfigValue(key, value);
-        ActivityResidueNumUtil.reviseNum(Long.parseLong(value));
+        ActivityResidueNumUtil.reviseNum(Long.parseLong(null == value ? String.valueOf(0) : value));
         return new ResultVO(1000);
     }
 }
