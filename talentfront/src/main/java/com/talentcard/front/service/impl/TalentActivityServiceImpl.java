@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author ChenXU
@@ -45,17 +46,11 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
         Integer education = userCurrentInfoPO.getEducation();
         Integer title = userCurrentInfoPO.getPtCategory();
         Integer quality = userCurrentInfoPO.getPqCategory();
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("cardId", cardId);
-        hashMap.put("categoryList", categoryList);
-        hashMap.put("education", education);
-        hashMap.put("title", title);
-        hashMap.put("quality", quality);
         ArrayList<Long> resultList = new ArrayList();
 
         //旅游
-        Integer trip = scenicEnjoyMapper.ifEnableEnjoy(hashMap);
-        if (trip > 0) {
+        List<Long> scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
+        if (scenicIdList.size() > 0) {
             resultList.add((long) 1);
         }
         return new ResultVO(1000, resultList);

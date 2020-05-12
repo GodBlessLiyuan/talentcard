@@ -151,20 +151,20 @@
         from t_scenic_enjoy
         where scenic_id = #{scenicId,jdbcType=BIGINT}
     </select>
-    <select id="ifEnableEnjoy" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    <select id="findSecondContent" resultType="java.lang.Long">
         select
-        count (sg_id)
+        sg_id
         from t_scenic_enjoy
         where card_id = #{cardId,jdbcType=BIGINT}
         <if test="categoryList != null">
-            <foreach collection="categoryList" item="category">
+            <foreach collection="categoryList" item="category" >
                 or category_id = #{category, jdbcType=BIGINT}
             </foreach>
         </if>
-        <if test="educationId != null">
-            or education_id = #{educationId, jdbcType=INTEGER}
+        <if test="education != null">
+            or education_id = #{education, jdbcType=INTEGER}
         </if>
-        <if test="educationId != null">
+        <if test="title != null">
             or title_id = #{title, jdbcType=INTEGER}
         </if>
         <if test="quality != null">

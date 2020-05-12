@@ -15,4 +15,5 @@ public interface ITalentActivityService{
      * @return
      */
     ResultVO findFirstContent(String openId);
+
 }

@@ -34,5 +34,17 @@ public interface ScenicEnjoyMapper extends BaseMapper<ScenicEnjoyPO, Long> {
      */
     List<ScenicEnjoyPO> queryByScenicId(Long scenicId);
 
-    Integer ifEnableEnjoy(HashMap<String, Object> hashMap);
+    /**
+     * 判断当前享受群体是否有满足的景区
+     *
+     * @param cardId
+     * @param categoryList
+     * @param education
+     * @param title
+     * @param quality
+     * @return
+     */
+    List<Long> findSecondContent(@Param("cardId") Long cardId, @Param("categoryList") List<Long> categoryList,
+                                 @Param("education") Integer education, @Param("title") Integer title,
+                                 @Param("quality") Integer quality);
 }
