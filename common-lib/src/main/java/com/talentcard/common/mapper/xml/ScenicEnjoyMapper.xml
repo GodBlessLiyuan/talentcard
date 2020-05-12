@@ -151,4 +151,24 @@
         from t_scenic_enjoy
         where scenic_id = #{scenicId,jdbcType=BIGINT}
     </select>
+    <select id="ifEnableEnjoy" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select
+        count (sg_id)
+        from t_scenic_enjoy
+        where card_id = #{cardId,jdbcType=BIGINT}
+        <if test="categoryList != null">
+            <foreach collection="categoryList" item="category">
+                or category_id = #{category, jdbcType=BIGINT}
+            </foreach>
+        </if>
+        <if test="educationId != null">
+            or education_id = #{educationId, jdbcType=INTEGER}
+        </if>
+        <if test="educationId != null">
+            or title_id = #{title, jdbcType=INTEGER}
+        </if>
+        <if test="quality != null">
+            or quality = #{quality, jdbcType=INTEGER}
+        </if>
+    </select>
 </mapper>

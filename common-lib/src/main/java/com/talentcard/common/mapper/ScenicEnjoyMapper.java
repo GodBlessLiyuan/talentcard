@@ -2,7 +2,9 @@ package com.talentcard.common.mapper;
 
 import com.talentcard.common.pojo.ScenicEnjoyPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -31,4 +33,6 @@ public interface ScenicEnjoyMapper extends BaseMapper<ScenicEnjoyPO, Long> {
      * @return
      */
     List<ScenicEnjoyPO> queryByScenicId(Long scenicId);
+
+    Integer ifEnableEnjoy(HashMap<String, Object> hashMap);
 }
