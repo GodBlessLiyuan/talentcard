@@ -49,7 +49,7 @@ public class ActivityResidueNumUtil {
     /**
      * 剩余人数-1
      */
-    public static void minusOneResidueNum() {
+    public static Integer minusOneResidueNum() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -63,9 +63,15 @@ public class ActivityResidueNumUtil {
             activityResidueNumPO.setNum(num - 1);
             activityResidueNumMapper.insertSelective(activityResidueNumPO);
         } else {
-            activityResidueNumPO.setNum(activityResidueNumPO.getNum() - 1);
+            //人数少于0不能再减了！！！这里核销需要失败
+            num = activityResidueNumPO.getNum() - 1;
+            if (num < 0) {
+                return 100;
+            }
+            activityResidueNumPO.setNum(num);
             activityResidueNumMapper.updateByPrimaryKeySelective(activityResidueNumPO);
         }
+        return 0;
     }
 
     /**

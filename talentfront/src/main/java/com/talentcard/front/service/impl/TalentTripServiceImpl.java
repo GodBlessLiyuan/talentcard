@@ -9,6 +9,7 @@ import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.pojo.UserCurrentInfoPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ITalentTripService;
+import com.talentcard.front.utils.ActivityResidueNumUtil;
 import com.talentcard.front.utils.TalentActivityUtil;
 import com.talentcard.front.vo.ScenicVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
         List<ScenicPO> scenicPOList = scenicMapper.findEnjoyScenic(scenicIdList);
         List<ScenicVO> scenicVOList = ScenicVO.convert(scenicPOList);
         HashMap<String, Object> hashMap = new HashMap<>();
-        Integer benefitNum = 10000;
+        Long benefitNum = ActivityResidueNumUtil.getResidueNum();
         hashMap.put("scenicList", scenicVOList);
         hashMap.put("benefitNum", benefitNum);
         return new ResultVO(1000, hashMap);
