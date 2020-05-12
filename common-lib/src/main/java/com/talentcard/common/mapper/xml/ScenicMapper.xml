@@ -15,8 +15,27 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="dr" jdbcType="TINYINT" property="dr"/>
     </resultMap>
+    <resultMap id="ScenicDetailResultMap" type="com.talentcard.common.bo.ScenicBO">
+        <id column="s_scenic_id" jdbcType="BIGINT" property="scenicId"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="rate" jdbcType="INTEGER" property="rate"/>
+        <result column="unit" jdbcType="TINYINT" property="unit"/>
+        <result column="times" jdbcType="INTEGER" property="times"/>
+        <result column="avatar" jdbcType="CHAR" property="avatar"/>
+        <result column="description" jdbcType="CHAR" property="description"/>
+        <result column="extra" jdbcType="CHAR" property="extra"/>
+        <result column="qr_code" jdbcType="CHAR" property="qrCode"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="dr" jdbcType="TINYINT" property="dr"/>
+        <collection property="scenicPicturePOList" ofType="com.talentcard.common.pojo.ScenicPicturePO">
+            <id column="sp_id" jdbcType="BIGINT" property="spId"/>
+            <result column="sp_scenic_id" jdbcType="BIGINT" property="scenicId"/>
+            <result column="picture" jdbcType="CHAR" property="picture"/>
+        </collection>
+    </resultMap>
     <sql id="Base_Column_List">
-        scenic_id, `name`, rate, unit, times, avatar, description, extra, qr_code, `status`,
+    scenic_id, `name`, rate, unit, times, avatar, description, extra, qr_code, `status`,
     create_time, dr
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -211,5 +230,17 @@
         <foreach collection="scenicIdList" item="scenicId">
             or scenic_id = #{scenicId, jdbcType=BIGINT}
         </foreach>
+    </select>
+
+    <select id="findOne" resultMap="ScenicDetailResultMap">
+        select
+        s.scenic_id as s_scenic_id, `name`, rate, unit, times,
+        avatar, description, extra, qr_code, `status`,
+        create_time, dr, sp_id, sp.scenic_id as sp_scenic_id, picture
+        from t_scenic s
+        left join t_scenic_picture sp
+        on s.scenic_id = sp.scenic_id
+        where
+        s.scenic_id = #{scenicId, jdbcType=BIGINT}
     </select>
 </mapper>

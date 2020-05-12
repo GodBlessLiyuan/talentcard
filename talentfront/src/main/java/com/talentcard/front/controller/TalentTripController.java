@@ -1,7 +1,6 @@
 package com.talentcard.front.controller;
 
 import com.talentcard.common.vo.ResultVO;
-import com.talentcard.front.service.ITalentActivityService;
 import com.talentcard.front.service.ITalentTripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +28,17 @@ public class TalentTripController {
     @RequestMapping("findSecondContent")
     public ResultVO findSecondContent(@RequestParam("openId") String openId) {
         return iTalentTripService.findSecondContent(openId);
+    }
+
+    /**
+     * 根据scenicId查找景区detail
+     *
+     * @param scenicId
+     * @return
+     */
+    @RequestMapping("findOne")
+    public ResultVO findOne(@RequestParam("scenicId") Long scenicId) {
+        return iTalentTripService.findOne(scenicId);
     }
 
 }
