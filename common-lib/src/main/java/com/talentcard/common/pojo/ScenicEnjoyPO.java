@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class ScenicEnjoyPO implements Serializable {
-    private Long sgId;
+    private Long seId;
 
     private Long scenicId;
 

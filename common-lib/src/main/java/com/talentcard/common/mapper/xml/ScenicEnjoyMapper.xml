@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.ScenicEnjoyMapper">
     <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ScenicEnjoyPO">
-        <id column="sg_id" jdbcType="BIGINT" property="sgId"/>
+        <id column="se_id" jdbcType="BIGINT" property="seId"/>
         <result column="scenic_id" jdbcType="BIGINT" property="scenicId"/>
         <result column="card_id" jdbcType="BIGINT" property="cardId"/>
         <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
@@ -12,32 +12,32 @@
         <result column="type" jdbcType="TINYINT" property="type"/>
     </resultMap>
     <sql id="Base_Column_List">
-        sg_id, scenic_id, card_id, category_id, education_id, title_id, quality, `type`
+        se_id, scenic_id, card_id, category_id, education_id, title_id, quality, `type`
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_scenic_enjoy
-        where sg_id = #{sgId,jdbcType=BIGINT}
+        where se_id = #{seId,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
         from t_scenic_enjoy
-        where sg_id = #{sgId,jdbcType=BIGINT}
+        where se_id = #{seId,jdbcType=BIGINT}
     </delete>
     <insert id="insert" parameterType="com.talentcard.common.pojo.ScenicEnjoyPO">
-        insert into t_scenic_enjoy (sg_id, scenic_id, card_id,
+        insert into t_scenic_enjoy (se_id, scenic_id, card_id,
                                     category_id, education_id, title_id,
                                     quality, `type`)
-        values (#{sgId,jdbcType=BIGINT}, #{scenicId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT},
+        values (#{seId,jdbcType=BIGINT}, #{scenicId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT},
                 #{categoryId,jdbcType=BIGINT}, #{educationId,jdbcType=INTEGER}, #{titleId,jdbcType=INTEGER},
                 #{quality,jdbcType=INTEGER}, #{type,jdbcType=TINYINT})
     </insert>
     <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ScenicEnjoyPO">
         insert into t_scenic_enjoy
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="sgId != null">
-                sg_id,
+            <if test="seId != null">
+                se_id,
             </if>
             <if test="scenicId != null">
                 scenic_id,
@@ -62,8 +62,8 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="sgId != null">
-                #{sgId,jdbcType=BIGINT},
+            <if test="seId != null">
+                #{seId,jdbcType=BIGINT},
             </if>
             <if test="scenicId != null">
                 #{scenicId,jdbcType=BIGINT},
@@ -113,7 +113,7 @@
                 `type` = #{type,jdbcType=TINYINT},
             </if>
         </set>
-        where sg_id = #{sgId,jdbcType=BIGINT}
+        where se_id = #{seId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.ScenicEnjoyPO">
         update t_scenic_enjoy
@@ -124,16 +124,16 @@
             title_id     = #{titleId,jdbcType=INTEGER},
             quality      = #{quality,jdbcType=INTEGER},
             `type`       = #{type,jdbcType=TINYINT}
-        where sg_id = #{sgId,jdbcType=BIGINT}
+        where se_id = #{seId,jdbcType=BIGINT}
     </update>
 
     <insert id="batchInsert" parameterType="com.talentcard.common.pojo.ScenicEnjoyPO">
-        insert into t_scenic_enjoy (sg_id, scenic_id, card_id,
+        insert into t_scenic_enjoy (se_id, scenic_id, card_id,
         category_id, education_id, title_id,
         quality, `type`)
         values
         <foreach collection="list" separator="," item="po">
-            (#{po.sgId,jdbcType=BIGINT}, #{po.scenicId,jdbcType=BIGINT}, #{po.cardId,jdbcType=BIGINT},
+            (#{po.seId,jdbcType=BIGINT}, #{po.scenicId,jdbcType=BIGINT}, #{po.cardId,jdbcType=BIGINT},
             #{po.categoryId,jdbcType=BIGINT}, #{po.educationId,jdbcType=INTEGER}, #{po.titleId,jdbcType=INTEGER},
             #{po.quality,jdbcType=INTEGER}, #{po.type,jdbcType=TINYINT})
         </foreach>
@@ -153,11 +153,11 @@
     </select>
     <select id="findSecondContent" resultType="java.lang.Long">
         select
-        sg_id
+        se_id
         from t_scenic_enjoy
         where card_id = #{cardId,jdbcType=BIGINT}
         <if test="categoryList != null">
-            <foreach collection="categoryList" item="category" >
+            <foreach collection="categoryList" item="category">
                 or category_id = #{category, jdbcType=BIGINT}
             </foreach>
         </if>
