@@ -5,6 +5,7 @@ import com.talentcard.common.pojo.ConfigPO;
 import com.talentcard.common.utils.RedisUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IConfigService;
+import com.talentcard.web.utils.ActivityResidueNumUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class ConfigServiceImpl implements IConfigService {
 
     @Override
     public ResultVO edit(String key, String value) {
+        
         ConfigPO po = configMapper.selectByPrimaryKey(key);
         if (null == po) {
             po = new ConfigPO();
@@ -43,7 +45,7 @@ public class ConfigServiceImpl implements IConfigService {
         }
 
         RedisUtil.setConfigValue(key, value);
-
+        ActivityResidueNumUtil.reviseNum(Long.parseLong(value));
         return new ResultVO(1000);
     }
 }

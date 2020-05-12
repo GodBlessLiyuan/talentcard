@@ -37,7 +37,7 @@ public class RedisUtil {
         String value = template.opsForValue().get(key);
         if (null == value) {
             ConfigPO po = configMapper.selectByPrimaryKey(key);
-            String res = null == po ? "" : po.getConfigValue();
+            String res = null == po ? String.valueOf(0) : po.getConfigValue();
             template.opsForValue().set(key, res);
             return res;
         }
@@ -52,6 +52,6 @@ public class RedisUtil {
      * @param value
      */
     public static void setConfigValue(String key, String value) {
-        template.opsForValue().set(key, null == value ? "" : value);
+        template.opsForValue().set(key, null == value ? String.valueOf(0) : value);
     }
 }
