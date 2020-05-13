@@ -72,19 +72,21 @@ public class ScenicServiceImpl implements IScenicService {
                 return new ResultVO(1101);
             }
 
-            String qrCode = null;
-            try {
-                qrCode = QrCodeUtil.encode("http://www.baidu.com", null, rootDir, projectDir, qrCodeDir, true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
             ScenicPO scenicPO = ScenicDTO.buildPO(new ScenicPO(), dto);
             scenicPO.setCreateTime(new Date());
             scenicPO.setStatus((byte) 2);
             scenicPO.setDr((byte) 1);
-            scenicPO.setQrCode(qrCode);
             scenicMapper.insert(scenicPO);
+
+            String qrCode = null;
+            try {
+                String url = publicPath + "/wx/?type=1&scenicId=" + scenicPO.getScenicId() + "&name=" + scenicPO.getName() + "#/jump";
+                qrCode = QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            scenicPO.setQrCode(qrCode);
+            scenicMapper.updateByPrimaryKey(scenicPO);
 
             List<ScenicEnjoyPO> enjoyPOs = ScenicDTO.buildEnjoyPOs(dto, scenicPO.getScenicId());
             if (enjoyPOs.size() > 0) {

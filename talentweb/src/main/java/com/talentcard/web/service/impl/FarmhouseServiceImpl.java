@@ -71,19 +71,21 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
                 return new ResultVO(1101);
             }
 
-            String qrCode = null;
-            try {
-                qrCode = QrCodeUtil.encode("http://www.baidu.com", null, rootDir, projectDir, qrCodeDir, true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
             FarmhousePO farmhousePO = FarmhouseDTO.buildPO(new FarmhousePO(), dto);
             farmhousePO.setCreateTime(new Date());
             farmhousePO.setStatus((byte) 2);
             farmhousePO.setDr((byte) 1);
-            farmhousePO.setQrCode(qrCode);
             farmhouseMapper.insert(farmhousePO);
+
+            String qrCode = null;
+            try {
+                String url = publicPath + "/wx/?type=1&scenicId=" + farmhousePO.getFarmhouseId() + "&name=" + farmhousePO.getName() + "#/jump";
+                qrCode = QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            farmhousePO.setQrCode(qrCode);
+            farmhouseMapper.updateByPrimaryKey(farmhousePO);
 
             List<FarmhouseEnjoyPO> enjoyPOs = FarmhouseDTO.buildEnjoyPOs(dto, farmhousePO.getFarmhouseId());
             if (enjoyPOs.size() > 0) {
@@ -146,7 +148,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
         List<FarmhouseEnjoyPO> enjoyPOs = farmhouseEnjoyMapper.queryByFarmhouseId(farmhouseId);
         List<FarmhousePicturePO> picPOs = farmhousePictureMapper.queryByFarmhouseId(farmhouseId);
 
-        FarmhouseDetailVO vo = FarmhouseDetailVO.build(farmhousePO,enjoyPOs,picPOs);
+        FarmhouseDetailVO vo = FarmhouseDetailVO.build(farmhousePO, enjoyPOs, picPOs);
         return new ResultVO<>(1000, vo);
     }
 
