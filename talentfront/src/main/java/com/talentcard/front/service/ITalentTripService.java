@@ -2,6 +2,8 @@ package com.talentcard.front.service;
 
 import com.talentcard.common.vo.ResultVO;
 
+import java.text.ParseException;
+
 /**
  * @author ChenXU
  * @version 1.0
@@ -30,5 +32,5 @@ public interface ITalentTripService {
      * @param activitySecondContentId
      * @return
      */
-    ResultVO getBenefit(String openId, Long activitySecondContentId);
+    ResultVO getBenefit(String openId, Long activitySecondContentId) throws ParseException;
 }

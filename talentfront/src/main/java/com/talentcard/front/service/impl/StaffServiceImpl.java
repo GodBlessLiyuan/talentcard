@@ -84,6 +84,9 @@ public class StaffServiceImpl implements IStaffService {
     @Override
     public ResultVO findOne(String openId) {
         StaffPO staffPO = staffMapper.findOneByOpenId(openId);
+        if(staffPO==null){
+            return new ResultVO(1001, staffPO);
+        }
         return new ResultVO(1000, staffPO);
     }
 }

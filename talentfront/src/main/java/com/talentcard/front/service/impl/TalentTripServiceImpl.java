@@ -1,12 +1,10 @@
 package com.talentcard.front.service.impl;
 
 import com.talentcard.common.bo.ScenicBO;
-import com.talentcard.common.mapper.ScenicEnjoyMapper;
-import com.talentcard.common.mapper.ScenicMapper;
-import com.talentcard.common.mapper.TalentMapper;
-import com.talentcard.common.mapper.UserCurrentInfoMapper;
+import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.TalentPO;
+import com.talentcard.common.pojo.TalentTripPO;
 import com.talentcard.common.pojo.UserCurrentInfoPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ITalentTripService;
@@ -16,9 +14,9 @@ import com.talentcard.front.vo.ScenicVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -38,6 +36,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
     private ScenicEnjoyMapper scenicEnjoyMapper;
     @Autowired
     private ScenicMapper scenicMapper;
+    @Autowired
+    private TalentTripMapper talentTripMapper;
 
     @Override
     public ResultVO findSecondContent(String openId) {
@@ -79,7 +79,78 @@ public class TalentTripServiceImpl implements ITalentTripService {
     }
 
     @Override
-    public ResultVO getBenefit(String openId, Long activitySecondContentId) {
-        return null;
+    public ResultVO getBenefit(String openId, Long activitySecondContentId) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = simpleDateFormat.format(new Date());
+        TalentTripPO ifExistOne = talentTripMapper.findOneNotExpired(openId, currentTime);
+        //平台次数是否为0
+        if (ActivityResidueNumUtil.getResidueNum() <= 0) {
+            return new ResultVO(1001, "当前福利已被领取完");
+        }
+        //用户是否已领取还未过期的福利
+        if (ifExistOne != null) {
+            return new ResultVO(1002, "当前人才已经有没用完的券");
+        }
+        //用户可用次数是否已超过限额
+        ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
+        if (scenicPO == null) {
+            return new ResultVO(2504, "查无景区");
+        }
+        Byte unit = scenicPO.getUnit();
+        Integer times = scenicPO.getTimes();
+        List<String> timeList = getTime(unit);
+        String startTime = timeList.get(0);
+        String endTime = timeList.get(1);
+        Integer getTimes = talentTripMapper.TalentGetTimes(openId, startTime, endTime);
+        if (getTimes >= times) {
+            return new ResultVO(1003, "当前用户已经把当月/年次数用尽");
+        }
+        TalentTripPO talentTripPO = new TalentTripPO();
+        talentTripPO.setOpenId(openId);
+        talentTripPO.setScenicId(activitySecondContentId);
+        talentTripPO.setCreateTime(new Date());
+        //设置有效时间
+        Date effectiveTime = simpleDateFormat.parse(timeList.get(2));
+        talentTripPO.setEffectiveTime(effectiveTime);
+        talentTripPO.setStatus((byte) 1);
+        talentTripMapper.insertSelective(talentTripPO);
+        return new ResultVO(1000, "领取成功");
     }
+
+    /**
+     * 获得可用次数的起始时间和结束时间，以及有效时间
+     *
+     * @param unit
+     * @return
+     */
+    private static List<String> getTime(Byte unit) {
+        String startTime;
+        String endTime;
+        String effectiveTime;
+        List<String> timeList = new ArrayList();
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int lastDay = 0;
+        if (month == 2) {
+            lastDay = calendar.getLeastMaximum(Calendar.DAY_OF_MONTH);
+        } else {
+            lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        }
+        //年
+        if (unit == 1) {
+            startTime = year + "-01-01 00:00:00";
+            endTime = year + "-12-31 23:59:59";
+            //月
+        } else {
+            startTime = year + "-" + month + "-" + lastDay + " 00:00:00";
+            endTime = year + "-" + month + "-" + lastDay + " 23:59:59";
+        }
+        effectiveTime = year + "-" + month + "-" + lastDay + " 23:59:59";
+        timeList.add(startTime);
+        timeList.add(endTime);
+        timeList.add(effectiveTime);
+        return timeList;
+    }
+
 }
