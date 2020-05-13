@@ -7,12 +7,14 @@
     <result column="scenic_id" jdbcType="BIGINT" property="scenicId" />
     <result column="staff_id" jdbcType="BIGINT" property="staffId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="effective_time" jdbcType="TIMESTAMP" property="effectiveTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
-    tt_id, open_id, scenic_id, staff_id, create_time, effective_time, `status`, dr
+    tt_id, open_id, scenic_id, staff_id, create_time, update_time, effective_time, `status`, 
+    dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -26,11 +28,13 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.TalentTripPO">
     insert into t_talent_trip (tt_id, open_id, scenic_id, 
-      staff_id, create_time, effective_time, 
-      `status`, dr)
+      staff_id, create_time, update_time, 
+      effective_time, `status`, dr
+      )
     values (#{ttId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{scenicId,jdbcType=BIGINT}, 
-      #{staffId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{effectiveTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT})
+      #{staffId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{effectiveTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentTripPO">
     insert into t_talent_trip
@@ -49,6 +53,9 @@
       </if>
       <if test="createTime != null">
         create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
       </if>
       <if test="effectiveTime != null">
         effective_time,
@@ -76,6 +83,9 @@
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="effectiveTime != null">
         #{effectiveTime,jdbcType=TIMESTAMP},
       </if>
@@ -102,6 +112,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="effectiveTime != null">
         effective_time = #{effectiveTime,jdbcType=TIMESTAMP},
       </if>
@@ -120,25 +133,32 @@
       scenic_id = #{scenicId,jdbcType=BIGINT},
       staff_id = #{staffId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
       effective_time = #{effectiveTime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=TINYINT},
       dr = #{dr,jdbcType=TINYINT}
     where tt_id = #{ttId,jdbcType=BIGINT}
   </update>
-  <select id="findOneNotExpired" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_talent_trip
-    where <![CDATA[ effective_time >= #{currentTime}]]>
-    and
-    open_id = #{openId,jdbcType=CHAR}
-  </select>
-  <select id="TalentGetTimes" resultType="java.lang.Integer">
+    <select id="findOneNotExpired" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_talent_trip
+        where
+        open_id = #{openId,jdbcType=CHAR}
+        and dr = 1
+        and `status` = 1
+        <if test="currentTime != null and currentTime!=''">
+            and <![CDATA[ effective_time >= #{currentTime}]]>
+        </if>
+    </select>
+    <select id="TalentGetTimes" resultType="java.lang.Integer">
     select
     count(tt_id)
     from t_talent_trip t
     where <![CDATA[ create_time >= #{startTime}]]>
     and <![CDATA[ create_time <= #{endTime}]]>
     and open_id = #{openId,jdbcType=CHAR}
+    and `status` = #{status,jdbcType=TINYINT}
+    and dr =1
   </select>
 </mapper>

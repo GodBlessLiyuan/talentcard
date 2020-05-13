@@ -151,4 +151,16 @@
      set `status` = #{status}
      where talent_id = #{talentId,jdbcType=BIGINT} and card_id = #{cardId,jdbcType=BIGINT}
   </update>
+
+  <select id="findOpenIdByCardNum" resultType="java.lang.String">
+    select
+    open_id
+    from t_user_card uc
+    left join t_talent t
+    on t.talent_id = uc.talent_id
+    where
+    uc.status = 2
+    and
+    uc.num = #{cardNum, jdbcType=CHAR}
+  </select>
 </mapper>

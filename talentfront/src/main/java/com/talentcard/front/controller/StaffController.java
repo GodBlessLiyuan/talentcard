@@ -3,22 +3,25 @@ package com.talentcard.front.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IStaffService;
+import com.talentcard.front.service.ITalentActivityService;
+import com.talentcard.front.service.impl.TalentActivityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 
 /**
  * @author ChenXU
  * @version 1.0
  * @createTime 2020-05-11 14:51
- * @description 员工
+ * @description 福利活动 员工总的接口
  */
 @RequestMapping("staff")
 @RestController
 public class StaffController {
     @Autowired
     private IStaffService iStaffService;
+    @Autowired
+    private ITalentActivityService iTalentActivityService;
 
     /**
      * 判断当前员工是否注册
@@ -54,5 +57,30 @@ public class StaffController {
     @RequestMapping("findOne")
     public ResultVO findOne(@RequestParam("openId") String openId) {
         return iStaffService.findOne(openId);
+    }
+
+    /**
+     * 核销
+     * 根据一级目录id，决定是否核销哪一个
+     *
+     * @return
+     */
+    @RequestMapping("vertify")
+    public ResultVO vertify(@RequestParam(value = "cardNum") String cardNum,
+                            @RequestParam(value = "staffOpenId") String staffOpenId,
+                            @RequestParam(value = "activityFirstContentId") Long activityFirstContentId,
+                            @RequestParam(value = "activitySecondContentId") Long activitySecondContentId) {
+        ResultVO resultVO = null;
+        String talentOpenId = iTalentActivityService.getOpenId(cardNum);
+        if(talentOpenId==null||talentOpenId.equals("")){
+            return new ResultVO(2500);
+        }
+        /**
+         * 1.旅游
+         */
+        if (activityFirstContentId == 1) {
+            resultVO = iStaffService.tripVertify(talentOpenId, staffOpenId, activitySecondContentId);
+        }
+        return resultVO;
     }
 }

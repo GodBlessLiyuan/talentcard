@@ -226,9 +226,8 @@
         <include refid="Base_Column_List"/>
         from t_scenic
         where
-        1 = 1
-        <foreach collection="scenicIdList" item="scenicId">
-            or scenic_id = #{scenicId, jdbcType=BIGINT}
+        <foreach collection="scenicIdList" separator="or" item="scenicId">
+            scenic_id = #{scenicId, jdbcType=BIGINT}
         </foreach>
     </select>
 

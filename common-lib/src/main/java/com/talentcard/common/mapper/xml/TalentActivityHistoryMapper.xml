@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.TalentActivityHistoryMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentActivityHistoryPO">
+    <id column="tah_id" jdbcType="BIGINT" property="tahId" />
+    <result column="open_id" jdbcType="CHAR" property="openId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="activity_first_content_id" jdbcType="BIGINT" property="activityFirstContentId" />
+    <result column="activity_second_content_id" jdbcType="BIGINT" property="activitySecondContentId" />
+    <result column="activity_second_content_name" jdbcType="CHAR" property="activitySecondContentName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tah_id, open_id, staff_id, activity_first_content_id, activity_second_content_id, 
+    activity_second_content_name, create_time, `status`, dr
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_talent_activity_history
+    where tah_id = #{tahId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_talent_activity_history
+    where tah_id = #{tahId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.TalentActivityHistoryPO">
+    insert into t_talent_activity_history (tah_id, open_id, staff_id, 
+      activity_first_content_id, activity_second_content_id, 
+      activity_second_content_name, create_time, `status`, 
+      dr)
+    values (#{tahId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{staffId,jdbcType=BIGINT}, 
+      #{activityFirstContentId,jdbcType=BIGINT}, #{activitySecondContentId,jdbcType=BIGINT}, 
+      #{activitySecondContentName,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
+      #{dr,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentActivityHistoryPO">
+    insert into t_talent_activity_history
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tahId != null">
+        tah_id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="staffId != null">
+        staff_id,
+      </if>
+      <if test="activityFirstContentId != null">
+        activity_first_content_id,
+      </if>
+      <if test="activitySecondContentId != null">
+        activity_second_content_id,
+      </if>
+      <if test="activitySecondContentName != null">
+        activity_second_content_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="dr != null">
+        dr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tahId != null">
+        #{tahId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=CHAR},
+      </if>
+      <if test="staffId != null">
+        #{staffId,jdbcType=BIGINT},
+      </if>
+      <if test="activityFirstContentId != null">
+        #{activityFirstContentId,jdbcType=BIGINT},
+      </if>
+      <if test="activitySecondContentId != null">
+        #{activitySecondContentId,jdbcType=BIGINT},
+      </if>
+      <if test="activitySecondContentName != null">
+        #{activitySecondContentName,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentActivityHistoryPO">
+    update t_talent_activity_history
+    <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=CHAR},
+      </if>
+      <if test="staffId != null">
+        staff_id = #{staffId,jdbcType=BIGINT},
+      </if>
+      <if test="activityFirstContentId != null">
+        activity_first_content_id = #{activityFirstContentId,jdbcType=BIGINT},
+      </if>
+      <if test="activitySecondContentId != null">
+        activity_second_content_id = #{activitySecondContentId,jdbcType=BIGINT},
+      </if>
+      <if test="activitySecondContentName != null">
+        activity_second_content_name = #{activitySecondContentName,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
+    </set>
+    where tah_id = #{tahId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentActivityHistoryPO">
+    update t_talent_activity_history
+    set open_id = #{openId,jdbcType=CHAR},
+      staff_id = #{staffId,jdbcType=BIGINT},
+      activity_first_content_id = #{activityFirstContentId,jdbcType=BIGINT},
+      activity_second_content_id = #{activitySecondContentId,jdbcType=BIGINT},
+      activity_second_content_name = #{activitySecondContentName,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=TINYINT},
+      dr = #{dr,jdbcType=TINYINT}
+    where tah_id = #{tahId,jdbcType=BIGINT}
+  </update>
+  <select id="findByOpenId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_talent_activity_history
+    where open_id = #{openId,jdbcType=CHAR}
+    and dr = 1
+    order by create_time desc
+  </select>
+</mapper>

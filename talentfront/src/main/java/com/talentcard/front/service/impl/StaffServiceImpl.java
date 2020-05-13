@@ -3,8 +3,12 @@ package com.talentcard.front.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.mapper.ScenicMapper;
 import com.talentcard.common.mapper.StaffMapper;
+import com.talentcard.common.mapper.TalentActivityHistoryMapper;
+import com.talentcard.common.mapper.TalentTripMapper;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.StaffPO;
+import com.talentcard.common.pojo.TalentActivityHistoryPO;
+import com.talentcard.common.pojo.TalentTripPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IStaffService;
 import com.talentcard.front.utils.StaffActivityUtil;
@@ -12,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -26,7 +32,11 @@ public class StaffServiceImpl implements IStaffService {
     @Autowired
     private StaffMapper staffMapper;
     @Autowired
+    private TalentTripMapper talentTripMapper;
+    @Autowired
     private ScenicMapper scenicMapper;
+    @Autowired
+    private TalentActivityHistoryMapper talentActivityHistoryMapper;
 
     @Override
     public ResultVO ifEnableRegister(String openId, Long activityFirstContentId, Long activitySecondContentId) {
@@ -84,9 +94,70 @@ public class StaffServiceImpl implements IStaffService {
     @Override
     public ResultVO findOne(String openId) {
         StaffPO staffPO = staffMapper.findOneByOpenId(openId);
-        if(staffPO==null){
+        if (staffPO == null) {
             return new ResultVO(1001, staffPO);
         }
         return new ResultVO(1000, staffPO);
+    }
+
+    public StaffServiceImpl() {
+        super();
+    }
+
+    @Override
+    public ResultVO vertify(String talentOpenId, String staffOpenId,
+                            Long activityFirstContentId, Long activitySecondContentId) {
+        return null;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public ResultVO tripVertify(String talentOpenId, String staffOpenId, Long activitySecondContentId) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = simpleDateFormat.format(new Date());
+        //判断人才旅游表里是否有状态为1的记录
+        TalentTripPO talentTripPO = talentTripMapper.findOneNotExpired(talentOpenId, currentTime);
+        if (talentTripPO == null) {
+            return new ResultVO(1001, "该人才没资格");
+        }
+        if (!talentTripPO.getScenicId().equals(activitySecondContentId)) {
+            return new ResultVO(1001, "该人才领的是其他的景区的！");
+        }
+        //找到staffId，更新人才旅游表
+        talentTripPO.setStatus((byte) 2);
+        StaffPO staffPO = staffMapper.findOneByOpenId(staffOpenId);
+        if (staffPO == null) {
+            return new ResultVO(2503, "没有此员工");
+        }
+        Long staffId = staffPO.getStaffId();
+        talentTripPO.setStaffId(staffId);
+        talentTripPO.setUpdateTime(new Date());
+        talentTripMapper.updateByPrimaryKeySelective(talentTripPO);
+        //更新历史表
+        TalentActivityHistoryPO talentActivityHistoryPO = new TalentActivityHistoryPO();
+        talentActivityHistoryPO.setOpenId(talentOpenId);
+        talentActivityHistoryPO.setStaffId(staffId);
+        talentActivityHistoryPO.setActivityFirstContentId((long) 1);
+        talentActivityHistoryPO.setActivitySecondContentId(activitySecondContentId);
+        ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
+        if (scenicPO == null) {
+            return new ResultVO(2504);
+        }
+        talentActivityHistoryPO.setActivitySecondContentName(scenicPO.getName());
+        talentActivityHistoryPO.setCreateTime(new Date());
+        talentActivityHistoryPO.setDr((byte) 1);
+        talentActivityHistoryMapper.insertSelective(talentActivityHistoryPO);
+
+        //得到当前检验人数
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int date = calendar.get(Calendar.DATE);
+        String startTime = year + "-" + month + "-" + date + " 00:00:00";
+        String endTime = year + "-" + month + "-" + date + " 23:59:59";
+        Long vertifyNum = staffMapper.getVertifyNum(staffOpenId, (long) 1, activitySecondContentId, startTime, endTime);
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("vertifyNum", vertifyNum);
+        return new ResultVO(1000, result);
     }
 }

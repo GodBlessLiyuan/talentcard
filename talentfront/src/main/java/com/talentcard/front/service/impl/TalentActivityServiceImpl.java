@@ -1,8 +1,7 @@
 package com.talentcard.front.service.impl;
 
-import com.talentcard.common.mapper.ScenicEnjoyMapper;
-import com.talentcard.common.mapper.TalentMapper;
-import com.talentcard.common.mapper.UserCurrentInfoMapper;
+import com.talentcard.common.mapper.*;
+import com.talentcard.common.pojo.TalentActivityHistoryPO;
 import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.pojo.UserCurrentInfoPO;
 import com.talentcard.common.vo.ResultVO;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,12 +27,21 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
     private UserCurrentInfoMapper userCurrentInfoMapper;
     @Autowired
     private ScenicEnjoyMapper scenicEnjoyMapper;
+    @Autowired
+    private TalentTripMapper talentTripMapper;
+    @Autowired
+    private UserCardMapper userCardMapper;
+    @Autowired
+    private TalentActivityHistoryMapper talentActivityHistoryMapper;
 
     @Override
     public ResultVO findFirstContent(String openId) {
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
+        }
         UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentPO.getTalentId());
-        if (talentPO == null || userCurrentInfoPO == null) {
+        if (userCurrentInfoPO == null) {
             return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
         }
         Long cardId = talentPO.getCardId();
@@ -54,5 +61,16 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
             resultList.add((long) 1);
         }
         return new ResultVO(1000, resultList);
+    }
+
+    @Override
+    public ResultVO findHistory(String openId) {
+        List<TalentActivityHistoryPO> resultList = talentActivityHistoryMapper.findByOpenId(openId);
+        return new ResultVO(1000, resultList);
+    }
+
+    @Override
+    public String getOpenId(String cardNum) {
+        return userCardMapper.findOpenIdByCardNum(cardNum);
     }
 }

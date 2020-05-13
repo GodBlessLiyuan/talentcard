@@ -47,4 +47,9 @@ public interface UserCardMapper extends BaseMapper<UserCardPO, Long> {
      * @return
      */
     int updateStatusByTalentId(UserCardPO po);
+
+    /**
+     * 根据卡号查询openId
+     */
+    String findOpenIdByCardNum(@Param("cardNum") String cardNum);
 }

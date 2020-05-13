@@ -33,4 +33,12 @@ public interface ITalentTripService {
      * @return
      */
     ResultVO getBenefit(String openId, Long activitySecondContentId) throws ParseException;
+
+    /**
+     * 得到当前人才某个景区福利的剩余次数
+     * @param openId
+     * @param activitySecondContentId
+     * @return
+     */
+    ResultVO getResidueTimes(String openId, Long activitySecondContentId);
 }

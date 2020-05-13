@@ -13,7 +13,7 @@ import java.text.ParseException;
  * @author ChenXU
  * @version 1.0
  * @createTime 2020-05-12 09:57
- * @description
+ * @description 福利活动 旅游部分的接口
  */
 @RequestMapping("talentTrip")
 @RestController
@@ -56,4 +56,16 @@ public class TalentTripController {
         return iTalentTripService.getBenefit(openId, activitySecondContentId);
     }
 
+    /**
+     * 得到当前人才某个景区福利的剩余次数
+     *
+     * @param openId
+     * @param activitySecondContentId
+     * @return
+     */
+    @RequestMapping("getResidueTimes")
+    public ResultVO getResidueTimes(@RequestParam("openId") String openId,
+                                    @RequestParam("activitySecondContentId") Long activitySecondContentId) {
+        return iTalentTripService.getResidueTimes(openId, activitySecondContentId);
+    }
 }

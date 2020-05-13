@@ -5,24 +5,28 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * t_talent_trip
+ * t_talent_activity_history
  * @author 
  */
 @Data
-public class TalentTripPO implements Serializable {
-    private Long ttId;
+public class TalentActivityHistoryPO implements Serializable {
+    private Long tahId;
 
     private String openId;
 
-    private Long scenicId;
-
     private Long staffId;
 
+    /**
+     * 1 旅游
+2 农家乐
+     */
+    private Long activityFirstContentId;
+
+    private Long activitySecondContentId;
+
+    private String activitySecondContentName;
+
     private Date createTime;
-
-    private Date updateTime;
-
-    private Date effectiveTime;
 
     private Byte status;
 

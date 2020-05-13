@@ -68,4 +68,10 @@
       authority_code = #{authorityCode,jdbcType=CHAR}
     where tga_id = #{tgaId,jdbcType=BIGINT}
   </update>
+  <select id="findByCode" resultType="java.lang.Long">
+    select
+    scenic_id
+    from t_trip_group_authority
+    where authority_code = #{code,jdbcType=CHAR}
+  </select>
 </mapper>
