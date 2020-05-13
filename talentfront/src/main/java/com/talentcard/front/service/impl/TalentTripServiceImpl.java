@@ -2,10 +2,7 @@ package com.talentcard.front.service.impl;
 
 import com.talentcard.common.bo.ScenicBO;
 import com.talentcard.common.mapper.*;
-import com.talentcard.common.pojo.ScenicPO;
-import com.talentcard.common.pojo.TalentPO;
-import com.talentcard.common.pojo.TalentTripPO;
-import com.talentcard.common.pojo.UserCurrentInfoPO;
+import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ITalentTripService;
 import com.talentcard.front.utils.ActivityResidueNumUtil;
@@ -13,6 +10,7 @@ import com.talentcard.front.utils.TalentActivityUtil;
 import com.talentcard.front.vo.ScenicVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,8 +36,11 @@ public class TalentTripServiceImpl implements ITalentTripService {
     private ScenicMapper scenicMapper;
     @Autowired
     private TalentTripMapper talentTripMapper;
+    @Autowired
+    private TripGroupAuthorityMapper tripGroupAuthorityMapper;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO findSecondContent(String openId) {
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
         UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentPO.getTalentId());
@@ -47,23 +48,45 @@ public class TalentTripServiceImpl implements ITalentTripService {
             return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
         }
         Long cardId = talentPO.getCardId();
+        String category = userCurrentInfoPO.getTalentCategory();
         ArrayList categoryList = null;
         //拆分人才类别
-        if (!(userCurrentInfoPO.getTalentCategory().equals("") && userCurrentInfoPO != null)) {
+        if (!category.equals("") && category != null) {
             categoryList = TalentActivityUtil.splitCategory(userCurrentInfoPO.getTalentCategory());
         }
         Integer education = userCurrentInfoPO.getEducation();
         Integer title = userCurrentInfoPO.getPtCategory();
         Integer quality = userCurrentInfoPO.getPqCategory();
-        List<Long> scenicIdList = null;
-        //景区idList，去大表查询
-        scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
-        if (scenicIdList == null) {
-            return new ResultVO(2504, "查无景区！");
+        List<Long> scenicIdList;
+        /**景区idList，去中间表查询
+         *
+         */
+        String code = getMiddleTableString(cardId, category, education, title, quality);
+        scenicIdList = tripGroupAuthorityMapper.findByCode(code);
+        /**
+         *  中间表没找到景区idList，去大表查询
+         */
+        if (scenicIdList.size() == 0) {
+            scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
+            if (scenicIdList.size() == 0) {
+                return new ResultVO(2504, "查无景区！");
+            }
+            //新增中间表
+            TripGroupAuthorityPO tripGroupAuthorityPO = new TripGroupAuthorityPO();
+            tripGroupAuthorityPO.setAuthorityCode(code);
+            for (Long scenicId : scenicIdList) {
+                tripGroupAuthorityPO.setScenicId(scenicId);
+                tripGroupAuthorityMapper.insertSelective(tripGroupAuthorityPO);
+            }
         }
+
+
+        //去重
         scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
+        //景区表，查询符合条件的景区
         List<ScenicPO> scenicPOList = scenicMapper.findEnjoyScenic(scenicIdList);
         List<ScenicVO> scenicVOList = ScenicVO.convert(scenicPOList);
+        //拼结果
         HashMap<String, Object> hashMap = new HashMap<>();
         Long benefitNum = ActivityResidueNumUtil.getResidueNum();
         hashMap.put("scenicList", scenicVOList);
@@ -79,6 +102,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO getBenefit(String openId, Long activitySecondContentId) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = simpleDateFormat.format(new Date());
@@ -152,5 +176,37 @@ public class TalentTripServiceImpl implements ITalentTripService {
         timeList.add(endTime);
         timeList.add(effectiveTime);
         return timeList;
+    }
+
+    /**
+     * 根据五个条件获得中间表唯一字符串
+     *
+     * @param cardId
+     * @param category
+     * @param education
+     * @param title
+     * @param quality
+     * @return
+     */
+    public static String getMiddleTableString(Long cardId, String category,
+                                              Integer education, Integer title, Integer quality) {
+        String middleTableString;
+        if (cardId == null) {
+            cardId = (long) 0;
+        }
+        if (category == null || category.equals("")) {
+            category = "0";
+        }
+        if (education == null) {
+            education = 0;
+        }
+        if (title == null) {
+            title = 0;
+        }
+        if (quality == null) {
+            quality = 0;
+        }
+        middleTableString = "" + cardId + "-" + category + "-" + education + "-" + title + "-" + quality;
+        return middleTableString;
     }
 }

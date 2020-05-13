@@ -1,6 +1,7 @@
 package com.talentcard.front.service.impl;
 
 import com.talentcard.common.mapper.*;
+import com.talentcard.common.pojo.TalentActivityHistoryPO;
 import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.pojo.UserCurrentInfoPO;
 import com.talentcard.common.vo.ResultVO;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -31,6 +31,8 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
     private TalentTripMapper talentTripMapper;
     @Autowired
     private UserCardMapper userCardMapper;
+    @Autowired
+    private TalentActivityHistoryMapper talentActivityHistoryMapper;
 
     @Override
     public ResultVO findFirstContent(String openId) {
@@ -60,8 +62,8 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
 
     @Override
     public ResultVO findHistory(String openId) {
-
-        return new ResultVO(1000, );
+        List<TalentActivityHistoryPO> resultList = talentActivityHistoryMapper.findByOpenId(openId);
+        return new ResultVO(1000, resultList);
     }
 
     @Override

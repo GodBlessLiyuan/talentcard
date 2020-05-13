@@ -1,9 +1,13 @@
 package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.mapper.ScenicMapper;
 import com.talentcard.common.mapper.StaffMapper;
+import com.talentcard.common.mapper.TalentActivityHistoryMapper;
 import com.talentcard.common.mapper.TalentTripMapper;
+import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.StaffPO;
+import com.talentcard.common.pojo.TalentActivityHistoryPO;
 import com.talentcard.common.pojo.TalentTripPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IStaffService;
@@ -28,6 +32,10 @@ public class StaffServiceImpl implements IStaffService {
     private StaffMapper staffMapper;
     @Autowired
     private TalentTripMapper talentTripMapper;
+    @Autowired
+    private ScenicMapper scenicMapper;
+    @Autowired
+    private TalentActivityHistoryMapper talentActivityHistoryMapper;
 
     @Override
     public ResultVO ifEnableRegister(String openId, Long activityFirstContentId, Long activitySecondContentId) {
@@ -102,6 +110,7 @@ public class StaffServiceImpl implements IStaffService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO tripVertify(String talentOpenId, String staffOpenId, Long activitySecondContentId) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = simpleDateFormat.format(new Date());
@@ -110,7 +119,7 @@ public class StaffServiceImpl implements IStaffService {
         if (talentTripPO == null) {
             return new ResultVO(1001, "该人才没资格");
         }
-        if (!talentTripPO.getScenicId().equals(activitySecondContentId)){
+        if (!talentTripPO.getScenicId().equals(activitySecondContentId)) {
             return new ResultVO(1001, "该人才领的是其他的景区的！");
         }
         //找到staffId，更新人才旅游表
@@ -119,9 +128,24 @@ public class StaffServiceImpl implements IStaffService {
         if (staffPO == null) {
             return new ResultVO(2503, "没有此员工");
         }
-        talentTripPO.setStaffId(staffPO.getStaffId());
+        Long staffId = staffPO.getStaffId();
+        talentTripPO.setStaffId(staffId);
         talentTripPO.setUpdateTime(new Date());
         talentTripMapper.updateByPrimaryKeySelective(talentTripPO);
+        //更新历史表
+        TalentActivityHistoryPO talentActivityHistoryPO = new TalentActivityHistoryPO();
+        talentActivityHistoryPO.setOpenId(talentOpenId);
+        talentActivityHistoryPO.setStaffId(staffId);
+        talentActivityHistoryPO.setActivityFirstContentId((long) 1);
+        talentActivityHistoryPO.setActivitySecondContentId(activitySecondContentId);
+        ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
+        if (scenicPO == null) {
+            return new ResultVO(2504);
+        }
+        talentActivityHistoryPO.setActivitySecondContentName(scenicPO.getName());
+        talentActivityHistoryPO.setCreateTime(new Date());
+        talentActivityHistoryPO.setDr((byte) 1);
+        talentActivityHistoryMapper.insertSelective(talentActivityHistoryPO);
         return new ResultVO(1000);
     }
 }

@@ -14,6 +14,8 @@ public class TalentActivityHistoryPO implements Serializable {
 
     private String openId;
 
+    private Long staffId;
+
     /**
      * 1 旅游
 2 农家乐
@@ -25,6 +27,13 @@ public class TalentActivityHistoryPO implements Serializable {
     private String activitySecondContentName;
 
     private Date createTime;
+
+    private Byte status;
+
+    /**
+     * 1 未删除  2 已删除
+     */
+    private Byte dr;
 
     private static final long serialVersionUID = 1L;
 }
