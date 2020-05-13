@@ -79,7 +79,7 @@ public class ScenicVO implements Serializable {
         vo.setScenicId(po.getScenicId());
         vo.setName(po.getName());
         String limit = po.getRate() +
-                (po.getUnit() == 1 ? "年" : po.getUnit() == 2 ? "月" : "日") +
+                (po.getUnit() == 1 ? "年" : "月") +
                 "/" +
                 po.getTimes() +
                 "次";
