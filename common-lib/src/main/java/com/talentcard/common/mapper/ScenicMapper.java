@@ -1,5 +1,6 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.bo.ScenicBO;
 import com.talentcard.common.pojo.ScenicPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -32,4 +33,6 @@ public interface ScenicMapper extends BaseMapper<ScenicPO, Long> {
      * @param scenicIdList
      */
     List<ScenicPO> findEnjoyScenic(@Param("scenicIdList") List<Long> scenicIdList);
+
+    ScenicBO findOne(@Param("scenicId") Long scenicId);
 }

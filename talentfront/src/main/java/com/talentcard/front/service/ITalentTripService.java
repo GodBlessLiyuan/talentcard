@@ -16,4 +16,19 @@ public interface ITalentTripService {
      */
     ResultVO findSecondContent(String openId);
 
+    /**
+     * 根据scenicId查找景区detail
+     * @param scenicId
+     * @return
+     */
+    ResultVO findOne(Long scenicId);
+
+
+    /**
+     * 领取景区福利
+     * @param openId
+     * @param activitySecondContentId
+     * @return
+     */
+    ResultVO getBenefit(String openId, Long activitySecondContentId);
 }

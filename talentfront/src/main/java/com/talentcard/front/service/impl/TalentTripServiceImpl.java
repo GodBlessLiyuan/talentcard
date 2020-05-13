@@ -1,5 +1,6 @@
 package com.talentcard.front.service.impl;
 
+import com.talentcard.common.bo.ScenicBO;
 import com.talentcard.common.mapper.ScenicEnjoyMapper;
 import com.talentcard.common.mapper.ScenicMapper;
 import com.talentcard.common.mapper.TalentMapper;
@@ -68,5 +69,17 @@ public class TalentTripServiceImpl implements ITalentTripService {
         hashMap.put("scenicList", scenicVOList);
         hashMap.put("benefitNum", benefitNum);
         return new ResultVO(1000, hashMap);
+    }
+
+    @Override
+    public ResultVO findOne(Long scenicId) {
+        ScenicBO scenicBO = scenicMapper.findOne(scenicId);
+        ScenicVO scenicVO = ScenicVO.convert(scenicBO);
+        return new ResultVO(1000, scenicVO);
+    }
+
+    @Override
+    public ResultVO getBenefit(String openId, Long activitySecondContentId) {
+        return null;
     }
 }

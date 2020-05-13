@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableDiscoveryClient
 @MapperScan("com.talentcard.common.mapper")
 @ComponentScan("com.talentcard.common.utils")
+@ComponentScan("com.talentcard.front")
 @SpringBootApplication
 public class FrontApplication {
 
