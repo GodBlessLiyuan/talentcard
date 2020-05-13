@@ -31,7 +31,7 @@ public class ActivityResidueNumUtil {
     public static Long getResidueNum() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
         String time = year + "-" + month;
         ActivityResidueNumPO activityResidueNumPO = activityResidueNumMapper.findOne(time);
         Long num;
@@ -52,7 +52,7 @@ public class ActivityResidueNumUtil {
     public static Integer minusOneResidueNum() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
         String time = year + "-" + month;
         ActivityResidueNumPO activityResidueNumPO = activityResidueNumMapper.findOne(time);
         Long num;
@@ -80,7 +80,7 @@ public class ActivityResidueNumUtil {
     public static void reviseNum(Long totalNum) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
         String time = year + "-" + month;
         ActivityResidueNumPO activityResidueNumPO = activityResidueNumMapper.findOne(time);
         Long num;

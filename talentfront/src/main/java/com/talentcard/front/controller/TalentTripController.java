@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+
 /**
  * @author ChenXU
  * @version 1.0
@@ -39,6 +41,19 @@ public class TalentTripController {
     @RequestMapping("findOne")
     public ResultVO findOne(@RequestParam("scenicId") Long scenicId) {
         return iTalentTripService.findOne(scenicId);
+    }
+
+    /**
+     * 获取福利
+     *
+     * @param openId
+     * @param activitySecondContentId
+     * @return
+     */
+    @RequestMapping("getBenefit")
+    public ResultVO getBenefit(@RequestParam("openId") String openId,
+                               @RequestParam("activitySecondContentId") Long activitySecondContentId) throws ParseException {
+        return iTalentTripService.getBenefit(openId, activitySecondContentId);
     }
 
 }
