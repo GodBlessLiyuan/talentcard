@@ -1,5 +1,6 @@
 package com.talentcard.web.vo;
 
+import com.talentcard.common.constant.TalentCardConstant;
 import com.talentcard.common.pojo.ScenicPO;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,11 +79,11 @@ public class ScenicVO implements Serializable {
         ScenicVO vo = new ScenicVO();
         vo.setScenicId(po.getScenicId());
         vo.setName(po.getName());
-        String limit = po.getRate() +
-                (po.getUnit() == 1 ? "年" : "月") +
-                "/" +
-                po.getTimes() +
-                "次";
+        String limit = "无";
+        if (null != po.getRate() && null != po.getUnit() && null != po.getTimes()) {
+            limit = po.getRate() + TalentCardConstant.UNITS[po.getUnit()] +
+                    "/" + po.getTimes() + "次";
+        }
         vo.setLimit(limit);
         vo.setStatus(po.getStatus());
         vo.setCtime(po.getCreateTime());
