@@ -37,8 +37,11 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
     @Override
     public ResultVO findFirstContent(String openId) {
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
+        }
         UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentPO.getTalentId());
-        if (talentPO == null || userCurrentInfoPO == null) {
+        if (userCurrentInfoPO == null) {
             return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
         }
         Long cardId = talentPO.getCardId();

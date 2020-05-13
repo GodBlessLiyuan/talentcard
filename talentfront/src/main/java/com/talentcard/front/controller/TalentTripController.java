@@ -56,4 +56,16 @@ public class TalentTripController {
         return iTalentTripService.getBenefit(openId, activitySecondContentId);
     }
 
+    /**
+     * 得到当前人才某个景区福利的剩余次数
+     *
+     * @param openId
+     * @param activitySecondContentId
+     * @return
+     */
+    @RequestMapping("getResidueTimes")
+    public ResultVO getResidueTimes(@RequestParam("openId") String openId,
+                                    @RequestParam("activitySecondContentId") Long activitySecondContentId) {
+        return iTalentTripService.getResidueTimes(openId, activitySecondContentId);
+    }
 }

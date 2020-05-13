@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -146,6 +147,17 @@ public class StaffServiceImpl implements IStaffService {
         talentActivityHistoryPO.setCreateTime(new Date());
         talentActivityHistoryPO.setDr((byte) 1);
         talentActivityHistoryMapper.insertSelective(talentActivityHistoryPO);
-        return new ResultVO(1000);
+
+        //得到当前检验人数
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int date = calendar.get(Calendar.DATE);
+        String startTime = year + "-" + month + "-" + date + " 00:00:00";
+        String endTime = year + "-" + month + "-" + date + " 23:59:59";
+        Long vertifyNum = staffMapper.getVertifyNum(staffOpenId, (long) 1, activitySecondContentId, startTime, endTime);
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("vertifyNum", vertifyNum);
+        return new ResultVO(1000, result);
     }
 }

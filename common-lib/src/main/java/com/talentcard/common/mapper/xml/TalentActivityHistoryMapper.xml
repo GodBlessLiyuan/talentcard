@@ -145,5 +145,6 @@
     from t_talent_activity_history
     where open_id = #{openId,jdbcType=CHAR}
     and dr = 1
+    order by create_time desc
   </select>
 </mapper>

@@ -102,6 +102,32 @@ public class TalentTripServiceImpl implements ITalentTripService {
     }
 
     @Override
+    public ResultVO getResidueTimes(String openId, Long activitySecondContentId) {
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if(talentPO==null){
+            return new ResultVO(2500,"查无此人");
+        }
+        ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
+        if (scenicPO == null) {
+            return new ResultVO(2504, "查无景区");
+        }
+        Byte unit = scenicPO.getUnit();
+        Integer times = scenicPO.getTimes();
+        List<String> timeList = getTime(unit);
+        String startTime = timeList.get(0);
+        String endTime = timeList.get(1);
+        //指定时间内已领取次数
+        Integer getTimes = talentTripMapper.TalentGetTimes(openId, startTime, endTime, (byte) 1);
+        Integer residueTimes = 0;
+        if (getTimes <= times) {
+            residueTimes = times - getTimes;
+        }
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("residueTimes", residueTimes);
+        return new ResultVO(1000, result);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO getBenefit(String openId, Long activitySecondContentId) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -125,7 +151,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
         List<String> timeList = getTime(unit);
         String startTime = timeList.get(0);
         String endTime = timeList.get(1);
-        Integer getTimes = talentTripMapper.TalentGetTimes(openId, startTime, endTime);
+        //指定时间内已领取次数
+        Integer getTimes = talentTripMapper.TalentGetTimes(openId, startTime, endTime, (byte) 1);
         if (getTimes >= times) {
             return new ResultVO(1003, "当前用户已经把当月/年次数用尽");
         }
@@ -168,7 +195,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
             endTime = year + "-12-31 23:59:59";
             //月
         } else {
-            startTime = year + "-" + month + "-" + lastDay + " 00:00:00";
+            startTime = year + "-" + month + "-01 00:00:00";
             endTime = year + "-" + month + "-" + lastDay + " 23:59:59";
         }
         effectiveTime = year + "-" + month + "-" + lastDay + " 23:59:59";

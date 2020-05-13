@@ -158,6 +158,7 @@
     where <![CDATA[ create_time >= #{startTime}]]>
     and <![CDATA[ create_time <= #{endTime}]]>
     and open_id = #{openId,jdbcType=CHAR}
+    and `status` = #{status,jdbcType=TINYINT}
     and dr =1
   </select>
 </mapper>

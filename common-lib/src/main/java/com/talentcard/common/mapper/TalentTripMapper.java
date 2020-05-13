@@ -21,7 +21,17 @@ public interface TalentTripMapper extends BaseMapper<TalentTripPO, Long> {
     TalentTripPO findOneNotExpired(@Param("openId") String openId,
                                    @Param("currentTime") String currentTime);
 
+    /**
+     * 根据openId，起始结束时间
+     * 查询一定时间内，领取/核销 旅游的次数
+     * @param openId
+     * @param startTime
+     * @param endTime
+     * @param status
+     * @return
+     */
     Integer TalentGetTimes(@Param("openId") String openId,
                            @Param("startTime") String startTime,
-                           @Param("endTime") String endTime);
+                           @Param("endTime") String endTime,
+                           @Param("status") Byte status);
 }
