@@ -16,4 +16,18 @@ public interface ITalentActivityService{
      */
     ResultVO findFirstContent(String openId);
 
+    /**
+     * 根据openId查找当前用户所参加活动的历史记录
+     * @param openId
+     * @return
+     */
+    ResultVO findHistory(String openId);
+
+    /**
+     * 用卡号拿到人才openId
+     * @param cardNum
+     * @return
+     */
+    String getOpenId(String cardNum);
+
 }

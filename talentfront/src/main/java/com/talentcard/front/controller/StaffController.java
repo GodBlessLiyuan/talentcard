@@ -3,6 +3,8 @@ package com.talentcard.front.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IStaffService;
+import com.talentcard.front.service.ITalentActivityService;
+import com.talentcard.front.service.impl.TalentActivityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 public class StaffController {
     @Autowired
     private IStaffService iStaffService;
+    @Autowired
+    private ITalentActivityService iTalentActivityService;
 
     /**
      * 判断当前员工是否注册
@@ -62,11 +66,15 @@ public class StaffController {
      * @return
      */
     @RequestMapping("vertify")
-    public ResultVO vertify(@RequestParam(value = "talentOpenId") String talentOpenId,
+    public ResultVO vertify(@RequestParam(value = "cardNum") String cardNum,
                             @RequestParam(value = "staffOpenId") String staffOpenId,
                             @RequestParam(value = "activityFirstContentId") Long activityFirstContentId,
                             @RequestParam(value = "activitySecondContentId") Long activitySecondContentId) {
         ResultVO resultVO = null;
+        String talentOpenId = iTalentActivityService.getOpenId(cardNum);
+        if(talentOpenId==null||talentOpenId.equals("")){
+            return new ResultVO(2500);
+        }
         /**
          * 1.旅游
          */

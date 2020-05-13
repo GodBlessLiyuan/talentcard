@@ -4,7 +4,6 @@ import com.talentcard.common.pojo.TalentTripPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
 
 /**
  * TalentTripMapper继承基类
@@ -25,11 +24,4 @@ public interface TalentTripMapper extends BaseMapper<TalentTripPO, Long> {
     Integer TalentGetTimes(@Param("openId") String openId,
                            @Param("startTime") String startTime,
                            @Param("endTime") String endTime);
-
-    /**
-     * 查找人才的旅游活动的历史
-     * @param openId
-     * @return
-     */
-    List<TalentTripPO> getHistory(@Param("openId") String openId);
 }

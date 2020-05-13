@@ -30,4 +30,14 @@ public class TalentActivityController {
         return iTalentActivityService.findFirstContent(openId);
     }
 
+    /**
+     * 根据openId查找当前用户所参加活动的历史记录
+     *
+     * @param openId
+     * @return
+     */
+    @RequestMapping("findHistory")
+    public ResultVO findHistory(@RequestParam("openId") String openId) {
+        return iTalentActivityService.findHistory(openId);
+    }
 }

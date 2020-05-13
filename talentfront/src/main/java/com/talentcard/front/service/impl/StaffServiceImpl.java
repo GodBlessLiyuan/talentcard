@@ -120,6 +120,7 @@ public class StaffServiceImpl implements IStaffService {
             return new ResultVO(2503, "没有此员工");
         }
         talentTripPO.setStaffId(staffPO.getStaffId());
+        talentTripPO.setUpdateTime(new Date());
         talentTripMapper.updateByPrimaryKeySelective(talentTripPO);
         return new ResultVO(1000);
     }

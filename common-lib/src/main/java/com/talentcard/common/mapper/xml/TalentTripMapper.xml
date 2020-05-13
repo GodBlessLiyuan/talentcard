@@ -1,125 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.TalentTripMapper">
-    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentTripPO">
-        <id column="tt_id" jdbcType="BIGINT" property="ttId"/>
-        <result column="open_id" jdbcType="CHAR" property="openId"/>
-        <result column="scenic_id" jdbcType="BIGINT" property="scenicId"/>
-        <result column="staff_id" jdbcType="BIGINT" property="staffId"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="effective_time" jdbcType="TIMESTAMP" property="effectiveTime"/>
-        <result column="status" jdbcType="TINYINT" property="status"/>
-        <result column="dr" jdbcType="TINYINT" property="dr"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-    tt_id, open_id, scenic_id, staff_id, create_time, effective_time, `status`, dr
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentTripPO">
+    <id column="tt_id" jdbcType="BIGINT" property="ttId" />
+    <result column="open_id" jdbcType="CHAR" property="openId" />
+    <result column="scenic_id" jdbcType="BIGINT" property="scenicId" />
+    <result column="staff_id" jdbcType="BIGINT" property="staffId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="effective_time" jdbcType="TIMESTAMP" property="effectiveTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tt_id, open_id, scenic_id, staff_id, create_time, update_time, effective_time, `status`, 
+    dr
   </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_talent_trip
-        where tt_id = #{ttId,jdbcType=BIGINT}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_talent_trip
+    where tt_id = #{ttId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_talent_trip
     where tt_id = #{ttId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.talentcard.common.pojo.TalentTripPO">
+  <insert id="insert" parameterType="com.talentcard.common.pojo.TalentTripPO">
     insert into t_talent_trip (tt_id, open_id, scenic_id, 
-      staff_id, create_time, effective_time, 
-      `status`, dr)
+      staff_id, create_time, update_time, 
+      effective_time, `status`, dr
+      )
     values (#{ttId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{scenicId,jdbcType=BIGINT}, 
-      #{staffId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{effectiveTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT})
+      #{staffId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{effectiveTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT}
+      )
   </insert>
-    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentTripPO">
-        insert into t_talent_trip
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="ttId != null">
-                tt_id,
-            </if>
-            <if test="openId != null">
-                open_id,
-            </if>
-            <if test="scenicId != null">
-                scenic_id,
-            </if>
-            <if test="staffId != null">
-                staff_id,
-            </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="effectiveTime != null">
-                effective_time,
-            </if>
-            <if test="status != null">
-                `status`,
-            </if>
-            <if test="dr != null">
-                dr,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="ttId != null">
-                #{ttId,jdbcType=BIGINT},
-            </if>
-            <if test="openId != null">
-                #{openId,jdbcType=CHAR},
-            </if>
-            <if test="scenicId != null">
-                #{scenicId,jdbcType=BIGINT},
-            </if>
-            <if test="staffId != null">
-                #{staffId,jdbcType=BIGINT},
-            </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="effectiveTime != null">
-                #{effectiveTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="status != null">
-                #{status,jdbcType=TINYINT},
-            </if>
-            <if test="dr != null">
-                #{dr,jdbcType=TINYINT},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentTripPO">
-        update t_talent_trip
-        <set>
-            <if test="openId != null">
-                open_id = #{openId,jdbcType=CHAR},
-            </if>
-            <if test="scenicId != null">
-                scenic_id = #{scenicId,jdbcType=BIGINT},
-            </if>
-            <if test="staffId != null">
-                staff_id = #{staffId,jdbcType=BIGINT},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="effectiveTime != null">
-                effective_time = #{effectiveTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="status != null">
-                `status` = #{status,jdbcType=TINYINT},
-            </if>
-            <if test="dr != null">
-                dr = #{dr,jdbcType=TINYINT},
-            </if>
-        </set>
-        where tt_id = #{ttId,jdbcType=BIGINT}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentTripPO">
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentTripPO">
+    insert into t_talent_trip
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ttId != null">
+        tt_id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="scenicId != null">
+        scenic_id,
+      </if>
+      <if test="staffId != null">
+        staff_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="effectiveTime != null">
+        effective_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="dr != null">
+        dr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ttId != null">
+        #{ttId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=CHAR},
+      </if>
+      <if test="scenicId != null">
+        #{scenicId,jdbcType=BIGINT},
+      </if>
+      <if test="staffId != null">
+        #{staffId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="effectiveTime != null">
+        #{effectiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentTripPO">
+    update t_talent_trip
+    <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=CHAR},
+      </if>
+      <if test="scenicId != null">
+        scenic_id = #{scenicId,jdbcType=BIGINT},
+      </if>
+      <if test="staffId != null">
+        staff_id = #{staffId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="effectiveTime != null">
+        effective_time = #{effectiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
+    </set>
+    where tt_id = #{ttId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentTripPO">
     update t_talent_trip
     set open_id = #{openId,jdbcType=CHAR},
       scenic_id = #{scenicId,jdbcType=BIGINT},
       staff_id = #{staffId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
       effective_time = #{effectiveTime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=TINYINT},
       dr = #{dr,jdbcType=TINYINT}
@@ -146,13 +160,4 @@
     and open_id = #{openId,jdbcType=CHAR}
     and dr =1
   </select>
-    <select id="getHistory" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_talent_trip
-        where
-        open_id = #{openId,jdbcType=CHAR}
-        and dr = 1
-        and `status` = 2
-    </select>
 </mapper>

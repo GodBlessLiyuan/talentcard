@@ -20,6 +20,8 @@ public class TalentTripPO implements Serializable {
 
     private Date createTime;
 
+    private Date updateTime;
+
     private Date effectiveTime;
 
     private Byte status;
