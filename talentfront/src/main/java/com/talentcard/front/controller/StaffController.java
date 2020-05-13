@@ -6,13 +6,12 @@ import com.talentcard.front.service.IStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 
 /**
  * @author ChenXU
  * @version 1.0
  * @createTime 2020-05-11 14:51
- * @description 员工
+ * @description 福利活动 员工总的接口
  */
 @RequestMapping("staff")
 @RestController
@@ -54,5 +53,26 @@ public class StaffController {
     @RequestMapping("findOne")
     public ResultVO findOne(@RequestParam("openId") String openId) {
         return iStaffService.findOne(openId);
+    }
+
+    /**
+     * 核销
+     * 根据一级目录id，决定是否核销哪一个
+     *
+     * @return
+     */
+    @RequestMapping("vertify")
+    public ResultVO vertify(@RequestParam(value = "talentOpenId") String talentOpenId,
+                            @RequestParam(value = "staffOpenId") String staffOpenId,
+                            @RequestParam(value = "activityFirstContentId") Long activityFirstContentId,
+                            @RequestParam(value = "activitySecondContentId") Long activitySecondContentId) {
+        ResultVO resultVO = null;
+        /**
+         * 1.旅游
+         */
+        if (activityFirstContentId == 1) {
+            resultVO = iStaffService.tripVertify(talentOpenId, staffOpenId, activitySecondContentId);
+        }
+        return resultVO;
     }
 }

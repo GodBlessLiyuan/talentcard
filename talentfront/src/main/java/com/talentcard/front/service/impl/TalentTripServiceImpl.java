@@ -113,6 +113,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
         Date effectiveTime = simpleDateFormat.parse(timeList.get(2));
         talentTripPO.setEffectiveTime(effectiveTime);
         talentTripPO.setStatus((byte) 1);
+        talentTripPO.setDr((byte) 1);
         talentTripMapper.insertSelective(talentTripPO);
         return new ResultVO(1000, "领取成功");
     }
@@ -152,5 +153,4 @@ public class TalentTripServiceImpl implements ITalentTripService {
         timeList.add(effectiveTime);
         return timeList;
     }
-
 }

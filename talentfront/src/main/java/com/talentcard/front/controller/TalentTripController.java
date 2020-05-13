@@ -13,7 +13,7 @@ import java.text.ParseException;
  * @author ChenXU
  * @version 1.0
  * @createTime 2020-05-12 09:57
- * @description
+ * @description 福利活动 旅游部分的接口
  */
 @RequestMapping("talentTrip")
 @RestController

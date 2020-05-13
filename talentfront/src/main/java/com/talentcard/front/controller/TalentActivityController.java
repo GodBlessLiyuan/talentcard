@@ -1,6 +1,5 @@
 package com.talentcard.front.controller;
 
-import com.netflix.discovery.converters.Auto;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ITalentActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author ChenXU
  * @version 1.0
  * @createTime 2020-05-11 20:07
- * @description
+ * @description 福利活动总的接口
  */
 @RequestMapping("talentActivity")
 @RestController
