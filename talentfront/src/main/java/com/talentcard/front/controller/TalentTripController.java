@@ -35,12 +35,12 @@ public class TalentTripController {
     /**
      * 根据scenicId查找景区detail
      *
-     * @param scenicId
+     * @param activitySecondContentId
      * @return
      */
     @RequestMapping("findOne")
-    public ResultVO findOne(@RequestParam("scenicId") Long scenicId) {
-        return iTalentTripService.findOne(scenicId);
+    public ResultVO findOne(@RequestParam("activitySecondContentId") Long activitySecondContentId) {
+        return iTalentTripService.findOne(activitySecondContentId);
     }
 
     /**
