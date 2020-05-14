@@ -187,13 +187,13 @@
         where
         dr =1
         <if test="activitySecondContentName != null and activitySecondContentName != ''">
-            and activity_second_content_name = #{activitySecondContentName,jdbcType=CHAR}
+            and trim(replace(activity_second_content_name,' ','')) like trim(replace ('%' #{activitySecondContentName,jdbcType=CHAR} '%' ,' ',''))
         </if>
         <if test="activityFirstContentId != null ">
             and activity_first_content_id = #{activityFirstContentId,jdbcType=BIGINT}
         </if>
         <if test="name != null and name != ''">
-            and `name` = #{name,jdbcType=CHAR}
+            and trim(replace(name,' ','')) like trim(replace ('%' #{name,jdbcType=CHAR} '%' ,' ',''))
         </if>
         <if test="startTime != null and startTime != ''">
             and <![CDATA[ create_time >= #{startTime}]]>

@@ -1,6 +1,8 @@
 package com.talentcard.front.utils;
 
+import com.talentcard.common.mapper.FarmhouseMapper;
 import com.talentcard.common.mapper.ScenicMapper;
+import com.talentcard.common.pojo.FarmhousePO;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.vo.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,10 @@ public class StaffActivityUtil {
 
     @Autowired
     private ScenicMapper scMapper;
+    @Autowired
+    private FarmhouseMapper fMapper;
     private static ScenicMapper scenicMapper;
+    private static FarmhouseMapper farmhouseMapper;
 
     /**
      * 构造方法执行后的初始化
@@ -28,6 +33,7 @@ public class StaffActivityUtil {
     @PostConstruct
     public void StaffActivityUtilInitialize() {
         scenicMapper = scMapper;
+        farmhouseMapper = fMapper;
     }
 
     public static String getActivitySecondContentName(Long activityFirstContentId,
@@ -45,6 +51,10 @@ public class StaffActivityUtil {
              * 农家乐
              */
         } else if (activityFirstContentId == 2) {
+            FarmhousePO farmhousePO = farmhouseMapper.selectByPrimaryKey(activitySecondContentId);
+            if (farmhousePO != null) {
+                activitySecondContentName = farmhousePO.getName();
+            }
 
             /**
              * 未来活动1
