@@ -15,6 +15,8 @@ import com.talentcard.wechat.utils.ToXmlUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class WxCardServiceImpl implements WxCardService {
 
+    private static final Logger logger = LoggerFactory.getLogger(WxCardServiceImpl.class);
     private static String TOKEN;
 
     /**
@@ -74,6 +77,8 @@ public class WxCardServiceImpl implements WxCardService {
         2）将三个参数字符串拼接成一个字符串进行sha1加密
         3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信*/
         String[] strs = new String[]{TOKEN,timestamp,nonce};
+
+        logger.info("check TOKEN {}",TOKEN);
         Arrays.sort(strs);
 
         String str = strs[0]+strs[1]+strs[2];
