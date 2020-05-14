@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -54,8 +55,8 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
         Integer education = userCurrentInfoPO.getEducation();
         Integer title = userCurrentInfoPO.getPtCategory();
         Integer quality = userCurrentInfoPO.getPqCategory();
-        ArrayList<Long> resultList = new ArrayList();
 
+        HashMap<String, Object> resultHashMap = new HashMap<>();
         /**
          * 每一个活动挨个枚举
          * todo 加入中间表判断
@@ -67,16 +68,20 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
          */
         scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
         if (scenicIdList.size() > 0) {
-            resultList.add((long) 1);
+            resultHashMap.put("trip", 1);
+        } else {
+            resultHashMap.put("trip", 2);
         }
         /**
          * 农家乐
          */
         farmhouseList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
         if (farmhouseList.size() > 0) {
-            resultList.add((long) 2);
+            resultHashMap.put("farmhouse", 1);
+        } else {
+            resultHashMap.put("farmhouse", 2);
         }
-        return new ResultVO(1000, resultList);
+        return new ResultVO(1000, resultHashMap);
     }
 
     @Override
