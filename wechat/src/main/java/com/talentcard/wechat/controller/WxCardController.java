@@ -46,7 +46,7 @@ public class WxCardController {
             String openId = requestMap.get("FromUserName");
             String event = requestMap.get("Event");
             String cardId = requestMap.get("CardId");
-            logger.info("cardId：", cardId);
+            logger.info("event：{} openId:{} cardId：{}", event,openId,cardId);
             if (event.equalsIgnoreCase("user_get_card")) {
                 //用户领取卡事件，激活接口
                 logger.info("用户开始领卡");
