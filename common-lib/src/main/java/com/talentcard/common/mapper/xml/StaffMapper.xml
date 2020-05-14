@@ -201,6 +201,7 @@
         <if test="endTime != null and endTime != ''">
             and <![CDATA[ create_time <= #{endTime}]]>
         </if>
+            order by create_time desc
     </select>
 
 </mapper>
