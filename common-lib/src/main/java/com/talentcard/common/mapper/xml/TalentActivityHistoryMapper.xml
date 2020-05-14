@@ -154,8 +154,7 @@
         from t_talent_activity_history
         where
         dr = 1
-        and
-        open_id = #{staffOpenId,jdbcType=CHAR}
+        and staff_id = #{staffId,jdbcType=BIGINT}
         and activity_first_content_id = #{activityFirstContentId,jdbcType=BIGINT}
         and activity_second_content_id = #{activitySecondContentId,jdbcType=BIGINT}
         <if test="startTime != null and startTime != ''">

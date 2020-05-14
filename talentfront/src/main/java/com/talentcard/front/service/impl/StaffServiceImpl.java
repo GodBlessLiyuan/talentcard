@@ -5,6 +5,7 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IStaffService;
+import com.talentcard.front.utils.ActivityResidueNumUtil;
 import com.talentcard.front.utils.StaffActivityUtil;
 import com.talentcard.front.utils.TalentActivityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,12 +135,17 @@ public class StaffServiceImpl implements IStaffService {
         if (!talentTripPO.getScenicId().equals(activitySecondContentId)) {
             return new ResultVO(1001, "该人才领的是其他的景区的！");
         }
-        //找到staffId，更新人才旅游表
-        talentTripPO.setStatus((byte) 2);
+        //得到staffPO
         StaffPO staffPO = staffMapper.findOneByOpenId(staffOpenId);
         if (staffPO == null) {
             return new ResultVO(2503, "没有此员工");
         }
+        if (!staffPO.getActivitySecondContentId().equals(activitySecondContentId)) {
+            return new ResultVO(1001, "该人才领的是其他的景区的，和员工不一致！");
+        }
+
+        //找到staffId，更新人才旅游表
+        talentTripPO.setStatus((byte) 2);
         Long staffId = staffPO.getStaffId();
         talentTripPO.setStaffId(staffId);
         talentTripPO.setUpdateTime(new Date());
@@ -166,9 +172,10 @@ public class StaffServiceImpl implements IStaffService {
         int date = calendar.get(Calendar.DATE);
         String startTime = year + "-" + month + "-" + date + " 00:00:00";
         String endTime = year + "-" + month + "-" + date + " 23:59:59";
-        Long vertifyNum = talentActivityHistoryMapper.getVertifyNum(staffOpenId, (long) 1, activitySecondContentId, startTime, endTime);
+        Long vertifyNum = talentActivityHistoryMapper.getVertifyNum(staffId, (long) 1, activitySecondContentId, startTime, endTime);
         HashMap<String, Object> result = new HashMap<>();
         result.put("vertifyNum", vertifyNum);
+        ActivityResidueNumUtil.minusOneResidueNum();
         return new ResultVO(1000, result);
     }
 
@@ -178,6 +185,14 @@ public class StaffServiceImpl implements IStaffService {
         TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
         if (talentPO == null) {
             return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
+        }
+        //得到staffPO
+        StaffPO staffPO = staffMapper.findOneByOpenId(staffOpenId);
+        if (staffPO == null) {
+            return new ResultVO(2503, "没有此员工");
+        }
+        if (!staffPO.getActivitySecondContentId().equals(activitySecondContentId)) {
+            return new ResultVO(1001, "该人才领的是其他的景区的，和员工不一致！");
         }
         //从uci表里取得人才类别
         UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentPO.getTalentId());
@@ -230,14 +245,10 @@ public class StaffServiceImpl implements IStaffService {
             return new ResultVO(1001, "核销失败，不具备此农家乐权益");
         }
 
+        //更新人才农家乐表
         TalentFarmhousePO talentFarmhousePO = new TalentFarmhousePO();
         talentFarmhousePO.setOpenId(talentOpenId);
-        //找到staffId，更新人才旅游表
         talentFarmhousePO.setStatus((byte) 2);
-        StaffPO staffPO = staffMapper.findOneByOpenId(staffOpenId);
-        if (staffPO == null) {
-            return new ResultVO(2503, "没有此员工");
-        }
         Long staffId = staffPO.getStaffId();
         talentFarmhousePO.setStaffId(staffId);
         talentFarmhousePO.setUpdateTime(new Date());
@@ -270,7 +281,7 @@ public class StaffServiceImpl implements IStaffService {
         int date = calendar.get(Calendar.DATE);
         String startTime = year + "-" + month + "-" + date + " 00:00:00";
         String endTime = year + "-" + month + "-" + date + " 23:59:59";
-        Long vertifyNum = talentActivityHistoryMapper.getVertifyNum(staffOpenId, (long) 2, activitySecondContentId, startTime, endTime);
+        Long vertifyNum = talentActivityHistoryMapper.getVertifyNum(staffId, (long) 2, activitySecondContentId, startTime, endTime);
         HashMap<String, Object> result = new HashMap<>();
         result.put("vertifyNum", vertifyNum);
         return new ResultVO(1000, result);

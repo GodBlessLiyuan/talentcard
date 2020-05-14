@@ -37,6 +37,7 @@ public class ActivityResidueNumUtil {
         Long num;
         //activityResidueNumPO，用总人数添加一条记录
         if (activityResidueNumPO == null) {
+            activityResidueNumPO= new ActivityResidueNumPO();
             activityResidueNumPO.setTime(time);
             num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));
             activityResidueNumPO.setNum(num);
@@ -58,6 +59,7 @@ public class ActivityResidueNumUtil {
         Long num;
         //activityResidueNumPO，用总人数添加一条记录
         if (activityResidueNumPO == null) {
+            activityResidueNumPO= new ActivityResidueNumPO();
             activityResidueNumPO.setTime(time);
             num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));
             activityResidueNumPO.setNum(num - 1);
@@ -86,6 +88,7 @@ public class ActivityResidueNumUtil {
         Long num;
         //activityResidueNumPO，用总人数添加一条记录
         if (activityResidueNumPO == null) {
+            activityResidueNumPO= new ActivityResidueNumPO();
             activityResidueNumPO = new ActivityResidueNumPO();
             activityResidueNumPO.setTime(time);
             num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));

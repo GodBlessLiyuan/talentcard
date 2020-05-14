@@ -16,14 +16,13 @@ public interface TalentActivityHistoryMapper extends BaseMapper<TalentActivityHi
     /**
      * 根据员工openID,一级目录id和二级目录id
      * 得到检验通过次数
-     * @param staffOpenId
      * @param activityFirstContentId
      * @param activitySecondContentId
      * @param startTime
      * @param endTime
      * @return
      */
-    Long getVertifyNum(@Param("staffOpenId") String staffOpenId,
+    Long getVertifyNum( @Param("staffId") Long staffId,
                        @Param("activityFirstContentId") Long activityFirstContentId,
                        @Param("activitySecondContentId") Long activitySecondContentId,
                        @Param("startTime") String startTime,

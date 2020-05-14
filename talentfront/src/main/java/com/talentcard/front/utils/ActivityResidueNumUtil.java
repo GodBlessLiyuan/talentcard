@@ -31,13 +31,13 @@ public class ActivityResidueNumUtil {
     public static Long getResidueNum() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
         String time = year + "-" + month;
         ActivityResidueNumPO activityResidueNumPO = activityResidueNumMapper.findOne(time);
         Long num;
         //activityResidueNumPO，用总人数添加一条记录
         if (activityResidueNumPO == null) {
-            activityResidueNumPO = new ActivityResidueNumPO();
+            activityResidueNumPO= new ActivityResidueNumPO();
             activityResidueNumPO.setTime(time);
             num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));
             activityResidueNumPO.setNum(num);
@@ -53,13 +53,13 @@ public class ActivityResidueNumUtil {
     public static Integer minusOneResidueNum() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
         String time = year + "-" + month;
         ActivityResidueNumPO activityResidueNumPO = activityResidueNumMapper.findOne(time);
         Long num;
         //activityResidueNumPO，用总人数添加一条记录
         if (activityResidueNumPO == null) {
-            activityResidueNumPO = new ActivityResidueNumPO();
+            activityResidueNumPO= new ActivityResidueNumPO();
             activityResidueNumPO.setTime(time);
             num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));
             activityResidueNumPO.setNum(num - 1);
@@ -82,12 +82,13 @@ public class ActivityResidueNumUtil {
     public static void reviseNum(Long totalNum) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
         String time = year + "-" + month;
         ActivityResidueNumPO activityResidueNumPO = activityResidueNumMapper.findOne(time);
         Long num;
         //activityResidueNumPO，用总人数添加一条记录
         if (activityResidueNumPO == null) {
+            activityResidueNumPO= new ActivityResidueNumPO();
             activityResidueNumPO = new ActivityResidueNumPO();
             activityResidueNumPO.setTime(time);
             num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));
