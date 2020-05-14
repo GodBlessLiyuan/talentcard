@@ -3,6 +3,7 @@ package com.talentcard.web.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.talentcard.common.mapper.FarmhouseEnjoyMapper;
+import com.talentcard.common.mapper.FarmhouseGroupAuthorityMapper;
 import com.talentcard.common.mapper.FarmhouseMapper;
 import com.talentcard.common.mapper.FarmhousePictureMapper;
 import com.talentcard.common.pojo.FarmhouseEnjoyPO;
@@ -42,6 +43,8 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
     private FarmhouseEnjoyMapper farmhouseEnjoyMapper;
     @Autowired
     private FarmhousePictureMapper farmhousePictureMapper;
+    @Autowired
+    private FarmhouseGroupAuthorityMapper farmhouseGroupAuthorityMapper;
 
     @Value("${file.publicPath}")
     private String publicPath;
@@ -129,13 +132,14 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
     }
 
     @Override
-    public ResultVO status(Long scenicId, Long status) {
-        FarmhousePO farmhousePO = farmhouseMapper.selectByPrimaryKey(scenicId);
+    public ResultVO status(Long farmhouseId, Long status) {
+        FarmhousePO farmhousePO = farmhouseMapper.selectByPrimaryKey(farmhouseId);
         if (null == farmhousePO) {
             return new ResultVO(1102);
         }
 
-        farmhouseMapper.updateStatus(scenicId, status);
+        farmhouseMapper.updateStatus(farmhouseId, status);
+        farmhouseGroupAuthorityMapper.deleteByFarmhouseId(farmhouseId);
         return new ResultVO(1000);
     }
 

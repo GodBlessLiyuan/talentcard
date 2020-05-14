@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.talentcard.common.mapper.ScenicEnjoyMapper;
 import com.talentcard.common.mapper.ScenicMapper;
 import com.talentcard.common.mapper.ScenicPictureMapper;
+import com.talentcard.common.mapper.TripGroupAuthorityMapper;
 import com.talentcard.common.pojo.ScenicEnjoyPO;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.ScenicPicturePO;
@@ -43,6 +44,8 @@ public class ScenicServiceImpl implements IScenicService {
     private ScenicEnjoyMapper scenicEnjoyMapper;
     @Autowired
     private ScenicPictureMapper scenicPictureMapper;
+    @Autowired
+    private TripGroupAuthorityMapper tripGroupAuthorityMapper;
 
     @Value("${file.publicPath}")
     private String publicPath;
@@ -129,6 +132,7 @@ public class ScenicServiceImpl implements IScenicService {
         return new ResultVO(1000);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVO status(Long scenicId, Long status) {
         ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(scenicId);
@@ -137,6 +141,7 @@ public class ScenicServiceImpl implements IScenicService {
         }
 
         scenicMapper.updateStatus(scenicId, status);
+        tripGroupAuthorityMapper.deleteByScenicId(scenicId);
         return new ResultVO(1000);
     }
 

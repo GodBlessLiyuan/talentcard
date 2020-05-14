@@ -12,4 +12,11 @@ import java.util.List;
 @Mapper
 public interface TripGroupAuthorityMapper extends BaseMapper<TripGroupAuthorityPO, Long> {
     List<Long> findByCode(@Param("code") String code);
+
+    /**
+     * 根据 scenicId 删除
+     *
+     * @param scenicId
+     */
+    void deleteByScenicId(Long scenicId);
 }

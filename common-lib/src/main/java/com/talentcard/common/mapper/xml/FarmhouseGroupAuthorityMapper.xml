@@ -1,78 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.FarmhouseGroupAuthorityMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.FarmhouseGroupAuthorityPO">
-    <id column="fgt_id" jdbcType="BIGINT" property="fgtId" />
-    <result column="farmhouse_id" jdbcType="BIGINT" property="farmhouseId" />
-    <result column="authority_code" jdbcType="CHAR" property="authorityCode" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    fgt_id, farmhouse_id, authority_code
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_farmhouse_group_authority
-    where fgt_id = #{fgtId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_farmhouse_group_authority
-    where fgt_id = #{fgtId,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhouseGroupAuthorityPO">
-    insert into t_farmhouse_group_authority (fgt_id, farmhouse_id, authority_code
-      )
-    values (#{fgtId,jdbcType=BIGINT}, #{farmhouseId,jdbcType=BIGINT}, #{authorityCode,jdbcType=CHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FarmhouseGroupAuthorityPO">
-    insert into t_farmhouse_group_authority
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="fgtId != null">
-        fgt_id,
-      </if>
-      <if test="farmhouseId != null">
-        farmhouse_id,
-      </if>
-      <if test="authorityCode != null">
-        authority_code,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="fgtId != null">
-        #{fgtId,jdbcType=BIGINT},
-      </if>
-      <if test="farmhouseId != null">
-        #{farmhouseId,jdbcType=BIGINT},
-      </if>
-      <if test="authorityCode != null">
-        #{authorityCode,jdbcType=CHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.FarmhouseGroupAuthorityPO">
-    update t_farmhouse_group_authority
-    <set>
-      <if test="farmhouseId != null">
-        farmhouse_id = #{farmhouseId,jdbcType=BIGINT},
-      </if>
-      <if test="authorityCode != null">
-        authority_code = #{authorityCode,jdbcType=CHAR},
-      </if>
-    </set>
-    where fgt_id = #{fgtId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.FarmhouseGroupAuthorityPO">
-    update t_farmhouse_group_authority
-    set farmhouse_id = #{farmhouseId,jdbcType=BIGINT},
-      authority_code = #{authorityCode,jdbcType=CHAR}
-    where fgt_id = #{fgtId,jdbcType=BIGINT}
-  </update>
+    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.FarmhouseGroupAuthorityPO">
+        <id column="fgt_id" jdbcType="BIGINT" property="fgtId"/>
+        <result column="farmhouse_id" jdbcType="BIGINT" property="farmhouseId"/>
+        <result column="authority_code" jdbcType="CHAR" property="authorityCode"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        fgt_id, farmhouse_id, authority_code
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_farmhouse_group_authority
+        where fgt_id = #{fgtId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from t_farmhouse_group_authority
+        where fgt_id = #{fgtId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhouseGroupAuthorityPO">
+        insert into t_farmhouse_group_authority (fgt_id, farmhouse_id, authority_code)
+        values (#{fgtId,jdbcType=BIGINT}, #{farmhouseId,jdbcType=BIGINT}, #{authorityCode,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FarmhouseGroupAuthorityPO">
+        insert into t_farmhouse_group_authority
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fgtId != null">
+                fgt_id,
+            </if>
+            <if test="farmhouseId != null">
+                farmhouse_id,
+            </if>
+            <if test="authorityCode != null">
+                authority_code,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fgtId != null">
+                #{fgtId,jdbcType=BIGINT},
+            </if>
+            <if test="farmhouseId != null">
+                #{farmhouseId,jdbcType=BIGINT},
+            </if>
+            <if test="authorityCode != null">
+                #{authorityCode,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.FarmhouseGroupAuthorityPO">
+        update t_farmhouse_group_authority
+        <set>
+            <if test="farmhouseId != null">
+                farmhouse_id = #{farmhouseId,jdbcType=BIGINT},
+            </if>
+            <if test="authorityCode != null">
+                authority_code = #{authorityCode,jdbcType=CHAR},
+            </if>
+        </set>
+        where fgt_id = #{fgtId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.FarmhouseGroupAuthorityPO">
+        update t_farmhouse_group_authority
+        set farmhouse_id   = #{farmhouseId,jdbcType=BIGINT},
+            authority_code = #{authorityCode,jdbcType=CHAR}
+        where fgt_id = #{fgtId,jdbcType=BIGINT}
+    </update>
 
-  <select id="findByCode" resultType="java.lang.Long">
-    select
-    farmhouse_id
-    from t_farmhouse_group_authority
-    where authority_code = #{code,jdbcType=CHAR}
-  </select>
+    <select id="findByCode" resultType="java.lang.Long">
+        select farmhouse_id
+        from t_farmhouse_group_authority
+        where authority_code = #{code,jdbcType=CHAR}
+    </select>
+    <delete id="deleteByFarmhouseId" parameterType="java.lang.Long">
+        delete
+        from t_farmhouse_group_authority
+        where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
+    </delete>
 </mapper>

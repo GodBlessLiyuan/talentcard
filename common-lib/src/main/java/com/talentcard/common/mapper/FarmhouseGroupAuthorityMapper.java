@@ -12,4 +12,11 @@ import java.util.List;
 @Mapper
 public interface FarmhouseGroupAuthorityMapper extends BaseMapper<FarmhouseGroupAuthorityPO, Long> {
     List<Long> findByCode(@Param("code") String code);
+
+    /**
+     * 根据 farmhouseId 删除
+     *
+     * @param farmhouseId
+     */
+    void deleteByFarmhouseId(Long farmhouseId);
 }
