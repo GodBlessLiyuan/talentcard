@@ -199,9 +199,11 @@
         <include refid="Base_Column_List"/>
         from t_farmhouse
         where
-        <foreach collection="farmhouseList" separator="or" item="farmhouseId">
-            farmhouse_id = #{farmhouseId, jdbcType=BIGINT}
-        </foreach>
+        (<foreach collection="farmhouseList" separator="or" item="farmhouseId">
+        farmhouse_id = #{farmhouseId, jdbcType=BIGINT}
+        </foreach>)
+        and status = 1
+        and dr = 1
     </select>
 
     <select id="findOne" resultMap="FarmhouseDetailResultMap">

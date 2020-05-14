@@ -132,7 +132,6 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         certApprovalPo.setUserId(userId);
         certApprovalPo.setOpinion((String) reqData.get("opinion"));
         certApprovalPo.setUpdateTime(new Date());
-        certApprovalPo.setUserId(userId);
         if (result.equals(FAILURE)) {
             /**
              * 驳回
