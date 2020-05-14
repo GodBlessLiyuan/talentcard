@@ -35,7 +35,7 @@
         </collection>
     </resultMap>
     <sql id="Base_Column_List">
-    scenic_id, `name`, rate, unit, times, avatar, description, extra, qr_code, `status`,
+        scenic_id, `name`, rate, unit, times, avatar, description, extra, qr_code, `status`,
     create_time, dr
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -205,7 +205,7 @@
         <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
         <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
         <if test="status != null and status !=0">and `status` = #{status}</if>
-        order by create_time asc
+        order by status asc, create_time asc
     </select>
 
     <select id="queryByName" resultMap="BaseResultMap">
@@ -228,20 +228,30 @@
         where
         (<foreach collection="scenicIdList" separator="or" item="scenicId">
         scenic_id = #{scenicId, jdbcType=BIGINT}
-         </foreach>)
+    </foreach>)
         and status = 1
         and dr = 1
     </select>
 
     <select id="findOne" resultMap="ScenicDetailResultMap">
-        select
-        s.scenic_id as s_scenic_id, `name`, rate, unit, times,
-        avatar, description, extra, qr_code, `status`,
-        create_time, dr, sp_id, sp.scenic_id as sp_scenic_id, picture
+        select s.scenic_id  as s_scenic_id,
+               `name`,
+               rate,
+               unit,
+               times,
+               avatar,
+               description,
+               extra,
+               qr_code,
+               `status`,
+               create_time,
+               dr,
+               sp_id,
+               sp.scenic_id as sp_scenic_id,
+               picture
         from t_scenic s
-        left join t_scenic_picture sp
-        on s.scenic_id = sp.scenic_id
-        where
-        s.scenic_id = #{activitySecondContentId, jdbcType=BIGINT}
+                 left join t_scenic_picture sp
+                           on s.scenic_id = sp.scenic_id
+        where s.scenic_id = #{activitySecondContentId, jdbcType=BIGINT}
     </select>
 </mapper>

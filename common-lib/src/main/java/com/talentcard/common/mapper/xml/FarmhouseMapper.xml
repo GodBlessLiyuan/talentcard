@@ -31,9 +31,9 @@
         </collection>
     </resultMap>
     <sql id="Base_Column_List">
-    farmhouse_id, `name`, discount, avatar, description, extra, qr_code, `status`, create_time, 
+        farmhouse_id, `name`, discount, avatar, description, extra, qr_code, `status`, create_time,
     dr
-  </sql>
+    </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -41,20 +41,21 @@
         where farmhouse_id = #{farmhouseId,jdbcType=BIGINT} and dr = 1
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_farmhouse
-    where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
-  </delete>
+        delete
+        from t_farmhouse
+        where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
+    </delete>
     <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhousePO" useGeneratedKeys="true"
             keyProperty="farmhouseId">
-    insert into t_farmhouse (farmhouse_id, `name`, discount, 
-      avatar, description, extra, 
-      qr_code, `status`, create_time, 
-      dr)
-    values (#{farmhouseId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{discount,jdbcType=DOUBLE}, 
-      #{avatar,jdbcType=CHAR}, #{description,jdbcType=CHAR}, #{extra,jdbcType=CHAR}, 
-      #{qrCode,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{dr,jdbcType=TINYINT})
-  </insert>
+        insert into t_farmhouse (farmhouse_id, `name`, discount,
+                                 avatar, description, extra,
+                                 qr_code, `status`, create_time,
+                                 dr)
+        values (#{farmhouseId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{discount,jdbcType=DOUBLE},
+                #{avatar,jdbcType=CHAR}, #{description,jdbcType=CHAR}, #{extra,jdbcType=CHAR},
+                #{qrCode,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP},
+                #{dr,jdbcType=TINYINT})
+    </insert>
     <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FarmhousePO">
         insert into t_farmhouse
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -156,18 +157,18 @@
         where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.FarmhousePO">
-    update t_farmhouse
-    set `name` = #{name,jdbcType=CHAR},
-      discount = #{discount,jdbcType=DOUBLE},
-      avatar = #{avatar,jdbcType=CHAR},
-      description = #{description,jdbcType=CHAR},
-      extra = #{extra,jdbcType=CHAR},
-      qr_code = #{qrCode,jdbcType=CHAR},
-      `status` = #{status,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      dr = #{dr,jdbcType=TINYINT}
-    where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
-  </update>
+        update t_farmhouse
+        set `name`      = #{name,jdbcType=CHAR},
+            discount    = #{discount,jdbcType=DOUBLE},
+            avatar      = #{avatar,jdbcType=CHAR},
+            description = #{description,jdbcType=CHAR},
+            extra       = #{extra,jdbcType=CHAR},
+            qr_code     = #{qrCode,jdbcType=CHAR},
+            `status`    = #{status,jdbcType=TINYINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            dr          = #{dr,jdbcType=TINYINT}
+        where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
+    </update>
 
     <select id="query" parameterType="java.util.Map" resultMap="BaseResultMap">
         select
@@ -178,7 +179,7 @@
         <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
         <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
         <if test="status != null and status !=0">and `status` = #{status}</if>
-        order by create_time asc
+        order by status asc, create_time asc
     </select>
 
     <select id="queryByName" resultMap="BaseResultMap">
@@ -189,10 +190,10 @@
     </select>
 
     <update id="updateStatus">
-    update t_farmhouse
-    set `status` = #{status,jdbcType=TINYINT}
-    where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
-  </update>
+        update t_farmhouse
+        set `status` = #{status,jdbcType=TINYINT}
+        where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
+    </update>
 
     <select id="findEnjoyFarmhouse" resultMap="BaseResultMap">
         select
@@ -201,23 +202,34 @@
         where
         (<foreach collection="farmhouseList" separator="or" item="farmhouseId">
         farmhouse_id = #{farmhouseId, jdbcType=BIGINT}
-        </foreach>)
+    </foreach>)
         and status = 1
         and dr = 1
     </select>
 
     <select id="findOne" resultMap="FarmhouseDetailResultMap">
-        select
-        f.farmhouse_id as f_farmhouse_id,
-        `name`, discount, avatar, description, extra,
-        qr_code, `status`, create_time, dr
-        create_time, dr, fp_id, fp.farmhouse_id as fp_farmhouse_id, picture,
+        select f.farmhouse_id  as f_farmhouse_id,
+               `name`,
+               discount,
+               avatar,
+               description,
+               extra,
+               qr_code,
+               `status`,
+               create_time,
+               dr
+                                  create_time,
+               dr,
+               fp_id,
+               fp.farmhouse_id as fp_farmhouse_id,
+               picture,
 
-        fp_id, fp.farmhouse_id as fp_farmhouse_id, picture
+               fp_id,
+               fp.farmhouse_id as fp_farmhouse_id,
+               picture
         from t_farmhouse f
-        left join t_farmhouse_picture fp
-        on f.farmhouse_id = fp.farmhouse_id
-        where
-        f.farmhouse_id = #{activitySecondContentId, jdbcType=BIGINT}
+                 left join t_farmhouse_picture fp
+                           on f.farmhouse_id = fp.farmhouse_id
+        where f.farmhouse_id = #{activitySecondContentId, jdbcType=BIGINT}
     </select>
 </mapper>
