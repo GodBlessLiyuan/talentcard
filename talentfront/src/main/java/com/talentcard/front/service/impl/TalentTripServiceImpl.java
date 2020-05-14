@@ -137,7 +137,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
     public ResultVO getBenefit(String openId, Long activitySecondContentId) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = simpleDateFormat.format(new Date());
-        TalentTripPO ifExistOne = talentTripMapper.findOneNotExpired(openId, currentTime);
+        TalentTripPO ifExistOne = talentTripMapper.findOneNotExpired(openId, activitySecondContentId, currentTime);
         //平台次数是否为0
         if (ActivityResidueNumUtil.getResidueNum() <= 0) {
             return new ResultVO(1001, "当前福利已被领取完");

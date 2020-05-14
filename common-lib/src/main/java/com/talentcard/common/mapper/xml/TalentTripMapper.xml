@@ -147,6 +147,7 @@
         open_id = #{openId,jdbcType=CHAR}
         and dr = 1
         and `status` = 1
+        and scenic_id = #{activitySecondContentId,jdbcType=BIGINT}
         <if test="currentTime != null and currentTime!=''">
             and <![CDATA[ effective_time >= #{currentTime}]]>
         </if>

@@ -128,7 +128,7 @@ public class StaffServiceImpl implements IStaffService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = simpleDateFormat.format(new Date());
         //判断人才旅游表里是否有状态为1的记录
-        TalentTripPO talentTripPO = talentTripMapper.findOneNotExpired(talentOpenId, currentTime);
+        TalentTripPO talentTripPO = talentTripMapper.findOneNotExpired(talentOpenId, activitySecondContentId, currentTime);
         if (talentTripPO == null) {
             return new ResultVO(1001, "该人才没资格");
         }

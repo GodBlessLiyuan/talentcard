@@ -19,6 +19,7 @@ public interface TalentTripMapper extends BaseMapper<TalentTripPO, Long> {
      * @return
      */
     TalentTripPO findOneNotExpired(@Param("openId") String openId,
+                                   @Param("activitySecondContentId") Long activitySecondContentId,
                                    @Param("currentTime") String currentTime);
 
     /**
