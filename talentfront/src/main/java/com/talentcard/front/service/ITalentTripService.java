@@ -19,11 +19,11 @@ public interface ITalentTripService {
     ResultVO findSecondContent(String openId);
 
     /**
-     * 根据scenicId查找景区detail
-     * @param scenicId
+     * 根据activitySecondContentId查找景区detail
+     * @param activitySecondContentId
      * @return
      */
-    ResultVO findOne(Long scenicId);
+    ResultVO findOne(Long activitySecondContentId);
 
 
     /**

@@ -1,34 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.FarmhouseMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.FarmhousePO">
-    <id column="farmhouse_id" jdbcType="BIGINT" property="farmhouseId" />
-    <result column="name" jdbcType="CHAR" property="name" />
-    <result column="discount" jdbcType="DOUBLE" property="discount" />
-    <result column="avatar" jdbcType="CHAR" property="avatar" />
-    <result column="description" jdbcType="CHAR" property="description" />
-    <result column="extra" jdbcType="CHAR" property="extra" />
-    <result column="qr_code" jdbcType="CHAR" property="qrCode" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="dr" jdbcType="TINYINT" property="dr" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.FarmhousePO">
+        <id column="farmhouse_id" jdbcType="BIGINT" property="farmhouseId"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="discount" jdbcType="DOUBLE" property="discount"/>
+        <result column="avatar" jdbcType="CHAR" property="avatar"/>
+        <result column="description" jdbcType="CHAR" property="description"/>
+        <result column="extra" jdbcType="CHAR" property="extra"/>
+        <result column="qr_code" jdbcType="CHAR" property="qrCode"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="dr" jdbcType="TINYINT" property="dr"/>
+    </resultMap>
+    <resultMap id="FarmhouseDetailResultMap" type="com.talentcard.common.bo.FarmhouseBO">
+        <id column="f_farmhouse_id" jdbcType="BIGINT" property="farmhouseId"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="discount" jdbcType="DOUBLE" property="discount"/>
+        <result column="avatar" jdbcType="CHAR" property="avatar"/>
+        <result column="description" jdbcType="CHAR" property="description"/>
+        <result column="extra" jdbcType="CHAR" property="extra"/>
+        <result column="qr_code" jdbcType="CHAR" property="qrCode"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="dr" jdbcType="TINYINT" property="dr"/>
+        <collection property="farmhousePicturePOList" ofType="com.talentcard.common.pojo.FarmhousePicturePO">
+            <id column="fp_id" jdbcType="BIGINT" property="fpId"/>
+            <result column="fp_farmhouse_id" jdbcType="BIGINT" property="farmhouseId"/>
+            <result column="picture" jdbcType="CHAR" property="picture"/>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
     farmhouse_id, `name`, discount, avatar, description, extra, qr_code, `status`, create_time, 
     dr
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_farmhouse
-    where farmhouse_id = #{farmhouseId,jdbcType=BIGINT} and dr = 1
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_farmhouse
+        where farmhouse_id = #{farmhouseId,jdbcType=BIGINT} and dr = 1
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_farmhouse
     where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhousePO" useGeneratedKeys="true"
-          keyProperty="farmhouseId">
+    <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhousePO" useGeneratedKeys="true"
+            keyProperty="farmhouseId">
     insert into t_farmhouse (farmhouse_id, `name`, discount, 
       avatar, description, extra, 
       qr_code, `status`, create_time, 
@@ -38,107 +55,107 @@
       #{qrCode,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{dr,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FarmhousePO">
-    insert into t_farmhouse
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="farmhouseId != null">
-        farmhouse_id,
-      </if>
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="discount != null">
-        discount,
-      </if>
-      <if test="avatar != null">
-        avatar,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="extra != null">
-        extra,
-      </if>
-      <if test="qrCode != null">
-        qr_code,
-      </if>
-      <if test="status != null">
-        `status`,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="dr != null">
-        dr,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="farmhouseId != null">
-        #{farmhouseId,jdbcType=BIGINT},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=CHAR},
-      </if>
-      <if test="discount != null">
-        #{discount,jdbcType=DOUBLE},
-      </if>
-      <if test="avatar != null">
-        #{avatar,jdbcType=CHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=CHAR},
-      </if>
-      <if test="extra != null">
-        #{extra,jdbcType=CHAR},
-      </if>
-      <if test="qrCode != null">
-        #{qrCode,jdbcType=CHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dr != null">
-        #{dr,jdbcType=TINYINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.FarmhousePO">
-    update t_farmhouse
-    <set>
-      <if test="name != null">
-        `name` = #{name,jdbcType=CHAR},
-      </if>
-      <if test="discount != null">
-        discount = #{discount,jdbcType=DOUBLE},
-      </if>
-      <if test="avatar != null">
-        avatar = #{avatar,jdbcType=CHAR},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=CHAR},
-      </if>
-      <if test="extra != null">
-        extra = #{extra,jdbcType=CHAR},
-      </if>
-      <if test="qrCode != null">
-        qr_code = #{qrCode,jdbcType=CHAR},
-      </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dr != null">
-        dr = #{dr,jdbcType=TINYINT},
-      </if>
-    </set>
-    where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.FarmhousePO">
+    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FarmhousePO">
+        insert into t_farmhouse
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="farmhouseId != null">
+                farmhouse_id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="discount != null">
+                discount,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="extra != null">
+                extra,
+            </if>
+            <if test="qrCode != null">
+                qr_code,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="dr != null">
+                dr,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="farmhouseId != null">
+                #{farmhouseId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=CHAR},
+            </if>
+            <if test="discount != null">
+                #{discount,jdbcType=DOUBLE},
+            </if>
+            <if test="avatar != null">
+                #{avatar,jdbcType=CHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=CHAR},
+            </if>
+            <if test="extra != null">
+                #{extra,jdbcType=CHAR},
+            </if>
+            <if test="qrCode != null">
+                #{qrCode,jdbcType=CHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dr != null">
+                #{dr,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.FarmhousePO">
+        update t_farmhouse
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=CHAR},
+            </if>
+            <if test="discount != null">
+                discount = #{discount,jdbcType=DOUBLE},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar,jdbcType=CHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=CHAR},
+            </if>
+            <if test="extra != null">
+                extra = #{extra,jdbcType=CHAR},
+            </if>
+            <if test="qrCode != null">
+                qr_code = #{qrCode,jdbcType=CHAR},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dr != null">
+                dr = #{dr,jdbcType=TINYINT},
+            </if>
+        </set>
+        where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.FarmhousePO">
     update t_farmhouse
     set `name` = #{name,jdbcType=CHAR},
       discount = #{discount,jdbcType=DOUBLE},
@@ -152,28 +169,53 @@
     where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
   </update>
 
-  <select id="query" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_farmhouse
-    where dr = 1
-    <if test="start != null and start !=''">and create_time >= #{start}</if>
-    <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
-    <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
-    <if test="status != null and status !=0">and `status` = #{status}</if>
-    order by create_time asc
-  </select>
+    <select id="query" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_farmhouse
+        where dr = 1
+        <if test="start != null and start !=''">and create_time >= #{start}</if>
+        <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
+        <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
+        <if test="status != null and status !=0">and `status` = #{status}</if>
+        order by create_time asc
+    </select>
 
-  <select id="queryByName" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_farmhouse
-    where `name` = #{name,jdbcType=CHAR} and dr = 1
-  </select>
+    <select id="queryByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_farmhouse
+        where `name` = #{name,jdbcType=CHAR} and dr = 1
+    </select>
 
-  <update id="updateStatus">
+    <update id="updateStatus">
     update t_farmhouse
     set `status` = #{status,jdbcType=TINYINT}
     where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
   </update>
+
+    <select id="findEnjoyFarmhouse" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_farmhouse
+        where
+        <foreach collection="farmhouseList" separator="or" item="farmhouseId">
+            farmhouse_id = #{farmhouseId, jdbcType=BIGINT}
+        </foreach>
+    </select>
+
+    <select id="findOne" resultMap="FarmhouseDetailResultMap">
+        select
+        f.farmhouse_id as f_farmhouse_id,
+        `name`, discount, avatar, description, extra,
+        qr_code, `status`, create_time, dr
+        create_time, dr, fp_id, fp.farmhouse_id as fp_farmhouse_id, picture,
+
+        fp_id, fp.farmhouse_id as fp_farmhouse_id, picture
+        from t_farmhouse f
+        left join t_farmhouse_picture fp
+        on f.farmhouse_id = fp.farmhouse_id
+        where
+        f.farmhouse_id = #{activitySecondContentId, jdbcType=BIGINT}
+    </select>
 </mapper>

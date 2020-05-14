@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -28,11 +29,11 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
     @Autowired
     private ScenicEnjoyMapper scenicEnjoyMapper;
     @Autowired
-    private TalentTripMapper talentTripMapper;
-    @Autowired
     private UserCardMapper userCardMapper;
     @Autowired
     private TalentActivityHistoryMapper talentActivityHistoryMapper;
+    @Autowired
+    private FarmhouseEnjoyMapper farmhouseEnjoyMapper;
 
     @Override
     public ResultVO findFirstContent(String openId) {
@@ -46,21 +47,41 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
         }
         Long cardId = talentPO.getCardId();
         ArrayList categoryList = null;
+        String talentCategory = userCurrentInfoPO.getTalentCategory();
         //拆分人才类别
-        if (!(userCurrentInfoPO.getTalentCategory().equals("") && userCurrentInfoPO != null)) {
+        if (talentCategory != null && !talentCategory.equals("")) {
             categoryList = TalentActivityUtil.splitCategory(userCurrentInfoPO.getTalentCategory());
         }
         Integer education = userCurrentInfoPO.getEducation();
         Integer title = userCurrentInfoPO.getPtCategory();
         Integer quality = userCurrentInfoPO.getPqCategory();
-        ArrayList<Long> resultList = new ArrayList();
 
-        //旅游
-        List<Long> scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
+        HashMap<String, Object> resultHashMap = new HashMap<>();
+        /**
+         * 每一个活动挨个枚举
+         * todo 加入中间表判断
+         */
+        List<Long> scenicIdList;
+        List<Long> farmhouseList;
+        /**
+         * 旅游
+         */
+        scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
         if (scenicIdList.size() > 0) {
-            resultList.add((long) 1);
+            resultHashMap.put("trip", 1);
+        } else {
+            resultHashMap.put("trip", 2);
         }
-        return new ResultVO(1000, resultList);
+        /**
+         * 农家乐
+         */
+        farmhouseList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
+        if (farmhouseList.size() > 0) {
+            resultHashMap.put("farmhouse", 1);
+        } else {
+            resultHashMap.put("farmhouse", 2);
+        }
+        return new ResultVO(1000, resultHashMap);
     }
 
     @Override

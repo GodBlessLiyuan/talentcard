@@ -31,20 +31,4 @@ public interface StaffMapper extends BaseMapper<StaffPO, Long> {
                          @Param("activitySecondContentId") Long activitySecondContentId);
 
     List<StaffPO> findStaffByFactor(HashMap<String, Object> hashMap);
-
-    /**
-     * 根据员工openID,一级目录id和二级目录id
-     * 得到检验通过次数
-     * @param openId
-     * @param activityFirstContentId
-     * @param activitySecondContentId
-     * @param startTime
-     * @param endTime
-     * @return
-     */
-    Long getVertifyNum(@Param("openId") String openId,
-                       @Param("activityFirstContentId") Long activityFirstContentId,
-                       @Param("activitySecondContentId") Long activitySecondContentId,
-                       @Param("startTime") String startTime,
-                       @Param("endTime") String endTime);
 }

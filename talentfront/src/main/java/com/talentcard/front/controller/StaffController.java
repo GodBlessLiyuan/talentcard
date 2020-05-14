@@ -81,6 +81,12 @@ public class StaffController {
         if (activityFirstContentId == 1) {
             resultVO = iStaffService.tripVertify(talentOpenId, staffOpenId, activitySecondContentId);
         }
+        /**
+         * 农家乐
+         */
+        if (activityFirstContentId == 2) {
+            resultVO = iStaffService.farmhouseVertify(talentOpenId, staffOpenId, activitySecondContentId);
+        }
         return resultVO;
     }
 }

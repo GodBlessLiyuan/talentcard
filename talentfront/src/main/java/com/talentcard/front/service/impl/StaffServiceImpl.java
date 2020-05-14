@@ -1,25 +1,19 @@
 package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.talentcard.common.mapper.ScenicMapper;
-import com.talentcard.common.mapper.StaffMapper;
-import com.talentcard.common.mapper.TalentActivityHistoryMapper;
-import com.talentcard.common.mapper.TalentTripMapper;
-import com.talentcard.common.pojo.ScenicPO;
-import com.talentcard.common.pojo.StaffPO;
-import com.talentcard.common.pojo.TalentActivityHistoryPO;
-import com.talentcard.common.pojo.TalentTripPO;
+import com.talentcard.common.mapper.*;
+import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IStaffService;
 import com.talentcard.front.utils.StaffActivityUtil;
+import com.talentcard.front.utils.TalentActivityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author ChenXU
@@ -37,6 +31,18 @@ public class StaffServiceImpl implements IStaffService {
     private ScenicMapper scenicMapper;
     @Autowired
     private TalentActivityHistoryMapper talentActivityHistoryMapper;
+    @Autowired
+    private TalentMapper talentMapper;
+    @Autowired
+    private UserCurrentInfoMapper userCurrentInfoMapper;
+    @Autowired
+    private FarmhouseEnjoyMapper farmhouseEnjoyMapper;
+    @Autowired
+    private TalentFarmhouseMapper talentFarmhouseMapper;
+    @Autowired
+    private FarmhouseGroupAuthorityMapper farmhouseGroupAuthorityMapper;
+    @Autowired
+    private FarmhouseMapper farmhouseMapper;
 
     @Override
     public ResultVO ifEnableRegister(String openId, Long activityFirstContentId, Long activitySecondContentId) {
@@ -155,9 +161,145 @@ public class StaffServiceImpl implements IStaffService {
         int date = calendar.get(Calendar.DATE);
         String startTime = year + "-" + month + "-" + date + " 00:00:00";
         String endTime = year + "-" + month + "-" + date + " 23:59:59";
-        Long vertifyNum = staffMapper.getVertifyNum(staffOpenId, (long) 1, activitySecondContentId, startTime, endTime);
+        Long vertifyNum = talentActivityHistoryMapper.getVertifyNum(staffOpenId, (long) 1, activitySecondContentId, startTime, endTime);
         HashMap<String, Object> result = new HashMap<>();
         result.put("vertifyNum", vertifyNum);
         return new ResultVO(1000, result);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public ResultVO farmhouseVertify(String talentOpenId, String staffOpenId, Long activitySecondContentId) {
+        TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
+        if (talentPO == null) {
+            return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
+        }
+        //从uci表里取得人才类别
+        UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentPO.getTalentId());
+        if (userCurrentInfoPO == null) {
+            return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
+        }
+        Long cardId = talentPO.getCardId();
+        String category = userCurrentInfoPO.getTalentCategory();
+        ArrayList categoryList = null;
+        //拆分人才类别
+        if (category != null && !category.equals("")) {
+            categoryList = TalentActivityUtil.splitCategory(userCurrentInfoPO.getTalentCategory());
+        }
+        Integer education = userCurrentInfoPO.getEducation();
+        Integer title = userCurrentInfoPO.getPtCategory();
+        Integer quality = userCurrentInfoPO.getPqCategory();
+        List<Long> farmhouseIdList;
+        /**
+         * 农家乐idList，去中间表查询
+         */
+        String code = getMiddleTableString(cardId, category, education, title, quality);
+        farmhouseIdList = farmhouseGroupAuthorityMapper.findByCode(code);
+        /**
+         *  中间表没找到景区idList，去大表查询
+         */
+        if (farmhouseIdList.size() == 0) {
+            farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
+            if (farmhouseIdList.size() == 0) {
+                return new ResultVO(2504, "查无景区！");
+            }
+            //新增中间表
+            FarmhouseGroupAuthorityPO farmhouseGroupAuthorityPO = new FarmhouseGroupAuthorityPO();
+            farmhouseGroupAuthorityPO.setAuthorityCode(code);
+            for (Long farmhouseId : farmhouseIdList) {
+                farmhouseGroupAuthorityPO.setFarmhouseId(farmhouseId);
+                farmhouseGroupAuthorityMapper.insertSelective(farmhouseGroupAuthorityPO);
+            }
+        }
+
+        //去重
+        farmhouseIdList = farmhouseIdList.stream().distinct().collect(Collectors.toList());
+        //flag用来判断talent是否拥有此农家乐的权限
+        Integer flag = 0;
+        for (Long farmhouseId : farmhouseIdList) {
+            if (farmhouseId == activitySecondContentId) {
+                flag = 1;
+            }
+        }
+        if (flag == 0) {
+            return new ResultVO(1001, "核销失败，不具备此农家乐权益");
+        }
+
+        TalentFarmhousePO talentFarmhousePO = new TalentFarmhousePO();
+        talentFarmhousePO.setOpenId(talentOpenId);
+        //找到staffId，更新人才旅游表
+        talentFarmhousePO.setStatus((byte) 2);
+        StaffPO staffPO = staffMapper.findOneByOpenId(staffOpenId);
+        if (staffPO == null) {
+            return new ResultVO(2503, "没有此员工");
+        }
+        Long staffId = staffPO.getStaffId();
+        talentFarmhousePO.setStaffId(staffId);
+        talentFarmhousePO.setUpdateTime(new Date());
+        talentFarmhousePO.setFarmhouseId(activitySecondContentId);
+        talentFarmhousePO.setDr((byte) 1);
+        //得到农家乐信息
+        FarmhousePO farmhousePO = farmhouseMapper.selectByPrimaryKey(activitySecondContentId);
+        if (farmhousePO == null) {
+            return new ResultVO(2502, "没有此活动");
+        }
+        talentFarmhousePO.setDiscount(farmhousePO.getDiscount());
+        talentFarmhouseMapper.insertSelective(talentFarmhousePO);
+
+        //更新历史表
+        TalentActivityHistoryPO talentActivityHistoryPO = new TalentActivityHistoryPO();
+        talentActivityHistoryPO.setOpenId(staffOpenId);
+        talentActivityHistoryPO.setStaffId(staffId);
+        talentActivityHistoryPO.setActivityFirstContentId((long) 2);
+        talentActivityHistoryPO.setActivitySecondContentId(activitySecondContentId);
+
+        talentActivityHistoryPO.setActivitySecondContentName(farmhousePO.getName());
+        talentActivityHistoryPO.setCreateTime(new Date());
+        talentActivityHistoryPO.setDr((byte) 1);
+        talentActivityHistoryMapper.insertSelective(talentActivityHistoryPO);
+        //
+        //得到当前检验人数
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int date = calendar.get(Calendar.DATE);
+        String startTime = year + "-" + month + "-" + date + " 00:00:00";
+        String endTime = year + "-" + month + "-" + date + " 23:59:59";
+        Long vertifyNum = talentActivityHistoryMapper.getVertifyNum(staffOpenId, (long) 2, activitySecondContentId, startTime, endTime);
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("vertifyNum", vertifyNum);
+        return new ResultVO(1000, result);
+    }
+
+    /**
+     * 根据五个条件获得中间表唯一字符串
+     *
+     * @param cardId
+     * @param category
+     * @param education
+     * @param title
+     * @param quality
+     * @return
+     */
+    public static String getMiddleTableString(Long cardId, String category,
+                                              Integer education, Integer title, Integer quality) {
+        String middleTableString;
+        if (cardId == null) {
+            cardId = (long) 0;
+        }
+        if (category == null || category.equals("")) {
+            category = "0";
+        }
+        if (education == null) {
+            education = 0;
+        }
+        if (title == null) {
+            title = 0;
+        }
+        if (quality == null) {
+            quality = 0;
+        }
+        middleTableString = "" + cardId + "-" + category + "-" + education + "-" + title + "-" + quality;
+        return middleTableString;
     }
 }

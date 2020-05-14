@@ -203,19 +203,4 @@
         </if>
     </select>
 
-    <select id="getVertifyNum" resultType="java.lang.Long">
-        select
-        count(staff_id)
-        from t_staff
-        where
-        dr = 1
-        and
-        open_id = #{openId,jdbcType=CHAR}
-        <if test="startTime != null and startTime != ''">
-            and <![CDATA[ create_time >= #{startTime}]]>
-        </if>
-        <if test="endTime != null and endTime != ''">
-            and <![CDATA[ create_time <= #{endTime}]]>
-        </if>
-    </select>
 </mapper>

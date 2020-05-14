@@ -43,15 +43,18 @@ public class TalentTripServiceImpl implements ITalentTripService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO findSecondContent(String openId) {
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
+        }
         UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentPO.getTalentId());
-        if (talentPO == null || userCurrentInfoPO == null) {
+        if (userCurrentInfoPO == null) {
             return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
         }
         Long cardId = talentPO.getCardId();
         String category = userCurrentInfoPO.getTalentCategory();
         ArrayList categoryList = null;
         //拆分人才类别
-        if (!category.equals("") && category != null) {
+        if (category != null && !category.equals("")) {
             categoryList = TalentActivityUtil.splitCategory(userCurrentInfoPO.getTalentCategory());
         }
         Integer education = userCurrentInfoPO.getEducation();
@@ -80,7 +83,6 @@ public class TalentTripServiceImpl implements ITalentTripService {
             }
         }
 
-
         //去重
         scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
         //景区表，查询符合条件的景区
@@ -95,8 +97,11 @@ public class TalentTripServiceImpl implements ITalentTripService {
     }
 
     @Override
-    public ResultVO findOne(Long scenicId) {
-        ScenicBO scenicBO = scenicMapper.findOne(scenicId);
+    public ResultVO findOne(Long activitySecondContentId) {
+        ScenicBO scenicBO = scenicMapper.findOne(activitySecondContentId);
+        if (scenicBO == null) {
+            return new ResultVO(2504, "查无景区");
+        }
         ScenicVO scenicVO = ScenicVO.convert(scenicBO);
         return new ResultVO(1000, scenicVO);
     }
@@ -104,8 +109,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
     @Override
     public ResultVO getResidueTimes(String openId, Long activitySecondContentId) {
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        if(talentPO==null){
-            return new ResultVO(2500,"查无此人");
+        if (talentPO == null) {
+            return new ResultVO(2500, "查无此人");
         }
         ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
         if (scenicPO == null) {
