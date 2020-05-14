@@ -80,7 +80,7 @@ public class ScenicServiceImpl implements IScenicService {
 
             String qrCode = null;
             try {
-                String url = publicPath + "/wx/?type=1&id=" + scenicPO.getScenicId() + "&name=" + scenicPO.getName() + "#/jump";
+                String url = publicPath + "/wx/#/jump?type=1&id=" + scenicPO.getScenicId() + "&name=" + scenicPO.getName();
                 qrCode = QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, true);
             } catch (Exception e) {
                 e.printStackTrace();
