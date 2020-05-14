@@ -24,14 +24,15 @@ public interface TalentTripMapper extends BaseMapper<TalentTripPO, Long> {
 
     /**
      * 根据openId，起始结束时间
-     * 查询一定时间内，领取/核销 旅游的次数
+     * 查询一定时间内，领取/核销 某个景区旅游的次数
      * @param openId
      * @param startTime
      * @param endTime
      * @param status
      * @return
      */
-    Integer TalentGetTimes(@Param("openId") String openId,
+    Integer talentGetTimes(@Param("openId") String openId,
+                           @Param("activitySecondContentId") Long activitySecondContentId,
                            @Param("startTime") String startTime,
                            @Param("endTime") String endTime,
                            @Param("status") Byte status);

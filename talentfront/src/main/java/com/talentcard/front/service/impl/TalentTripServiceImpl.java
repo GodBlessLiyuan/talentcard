@@ -122,7 +122,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
         String startTime = timeList.get(0);
         String endTime = timeList.get(1);
         //指定时间内已领取次数
-        Integer getTimes = talentTripMapper.TalentGetTimes(openId, startTime, endTime, (byte) 1);
+        Integer getTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
         Integer residueTimes = 0;
         if (getTimes <= times) {
             residueTimes = times - getTimes;
@@ -157,7 +157,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
         String startTime = timeList.get(0);
         String endTime = timeList.get(1);
         //指定时间内已领取次数
-        Integer getTimes = talentTripMapper.TalentGetTimes(openId, startTime, endTime, (byte) 1);
+        Integer getTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
         if (getTimes >= times) {
             return new ResultVO(1003, "当前用户已经把当月/年次数用尽");
         }

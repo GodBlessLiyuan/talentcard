@@ -152,11 +152,12 @@
             and <![CDATA[ effective_time >= #{currentTime}]]>
         </if>
     </select>
-    <select id="TalentGetTimes" resultType="java.lang.Integer">
+    <select id="talentGetTimes" resultType="java.lang.Integer">
     select
     count(tt_id)
     from t_talent_trip t
-    where <![CDATA[ create_time >= #{startTime}]]>
+    where scenic_id = #{activitySecondContentId,jdbcType=BIGINT}
+    and <![CDATA[ create_time >= #{startTime}]]>
     and <![CDATA[ create_time <= #{endTime}]]>
     and open_id = #{openId,jdbcType=CHAR}
     and `status` = #{status,jdbcType=TINYINT}
