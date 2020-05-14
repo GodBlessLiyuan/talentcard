@@ -240,6 +240,6 @@
         left join t_scenic_picture sp
         on s.scenic_id = sp.scenic_id
         where
-        s.scenic_id = #{scenicId, jdbcType=BIGINT}
+        s.scenic_id = #{activitySecondContentId, jdbcType=BIGINT}
     </select>
 </mapper>

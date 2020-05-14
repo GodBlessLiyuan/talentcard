@@ -57,4 +57,14 @@ public interface IStaffService {
      * @return
      */
     ResultVO tripVertify(String talentOpenId, String staffOpenId, Long activitySecondContentId);
+
+    /**
+     * 农家乐核销
+     * 判断是否有农家乐资格
+     * @param talentOpenId
+     * @param staffOpenId
+     * @param activitySecondContentId
+     * @return
+     */
+    ResultVO farmhouseVertify(String talentOpenId, String staffOpenId, Long activitySecondContentId);
 }

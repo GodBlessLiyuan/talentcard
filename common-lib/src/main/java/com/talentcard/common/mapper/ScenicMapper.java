@@ -34,5 +34,10 @@ public interface ScenicMapper extends BaseMapper<ScenicPO, Long> {
      */
     List<ScenicPO> findEnjoyScenic(@Param("scenicIdList") List<Long> scenicIdList);
 
-    ScenicBO findOne(@Param("scenicId") Long scenicId);
+    /**
+     * 根据目录id得到一个具体信息
+     * @param activitySecondContentId
+     * @return
+     */
+    ScenicBO findOne(@Param("activitySecondContentId") Long activitySecondContentId);
 }
