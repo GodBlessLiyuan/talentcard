@@ -46,7 +46,7 @@ public class FarmhouseController {
                           @RequestParam(value = "status", defaultValue = "0") Byte status) {
 
         Map<String, Object> reqMap = new HashMap<>(6);
-        reqMap.put("name", name.replaceAll("%", "\\%"));
+        reqMap.put("name", name.replaceAll("%", "\\\\%"));
         reqMap.put("status", status);
         reqMap.put("start", start);
         if (!"".equals(end)) {
