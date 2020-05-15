@@ -37,7 +37,7 @@ public class ActivityResidueNumUtil {
         Long num;
         //activityResidueNumPO，用总人数添加一条记录
         if (activityResidueNumPO == null) {
-            activityResidueNumPO= new ActivityResidueNumPO();
+            activityResidueNumPO = new ActivityResidueNumPO();
             activityResidueNumPO.setTime(time);
             num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));
             activityResidueNumPO.setNum(num);
@@ -59,7 +59,7 @@ public class ActivityResidueNumUtil {
         Long num;
         //activityResidueNumPO，用总人数添加一条记录
         if (activityResidueNumPO == null) {
-            activityResidueNumPO= new ActivityResidueNumPO();
+            activityResidueNumPO = new ActivityResidueNumPO();
             activityResidueNumPO.setTime(time);
             num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));
             activityResidueNumPO.setNum(num - 1);
@@ -68,7 +68,7 @@ public class ActivityResidueNumUtil {
             //人数少于0不能再减了！！！这里核销需要失败
             num = activityResidueNumPO.getNum() - 1;
             if (num < 0) {
-                return 100;
+                num = (long) 0;
             }
             activityResidueNumPO.setNum(num);
             activityResidueNumMapper.updateByPrimaryKeySelective(activityResidueNumPO);
@@ -88,15 +88,15 @@ public class ActivityResidueNumUtil {
         Long num;
         //activityResidueNumPO，用总人数添加一条记录
         if (activityResidueNumPO == null) {
-            activityResidueNumPO= new ActivityResidueNumPO();
+            activityResidueNumPO = new ActivityResidueNumPO();
             activityResidueNumPO = new ActivityResidueNumPO();
             activityResidueNumPO.setTime(time);
             num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));
             activityResidueNumPO.setNum(num);
             activityResidueNumMapper.insertSelective(activityResidueNumPO);
         } else {
-            //剩余人数>总人数，剩余人数修正到总人数
-            if (activityResidueNumPO.getNum() > totalNum) {
+            //剩余人数>总人数，剩余人数修正到总人数，为0，则强行一致
+            if (activityResidueNumPO.getNum() > totalNum || activityResidueNumPO.getNum() == 0) {
                 activityResidueNumPO.setNum(totalNum);
                 activityResidueNumMapper.updateByPrimaryKeySelective(activityResidueNumPO);
             }
