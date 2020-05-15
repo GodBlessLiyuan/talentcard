@@ -128,6 +128,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
             farmhousePictureMapper.batchInsert(picPOs);
         }
 
+        farmhouseGroupAuthorityMapper.clear();
         return new ResultVO(1000);
     }
 
