@@ -26,6 +26,8 @@ public class TalentActivityHistoryPO implements Serializable {
 
     private String activitySecondContentName;
 
+    private String ipAddress;
+
     private Date createTime;
 
     private Byte status;

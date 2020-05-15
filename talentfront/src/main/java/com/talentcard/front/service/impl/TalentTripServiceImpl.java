@@ -74,6 +74,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
             if (scenicIdList.size() == 0) {
                 return new ResultVO(2504, "查无景区！");
             }
+            //去重
+            scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
             //新增中间表
             TripGroupAuthorityPO tripGroupAuthorityPO = new TripGroupAuthorityPO();
             tripGroupAuthorityPO.setAuthorityCode(code);
@@ -81,10 +83,10 @@ public class TalentTripServiceImpl implements ITalentTripService {
                 tripGroupAuthorityPO.setScenicId(scenicId);
                 tripGroupAuthorityMapper.insertSelective(tripGroupAuthorityPO);
             }
+        }else{
+            //去重
+            scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
         }
-
-        //去重
-        scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
         //景区表，查询符合条件的景区
         List<ScenicPO> scenicPOList = scenicMapper.findEnjoyScenic(scenicIdList);
         List<ScenicVO> scenicVOList = ScenicVO.convert(scenicPOList);

@@ -153,22 +153,27 @@
     </select>
     <select id="findSecondContent" resultType="java.lang.Long">
         select
-        scenic_id
-        from t_scenic_enjoy
-        where card_id = #{cardId,jdbcType=BIGINT}
+        sc.scenic_id
+        from t_scenic_enjoy sc
+        left join t_scenic s
+        on sc.scenic_id = s.scenic_id
+        where
+        s.status = 1
+        and s.dr = 1
+        and (sc.card_id = #{cardId,jdbcType=BIGINT}
         <if test="categoryList != null">
             <foreach collection="categoryList" item="category">
-                or category_id = #{category, jdbcType=BIGINT}
+                or sc.category_id = #{category, jdbcType=BIGINT}
             </foreach>
         </if>
         <if test="education != null">
-            or education_id = #{education, jdbcType=INTEGER}
+            or sc.education_id = #{education, jdbcType=INTEGER}
         </if>
         <if test="title != null">
-            or title_id = #{title, jdbcType=INTEGER}
+            or sc.title_id = #{title, jdbcType=INTEGER}
         </if>
         <if test="quality != null">
-            or quality = #{quality, jdbcType=INTEGER}
-        </if>
+            or sc.quality = #{quality, jdbcType=INTEGER}
+        </if>)
     </select>
 </mapper>
