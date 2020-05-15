@@ -1,12 +1,16 @@
 package com.talentcard.web.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.ApprovalBO;
 import com.talentcard.common.bo.CertApprovalBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ICertApprovalService;
+import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.ApprovalItemsVO;
@@ -106,6 +110,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
          * 根据openId 发送领卡通知
          */
         TalentPO currentTalent = talentMapper.selectByPrimaryKey(talentId);
+        String openId = currentTalent.getOpenId();
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
         //openId
@@ -282,6 +287,20 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             //模版编号
             messageDTO.setTemplateId(1);
             MessageUtil.sendTemplateMessage(messageDTO);
+            /**
+             * 设置旧卡券失效
+             */
+            ActivcateBO oldCard=talentMapper.activate(openId, (byte)5, (byte) 2);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("code", oldCard.getCode());
+            jsonObject.put("card_id", oldCard.getWxCardId());
+            String url = "https://api.weixin.qq.com/card/code/unavailable?access_token="
+                    + AccessTokenUtil.getAccessToken();
+            JSONObject vertifyResult = WechatApiUtil.postRequest(url, jsonObject);
+            if (vertifyResult.getInteger("errcode") != 0) {
+                return new ResultVO(2330, "核销失败");
+            }
+            logger.info("销毁旧卡 {}", vertifyResult);
             return new ResultVO(1000);
         }
         /**
