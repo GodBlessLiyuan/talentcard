@@ -290,14 +290,21 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
              * 设置旧卡券失效
              */
             ActivcateBO oldCard = talentMapper.activate(openId, (byte) 5, (byte) 2);
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("code", oldCard.getCode());
-            jsonObject.put("card_id", oldCard.getWxCardId());
-            String url = "https://api.weixin.qq.com/card/code/unavailable?access_token="
-                    + AccessTokenUtil.getAccessToken();
-            JSONObject vertifyResult = WechatApiUtil.postRequest(url, jsonObject);
-            if (vertifyResult.getInteger("errcode") != 0) {
-                logger.info("销毁旧卡 {}", vertifyResult);
+            //SB把基础卡删了，则去找删卡的结果
+            if (oldCard == null) {
+                oldCard = talentMapper.activate(openId, (byte) 2, (byte) 1);
+            }
+            if (oldCard != null) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("code", oldCard.getCode());
+                jsonObject.put("card_id", oldCard.getWxCardId());
+                String url = "https://api.weixin.qq.com/card/code/unavailable?access_token="
+                        + AccessTokenUtil.getAccessToken();
+                JSONObject vertifyResult = WechatApiUtil.postRequest(url, jsonObject);
+                if (vertifyResult.getInteger("errcode") != 0) {
+                    logger.info("销毁旧卡 {}", vertifyResult);
+
+                }
             }
             //领卡通知
             MessageUtil.sendTemplateMessage(messageDTO);
