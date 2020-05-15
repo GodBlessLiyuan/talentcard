@@ -46,7 +46,7 @@ public class ScenicController {
                           @RequestParam(value = "status", defaultValue = "0") Byte status) {
 
         Map<String, Object> reqMap = new HashMap<>(6);
-        reqMap.put("name", name);
+        reqMap.put("name", name.replaceAll("%", "\\%"));
         if (!"".equals(end)) {
             end = end + " 23:59:59";
         }
