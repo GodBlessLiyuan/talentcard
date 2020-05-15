@@ -165,6 +165,9 @@ public class StaffServiceImpl implements IStaffService {
         talentActivityHistoryPO.setActivitySecondContentName(scenicPO.getName());
         talentActivityHistoryPO.setCreateTime(new Date());
         talentActivityHistoryPO.setDr((byte) 1);
+        //得到ip
+        String ipAddress = HttpServletRequestUtil.getIpAddr(httpServletRequest);
+        talentActivityHistoryPO.setIpAddress(ipAddress);
         talentActivityHistoryMapper.insertSelective(talentActivityHistoryPO);
 
         //得到当前检验人数
@@ -279,7 +282,6 @@ public class StaffServiceImpl implements IStaffService {
         String ipAddress = HttpServletRequestUtil.getIpAddr(httpServletRequest);
         talentActivityHistoryPO.setIpAddress(ipAddress);
         talentActivityHistoryMapper.insertSelective(talentActivityHistoryPO);
-        //
         //得到当前检验人数
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
