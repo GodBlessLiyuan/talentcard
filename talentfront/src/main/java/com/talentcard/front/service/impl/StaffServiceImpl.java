@@ -225,6 +225,8 @@ public class StaffServiceImpl implements IStaffService {
             if (farmhouseIdList.size() == 0) {
                 return new ResultVO(2504, "查无景区！");
             }
+            //去重
+            farmhouseIdList = farmhouseIdList.stream().distinct().collect(Collectors.toList());
             //新增中间表
             FarmhouseGroupAuthorityPO farmhouseGroupAuthorityPO = new FarmhouseGroupAuthorityPO();
             farmhouseGroupAuthorityPO.setAuthorityCode(code);
@@ -232,10 +234,10 @@ public class StaffServiceImpl implements IStaffService {
                 farmhouseGroupAuthorityPO.setFarmhouseId(farmhouseId);
                 farmhouseGroupAuthorityMapper.insertSelective(farmhouseGroupAuthorityPO);
             }
+        } else {
+            //去重
+            farmhouseIdList = farmhouseIdList.stream().distinct().collect(Collectors.toList());
         }
-
-        //去重
-        farmhouseIdList = farmhouseIdList.stream().distinct().collect(Collectors.toList());
         //flag用来判断talent是否拥有此农家乐的权限
         Integer flag = 0;
         for (Long farmhouseId : farmhouseIdList) {

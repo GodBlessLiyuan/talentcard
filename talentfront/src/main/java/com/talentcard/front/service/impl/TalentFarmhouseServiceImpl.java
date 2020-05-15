@@ -75,6 +75,8 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
             if (farmhouseIdList.size() == 0) {
                 return new ResultVO(2504, "查无景区！");
             }
+            //去重
+            farmhouseIdList = farmhouseIdList.stream().distinct().collect(Collectors.toList());
             //新增中间表
             FarmhouseGroupAuthorityPO farmhouseGroupAuthorityPO = new FarmhouseGroupAuthorityPO();
             farmhouseGroupAuthorityPO.setAuthorityCode(code);
@@ -82,10 +84,10 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
                 farmhouseGroupAuthorityPO.setFarmhouseId(farmhouseId);
                 farmhouseGroupAuthorityMapper.insertSelective(farmhouseGroupAuthorityPO);
             }
+        }else{
+            //去重
+            farmhouseIdList = farmhouseIdList.stream().distinct().collect(Collectors.toList());
         }
-
-        //去重
-        farmhouseIdList = farmhouseIdList.stream().distinct().collect(Collectors.toList());
         //景区表，查询符合条件的景区
         List<FarmhousePO> farmhousePOList = farmhouseMapper.findEnjoyFarmhouse(farmhouseIdList);
         List<FarmhouseVO> farmhouseVOList = FarmhouseVO.convert(farmhousePOList);
