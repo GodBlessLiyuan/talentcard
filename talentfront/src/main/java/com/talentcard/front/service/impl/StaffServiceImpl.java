@@ -6,12 +6,14 @@ import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IStaffService;
 import com.talentcard.front.utils.ActivityResidueNumUtil;
+import com.talentcard.front.utils.HttpServletRequestUtil;
 import com.talentcard.front.utils.StaffActivityUtil;
 import com.talentcard.front.utils.TalentActivityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -124,7 +126,7 @@ public class StaffServiceImpl implements IStaffService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO tripVertify(String talentOpenId, String staffOpenId, Long activitySecondContentId) {
+    public ResultVO tripVertify(HttpServletRequest httpServletRequest, String talentOpenId, String staffOpenId, Long activitySecondContentId) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = simpleDateFormat.format(new Date());
         //判断人才旅游表里是否有状态为1的记录
@@ -181,7 +183,7 @@ public class StaffServiceImpl implements IStaffService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO farmhouseVertify(String talentOpenId, String staffOpenId, Long activitySecondContentId) {
+    public ResultVO farmhouseVertify(HttpServletRequest httpServletRequest, String talentOpenId, String staffOpenId, Long activitySecondContentId) {
         TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
         if (talentPO == null) {
             return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
@@ -268,10 +270,12 @@ public class StaffServiceImpl implements IStaffService {
         talentActivityHistoryPO.setStaffId(staffId);
         talentActivityHistoryPO.setActivityFirstContentId((long) 2);
         talentActivityHistoryPO.setActivitySecondContentId(activitySecondContentId);
-
         talentActivityHistoryPO.setActivitySecondContentName(farmhousePO.getName());
         talentActivityHistoryPO.setCreateTime(new Date());
         talentActivityHistoryPO.setDr((byte) 1);
+        //得到ip
+        String ipAddress = HttpServletRequestUtil.getIpAddr(httpServletRequest);
+        talentActivityHistoryPO.setIpAddress(ipAddress);
         talentActivityHistoryMapper.insertSelective(talentActivityHistoryPO);
         //
         //得到当前检验人数

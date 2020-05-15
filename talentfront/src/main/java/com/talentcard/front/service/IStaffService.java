@@ -3,6 +3,7 @@ package com.talentcard.front.service;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.vo.ResultVO;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 /**
@@ -56,7 +57,7 @@ public interface IStaffService {
      * @param activitySecondContentId
      * @return
      */
-    ResultVO tripVertify(String talentOpenId, String staffOpenId, Long activitySecondContentId);
+    ResultVO tripVertify(HttpServletRequest httpServletRequest, String talentOpenId, String staffOpenId, Long activitySecondContentId);
 
     /**
      * 农家乐核销
@@ -66,5 +67,5 @@ public interface IStaffService {
      * @param activitySecondContentId
      * @return
      */
-    ResultVO farmhouseVertify(String talentOpenId, String staffOpenId, Long activitySecondContentId);
+    ResultVO farmhouseVertify(HttpServletRequest httpServletRequest,String talentOpenId, String staffOpenId, Long activitySecondContentId);
 }

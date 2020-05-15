@@ -8,6 +8,8 @@ import com.talentcard.front.service.impl.TalentActivityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * @author ChenXU
@@ -66,26 +68,29 @@ public class StaffController {
      * @return
      */
     @RequestMapping("vertify")
-    public ResultVO vertify(@RequestParam(value = "cardNum") String cardNum,
+    public ResultVO vertify(HttpServletRequest httpServletRequest,
+                            @RequestParam(value = "cardNum") String cardNum,
                             @RequestParam(value = "staffOpenId") String staffOpenId,
                             @RequestParam(value = "activityFirstContentId") Long activityFirstContentId,
                             @RequestParam(value = "activitySecondContentId") Long activitySecondContentId) {
         ResultVO resultVO = null;
         String talentOpenId = iTalentActivityService.getOpenId(cardNum);
-        if(talentOpenId==null||talentOpenId.equals("")){
+        if (talentOpenId == null || talentOpenId.equals("")) {
             return new ResultVO(2500);
         }
         /**
          * 1.旅游
          */
         if (activityFirstContentId == 1) {
-            resultVO = iStaffService.tripVertify(talentOpenId, staffOpenId, activitySecondContentId);
+            resultVO = iStaffService.tripVertify(httpServletRequest, talentOpenId,
+                    staffOpenId, activitySecondContentId);
         }
         /**
          * 农家乐
          */
         if (activityFirstContentId == 2) {
-            resultVO = iStaffService.farmhouseVertify(talentOpenId, staffOpenId, activitySecondContentId);
+            resultVO = iStaffService.farmhouseVertify(httpServletRequest, talentOpenId,
+                    staffOpenId, activitySecondContentId);
         }
         return resultVO;
     }
