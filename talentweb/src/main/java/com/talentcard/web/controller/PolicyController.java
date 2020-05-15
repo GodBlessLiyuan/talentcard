@@ -41,7 +41,7 @@ public class PolicyController {
         }
         hashMap.put("start", start);
         hashMap.put("end", end);
-        hashMap.put("name", name);
+        hashMap.put("name", name.replaceAll("%", "\\\\%"));
         hashMap.put("num", num);
         hashMap.put("apply", apply);
 

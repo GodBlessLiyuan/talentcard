@@ -1,9 +1,7 @@
 package com.talentcard.web.controller;
 
-import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IUserService;
-import com.talentcard.web.vo.UserRoleVO;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

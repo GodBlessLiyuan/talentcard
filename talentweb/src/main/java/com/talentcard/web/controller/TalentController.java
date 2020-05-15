@@ -1,9 +1,7 @@
 package com.talentcard.web.controller;
 
-import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ITalentService;
-import com.talentcard.web.vo.TalentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,7 +40,7 @@ public class TalentController {
         }
         reqMap.put("start", start);
         reqMap.put("end", end);
-        reqMap.put("name", name);
+        reqMap.put("name", name.replaceAll("%", "\\\\%"));
         reqMap.put("sex", sex);
         reqMap.put("educ", educ);
         reqMap.put("title", title);
@@ -75,7 +73,7 @@ public class TalentController {
         }
         reqMap.put("start", start);
         reqMap.put("end", end);
-        reqMap.put("name", name);
+        reqMap.put("name", name.replaceAll("%", "\\\\%"));
         reqMap.put("sex", sex);
         reqMap.put("educ", educ);
         reqMap.put("title", title);

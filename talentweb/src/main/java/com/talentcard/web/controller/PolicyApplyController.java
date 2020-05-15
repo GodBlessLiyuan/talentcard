@@ -43,7 +43,7 @@ public class PolicyApplyController {
         reqMap.put("start", start);
         reqMap.put("end", end);
         reqMap.put("num", num);
-        reqMap.put("name", name);
+        reqMap.put("name", name.replaceAll("%", "\\\\%"));
         reqMap.put("apply", apply);
         reqMap.put("status", status);
 
@@ -61,7 +61,7 @@ public class PolicyApplyController {
         HashMap<String, Object> reqMap = new HashMap<>(6);
         reqMap.put("start", start);
         reqMap.put("end", end);
-        reqMap.put("name", name);
+        reqMap.put("name", name.replaceAll("%", "\\\\%"));
         reqMap.put("num", num);
         reqMap.put("apply", apply);
         reqMap.put("status", status);

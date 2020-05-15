@@ -48,7 +48,7 @@ public class CertController {
             }
         }
         Map<String, Object> reqData = new HashMap<>(9);
-        reqData.put("name",name);
+        reqData.put("name", name.replaceAll("%", "\\\\%"));
         reqData.put("sex",sex);
         reqData.put("pqCategory",pqCategory);
         reqData.put("ptCategory",ptCategory);

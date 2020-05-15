@@ -77,7 +77,7 @@ public class CardController {
         }
         hashMap.put("startTime", startTime);
         hashMap.put("endTime", endTime);
-        hashMap.put("title", title);
+        hashMap.put("title", title.replaceAll("%", "\\\\%"));
         hashMap.put("cardNum", cardNum);
         return iCardService.query(hashMap);
     }
