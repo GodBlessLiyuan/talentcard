@@ -192,7 +192,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             //校验是否存在脏数据
             Integer checkIfDirty = certificationMapper.checkIfDirty(talentId, (byte) 5, (byte) 2);
             if (checkIfDirty != 1) {
-                return new ResultVO(1001, "当前有脏数据，无法领取高级卡");
+                return new ResultVO(2311, "当前有脏数据，无法领取高级卡");
             }
             //人才卡编号根据人才卡当前卡id的总数+1
             CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
