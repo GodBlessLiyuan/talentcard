@@ -1,12 +1,16 @@
 package com.talentcard.web.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.ApprovalBO;
 import com.talentcard.common.bo.CertApprovalBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ICertApprovalService;
+import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.ApprovalItemsVO;
@@ -106,6 +110,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
          * 根据openId 发送领卡通知
          */
         TalentPO currentTalent = talentMapper.selectByPrimaryKey(talentId);
+        String openId = currentTalent.getOpenId();
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
         //openId
@@ -182,10 +187,10 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
              * 审批通过
              */
             //校验是否存在脏数据
-            Integer checkIfDirty = certificationMapper.checkIfDirty(talentId, (byte) 5, (byte) 2);
-            if (checkIfDirty != 1) {
-                return new ResultVO(2700, "当前有脏数据，无法领取高级卡");
-            }
+//            Integer checkIfDirty = certificationMapper.checkIfDirty(talentId, (byte) 5, (byte) 2);
+//            if (checkIfDirty != 1) {
+//                return new ResultVO(2700, "当前有脏数据，无法领取高级卡");
+//            }
             //人才卡编号根据人才卡当前卡id的总数+1
             CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
             if (null == cardPO) {
@@ -281,6 +286,27 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             messageDTO.setFirst("您好，请您领取衢江区人才卡");
             //模版编号
             messageDTO.setTemplateId(1);
+            /**
+             * 设置旧卡券失效
+             */
+            ActivcateBO oldCard = talentMapper.activate(openId, (byte) 5, (byte) 2);
+            //SB把基础卡删了，则去找删卡的结果
+            if (oldCard == null) {
+                oldCard = talentMapper.activate(openId, (byte) 2, (byte) 1);
+            }
+            if (oldCard != null) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("code", oldCard.getCode());
+                jsonObject.put("card_id", oldCard.getWxCardId());
+                String url = "https://api.weixin.qq.com/card/code/unavailable?access_token="
+                        + AccessTokenUtil.getAccessToken();
+                JSONObject vertifyResult = WechatApiUtil.postRequest(url, jsonObject);
+                if (vertifyResult.getInteger("errcode") != 0) {
+                    logger.info("销毁旧卡 {}", vertifyResult);
+
+                }
+            }
+            //领卡通知
             MessageUtil.sendTemplateMessage(messageDTO);
             return new ResultVO(1000);
         }

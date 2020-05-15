@@ -154,7 +154,7 @@ public class EventServiceImpl implements IEventService {
             }
             /**
              * 如果找不到旧卡，则是用户弱智把当前卡删了！！！
-             * 或者高级卡更换高级卡
+             * 单纯删卡同时高级卡更换高级卡
              */
             if (oldCard == null) {
                 //user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
@@ -193,16 +193,16 @@ public class EventServiceImpl implements IEventService {
             /**
              * 设置旧卡券失效
              */
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("code", oldCard.getCode());
-            jsonObject.put("card_id", oldCard.getWxCardId());
-            String url = "https://api.weixin.qq.com/card/code/unavailable?access_token="
-                    + AccessTokenUtil.getAccessToken();
-            result = WechatApiUtil.postRequest(url, jsonObject);
-            if (result.getInteger("errcode") != 0) {
-                return new ResultVO(2330, "激活失败");
-            }
-            logger.info("销毁旧卡", result);
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("code", oldCard.getCode());
+//            jsonObject.put("card_id", oldCard.getWxCardId());
+//            String url = "https://api.weixin.qq.com/card/code/unavailable?access_token="
+//                    + AccessTokenUtil.getAccessToken();
+//            result = WechatApiUtil.postRequest(url, jsonObject);
+//            if (result.getInteger("errcode") != 0) {
+//                return new ResultVO(2330, "激活失败");
+//            }
+//            logger.info("销毁旧卡", result);
             //更新customField
             TalentInfoUpdateUtil.updateSeniorCardCustomField(newCard.getCode(),
                     newCard.getWxCardId(), newCardTalentId);
