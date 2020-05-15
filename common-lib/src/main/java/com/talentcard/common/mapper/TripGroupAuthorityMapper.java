@@ -14,9 +14,7 @@ public interface TripGroupAuthorityMapper extends BaseMapper<TripGroupAuthorityP
     List<Long> findByCode(@Param("code") String code);
 
     /**
-     * 根据 scenicId 删除
-     *
-     * @param scenicId
+     * 清空数据
      */
-    void deleteByScenicId(Long scenicId);
+    void clear();
 }

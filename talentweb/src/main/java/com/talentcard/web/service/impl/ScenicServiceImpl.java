@@ -129,6 +129,7 @@ public class ScenicServiceImpl implements IScenicService {
             scenicPictureMapper.batchInsert(picPOs);
         }
 
+        tripGroupAuthorityMapper.clear();
         return new ResultVO(1000);
     }
 
@@ -141,7 +142,7 @@ public class ScenicServiceImpl implements IScenicService {
         }
 
         scenicMapper.updateStatus(scenicId, status);
-        tripGroupAuthorityMapper.deleteByScenicId(scenicId);
+        tripGroupAuthorityMapper.clear();
         return new ResultVO(1000);
     }
 

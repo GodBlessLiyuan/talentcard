@@ -139,7 +139,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
         }
 
         farmhouseMapper.updateStatus(farmhouseId, status);
-        farmhouseGroupAuthorityMapper.deleteByFarmhouseId(farmhouseId);
+        farmhouseGroupAuthorityMapper.clear();
         return new ResultVO(1000);
     }
 

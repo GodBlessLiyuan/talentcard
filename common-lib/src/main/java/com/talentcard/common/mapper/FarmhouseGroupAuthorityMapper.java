@@ -14,9 +14,7 @@ public interface FarmhouseGroupAuthorityMapper extends BaseMapper<FarmhouseGroup
     List<Long> findByCode(@Param("code") String code);
 
     /**
-     * 根据 farmhouseId 删除
-     *
-     * @param farmhouseId
+     * 清空
      */
-    void deleteByFarmhouseId(Long farmhouseId);
+    void clear();
 }

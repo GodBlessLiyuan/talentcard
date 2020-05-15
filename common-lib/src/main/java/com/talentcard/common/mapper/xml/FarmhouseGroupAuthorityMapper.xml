@@ -73,9 +73,8 @@
         from t_farmhouse_group_authority
         where authority_code = #{code,jdbcType=CHAR}
     </select>
-    <delete id="deleteByFarmhouseId" parameterType="java.lang.Long">
+    <delete id="clear">
         delete
         from t_farmhouse_group_authority
-        where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
     </delete>
 </mapper>

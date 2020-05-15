@@ -73,9 +73,8 @@
         where authority_code = #{code,jdbcType=CHAR}
     </select>
 
-    <delete id="deleteByScenicId" parameterType="java.lang.Long">
+    <delete id="clear">
         delete
         from t_trip_group_authority
-        where scenic_id = #{scenicId,jdbcType=BIGINT}
     </delete>
 </mapper>
