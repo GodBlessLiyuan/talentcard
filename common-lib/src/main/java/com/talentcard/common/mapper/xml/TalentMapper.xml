@@ -501,6 +501,7 @@
           and c.status = #{certificationStatus, jdbcType=TINYINT}
           and uc.status = #{userCardStatus, jdbcType=TINYINT}
           and t.dr = 1
+          and card.dr = 1
     </select>
     <select id="ifExistGetCard" resultType="java.lang.Integer">
         select count(t.talent_id)
