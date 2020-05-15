@@ -286,11 +286,10 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             messageDTO.setFirst("您好，请您领取衢江区人才卡");
             //模版编号
             messageDTO.setTemplateId(1);
-            MessageUtil.sendTemplateMessage(messageDTO);
             /**
              * 设置旧卡券失效
              */
-            ActivcateBO oldCard=talentMapper.activate(openId, (byte)5, (byte) 2);
+            ActivcateBO oldCard = talentMapper.activate(openId, (byte) 5, (byte) 2);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("code", oldCard.getCode());
             jsonObject.put("card_id", oldCard.getWxCardId());
@@ -298,9 +297,10 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                     + AccessTokenUtil.getAccessToken();
             JSONObject vertifyResult = WechatApiUtil.postRequest(url, jsonObject);
             if (vertifyResult.getInteger("errcode") != 0) {
-                return new ResultVO(2330, "核销失败");
+                logger.info("销毁旧卡 {}", vertifyResult);
             }
-            logger.info("销毁旧卡 {}", vertifyResult);
+            //领卡通知
+            MessageUtil.sendTemplateMessage(messageDTO);
             return new ResultVO(1000);
         }
         /**
