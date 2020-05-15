@@ -110,6 +110,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
          * 根据openId 发送领卡通知
          */
         TalentPO currentTalent = talentMapper.selectByPrimaryKey(talentId);
+        if (currentTalent == null) {
+            return new ResultVO(2500);
+        }
         String openId = currentTalent.getOpenId();
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
@@ -187,10 +190,10 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
              * 审批通过
              */
             //校验是否存在脏数据
-//            Integer checkIfDirty = certificationMapper.checkIfDirty(talentId, (byte) 5, (byte) 2);
-//            if (checkIfDirty != 1) {
-//                return new ResultVO(2700, "当前有脏数据，无法领取高级卡");
-//            }
+            Integer checkIfDirty = certificationMapper.checkIfDirty(talentId, (byte) 5, (byte) 2);
+            if (checkIfDirty != 1) {
+                return new ResultVO(1001, "当前有脏数据，无法领取高级卡");
+            }
             //人才卡编号根据人才卡当前卡id的总数+1
             CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
             if (null == cardPO) {
@@ -272,11 +275,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             cardPO.setCurrNum(cardPO.getCurrNum() + 1);
             cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
             cardMapper.updateByPrimaryKeySelective(cardPO);
-            int resultUserCard = userCardMapper.insertSelective(userCardPO);
-            if (resultUserCard == 0) {
-                //新增人才卡状态失败
-                return new ResultVO(2373);
-            }
+
             //推送审批通过微信消息
             messageDTO.setKeyword3("个人");
             messageDTO.setRemark("领取后可享受多项人才权益哦");
@@ -290,10 +289,6 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
              * 设置旧卡券失效
              */
             ActivcateBO oldCard = talentMapper.activate(openId, (byte) 5, (byte) 2);
-            //SB把基础卡删了，则去找删卡的结果
-            if (oldCard == null) {
-                oldCard = talentMapper.activate(openId, (byte) 2, (byte) 1);
-            }
             if (oldCard != null) {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("code", oldCard.getCode());
@@ -308,6 +303,12 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             }
             //领卡通知
             MessageUtil.sendTemplateMessage(messageDTO);
+            //uc表最后insert，防止oldCard找到俩，因为按照uc状态为1的，用户删了卡，则会有两条uc状态为1的
+            int resultUserCard = userCardMapper.insertSelective(userCardPO);
+            if (resultUserCard == 0) {
+                //新增人才卡状态失败
+                return new ResultVO(2373);
+            }
             return new ResultVO(1000);
         }
         /**
