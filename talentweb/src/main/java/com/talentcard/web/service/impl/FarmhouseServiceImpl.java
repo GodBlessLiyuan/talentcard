@@ -82,7 +82,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
 
             String qrCode = null;
             try {
-                String url = publicPath + "/wx/#/jump?type=1&id=" + farmhousePO.getFarmhouseId() + "&name=" + farmhousePO.getName();
+                String url = publicPath + "/wx/#/jump?type=2&id=" + farmhousePO.getFarmhouseId() + "&name=" + farmhousePO.getName();
                 qrCode = QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, true);
             } catch (Exception e) {
                 e.printStackTrace();
