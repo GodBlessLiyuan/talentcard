@@ -36,7 +36,9 @@ public class StaffController {
         }
         hashMap.put("activitySecondContentName", activitySecondContentName);
         hashMap.put("activityFirstContentId", activityFirstContentId);
-        hashMap.put("name", name.replaceAll("%", "\\\\%"));
+        if(null != name) {
+            hashMap.put("name", name.replaceAll("%", "\\\\%"));
+        }
         hashMap.put("startTime", startTime);
         hashMap.put("endTime", endTime);
         return iStaffService.query(pageNum, pageSize, hashMap);
