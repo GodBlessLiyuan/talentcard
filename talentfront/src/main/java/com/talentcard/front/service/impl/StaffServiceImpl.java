@@ -270,7 +270,7 @@ public class StaffServiceImpl implements IStaffService {
 
         //更新历史表
         TalentActivityHistoryPO talentActivityHistoryPO = new TalentActivityHistoryPO();
-        talentActivityHistoryPO.setOpenId(staffOpenId);
+        talentActivityHistoryPO.setOpenId(talentOpenId);
         talentActivityHistoryPO.setStaffId(staffId);
         talentActivityHistoryPO.setActivityFirstContentId((long) 2);
         talentActivityHistoryPO.setActivitySecondContentId(activitySecondContentId);
