@@ -218,7 +218,7 @@ public class StaffServiceImpl implements IStaffService {
         if (farmhouseIdList.size() == 0) {
             farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
             if (farmhouseIdList.size() == 0) {
-                return new ResultVO(2504, "查无景区！");
+                return new ResultVO(1101, "查无景区！");
             }
             //去重
             farmhouseIdList = farmhouseIdList.stream().distinct().collect(Collectors.toList());
