@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.IStaffService;
-import com.talentcard.front.utils.ActivityResidueNumUtil;
-import com.talentcard.front.utils.HttpServletRequestUtil;
-import com.talentcard.front.utils.StaffActivityUtil;
-import com.talentcard.front.utils.TalentActivityUtil;
+import com.talentcard.front.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -121,6 +119,30 @@ public class StaffServiceImpl implements IStaffService {
     @Override
     public ResultVO vertify(String talentOpenId, String staffOpenId,
                             Long activityFirstContentId, Long activitySecondContentId) {
+        TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(talentOpenId);
+        //开头
+        messageDTO.setFirst("您好，您已经消耗一次活动机会");
+        //姓名
+        messageDTO.setKeyword1(talentPO.getName());
+        //身份证号，屏蔽八位
+        String encryptionIdCard = talentPO.getIdCard().substring(0, 9) + "********";
+        messageDTO.setKeyword2(encryptionIdCard);
+        messageDTO.setKeyword3("个人");
+        //领卡机构
+        //通知时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        String currentTime = formatter.format(new Date());
+        messageDTO.setKeyword4(currentTime);
+        //模版编号
+        messageDTO.setTemplateId(1);
+        //结束
+        messageDTO.setRemark("这里就是个测试字段");
+        messageDTO.setUrl(FrontParameterUtil.getIndexUrl());
+        MessageUtil.sendTemplateMessage(messageDTO);
         return null;
     }
 
