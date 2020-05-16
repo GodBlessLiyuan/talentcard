@@ -218,7 +218,7 @@ public class StaffServiceImpl implements IStaffService {
         if (farmhouseIdList.size() == 0) {
             farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
             if (farmhouseIdList.size() == 0) {
-                return new ResultVO(1101, "查无景区！");
+                return new ResultVO(1001, "查无景区!不具备此农家乐权益!");
             }
             //去重
             farmhouseIdList = farmhouseIdList.stream().distinct().collect(Collectors.toList());
@@ -236,7 +236,7 @@ public class StaffServiceImpl implements IStaffService {
         //flag用来判断talent是否拥有此农家乐的权限
         Integer flag = 0;
         for (Long farmhouseId : farmhouseIdList) {
-            if (farmhouseId == activitySecondContentId) {
+            if (farmhouseId.equals(activitySecondContentId)) {
                 flag = 1;
             }
         }
