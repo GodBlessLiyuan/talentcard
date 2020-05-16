@@ -188,6 +188,7 @@
         from t_talent_activity_history
         where
         dr = 1
+        and activity_first_content_id != 2
         <if test="startTime != null and startTime != ''">
             and <![CDATA[ create_time >= #{startTime}]]>
         </if>
