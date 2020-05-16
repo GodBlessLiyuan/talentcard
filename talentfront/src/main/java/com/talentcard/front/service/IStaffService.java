@@ -46,7 +46,7 @@ public interface IStaffService {
      * @param activitySecondContentId
      * @return
      */
-    ResultVO vertify(String talentOpenId, String staffOpenId,
+    ResultVO sendMessage(String talentOpenId, String staffOpenId,
                      Long activityFirstContentId, Long activitySecondContentId);
 
     /**

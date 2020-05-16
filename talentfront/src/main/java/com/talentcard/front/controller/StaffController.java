@@ -92,8 +92,6 @@ public class StaffController {
             resultVO = iStaffService.farmhouseVertify(httpServletRequest, talentOpenId,
                     staffOpenId, activitySecondContentId);
         }
-        iStaffService.vertify(talentOpenId,
-                staffOpenId, activityFirstContentId, activitySecondContentId);
         return resultVO;
     }
 }

@@ -117,43 +117,6 @@ public class StaffServiceImpl implements IStaffService {
     }
 
     @Override
-    public ResultVO vertify(String talentOpenId, String staffOpenId,
-                            Long activityFirstContentId, Long activitySecondContentId) {
-        String keyword1 = "";
-        String keyword2 = "";
-        TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
-        if (activityFirstContentId == 1) {
-            ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
-            keyword1 = scenicPO.getName() + "免门票服务";
-            keyword2 = scenicPO.getName();
-        } else if (activityFirstContentId == 2) {
-            FarmhousePO farmhousePO = farmhouseMapper.selectByPrimaryKey(activitySecondContentId);
-            keyword1 = farmhousePO.getName() + farmhousePO.getDiscount() + "折优惠服务";
-            keyword2 = farmhousePO.getName();
-        }
-        //用消息模板推送微信消息
-        MessageDTO messageDTO = new MessageDTO();
-        //openId
-        messageDTO.setOpenid(talentOpenId);
-        //开头
-        messageDTO.setFirst("您好，您的人才服务已使用成功");
-        messageDTO.setKeyword1(keyword1);
-        messageDTO.setKeyword2(keyword2);
-        messageDTO.setKeyword3("个人");
-        //通知时间
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
-        String currentTime = formatter.format(new Date());
-        messageDTO.setKeyword3(currentTime);
-        //模版编号
-        messageDTO.setTemplateId(2);
-        //结束
-        messageDTO.setRemark("感谢使用！");
-        messageDTO.setUrl(FrontParameterUtil.getIndexUrl());
-        MessageUtil.sendTemplateMessage(messageDTO);
-        return null;
-    }
-
-    @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO tripVertify(HttpServletRequest httpServletRequest, String talentOpenId, String staffOpenId, Long activitySecondContentId) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -209,6 +172,7 @@ public class StaffServiceImpl implements IStaffService {
         Long vertifyNum = talentActivityHistoryMapper.getVertifyNum(staffId, (long) 1, activitySecondContentId, startTime, endTime);
         HashMap<String, Object> result = new HashMap<>();
         result.put("vertifyNum", vertifyNum);
+        sendMessage(talentOpenId, staffOpenId, (long) 1, activitySecondContentId);
         return new ResultVO(1000, result);
     }
 
@@ -320,6 +284,7 @@ public class StaffServiceImpl implements IStaffService {
         Long vertifyNum = talentActivityHistoryMapper.getVertifyNum(staffId, (long) 2, activitySecondContentId, startTime, endTime);
         HashMap<String, Object> result = new HashMap<>();
         result.put("vertifyNum", vertifyNum);
+        sendMessage(talentOpenId, staffOpenId, (long) 2, activitySecondContentId);
         return new ResultVO(1000, result);
     }
 
@@ -354,4 +319,42 @@ public class StaffServiceImpl implements IStaffService {
         middleTableString = "" + cardId + "-" + category + "-" + education + "-" + title + "-" + quality;
         return middleTableString;
     }
+
+    @Override
+    public ResultVO sendMessage(String talentOpenId, String staffOpenId,
+                                Long activityFirstContentId, Long activitySecondContentId) {
+        String keyword1 = "";
+        String keyword2 = "";
+        TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
+        if (activityFirstContentId == 1) {
+            ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
+            keyword1 = scenicPO.getName() + "免门票服务";
+            keyword2 = scenicPO.getName();
+        } else if (activityFirstContentId == 2) {
+            FarmhousePO farmhousePO = farmhouseMapper.selectByPrimaryKey(activitySecondContentId);
+            keyword1 = farmhousePO.getName() + farmhousePO.getDiscount() + "折优惠服务";
+            keyword2 = farmhousePO.getName();
+        }
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(talentOpenId);
+        //开头
+        messageDTO.setFirst("您好，您的人才服务已使用成功");
+        messageDTO.setKeyword1(keyword1);
+        messageDTO.setKeyword2(keyword2);
+        messageDTO.setKeyword3("个人");
+        //通知时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        String currentTime = formatter.format(new Date());
+        messageDTO.setKeyword3(currentTime);
+        //模版编号
+        messageDTO.setTemplateId(2);
+        //结束
+        messageDTO.setRemark("感谢使用！");
+        messageDTO.setUrl(FrontParameterUtil.getIndexUrl());
+        MessageUtil.sendTemplateMessage(messageDTO);
+        return null;
+    }
+
 }
