@@ -64,10 +64,13 @@ public class MessageUtil {
         keyword3.setValue(messageDTO.getKeyword3());
         keyword3.setColor("#173177");
         map.put("keyword3", keyword3);
-        TemplateDataDto keyword4 = new TemplateDataDto();
-        keyword4.setValue(messageDTO.getKeyword4());
-        keyword4.setColor("#173177");
-        map.put("keyword4", keyword4);
+        if(messageDTO.getTemplateId() == 1) {
+            //模版1有keywords4，模板2没有，只有三个关键词
+            TemplateDataDto keyword4 = new TemplateDataDto();
+            keyword4.setValue(messageDTO.getKeyword4());
+            keyword4.setColor("#173177");
+            map.put("keyword4", keyword4);
+        }
         TemplateDataDto remark = new TemplateDataDto();
         remark.setValue(messageDTO.getRemark());
         remark.setColor("#173177");

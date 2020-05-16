@@ -119,28 +119,35 @@ public class StaffServiceImpl implements IStaffService {
     @Override
     public ResultVO vertify(String talentOpenId, String staffOpenId,
                             Long activityFirstContentId, Long activitySecondContentId) {
-        TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
+        String keyword1="";
+        String keyword2="";
+                TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
+        if(activityFirstContentId==1){
+            ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
+            keyword1 =scenicPO.getName()+"免门票服务";
+            keyword2 =scenicPO.getName();
+        }else if(activityFirstContentId==2){
+            FarmhousePO farmhousePO = farmhouseMapper.selectByPrimaryKey(activitySecondContentId);
+            keyword1 =farmhousePO.getName()+"7折优惠服务";
+            keyword2 =farmhousePO.getName();
+        }
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
         //openId
         messageDTO.setOpenid(talentOpenId);
         //开头
-        messageDTO.setFirst("您好，您已经消耗一次活动机会");
-        //姓名
-        messageDTO.setKeyword1(talentPO.getName());
-        //身份证号，屏蔽八位
-        String encryptionIdCard = talentPO.getIdCard().substring(0, 9) + "********";
-        messageDTO.setKeyword2(encryptionIdCard);
+        messageDTO.setFirst("您好，您的人才服务已使用成功");
+        messageDTO.setKeyword1(keyword1);
+        messageDTO.setKeyword2(keyword2);
         messageDTO.setKeyword3("个人");
-        //领卡机构
         //通知时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         String currentTime = formatter.format(new Date());
-        messageDTO.setKeyword4(currentTime);
+        messageDTO.setKeyword3(currentTime);
         //模版编号
-        messageDTO.setTemplateId(1);
+        messageDTO.setTemplateId(2);
         //结束
-        messageDTO.setRemark("这里就是个测试字段");
+        messageDTO.setRemark("谢谢！");
         messageDTO.setUrl(FrontParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return null;
