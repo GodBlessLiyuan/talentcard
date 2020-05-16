@@ -173,12 +173,12 @@ public class TalentTripServiceImpl implements ITalentTripService {
         talentTripPO.setStatus((byte) 1);
         talentTripPO.setDr((byte) 1);
         talentTripMapper.insertSelective(talentTripPO);
+        ActivityResidueNumUtil.minusOneResidueNum();
         return new ResultVO(1000, "领取成功");
     }
 
     /**
      * 获得可用次数的起始时间和结束时间，以及有效时间
-     *
      * @param unit
      * @return
      */

@@ -180,7 +180,6 @@ public class StaffServiceImpl implements IStaffService {
         Long vertifyNum = talentActivityHistoryMapper.getVertifyNum(staffId, (long) 1, activitySecondContentId, startTime, endTime);
         HashMap<String, Object> result = new HashMap<>();
         result.put("vertifyNum", vertifyNum);
-        ActivityResidueNumUtil.minusOneResidueNum();
         return new ResultVO(1000, result);
     }
 

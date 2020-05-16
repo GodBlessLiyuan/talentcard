@@ -27,4 +27,13 @@ public interface TalentActivityHistoryMapper extends BaseMapper<TalentActivityHi
                        @Param("activitySecondContentId") Long activitySecondContentId,
                        @Param("startTime") String startTime,
                        @Param("endTime") String endTime);
+
+    /**
+     * 根据开始结束时间，决定一定时间段内，消耗的总次数，如景区这种消耗类型的活动等
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    Long getCostTimes(@Param("startTime") String startTime,
+                        @Param("endTime") String endTime);
 }
