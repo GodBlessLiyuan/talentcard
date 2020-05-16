@@ -119,17 +119,17 @@ public class StaffServiceImpl implements IStaffService {
     @Override
     public ResultVO vertify(String talentOpenId, String staffOpenId,
                             Long activityFirstContentId, Long activitySecondContentId) {
-        String keyword1="";
-        String keyword2="";
-                TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
-        if(activityFirstContentId==1){
+        String keyword1 = "";
+        String keyword2 = "";
+        TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
+        if (activityFirstContentId == 1) {
             ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
-            keyword1 =scenicPO.getName()+"免门票服务";
-            keyword2 =scenicPO.getName();
-        }else if(activityFirstContentId==2){
+            keyword1 = scenicPO.getName() + "免门票服务";
+            keyword2 = scenicPO.getName();
+        } else if (activityFirstContentId == 2) {
             FarmhousePO farmhousePO = farmhouseMapper.selectByPrimaryKey(activitySecondContentId);
-            keyword1 =farmhousePO.getName()+"7折优惠服务";
-            keyword2 =farmhousePO.getName();
+            keyword1 = farmhousePO.getName() + farmhousePO.getDiscount() + "折优惠服务";
+            keyword2 = farmhousePO.getName();
         }
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
@@ -147,7 +147,7 @@ public class StaffServiceImpl implements IStaffService {
         //模版编号
         messageDTO.setTemplateId(2);
         //结束
-        messageDTO.setRemark("谢谢！");
+        messageDTO.setRemark("感谢使用！");
         messageDTO.setUrl(FrontParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return null;
