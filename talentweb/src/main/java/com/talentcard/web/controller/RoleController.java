@@ -22,6 +22,7 @@ public class RoleController {
 
     /**
      * 根据角色名和角色创建时间的开始结束时间间隔进行角色用户的查询
+     *
      * @param roleName
      * @param startTime
      * @param endTime
@@ -31,7 +32,10 @@ public class RoleController {
     public ResultVO queryByRole(@RequestParam(value = "roleName", required = false) String roleName,
                                 @RequestParam(value = "startTime", required = false) String startTime,
                                 @RequestParam(value = "endTime", required = false) String endTime) {
-        return roleService.queryByRole(roleName,startTime,endTime);
+        if (null != roleName) {
+            roleName = roleName.replaceAll("%", "\\\\%");
+        }
+        return roleService.queryByRole(roleName, startTime, endTime);
     }
 
 

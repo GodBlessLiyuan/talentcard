@@ -25,6 +25,7 @@ public class UserController {
 
     /**
      * 普通用户更新用户密码
+     *
      * @param session
      * @param oldPassword
      * @param newPassword
@@ -33,7 +34,7 @@ public class UserController {
     @RequestMapping("updatePassword")
     public ResultVO editPassword(HttpSession session, @RequestParam(value = "oldPassword", required = false) String oldPassword,
                                  @RequestParam(value = "newPassword", required = false) String newPassword) {
-        return userService.editPassword(session,oldPassword,newPassword);
+        return userService.editPassword(session, oldPassword, newPassword);
     }
 
     @RequestMapping("insertUser")
@@ -41,13 +42,14 @@ public class UserController {
                                @RequestParam(value = "password", required = false) String password,
                                @RequestParam(value = "name", required = false) String name,
                                @RequestParam(value = "roleId", required = false) Long roleId,
-                               @RequestParam(value = "extra",required = false) String extra) {
+                               @RequestParam(value = "extra", required = false) String extra) {
 
-        return userService.insertUser(username,password,name,roleId,extra);
+        return userService.insertUser(username, password, name, roleId, extra);
     }
 
     /**
      * 编辑用户，用户名不能修改，其它可改
+     *
      * @param username
      * @param name
      * @param roleId
@@ -58,12 +60,13 @@ public class UserController {
     public ResultVO editUser(@RequestParam(value = "username", required = false) String username,
                              @RequestParam(value = "name", required = false) String name,
                              @RequestParam(value = "roleId", required = false) Long roleId,
-                             @RequestParam(value = "extra",required = false) String extra) {
-        return userService.editUser(username,name,roleId,extra);
+                             @RequestParam(value = "extra", required = false) String extra) {
+        return userService.editUser(username, name, roleId, extra);
     }
 
     /**
      * 管理员修改密码
+     *
      * @param username
      * @param password
      * @return
@@ -71,11 +74,12 @@ public class UserController {
     @RequestMapping("adminUpUserPassword")
     public ResultVO managerUpdatePassword(@RequestParam(value = "username", required = false) String username,
                                           @RequestParam(value = "password", required = false) String password) {
-        return userService.adminUpdatePassword(username,password);
+        return userService.adminUpdatePassword(username, password);
     }
 
     /**
      * 根据用户名删除用户
+     *
      * @param username
      * @return
      */
@@ -86,17 +90,20 @@ public class UserController {
 
     /**
      * 根据用户名和角色id获取当前用户系统权限列表，需要分页展示
+     *
      * @param username
      * @param roleId
      * @return
      */
     @RequestMapping("queryByUser")
     public ResultVO queryByUser(HttpSession session,
-                                              @RequestParam(value = "start", defaultValue = "1") int pageNum,
-                                              @RequestParam(value = "length", defaultValue = "10") int pageSize,
-                                              @RequestParam(value = "username", defaultValue = "") String username,
-                                              @RequestParam(value = "roleId", defaultValue = "") Long roleId) {
+                                @RequestParam(value = "start", defaultValue = "1") int pageNum,
+                                @RequestParam(value = "length", defaultValue = "10") int pageSize,
+                                @RequestParam(value = "username", defaultValue = "") String username,
+                                @RequestParam(value = "roleId", defaultValue = "") Long roleId) {
         Map<String, Object> reqData = new HashMap<>(2);
+        username = username.replaceAll("%", "\\\\%");
+
         reqData.put("username", username.replaceAll(" ", ""));
         reqData.put("roleId", roleId);
         return userService.queryUserRole(pageNum, pageSize, reqData);
