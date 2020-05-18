@@ -2,7 +2,6 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 
 /* Drop Tables */
 
-DROP TABLE IF EXISTS t_activity_residue_num;
 DROP TABLE IF EXISTS t_annex;
 DROP TABLE IF EXISTS t_role_authority;
 DROP TABLE IF EXISTS t_authority;
@@ -18,37 +17,14 @@ DROP TABLE IF EXISTS t_user_card;
 DROP TABLE IF EXISTS t_user_current_info;
 DROP TABLE IF EXISTS t_talent;
 DROP TABLE IF EXISTS t_card;
-DROP TABLE IF EXISTS t_config;
-DROP TABLE IF EXISTS t_farmhouse_enjoy;
-DROP TABLE IF EXISTS t_farmhouse_group_authority;
-DROP TABLE IF EXISTS t_farmhouse_picture;
-DROP TABLE IF EXISTS t_talent_farmhouse;
-DROP TABLE IF EXISTS t_farmhouse;
 DROP TABLE IF EXISTS t_policy;
 DROP TABLE IF EXISTS t_user;
 DROP TABLE IF EXISTS t_role;
-DROP TABLE IF EXISTS t_scenic_enjoy;
-DROP TABLE IF EXISTS t_scenic_picture;
-DROP TABLE IF EXISTS t_talent_trip;
-DROP TABLE IF EXISTS t_trip_group_authority;
-DROP TABLE IF EXISTS t_scenic;
-DROP TABLE IF EXISTS t_staff;
-DROP TABLE IF EXISTS t_talent_activity_history;
 
 
 
 
 /* Create Tables */
-
-CREATE TABLE t_activity_residue_num
-(
-	arn_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	num bigint unsigned NOT NULL,
-	time char(64) NOT NULL,
-	PRIMARY KEY (arn_id),
-	UNIQUE (arn_id)
-);
-
 
 CREATE TABLE t_annex
 (
@@ -100,7 +76,6 @@ CREATE TABLE t_card
 	prerogative varchar(2048),
 	initial_word char(32) NOT NULL,
 	initial_num char(32) NOT NULL,
-	business_description char(255),
 	create_person char(16),
 	update_person char(16),
 	create_time datetime,
@@ -145,7 +120,7 @@ CREATE TABLE t_certification
 	-- 1是基本卡
 	-- 2是基本卡换的高级卡
 	-- 3是高级卡换的高级卡
-	type tinyint COMMENT '1是基本卡
+	type tinyint unsigned COMMENT '1是基本卡
 2是基本卡换的高级卡
 3是高级卡换的高级卡',
 	PRIMARY KEY (cert_id),
@@ -169,18 +144,6 @@ CREATE TABLE t_cert_approval
 	opinion char(255),
 	PRIMARY KEY (approval_id),
 	UNIQUE (approval_id)
-);
-
-
-CREATE TABLE t_config
-(
-	create_time datetime,
-	config_key char(64) NOT NULL,
-	config_value char(255),
-	create_time datetime,
-	update_time datetime,
-	PRIMARY KEY (config_key),
-	UNIQUE (config_key)
 );
 
 
@@ -211,62 +174,6 @@ CREATE TABLE t_education
 10.其他情况失效',
 	PRIMARY KEY (educ_id),
 	UNIQUE (educ_id)
-);
-
-
-CREATE TABLE t_farmhouse
-(
-	farmhouse_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	name char(16) NOT NULL,
-	discount double(2,1),
-	avatar char(255),
-	description text,
-	extra text,
-	qr_code char(255),
-	-- 1：上架；2：下架
-	status tinyint COMMENT '1：上架；2：下架',
-	create_time datetime,
-	-- 1 未删除  2 已删除
-	dr tinyint COMMENT '1 未删除  2 已删除',
-	PRIMARY KEY (farmhouse_id),
-	UNIQUE (farmhouse_id),
-	UNIQUE (name)
-);
-
-
-CREATE TABLE t_farmhouse_enjoy
-(
-	fe_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	farmhouse_id bigint unsigned NOT NULL,
-	card_id bigint unsigned,
-	category_id bigint unsigned,
-	education_id int unsigned,
-	title_id int unsigned,
-	quality int unsigned,
-	-- 1：人才卡；2：人才类别；3：人才学历；4：职称；5：职业资格
-	type tinyint COMMENT '1：人才卡；2：人才类别；3：人才学历；4：职称；5：职业资格',
-	PRIMARY KEY (fe_id),
-	UNIQUE (fe_id)
-);
-
-
-CREATE TABLE t_farmhouse_group_authority
-(
-	fgt_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	farmhouse_id bigint unsigned NOT NULL,
-	authority_code char(128),
-	PRIMARY KEY (fgt_id),
-	UNIQUE (fgt_id)
-);
-
-
-CREATE TABLE t_farmhouse_picture
-(
-	fp_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	farmhouse_id bigint unsigned NOT NULL,
-	picture char(255),
-	PRIMARY KEY (fp_id),
-	UNIQUE (fp_id)
 );
 
 
@@ -410,80 +317,6 @@ CREATE TABLE t_role_authority
 );
 
 
-CREATE TABLE t_scenic
-(
-	scenic_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	name char(16) NOT NULL,
-	rate int,
-	-- 1：年；2：季；3：月
-	unit tinyint COMMENT '1：年；2：季；3：月',
-	times int,
-	avatar char(255),
-	description text,
-	extra text,
-	qr_code char(255),
-	-- 1：上架；2：下架
-	status tinyint COMMENT '1：上架；2：下架',
-	create_time datetime,
-	-- 1 未删除  2 已删除
-	dr tinyint COMMENT '1 未删除  2 已删除',
-	PRIMARY KEY (scenic_id),
-	UNIQUE (scenic_id),
-	UNIQUE (name)
-);
-
-
-CREATE TABLE t_scenic_enjoy
-(
-	se_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	scenic_id bigint unsigned NOT NULL,
-	card_id bigint unsigned,
-	category_id bigint unsigned,
-	education_id int unsigned,
-	title_id int unsigned,
-	quality int unsigned,
-	-- 1：人才卡；2：人才类别；3：人才学历；4：职称；5：职业资格
-	type tinyint COMMENT '1：人才卡；2：人才类别；3：人才学历；4：职称；5：职业资格',
-	PRIMARY KEY (se_id),
-	UNIQUE (se_id)
-);
-
-
-CREATE TABLE t_scenic_picture
-(
-	sp_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	scenic_id bigint unsigned NOT NULL,
-	picture char(255),
-	PRIMARY KEY (sp_id),
-	UNIQUE (sp_id)
-);
-
-
-CREATE TABLE t_staff
-(
-	staff_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	open_id char(128),
-	name char(32),
-	-- 1 旅游
-	-- 2 农家乐
-	activity_first_content_id bigint unsigned NOT NULL COMMENT '1 旅游
-2 农家乐',
-	activity_second_content_id bigint unsigned NOT NULL,
-	activity_second_content_name char(32) NOT NULL,
-	-- 1：男；2：女
-	sex tinyint COMMENT '1：男；2：女',
-	id_card char(18),
-	phone char(32),
-	create_time datetime,
-	-- 1正在使用
-	-- 2删除
-	dr tinyint unsigned COMMENT '1正在使用
-2删除',
-	PRIMARY KEY (staff_id),
-	UNIQUE (staff_id)
-);
-
-
 CREATE TABLE t_talent
 (
 	talent_id bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -511,71 +344,6 @@ CREATE TABLE t_talent
 	PRIMARY KEY (talent_id),
 	UNIQUE (talent_id),
 	UNIQUE (id_card)
-);
-
-
-CREATE TABLE t_talent_activity_history
-(
-	tah_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	open_id char(128) NOT NULL,
-	staff_id bigint unsigned,
-	-- 1 旅游
-	-- 2 农家乐
-	activity_first_content_id bigint unsigned COMMENT '1 旅游
-2 农家乐',
-	activity_second_content_id bigint unsigned,
-	activity_second_content_name char(32),
-	ip_address char(255),
-	create_time datetime,
-	status tinyint unsigned,
-	-- 1 未删除  2 已删除
-	dr tinyint COMMENT '1 未删除  2 已删除',
-	PRIMARY KEY (tah_id),
-	UNIQUE (tah_id)
-);
-
-
-CREATE TABLE t_talent_farmhouse
-(
-	tt_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	open_id char(128) NOT NULL,
-	farmhouse_id bigint unsigned NOT NULL,
-	staff_id bigint unsigned,
-	discount double(2,1),
-	effective_time datetime,
-	update_time datetime,
-	status tinyint unsigned,
-	-- 1 未删除  2 已删除
-	dr tinyint COMMENT '1 未删除  2 已删除',
-	PRIMARY KEY (tt_id),
-	UNIQUE (tt_id)
-);
-
-
-CREATE TABLE t_talent_trip
-(
-	tt_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	open_id char(128) NOT NULL,
-	scenic_id bigint unsigned NOT NULL,
-	staff_id bigint unsigned,
-	create_time datetime,
-	effective_time datetime NOT NULL,
-	update_time datetime,
-	status tinyint unsigned,
-	-- 1 未删除  2 已删除
-	dr tinyint COMMENT '1 未删除  2 已删除',
-	PRIMARY KEY (tt_id),
-	UNIQUE (tt_id)
-);
-
-
-CREATE TABLE t_trip_group_authority
-(
-	fgt_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	scenic_id bigint unsigned NOT NULL,
-	authority_code char(128),
-	PRIMARY KEY (fgt_id),
-	UNIQUE (fgt_id)
 );
 
 
@@ -703,38 +471,6 @@ ALTER TABLE t_prof_title
 ;
 
 
-ALTER TABLE t_farmhouse_enjoy
-	ADD FOREIGN KEY (farmhouse_id)
-	REFERENCES t_farmhouse (farmhouse_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE t_farmhouse_group_authority
-	ADD FOREIGN KEY (farmhouse_id)
-	REFERENCES t_farmhouse (farmhouse_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE t_farmhouse_picture
-	ADD FOREIGN KEY (farmhouse_id)
-	REFERENCES t_farmhouse (farmhouse_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE t_talent_farmhouse
-	ADD FOREIGN KEY (farmhouse_id)
-	REFERENCES t_farmhouse (farmhouse_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
 ALTER TABLE t_policy_apply
 	ADD FOREIGN KEY (policy_id)
 	REFERENCES t_policy (policy_id)
@@ -778,54 +514,6 @@ ALTER TABLE t_role_authority
 ALTER TABLE t_user
 	ADD FOREIGN KEY (role_id)
 	REFERENCES t_role (role_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE t_scenic_enjoy
-	ADD FOREIGN KEY (scenic_id)
-	REFERENCES t_scenic (scenic_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE t_scenic_picture
-	ADD FOREIGN KEY (scenic_id)
-	REFERENCES t_scenic (scenic_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE t_talent_trip
-	ADD FOREIGN KEY (scenic_id)
-	REFERENCES t_scenic (scenic_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE t_trip_group_authority
-	ADD FOREIGN KEY (scenic_id)
-	REFERENCES t_scenic (scenic_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE t_talent_farmhouse
-	ADD FOREIGN KEY (staff_id)
-	REFERENCES t_staff (staff_id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE t_talent_trip
-	ADD FOREIGN KEY (staff_id)
-	REFERENCES t_staff (staff_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
