@@ -20,11 +20,17 @@ import java.util.Map;
 public class MessageUtil {
 
 
-    private static String templateId;
+    private static String getCardTemplateId;
+    private static String activityVertifyTemplateId;
 
     @Value("${wechat.template_id}")
-    public void setTemplateId(String templateId) {
-        MessageUtil.templateId = templateId;
+    public void setTemplateId(String getCardTemplateId) {
+        MessageUtil.getCardTemplateId = getCardTemplateId;
+    }
+
+    @Value("${wechat.activityVertifyTemplateId}")
+    public void setActivityVertifyTemplateId(String activityVertifyTemplateId) {
+        MessageUtil.activityVertifyTemplateId = activityVertifyTemplateId;
     }
 
     //注册完，审批完
@@ -33,7 +39,13 @@ public class MessageUtil {
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + at;
         WeChatTemDto weChatTemDto = new WeChatTemDto();
         weChatTemDto.setTouser(messageDTO.getOpenid());
-        weChatTemDto.setTemplate_id(templateId);
+        if (messageDTO.getTemplateId() == 1) {
+            //领卡通知
+            weChatTemDto.setTemplate_id(getCardTemplateId);
+        } else if (messageDTO.getTemplateId() == 2) {
+            //驳回通知
+            weChatTemDto.setTemplate_id(activityVertifyTemplateId);
+        }
         weChatTemDto.setUrl(messageDTO.getUrl());
         Map<String, TemplateDataDto> map = new HashMap<>();
         TemplateDataDto first = new TemplateDataDto();
@@ -52,10 +64,13 @@ public class MessageUtil {
         keyword3.setValue(messageDTO.getKeyword3());
         keyword3.setColor("#173177");
         map.put("keyword3", keyword3);
-        TemplateDataDto keyword4 = new TemplateDataDto();
-        keyword4.setValue(messageDTO.getKeyword4());
-        keyword4.setColor("#173177");
-        map.put("keyword4", keyword4);
+        if(messageDTO.getTemplateId() == 1) {
+            //模版1有keywords4，模板2没有，只有三个关键词
+            TemplateDataDto keyword4 = new TemplateDataDto();
+            keyword4.setValue(messageDTO.getKeyword4());
+            keyword4.setColor("#173177");
+            map.put("keyword4", keyword4);
+        }
         TemplateDataDto remark = new TemplateDataDto();
         remark.setValue(messageDTO.getRemark());
         remark.setColor("#173177");

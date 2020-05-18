@@ -45,7 +45,7 @@ public class ConfigServiceImpl implements IConfigService {
         }
 
         RedisUtil.setConfigValue(key, value);
-        ActivityResidueNumUtil.reviseNum(Long.parseLong(null == value ? String.valueOf(0) : value));
+        ActivityResidueNumUtil.reviseNum();
         return new ResultVO(1000);
     }
 }

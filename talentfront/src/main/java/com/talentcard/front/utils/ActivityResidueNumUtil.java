@@ -1,6 +1,7 @@
 package com.talentcard.front.utils;
 
 import com.talentcard.common.mapper.ActivityResidueNumMapper;
+import com.talentcard.common.mapper.TalentActivityHistoryMapper;
 import com.talentcard.common.pojo.ActivityResidueNumPO;
 import com.talentcard.common.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,16 @@ import java.util.Calendar;
 @Component
 public class ActivityResidueNumUtil {
     private static ActivityResidueNumMapper activityResidueNumMapper;
+    private static TalentActivityHistoryMapper talentActivityHistoryMapper;
 
     @Autowired
     public void setActivityResidueNumMapper(ActivityResidueNumMapper arMapper) {
         activityResidueNumMapper = arMapper;
+    }
+
+    @Autowired
+    public void setTalentActivityHistoryMapper(TalentActivityHistoryMapper taMapper) {
+        talentActivityHistoryMapper = taMapper;
     }
 
     /**
@@ -36,9 +43,11 @@ public class ActivityResidueNumUtil {
         ActivityResidueNumPO activityResidueNumPO = activityResidueNumMapper.findOne(time);
         Long num;
         //activityResidueNumPO，用总人数添加一条记录
+        //说明表里没有这个月份的记录，第一个人，剩余人数 = 总人数
         if (activityResidueNumPO == null) {
-            activityResidueNumPO= new ActivityResidueNumPO();
+            activityResidueNumPO = new ActivityResidueNumPO();
             activityResidueNumPO.setTime(time);
+            //取得总人数
             num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));
             activityResidueNumPO.setNum(num);
             activityResidueNumMapper.insertSelective(activityResidueNumPO);
@@ -48,9 +57,9 @@ public class ActivityResidueNumUtil {
     }
 
     /**
-     * 剩余人数-1
+     * 剩余人数-1minusOneResidueNum
      */
-    public static Integer minusOneResidueNum() {
+    public static void minusOneResidueNum() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
@@ -59,47 +68,55 @@ public class ActivityResidueNumUtil {
         Long num;
         //activityResidueNumPO，用总人数添加一条记录
         if (activityResidueNumPO == null) {
-            activityResidueNumPO= new ActivityResidueNumPO();
+            activityResidueNumPO = new ActivityResidueNumPO();
             activityResidueNumPO.setTime(time);
             num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));
             activityResidueNumPO.setNum(num - 1);
             activityResidueNumMapper.insertSelective(activityResidueNumPO);
         } else {
-            //人数少于0不能再减了！！！这里核销需要失败
             num = activityResidueNumPO.getNum() - 1;
-            if (num < 0) {
-                return 100;
-            }
             activityResidueNumPO.setNum(num);
             activityResidueNumMapper.updateByPrimaryKeySelective(activityResidueNumPO);
         }
-        return 0;
     }
 
     /**
      * 剩余人数修正
      */
-    public static void reviseNum(Long totalNum) {
+    public static void reviseNum() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
+        int lastDay;
+        if (month == 2) {
+            lastDay = calendar.getLeastMaximum(Calendar.DAY_OF_MONTH);
+        } else {
+            lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        }
         String time = year + "-" + month;
+        //决定一个月的第一天和最后一天
+        String startTime = year + "-" + month + "-01 00:00:00";
+        String endTime = year + "-" + month + "-" + lastDay + " 23:59:59";
+
         ActivityResidueNumPO activityResidueNumPO = activityResidueNumMapper.findOne(time);
-        Long num;
-        //activityResidueNumPO，用总人数添加一条记录
+        //计算实际剩余次数
+        Long num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));
+        Long vertifyTimes = talentActivityHistoryMapper.getCostTimes(startTime, endTime);
+        //有人使用过当前余额 = 总人数 - 已经使用的人数
+        num = num - vertifyTimes;
+        //剩余人数>总人数，剩余人数修正到总人数，为0，则强行一致
+        if (num < 0) {
+            num = (long) 0;
+        }
+        //没人使用过，则认为无记录，当前余额 = 总人数
         if (activityResidueNumPO == null) {
-            activityResidueNumPO= new ActivityResidueNumPO();
             activityResidueNumPO = new ActivityResidueNumPO();
             activityResidueNumPO.setTime(time);
-            num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));
             activityResidueNumPO.setNum(num);
             activityResidueNumMapper.insertSelective(activityResidueNumPO);
         } else {
-            //剩余人数>总人数，剩余人数修正到总人数
-            if (activityResidueNumPO.getNum() > totalNum) {
-                activityResidueNumPO.setNum(totalNum);
-                activityResidueNumMapper.updateByPrimaryKeySelective(activityResidueNumPO);
-            }
+            activityResidueNumPO.setNum(num);
+            activityResidueNumMapper.updateByPrimaryKeySelective(activityResidueNumPO);
         }
     }
 }
