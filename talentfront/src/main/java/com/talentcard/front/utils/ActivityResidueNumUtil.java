@@ -33,8 +33,8 @@ public class ActivityResidueNumUtil {
     }
 
     @Autowired
-    public void setTalentTripMapper(TalentTripMapper talentTripMapper) {
-        talentTripMapper = talentTripMapper;
+    public void setTalentTripMapper(TalentTripMapper tTmapper) {
+        talentTripMapper = tTmapper;
     }
 
     /**
