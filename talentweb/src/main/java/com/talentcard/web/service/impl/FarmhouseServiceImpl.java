@@ -83,7 +83,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
             String qrCode = null;
             try {
                 String url = publicPath + "/wx/#/jump?type=2&id=" + farmhousePO.getFarmhouseId() + "&name=" + farmhousePO.getName();
-                qrCode = QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, true);
+                qrCode = QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, null, true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -111,6 +111,15 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
 
         if (null != existPO && !dto.getFarmhouseId().equals(existPO.getFarmhouseId())) {
             return new ResultVO(1101);
+        }
+
+        if (!dto.getName().equals(farmhousePO.getName())) {
+            try {
+                String url = publicPath + "/wx/#/jump?type=2&id=" + dto.getFarmhouseId() + "&name=" + dto.getName();
+                QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, farmhousePO.getQrCode(), true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         FarmhouseDTO.buildPO(farmhousePO, dto);

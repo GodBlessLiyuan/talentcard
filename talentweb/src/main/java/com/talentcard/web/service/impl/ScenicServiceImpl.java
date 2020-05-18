@@ -84,7 +84,7 @@ public class ScenicServiceImpl implements IScenicService {
             String qrCode = null;
             try {
                 String url = publicPath + "/wx/#/jump?type=1&id=" + scenicPO.getScenicId() + "&name=" + scenicPO.getName();
-                qrCode = QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, true);
+                qrCode = QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, null, true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -112,6 +112,15 @@ public class ScenicServiceImpl implements IScenicService {
 
         if (null != existPO && !dto.getScenicId().equals(existPO.getScenicId())) {
             return new ResultVO(1101);
+        }
+
+        if (!dto.getName().equals(scenicPO.getName())) {
+            try {
+                String url = publicPath + "/wx/#/jump?type=1&id=" + dto.getScenicId() + "&name=" + dto.getName();
+                QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, scenicPO.getQrCode(), true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         ScenicDTO.buildPO(scenicPO, dto);

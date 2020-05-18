@@ -119,16 +119,18 @@ public class QrCodeUtil {
      * @param needCompress 是否压缩LOGO
      * @throws Exception
      */
-    public static String encode(String content, String logoPath, String rootPath, String projectDir, String dir, boolean needCompress)
+    public static String encode(String content, String logoPath, String rootPath, String projectDir, String dir, String filePath, boolean needCompress)
             throws Exception {
         BufferedImage image = QrCodeUtil.createImage(content, logoPath, needCompress);
         File targetFile = new File(rootPath + projectDir + dir);
         if (!targetFile.exists()) {
             targetFile.mkdirs();
         }
-        String filename = System.currentTimeMillis() + RandomUtil.getRandomString(8) + "." + FORMAT;
-        ImageIO.write(image, FORMAT, new File(rootPath + projectDir + dir + filename));
-        return projectDir + dir + filename;
+        if (null == filePath) {
+            filePath = projectDir + dir + System.currentTimeMillis() + RandomUtil.getRandomString(8) + "." + FORMAT;
+        }
+        ImageIO.write(image, FORMAT, new File(rootPath + filePath));
+        return filePath;
     }
 
     /**
