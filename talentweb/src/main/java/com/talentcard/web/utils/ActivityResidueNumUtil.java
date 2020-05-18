@@ -2,6 +2,7 @@ package com.talentcard.web.utils;
 
 import com.talentcard.common.mapper.ActivityResidueNumMapper;
 import com.talentcard.common.mapper.TalentActivityHistoryMapper;
+import com.talentcard.common.mapper.TalentTripMapper;
 import com.talentcard.common.pojo.ActivityResidueNumPO;
 import com.talentcard.common.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.util.Calendar;
 public class ActivityResidueNumUtil {
     private static ActivityResidueNumMapper activityResidueNumMapper;
     private static TalentActivityHistoryMapper talentActivityHistoryMapper;
+    private static TalentTripMapper talentTripMapper;
 
     @Autowired
     public void setActivityResidueNumMapper(ActivityResidueNumMapper arMapper) {
@@ -28,6 +30,11 @@ public class ActivityResidueNumUtil {
     @Autowired
     public void setTalentActivityHistoryMapper(TalentActivityHistoryMapper taMapper) {
         talentActivityHistoryMapper = taMapper;
+    }
+
+    @Autowired
+    public void setTalentTripMapper(TalentTripMapper tTmapper) {
+        talentTripMapper = tTmapper;
     }
 
     /**
@@ -101,7 +108,7 @@ public class ActivityResidueNumUtil {
         ActivityResidueNumPO activityResidueNumPO = activityResidueNumMapper.findOne(time);
         //计算实际剩余次数
         Long num = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));
-        Long vertifyTimes = talentActivityHistoryMapper.getCostTimes(startTime, endTime);
+        Long vertifyTimes = talentTripMapper.getCostTimes(startTime, endTime);
         //有人使用过当前余额 = 总人数 - 已经使用的人数
         num = num - vertifyTimes;
         //剩余人数>总人数，剩余人数修正到总人数，为0，则强行一致

@@ -83,7 +83,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
                 tripGroupAuthorityPO.setScenicId(scenicId);
                 tripGroupAuthorityMapper.insertSelective(tripGroupAuthorityPO);
             }
-        }else{
+        } else {
             //去重
             scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
         }
@@ -123,8 +123,11 @@ public class TalentTripServiceImpl implements ITalentTripService {
         List<String> timeList = getTime(unit);
         String startTime = timeList.get(0);
         String endTime = timeList.get(1);
-        //指定时间内已领取次数
-        Integer getTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
+        //指定时间内已领取福利次数
+        Integer getBenefitTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
+        //指定时间内福利核销次数
+        Integer vertifyTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 2);
+        Integer getTimes = getBenefitTimes + vertifyTimes;
         Integer residueTimes = 0;
         if (getTimes <= times) {
             residueTimes = times - getTimes;
@@ -140,13 +143,13 @@ public class TalentTripServiceImpl implements ITalentTripService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = simpleDateFormat.format(new Date());
         TalentTripPO ifExistOne = talentTripMapper.findOneNotExpired(openId, activitySecondContentId, currentTime);
-        //平台次数是否为0
-        if (ActivityResidueNumUtil.getResidueNum() <= 0) {
-            return new ResultVO(1001, "当前福利已被领取完");
-        }
         //用户是否已领取还未过期的福利
         if (ifExistOne != null) {
             return new ResultVO(1002, "当前人才已经有没用完的券");
+        }
+        //平台次数是否为0
+        if (ActivityResidueNumUtil.getResidueNum() <= 0) {
+            return new ResultVO(1001, "当前福利已被领取完");
         }
         //用户可用次数是否已超过限额
         ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
@@ -158,8 +161,11 @@ public class TalentTripServiceImpl implements ITalentTripService {
         List<String> timeList = getTime(unit);
         String startTime = timeList.get(0);
         String endTime = timeList.get(1);
-        //指定时间内已领取次数
-        Integer getTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
+        //指定时间内已领取福利次数
+        Integer getBenefitTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
+        //指定时间内福利核销次数
+        Integer vertifyTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 2);
+        Integer getTimes = getBenefitTimes + vertifyTimes;
         if (getTimes >= times) {
             return new ResultVO(1003, "当前用户已经把当月/年次数用尽");
         }
@@ -179,6 +185,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
 
     /**
      * 获得可用次数的起始时间和结束时间，以及有效时间
+     *
      * @param unit
      * @return
      */

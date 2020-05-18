@@ -163,4 +163,17 @@
     and `status` = #{status,jdbcType=TINYINT}
     and dr =1
   </select>
+  <select id="getCostTimes" resultType="java.lang.Long">
+    select
+    count(tt_id)
+    from t_talent_trip
+    where
+    dr = 1
+    <if test="startTime != null and startTime != ''">
+      and <![CDATA[ create_time >= #{startTime}]]>
+    </if>
+    <if test="endTime != null and endTime != ''">
+      and <![CDATA[ create_time <= #{endTime}]]>
+    </if>
+  </select>
 </mapper>
