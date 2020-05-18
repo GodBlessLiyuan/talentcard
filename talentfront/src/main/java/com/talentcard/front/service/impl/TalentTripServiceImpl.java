@@ -83,7 +83,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
                 tripGroupAuthorityPO.setScenicId(scenicId);
                 tripGroupAuthorityMapper.insertSelective(tripGroupAuthorityPO);
             }
-        }else{
+        } else {
             //去重
             scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
         }
@@ -123,8 +123,11 @@ public class TalentTripServiceImpl implements ITalentTripService {
         List<String> timeList = getTime(unit);
         String startTime = timeList.get(0);
         String endTime = timeList.get(1);
-        //指定时间内已领取次数
-        Integer getTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
+        //指定时间内已领取福利次数
+        Integer getBenefitTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
+        //指定时间内福利核销次数
+        Integer vertifyTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 2);
+        Integer getTimes = getBenefitTimes + vertifyTimes;
         Integer residueTimes = 0;
         if (getTimes <= times) {
             residueTimes = times - getTimes;
@@ -159,8 +162,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
         String startTime = timeList.get(0);
         String endTime = timeList.get(1);
         //指定时间内已领取次数
-        Integer getTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
-        if (getTimes >= times) {
+        Integer getBenefitTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
+        if (getBenefitTimes >= times) {
             return new ResultVO(1003, "当前用户已经把当月/年次数用尽");
         }
         TalentTripPO talentTripPO = new TalentTripPO();
@@ -179,6 +182,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
 
     /**
      * 获得可用次数的起始时间和结束时间，以及有效时间
+     *
      * @param unit
      * @return
      */
