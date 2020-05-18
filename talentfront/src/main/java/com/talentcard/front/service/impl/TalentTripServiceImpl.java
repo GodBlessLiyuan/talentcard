@@ -143,13 +143,13 @@ public class TalentTripServiceImpl implements ITalentTripService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = simpleDateFormat.format(new Date());
         TalentTripPO ifExistOne = talentTripMapper.findOneNotExpired(openId, activitySecondContentId, currentTime);
-        //平台次数是否为0
-        if (ActivityResidueNumUtil.getResidueNum() <= 0) {
-            return new ResultVO(1001, "当前福利已被领取完");
-        }
         //用户是否已领取还未过期的福利
         if (ifExistOne != null) {
             return new ResultVO(1002, "当前人才已经有没用完的券");
+        }
+        //平台次数是否为0
+        if (ActivityResidueNumUtil.getResidueNum() <= 0) {
+            return new ResultVO(1001, "当前福利已被领取完");
         }
         //用户可用次数是否已超过限额
         ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
