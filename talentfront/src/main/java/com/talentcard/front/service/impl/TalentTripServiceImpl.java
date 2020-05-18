@@ -161,9 +161,12 @@ public class TalentTripServiceImpl implements ITalentTripService {
         List<String> timeList = getTime(unit);
         String startTime = timeList.get(0);
         String endTime = timeList.get(1);
-        //指定时间内已领取次数
+        //指定时间内已领取福利次数
         Integer getBenefitTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
-        if (getBenefitTimes >= times) {
+        //指定时间内福利核销次数
+        Integer vertifyTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 2);
+        Integer getTimes = getBenefitTimes + vertifyTimes;
+        if (getTimes >= times) {
             return new ResultVO(1003, "当前用户已经把当月/年次数用尽");
         }
         TalentTripPO talentTripPO = new TalentTripPO();
