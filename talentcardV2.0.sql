@@ -174,7 +174,6 @@ CREATE TABLE t_cert_approval
 
 CREATE TABLE t_config
 (
-	create_time datetime,
 	config_key char(64) NOT NULL,
 	config_value char(255),
 	create_time datetime,
