@@ -19,11 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 public class LogInterceptor {
-    @Pointcut("execution(public * com.talentcard.web.controller.*.*(..))")
-    public void log() {
-    }
-    @Before("log()")
-    public void deoBefore(JoinPoint joinPoint) {
+//    @Pointcut("execution(public * com.talentcard.web.controller.*.*(..))")
+//    public void log() {
+//    }
+//    @Before("log()")
+//    public void deoBefore(JoinPoint joinPoint) {
 //        System.out.println("!!!!!!!!!!!!");
-    }
+//    }
 }
