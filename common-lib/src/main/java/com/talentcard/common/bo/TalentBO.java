@@ -1,9 +1,6 @@
 package com.talentcard.common.bo;
 
-import com.talentcard.common.pojo.EducationPO;
-import com.talentcard.common.pojo.ProfQualityPO;
-import com.talentcard.common.pojo.ProfTitlePO;
-import com.talentcard.common.pojo.TalentPO;
+import com.talentcard.common.pojo.*;
 import lombok.Data;
 
 import java.util.List;
@@ -67,4 +64,5 @@ public class TalentBO extends TalentPO {
     private List<EducationPO> educationPOList;
     private List<ProfTitlePO> profTitlePOList;
     private List<ProfQualityPO> profQualityPOList;
+    private List<TalentHonourPO> talentHonourPOList;
 }

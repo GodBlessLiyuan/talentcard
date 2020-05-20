@@ -12,6 +12,7 @@
     <result column="qualities" jdbcType="CHAR" property="qualities" />
     <result column="talent_honour" jdbcType="VARCHAR" property="talentHonour" />
     <result column="apply" jdbcType="TINYINT" property="apply" />
+    <result column="color" jdbcType="CHAR" property="color" />
     <result column="rate" jdbcType="INTEGER" property="rate" />
     <result column="unit" jdbcType="TINYINT" property="unit" />
     <result column="times" jdbcType="INTEGER" property="times" />
@@ -26,7 +27,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     policy_id, `name`, num, cards, categories, educations, titles, qualities, talent_honour, 
-    apply, rate, unit, times, bank, annex, user_id, create_time, dr
+    apply, color, rate, unit, times, bank, annex, user_id, create_time, dr
   </sql>
   <sql id="Blob_Column_List">
     description
@@ -47,14 +48,14 @@
     insert into t_policy (policy_id, `name`, num, 
       cards, categories, educations, 
       titles, qualities, talent_honour, 
-      apply, rate, unit, 
+      apply, color, rate, unit, 
       times, bank, annex, 
       user_id, create_time, dr, 
       description)
     values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR}, 
       #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR}, #{educations,jdbcType=CHAR}, 
       #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR}, #{talentHonour,jdbcType=VARCHAR}, 
-      #{apply,jdbcType=TINYINT}, #{rate,jdbcType=INTEGER}, #{unit,jdbcType=TINYINT}, 
+      #{apply,jdbcType=TINYINT}, #{color,jdbcType=CHAR}, #{rate,jdbcType=INTEGER}, #{unit,jdbcType=TINYINT}, 
       #{times,jdbcType=INTEGER}, #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT}, 
       #{userId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, 
       #{description,jdbcType=LONGVARCHAR})
@@ -91,6 +92,9 @@
       </if>
       <if test="apply != null">
         apply,
+      </if>
+      <if test="color != null">
+        color,
       </if>
       <if test="rate != null">
         rate,
@@ -151,6 +155,9 @@
       <if test="apply != null">
         #{apply,jdbcType=TINYINT},
       </if>
+      <if test="color != null">
+        #{color,jdbcType=CHAR},
+      </if>
       <if test="rate != null">
         #{rate,jdbcType=INTEGER},
       </if>
@@ -210,6 +217,9 @@
       <if test="apply != null">
         apply = #{apply,jdbcType=TINYINT},
       </if>
+      <if test="color != null">
+        color = #{color,jdbcType=CHAR},
+      </if>
       <if test="rate != null">
         rate = #{rate,jdbcType=INTEGER},
       </if>
@@ -251,6 +261,7 @@
       qualities = #{qualities,jdbcType=CHAR},
       talent_honour = #{talentHonour,jdbcType=VARCHAR},
       apply = #{apply,jdbcType=TINYINT},
+      color = #{color,jdbcType=CHAR},
       rate = #{rate,jdbcType=INTEGER},
       unit = #{unit,jdbcType=TINYINT},
       times = #{times,jdbcType=INTEGER},

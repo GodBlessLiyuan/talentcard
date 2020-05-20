@@ -36,6 +36,8 @@ public class PolicyPO implements Serializable {
      */
     private Byte apply;
 
+    private String color;
+
     private Integer rate;
 
     private Byte unit;

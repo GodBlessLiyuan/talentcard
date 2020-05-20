@@ -14,10 +14,12 @@
     <result column="pq_category" jdbcType="INTEGER" property="pqCategory" />
     <result column="pq_info" jdbcType="CHAR" property="pqInfo" />
     <result column="talent_category" jdbcType="CHAR" property="talentCategory" />
+    <result column="honour_id" jdbcType="BIGINT" property="honourId" />
+    <result column="th_info" jdbcType="CHAR" property="thInfo" />
   </resultMap>
   <sql id="Base_Column_List">
     uci_id, talent_id, political, education, school, first_class, major, pt_category, 
-    pt_info, pq_category, pq_info, talent_category
+    pt_info, pq_category, pq_info, talent_category, honour_id, th_info
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -33,13 +35,13 @@
     insert into t_user_current_info (uci_id, talent_id, political, 
       education, school, first_class, 
       major, pt_category, pt_info, 
-      pq_category, pq_info, talent_category
-      )
+      pq_category, pq_info, talent_category, 
+      honour_id, th_info)
     values (#{uciId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{political,jdbcType=TINYINT}, 
       #{education,jdbcType=INTEGER}, #{school,jdbcType=CHAR}, #{firstClass,jdbcType=TINYINT}, 
       #{major,jdbcType=CHAR}, #{ptCategory,jdbcType=INTEGER}, #{ptInfo,jdbcType=CHAR}, 
-      #{pqCategory,jdbcType=INTEGER}, #{pqInfo,jdbcType=CHAR}, #{talentCategory,jdbcType=CHAR}
-      )
+      #{pqCategory,jdbcType=INTEGER}, #{pqInfo,jdbcType=CHAR}, #{talentCategory,jdbcType=CHAR}, 
+      #{honourId,jdbcType=BIGINT}, #{thInfo,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.UserCurrentInfoPO">
     insert into t_user_current_info
@@ -80,6 +82,12 @@
       <if test="talentCategory != null">
         talent_category,
       </if>
+      <if test="honourId != null">
+        honour_id,
+      </if>
+      <if test="thInfo != null">
+        th_info,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uciId != null">
@@ -117,6 +125,12 @@
       </if>
       <if test="talentCategory != null">
         #{talentCategory,jdbcType=CHAR},
+      </if>
+      <if test="honourId != null">
+        #{honourId,jdbcType=BIGINT},
+      </if>
+      <if test="thInfo != null">
+        #{thInfo,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
@@ -156,6 +170,12 @@
       <if test="talentCategory != null">
         talent_category = #{talentCategory,jdbcType=CHAR},
       </if>
+      <if test="honourId != null">
+        honour_id = #{honourId,jdbcType=BIGINT},
+      </if>
+      <if test="thInfo != null">
+        th_info = #{thInfo,jdbcType=CHAR},
+      </if>
     </set>
     where uci_id = #{uciId,jdbcType=BIGINT}
   </update>
@@ -171,7 +191,9 @@
       pt_info = #{ptInfo,jdbcType=CHAR},
       pq_category = #{pqCategory,jdbcType=INTEGER},
       pq_info = #{pqInfo,jdbcType=CHAR},
-      talent_category = #{talentCategory,jdbcType=CHAR}
+      talent_category = #{talentCategory,jdbcType=CHAR},
+      honour_id = #{honourId,jdbcType=BIGINT},
+      th_info = #{thInfo,jdbcType=CHAR}
     where uci_id = #{uciId,jdbcType=BIGINT}
   </update>
 

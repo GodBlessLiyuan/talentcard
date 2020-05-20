@@ -49,21 +49,26 @@ public class MessageUtil {
         weChatTemDto.setUrl(messageDTO.getUrl());
         Map<String, TemplateDataDto> map = new HashMap<>();
         TemplateDataDto first = new TemplateDataDto();
+
         first.setValue(messageDTO.getFirst());
         first.setColor("#173177");
         map.put("first", first);
+
         TemplateDataDto keyword1 = new TemplateDataDto();
         keyword1.setValue(messageDTO.getKeyword1());
         keyword1.setColor("#173177");
         map.put("keyword1", keyword1);
+
         TemplateDataDto keyword2 = new TemplateDataDto();
         keyword2.setValue(messageDTO.getKeyword2());
         keyword2.setColor("#173177");
         map.put("keyword2", keyword2);
+
         TemplateDataDto keyword3 = new TemplateDataDto();
         keyword3.setValue(messageDTO.getKeyword3());
         keyword3.setColor("#173177");
         map.put("keyword3", keyword3);
+
         if(messageDTO.getTemplateId() == 1) {
             //模版1有keywords4，模板2没有，只有三个关键词
             TemplateDataDto keyword4 = new TemplateDataDto();
@@ -71,11 +76,13 @@ public class MessageUtil {
             keyword4.setColor("#173177");
             map.put("keyword4", keyword4);
         }
+
         TemplateDataDto remark = new TemplateDataDto();
         remark.setValue(messageDTO.getRemark());
         remark.setColor("#173177");
         map.put("remark", remark);
         weChatTemDto.setData(map);
+
         JSONObject jsonObject = JSONObject.fromObject(weChatTemDto);
         String data = jsonObject.toString();
         String result = RequestUtil.post(url, data);

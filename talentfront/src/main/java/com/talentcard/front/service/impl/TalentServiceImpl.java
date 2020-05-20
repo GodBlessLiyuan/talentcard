@@ -113,22 +113,37 @@ public class TalentServiceImpl implements ITalentService {
         if (ifExist != null) {
             return new ResultVO(2305, "该openId已被注册");
         }
-        //身份证18位校验
+        //身份证明卡：身份证、护照、驾照
         String idCard = jsonObject.getString("idCard");
-        if (idCard != null) {
-            if (idCard.length() != 18) {
-                return new ResultVO(2306, "身份证不是18位或者倒数第二位不是数字");
+        String passport = jsonObject.getString("passport");
+        String driverCard = jsonObject.getString("driverCard");
+        Byte cardType = jsonObject.getByte("cardType");
+        String identificationCardNum = "";
+        if (cardType == 1) {
+            identificationCardNum = idCard;
+            if (idCard != null) {
+                if (idCard.length() != 18) {
+                    return new ResultVO(2306, "身份证不是18位或者倒数第二位不是数字");
+                }
+                //判断身份证号倒数第二位是否是数字
+                Boolean strResult = Character.isDigit(idCard.charAt(16));
+                if (strResult == false) {
+                    return new ResultVO(2306, "身份证不是18位或者倒数第二位不是数字");
+                }
+                //身份证唯一性校验
+                Integer idCardExist = talentMapper.idCardIfUnique(idCard);
+                if (idCardExist != 0) {
+                    return new ResultVO(2306, "该身份证号已被注册");
+                }
             }
-            //判断身份证号倒数第二位是否是数字
-            Boolean strResult = Character.isDigit(idCard.charAt(16));
-            if (strResult == false) {
-                return new ResultVO(2306, "身份证不是18位或者倒数第二位不是数字");
-            }
-            //身份证唯一性校验
-            Integer idCardExist = talentMapper.idCardIfUnique(idCard);
-            if (idCardExist != 0) {
-                return new ResultVO(2306, "该身份证号已被注册");
-            }
+        } else if (cardType == 2) {
+            identificationCardNum = passport;
+        } else if (cardType == 3) {
+            identificationCardNum = driverCard;
+        }
+        if (identificationCardNum.equals("") || identificationCardNum == null
+                || identificationCardNum.length() <= 3) {
+            return new ResultVO(2310, "证件号码长度过短，不符合规范");
         }
         //设置状态值 状态3为注册中
         Byte status = (byte) 2;
@@ -138,10 +153,10 @@ public class TalentServiceImpl implements ITalentService {
         talentPO.setName(jsonObject.getString("name"));
         //通过身份证号判断性别
         talentPO.setSex(jsonObject.getByte("sex"));
-        talentPO.setCardType(jsonObject.getByte("cardType"));
+        talentPO.setCardType(cardType);
         talentPO.setIdCard(idCard);
-        talentPO.setPassport(jsonObject.getString("passport"));
-        talentPO.setDriverCard(jsonObject.getString("driverCard"));
+        talentPO.setPassport(passport);
+        talentPO.setDriverCard(driverCard);
         talentPO.setWorkUnit(jsonObject.getString("workUnit"));
         talentPO.setWorkLocation(jsonObject.getString("workLocation"));
         talentPO.setWorkLocationType(jsonObject.getByte("workLocationType"));
@@ -177,7 +192,7 @@ public class TalentServiceImpl implements ITalentService {
         educationPO.setCertId(certificationId);
         educationPO.setTalentId(talentId);
         educationPO.setStatus(status);
-        educationPO.setIfCertificate((byte)1);
+        educationPO.setIfCertificate((byte) 1);
         educationMapper.insertSelective(educationPO);
 
         //职称表
@@ -187,7 +202,7 @@ public class TalentServiceImpl implements ITalentService {
         profTitlePO.setCertId(certificationId);
         profTitlePO.setTalentId(talentId);
         profTitlePO.setStatus(status);
-        profTitlePO.setIfCertificate((byte)1);
+        profTitlePO.setIfCertificate((byte) 1);
         profTitleMapper.insertSelective(profTitlePO);
 
 
@@ -198,7 +213,7 @@ public class TalentServiceImpl implements ITalentService {
         profQualityPO.setCertId(certificationId);
         profQualityPO.setTalentId(talentId);
         profQualityPO.setStatus(status);
-        profQualityPO.setIfCertificate((byte)1);
+        profQualityPO.setIfCertificate((byte) 1);
         profQualityMapper.insertSelective(profQualityPO);
 
         //荣誉表
@@ -207,7 +222,7 @@ public class TalentServiceImpl implements ITalentService {
         talentHonourPO.setCertId(certificationId);
         talentHonourPO.setTalentId(talentId);
         talentHonourPO.setStatus(status);
-        talentHonourPO.setIfCertificate((byte)1);
+        talentHonourPO.setIfCertificate((byte) 1);
         talentHonourMapper.insertSelective(talentHonourPO);
 
         //插入基本信息表
@@ -221,7 +236,7 @@ public class TalentServiceImpl implements ITalentService {
         userCurrentInfoPO.setPtInfo(jsonObject.getString("profTitleInfo"));
         userCurrentInfoPO.setPqCategory(jsonObject.getInteger("profQualityCategory"));
         userCurrentInfoPO.setPqInfo(jsonObject.getString("profQualityInfo"));
-        userCurrentInfoPO.setPolitical((byte) 0);
+        userCurrentInfoPO.setPolitical(jsonObject.getByte("political"));
         userCurrentInfoMapper.insertSelective(userCurrentInfoPO);
 
         //人卡表新增；更新card表里currNum（+1）
@@ -259,9 +274,16 @@ public class TalentServiceImpl implements ITalentService {
         messageDTO.setFirst("您好，请您领取衢江区人才卡");
         //姓名
         messageDTO.setKeyword1(talentPO.getName());
-        //身份证号，屏蔽八位
-        String encryptionIdCard = talentPO.getIdCard().substring(0, 9) + "********";
-        messageDTO.setKeyword2(encryptionIdCard);
+        //身份证、护照、驾照3选1
+        Integer start = identificationCardNum.length() - 4;
+        Integer end = identificationCardNum.length();
+        Integer midStar = identificationCardNum.length() - 4;
+        String encryptionIdCardNum = "";
+        for (int i = 0; i < midStar; i++) {
+            encryptionIdCardNum = encryptionIdCardNum + "*";
+        }
+        encryptionIdCardNum = encryptionIdCardNum + identificationCardNum.substring(start, end);
+        messageDTO.setKeyword2(encryptionIdCardNum);
         messageDTO.setKeyword3("个人");
         //领卡机构
         //通知时间
