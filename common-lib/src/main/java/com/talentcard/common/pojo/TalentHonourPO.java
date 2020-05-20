@@ -4,18 +4,18 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * t_prof_title
+ * t_talent_honour
  * @author 
  */
 @Data
-public class ProfTitlePO implements Serializable {
-    private Long ptId;
+public class TalentHonourPO implements Serializable {
+    private Long thId;
 
-    private Integer category;
+    private Long honourId;
+
+    private String honourPicture;
 
     private String info;
-
-    private String picture;
 
     private Long certId;
 

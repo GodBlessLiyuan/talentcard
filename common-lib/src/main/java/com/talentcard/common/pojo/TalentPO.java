@@ -25,6 +25,13 @@ public class TalentPO implements Serializable {
 
     private String passport;
 
+    private String driverCard;
+
+    /**
+     * 1身份证2护照3驾照
+     */
+    private Byte cardYpe;
+
     private String workUnit;
 
     private Integer industry;
@@ -36,6 +43,14 @@ public class TalentPO implements Serializable {
     private Date createTime;
 
     private String category;
+
+    private String workLocation;
+
+    /**
+     * 1国内；
+2海外；
+     */
+    private Byte workLocationType;
 
     /**
      * 1 认证通过

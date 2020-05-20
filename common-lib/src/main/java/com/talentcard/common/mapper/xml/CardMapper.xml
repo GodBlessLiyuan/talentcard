@@ -17,7 +17,8 @@
     <result column="prerogative" jdbcType="VARCHAR" property="prerogative" />
     <result column="initial_word" jdbcType="CHAR" property="initialWord" />
     <result column="initial_num" jdbcType="CHAR" property="initialNum" />
-    <result column="business_description" jdbcType="VARCHAR" property="businessDescription" />
+    <result column="area_num" jdbcType="CHAR" property="areaNum" />
+    <result column="business_description" jdbcType="CHAR" property="businessDescription" />
     <result column="create_person" jdbcType="CHAR" property="createPerson" />
     <result column="update_person" jdbcType="CHAR" property="updatePerson" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -27,7 +28,8 @@
   <sql id="Base_Column_List">
     card_id, wx_card_id, `name`, title, `status`, member_num, waiting_member_num, curr_num, 
     description, picture, picture_cdn, logo_url, prerogative, initial_word, initial_num, 
-    business_description, create_person, update_person, create_time, update_time, dr
+    area_num, business_description, create_person, update_person, create_time, update_time, 
+    dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -45,17 +47,17 @@
       waiting_member_num, curr_num, description, 
       picture, picture_cdn, logo_url, 
       prerogative, initial_word, initial_num, 
-      business_description, create_person, update_person, 
-      create_time, update_time, dr
-      )
+      area_num, business_description, create_person, 
+      update_person, create_time, update_time, 
+      dr)
     values (#{cardId,jdbcType=BIGINT}, #{wxCardId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
       #{title,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{memberNum,jdbcType=BIGINT}, 
       #{waitingMemberNum,jdbcType=BIGINT}, #{currNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, 
       #{picture,jdbcType=CHAR}, #{pictureCdn,jdbcType=VARCHAR}, #{logoUrl,jdbcType=CHAR}, 
       #{prerogative,jdbcType=VARCHAR}, #{initialWord,jdbcType=CHAR}, #{initialNum,jdbcType=CHAR}, 
-      #{businessDescription,jdbcType=VARCHAR}, #{createPerson,jdbcType=CHAR}, #{updatePerson,jdbcType=CHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}
-      )
+      #{areaNum,jdbcType=CHAR}, #{businessDescription,jdbcType=CHAR}, #{createPerson,jdbcType=CHAR}, 
+      #{updatePerson,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{dr,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CardPO">
     insert into t_card
@@ -104,6 +106,9 @@
       </if>
       <if test="initialNum != null">
         initial_num,
+      </if>
+      <if test="areaNum != null">
+        area_num,
       </if>
       <if test="businessDescription != null">
         business_description,
@@ -170,8 +175,11 @@
       <if test="initialNum != null">
         #{initialNum,jdbcType=CHAR},
       </if>
+      <if test="areaNum != null">
+        #{areaNum,jdbcType=CHAR},
+      </if>
       <if test="businessDescription != null">
-        #{businessDescription,jdbcType=VARCHAR},
+        #{businessDescription,jdbcType=CHAR},
       </if>
       <if test="createPerson != null">
         #{createPerson,jdbcType=CHAR},
@@ -235,8 +243,11 @@
       <if test="initialNum != null">
         initial_num = #{initialNum,jdbcType=CHAR},
       </if>
+      <if test="areaNum != null">
+        area_num = #{areaNum,jdbcType=CHAR},
+      </if>
       <if test="businessDescription != null">
-        business_description = #{businessDescription,jdbcType=VARCHAR},
+        business_description = #{businessDescription,jdbcType=CHAR},
       </if>
       <if test="createPerson != null">
         create_person = #{createPerson,jdbcType=CHAR},
@@ -272,7 +283,8 @@
       prerogative = #{prerogative,jdbcType=VARCHAR},
       initial_word = #{initialWord,jdbcType=CHAR},
       initial_num = #{initialNum,jdbcType=CHAR},
-      business_description = #{businessDescription,jdbcType=VARCHAR},
+      area_num = #{areaNum,jdbcType=CHAR},
+      business_description = #{businessDescription,jdbcType=CHAR},
       create_person = #{createPerson,jdbcType=CHAR},
       update_person = #{updatePerson,jdbcType=CHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},

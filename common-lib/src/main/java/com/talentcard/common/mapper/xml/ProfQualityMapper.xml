@@ -4,14 +4,15 @@
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ProfQualityPO">
     <id column="pq_id" jdbcType="BIGINT" property="pqId" />
     <result column="category" jdbcType="INTEGER" property="category" />
-    <result column="info" jdbcType="CHAR" property="info" />
     <result column="picture" jdbcType="CHAR" property="picture" />
+    <result column="info" jdbcType="CHAR" property="info" />
     <result column="cert_id" jdbcType="BIGINT" property="certId" />
     <result column="talent_id" jdbcType="BIGINT" property="talentId" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="if_certificate" jdbcType="TINYINT" property="ifCertificate" />
   </resultMap>
   <sql id="Base_Column_List">
-    pq_id, category, info, picture, cert_id, talent_id, `status`
+    pq_id, category, picture, info, cert_id, talent_id, `status`, if_certificate
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,12 +25,12 @@
     where pq_id = #{pqId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.ProfQualityPO">
-    insert into t_prof_quality (pq_id, category, info, 
-      picture, cert_id, talent_id, 
-      `status`)
-    values (#{pqId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{info,jdbcType=CHAR}, 
-      #{picture,jdbcType=CHAR}, #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
-      #{status,jdbcType=TINYINT})
+    insert into t_prof_quality (pq_id, category, picture, 
+      info, cert_id, talent_id, 
+      `status`, if_certificate)
+    values (#{pqId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{picture,jdbcType=CHAR}, 
+      #{info,jdbcType=CHAR}, #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
+      #{status,jdbcType=TINYINT}, #{ifCertificate,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ProfQualityPO">
     insert into t_prof_quality
@@ -40,11 +41,11 @@
       <if test="category != null">
         category,
       </if>
-      <if test="info != null">
-        info,
-      </if>
       <if test="picture != null">
         picture,
+      </if>
+      <if test="info != null">
+        info,
       </if>
       <if test="certId != null">
         cert_id,
@@ -55,6 +56,9 @@
       <if test="status != null">
         `status`,
       </if>
+      <if test="ifCertificate != null">
+        if_certificate,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="pqId != null">
@@ -63,11 +67,11 @@
       <if test="category != null">
         #{category,jdbcType=INTEGER},
       </if>
-      <if test="info != null">
-        #{info,jdbcType=CHAR},
-      </if>
       <if test="picture != null">
         #{picture,jdbcType=CHAR},
+      </if>
+      <if test="info != null">
+        #{info,jdbcType=CHAR},
       </if>
       <if test="certId != null">
         #{certId,jdbcType=BIGINT},
@@ -78,6 +82,9 @@
       <if test="status != null">
         #{status,jdbcType=TINYINT},
       </if>
+      <if test="ifCertificate != null">
+        #{ifCertificate,jdbcType=TINYINT},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.ProfQualityPO">
@@ -86,11 +93,11 @@
       <if test="category != null">
         category = #{category,jdbcType=INTEGER},
       </if>
-      <if test="info != null">
-        info = #{info,jdbcType=CHAR},
-      </if>
       <if test="picture != null">
         picture = #{picture,jdbcType=CHAR},
+      </if>
+      <if test="info != null">
+        info = #{info,jdbcType=CHAR},
       </if>
       <if test="certId != null">
         cert_id = #{certId,jdbcType=BIGINT},
@@ -101,17 +108,21 @@
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
       </if>
+      <if test="ifCertificate != null">
+        if_certificate = #{ifCertificate,jdbcType=TINYINT},
+      </if>
     </set>
     where pq_id = #{pqId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.ProfQualityPO">
     update t_prof_quality
     set category = #{category,jdbcType=INTEGER},
-      info = #{info,jdbcType=CHAR},
       picture = #{picture,jdbcType=CHAR},
+      info = #{info,jdbcType=CHAR},
       cert_id = #{certId,jdbcType=BIGINT},
       talent_id = #{talentId,jdbcType=BIGINT},
-      `status` = #{status,jdbcType=TINYINT}
+      `status` = #{status,jdbcType=TINYINT},
+      if_certificate = #{ifCertificate,jdbcType=TINYINT}
     where pq_id = #{pqId,jdbcType=BIGINT}
   </update>
 
