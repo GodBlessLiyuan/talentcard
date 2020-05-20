@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,15 +26,15 @@ public class TalentController {
 
     @RequestMapping("query")
     public ResultVO query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                                      @RequestParam(value = "start", defaultValue = "") String start,
-                                      @RequestParam(value = "end", defaultValue = "") String end,
-                                      @RequestParam(value = "name", defaultValue = "") String name,
-                                      @RequestParam(value = "sex", defaultValue = "") Byte sex,
-                                      @RequestParam(value = "educ", defaultValue = "") Integer educ,
-                                      @RequestParam(value = "title", defaultValue = "") Integer title,
-                                      @RequestParam(value = "quality", defaultValue = "") Integer quality,
-                                      @RequestParam(value = "card", defaultValue = "") String card) {
+                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                          @RequestParam(value = "start", defaultValue = "") String start,
+                          @RequestParam(value = "end", defaultValue = "") String end,
+                          @RequestParam(value = "name", defaultValue = "") String name,
+                          @RequestParam(value = "sex", defaultValue = "") Byte sex,
+                          @RequestParam(value = "educ", defaultValue = "") Integer educ,
+                          @RequestParam(value = "title", defaultValue = "") Integer title,
+                          @RequestParam(value = "quality", defaultValue = "") Integer quality,
+                          @RequestParam(value = "card", defaultValue = "") String card) {
 
         Map<String, Object> reqMap = new HashMap<>(8);
         if (!"".equals(end)) {
@@ -57,16 +59,16 @@ public class TalentController {
 
     @RequestMapping("queryCert")
     public ResultVO queryCert(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                                          @RequestParam(value = "start", defaultValue = "") String start,
-                                          @RequestParam(value = "end", defaultValue = "") String end,
-                                          @RequestParam(value = "name", defaultValue = "") String name,
-                                          @RequestParam(value = "sex", defaultValue = "") Byte sex,
-                                          @RequestParam(value = "educ", defaultValue = "") Integer educ,
-                                          @RequestParam(value = "title", defaultValue = "") Integer title,
-                                          @RequestParam(value = "quality", defaultValue = "") Integer quality,
-                                          @RequestParam(value = "card", defaultValue = "") String card,
-                                          @RequestParam(value = "category", defaultValue = "") String category) {
+                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                              @RequestParam(value = "start", defaultValue = "") String start,
+                              @RequestParam(value = "end", defaultValue = "") String end,
+                              @RequestParam(value = "name", defaultValue = "") String name,
+                              @RequestParam(value = "sex", defaultValue = "") Byte sex,
+                              @RequestParam(value = "educ", defaultValue = "") Integer educ,
+                              @RequestParam(value = "title", defaultValue = "") Integer title,
+                              @RequestParam(value = "quality", defaultValue = "") Integer quality,
+                              @RequestParam(value = "card", defaultValue = "") String card,
+                              @RequestParam(value = "category", defaultValue = "") String category) {
         Map<String, Object> reqMap = new HashMap<>(8);
         if (!"".equals(end)) {
             end = end + " 23:59:59";
@@ -89,5 +91,10 @@ public class TalentController {
                          @RequestParam(value = "cardId") Long cardId) {
         iTalentService.edit(talentId, cardId);
         return new ResultVO(1000);
+    }
+
+    @RequestMapping("batch")
+    public ResultVO batch(@RequestParam(value = "file") MultipartFile file) {
+        return iTalentService.batch(file);
     }
 }

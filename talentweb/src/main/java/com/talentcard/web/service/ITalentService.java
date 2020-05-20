@@ -3,7 +3,9 @@ package com.talentcard.web.service;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.vo.TalentVO;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -42,4 +44,12 @@ public interface ITalentService {
     ResultVO queryCert(int pageNum, int pageSize, Map<String, Object> reqMap);
 
     ResultVO edit(Long talentId, Long cardId);
+
+    /**
+     * 批量认证
+     *
+     * @param file
+     * @return
+     */
+    ResultVO batch(MultipartFile file);
 }

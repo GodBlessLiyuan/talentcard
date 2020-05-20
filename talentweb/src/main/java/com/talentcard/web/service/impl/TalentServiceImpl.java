@@ -1,9 +1,12 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.sun.org.apache.regexp.internal.RE;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.ExcelUtil;
+import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
@@ -13,9 +16,16 @@ import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.TalentDetailVO;
 import com.talentcard.web.vo.TalentVO;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -45,6 +55,16 @@ public class TalentServiceImpl implements ITalentService {
     private UserCardMapper userCardMapper;
     @Autowired
     private UserCurrentInfoMapper userCurrentInfoMapper;
+
+    @Value("${file.rootDir}")
+    private String rootDir;
+    @Value("${file.projectDir}")
+    private String projectDir;
+    @Value("${file.excelDir}")
+    private String excelDir;
+
+    private static final String[] EXCEL_TITLE = {"姓名", "证件号码"};
+    private static final String[] EXCEL_TITLE_RES = {"姓名", "证件号码", "人才卡", "人才类别", "人才荣誉", "认证结果", "说明"};
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -96,6 +116,62 @@ public class TalentServiceImpl implements ITalentService {
         if (!cardId.equals(currentCardId)) {
             this.changeTalentCard(talentId, cardId);
         }
+        return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO batch(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        if (null == fileName) {
+            // 文件内表头信息或文件格式有误，请下载模板文件检查后重新上传！
+            return new ResultVO(1100);
+        }
+        String suffix = fileName.substring(fileName.lastIndexOf("."));
+        if (!".xlsx".equals(suffix)) {
+            // 文件内表头信息或文件格式有误，请下载模板文件检查后重新上传！
+            return new ResultVO(1100);
+        }
+
+        try {
+            XSSFWorkbook wb = new XSSFWorkbook(file.getInputStream());
+            XSSFSheet sheet = wb.getSheetAt(0);
+            if (!ExcelUtil.isNormTitle(sheet.getRow(1), EXCEL_TITLE)) {
+                // 文件内表头信息或文件格式有误，请下载模板文件检查后重新上传！
+                return new ResultVO(1100);
+            }
+
+            List<String> names = new LinkedList<>();
+            List<String> idCards = new LinkedList<>();
+            for (int r = 2; r <= sheet.getLastRowNum(); r++) {
+                XSSFRow row = sheet.getRow(r);
+                names.add(ExcelUtil.getStringValue(row, 0));
+                idCards.add(ExcelUtil.getStringValue(row, 1));
+            }
+
+            // TODO: 业务逻辑
+
+
+            String[][] rows = new String[names.size()][];
+            for (int i = 0; i < names.size(); i++) {
+                String[] row = new String[EXCEL_TITLE_RES.length];
+                row[0] = names.get(i);
+                row[1] = idCards.get(i);
+                row[2] = String.valueOf(3);
+                row[3] = String.valueOf(4);
+                row[4] = String.valueOf(5);
+                row[5] = String.valueOf(6);
+                row[6] = String.valueOf(7);
+                rows[i] = row;
+            }
+
+            String url = ExcelUtil.save(ExcelUtil.buildExcel("批量认证结果", EXCEL_TITLE_RES, rows),
+                    rootDir, projectDir, excelDir, "批量认证结果");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultVO(1100);
+        }
+
         return new ResultVO(1000);
     }
 
