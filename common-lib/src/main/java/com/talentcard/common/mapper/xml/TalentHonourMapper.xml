@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.talentcard.common.mapper.ProfTitleMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ProfTitlePO">
-    <id column="pt_id" jdbcType="BIGINT" property="ptId" />
-    <result column="category" jdbcType="INTEGER" property="category" />
+<mapper namespace="com.talentcard.common.mapper.TalentHonourMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentHonourPO">
+    <id column="th_id" jdbcType="BIGINT" property="thId" />
+    <result column="honour_id" jdbcType="BIGINT" property="honourId" />
+    <result column="honour_picture" jdbcType="CHAR" property="honourPicture" />
     <result column="info" jdbcType="CHAR" property="info" />
-    <result column="picture" jdbcType="CHAR" property="picture" />
     <result column="cert_id" jdbcType="BIGINT" property="certId" />
     <result column="talent_id" jdbcType="BIGINT" property="talentId" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="if_certificate" jdbcType="TINYINT" property="ifCertificate" />
   </resultMap>
   <sql id="Base_Column_List">
-    pt_id, category, info, picture, cert_id, talent_id, `status`, if_certificate
+    th_id, honour_id, honour_picture, info, cert_id, talent_id, `status`, if_certificate
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_prof_title
-    where pt_id = #{ptId,jdbcType=BIGINT}
+    from t_talent_honour
+    where th_id = #{thId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_prof_title
-    where pt_id = #{ptId,jdbcType=BIGINT}
+    delete from t_talent_honour
+    where th_id = #{thId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.ProfTitlePO">
-    insert into t_prof_title (pt_id, category, info, 
-      picture, cert_id, talent_id, 
+  <insert id="insert" parameterType="com.talentcard.common.pojo.TalentHonourPO">
+    insert into t_talent_honour (th_id, honour_id, honour_picture, 
+      info, cert_id, talent_id, 
       `status`, if_certificate)
-    values (#{ptId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{info,jdbcType=CHAR}, 
-      #{picture,jdbcType=CHAR}, #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
+    values (#{thId,jdbcType=BIGINT}, #{honourId,jdbcType=BIGINT}, #{honourPicture,jdbcType=CHAR}, 
+      #{info,jdbcType=CHAR}, #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
       #{status,jdbcType=TINYINT}, #{ifCertificate,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ProfTitlePO">
-    insert into t_prof_title
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentHonourPO">
+    insert into t_talent_honour
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="ptId != null">
-        pt_id,
+      <if test="thId != null">
+        th_id,
       </if>
-      <if test="category != null">
-        category,
+      <if test="honourId != null">
+        honour_id,
+      </if>
+      <if test="honourPicture != null">
+        honour_picture,
       </if>
       <if test="info != null">
         info,
-      </if>
-      <if test="picture != null">
-        picture,
       </if>
       <if test="certId != null">
         cert_id,
@@ -61,17 +61,17 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="ptId != null">
-        #{ptId,jdbcType=BIGINT},
+      <if test="thId != null">
+        #{thId,jdbcType=BIGINT},
       </if>
-      <if test="category != null">
-        #{category,jdbcType=INTEGER},
+      <if test="honourId != null">
+        #{honourId,jdbcType=BIGINT},
+      </if>
+      <if test="honourPicture != null">
+        #{honourPicture,jdbcType=CHAR},
       </if>
       <if test="info != null">
         #{info,jdbcType=CHAR},
-      </if>
-      <if test="picture != null">
-        #{picture,jdbcType=CHAR},
       </if>
       <if test="certId != null">
         #{certId,jdbcType=BIGINT},
@@ -87,17 +87,17 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.ProfTitlePO">
-    update t_prof_title
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentHonourPO">
+    update t_talent_honour
     <set>
-      <if test="category != null">
-        category = #{category,jdbcType=INTEGER},
+      <if test="honourId != null">
+        honour_id = #{honourId,jdbcType=BIGINT},
+      </if>
+      <if test="honourPicture != null">
+        honour_picture = #{honourPicture,jdbcType=CHAR},
       </if>
       <if test="info != null">
         info = #{info,jdbcType=CHAR},
-      </if>
-      <if test="picture != null">
-        picture = #{picture,jdbcType=CHAR},
       </if>
       <if test="certId != null">
         cert_id = #{certId,jdbcType=BIGINT},
@@ -112,36 +112,17 @@
         if_certificate = #{ifCertificate,jdbcType=TINYINT},
       </if>
     </set>
-    where pt_id = #{ptId,jdbcType=BIGINT}
+    where th_id = #{thId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.ProfTitlePO">
-    update t_prof_title
-    set category = #{category,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentHonourPO">
+    update t_talent_honour
+    set honour_id = #{honourId,jdbcType=BIGINT},
+      honour_picture = #{honourPicture,jdbcType=CHAR},
       info = #{info,jdbcType=CHAR},
-      picture = #{picture,jdbcType=CHAR},
       cert_id = #{certId,jdbcType=BIGINT},
       talent_id = #{talentId,jdbcType=BIGINT},
       `status` = #{status,jdbcType=TINYINT},
       if_certificate = #{ifCertificate,jdbcType=TINYINT}
-    where pt_id = #{ptId,jdbcType=BIGINT}
+    where th_id = #{thId,jdbcType=BIGINT}
   </update>
-
-  <select id="queryNameByTalentId" parameterType="java.lang.Long" resultType="java.lang.Integer">
-    select category
-    from t_prof_title
-    where talent_id = #{talentId,jdbcType=BIGINT} and `status` = 1
-  </select>
-
-  <update id="updateStatusByCertId">
-    update t_prof_title
-    set `status` = #{status,jdbcType=TINYINT}
-    where cert_id = #{certId,jdbcType=BIGINT}
-  </update>
-
-  <select id="selectByCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_prof_title
-    where cert_id = #{certId,jdbcType=BIGINT}
-  </select>
 </mapper>
