@@ -42,6 +42,8 @@ public class TalentServiceImpl implements ITalentService {
     @Autowired
     private ProfQualityMapper profQualityMapper;
     @Autowired
+    private TalentHonourMapper talentHonourMapper;
+    @Autowired
     private CertApprovalMapper certApprovalMapper;
     @Autowired
     private CardMapper cardMapper;
@@ -113,32 +115,36 @@ public class TalentServiceImpl implements ITalentService {
         }
         //身份证18位校验
         String idCard = jsonObject.getString("idCard");
-        if (idCard.length() != 18) {
-            return new ResultVO(2306, "身份证不是18位或者倒数第二位不是数字");
-        }
-        //判断身份证号倒数第二位是否是数字
-        Boolean strResult = Character.isDigit(idCard.charAt(16));
-        if (strResult == false) {
-            return new ResultVO(2306, "身份证不是18位或者倒数第二位不是数字");
-        }
-        //身份证唯一性校验
-        Integer idCardExist = talentMapper.idCardIfUnique(idCard);
-        if (idCardExist != 0) {
-            return new ResultVO(2306, "该身份证号已被注册");
+        if (idCard != null) {
+            if (idCard.length() != 18) {
+                return new ResultVO(2306, "身份证不是18位或者倒数第二位不是数字");
+            }
+            //判断身份证号倒数第二位是否是数字
+            Boolean strResult = Character.isDigit(idCard.charAt(16));
+            if (strResult == false) {
+                return new ResultVO(2306, "身份证不是18位或者倒数第二位不是数字");
+            }
+            //身份证唯一性校验
+            Integer idCardExist = talentMapper.idCardIfUnique(idCard);
+            if (idCardExist != 0) {
+                return new ResultVO(2306, "该身份证号已被注册");
+            }
         }
         //设置状态值 状态3为注册中
         Byte status = (byte) 2;
-        //通过currentType判定第一次注册填写的哪一个
-        Byte currentType = jsonObject.getByte("currentType");
         //人才表
         TalentPO talentPO = new TalentPO();
         talentPO.setOpenId(openId);
         talentPO.setName(jsonObject.getString("name"));
         //通过身份证号判断性别
-        talentPO.setSex(TalentUtil.judgeGenderUtil(idCard));
+        talentPO.setSex(jsonObject.getByte("sex"));
+        talentPO.setCardType(jsonObject.getByte("cardType"));
         talentPO.setIdCard(idCard);
         talentPO.setPassport(jsonObject.getString("passport"));
+        talentPO.setDriverCard(jsonObject.getString("driverCard"));
         talentPO.setWorkUnit(jsonObject.getString("workUnit"));
+        talentPO.setWorkLocation(jsonObject.getString("workLocation"));
+        talentPO.setWorkLocationType(jsonObject.getByte("workLocationType"));
         talentPO.setIndustry(jsonObject.getInteger("industry"));
         talentPO.setIndustrySecond(jsonObject.getInteger("industrySecond"));
         talentPO.setPhone(jsonObject.getString("phone"));
@@ -157,8 +163,8 @@ public class TalentServiceImpl implements ITalentService {
         certificationPO.setCreateTime(new Date());
         certificationPO.setStatus(status);
         certificationPO.setTalentId(talentId);
-        certificationPO.setCurrentType(currentType);
         certificationPO.setType((byte) 1);
+        certificationPO.setPolitical(jsonObject.getByte("political"));
         certificationMapper.add(certificationPO);
         Long certificationId = certificationPO.getCertId();
 
@@ -171,6 +177,7 @@ public class TalentServiceImpl implements ITalentService {
         educationPO.setCertId(certificationId);
         educationPO.setTalentId(talentId);
         educationPO.setStatus(status);
+        educationPO.setIfCertificate((byte)1);
         educationMapper.insertSelective(educationPO);
 
         //职称表
@@ -180,6 +187,7 @@ public class TalentServiceImpl implements ITalentService {
         profTitlePO.setCertId(certificationId);
         profTitlePO.setTalentId(talentId);
         profTitlePO.setStatus(status);
+        profTitlePO.setIfCertificate((byte)1);
         profTitleMapper.insertSelective(profTitlePO);
 
 
@@ -190,7 +198,17 @@ public class TalentServiceImpl implements ITalentService {
         profQualityPO.setCertId(certificationId);
         profQualityPO.setTalentId(talentId);
         profQualityPO.setStatus(status);
+        profQualityPO.setIfCertificate((byte)1);
         profQualityMapper.insertSelective(profQualityPO);
+
+        //荣誉表
+        TalentHonourPO talentHonourPO = new TalentHonourPO();
+        talentHonourPO.setHonourId(jsonObject.getLong("honourId"));
+        talentHonourPO.setCertId(certificationId);
+        talentHonourPO.setTalentId(talentId);
+        talentHonourPO.setStatus(status);
+        talentHonourPO.setIfCertificate((byte)1);
+        talentHonourMapper.insertSelective(talentHonourPO);
 
         //插入基本信息表
         UserCurrentInfoPO userCurrentInfoPO = new UserCurrentInfoPO();

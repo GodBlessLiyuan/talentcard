@@ -262,27 +262,27 @@
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>
 
-  <select id="query" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_policy where dr = 1
-    <if test="start != null and start !=''">and create_time >= #{start}</if>
-    <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
-    <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
-    <if test="num != null and num !=''">and num like '%' #{num} '%'</if>
-    <if test="apply != null and apply !=0">and apply = #{apply}</if>
-    order by create_time desc
-  </select>
-  <select id="queryByDr" parameterType="java.lang.Byte" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_policy
-    where dr = #{dr,jdbcType=TINYINT}
-  </select>
-  <select id="queryByNum" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_policy
-    where dr = 1 and num = #{num,jdbcType=CHAR}
-  </select>
+    <select id="query" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy where dr = 1
+        <if test="start != null and start !=''">and create_time >= #{start}</if>
+        <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
+        <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
+        <if test="num != null and num !=''">and num like '%' #{num} '%'</if>
+        <if test="apply != null and apply !=0">and apply = #{apply}</if>
+        order by create_time desc
+    </select>
+    <select id="queryByDr" parameterType="java.lang.Byte" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy
+        where dr = #{dr,jdbcType=TINYINT}
+    </select>
+    <select id="queryByNum" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy
+        where dr = 1 and num = #{num,jdbcType=CHAR}
+    </select>
 </mapper>
