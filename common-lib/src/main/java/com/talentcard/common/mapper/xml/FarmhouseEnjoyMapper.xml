@@ -188,6 +188,9 @@
     </if>
     <if test="quality != null">
       or fe.quality = #{quality, jdbcType=INTEGER}
+    </if>
+    <if test="talentHonour != null">
+      or fe.honour_id = #{talentHonour, jdbcType=BIGINT}
     </if>)
   </select>
 </mapper>

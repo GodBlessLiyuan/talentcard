@@ -61,17 +61,18 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
         Integer education = userCurrentInfoPO.getEducation();
         Integer title = userCurrentInfoPO.getPtCategory();
         Integer quality = userCurrentInfoPO.getPqCategory();
+        Long talentHonour = userCurrentInfoPO.getHonourId();
         List<Long> farmhouseIdList;
         /**
          * 农家乐idList，去中间表查询
          */
-        String code = getMiddleTableString(cardId, category, education, title, quality);
+        String code = getMiddleTableString(cardId, category, education, title, quality, talentHonour);
         farmhouseIdList = farmhouseGroupAuthorityMapper.findByCode(code);
         /**
          *  中间表没找到景区idList，去大表查询
          */
         if (farmhouseIdList.size() == 0) {
-            farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
+            farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality, talentHonour);
             if (farmhouseIdList.size() == 0) {
                 return new ResultVO(2504, "查无景区！");
             }
@@ -84,7 +85,7 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
                 farmhouseGroupAuthorityPO.setFarmhouseId(farmhouseId);
                 farmhouseGroupAuthorityMapper.insertSelective(farmhouseGroupAuthorityPO);
             }
-        }else{
+        } else {
             //去重
             farmhouseIdList = farmhouseIdList.stream().distinct().collect(Collectors.toList());
         }
@@ -119,8 +120,8 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
      * @param quality
      * @return
      */
-    public static String getMiddleTableString(Long cardId, String category,
-                                              Integer education, Integer title, Integer quality) {
+    public static String getMiddleTableString(Long cardId, String category, Integer education,
+                                              Integer title, Integer quality, Long talentHonour) {
         String middleTableString;
         if (cardId == null) {
             cardId = (long) 0;
@@ -133,11 +134,16 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
         }
         if (title == null) {
             title = 0;
+            title = 0;
         }
         if (quality == null) {
             quality = 0;
         }
-        middleTableString = "" + cardId + "-" + category + "-" + education + "-" + title + "-" + quality;
+        if (talentHonour == null) {
+            talentHonour = (long) 0;
+        }
+        middleTableString = "" + cardId + "-" + category + "-"
+                + education + "-" + title + "-" + quality + "-" + talentHonour;
         return middleTableString;
     }
 }

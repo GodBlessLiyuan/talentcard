@@ -42,9 +42,11 @@ public interface FarmhouseEnjoyMapper extends BaseMapper<FarmhouseEnjoyPO, Long>
      * @param education
      * @param title
      * @param quality
+     * @param talentHonour
      * @return
      */
     List<Long> findSecondContent(@Param("cardId") Long cardId, @Param("categoryList") List<Long> categoryList,
                                  @Param("education") Integer education, @Param("title") Integer title,
-                                 @Param("quality") Integer quality);
+                                 @Param("quality") Integer quality,
+                                 @Param("talentHonour") Long talentHonour);
 }

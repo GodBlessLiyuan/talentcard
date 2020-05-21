@@ -60,18 +60,19 @@ public class TalentTripServiceImpl implements ITalentTripService {
         Integer education = userCurrentInfoPO.getEducation();
         Integer title = userCurrentInfoPO.getPtCategory();
         Integer quality = userCurrentInfoPO.getPqCategory();
-        Long honour = userCurrentInfoPO.getHonour();
+        Long talentHonour = userCurrentInfoPO.getHonourId();
         List<Long> scenicIdList;
         /**景区idList，去中间表查询
          *
          */
-        String code = getMiddleTableString(cardId, category, education, title, quality, honour);
+        String code = getMiddleTableString(cardId, category, education, title, quality,talentHonour);
         scenicIdList = tripGroupAuthorityMapper.findByCode(code);
         /**
          *  中间表没找到景区idList，去大表查询
          */
         if (scenicIdList.size() == 0) {
-            scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality, honour);
+            scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList,
+                    education, title, quality,talentHonour);
             if (scenicIdList.size() == 0) {
                 return new ResultVO(2504, "查无景区！");
             }
@@ -230,8 +231,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
      * @param quality
      * @return
      */
-    public static String getMiddleTableString(Long cardId, String category,
-                                              Integer education, Integer title, Integer quality, Long honour) {
+    public static String getMiddleTableString(Long cardId, String category, Integer education,
+                                              Integer title, Integer quality, Long talentHonour) {
         String middleTableString;
         if (cardId == null) {
             cardId = (long) 0;
@@ -244,14 +245,16 @@ public class TalentTripServiceImpl implements ITalentTripService {
         }
         if (title == null) {
             title = 0;
+            title = 0;
         }
         if (quality == null) {
             quality = 0;
         }
-        if (honour == null) {
-            honour = 0L;
+        if (talentHonour == null) {
+            talentHonour = (long)0;
         }
-        middleTableString = "" + cardId + "-" + category + "-" + education + "-" + title + "-" + quality + "-" + honour;
+        middleTableString = "" + cardId + "-" + category + "-"
+                + education + "-" + title + "-" + quality + "-" + talentHonour;
         return middleTableString;
     }
 }
