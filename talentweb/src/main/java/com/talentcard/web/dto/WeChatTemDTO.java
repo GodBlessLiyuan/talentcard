@@ -8,7 +8,7 @@ import java.util.Map;
  * @description: TODO
  * @version: 1.0
  */
-public class WeChatTemDto {
+public class WeChatTemDTO {
 
     private String touser;
 
@@ -16,7 +16,7 @@ public class WeChatTemDto {
 
     private String url;
 
-    private Map<String, TemplateDataDto> data;
+    private Map<String, TemplateDataDTO> data;
 
     public String getTouser() {
         return touser;
@@ -42,11 +42,11 @@ public class WeChatTemDto {
         this.url = url;
     }
 
-    public Map<String, TemplateDataDto> getData() {
+    public Map<String, TemplateDataDTO> getData() {
         return data;
     }
 
-    public void setData(Map<String, TemplateDataDto> data) {
+    public void setData(Map<String, TemplateDataDTO> data) {
         this.data = data;
     }
 }

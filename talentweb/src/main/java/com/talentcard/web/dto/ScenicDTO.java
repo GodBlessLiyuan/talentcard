@@ -18,7 +18,6 @@ import java.util.List;
  * @description: 景区
  * @version: 1.0
  */
-@Component
 @Data
 public class ScenicDTO implements Serializable {
     private static final long SerialVersionUID = 1L;
@@ -93,7 +92,6 @@ public class ScenicDTO implements Serializable {
      */
     private String extra;
 
-    private static String publicPath;
 
     /**
      * 根据 dto 设置 po
@@ -187,7 +185,7 @@ public class ScenicDTO implements Serializable {
             for (String picture : dto.getPicture()) {
                 ScenicPicturePO po = new ScenicPicturePO();
                 po.setScenicId(scenicId);
-                po.setPicture(picture.split(publicPath)[1]);
+                po.setPicture(picture.split(FilePathConfig.getStaticPublicBasePath())[1]);
                 pos.add(po);
             }
         }

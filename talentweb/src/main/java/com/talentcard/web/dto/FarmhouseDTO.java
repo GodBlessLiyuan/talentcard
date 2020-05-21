@@ -5,7 +5,6 @@ import com.talentcard.common.pojo.FarmhouseEnjoyPO;
 import com.talentcard.common.pojo.FarmhousePO;
 import com.talentcard.common.pojo.FarmhousePicturePO;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import java.util.List;
  * @description: 农家乐
  * @version: 1.0
  */
-@Component
 @Data
 public class FarmhouseDTO implements Serializable {
     private static final long SerialVersionUID = 1L;

@@ -6,7 +6,7 @@ package com.talentcard.web.dto;
  * @description: TODO
  * @version: 1.0
  */
-public class TemplateDataDto {
+public class TemplateDataDTO {
 
     private String value;
     private String color;
