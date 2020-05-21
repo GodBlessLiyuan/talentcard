@@ -94,6 +94,11 @@ public class ScenicDTO implements Serializable {
 
     private static String publicPath;
 
+    /**
+     * 可查看与申请此景区的人才荣誉IDs
+     */
+    private Long[] honourIds;
+
     @Value("${file.publicPath}")
     private void setPublicPath(String publicPath) {
         ScenicDTO.publicPath = publicPath;
@@ -171,6 +176,15 @@ public class ScenicDTO implements Serializable {
                 po.setScenicId(scenicId);
                 po.setQuality(qualityId);
                 po.setType((byte) 5);
+                pos.add(po);
+            }
+        }
+        if (null != dto.getHonourIds() && dto.getHonourIds().length > 0) {
+            for (Long honourId : dto.getHonourIds()) {
+                ScenicEnjoyPO po = new ScenicEnjoyPO();
+                po.setScenicId(scenicId);
+                po.setHonourId(honourId);
+                po.setType((byte) 6);
                 pos.add(po);
             }
         }

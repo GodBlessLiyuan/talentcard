@@ -13,11 +13,11 @@
     <result column="type" jdbcType="TINYINT" property="type" />
   </resultMap>
   <sql id="Base_Column_List">
-    se_id, scenic_id, card_id, category_id, education_id, title_id, quality, honour_id, 
+    se_id, scenic_id, card_id, category_id, education_id, title_id, quality, honour_id,
     `type`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_scenic_enjoy
     where se_id = #{seId,jdbcType=BIGINT}
@@ -27,12 +27,12 @@
     where se_id = #{seId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.ScenicEnjoyPO">
-    insert into t_scenic_enjoy (se_id, scenic_id, card_id, 
-      category_id, education_id, title_id, 
+    insert into t_scenic_enjoy (se_id, scenic_id, card_id,
+      category_id, education_id, title_id,
       quality, honour_id, `type`
       )
-    values (#{seId,jdbcType=BIGINT}, #{scenicId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT}, 
-      #{categoryId,jdbcType=BIGINT}, #{educationId,jdbcType=INTEGER}, #{titleId,jdbcType=INTEGER}, 
+    values (#{seId,jdbcType=BIGINT}, #{scenicId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT},
+      #{categoryId,jdbcType=BIGINT}, #{educationId,jdbcType=INTEGER}, #{titleId,jdbcType=INTEGER},
       #{quality,jdbcType=INTEGER}, #{honourId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}
       )
   </insert>
@@ -142,12 +142,12 @@
   <insert id="batchInsert" parameterType="com.talentcard.common.pojo.ScenicEnjoyPO">
     insert into t_scenic_enjoy (se_id, scenic_id, card_id,
     category_id, education_id, title_id,
-    quality, `type`)
+    quality, honour_id, `type`)
     values
     <foreach collection="list" separator="," item="po">
       (#{po.seId,jdbcType=BIGINT}, #{po.scenicId,jdbcType=BIGINT}, #{po.cardId,jdbcType=BIGINT},
       #{po.categoryId,jdbcType=BIGINT}, #{po.educationId,jdbcType=INTEGER}, #{po.titleId,jdbcType=INTEGER},
-      #{po.quality,jdbcType=INTEGER}, #{po.type,jdbcType=TINYINT})
+      #{po.quality,jdbcType=INTEGER}, #{po.honourId,jdbcType=BIGINT}, #{po.type,jdbcType=TINYINT})
     </foreach>
   </insert>
 

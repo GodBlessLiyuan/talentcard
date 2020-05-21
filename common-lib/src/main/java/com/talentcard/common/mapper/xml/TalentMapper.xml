@@ -94,8 +94,8 @@
         </collection>
     </resultMap>
     <sql id="Base_Column_List">
-    talent_id, open_id, `name`, sex, id_card, passport, driver_card, card_type, work_unit, 
-    industry, industry_second, political, phone, create_time, category, work_location, 
+    talent_id, open_id, `name`, sex, id_card, passport, driver_card, card_type, work_unit,
+    industry, industry_second, political, phone, create_time, category, work_location,
     work_location_type, `status`, card_id, dr
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -109,19 +109,19 @@
     where talent_id = #{talentId,jdbcType=BIGINT}
   </delete>
     <insert id="insert" parameterType="com.talentcard.common.pojo.TalentPO">
-    insert into t_talent (talent_id, open_id, `name`, 
-      sex, id_card, passport, driver_card, 
-      card_type, work_unit, industry, 
-      industry_second, political, phone, 
-      create_time, category, work_location, 
-      work_location_type, `status`, card_id, 
+    insert into t_talent (talent_id, open_id, `name`,
+      sex, id_card, passport, driver_card,
+      card_type, work_unit, industry,
+      industry_second, political, phone,
+      create_time, category, work_location,
+      work_location_type, `status`, card_id,
       dr)
-    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
-      #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{driverCard,jdbcType=CHAR}, 
-      #{cardType,jdbcType=TINYINT}, #{workUnit,jdbcType=CHAR}, #{industry,jdbcType=INTEGER}, 
-      #{industrySecond,jdbcType=INTEGER}, #{political,jdbcType=TINYINT}, #{phone,jdbcType=CHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{category,jdbcType=CHAR}, #{workLocation,jdbcType=CHAR}, 
-      #{workLocationType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{cardId,jdbcType=BIGINT}, 
+    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
+      #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{driverCard,jdbcType=CHAR},
+      #{cardType,jdbcType=TINYINT}, #{workUnit,jdbcType=CHAR}, #{industry,jdbcType=INTEGER},
+      #{industrySecond,jdbcType=INTEGER}, #{political,jdbcType=TINYINT}, #{phone,jdbcType=CHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{category,jdbcType=CHAR}, #{workLocation,jdbcType=CHAR},
+      #{workLocationType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{cardId,jdbcType=BIGINT},
       #{dr,jdbcType=TINYINT})
   </insert>
     <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentPO">
