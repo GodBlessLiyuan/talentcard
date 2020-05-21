@@ -1,5 +1,6 @@
 package com.talentcard.web.dto;
 
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.FarmhouseEnjoyPO;
 import com.talentcard.common.pojo.FarmhousePO;
 import com.talentcard.common.pojo.FarmhousePicturePO;
@@ -79,17 +80,10 @@ public class FarmhouseDTO implements Serializable {
      */
     private String extra;
 
-    private static String publicPath;
-
     /**
      * 可查看与申请此景区的人才荣誉IDs
      */
     private Long[] honourIds;
-
-    @Value("${file.publicPath}")
-    private void setPublicPath(String publicPath) {
-        FarmhouseDTO.publicPath = publicPath;
-    }
 
     /**
      * 根据 dto 设置 po

@@ -1,11 +1,10 @@
 package com.talentcard.web.dto;
 
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.ScenicEnjoyPO;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.ScenicPicturePO;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -91,17 +90,10 @@ public class ScenicDTO implements Serializable {
      */
     private String extra;
 
-    private static String publicPath;
-
     /**
      * 可查看与申请此景区的人才荣誉IDs
      */
     private Long[] honourIds;
-
-    @Value("${file.publicPath}")
-    private void setPublicPath(String publicPath) {
-        ScenicDTO.publicPath = publicPath;
-    }
 
     /**
      * 根据 dto 设置 po
