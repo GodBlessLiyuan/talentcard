@@ -10,7 +10,6 @@ import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.FrontParameterUtil;
 import com.talentcard.front.utils.MessageUtil;
-import com.talentcard.front.utils.TalentUtil;
 import com.talentcard.front.vo.TalentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,6 +63,8 @@ public class TalentServiceImpl implements ITalentService {
     private String profTitleDir;
     @Value("${file.profQualityDir}")
     private String profQualityDir;
+    @Value("${file.talentHonourDir}")
+    private String talentHonourDir;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -142,7 +143,7 @@ public class TalentServiceImpl implements ITalentService {
             identificationCardNum = driverCard;
         }
         if (identificationCardNum.equals("") || identificationCardNum == null
-                || identificationCardNum.length() <= 3) {
+                || identificationCardNum.length() <= 4) {
             return new ResultVO(2310, "证件号码长度过短，不符合规范");
         }
         //设置状态值 状态3为注册中
@@ -165,6 +166,7 @@ public class TalentServiceImpl implements ITalentService {
         talentPO.setPhone(jsonObject.getString("phone"));
         talentPO.setCreateTime(new Date());
         talentPO.setStatus(status);
+        talentPO.setPolitical(jsonObject.getByte("political"));
         talentPO.setDr((byte) 1);
         //人才表的初级卡cardId
         CardPO cardPO = cardMapper.findDefaultCard();
@@ -192,7 +194,7 @@ public class TalentServiceImpl implements ITalentService {
         educationPO.setCertId(certificationId);
         educationPO.setTalentId(talentId);
         educationPO.setStatus(status);
-        educationPO.setIfCertificate((byte) 1);
+        educationPO.setIfCertificate((byte) 10);
         educationMapper.insertSelective(educationPO);
 
         //职称表
@@ -202,7 +204,7 @@ public class TalentServiceImpl implements ITalentService {
         profTitlePO.setCertId(certificationId);
         profTitlePO.setTalentId(talentId);
         profTitlePO.setStatus(status);
-        profTitlePO.setIfCertificate((byte) 1);
+        profTitlePO.setIfCertificate((byte) 10);
         profTitleMapper.insertSelective(profTitlePO);
 
 
@@ -213,7 +215,7 @@ public class TalentServiceImpl implements ITalentService {
         profQualityPO.setCertId(certificationId);
         profQualityPO.setTalentId(talentId);
         profQualityPO.setStatus(status);
-        profQualityPO.setIfCertificate((byte) 1);
+        profQualityPO.setIfCertificate((byte) 10);
         profQualityMapper.insertSelective(profQualityPO);
 
         //荣誉表
@@ -222,7 +224,7 @@ public class TalentServiceImpl implements ITalentService {
         talentHonourPO.setCertId(certificationId);
         talentHonourPO.setTalentId(talentId);
         talentHonourPO.setStatus(status);
-        talentHonourPO.setIfCertificate((byte) 1);
+        talentHonourPO.setIfCertificate((byte) 10);
         talentHonourMapper.insertSelective(talentHonourPO);
 
         //插入基本信息表
@@ -274,15 +276,8 @@ public class TalentServiceImpl implements ITalentService {
         messageDTO.setFirst("您好，请您领取衢江区人才卡");
         //姓名
         messageDTO.setKeyword1(talentPO.getName());
-        //身份证、护照、驾照3选1
-        Integer start = identificationCardNum.length() - 4;
-        Integer end = identificationCardNum.length();
-        Integer midStar = identificationCardNum.length() - 4;
-        String encryptionIdCardNum = "";
-        for (int i = 0; i < midStar; i++) {
-            encryptionIdCardNum = encryptionIdCardNum + "*";
-        }
-        encryptionIdCardNum = encryptionIdCardNum + identificationCardNum.substring(start, end);
+        //身份证、护照、驾照3选1，后四位变星星
+        String encryptionIdCardNum = identificationCardEncryption(identificationCardNum);
         messageDTO.setKeyword2(encryptionIdCardNum);
         messageDTO.setKeyword3("个人");
         //领卡机构
@@ -302,7 +297,6 @@ public class TalentServiceImpl implements ITalentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO identification(String openId,
-                                   Byte political,
                                    Integer education,
                                    String school,
                                    Byte firstClass,
@@ -311,9 +305,11 @@ public class TalentServiceImpl implements ITalentService {
                                    String profQualityInfo,
                                    Integer profTitleCategory,
                                    String profTitleInfo,
+                                   Long honourId,
                                    MultipartFile educPicture,
                                    MultipartFile profTitlePicture,
-                                   MultipartFile profQualityPicture) {
+                                   MultipartFile profQualityPicture,
+                                   MultipartFile talentHonourPicture) {
         //校验数据库是否存在状态3的数据
         Integer ifWaitingApproval = certificationMapper.ifWaitingApproval(openId);
         if (ifWaitingApproval != null && ifWaitingApproval != 0) {
@@ -333,6 +329,7 @@ public class TalentServiceImpl implements ITalentService {
         String educUrl = "";
         String profTitleUrl = "";
         String profQualityUrl = "";
+        String talentHonourUrl = "";
         if (educPicture != null) {
             educUrl = FileUtil.uploadFile
                     (educPicture, rootDir, projectDir, educationDir, "education");
@@ -345,17 +342,23 @@ public class TalentServiceImpl implements ITalentService {
             profQualityUrl = FileUtil.uploadFile
                     (profQualityPicture, rootDir, projectDir, profQualityDir, "profQuality");
         }
-        if (educUrl == "" && profTitleUrl == "" && profQualityUrl == "") {
+        if (talentHonourPicture != null) {
+            talentHonourUrl = FileUtil.uploadFile
+                    (talentHonourPicture, rootDir, projectDir, talentHonourDir, "talentHonour");
+        }
+        if (educUrl == "" && profTitleUrl == "" && profQualityUrl == "" && talentHonourUrl == "") {
             return new ResultVO(2304, "上传文件失败");
         }
 
         //人才表；通过openId获取talent表里唯一的信息
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500, "查无此人！");
+        }
         Long talentId = talentPO.getTalentId();
 
         //认证表
         CertificationPO certificationPO = new CertificationPO();
-        certificationPO.setPolitical(political);
         certificationPO.setCreateTime(new Date());
         certificationPO.setStatus(status);
         certificationPO.setTalentId(talentId);
@@ -381,6 +384,12 @@ public class TalentServiceImpl implements ITalentService {
         educationPO.setCertId(certificationId);
         educationPO.setTalentId(talentId);
         educationPO.setStatus(status);
+        if (education == null) {
+            //10代表本次不认证
+            educationPO.setIfCertificate((byte) 10);
+        } else {
+            educationPO.setIfCertificate((byte) 2);
+        }
         educationMapper.insertSelective(educationPO);
 
         //职称表
@@ -391,6 +400,12 @@ public class TalentServiceImpl implements ITalentService {
         profTitlePO.setCertId(certificationId);
         profTitlePO.setTalentId(talentId);
         profTitlePO.setStatus(status);
+        if (profTitlePO == null) {
+            //10代表本次不认证
+            profTitlePO.setIfCertificate((byte) 10);
+        } else {
+            profTitlePO.setIfCertificate((byte) 2);
+        }
         profTitleMapper.insertSelective(profTitlePO);
 
 
@@ -402,8 +417,28 @@ public class TalentServiceImpl implements ITalentService {
         profQualityPO.setCertId(certificationId);
         profQualityPO.setTalentId(talentId);
         profQualityPO.setStatus(status);
+        if (profQualityPO == null) {
+            //10代表本次不认证
+            profQualityPO.setIfCertificate((byte) 10);
+        } else {
+            profQualityPO.setIfCertificate((byte) 2);
+        }
         profQualityMapper.insertSelective(profQualityPO);
 
+        //人才荣誉表
+        TalentHonourPO talentHonourPO = new TalentHonourPO();
+        talentHonourPO.setHonourId(honourId);
+        talentHonourPO.setHonourPicture(talentHonourUrl);
+        talentHonourPO.setCertId(certificationId);
+        talentHonourPO.setTalentId(talentId);
+        talentHonourPO.setStatus(status);
+        if (talentHonourPO == null) {
+            //10代表本次不认证
+            talentHonourPO.setIfCertificate((byte) 10);
+        } else {
+            talentHonourPO.setIfCertificate((byte) 2);
+        }
+        talentHonourMapper.insertSelective(talentHonourPO);
         return new ResultVO(1000);
     }
 
@@ -430,10 +465,36 @@ public class TalentServiceImpl implements ITalentService {
             }
         }
         TalentVO talentVO = TalentVO.convert(talentBO);
-        //身份证号打星星
-        String starIdCard = talentVO.getIdCard().substring(0, 9) + "********";
-        talentVO.setIdCard(starIdCard);
+        /**
+         * 证件号后四位打星星
+         */
+        String idCard = talentVO.getIdCard();
+        String passport = talentVO.getPassport();
+        String driverCard = talentVO.getDriverCard();
+        if (idCard != null && !idCard.equals("")) {
+            idCard = identificationCardEncryption(idCard);
+            talentVO.setIdCard(idCard);
+        }
+        if (passport != null && !passport.equals("")) {
+            passport = identificationCardEncryption(passport);
+            talentVO.setPassport(passport);
+        }
+        if (driverCard != null && !driverCard.equals("")) {
+            driverCard = identificationCardEncryption(driverCard);
+            talentVO.setDriverCard(driverCard);
+        }
         return new ResultVO(1000, talentVO);
 
+    }
+
+    /**
+     * 证件号码，后四位加密
+     *
+     * @return
+     */
+    public String identificationCardEncryption(String identificationCardNum) {
+        Integer end = identificationCardNum.length() - 4;
+        String encryptionIdCardNum = identificationCardNum.substring(0, end) + "****";
+        return encryptionIdCardNum;
     }
 }

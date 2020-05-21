@@ -33,7 +33,7 @@ public class ApprovalTalentVO {
     private String category;
     private Long cardId;
     private Long certId;
-    private String political;
+    private Byte political;
     private Date createTime;
     private Date completeCertificationTime;
     /**

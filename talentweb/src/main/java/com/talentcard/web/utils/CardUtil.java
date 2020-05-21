@@ -147,9 +147,9 @@ public class CardUtil {
         memberCardPO.setCustom_field2(customFiled2);
         memberCardPO.setCustom_field3(customFiled3);
 
-        //我的权益
+        //我的权益：我的人才政策
         CustomCell1PO customCell1PO = new CustomCell1PO();
-        customCell1PO.setName("我的权益");
+        customCell1PO.setName("我的人才政策");
         customCell1PO.setTips("");
         customCell1PO.setUrl(WebParameterUtil.getMySeniorRightUrl());
 

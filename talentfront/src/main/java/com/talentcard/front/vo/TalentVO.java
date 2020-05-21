@@ -4,6 +4,7 @@ import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.pojo.EducationPO;
 import com.talentcard.common.pojo.ProfQualityPO;
 import com.talentcard.common.pojo.ProfTitlePO;
+import com.talentcard.common.pojo.TalentHonourPO;
 import com.talentcard.front.utils.FrontParameterUtil;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,8 +26,10 @@ public class TalentVO {
     private String openId;
     private String name;
     private Byte sex;
+    private Byte cardType;
     private String idCard;
     private String passport;
+    private String driverCard;
     private String workUnit;
     private Integer industry;
     private Integer industrySecond;
@@ -34,12 +37,15 @@ public class TalentVO {
     private Byte talentStatus;
     private String talentCategory;
     private Long certId;
-    private String political;
+    private Byte political;
     private Byte certificationStatus;
     private Byte currentType;
+    private Byte workLocationType;
+    private String workLocation;
     private List<EducationPO> educationPOList;
     private List<ProfTitlePO> profTitlePOList;
     private List<ProfQualityPO> profQualityPOList;
+    private List<TalentHonourPO> talentHonourPOList;
 
     /**
      * Bo转VO
@@ -53,7 +59,7 @@ public class TalentVO {
         talentVO.setOpenId(talentBO.getOpenId());
         talentVO.setName(talentBO.getName());
         talentVO.setIdCard(talentBO.getIdCard());
-//        talentVO.setPassport(talentBO.getPassport());
+        talentVO.setPassport(talentBO.getPassport());
         talentVO.setWorkUnit(talentBO.getWorkUnit());
         talentVO.setIndustry(talentBO.getIndustry());
         talentVO.setIndustrySecond(talentBO.getIndustrySecond());
@@ -65,6 +71,10 @@ public class TalentVO {
         talentVO.setCertificationStatus(talentBO.getCertificationStatus());
         talentVO.setCurrentType(talentBO.getCurrentType());
         talentVO.setSex(talentBO.getSex());
+        talentVO.setCardType(talentBO.getCardType());
+        talentVO.setWorkLocation(talentBO.getWorkLocation());
+        talentVO.setWorkLocationType(talentBO.getWorkLocationType());
+        talentVO.setDriverCard(talentBO.getDriverCard());
 
         //学历文件
         if (talentBO.getEducationPOList() != null) {
@@ -92,9 +102,18 @@ public class TalentVO {
                 }
             }
         }
+        //职业资格文件
+        if (talentBO.getTalentHonourPOList() != null) {
+            for (TalentHonourPO talentHonourPO : talentBO.getTalentHonourPOList()) {
+                if (talentHonourPO.getHonourPicture() != null && !talentHonourPO.getHonourPicture() .equals("")) {
+                    talentHonourPO.setHonourPicture(FrontParameterUtil.getPublicPath() + talentHonourPO.getHonourPicture());
+                }
+            }
+        }
         talentVO.setEducationPOList(talentBO.getEducationPOList());
         talentVO.setProfTitlePOList(talentBO.getProfTitlePOList());
         talentVO.setProfQualityPOList(talentBO.getProfQualityPOList());
+        talentVO.setTalentHonourPOList(talentBO.getTalentHonourPOList());
         return talentVO;
     }
 
@@ -109,7 +128,6 @@ public class TalentVO {
         for (TalentBO talentBO : talentBOList) {
             talentVOList.add(TalentVO.convert(talentBO));
         }
-
 
         return talentVOList;
     }

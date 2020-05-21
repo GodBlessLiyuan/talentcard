@@ -39,7 +39,6 @@ public interface ITalentService {
 
     /**
      * @param openId
-     * @param political
      * @param education
      * @param school
      * @param firstClass
@@ -54,7 +53,6 @@ public interface ITalentService {
      * @return
      */
     ResultVO identification(String openId,
-                            Byte political,
                             Integer education,
                             String school,
                             Byte firstClass,
@@ -63,7 +61,9 @@ public interface ITalentService {
                             String profQualityInfo,
                             Integer profTitleCategory,
                             String profTitleInfo,
+                            Long honourId,
                             MultipartFile educPicture,
                             MultipartFile profTitlePicture,
-                            MultipartFile profQualityPicture);
+                            MultipartFile profQualityPicture,
+                            MultipartFile talentHonourPicture);
 }
