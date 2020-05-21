@@ -327,7 +327,6 @@ public class StaffServiceImpl implements IStaffService {
                                 Long activityFirstContentId, Long activitySecondContentId) {
         String keyword1 = "";
         String keyword2 = "";
-        TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
         if (activityFirstContentId == 1) {
             ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
             keyword1 = scenicPO.getName() + "免门票服务";
