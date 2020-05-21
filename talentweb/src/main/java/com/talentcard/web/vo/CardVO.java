@@ -1,8 +1,7 @@
 package com.talentcard.web.vo;
 
-import com.talentcard.common.bo.TalentBO;
-import com.talentcard.common.pojo.*;
-import com.talentcard.web.utils.WebParameterUtil;
+import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.pojo.CardPO;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -69,12 +68,12 @@ public class CardVO {
 
         //背景图
         if (cardVO.getPicture() != null && cardVO.getPicture() != "") {
-            cardVO.setPicture(WebParameterUtil.getPublicPath() + cardVO.getPicture());
+            cardVO.setPicture(FilePathConfig.getStaticPublicBasePath() + cardVO.getPicture());
         }
         //logo图
         //背景图
         if (cardVO.getLogoUrl() != null && cardVO.getLogoUrl() != "") {
-            cardVO.setLogoUrl(WebParameterUtil.getPublicPath() + cardVO.getLogoUrl());
+            cardVO.setLogoUrl(FilePathConfig.getStaticPublicBasePath() + cardVO.getLogoUrl());
         }
         return cardVO;
     }

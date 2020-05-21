@@ -1,6 +1,7 @@
 package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
@@ -353,7 +354,7 @@ public class StaffServiceImpl implements IStaffService {
         messageDTO.setTemplateId(2);
         //结束
         messageDTO.setRemark("感谢使用！");
-        messageDTO.setUrl(FrontParameterUtil.getIndexUrl());
+        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
         MessageUtil.sendTemplateMessage(messageDTO);
         return null;
     }

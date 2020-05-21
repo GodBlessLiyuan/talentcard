@@ -2,6 +2,7 @@ package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.FarmhouseEnjoyMapper;
 import com.talentcard.common.mapper.FarmhouseGroupAuthorityMapper;
 import com.talentcard.common.mapper.FarmhouseMapper;
@@ -45,17 +46,8 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
     private FarmhousePictureMapper farmhousePictureMapper;
     @Autowired
     private FarmhouseGroupAuthorityMapper farmhouseGroupAuthorityMapper;
-
-    @Value("${file.publicPath}")
-    private String publicPath;
-    @Value("${file.rootDir}")
-    private String rootDir;
-    @Value("${file.projectDir}")
-    private String projectDir;
-    @Value("${file.farmhouseDir}")
-    private String farmhouseDir;
-    @Value("${file.qrCodeDir}")
-    private String qrCodeDir;
+    @Autowired
+    private FilePathConfig filePathConfig;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -82,8 +74,8 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
 
             String qrCode = null;
             try {
-                String url = publicPath + "/wx/#/jump?type=2&id=" + farmhousePO.getFarmhouseId() + "&name=" + farmhousePO.getName();
-                qrCode = QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, null, true);
+                String url = filePathConfig.getPublicBasePath() + "/wx/#/jump?type=2&id=" + farmhousePO.getFarmhouseId() + "&name=" + farmhousePO.getName();
+                qrCode = QrCodeUtil.encode(url, null, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getQrCodeDir(), null, true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -115,8 +107,8 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
 
         if (!dto.getName().equals(farmhousePO.getName())) {
             try {
-                String url = publicPath + "/wx/#/jump?type=2&id=" + dto.getFarmhouseId() + "&name=" + dto.getName();
-                QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, farmhousePO.getQrCode(), true);
+                String url = filePathConfig.getPublicBasePath() + "/wx/#/jump?type=2&id=" + dto.getFarmhouseId() + "&name=" + dto.getName();
+                QrCodeUtil.encode(url, null, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getQrCodeDir(), farmhousePO.getQrCode(), true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -168,7 +160,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
 
     @Override
     public ResultVO upload(MultipartFile file) {
-        String picture = FileUtil.uploadFile(file, rootDir, projectDir, farmhouseDir, "farmhouse");
-        return new ResultVO<>(1000, publicPath + picture);
+        String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getFarmHouseDir(), "farmhouse");
+        return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 }

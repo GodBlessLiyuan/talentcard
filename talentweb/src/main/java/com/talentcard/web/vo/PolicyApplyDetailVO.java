@@ -4,9 +4,8 @@ import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.pojo.AnnexPO;
 import com.talentcard.common.pojo.PolicyApprovalPO;
 import com.talentcard.common.utils.DateUtil;
+import com.talentcard.common.config.FilePathConfig;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -18,7 +17,6 @@ import java.util.List;
  * @description: 政策权益申请-详情
  * @version: 1.0
  */
-@Component
 @Data
 public class PolicyApplyDetailVO implements Serializable {
     private static final long SerialVersionUID = 1L;
@@ -61,16 +59,6 @@ public class PolicyApplyDetailVO implements Serializable {
     private List<PolicyApprovalVO> approval;
 
     /**
-     * 公共路径
-     */
-    private static String publicPath;
-
-    @Value("${file.publicPath}")
-    private void setPublicPath(String publicPath) {
-        PolicyApplyDetailVO.publicPath = publicPath;
-    }
-
-    /**
      * bo 转 vo
      *
      * @param bo
@@ -98,7 +86,7 @@ public class PolicyApplyDetailVO implements Serializable {
             for (AnnexPO po : bo.getAnnexes()) {
                 AnnexVO annexVO = new AnnexVO();
                 annexVO.setName(po.getName());
-                annexVO.setUrl(publicPath + po.getLocation());
+                annexVO.setUrl(FilePathConfig.getStaticPublicBasePath() + po.getLocation());
                 annexVOs.add(annexVO);
             }
             vo.setAnnexes(annexVOs);

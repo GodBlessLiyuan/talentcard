@@ -1,9 +1,9 @@
 package com.talentcard.web.vo;
 
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.constant.TalentCardConstant;
 import com.talentcard.common.pojo.ScenicPO;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -47,14 +47,6 @@ public class ScenicVO implements Serializable {
      */
     private String qrCode;
 
-
-    private static String publicPath;
-
-    @Value("${file.publicPath}")
-    private void setPublicPath(String publicPath) {
-        ScenicVO.publicPath = publicPath;
-    }
-
     /**
      * pos 转 vos
      *
@@ -88,7 +80,7 @@ public class ScenicVO implements Serializable {
         vo.setStatus(po.getStatus());
         vo.setCtime(po.getCreateTime());
         if (null != po.getQrCode()) {
-            vo.setQrCode(publicPath + po.getQrCode());
+            vo.setQrCode(FilePathConfig.getStaticPublicBasePath() + po.getQrCode());
         }
         return vo;
     }

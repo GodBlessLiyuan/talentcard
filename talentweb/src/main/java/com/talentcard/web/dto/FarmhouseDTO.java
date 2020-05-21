@@ -1,10 +1,10 @@
 package com.talentcard.web.dto;
 
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.FarmhouseEnjoyPO;
 import com.talentcard.common.pojo.FarmhousePO;
 import com.talentcard.common.pojo.FarmhousePicturePO;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -82,13 +82,6 @@ public class FarmhouseDTO implements Serializable {
      */
     private String extra;
 
-    private static String publicPath;
-
-    @Value("${file.publicPath}")
-    private void setPublicPath(String publicPath) {
-        FarmhouseDTO.publicPath = publicPath;
-    }
-
     /**
      * 根据 dto 设置 po
      *
@@ -99,7 +92,7 @@ public class FarmhouseDTO implements Serializable {
         po.setName(dto.getName());
         po.setDiscount(dto.getDiscount());
         if (null != dto.getAvatar()) {
-            po.setAvatar(dto.getAvatar().split(publicPath)[1]);
+            po.setAvatar(dto.getAvatar().split(FilePathConfig.getStaticPublicBasePath())[1]);
         }
         po.setDescription(dto.getDesc());
         po.setExtra(dto.getExtra());
@@ -179,7 +172,7 @@ public class FarmhouseDTO implements Serializable {
             for (String picture : dto.getPicture()) {
                 FarmhousePicturePO po = new FarmhousePicturePO();
                 po.setFarmhouseId(farmhouseId);
-                po.setPicture(picture.split(publicPath)[1]);
+                po.setPicture(picture.split(FilePathConfig.getStaticPublicBasePath())[1]);
                 pos.add(po);
             }
         }

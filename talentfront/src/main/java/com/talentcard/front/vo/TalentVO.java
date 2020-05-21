@@ -1,13 +1,12 @@
 package com.talentcard.front.vo;
 
 import com.talentcard.common.bo.TalentBO;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.EducationPO;
 import com.talentcard.common.pojo.ProfQualityPO;
 import com.talentcard.common.pojo.ProfTitlePO;
 import com.talentcard.common.pojo.TalentHonourPO;
-import com.talentcard.front.utils.FrontParameterUtil;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -80,7 +79,7 @@ public class TalentVO {
         if (talentBO.getEducationPOList() != null) {
             for (EducationPO educationPO : talentBO.getEducationPOList()) {
                 if (educationPO.getEducPicture() != null && !educationPO.getEducPicture().equals("")) {
-                    educationPO.setEducPicture(FrontParameterUtil.getPublicPath() + educationPO.getEducPicture());
+                    educationPO.setEducPicture(FilePathConfig.getStaticPublicBasePath() + educationPO.getEducPicture());
                 }
             }
         }
@@ -89,7 +88,7 @@ public class TalentVO {
         if (talentBO.getProfTitlePOList() != null) {
             for (ProfTitlePO profTitlePO : talentBO.getProfTitlePOList()) {
                 if (profTitlePO.getPicture() != null && !profTitlePO.getPicture().equals("")) {
-                    profTitlePO.setPicture(FrontParameterUtil.getPublicPath() + profTitlePO.getPicture());
+                    profTitlePO.setPicture(FilePathConfig.getStaticPublicBasePath() + profTitlePO.getPicture());
                 }
             }
         }
@@ -98,7 +97,7 @@ public class TalentVO {
         if (talentBO.getProfQualityPOList() != null) {
             for (ProfQualityPO profQualityPO : talentBO.getProfQualityPOList()) {
                 if (profQualityPO.getPicture() != null && !profQualityPO.getPicture().equals("")) {
-                    profQualityPO.setPicture(FrontParameterUtil.getPublicPath() + profQualityPO.getPicture());
+                    profQualityPO.setPicture(FilePathConfig.getStaticPublicBasePath() + profQualityPO.getPicture());
                 }
             }
         }
@@ -106,7 +105,7 @@ public class TalentVO {
         if (talentBO.getTalentHonourPOList() != null) {
             for (TalentHonourPO talentHonourPO : talentBO.getTalentHonourPOList()) {
                 if (talentHonourPO.getHonourPicture() != null && !talentHonourPO.getHonourPicture() .equals("")) {
-                    talentHonourPO.setHonourPicture(FrontParameterUtil.getPublicPath() + talentHonourPO.getHonourPicture());
+                    talentHonourPO.setHonourPicture(FilePathConfig.getStaticPublicBasePath() + talentHonourPO.getHonourPicture());
                 }
             }
         }

@@ -1,12 +1,11 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
-import com.sun.org.apache.regexp.internal.RE;
 import com.talentcard.common.bo.TalentBO;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.ExcelUtil;
-import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
@@ -20,14 +19,13 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 
 /**
  * @author: xiahui
@@ -55,13 +53,8 @@ public class TalentServiceImpl implements ITalentService {
     private UserCardMapper userCardMapper;
     @Autowired
     private UserCurrentInfoMapper userCurrentInfoMapper;
-
-    @Value("${file.rootDir}")
-    private String rootDir;
-    @Value("${file.projectDir}")
-    private String projectDir;
-    @Value("${file.excelDir}")
-    private String excelDir;
+    @Autowired
+    private FilePathConfig filePathConfig;
 
     private static final String[] EXCEL_TITLE = {"姓名", "证件号码"};
     private static final String[] EXCEL_TITLE_RES = {"姓名", "证件号码", "人才卡", "人才类别", "人才荣誉", "认证结果", "说明"};
@@ -165,7 +158,7 @@ public class TalentServiceImpl implements ITalentService {
             }
 
             String url = ExcelUtil.save(ExcelUtil.buildExcel("批量认证结果", EXCEL_TITLE_RES, rows),
-                    rootDir, projectDir, excelDir, "批量认证结果");
+                    filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getExcelDir(), "批量认证结果");
 
         } catch (Exception e) {
             e.printStackTrace();

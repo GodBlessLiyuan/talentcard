@@ -1,5 +1,6 @@
 package com.talentcard.web.dto;
 
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.ScenicEnjoyPO;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.ScenicPicturePO;
@@ -94,11 +95,6 @@ public class ScenicDTO implements Serializable {
 
     private static String publicPath;
 
-    @Value("${file.publicPath}")
-    private void setPublicPath(String publicPath) {
-        ScenicDTO.publicPath = publicPath;
-    }
-
     /**
      * 根据 dto 设置 po
      *
@@ -111,7 +107,7 @@ public class ScenicDTO implements Serializable {
         po.setUnit(dto.getUnit());
         po.setTimes(dto.getTimes());
         if (null != dto.getAvatar()) {
-            po.setAvatar(dto.getAvatar().split(publicPath)[1]);
+            po.setAvatar(dto.getAvatar().split(FilePathConfig.getStaticPublicBasePath())[1]);
         }
         po.setDescription(dto.getDesc());
         po.setExtra(dto.getExtra());

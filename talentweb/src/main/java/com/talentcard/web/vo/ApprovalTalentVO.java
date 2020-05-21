@@ -2,10 +2,10 @@ package com.talentcard.web.vo;
 
 import com.talentcard.common.bo.CertApprovalBO;
 import com.talentcard.common.bo.TalentBO;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.EducationPO;
 import com.talentcard.common.pojo.ProfQualityPO;
 import com.talentcard.common.pojo.ProfTitlePO;
-import com.talentcard.web.utils.WebParameterUtil;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -74,7 +74,7 @@ public class ApprovalTalentVO {
         if (talentBO.getEducationPOList() != null) {
             for (EducationPO educationPO : talentBO.getEducationPOList()) {
                 if (educationPO.getEducPicture() != null && !educationPO.getEducPicture().equals("")) {
-                    educationPO.setEducPicture(WebParameterUtil.getPublicPath() + educationPO.getEducPicture());
+                    educationPO.setEducPicture(FilePathConfig.getStaticPublicBasePath() + educationPO.getEducPicture());
                 }
             }
         }
@@ -82,7 +82,7 @@ public class ApprovalTalentVO {
         if (talentBO.getProfTitlePOList() != null) {
             for (ProfTitlePO profTitlePO : talentBO.getProfTitlePOList()) {
                 if (profTitlePO.getPicture() != null && !profTitlePO.getPicture().equals("")) {
-                    profTitlePO.setPicture(WebParameterUtil.getPublicPath() + profTitlePO.getPicture());
+                    profTitlePO.setPicture(FilePathConfig.getStaticPublicBasePath() + profTitlePO.getPicture());
                 }
             }
         }
@@ -90,7 +90,7 @@ public class ApprovalTalentVO {
         if (talentBO.getProfQualityPOList() != null) {
             for (ProfQualityPO profQualityPO : talentBO.getProfQualityPOList()) {
                 if (profQualityPO.getPicture() != null && !profQualityPO.getPicture().equals("")) {
-                    profQualityPO.setPicture(WebParameterUtil.getPublicPath() + profQualityPO.getPicture());
+                    profQualityPO.setPicture(FilePathConfig.getStaticPublicBasePath() + profQualityPO.getPicture());
                 }
             }
         }
