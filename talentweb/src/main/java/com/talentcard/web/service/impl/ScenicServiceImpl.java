@@ -9,6 +9,7 @@ import com.talentcard.common.mapper.TripGroupAuthorityMapper;
 import com.talentcard.common.pojo.ScenicEnjoyPO;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.ScenicPicturePO;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.QrCodeUtil;
 import com.talentcard.common.vo.PageInfoVO;
@@ -17,8 +18,9 @@ import com.talentcard.web.dto.ScenicDTO;
 import com.talentcard.web.service.IScenicService;
 import com.talentcard.web.vo.ScenicDetailVO;
 import com.talentcard.web.vo.ScenicVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,9 @@ import java.util.Map;
 @EnableTransactionManagement
 @Service
 public class ScenicServiceImpl implements IScenicService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ScenicServiceImpl.class);
+
     @Autowired
     private ScenicMapper scenicMapper;
     @Autowired
@@ -46,17 +51,9 @@ public class ScenicServiceImpl implements IScenicService {
     private ScenicPictureMapper scenicPictureMapper;
     @Autowired
     private TripGroupAuthorityMapper tripGroupAuthorityMapper;
+    @Autowired
+    private FilePathConfig filePathConfig;
 
-    @Value("${file.publicPath}")
-    private String publicPath;
-    @Value("${file.rootDir}")
-    private String rootDir;
-    @Value("${file.projectDir}")
-    private String projectDir;
-    @Value("${file.scenicDir}")
-    private String scenicDir;
-    @Value("${file.qrCodeDir}")
-    private String qrCodeDir;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -83,8 +80,8 @@ public class ScenicServiceImpl implements IScenicService {
 
             String qrCode = null;
             try {
-                String url = publicPath + "/wx/#/jump?type=1&id=" + scenicPO.getScenicId() + "&name=" + scenicPO.getName();
-                qrCode = QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, null, true);
+                String url = filePathConfig.getPublicBasePath() + "/wx/#/jump?type=1&id=" + scenicPO.getScenicId() + "&name=" + scenicPO.getName();
+                qrCode = QrCodeUtil.encode(url, null, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getQrCodeDir(), null, true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -116,8 +113,8 @@ public class ScenicServiceImpl implements IScenicService {
 
         if (!dto.getName().equals(scenicPO.getName())) {
             try {
-                String url = publicPath + "/wx/#/jump?type=1&id=" + dto.getScenicId() + "&name=" + dto.getName();
-                QrCodeUtil.encode(url, null, rootDir, projectDir, qrCodeDir, scenicPO.getQrCode(), true);
+                String url = filePathConfig.getPublicBasePath() + "/wx/#/jump?type=1&id=" + dto.getScenicId() + "&name=" + dto.getName();
+                QrCodeUtil.encode(url, null, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getQrCodeDir(), scenicPO.getQrCode(), true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -169,12 +166,12 @@ public class ScenicServiceImpl implements IScenicService {
         vo.setUnit(scenicPO.getUnit());
         vo.setTimes(scenicPO.getTimes());
         if (null != scenicPO.getAvatar()) {
-            vo.setAvatar(publicPath + scenicPO.getAvatar());
+            vo.setAvatar(filePathConfig.getPublicBasePath() + scenicPO.getAvatar());
         }
         vo.setDesc(scenicPO.getDescription());
         vo.setExtra(scenicPO.getExtra());
         if (null != scenicPO.getQrCode()) {
-            vo.setQrCode(publicPath + scenicPO.getQrCode());
+            vo.setQrCode(filePathConfig.getPublicBasePath() + scenicPO.getQrCode());
         }
 
         List<ScenicEnjoyPO> enjoyPOs = scenicEnjoyMapper.queryByScenicId(scenicId);
@@ -207,7 +204,7 @@ public class ScenicServiceImpl implements IScenicService {
         List<ScenicPicturePO> picPOs = scenicPictureMapper.queryByScenicId(scenicId);
         List<String> picture = new ArrayList<>();
         for (ScenicPicturePO po : picPOs) {
-            picture.add(publicPath + po.getPicture());
+            picture.add(filePathConfig.getPublicBasePath() + po.getPicture());
         }
         vo.setPicture(picture);
 
@@ -216,7 +213,7 @@ public class ScenicServiceImpl implements IScenicService {
 
     @Override
     public ResultVO upload(MultipartFile file) {
-        String picture = FileUtil.uploadFile(file, rootDir, projectDir, scenicDir, "scenic");
-        return new ResultVO<>(1000, publicPath + picture);
+        String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getScenicDir(), "scenic");
+        return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 }

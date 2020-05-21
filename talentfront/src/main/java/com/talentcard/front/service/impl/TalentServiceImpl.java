@@ -2,17 +2,16 @@ package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.TalentBO;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.ITalentService;
-import com.talentcard.front.utils.FrontParameterUtil;
 import com.talentcard.front.utils.MessageUtil;
 import com.talentcard.front.vo.TalentVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,21 +49,8 @@ public class TalentServiceImpl implements ITalentService {
     private UserCardMapper userCardMapper;
     @Autowired
     private UserCurrentInfoMapper userCurrentInfoMapper;
-
-    @Value("${file.publicPath}")
-    private String publicPath;
-    @Value("${file.rootDir}")
-    private String rootDir;
-    @Value("${file.projectDir}")
-    private String projectDir;
-    @Value("${file.educationDir}")
-    private String educationDir;
-    @Value("${file.profTitleDir}")
-    private String profTitleDir;
-    @Value("${file.profQualityDir}")
-    private String profQualityDir;
-    @Value("${file.talentHonourDir}")
-    private String talentHonourDir;
+    @Autowired
+    private FilePathConfig filePathConfig;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -248,8 +234,9 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setTalentId(talentId);
         userCardPO.setCardId(cardId);
         //设置当前编号，组合起来，并且更新卡的currentNum
-        String membershipNumber = cardPO.getInitialWord();
-        Integer initialNumLength = cardPO.getInitialNum().length();
+        String membershipNumber = cardPO.getInitialWord() + cardPO.getAreaNum();
+        //写死，长度为6
+        Integer initialNumLength = 6;
         Integer currentNumLength = cardPO.getCurrNum().toString().length();
         //补0
         if ((initialNumLength - currentNumLength) > 0) {
@@ -289,7 +276,7 @@ public class TalentServiceImpl implements ITalentService {
         messageDTO.setTemplateId(1);
         //结束
         messageDTO.setRemark("领取后可享受多项人才权益哦");
-        messageDTO.setUrl(FrontParameterUtil.getIndexUrl());
+        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
@@ -332,19 +319,19 @@ public class TalentServiceImpl implements ITalentService {
         String talentHonourUrl = "";
         if (educPicture != null) {
             educUrl = FileUtil.uploadFile
-                    (educPicture, rootDir, projectDir, educationDir, "education");
+                    (educPicture, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getEducationDir(), "education");
         }
         if (profTitlePicture != null) {
             profTitleUrl = FileUtil.uploadFile
-                    (profTitlePicture, rootDir, projectDir, profTitleDir, "profTitle");
+                    (profTitlePicture, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getProfTitleDir(), "profTitle");
         }
         if (profQualityPicture != null) {
             profQualityUrl = FileUtil.uploadFile
-                    (profQualityPicture, rootDir, projectDir, profQualityDir, "profQuality");
+                    (profQualityPicture, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getProfQualityDir(), "profQuality");
         }
         if (talentHonourPicture != null) {
             talentHonourUrl = FileUtil.uploadFile
-                    (talentHonourPicture, rootDir, projectDir, talentHonourDir, "talentHonour");
+                    (talentHonourPicture, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getTalentHonourDir(), "talentHonour");
         }
         if (educUrl == "" && profTitleUrl == "" && profQualityUrl == "" && talentHonourUrl == "") {
             return new ResultVO(2304, "上传文件失败");

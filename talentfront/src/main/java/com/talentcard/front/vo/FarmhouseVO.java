@@ -1,9 +1,9 @@
 package com.talentcard.front.vo;
 
 import com.talentcard.common.bo.FarmhouseBO;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.FarmhousePO;
 import com.talentcard.common.pojo.FarmhousePicturePO;
-import com.talentcard.front.utils.FrontParameterUtil;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -47,12 +47,12 @@ public class FarmhouseVO {
 
         //avatar
         if (farmhousePO.getAvatar() != null && !farmhousePO.getAvatar().equals("")) {
-            farmhouseVO.setAvatar(FrontParameterUtil.getPublicPath() + farmhousePO.getAvatar());
+            farmhouseVO.setAvatar(FilePathConfig.getStaticPublicBasePath() + farmhousePO.getAvatar());
         }
 
         //qrCode
         if (farmhousePO.getQrCode() != null && !farmhousePO.getQrCode().equals("")) {
-            farmhouseVO.setQrCode(FrontParameterUtil.getPublicPath() + farmhousePO.getQrCode());
+            farmhouseVO.setQrCode(FilePathConfig.getStaticPublicBasePath() + farmhousePO.getQrCode());
         }
         return farmhouseVO;
     }
@@ -69,7 +69,7 @@ public class FarmhouseVO {
         if (farmhouseBO.getFarmhousePicturePOList() != null) {
             for (FarmhousePicturePO farmhousePicturePO : farmhouseBO.getFarmhousePicturePOList()) {
                 if (farmhousePicturePO.getPicture() != null && !farmhousePicturePO.getPicture().equals("")) {
-                    farmhousePicturePO.setPicture(FrontParameterUtil.getPublicPath() + farmhousePicturePO.getPicture());
+                    farmhousePicturePO.setPicture(FilePathConfig.getStaticPublicBasePath() + farmhousePicturePO.getPicture());
                 }
             }
         }

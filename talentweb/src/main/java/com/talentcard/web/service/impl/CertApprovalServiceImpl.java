@@ -261,15 +261,21 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             userCardPO.setStatus((byte) 1);
             userCardPO.setCreateTime(new Date());
 
-            String membershipNumber = cardPO.getInitialWord();
-            Integer initialNumLength = cardPO.getInitialNum().length();
-            Integer currentNumLength = cardPO.getCurrNum().toString().length();
+            /**
+             * 用基本卡的当前人数和编号数据
+             */
+            CardPO defaultCardPO = cardMapper.findDefaultCard();
+            String membershipNumber = defaultCardPO.getInitialWord() + defaultCardPO.getAreaNum();
+            //写死，初始后字段总共6位
+            Integer initialNumLength = 6;
+            Integer currentNumLength = defaultCardPO.getCurrNum().toString().length();
             if ((initialNumLength - currentNumLength) > 0) {
                 for (int i = 0; i < (initialNumLength - currentNumLength); i++) {
                     membershipNumber = membershipNumber + "0";
                 }
             }
-            membershipNumber = membershipNumber + cardPO.getCurrNum();
+            membershipNumber = membershipNumber + defaultCardPO.getCurrNum();
+
             userCardPO.setNum(membershipNumber);
             userCardPO.setName(cardPO.getTitle());
             cardPO.setCurrNum(cardPO.getCurrNum() + 1);

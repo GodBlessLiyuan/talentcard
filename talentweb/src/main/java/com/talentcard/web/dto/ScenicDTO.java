@@ -17,7 +17,6 @@ import java.util.List;
  * @description: 景区
  * @version: 1.0
  */
-@Component
 @Data
 public class ScenicDTO implements Serializable {
     private static final long SerialVersionUID = 1L;
@@ -116,7 +115,7 @@ public class ScenicDTO implements Serializable {
         po.setUnit(dto.getUnit());
         po.setTimes(dto.getTimes());
         if (null != dto.getAvatar()) {
-            po.setAvatar(dto.getAvatar().split(publicPath)[1]);
+            po.setAvatar(dto.getAvatar().split(FilePathConfig.getStaticPublicBasePath())[1]);
         }
         po.setDescription(dto.getDesc());
         po.setExtra(dto.getExtra());
@@ -205,7 +204,7 @@ public class ScenicDTO implements Serializable {
             for (String picture : dto.getPicture()) {
                 ScenicPicturePO po = new ScenicPicturePO();
                 po.setScenicId(scenicId);
-                po.setPicture(picture.split(publicPath)[1]);
+                po.setPicture(picture.split(FilePathConfig.getStaticPublicBasePath())[1]);
                 pos.add(po);
             }
         }

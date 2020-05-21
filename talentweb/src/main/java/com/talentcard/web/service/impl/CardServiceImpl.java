@@ -2,6 +2,7 @@ package com.talentcard.web.service.impl;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.CardMapper;
 import com.talentcard.common.mapper.PolicyMapper;
 import com.talentcard.common.pojo.CardPO;
@@ -34,14 +35,9 @@ import java.util.List;
 @EnableTransactionManagement
 public class CardServiceImpl implements ICardService {
     private static final Logger logger = LoggerFactory.getLogger(CardServiceImpl.class);
-    @Value("${file.publicPath}")
-    private String publicPath;
-    @Value("${file.rootDir}")
-    private String rootDir;
-    @Value("${file.projectDir}")
-    private String projectDir;
-    @Value("${file.cardBackgroundDir}")
-    private String cardBackgroundDir;
+
+    @Autowired
+    private FilePathConfig filePathConfig;
     @Value("${wechat.logoUrl}")
     private String logoUrl;
     @Autowired
@@ -53,7 +49,7 @@ public class CardServiceImpl implements ICardService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO add(String name, String title, String notice,
                         String description, String prerogative, MultipartFile background,
-                        String initialWord, String initialNumber, String businessDescription, Byte status, String color,
+                        String initialWord, String areaNum, String businessDescription, Byte status, String color,
                         HttpSession httpSession) {
         //判断是否已经存在该初始字段
         Integer ifExistInitialWord = cardMapper.ifExistInitialWord(initialWord);
@@ -62,9 +58,9 @@ public class CardServiceImpl implements ICardService {
         }
         //上传背景图片到服务器上
         String picture = FileUtil.uploadFile
-                (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
+                (background, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getCardBackgroundDir(), "cardBackground");
 //        String pictureUploadCdnUrl = publicPath + picture;
-        String pictureUploadCdnUrl = rootDir + picture;
+        String pictureUploadCdnUrl = filePathConfig.getLocalBasePath() + picture;
         logger.info("pictureUploadCdnUrl", pictureUploadCdnUrl);
         //服务器到cdn上
         String pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
@@ -76,9 +72,9 @@ public class CardServiceImpl implements ICardService {
         }
         //上传logo图片
         //公网访问url
-        String publicLogoUrl = publicPath + logoUrl;
+        String publicLogoUrl = filePathConfig.getPublicBasePath() + logoUrl;
         //服务器url
-        String serverLogoUrl = rootDir + logoUrl;
+        String serverLogoUrl = filePathConfig.getLocalBasePath() + logoUrl;
 //        String logoCDN = CardUtil.uploadPicture(publicLogoUrl);
         logger.info("serverLogoUrl: {}", serverLogoUrl);
         //服务器到cdn上
@@ -120,13 +116,13 @@ public class CardServiceImpl implements ICardService {
         //创建卡，本地服务端
         cardPO.setName(name);
         cardPO.setTitle(title);
-        cardPO.setCurrNum(Long.valueOf(initialNumber));
+        cardPO.setCurrNum((long) 1);
         cardPO.setDescription(description);
         cardPO.setPicture(picture);
         cardPO.setPictureCdn(pictureCDN);
         cardPO.setPrerogative(prerogative);
         cardPO.setInitialWord(initialWord);
-        cardPO.setInitialNum(initialNumber);
+        cardPO.setAreaNum(areaNum);
         cardPO.setCreateTime(new Date());
         cardPO.setStatus(status);
         cardPO.setMemberNum((long) 0);
@@ -159,9 +155,9 @@ public class CardServiceImpl implements ICardService {
         String pictureCDN = "";
         if (background != null) {
             picture = FileUtil.uploadFile
-                    (background, rootDir, projectDir, cardBackgroundDir, "cardBackground");
+                    (background, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getCardBackgroundDir(), "cardBackground");
 //        String pictureUploadCdnUrl = publicPath + picture;
-            String pictureUploadCdnUrl = rootDir + picture;
+            String pictureUploadCdnUrl = filePathConfig.getLocalBasePath() + picture;
             //背景图上传到cdn上
             pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
             JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
@@ -238,7 +234,7 @@ public class CardServiceImpl implements ICardService {
         //添加功public path
         String pictureUrl = cardPO.getPicture();
         if (pictureUrl != null && pictureUrl != "") {
-            cardPO.setPicture(publicPath + pictureUrl);
+            cardPO.setPicture(filePathConfig.getPublicBasePath() + pictureUrl);
         }
         cardVO.setPolicyInfo(policyInfo);
         return new ResultVO(1000, cardVO);

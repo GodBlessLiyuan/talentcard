@@ -1,10 +1,10 @@
 package com.talentcard.web.vo;
 
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.FarmhouseEnjoyPO;
 import com.talentcard.common.pojo.FarmhousePO;
 import com.talentcard.common.pojo.FarmhousePicturePO;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -87,14 +87,6 @@ public class FarmhouseDetailVO implements Serializable {
      */
     private String qrCode;
 
-    private static String publicPath;
-
-    @Value("${file.publicPath}")
-    private void setPublicPath(String publicPath) {
-        FarmhouseDetailVO.publicPath = publicPath;
-    }
-
-
     /**
      * 构建vo
      *
@@ -109,12 +101,12 @@ public class FarmhouseDetailVO implements Serializable {
         vo.setName(farmhousePO.getName());
         vo.setDiscount(farmhousePO.getDiscount());
         if (null != farmhousePO.getAvatar()) {
-            vo.setAvatar(publicPath + farmhousePO.getAvatar());
+            vo.setAvatar(FilePathConfig.getStaticPublicBasePath() + farmhousePO.getAvatar());
         }
         vo.setDesc(farmhousePO.getDescription());
         vo.setExtra(farmhousePO.getExtra());
         if (null != farmhousePO.getQrCode()) {
-            vo.setQrCode(publicPath + farmhousePO.getQrCode());
+            vo.setQrCode(FilePathConfig.getStaticPublicBasePath() + farmhousePO.getQrCode());
         }
 
         List<Long> cardIds = new ArrayList<>();
@@ -145,7 +137,7 @@ public class FarmhouseDetailVO implements Serializable {
 
         List<String> picture = new ArrayList<>();
         for (FarmhousePicturePO po : picPOs) {
-            picture.add(publicPath + po.getPicture());
+            picture.add(FilePathConfig.getStaticPublicBasePath() + po.getPicture());
         }
         vo.setPicture(picture);
 

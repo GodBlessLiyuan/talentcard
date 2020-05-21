@@ -65,14 +65,14 @@ public class TalentTripServiceImpl implements ITalentTripService {
         /**景区idList，去中间表查询
          *
          */
-        String code = getMiddleTableString(cardId, category, education, title, quality,talentHonour);
+        String code = getMiddleTableString(cardId, category, education, title, quality, talentHonour);
         scenicIdList = tripGroupAuthorityMapper.findByCode(code);
         /**
          *  中间表没找到景区idList，去大表查询
          */
         if (scenicIdList.size() == 0) {
             scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList,
-                    education, title, quality,talentHonour);
+                    education, title, quality, talentHonour);
             if (scenicIdList.size() == 0) {
                 return new ResultVO(2504, "查无景区！");
             }
@@ -251,7 +251,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
             quality = 0;
         }
         if (talentHonour == null) {
-            talentHonour = (long)0;
+            talentHonour = (long) 0;
         }
         middleTableString = "" + cardId + "-" + category + "-"
                 + education + "-" + title + "-" + quality + "-" + talentHonour;

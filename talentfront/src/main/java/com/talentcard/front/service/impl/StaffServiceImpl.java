@@ -1,6 +1,7 @@
 package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
@@ -206,6 +207,7 @@ public class StaffServiceImpl implements IStaffService {
         Integer education = userCurrentInfoPO.getEducation();
         Integer title = userCurrentInfoPO.getPtCategory();
         Integer quality = userCurrentInfoPO.getPqCategory();
+        Long talentHonour = userCurrentInfoPO.getHonourId();
         List<Long> farmhouseIdList;
         /**
          * 农家乐idList，去中间表查询
@@ -216,7 +218,7 @@ public class StaffServiceImpl implements IStaffService {
          *  中间表没找到景区idList，去大表查询
          */
         if (farmhouseIdList.size() == 0) {
-            farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
+            farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality,talentHonour);
             if (farmhouseIdList.size() == 0) {
                 return new ResultVO(1001, "查无景区!不具备此农家乐权益!");
             }
@@ -352,7 +354,7 @@ public class StaffServiceImpl implements IStaffService {
         messageDTO.setTemplateId(2);
         //结束
         messageDTO.setRemark("感谢使用！");
-        messageDTO.setUrl(FrontParameterUtil.getIndexUrl());
+        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
         MessageUtil.sendTemplateMessage(messageDTO);
         return null;
     }

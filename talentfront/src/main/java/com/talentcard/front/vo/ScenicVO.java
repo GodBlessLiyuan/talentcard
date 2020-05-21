@@ -1,8 +1,8 @@
 package com.talentcard.front.vo;
 
 import com.talentcard.common.bo.ScenicBO;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.*;
-import com.talentcard.front.utils.FrontParameterUtil;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -51,12 +51,12 @@ public class ScenicVO {
 
         //avatar
         if (scenicPO.getAvatar() != null && !scenicPO.getAvatar().equals("")) {
-            scenicVO.setAvatar(FrontParameterUtil.getPublicPath() + scenicPO.getAvatar());
+            scenicVO.setAvatar(FilePathConfig.getStaticPublicBasePath() + scenicPO.getAvatar());
         }
 
         //qrCode
         if (scenicPO.getQrCode() != null && !scenicPO.getQrCode().equals("")) {
-            scenicVO.setQrCode(FrontParameterUtil.getPublicPath() + scenicPO.getQrCode());
+            scenicVO.setQrCode(FilePathConfig.getStaticPublicBasePath() + scenicPO.getQrCode());
         }
         return scenicVO;
     }
@@ -73,7 +73,7 @@ public class ScenicVO {
         if (scenicBO.getScenicPicturePOList() != null) {
             for (ScenicPicturePO scenicPicturePO : scenicBO.getScenicPicturePOList()) {
                 if (scenicPicturePO.getPicture() != null && !scenicPicturePO.getPicture().equals("")) {
-                    scenicPicturePO.setPicture(FrontParameterUtil.getPublicPath() + scenicPicturePO.getPicture());
+                    scenicPicturePO.setPicture(FilePathConfig.getStaticPublicBasePath() + scenicPicturePO.getPicture());
                 }
             }
         }

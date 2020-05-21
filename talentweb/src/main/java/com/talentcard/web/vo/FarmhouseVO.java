@@ -1,9 +1,8 @@
 package com.talentcard.web.vo;
 
 import com.talentcard.common.pojo.FarmhousePO;
+import com.talentcard.common.config.FilePathConfig;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import java.util.List;
  * @description: 农家乐
  * @version: 1.0
  */
-@Component
 @Data
 public class FarmhouseVO implements Serializable {
     private static final long SerialVersionUID = 1L;
@@ -47,12 +45,6 @@ public class FarmhouseVO implements Serializable {
     private String qrCode;
 
 
-    private static String publicPath;
-
-    @Value("${file.publicPath}")
-    private void setPublicPath(String publicPath) {
-        FarmhouseVO.publicPath = publicPath;
-    }
 
     /**
      * pos 转 vos
@@ -82,7 +74,7 @@ public class FarmhouseVO implements Serializable {
         vo.setStatus(po.getStatus());
         vo.setCtime(po.getCreateTime());
         if (null != po.getQrCode()) {
-            vo.setQrCode(publicPath + po.getQrCode());
+            vo.setQrCode(FilePathConfig.getStaticPublicBasePath() + po.getQrCode());
         }
         return vo;
     }

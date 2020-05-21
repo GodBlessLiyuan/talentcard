@@ -55,7 +55,7 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
         Integer education = userCurrentInfoPO.getEducation();
         Integer title = userCurrentInfoPO.getPtCategory();
         Integer quality = userCurrentInfoPO.getPqCategory();
-        Long honour = userCurrentInfoPO.getHonour();
+        Long talentHonour = userCurrentInfoPO.getHonourId();
 
         HashMap<String, Object> resultHashMap = new HashMap<>();
         /**
@@ -67,7 +67,7 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
         /**
          * 旅游
          */
-        scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality, honour);
+        scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality, talentHonour);
         if (scenicIdList.size() > 0) {
             resultHashMap.put("trip", 1);
         } else {
@@ -76,7 +76,7 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
         /**
          * 农家乐
          */
-        farmhouseList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
+        farmhouseList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality, talentHonour);
         if (farmhouseList.size() > 0) {
             resultHashMap.put("farmhouse", 1);
         } else {

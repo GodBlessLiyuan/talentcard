@@ -4,8 +4,6 @@ import com.talentcard.common.pojo.FarmhouseEnjoyPO;
 import com.talentcard.common.pojo.FarmhousePO;
 import com.talentcard.common.pojo.FarmhousePicturePO;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,7 +15,6 @@ import java.util.List;
  * @description: 农家乐
  * @version: 1.0
  */
-@Component
 @Data
 public class FarmhouseDTO implements Serializable {
     private static final long SerialVersionUID = 1L;
@@ -104,7 +101,7 @@ public class FarmhouseDTO implements Serializable {
         po.setName(dto.getName());
         po.setDiscount(dto.getDiscount());
         if (null != dto.getAvatar()) {
-            po.setAvatar(dto.getAvatar().split(publicPath)[1]);
+            po.setAvatar(dto.getAvatar().split(FilePathConfig.getStaticPublicBasePath())[1]);
         }
         po.setDescription(dto.getDesc());
         po.setExtra(dto.getExtra());
@@ -192,7 +189,7 @@ public class FarmhouseDTO implements Serializable {
             for (String picture : dto.getPicture()) {
                 FarmhousePicturePO po = new FarmhousePicturePO();
                 po.setFarmhouseId(farmhouseId);
-                po.setPicture(picture.split(publicPath)[1]);
+                po.setPicture(picture.split(FilePathConfig.getStaticPublicBasePath())[1]);
                 pos.add(po);
             }
         }
