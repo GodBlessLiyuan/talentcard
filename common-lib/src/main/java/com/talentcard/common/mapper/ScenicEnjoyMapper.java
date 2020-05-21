@@ -46,5 +46,5 @@ public interface ScenicEnjoyMapper extends BaseMapper<ScenicEnjoyPO, Long> {
      */
     List<Long> findSecondContent(@Param("cardId") Long cardId, @Param("categoryList") List<Long> categoryList,
                                  @Param("education") Integer education, @Param("title") Integer title,
-                                 @Param("quality") Integer quality);
+                                 @Param("quality") Integer quality, @Param("honour") Long honourId);
 }

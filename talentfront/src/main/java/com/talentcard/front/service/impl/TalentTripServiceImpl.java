@@ -60,17 +60,18 @@ public class TalentTripServiceImpl implements ITalentTripService {
         Integer education = userCurrentInfoPO.getEducation();
         Integer title = userCurrentInfoPO.getPtCategory();
         Integer quality = userCurrentInfoPO.getPqCategory();
+        Long honour = userCurrentInfoPO.getHonour();
         List<Long> scenicIdList;
         /**景区idList，去中间表查询
          *
          */
-        String code = getMiddleTableString(cardId, category, education, title, quality);
+        String code = getMiddleTableString(cardId, category, education, title, quality, honour);
         scenicIdList = tripGroupAuthorityMapper.findByCode(code);
         /**
          *  中间表没找到景区idList，去大表查询
          */
         if (scenicIdList.size() == 0) {
-            scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality);
+            scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality, honour);
             if (scenicIdList.size() == 0) {
                 return new ResultVO(2504, "查无景区！");
             }
@@ -230,7 +231,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
      * @return
      */
     public static String getMiddleTableString(Long cardId, String category,
-                                              Integer education, Integer title, Integer quality) {
+                                              Integer education, Integer title, Integer quality, Long honour) {
         String middleTableString;
         if (cardId == null) {
             cardId = (long) 0;
@@ -247,7 +248,10 @@ public class TalentTripServiceImpl implements ITalentTripService {
         if (quality == null) {
             quality = 0;
         }
-        middleTableString = "" + cardId + "-" + category + "-" + education + "-" + title + "-" + quality;
+        if (honour == null) {
+            honour = 0L;
+        }
+        middleTableString = "" + cardId + "-" + category + "-" + education + "-" + title + "-" + quality + "-" + honour;
         return middleTableString;
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * t_talent
- * @author 
+ * @author
  */
 @Data
 public class TalentPO implements Serializable {
@@ -50,6 +50,8 @@ public class TalentPO implements Serializable {
     private String category;
 
     private String workLocation;
+
+    private Long honour;
 
     /**
      * 1国内；
