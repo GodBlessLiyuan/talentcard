@@ -23,7 +23,7 @@ public class FarmhouseEnjoyPO implements Serializable {
 
     private Integer quality;
 
-    private Long thId;
+    private Long honourId;
 
     /**
      * 1：人才卡；2：人才类别；3：人才学历；4：职称；5：职业资格；6：人才荣誉
