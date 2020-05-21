@@ -120,9 +120,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         messageDTO.setOpenid(currentTalent.getOpenId());
         //姓名
         messageDTO.setKeyword1(currentTalent.getName());
-        //身份证号，屏蔽八位
-        String encryptionIdCard = currentTalent.getIdCard().substring(0, 9) + "********";
-        messageDTO.setKeyword2(encryptionIdCard);
+        //证件号码
+        String identificationCardNum = identificationCardEncryption(currentTalent);
+        messageDTO.setKeyword2(identificationCardNum);
 
         //领卡机构
         //通知时间
@@ -340,6 +340,34 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         List<CertApprovalBO> certApprovalBOList = certApprovalMapper.queryApprovalById(talentId, certId);
         ApprovalTalentVO approvalTalentVO = ApprovalTalentVO.convert(talentBO, certApprovalBOList);
         return new ResultVO(1000, approvalTalentVO);
+    }
+
+    /**
+     * 证件号码，后四位加密,打星星
+     *
+     * @return
+     */
+    public String identificationCardEncryption(TalentPO talentPO) {
+
+        Byte cardType = talentPO.getCardType();
+        String identificationCardNum = "";
+        if (cardType == 1) {
+            //身份证
+            identificationCardNum = talentPO.getIdCard();
+        } else if (cardType == 2) {
+            //护照
+            identificationCardNum = talentPO.getPassport();
+        } else if (cardType == 3) {
+            //驾照
+            identificationCardNum = talentPO.getDriverCard();
+        }
+        if (identificationCardNum.equals("") || identificationCardNum == null
+                || identificationCardNum.length() <= 4) {
+            return "当前号码出现异常！";
+        }
+        Integer end = identificationCardNum.length() - 4;
+        String encryptionIdCardNum = identificationCardNum.substring(0, end) + "****";
+        return encryptionIdCardNum;
     }
 
 }

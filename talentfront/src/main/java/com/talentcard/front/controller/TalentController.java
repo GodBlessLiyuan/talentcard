@@ -85,7 +85,6 @@ public class TalentController {
      * 用户认证模块
      *
      * @param openId
-     * @param political
      * @param education
      * @param school
      * @param firstClass
