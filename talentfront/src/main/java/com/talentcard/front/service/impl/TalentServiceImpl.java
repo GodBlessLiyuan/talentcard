@@ -249,7 +249,8 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setCardId(cardId);
         //设置当前编号，组合起来，并且更新卡的currentNum
         String membershipNumber = cardPO.getInitialWord();
-        Integer initialNumLength = cardPO.getInitialNum().length();
+        //写死，长度为6
+        Integer initialNumLength = 6;
         Integer currentNumLength = cardPO.getCurrNum().toString().length();
         //补0
         if ((initialNumLength - currentNumLength) > 0) {

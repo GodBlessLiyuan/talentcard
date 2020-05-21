@@ -53,7 +53,7 @@ public class CardServiceImpl implements ICardService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO add(String name, String title, String notice,
                         String description, String prerogative, MultipartFile background,
-                        String initialWord, String initialNumber, String businessDescription, Byte status, String color,
+                        String initialWord, String areaNum, String businessDescription, Byte status, String color,
                         HttpSession httpSession) {
         //判断是否已经存在该初始字段
         Integer ifExistInitialWord = cardMapper.ifExistInitialWord(initialWord);
@@ -120,13 +120,13 @@ public class CardServiceImpl implements ICardService {
         //创建卡，本地服务端
         cardPO.setName(name);
         cardPO.setTitle(title);
-        cardPO.setCurrNum(Long.valueOf(initialNumber));
+        cardPO.setCurrNum((long) 1);
         cardPO.setDescription(description);
         cardPO.setPicture(picture);
         cardPO.setPictureCdn(pictureCDN);
         cardPO.setPrerogative(prerogative);
         cardPO.setInitialWord(initialWord);
-        cardPO.setInitialNum(initialNumber);
+        cardPO.setAreaNum(areaNum);
         cardPO.setCreateTime(new Date());
         cardPO.setStatus(status);
         cardPO.setMemberNum((long) 0);

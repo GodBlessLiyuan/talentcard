@@ -32,7 +32,7 @@ public class CardController {
      * @param prerogative   必须给
      * @param background
      * @param initialWord
-     * @param initialNumber
+     * @param areaNum
      * @param status
      * @return
      */
@@ -44,13 +44,13 @@ public class CardController {
                         @RequestParam(value = "prerogative", required = false, defaultValue = "可享受多项人才服务，如人才政策网上兑现、人才公寓申请、免费旅游、酒店农家乐折扣、VIP出行等") String prerogative,
                         @RequestParam(value = "background") MultipartFile background,
                         @RequestParam(value = "initialWord") String initialWord,
-                        @RequestParam(value = "initialNumber") String initialNumber,
+                        @RequestParam(value = "areaNum", required = false, defaultValue = "010") String areaNum,
                         @RequestParam(value = "businessDescription", required = false, defaultValue = "") String businessDescription,
                         @RequestParam(value = "status") Byte status,
                         @RequestParam(value = "color", required = false, defaultValue = "Color030") String color,
                         HttpSession httpSession) {
         return iCardService.add(name, title, notice, description, prerogative,
-                background, initialWord, initialNumber, businessDescription, status, color, httpSession);
+                background, initialWord, areaNum, businessDescription, status, color, httpSession);
     }
 
 
