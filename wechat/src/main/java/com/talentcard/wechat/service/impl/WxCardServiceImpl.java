@@ -78,7 +78,9 @@ public class WxCardServiceImpl implements WxCardService {
         3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信*/
         String[] strs = new String[]{TOKEN,timestamp,nonce};
 
-        logger.info("check TOKEN {}",TOKEN);
+        if(logger.isInfoEnabled()) {
+            logger.info("check TOKEN {}", TOKEN);
+        }
         Arrays.sort(strs);
 
         String str = strs[0]+strs[1]+strs[2];

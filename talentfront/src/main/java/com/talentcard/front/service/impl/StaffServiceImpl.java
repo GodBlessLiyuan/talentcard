@@ -58,7 +58,7 @@ public class StaffServiceImpl implements IStaffService {
             //不存在当前员工，未绑定
             status = 2;
         }
-        HashMap<String, Object> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>(2);
         hashMap.put("status", status);
         hashMap.put("staffNum", staffNum);
         return new ResultVO(1000, hashMap);
@@ -171,7 +171,7 @@ public class StaffServiceImpl implements IStaffService {
         String startTime = year + "-" + month + "-" + date + " 00:00:00";
         String endTime = year + "-" + month + "-" + date + " 23:59:59";
         Long vertifyNum = talentActivityHistoryMapper.getVertifyNum(staffId, (long) 1, activitySecondContentId, startTime, endTime);
-        HashMap<String, Object> result = new HashMap<>();
+        HashMap<String, Object> result = new HashMap<>(1);
         result.put("vertifyNum", vertifyNum);
         sendMessage(talentOpenId, staffOpenId, (long) 1, activitySecondContentId);
         return new ResultVO(1000, result);
@@ -284,7 +284,7 @@ public class StaffServiceImpl implements IStaffService {
         String startTime = year + "-" + month + "-" + date + " 00:00:00";
         String endTime = year + "-" + month + "-" + date + " 23:59:59";
         Long vertifyNum = talentActivityHistoryMapper.getVertifyNum(staffId, (long) 2, activitySecondContentId, startTime, endTime);
-        HashMap<String, Object> result = new HashMap<>();
+        HashMap<String, Object> result = new HashMap<>(1);
         result.put("vertifyNum", vertifyNum);
         sendMessage(talentOpenId, staffOpenId, (long) 2, activitySecondContentId);
         return new ResultVO(1000, result);

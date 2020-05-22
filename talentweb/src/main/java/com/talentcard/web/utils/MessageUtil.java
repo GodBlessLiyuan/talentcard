@@ -59,7 +59,7 @@ public class MessageUtil {
             weChatTemDto.setTemplate_id(policyApprovalTemplate);
         }
         weChatTemDto.setUrl(messageDTO.getUrl());
-        Map<String, TemplateDataDTO> map = new HashMap<>();
+        Map<String, TemplateDataDTO> map = new HashMap<>(6);
 
         TemplateDataDTO first = new TemplateDataDTO();
         first.setValue(messageDTO.getFirst());

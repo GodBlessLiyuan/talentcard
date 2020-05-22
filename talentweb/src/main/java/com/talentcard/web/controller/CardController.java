@@ -4,13 +4,14 @@ package com.talentcard.web.controller;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ICardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 
@@ -68,7 +69,7 @@ public class CardController {
                           @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
                           @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime,
                           @RequestParam(value = "cardNum", required = false, defaultValue = "") String cardNum) throws ParseException {
-        HashMap<String, Object> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>(4);
         if (!startTime.equals("")) {
             startTime = startTime + " 00:00:00";
         }
@@ -97,7 +98,7 @@ public class CardController {
                                    @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
                                    @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime,
                                    @RequestParam(value = "cardNum", required = false, defaultValue = "") String cardNum) throws ParseException {
-        HashMap<String, Object> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>(4);
         if (!startTime.equals("")) {
             startTime = startTime + " 00:00:00";
         }
