@@ -278,9 +278,14 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
 
             userCardPO.setNum(membershipNumber);
             userCardPO.setName(cardPO.getTitle());
-            cardPO.setCurrNum(cardPO.getCurrNum() + 1);
+
+//            cardPO.setCurrNum(cardPO.getCurrNum() + 1);
+            //高级卡更新待领取数量
             cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
             cardMapper.updateByPrimaryKeySelective(cardPO);
+            //基本卡更新下一张卡的编号（当前编号）
+            defaultCardPO.setCurrNum(cardPO.getCurrNum() + 1);
+            cardMapper.updateByPrimaryKeySelective(defaultCardPO);
 
             //推送审批通过微信消息
             messageDTO.setKeyword3("个人");
