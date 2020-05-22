@@ -56,6 +56,10 @@ public class TalentBO extends TalentPO {
      *
      */
     private Byte cstatus;
+    /**
+     * 人才荣誉
+     */
+    private Long honour;
 
     private Long certId;
     private Byte certificationStatus;

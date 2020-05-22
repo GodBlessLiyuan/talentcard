@@ -58,6 +58,10 @@ public class TalentVO implements Serializable {
      * 人才类别
      */
     private String category;
+    /**
+     * 人才荣誉
+     */
+    private Long honour;
 
     /**
      * bos 转 vos
@@ -92,6 +96,7 @@ public class TalentVO implements Serializable {
         vo.setTitle(bo.getTitle());
         vo.setQuality(bo.getQuality());
         vo.setCname(bo.getCname());
+        vo.setHonour(bo.getHonour());
         vo.setCnum(bo.getCnum());
         if (null == bo.getCategory() || "".equals(bo.getCategory())) {
             vo.setCategory("无");

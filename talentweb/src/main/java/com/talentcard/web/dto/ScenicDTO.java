@@ -5,8 +5,6 @@ import com.talentcard.common.pojo.ScenicEnjoyPO;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.ScenicPicturePO;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -92,6 +90,10 @@ public class ScenicDTO implements Serializable {
      */
     private String extra;
 
+    /**
+     * 可查看与申请此景区的人才荣誉IDs
+     */
+    private Long[] honourIds;
 
     /**
      * 根据 dto 设置 po
@@ -165,6 +167,15 @@ public class ScenicDTO implements Serializable {
                 po.setScenicId(scenicId);
                 po.setQuality(qualityId);
                 po.setType((byte) 5);
+                pos.add(po);
+            }
+        }
+        if (null != dto.getHonourIds() && dto.getHonourIds().length > 0) {
+            for (Long honourId : dto.getHonourIds()) {
+                ScenicEnjoyPO po = new ScenicEnjoyPO();
+                po.setScenicId(scenicId);
+                po.setHonourId(honourId);
+                po.setType((byte) 6);
                 pos.add(po);
             }
         }

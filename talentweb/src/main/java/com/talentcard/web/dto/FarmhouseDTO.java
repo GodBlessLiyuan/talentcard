@@ -81,6 +81,11 @@ public class FarmhouseDTO implements Serializable {
     private String extra;
 
     /**
+     * 可查看与申请此景区的人才荣誉IDs
+     */
+    private Long[] honourIds;
+
+    /**
      * 根据 dto 设置 po
      *
      * @param po
@@ -153,7 +158,15 @@ public class FarmhouseDTO implements Serializable {
                 pos.add(po);
             }
         }
-
+        if (null != dto.getHonourIds() && dto.getHonourIds().length > 0) {
+            for (Long honourId : dto.getHonourIds()) {
+                FarmhouseEnjoyPO po = new FarmhouseEnjoyPO();
+                po.setFarmhouseId(farmhouseId);
+                po.setHonourId(honourId);
+                po.setType((byte) 6);
+                pos.add(po);
+            }
+        }
         return pos;
     }
 

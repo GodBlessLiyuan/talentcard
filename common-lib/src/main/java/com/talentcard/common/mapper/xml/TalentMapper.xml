@@ -94,8 +94,8 @@
         </collection>
     </resultMap>
     <sql id="Base_Column_List">
-    talent_id, open_id, `name`, sex, id_card, passport, driver_card, card_type, work_unit, 
-    industry, industry_second, political, phone, create_time, category, work_location, 
+    talent_id, open_id, `name`, sex, id_card, passport, driver_card, card_type, work_unit,
+    industry, industry_second, political, phone, create_time, category, work_location,
     work_location_type, `status`, card_id, dr
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -109,19 +109,19 @@
     where talent_id = #{talentId,jdbcType=BIGINT}
   </delete>
     <insert id="insert" parameterType="com.talentcard.common.pojo.TalentPO">
-    insert into t_talent (talent_id, open_id, `name`, 
-      sex, id_card, passport, driver_card, 
-      card_type, work_unit, industry, 
-      industry_second, political, phone, 
-      create_time, category, work_location, 
-      work_location_type, `status`, card_id, 
+    insert into t_talent (talent_id, open_id, `name`,
+      sex, id_card, passport, driver_card,
+      card_type, work_unit, industry,
+      industry_second, political, phone,
+      create_time, category, work_location,
+      work_location_type, `status`, card_id,
       dr)
-    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
-      #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{driverCard,jdbcType=CHAR}, 
-      #{cardType,jdbcType=TINYINT}, #{workUnit,jdbcType=CHAR}, #{industry,jdbcType=INTEGER}, 
-      #{industrySecond,jdbcType=INTEGER}, #{political,jdbcType=TINYINT}, #{phone,jdbcType=CHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{category,jdbcType=CHAR}, #{workLocation,jdbcType=CHAR}, 
-      #{workLocationType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{cardId,jdbcType=BIGINT}, 
+    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
+      #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{driverCard,jdbcType=CHAR},
+      #{cardType,jdbcType=TINYINT}, #{workUnit,jdbcType=CHAR}, #{industry,jdbcType=INTEGER},
+      #{industrySecond,jdbcType=INTEGER}, #{political,jdbcType=TINYINT}, #{phone,jdbcType=CHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{category,jdbcType=CHAR}, #{workLocation,jdbcType=CHAR},
+      #{workLocationType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{cardId,jdbcType=BIGINT},
       #{dr,jdbcType=TINYINT})
   </insert>
     <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentPO">
@@ -569,7 +569,8 @@
         uci.pq_category as quality,
         uc.name as cname,
         uc.num as cnum,
-        uci.talent_category as category
+        uci.talent_category as category,
+        uci.th_id as honour
         from t_talent t
         left join t_user_current_info uci on t.talent_id = uci.talent_id
         left join t_user_card uc on t.talent_id = uc.talent_id
@@ -585,6 +586,7 @@
         <if test="quality != null and quality !=0">and uci.pq_category = #{quality}</if>
         <if test="card != null and card !=''">and (uc.name like '%' #{card} '%' or uc.num like '%' #{card} '%')</if>
         <if test="category != null and category !=0">and uci.talent_category = #{quality}</if>
+        <if test="honour != null and honour != 0">and uci.th_id = #{honour}</if>
         order by t.create_time desc
     </select>
     <select id="queryDetail" parameterType="java.lang.Long" resultType="com.talentcard.common.bo.TalentBO">
