@@ -60,7 +60,7 @@ public class EventServiceImpl implements IEventService {
             Long certId = newCard.getCertId();
             //4表，更新status=5:基础卡正在使用
             Byte status = 5;
-            TalentInfoUpdateUtil.fourTableUpdate(certId, status);
+            TalentInfoUpdateUtil.fiveTableUpdate(certId, status);
             //user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
             userCardMapper.updateStatusById(newCard.getTalentId(), (byte) 1, (byte) 2);
 
@@ -157,7 +157,7 @@ public class EventServiceImpl implements IEventService {
             if (oldCard == null) {
                 //user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
                 userCardMapper.updateStatusById(newCard.getTalentId(), (byte) 1, (byte) 2);
-                TalentInfoUpdateUtil.fourTableUpdate(newCardCertId, (byte) 1);
+                TalentInfoUpdateUtil.fiveTableUpdate(newCardCertId, (byte) 1);
                 //更新customField
                 TalentInfoUpdateUtil.updateSeniorCardCustomField(newCard.getCode(),
                         newCard.getWxCardId(), newCardTalentId);
@@ -177,12 +177,12 @@ public class EventServiceImpl implements IEventService {
             //旧卡数量-1
             cardMapper.updateByPrimaryKeySelective(oldCardPO);
             //旧卡4表从状态5或者1改为状态9或10
-            TalentInfoUpdateUtil.fourTableUpdate(oldCertId, oldCardStatus);
+            TalentInfoUpdateUtil.fiveTableUpdate(oldCertId, oldCardStatus);
 
             //2.certification表和三表，更新status=1:正在使用
             Byte newCardStatus = 1;
             //新卡4表状态从4变为1
-            TalentInfoUpdateUtil.fourTableUpdate(newCardCertId, newCardStatus);
+            TalentInfoUpdateUtil.fiveTableUpdate(newCardCertId, newCardStatus);
             //user_card更新（查询status=2的卡，改为status=3）（之前正在使用的旧卡变为废弃）
             userCardMapper.updateStatusById(newCard.getTalentId(), (byte) 2, (byte) 3);
             //user_card更新（查询status=1的卡，改为status=2）（之前待使用的旧卡变为正在使用）
@@ -258,7 +258,7 @@ public class EventServiceImpl implements IEventService {
             //c表status=1找正在使用的certId
             Long certId = currentCard.getCertId();
             //4表，status从1或者5改成10或者9
-            TalentInfoUpdateUtil.fourTableUpdate(certId, dropCardStatus);
+            TalentInfoUpdateUtil.fiveTableUpdate(certId, dropCardStatus);
             //uc表，status从2改为3
             userCardMapper.updateStatusById(talentId, (byte) 2, (byte) 3);
         } else {
@@ -271,7 +271,7 @@ public class EventServiceImpl implements IEventService {
             //uc的status=2的改为=1
             userCardMapper.updateStatusById(talentId, (byte) 2, (byte) 1);
             //4表status=5的改为=2或者4
-            TalentInfoUpdateUtil.fourTableUpdate(certId, waitingReceiveCardStatus);
+            TalentInfoUpdateUtil.fiveTableUpdate(certId, waitingReceiveCardStatus);
         }
         //无论是有待领取的卡，还是没有待领取的卡，正在使用的卡都数量-1，待领取数量+1
         CardPO cardPO = cardMapper.selectByPrimaryKey(currentCard.getCardId());

@@ -27,12 +27,16 @@ public class TalentInfoUpdateUtil {
     private ProfQualityMapper pqMapper;
     @Autowired
     private TalentMapper tMapper;
+    @Autowired
+    private TalentHonourMapper thMapper;
 
     private static CertificationMapper certificationMapper;
     private static EducationMapper educationMapper;
     private static ProfTitleMapper profTitleMapper;
     private static ProfQualityMapper profQualityMapper;
     private static TalentMapper talentMapper;
+    private static TalentHonourMapper talentHonourMapper;
+
 
     /**
      * 构造方法执行后的初始化
@@ -44,6 +48,7 @@ public class TalentInfoUpdateUtil {
         profTitleMapper = ptMapper;
         profQualityMapper = pqMapper;
         talentMapper = tMapper;
+        talentHonourMapper = thMapper;
     }
 
     /**
@@ -52,11 +57,12 @@ public class TalentInfoUpdateUtil {
      * @param certId
      * @param status
      */
-    public static void fourTableUpdate(Long certId, Byte status) {
+    public static void fiveTableUpdate(Long certId, Byte status) {
         certificationMapper.updateStatusByCertId(certId, status);
         educationMapper.updateStatusByCertId(certId, status);
         profTitleMapper.updateStatusByCertId(certId, status);
         profQualityMapper.updateStatusByCertId(certId, status);
+        talentHonourMapper.updateStatusByCertId(certId, status);
     }
 
     public static void updateJuniorCardCustomField(String code, String wxCardId, Long talentId) {

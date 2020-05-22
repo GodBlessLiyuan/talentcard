@@ -125,4 +125,10 @@
       if_certificate = #{ifCertificate,jdbcType=TINYINT}
     where th_id = #{thId,jdbcType=BIGINT}
   </update>
+  <update id="updateStatusByCertId">
+    update t_talent_honour th
+    set th.`status` = #{status}
+    where th.cert_id = #{certId,jdbcType=BIGINT}
+  </update>
+
 </mapper>
