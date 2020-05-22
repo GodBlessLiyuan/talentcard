@@ -458,15 +458,14 @@ public class TalentServiceImpl implements ITalentService {
         String idCard = talentVO.getIdCard();
         String passport = talentVO.getPassport();
         String driverCard = talentVO.getDriverCard();
-        if (idCard != null && !idCard.equals("")) {
+        Byte cardType = talentBO.getCardType();
+        if (cardType == 1) {
             idCard = identificationCardEncryption(idCard);
             talentVO.setIdCard(idCard);
-        }
-        if (passport != null && !passport.equals("")) {
+        } else if (cardType == 2) {
             passport = identificationCardEncryption(passport);
             talentVO.setPassport(passport);
-        }
-        if (driverCard != null && !driverCard.equals("")) {
+        } else if (cardType == 3) {
             driverCard = identificationCardEncryption(driverCard);
             talentVO.setDriverCard(driverCard);
         }
