@@ -47,7 +47,7 @@ public class MessageUtil {
             weChatTemDto.setTemplate_id(activityVertifyTemplateId);
         }
         weChatTemDto.setUrl(messageDTO.getUrl());
-        Map<String, TemplateDataDto> map = new HashMap<>();
+        Map<String, TemplateDataDto> map = new HashMap<>(6);
         TemplateDataDto first = new TemplateDataDto();
 
         first.setValue(messageDTO.getFirst());

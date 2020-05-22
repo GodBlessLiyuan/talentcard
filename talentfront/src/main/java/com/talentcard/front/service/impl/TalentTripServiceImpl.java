@@ -93,7 +93,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
         List<ScenicPO> scenicPOList = scenicMapper.findEnjoyScenic(scenicIdList);
         List<ScenicVO> scenicVOList = ScenicVO.convert(scenicPOList);
         //拼结果
-        HashMap<String, Object> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>(2);
         Long benefitNum = ActivityResidueNumUtil.getResidueNum();
         hashMap.put("scenicList", scenicVOList);
         hashMap.put("benefitNum", benefitNum);
@@ -134,7 +134,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
         if (getTimes <= times) {
             residueTimes = times - getTimes;
         }
-        HashMap<String, Object> result = new HashMap<>();
+        HashMap<String, Object> result = new HashMap<>(1);
         result.put("residueTimes", residueTimes);
         return new ResultVO(1000, result);
     }

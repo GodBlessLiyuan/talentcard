@@ -18,6 +18,8 @@ import com.talentcard.web.vo.TalentVO;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +37,7 @@ import java.util.*;
  */
 @Service
 public class TalentServiceImpl implements ITalentService {
+    private static final Logger logger = LoggerFactory.getLogger(TalentServiceImpl.class);
     @Autowired
     private TalentMapper talentMapper;
     @Autowired
@@ -234,7 +237,10 @@ public class TalentServiceImpl implements ITalentService {
         newUserCardPO.setCreateTime(new Date());
         newUserCardPO.setStatus((byte) 1);
         newUserCardPO.setName(newCardPO.getName());
-        cardMapper.updateByPrimaryKeySelective(newCardPO);
+        int updateResult = cardMapper.updateByPrimaryKeySelective(newCardPO);
+        if (updateResult == 0) {
+            logger.error("update cardMapper error");
+        }
         userCardMapper.insertSelective(newUserCardPO);
 
         TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);

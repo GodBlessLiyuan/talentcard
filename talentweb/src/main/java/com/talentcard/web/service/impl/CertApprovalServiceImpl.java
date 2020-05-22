@@ -120,9 +120,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         messageDTO.setOpenid(currentTalent.getOpenId());
         //姓名
         messageDTO.setKeyword1(currentTalent.getName());
-        //身份证号，屏蔽八位
-        String encryptionIdCard = currentTalent.getIdCard().substring(0, 9) + "********";
-        messageDTO.setKeyword2(encryptionIdCard);
+        //证件号码
+        String identificationCardNum = identificationCardEncryption(currentTalent);
+        messageDTO.setKeyword2(identificationCardNum);
 
         //领卡机构
         //通知时间
@@ -278,9 +278,20 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
 
             userCardPO.setNum(membershipNumber);
             userCardPO.setName(cardPO.getTitle());
-            cardPO.setCurrNum(cardPO.getCurrNum() + 1);
+
+//            cardPO.setCurrNum(cardPO.getCurrNum() + 1);
+            //高级卡更新待领取数量
             cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
-            cardMapper.updateByPrimaryKeySelective(cardPO);
+            int updateResult = cardMapper.updateByPrimaryKeySelective(cardPO);
+            if (updateResult == 0) {
+                logger.error("update cardMapper error");
+            }
+            //基本卡更新下一张卡的编号（当前编号）
+            defaultCardPO.setCurrNum(cardPO.getCurrNum() + 1);
+            updateResult = cardMapper.updateByPrimaryKeySelective(defaultCardPO);
+            if (updateResult == 0) {
+                logger.error("update cardMapper error");
+            }
 
             //推送审批通过微信消息
             messageDTO.setKeyword3("个人");
@@ -322,7 +333,10 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
          */
         CertApprovalPO oldCertApprovalPO = certApprovalMapper.findByCertId(certId, (byte) 1, null);
         oldCertApprovalPO.setUpdateTime(new Date());
-        certApprovalMapper.updateByPrimaryKeySelective(oldCertApprovalPO);
+        int updateResult = certApprovalMapper.updateByPrimaryKeySelective(oldCertApprovalPO);
+        if (updateResult == 0) {
+            logger.error("update certApprovalMapper error");
+        }
         return new ResultVO(1000);
     }
 
@@ -340,6 +354,34 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         List<CertApprovalBO> certApprovalBOList = certApprovalMapper.queryApprovalById(talentId, certId);
         ApprovalTalentVO approvalTalentVO = ApprovalTalentVO.convert(talentBO, certApprovalBOList);
         return new ResultVO(1000, approvalTalentVO);
+    }
+
+    /**
+     * 证件号码，后四位加密,打星星
+     *
+     * @return
+     */
+    public String identificationCardEncryption(TalentPO talentPO) {
+
+        Byte cardType = talentPO.getCardType();
+        String identificationCardNum = "";
+        if (cardType == 1) {
+            //身份证
+            identificationCardNum = talentPO.getIdCard();
+        } else if (cardType == 2) {
+            //护照
+            identificationCardNum = talentPO.getPassport();
+        } else if (cardType == 3) {
+            //驾照
+            identificationCardNum = talentPO.getDriverCard();
+        }
+        if (identificationCardNum.equals("") || identificationCardNum == null
+                || identificationCardNum.length() <= 4) {
+            return "当前号码出现异常！";
+        }
+        Integer end = identificationCardNum.length() - 4;
+        String encryptionIdCardNum = identificationCardNum.substring(0, end) + "****";
+        return encryptionIdCardNum;
     }
 
 }

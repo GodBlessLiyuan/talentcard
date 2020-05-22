@@ -8,6 +8,8 @@ import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IStaffService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,7 @@ import java.util.List;
  */
 @Service
 public class StaffServiceImpl implements IStaffService {
+    private static final Logger logger = LoggerFactory.getLogger(StaffServiceImpl.class);
     @Autowired
     private StaffMapper staffMapper;
 
@@ -40,7 +43,10 @@ public class StaffServiceImpl implements IStaffService {
             return new ResultVO(2503, "没有此员工");
         }
         staffPO.setDr((byte) 2);
-        staffMapper.updateByPrimaryKeySelective(staffPO);
+        int updateResult = staffMapper.updateByPrimaryKeySelective(staffPO);
+        if (updateResult == 0) {
+            logger.error("update staffMapper error");
+        }
         return new ResultVO(1000);
     }
 }

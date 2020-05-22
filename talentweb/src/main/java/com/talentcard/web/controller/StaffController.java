@@ -27,7 +27,7 @@ public class StaffController {
                           @RequestParam(value = "name", required = false) String name,
                           @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
                           @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime) {
-        HashMap<String, Object> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>(5);
         if (!startTime.equals("")) {
             startTime = startTime + " 00:00:00";
         }

@@ -201,7 +201,10 @@ public class CardServiceImpl implements ICardService {
         cardPO.setUpdatePerson(updatePerson);
         cardPO.setUpdateTime(new Date());
         cardPO.setBusinessDescription(businessDescription);
-        cardMapper.updateByPrimaryKeySelective(cardPO);
+        int updateResult = cardMapper.updateByPrimaryKeySelective(cardPO);
+        if (updateResult == 0) {
+            logger.error("update cardMapper error");
+        }
         return new ResultVO(1000);
     }
 
@@ -261,7 +264,10 @@ public class CardServiceImpl implements ICardService {
         }
         //删除卡服务端
         cardPO.setDr((byte) 2);
-        cardMapper.updateByPrimaryKeySelective(cardPO);
+        int updateResult = cardMapper.updateByPrimaryKeySelective(cardPO);
+        if (updateResult == 0) {
+            logger.error("update cardMapper error");
+        }
         return new ResultVO(1000, result);
     }
 

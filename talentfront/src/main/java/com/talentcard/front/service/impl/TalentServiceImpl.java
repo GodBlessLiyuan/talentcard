@@ -11,6 +11,8 @@ import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.MessageUtil;
 import com.talentcard.front.vo.TalentVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -29,6 +31,7 @@ import java.util.HashMap;
 @EnableTransactionManagement
 @Service
 public class TalentServiceImpl implements ITalentService {
+    private static final Logger logger = LoggerFactory.getLogger(TalentServiceImpl.class);
     @Autowired
     private TalentMapper talentMapper;
     @Autowired
@@ -252,7 +255,10 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setCreateTime(new Date());
         userCardPO.setStatus((byte) 1);
         userCardPO.setName(cardPO.getTitle());
-        cardMapper.updateByPrimaryKeySelective(cardPO);
+        int updateResult = cardMapper.updateByPrimaryKeySelective(cardPO);
+        if (updateResult == 0) {
+            logger.error("update cardMapper error");
+        }
         userCardMapper.insertSelective(userCardPO);
 
         //用消息模板推送微信消息
@@ -458,15 +464,14 @@ public class TalentServiceImpl implements ITalentService {
         String idCard = talentVO.getIdCard();
         String passport = talentVO.getPassport();
         String driverCard = talentVO.getDriverCard();
-        if (idCard != null && !idCard.equals("")) {
+        Byte cardType = talentBO.getCardType();
+        if (cardType == 1) {
             idCard = identificationCardEncryption(idCard);
             talentVO.setIdCard(idCard);
-        }
-        if (passport != null && !passport.equals("")) {
+        } else if (cardType == 2) {
             passport = identificationCardEncryption(passport);
             talentVO.setPassport(passport);
-        }
-        if (driverCard != null && !driverCard.equals("")) {
+        } else if (cardType == 3) {
             driverCard = identificationCardEncryption(driverCard);
             talentVO.setDriverCard(driverCard);
         }

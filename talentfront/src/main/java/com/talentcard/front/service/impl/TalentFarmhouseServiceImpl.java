@@ -1,23 +1,23 @@
 package com.talentcard.front.service.impl;
 
 import com.talentcard.common.bo.FarmhouseBO;
-import com.talentcard.common.bo.ScenicBO;
 import com.talentcard.common.mapper.*;
-import com.talentcard.common.pojo.*;
+import com.talentcard.common.pojo.FarmhouseGroupAuthorityPO;
+import com.talentcard.common.pojo.FarmhousePO;
+import com.talentcard.common.pojo.TalentPO;
+import com.talentcard.common.pojo.UserCurrentInfoPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ITalentFarmhouseService;
-import com.talentcard.front.service.ITalentTripService;
 import com.talentcard.front.utils.ActivityResidueNumUtil;
 import com.talentcard.front.utils.TalentActivityUtil;
 import com.talentcard.front.vo.FarmhouseVO;
-import com.talentcard.front.vo.ScenicVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -93,7 +93,7 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
         List<FarmhousePO> farmhousePOList = farmhouseMapper.findEnjoyFarmhouse(farmhouseIdList);
         List<FarmhouseVO> farmhouseVOList = FarmhouseVO.convert(farmhousePOList);
         //拼结果
-        HashMap<String, Object> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>(2);
         Long benefitNum = ActivityResidueNumUtil.getResidueNum();
         hashMap.put("farmhouseVOList", farmhouseVOList);
         hashMap.put("benefitNum", benefitNum);

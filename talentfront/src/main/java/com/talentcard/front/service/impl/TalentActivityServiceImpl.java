@@ -57,7 +57,7 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
         Integer quality = userCurrentInfoPO.getPqCategory();
         Long talentHonour = userCurrentInfoPO.getHonourId();
 
-        HashMap<String, Object> resultHashMap = new HashMap<>();
+        HashMap<String, Object> resultHashMap = new HashMap<>(2);
         /**
          * 每一个活动挨个枚举
          * todo 加入中间表判断

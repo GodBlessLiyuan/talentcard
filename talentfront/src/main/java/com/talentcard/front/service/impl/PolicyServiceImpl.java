@@ -1,6 +1,7 @@
 package com.talentcard.front.service.impl;
 
 import com.talentcard.common.bo.PolicyApplyBO;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.FileUtil;
@@ -10,7 +11,7 @@ import com.talentcard.front.service.IPolicyService;
 import com.talentcard.front.vo.PolicyAppliesVO;
 import com.talentcard.front.vo.PolicyApplyDetailVO;
 import com.talentcard.front.vo.PolicyDetailVO;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,13 +49,8 @@ public class PolicyServiceImpl implements IPolicyService {
     private BankMapper bankMapper;
     @Resource
     private AnnexMapper annexMapper;
-
-    @Value("${file.rootDir}")
-    private String rootDir;
-    @Value("${file.projectDir}")
-    private String projectDir;
-    @Value("${file.annexDir}")
-    private String annexDir;
+    @Autowired
+    private FilePathConfig filePathConfig;
 
     @Override
     public ResultVO policies(String openid) {
@@ -292,7 +288,7 @@ public class PolicyServiceImpl implements IPolicyService {
             for (MultipartFile file : dto.getFiles()) {
                 AnnexPO annexPO = new AnnexPO();
                 annexPO.setName(file.getOriginalFilename());
-                annexPO.setLocation(FileUtil.uploadFile(file, rootDir, projectDir, annexDir, "annex"));
+                annexPO.setLocation(FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getAnnexDir(), "annex"));
                 annexPO.setPaId(applyPO.getPaId());
                 annexPOs.add(annexPO);
             }
