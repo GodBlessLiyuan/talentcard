@@ -8,6 +8,8 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.IStaffService;
 import com.talentcard.front.utils.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class StaffServiceImpl implements IStaffService {
+    private static final Logger logger = LoggerFactory.getLogger(StaffServiceImpl.class);
     @Autowired
     private StaffMapper staffMapper;
     @Autowired
@@ -144,7 +147,10 @@ public class StaffServiceImpl implements IStaffService {
         Long staffId = staffPO.getStaffId();
         talentTripPO.setStaffId(staffId);
         talentTripPO.setUpdateTime(new Date());
-        talentTripMapper.updateByPrimaryKeySelective(talentTripPO);
+        int updateResult = talentTripMapper.updateByPrimaryKeySelective(talentTripPO);
+        if (updateResult == 0) {
+            logger.error("update talentTripMapper error");
+        }
         //更新历史表
         TalentActivityHistoryPO talentActivityHistoryPO = new TalentActivityHistoryPO();
         talentActivityHistoryPO.setOpenId(talentOpenId);
@@ -218,7 +224,7 @@ public class StaffServiceImpl implements IStaffService {
          *  中间表没找到景区idList，去大表查询
          */
         if (farmhouseIdList.size() == 0) {
-            farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality,talentHonour);
+            farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality, talentHonour);
             if (farmhouseIdList.size() == 0) {
                 return new ResultVO(1001, "查无景区!不具备此农家乐权益!");
             }

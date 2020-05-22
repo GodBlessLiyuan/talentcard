@@ -282,10 +282,16 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
 //            cardPO.setCurrNum(cardPO.getCurrNum() + 1);
             //高级卡更新待领取数量
             cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
-            cardMapper.updateByPrimaryKeySelective(cardPO);
+            int updateResult = cardMapper.updateByPrimaryKeySelective(cardPO);
+            if (updateResult == 0) {
+                logger.error("update cardMapper error");
+            }
             //基本卡更新下一张卡的编号（当前编号）
             defaultCardPO.setCurrNum(cardPO.getCurrNum() + 1);
-            cardMapper.updateByPrimaryKeySelective(defaultCardPO);
+            updateResult = cardMapper.updateByPrimaryKeySelective(defaultCardPO);
+            if (updateResult == 0) {
+                logger.error("update cardMapper error");
+            }
 
             //推送审批通过微信消息
             messageDTO.setKeyword3("个人");
@@ -327,7 +333,10 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
          */
         CertApprovalPO oldCertApprovalPO = certApprovalMapper.findByCertId(certId, (byte) 1, null);
         oldCertApprovalPO.setUpdateTime(new Date());
-        certApprovalMapper.updateByPrimaryKeySelective(oldCertApprovalPO);
+        int updateResult = certApprovalMapper.updateByPrimaryKeySelective(oldCertApprovalPO);
+        if (updateResult == 0) {
+            logger.error("update certApprovalMapper error");
+        }
         return new ResultVO(1000);
     }
 
