@@ -34,9 +34,10 @@ public class TalentController {
                           @RequestParam(value = "educ", defaultValue = "") Integer educ,
                           @RequestParam(value = "title", defaultValue = "") Integer title,
                           @RequestParam(value = "quality", defaultValue = "") Integer quality,
-                          @RequestParam(value = "card", defaultValue = "") String card) {
+                          @RequestParam(value = "card", defaultValue = "") String card,
+                          @RequestParam(value = "honourId", defaultValue = "") Long honourId) {
 
-        Map<String, Object> reqMap = new HashMap<>(8);
+        Map<String, Object> reqMap = new HashMap<>(10);
         if (!"".equals(end)) {
             end = end + " 23:59:59";
         }
@@ -48,6 +49,7 @@ public class TalentController {
         reqMap.put("title", title);
         reqMap.put("quality", quality);
         reqMap.put("card", card);
+        reqMap.put("honour", honourId);
 
         return iTalentService.query(pageNum, pageSize, reqMap);
     }
