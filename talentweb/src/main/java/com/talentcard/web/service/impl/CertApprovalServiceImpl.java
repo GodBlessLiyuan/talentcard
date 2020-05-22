@@ -140,7 +140,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         certApprovalPo.setUserId(userId);
         certApprovalPo.setOpinion((String) reqData.get("opinion"));
         certApprovalPo.setUpdateTime(new Date());
-        if (result.equals(FAILURE)) {
+        if (FAILURE.equals(result)) {
             /**
              * 驳回
              */
@@ -268,15 +268,19 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             String membershipNumber = defaultCardPO.getInitialWord() + defaultCardPO.getAreaNum();
             //写死，初始后字段总共6位
             Integer initialNumLength = 6;
-            Integer currentNumLength = defaultCardPO.getCurrNum().toString().length();
-            if ((initialNumLength - currentNumLength) > 0) {
-                for (int i = 0; i < (initialNumLength - currentNumLength); i++) {
-                    membershipNumber = membershipNumber + "0";
-                }
-            }
-            membershipNumber = membershipNumber + defaultCardPO.getCurrNum();
 
-            userCardPO.setNum(membershipNumber);
+            if(defaultCardPO.getCurrNum()!=null){
+                Integer currentNumLength = defaultCardPO.getCurrNum().toString().length();
+                if ((initialNumLength - currentNumLength) > 0) {
+                    for (int i = 0; i < (initialNumLength - currentNumLength); i++) {
+                        membershipNumber = membershipNumber + "0";
+                    }
+                }
+                membershipNumber = membershipNumber + defaultCardPO.getCurrNum();
+
+                userCardPO.setNum(membershipNumber);
+            }
+
             userCardPO.setName(cardPO.getTitle());
 
 //            cardPO.setCurrNum(cardPO.getCurrNum() + 1);

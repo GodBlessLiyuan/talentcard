@@ -30,7 +30,7 @@ public class FilePathConfig {
     /**
      * 项目目录
      */
-    private String projectDir;
+    private String projectDir = "/talentcard/";
 
     /**
      * 附件目录

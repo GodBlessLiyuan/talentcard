@@ -223,9 +223,9 @@ public class StaffServiceImpl implements IStaffService {
         /**
          *  中间表没找到景区idList，去大表查询
          */
-        if (farmhouseIdList.size() == 0) {
+        if (farmhouseIdList != null && farmhouseIdList.size() == 0) {
             farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality, talentHonour);
-            if (farmhouseIdList.size() == 0) {
+            if (farmhouseIdList != null &&farmhouseIdList.size() == 0) {
                 return new ResultVO(1001, "查无景区!不具备此农家乐权益!");
             }
             //去重

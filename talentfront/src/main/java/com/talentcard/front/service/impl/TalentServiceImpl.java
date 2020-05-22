@@ -60,23 +60,30 @@ public class TalentServiceImpl implements ITalentService {
     public ResultVO<TalentPO> findStatus(String openId) {
         //待领取的卡
         HashMap<String, Object> getCard = userCardMapper.findCurrentCard(openId, (byte) 1);
-        //正在使用的卡
-        HashMap<String, Object> currentCard = userCardMapper.findCurrentCard(openId, (byte) 2);
+
+
         HashMap<String, Object> result = new HashMap(4);
-        if (getCard == null && currentCard == null) {
-            //都为空，说明这个人没有卡，需要注册
-            result.put("status", 2);
-        } else if (getCard != null) {
+
+        if (getCard != null) {
             //说明存在待领取的卡，优先给待领取的
             result.put("status", 1);
             result.put("cardId", getCard.get("cardId"));
             result.put("code", getCard.get("code"));
         } else {
-            //实在不行，给正在使用的卡
-            result.put("status", 1);
-            result.put("cardId", currentCard.get("cardId"));
-            result.put("code", currentCard.get("code"));
+            //正在使用的卡
+            HashMap<String, Object> currentCard = userCardMapper.findCurrentCard(openId, (byte) 2);
+
+            if (currentCard == null) {
+                //都为空，说明这个人没有卡，需要注册
+                result.put("status", 2);
+            }  else {
+                //实在不行，给正在使用的卡
+                result.put("status", 1);
+                result.put("cardId", currentCard.get("cardId"));
+                result.put("code", currentCard.get("code"));
+            }
         }
+
         Integer ifChangeCard = talentMapper.ifExistGetCard(openId);
         if (ifChangeCard == 0) {
             result.put("ifChangeCard", 2);
