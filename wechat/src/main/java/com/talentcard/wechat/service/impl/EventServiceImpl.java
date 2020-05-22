@@ -4,10 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
-import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.wechat.service.IEventService;
-import com.talentcard.wechat.utils.AccessTokenUtil;
 import com.talentcard.wechat.utils.TalentInfoUpdateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -224,10 +222,9 @@ public class EventServiceImpl implements IEventService {
         //c表status=1，uc表status=2
         //判断正在使用的卡是基本卡还是高级卡
         ActivcateBO currentCard;
-        //基本卡
+        //基本卡 5 基本卡正在使用  2 有正在使用的卡
         ActivcateBO baseCard = talentMapper.activate(openId, (byte) 5, (byte) 2);
-        //高级卡
-        ActivcateBO highCard = talentMapper.activate(openId, (byte) 1, (byte) 2);
+
         //正在使用的卡改为废弃的状态：9 or 10。9是基本卡废弃；10是高级卡废弃
         Byte dropCardStatus;
         //正在使用的卡改为待领取的状态：2 or 4。2是基本卡待领取；4是高级卡待领取
@@ -237,13 +234,17 @@ public class EventServiceImpl implements IEventService {
             currentCard = baseCard;
             dropCardStatus = 9;
             waitingReceiveCardStatus = 2;
-        } else if (highCard != null) {
-            //正在使用的是高级卡
-            currentCard = highCard;
-            dropCardStatus = 10;
-            waitingReceiveCardStatus = 4;
-        } else {
-            return new ResultVO(2210, "没有正在使用的卡");
+        } else{
+            //高级卡
+            ActivcateBO highCard = talentMapper.activate(openId, (byte) 1, (byte) 2);
+            if (highCard != null) {
+                //正在使用的是高级卡
+                currentCard = highCard;
+                dropCardStatus = 10;
+                waitingReceiveCardStatus = 4;
+            } else {
+                return new ResultVO(2210, "没有正在使用的卡");
+            }
         }
         //判断删卡事件的wxCardId是否和数据库里的一致
         if (!currentCard.getWxCardId().equals(eventCardId)) {
@@ -266,7 +267,7 @@ public class EventServiceImpl implements IEventService {
              */
             Long talentId = currentCard.getTalentId();
             Long certId = currentCard.getCertId();
-            CardPO cardPO = cardMapper.selectByPrimaryKey(currentCard.getCardId());
+
             //uc的status=2的改为=1
             userCardMapper.updateStatusById(talentId, (byte) 2, (byte) 1);
             //4表status=5的改为=2或者4
@@ -281,7 +282,10 @@ public class EventServiceImpl implements IEventService {
             return new ResultVO(2212, "卡当前数量是0，不能再减少了！");
         }
         cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
-        cardMapper.updateByPrimaryKeySelective(cardPO);
+        int result = cardMapper.updateByPrimaryKeySelective(cardPO);
+        if(result==0){
+            logger.error("update cardMapper error");
+        }
         //修改状态
         return new ResultVO(1000);
     }
