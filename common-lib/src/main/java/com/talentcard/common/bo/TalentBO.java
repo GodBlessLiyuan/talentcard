@@ -60,6 +60,30 @@ public class TalentBO extends TalentPO {
      * 人才荣誉
      */
     private Long honour;
+    /**
+     * 工作地点
+     */
+    private String workLocation;
+    /**
+     * 政治面貌
+     */
+    private Byte political;
+    /**
+     * 证件类型
+     */
+    private Byte cardType;
+    /**
+     * 身份证号
+     */
+    private String idCard;
+    /**
+     * 护照号
+     */
+    private String passport;
+    /**
+     * 驾照号
+     */
+    private String driverCard;
 
     private Long certId;
     private Byte certificationStatus;

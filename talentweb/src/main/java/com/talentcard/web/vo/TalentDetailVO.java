@@ -84,6 +84,30 @@ public class TalentDetailVO implements Serializable {
      * 注册时间
      */
     private Date ctime;
+    /**
+     * 人才荣誉
+     */
+    private Long honour;
+    /**
+     * 工作地点
+     */
+    private String workLocation;
+    /**
+     * 政治面貌
+     */
+    private Byte political;
+    /**
+     * 证件类型
+     */
+    private Byte cardType;
+    /**
+     * 护照号
+     */
+    private String passport;
+    /**
+     * 驾照号
+     */
+    private String driverCard;
 
     /**
      * bo 转 vo
@@ -111,6 +135,12 @@ public class TalentDetailVO implements Serializable {
         vo.setIndustry(bo.getIndustry());
         vo.setUnit(bo.getWorkUnit());
         vo.setCtime(bo.getCreateTime());
+        vo.setHonour(bo.getHonour());
+        vo.setWorkLocation(bo.getWorkLocation());
+        vo.setPolitical(bo.getPolitical());
+        vo.setCardType(bo.getCardType());
+        vo.setPassport(bo.getPassport());
+        vo.setDriverCard(bo.getDriverCard());
 
         return vo;
     }

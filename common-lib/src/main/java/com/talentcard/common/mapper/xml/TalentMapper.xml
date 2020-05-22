@@ -600,6 +600,12 @@
                t.work_unit     as workUnit,
                t.industry,
                t.phone,
+               t.political     as political,
+               t.card_type     as cardType,
+               t.id_card       as idCard,
+               t.passport      as passport,
+               t.driver_card   as driverCard,
+               t.work_location as workLocation,
                uci.education   as educ,
                uci.school,
                uci.first_class as first,
@@ -608,6 +614,7 @@
                uci.pt_info     as ptInfo,
                uci.pq_category as quality,
                uci.pq_info     as pqInfo,
+               uci.th_id       as honour,
                c.name          as cname,
                c.num           as cnum
         from t_talent t
