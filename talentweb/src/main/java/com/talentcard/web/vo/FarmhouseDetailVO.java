@@ -86,6 +86,10 @@ public class FarmhouseDetailVO implements Serializable {
      * 二维码
      */
     private String qrCode;
+    /**
+     * 可查看与申请此政策权益的人才荣誉IDs
+     */
+    private List<Long> talentHonourIds;
 
     /**
      * 构建vo
@@ -114,6 +118,7 @@ public class FarmhouseDetailVO implements Serializable {
         List<Integer> educIds = new ArrayList<>();
         List<Integer> titleIds = new ArrayList<>();
         List<Integer> qualityIds = new ArrayList<>();
+        List<Long> talentHonourIds = new ArrayList<>();
         for (FarmhouseEnjoyPO po : enjoyPOs) {
             Byte type = po.getType();
             if (type == 1) {
@@ -126,6 +131,8 @@ public class FarmhouseDetailVO implements Serializable {
                 titleIds.add(po.getTitleId());
             } else if (type == 5) {
                 qualityIds.add(po.getQuality());
+            } else if (type == 6) {
+                talentHonourIds.add(po.getHonourId());
             }
         }
 
@@ -134,6 +141,7 @@ public class FarmhouseDetailVO implements Serializable {
         vo.setEducIds(educIds);
         vo.setTitleIds(titleIds);
         vo.setQualityIds(qualityIds);
+        vo.setTalentHonourIds(talentHonourIds);
 
         List<String> picture = new ArrayList<>();
         for (FarmhousePicturePO po : picPOs) {

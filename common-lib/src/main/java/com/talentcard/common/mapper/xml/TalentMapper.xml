@@ -543,7 +543,8 @@
         uci.pt_category as title,
         uci.pq_category as quality,
         c.name as cname,
-        c.num as cnum
+        c.num as cnum,
+        uci.th_id as honour
         from t_talent t
         left join t_user_current_info uci on t.talent_id = uci.talent_id
         left join t_user_card c on t.talent_id = c.talent_id
@@ -556,6 +557,7 @@
         <if test="educ != null and educ !=0">and uci.education = #{educ}</if>
         <if test="title != null and title !=0">and uci.pt_category = #{title}</if>
         <if test="quality != null and quality !=0">and uci.pq_category = #{quality}</if>
+        <if test="honour != null and honour != 0">and uci.th_id = #{honour}</if>
         <if test="card != null and card !=''">and (c.name like '%' #{card} '%' or c.num like '%' #{card} '%')</if>
         order by t.create_time desc
     </select>
@@ -598,6 +600,12 @@
                t.work_unit     as workUnit,
                t.industry,
                t.phone,
+               t.political     as political,
+               t.card_type     as cardType,
+               t.id_card       as idCard,
+               t.passport      as passport,
+               t.driver_card   as driverCard,
+               t.work_location as workLocation,
                uci.education   as educ,
                uci.school,
                uci.first_class as first,
@@ -606,6 +614,7 @@
                uci.pt_info     as ptInfo,
                uci.pq_category as quality,
                uci.pq_info     as pqInfo,
+               uci.th_id       as honour,
                c.name          as cname,
                c.num           as cnum
         from t_talent t
