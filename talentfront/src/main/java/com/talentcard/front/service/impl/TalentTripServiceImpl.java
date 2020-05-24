@@ -78,10 +78,11 @@ public class TalentTripServiceImpl implements ITalentTripService {
             }
             //去重
             scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
-            //新增中间表
-            TripGroupAuthorityPO tripGroupAuthorityPO = new TripGroupAuthorityPO();
-            tripGroupAuthorityPO.setAuthorityCode(code);
+
             for (Long scenicId : scenicIdList) {
+                //新增中间表
+                TripGroupAuthorityPO tripGroupAuthorityPO = new TripGroupAuthorityPO();
+                tripGroupAuthorityPO.setAuthorityCode(code);
                 tripGroupAuthorityPO.setScenicId(scenicId);
                 tripGroupAuthorityMapper.insertSelective(tripGroupAuthorityPO);
             }

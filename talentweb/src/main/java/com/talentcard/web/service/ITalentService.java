@@ -52,4 +52,10 @@ public interface ITalentService {
      * @return
      */
     ResultVO batch(MultipartFile file);
+
+    /**
+     * 清理用户缓存
+     * @param openId
+     */
+    void clearRedisCache(String openId);
 }

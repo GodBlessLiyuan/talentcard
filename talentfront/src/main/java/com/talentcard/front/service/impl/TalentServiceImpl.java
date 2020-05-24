@@ -1,11 +1,14 @@
 package com.talentcard.front.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.FileUtil;
+import com.talentcard.common.utils.StringToObjUtil;
+import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.ITalentService;
@@ -22,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 人才注册/认证相关
@@ -54,13 +58,24 @@ public class TalentServiceImpl implements ITalentService {
     private UserCurrentInfoMapper userCurrentInfoMapper;
     @Autowired
     private FilePathConfig filePathConfig;
+    @Autowired
+    private RedisMapUtil redisMapUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO<TalentPO> findStatus(String openId) {
+
+        /**
+         * 添加redis hash缓存
+         */
+        String mapStr = this.redisMapUtil.hget(openId,"findStatus");
+        Map<String,String> cacheResult = StringToObjUtil.strToObj(mapStr,Map.class);
+        if(cacheResult != null){
+            return new ResultVO(1000, cacheResult);
+        }
+
         //待领取的卡
         HashMap<String, Object> getCard = userCardMapper.findCurrentCard(openId, (byte) 1);
-
 
         HashMap<String, Object> result = new HashMap(4);
 
@@ -98,6 +113,12 @@ public class TalentServiceImpl implements ITalentService {
             //找不到待审批的
             result.put("ifInAudit", 2);
         }
+
+        /**
+         * 设置缓存
+         */
+        this.redisMapUtil.hset(openId, "findStatus", JSON.toJSONString(result));
+
         return new ResultVO(1000, result);
     }
 
@@ -291,6 +312,12 @@ public class TalentServiceImpl implements ITalentService {
         messageDTO.setRemark("领取后可享受多项人才权益哦");
         messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
         MessageUtil.sendTemplateMessage(messageDTO);
+
+        /**
+         * 清除redis缓存
+         */
+        cleanRedisCache(openId);
+
         return new ResultVO(1000);
     }
 
@@ -439,11 +466,25 @@ public class TalentServiceImpl implements ITalentService {
             talentHonourPO.setIfCertificate((byte) 2);
         }
         talentHonourMapper.insertSelective(talentHonourPO);
+        /**
+         * 清除redis缓存
+         */
+        cleanRedisCache(openId);
         return new ResultVO(1000);
     }
 
     @Override
     public ResultVO findInfo(String openId) {
+
+        /**
+         * 添加redis hash缓存
+         */
+        String mapStr = this.redisMapUtil.hget(openId,"findInfo");
+        TalentVO cacheResult = StringToObjUtil.strToObj(mapStr,TalentVO.class);
+        if(cacheResult != null){
+            return new ResultVO(1000, cacheResult);
+        }
+
         //根据openId和c表status=9是否有数据来判断是否认证过
         //status=9说明基本卡已经作废，证明认证完成
         Integer ifCertificate = talentMapper.ifCertificate(openId);
@@ -482,6 +523,11 @@ public class TalentServiceImpl implements ITalentService {
             driverCard = identificationCardEncryption(driverCard);
             talentVO.setDriverCard(driverCard);
         }
+
+        /**
+         * 设置缓存
+         */
+        this.redisMapUtil.hset(openId,"findInfo", JSON.toJSONString(talentVO));
         return new ResultVO(1000, talentVO);
 
     }
@@ -495,5 +541,16 @@ public class TalentServiceImpl implements ITalentService {
         Integer end = identificationCardNum.length() - 4;
         String encryptionIdCardNum = identificationCardNum.substring(0, end) + "****";
         return encryptionIdCardNum;
+    }
+
+    /**
+     * 清除用户redis缓存
+     * @param openId
+     */
+    private void cleanRedisCache(String openId){
+        /**
+         * 清除redis缓存
+         */
+        this.redisMapUtil.del(openId);
     }
 }

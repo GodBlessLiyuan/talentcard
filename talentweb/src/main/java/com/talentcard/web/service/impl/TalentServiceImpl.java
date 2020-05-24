@@ -7,6 +7,7 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.ExcelUtil;
 import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.MessageDTO;
@@ -58,6 +59,8 @@ public class TalentServiceImpl implements ITalentService {
     private UserCurrentInfoMapper userCurrentInfoMapper;
     @Autowired
     private FilePathConfig filePathConfig;
+    @Autowired
+    private RedisMapUtil redisMapUtil;
 
     private static final String[] EXCEL_TITLE = {"姓名", "证件号码"};
     private static final String[] EXCEL_TITLE_RES = {"姓名", "证件号码", "人才卡", "人才类别", "人才荣誉", "认证结果", "说明"};
@@ -268,5 +271,12 @@ public class TalentServiceImpl implements ITalentService {
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
+    }
+
+
+
+    @Override
+    public void clearRedisCache(String openId) {
+        this.redisMapUtil.del(openId);
     }
 }

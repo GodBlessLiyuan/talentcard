@@ -10,6 +10,7 @@ import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ICertApprovalService;
+import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
@@ -55,6 +56,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     CardMapper cardMapper;
     @Resource
     UserCurrentInfoMapper userCurrentInfoMapper;
+    @Resource
+    ITalentService talentService;
 
     /**
      * 审批result的值含义
@@ -330,6 +333,12 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 //新增人才卡状态失败
                 return new ResultVO(2373);
             }
+
+            /**
+             * 清除redis缓存
+             */
+            talentService.clearRedisCache(openId);
+
             return new ResultVO(1000);
         }
         /**
@@ -341,6 +350,12 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         if (updateResult == 0) {
             logger.error("update certApprovalMapper error");
         }
+
+        /**
+         * 清除redis缓存
+         */
+        talentService.clearRedisCache(openId);
+
         return new ResultVO(1000);
     }
 
