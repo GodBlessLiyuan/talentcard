@@ -16,7 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 @MapperScan("com.talentcard.common.mapper")
 @ComponentScan("com.talentcard.common.utils")
 @ComponentScan("com.talentcard.web")
-@EnableConfigurationProperties({FilePathConfig.class, RedisConfig.class})
+@EnableConfigurationProperties({FilePathConfig.class})
 public class WebApplication {
 
     public static void main(String[] args) {

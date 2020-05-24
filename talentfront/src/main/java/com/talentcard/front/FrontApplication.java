@@ -13,7 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 @MapperScan("com.talentcard.common.mapper")
 @ComponentScan("com.talentcard.common.utils")
 @ComponentScan("com.talentcard.front")
-@EnableConfigurationProperties({FilePathConfig.class, RedisConfig.class})
+@EnableConfigurationProperties({FilePathConfig.class})
 @SpringBootApplication
 public class FrontApplication {
 
