@@ -1,6 +1,7 @@
 package com.talentcard.front;
 
 import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.config.RedisConfig;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 @MapperScan("com.talentcard.common.mapper")
 @ComponentScan("com.talentcard.common.utils")
 @ComponentScan("com.talentcard.front")
-@EnableConfigurationProperties({FilePathConfig.class})
+@EnableConfigurationProperties({FilePathConfig.class, RedisConfig.class})
 @SpringBootApplication
 public class FrontApplication {
 
