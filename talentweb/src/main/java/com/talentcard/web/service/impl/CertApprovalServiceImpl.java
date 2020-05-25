@@ -268,7 +268,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
              * 用基本卡的当前人数和编号数据
              */
             CardPO defaultCardPO = cardMapper.findDefaultCard();
-            String membershipNumber = defaultCardPO.getInitialWord() + defaultCardPO.getAreaNum();
+            String membershipNumber = cardPO.getInitialWord() + cardPO.getAreaNum();
             //写死，初始后字段总共6位
             Integer initialNumLength = 6;
 
@@ -370,6 +370,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     public ResultVO findOne(Long talentId, Long certId) {
         // 和上面的检索status不同
         TalentBO talentBO = talentMapper.certApprovalDetail(certId);
+        if(talentBO==null){
+            return new ResultVO(2500, "查无此人");
+        }
         List<CertApprovalBO> certApprovalBOList = certApprovalMapper.queryApprovalById(talentId, certId);
         ApprovalTalentVO approvalTalentVO = ApprovalTalentVO.convert(talentBO, certApprovalBOList);
         return new ResultVO(1000, approvalTalentVO);

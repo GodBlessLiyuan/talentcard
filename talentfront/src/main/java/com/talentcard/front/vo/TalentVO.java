@@ -101,7 +101,7 @@ public class TalentVO {
                 }
             }
         }
-        //职业资格文件
+        //人才荣誉
         if (talentBO.getTalentHonourPOList() != null) {
             for (TalentHonourPO talentHonourPO : talentBO.getTalentHonourPOList()) {
                 if (talentHonourPO.getHonourPicture() != null && !talentHonourPO.getHonourPicture() .equals("")) {

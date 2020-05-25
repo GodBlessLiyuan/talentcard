@@ -3,9 +3,11 @@ package com.talentcard.web.vo;
 import com.talentcard.common.bo.CertApprovalBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.mapper.TalentHonourMapper;
 import com.talentcard.common.pojo.EducationPO;
 import com.talentcard.common.pojo.ProfQualityPO;
 import com.talentcard.common.pojo.ProfTitlePO;
+import com.talentcard.common.pojo.TalentHonourPO;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -36,12 +38,16 @@ public class ApprovalTalentVO {
     private Byte political;
     private Date createTime;
     private Date completeCertificationTime;
+    private String workLocation;
+    private Byte workLocationType;
+    private Byte cardType;
     /**
      * 三个表信息
      */
     private List<EducationPO> educationPOList;
     private List<ProfTitlePO> profTitlePOList;
     private List<ProfQualityPO> profQualityPOList;
+    private List<TalentHonourPO> talentHonourPOList;
 
     /**
      * 审批记录清单items
@@ -69,6 +75,9 @@ public class ApprovalTalentVO {
         approvalTalentVO.setPolitical(talentBO.getPolitical());
         approvalTalentVO.setSex(talentBO.getSex());
         approvalTalentVO.setCreateTime(talentBO.getCreateTime());
+        approvalTalentVO.setCardType(talentBO.getCardType());
+        approvalTalentVO.setWorkLocationType(talentBO.getWorkLocationType());
+        approvalTalentVO.setWorkLocation(talentBO.getWorkLocation());
 
         //学历文件
         if (talentBO.getEducationPOList() != null) {
@@ -94,9 +103,18 @@ public class ApprovalTalentVO {
                 }
             }
         }
+        //人才荣誉
+        if (talentBO.getTalentHonourPOList() != null) {
+            for (TalentHonourPO talentHonourPO : talentBO.getTalentHonourPOList()) {
+                if (talentHonourPO.getHonourPicture() != null && !talentHonourPO.getHonourPicture() .equals("")) {
+                    talentHonourPO.setHonourPicture(FilePathConfig.getStaticPublicBasePath() + talentHonourPO.getHonourPicture());
+                }
+            }
+        }
         approvalTalentVO.setEducationPOList(talentBO.getEducationPOList());
         approvalTalentVO.setProfTitlePOList(talentBO.getProfTitlePOList());
         approvalTalentVO.setProfQualityPOList(talentBO.getProfQualityPOList());
+        approvalTalentVO.setTalentHonourPOList(talentBO.getTalentHonourPOList());
 
         approvalTalentVO.setCertApprovalBOList(certApprovalBOList);
 

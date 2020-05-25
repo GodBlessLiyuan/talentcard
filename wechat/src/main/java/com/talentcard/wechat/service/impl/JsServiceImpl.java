@@ -19,6 +19,13 @@ public class JsServiceImpl implements IJsSdkService {
     @Override
     public ResultVO getSignature(String openId) {
         HashMap hashMap = userCardMapper.findCurrentCard(openId, (byte) 1);
+        //没有待领取的卡，找正在使用的
+        if(hashMap==null){
+            hashMap = userCardMapper.findCurrentCard(openId, (byte) 2);
+        }
+        if(hashMap==null){
+            return new ResultVO(2500,"查无此人！");
+        }
         String apiTicket = JsSdkUtil.getApiTicket();
         String timeStamp = String.valueOf((System.currentTimeMillis() / 1000));
         String cardId = (String) hashMap.get("cardId");

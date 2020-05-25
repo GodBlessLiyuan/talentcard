@@ -763,20 +763,26 @@
     </select>
 
     <select id="certApprovalDetail" resultMap="TalentResultMap">
-        select t.talent_id    as t_talent_id,
-               open_id,
-               `name`,
-               sex,
-               id_card,
-               passport,
-               work_unit,
-               industry,
-               industry_second,
-               phone,
+         select t.talent_id    as t_talent_id,
+               t.open_id as t_open_id,
+               t.`name` as t_name,
+               t.sex as t_sex,
+               t.id_card as t_id_card,
+               t.passport as t_passport,
+               t.driver_card as t_driver_card,
+               t.card_type as t_card_type,
+               t.work_unit as t_work_unit,
+               t.industry as t_industry,
+               t.industry_second as t_industry_second,
+               t.political as t_political,
+               t.phone as t_phone,
                t.create_time  as t_create_time,
                t.`status`     as t_status,
                t.category     as t_category,
+               t.work_location as t_work_location,
+               t.work_location_type as t_work_location_type,
                t.card_id      as t_card_id,
+               t.dr as t_dr,
 
                c.cert_id      as c_cert_id,
                c.political    as c_political,
@@ -792,6 +798,7 @@
                e.cert_id      as e_cert_id,
                e.talent_id    as e_talent_id,
                e.status       as e_status,
+               e.if_certificate as e_if_certificate,
 
                pt.pt_id       as pt_pt_id,
                pt.category    as pt_category,
@@ -800,6 +807,7 @@
                pt.cert_id     as pt_cert_id,
                pt.talent_id   as pt_talent_id,
                pt.status      as pt_status,
+               pt.if_certificate as pt_if_certificate,
 
                pq.pq_id       as pq_pq_id,
                pq.category    as pq_category,
@@ -807,7 +815,12 @@
                pq.picture     as pq_picture,
                pq.cert_id     as pq_cert_id,
                pq.talent_id   as pq_talent_id,
-               pq.status      as pq_status
+               pq.status      as pq_status,
+               pq.if_certificate as pq_if_certificate,
+
+               th.th_id as th_th_id, th.honour_id as th_honour_id, th.honour_picture as th_honour_picture,
+               th.info as th_info, th.cert_id as th_cert_id, th.talent_id as th_talent_id,
+               th.`status` as th_status, th.if_certificate as th_if_certificate
         from t_talent t
                  left join t_certification c
                            on t.talent_id = c.talent_id
@@ -817,6 +830,8 @@
                            on c.cert_id = pt.cert_id
                  left join t_prof_quality pq
                            on c.cert_id = pq.cert_id
+                left join t_talent_honour th
+                           on c.cert_id = th.cert_id
         where c.cert_id = #{certId,jdbcType=BIGINT}
         and t.dr = 1
     </select>

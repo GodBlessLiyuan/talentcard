@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * t_user_current_info
- * @author
+ * @author 
  */
 @Data
 public class UserCurrentInfoPO implements Serializable {
@@ -39,8 +39,6 @@ public class UserCurrentInfoPO implements Serializable {
     private Long honourId;
 
     private String thInfo;
-
-    private Long honour;
 
     private static final long serialVersionUID = 1L;
 }
