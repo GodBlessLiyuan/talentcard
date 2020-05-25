@@ -1,3 +1,35 @@
+DROP TABLE IF EXISTS t_activity_residue_num;
+DROP TABLE IF EXISTS t_annex;
+DROP TABLE IF EXISTS t_role_authority;
+DROP TABLE IF EXISTS t_authority;
+DROP TABLE IF EXISTS t_bank;
+DROP TABLE IF EXISTS t_cert_approval;
+DROP TABLE IF EXISTS t_education;
+DROP TABLE IF EXISTS t_prof_quality;
+DROP TABLE IF EXISTS t_prof_title;
+DROP TABLE IF EXISTS t_certification;
+DROP TABLE IF EXISTS t_policy_approval;
+DROP TABLE IF EXISTS t_policy_apply;
+DROP TABLE IF EXISTS t_user_card;
+DROP TABLE IF EXISTS t_user_current_info;
+DROP TABLE IF EXISTS t_talent;
+DROP TABLE IF EXISTS t_card;
+DROP TABLE IF EXISTS t_config;
+DROP TABLE IF EXISTS t_farmhouse_enjoy;
+DROP TABLE IF EXISTS t_farmhouse_group_authority;
+DROP TABLE IF EXISTS t_farmhouse_picture;
+DROP TABLE IF EXISTS t_talent_farmhouse;
+DROP TABLE IF EXISTS t_farmhouse;
+DROP TABLE IF EXISTS t_policy;
+DROP TABLE IF EXISTS t_user;
+DROP TABLE IF EXISTS t_role;
+DROP TABLE IF EXISTS t_scenic_enjoy;
+DROP TABLE IF EXISTS t_scenic_picture;
+DROP TABLE IF EXISTS t_talent_trip;
+DROP TABLE IF EXISTS t_trip_group_authority;
+DROP TABLE IF EXISTS t_scenic;
+DROP TABLE IF EXISTS t_staff;
+DROP TABLE IF EXISTS t_talent_activity_history;
 
 
 /* Create Tables */
