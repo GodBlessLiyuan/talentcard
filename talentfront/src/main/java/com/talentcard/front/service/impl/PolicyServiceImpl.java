@@ -318,4 +318,15 @@ public class PolicyServiceImpl implements IPolicyService {
 
         return new ResultVO<>(1000, PolicyApplyDetailVO.convert(bo));
     }
+
+    @Override
+    public ResultVO queryBankCardInfo(String openId) {
+        List<BankPO> bankInfoList = new ArrayList<>();
+        bankInfoList = policyMapper.queryBankCardInfo(openId);
+        if (bankInfoList == null || bankInfoList.size() == 0) {
+            return new ResultVO(1102);
+        }
+
+        return new ResultVO(1000, bankInfoList.get(0));
+    }
 }
