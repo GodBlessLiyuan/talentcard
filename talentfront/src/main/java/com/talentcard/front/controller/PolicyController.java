@@ -71,4 +71,14 @@ public class PolicyController {
     public ResultVO detail(@RequestParam(name = "paid") Long paid) {
         return service.detail(paid);
     }
+
+    /**
+     * 獲得銀行卡信息
+     * @param openId
+     * @return
+     */
+    @RequestMapping("bankInfo")
+    public ResultVO queryBankCardInfo(String openId){
+        return service.queryBankCardInfo(openId);
+    }
 }

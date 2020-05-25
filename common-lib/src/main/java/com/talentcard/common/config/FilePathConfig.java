@@ -99,12 +99,17 @@ public class FilePathConfig {
         return this.publicBasePath;
     }
 
+    public void setPublicBasePath(String publicBasePath) {
+        staticPublicBasePath = publicBasePath;
+        this.publicBasePath = publicBasePath;
+    }
+
+
     public String getLocalBasePath() {
         return localBasePath;
     }
 
     public void setLocalBasePath(String localBasePath) {
-        staticPublicBasePath = localBasePath;
         this.localBasePath = localBasePath;
     }
 
