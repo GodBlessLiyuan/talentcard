@@ -10,7 +10,7 @@
     <result column="educations" jdbcType="CHAR" property="educations" />
     <result column="titles" jdbcType="CHAR" property="titles" />
     <result column="qualities" jdbcType="CHAR" property="qualities" />
-    <result column="talent_honour" jdbcType="VARCHAR" property="talentHonour" />
+    <result column="honour_ids" jdbcType="VARCHAR" property="honourIds" />
     <result column="apply" jdbcType="TINYINT" property="apply" />
     <result column="color" jdbcType="CHAR" property="color" />
     <result column="rate" jdbcType="INTEGER" property="rate" />
@@ -26,14 +26,14 @@
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
   </resultMap>
   <sql id="Base_Column_List">
-    policy_id, `name`, num, cards, categories, educations, titles, qualities, talent_honour,
-    apply, color, rate, unit, times, bank, annex, user_id, create_time, dr, description
+    policy_id, `name`, num, cards, categories, educations, titles, qualities, honour_ids, 
+    apply, color, rate, unit, times, bank, annex, user_id, create_time, dr
   </sql>
   <sql id="Blob_Column_List">
     description
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
-    select
+    select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
@@ -45,19 +45,19 @@
     where policy_id = #{policyId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyPO">
-    insert into t_policy (policy_id, `name`, num,
-      cards, categories, educations,
-      titles, qualities, talent_honour,
-      apply, color, rate, unit,
-      times, bank, annex,
-      user_id, create_time, dr,
+    insert into t_policy (policy_id, `name`, num, 
+      cards, categories, educations, 
+      titles, qualities, honour_ids, 
+      apply, color, rate, unit, 
+      times, bank, annex, 
+      user_id, create_time, dr, 
       description)
-    values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR},
-      #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR}, #{educations,jdbcType=CHAR},
-      #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR}, #{talentHonour,jdbcType=VARCHAR},
-      #{apply,jdbcType=TINYINT}, #{color,jdbcType=CHAR}, #{rate,jdbcType=INTEGER}, #{unit,jdbcType=TINYINT},
-      #{times,jdbcType=INTEGER}, #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT},
-      #{userId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT},
+    values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR}, 
+      #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR}, #{educations,jdbcType=CHAR}, 
+      #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR}, #{honourIds,jdbcType=VARCHAR}, 
+      #{apply,jdbcType=TINYINT}, #{color,jdbcType=CHAR}, #{rate,jdbcType=INTEGER}, #{unit,jdbcType=TINYINT}, 
+      #{times,jdbcType=INTEGER}, #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT}, 
+      #{userId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, 
       #{description,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyPO">
@@ -87,8 +87,8 @@
       <if test="qualities != null">
         qualities,
       </if>
-      <if test="talentHonour != null">
-        talent_honour,
+      <if test="honourIds != null">
+        honour_ids,
       </if>
       <if test="apply != null">
         apply,
@@ -149,8 +149,8 @@
       <if test="qualities != null">
         #{qualities,jdbcType=CHAR},
       </if>
-      <if test="talentHonour != null">
-        #{talentHonour,jdbcType=VARCHAR},
+      <if test="honourIds != null">
+        #{honourIds,jdbcType=VARCHAR},
       </if>
       <if test="apply != null">
         #{apply,jdbcType=TINYINT},
@@ -211,8 +211,8 @@
       <if test="qualities != null">
         qualities = #{qualities,jdbcType=CHAR},
       </if>
-      <if test="talentHonour != null">
-        talent_honour = #{talentHonour,jdbcType=VARCHAR},
+      <if test="honourIds != null">
+        honour_ids = #{honourIds,jdbcType=VARCHAR},
       </if>
       <if test="apply != null">
         apply = #{apply,jdbcType=TINYINT},
@@ -250,6 +250,29 @@
     </set>
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.talentcard.common.pojo.PolicyPO">
+    update t_policy
+    set `name` = #{name,jdbcType=CHAR},
+      num = #{num,jdbcType=CHAR},
+      cards = #{cards,jdbcType=CHAR},
+      categories = #{categories,jdbcType=CHAR},
+      educations = #{educations,jdbcType=CHAR},
+      titles = #{titles,jdbcType=CHAR},
+      qualities = #{qualities,jdbcType=CHAR},
+      honour_ids = #{honourIds,jdbcType=VARCHAR},
+      apply = #{apply,jdbcType=TINYINT},
+      color = #{color,jdbcType=CHAR},
+      rate = #{rate,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=TINYINT},
+      times = #{times,jdbcType=INTEGER},
+      bank = #{bank,jdbcType=TINYINT},
+      annex = #{annex,jdbcType=TINYINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      dr = #{dr,jdbcType=TINYINT},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where policy_id = #{policyId,jdbcType=BIGINT}
+  </update>
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PolicyPO">
     update t_policy
     set `name` = #{name,jdbcType=CHAR},
@@ -259,7 +282,7 @@
       educations = #{educations,jdbcType=CHAR},
       titles = #{titles,jdbcType=CHAR},
       qualities = #{qualities,jdbcType=CHAR},
-      talent_honour = #{talentHonour,jdbcType=VARCHAR},
+      honour_ids = #{honourIds,jdbcType=VARCHAR},
       apply = #{apply,jdbcType=TINYINT},
       color = #{color,jdbcType=CHAR},
       rate = #{rate,jdbcType=INTEGER},

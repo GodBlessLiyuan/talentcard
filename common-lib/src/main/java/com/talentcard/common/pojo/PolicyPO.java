@@ -26,10 +26,7 @@ public class PolicyPO implements Serializable {
 
     private String qualities;
 
-    /**
-     * 可申请人才荣誉IDs
-     */
-    private String talentHonour;
+    private String honourIds;
 
     /**
      * 1：需要；2：不需要
