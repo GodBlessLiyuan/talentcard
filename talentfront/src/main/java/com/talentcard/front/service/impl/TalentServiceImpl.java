@@ -68,9 +68,9 @@ public class TalentServiceImpl implements ITalentService {
         /**
          * 添加redis hash缓存
          */
-        String mapStr = this.redisMapUtil.hget(openId,"findStatus");
-        Map<String,String> cacheResult = StringToObjUtil.strToObj(mapStr,Map.class);
-        if(cacheResult != null){
+        String mapStr = this.redisMapUtil.hget(openId, "findStatus");
+        Map<String, String> cacheResult = StringToObjUtil.strToObj(mapStr, Map.class);
+        if (cacheResult != null) {
             return new ResultVO(1000, cacheResult);
         }
 
@@ -91,7 +91,7 @@ public class TalentServiceImpl implements ITalentService {
             if (currentCard == null) {
                 //都为空，说明这个人没有卡，需要注册
                 result.put("status", 2);
-            }  else {
+            } else {
                 //实在不行，给正在使用的卡
                 result.put("status", 1);
                 result.put("cardId", currentCard.get("cardId"));
@@ -112,6 +112,13 @@ public class TalentServiceImpl implements ITalentService {
         } else {
             //找不到待审批的
             result.put("ifInAudit", 2);
+        }
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+
+        if (talentPO.getStatus() == 1) {
+            result.put("ifCertificate", 1);
+        } else {
+            result.put("ifCertificate", 2);
         }
 
         /**
@@ -480,9 +487,9 @@ public class TalentServiceImpl implements ITalentService {
         /**
          * 添加redis hash缓存
          */
-        String mapStr = this.redisMapUtil.hget(openId,"findInfo");
-        TalentVO cacheResult = StringToObjUtil.strToObj(mapStr,TalentVO.class);
-        if(cacheResult != null){
+        String mapStr = this.redisMapUtil.hget(openId, "findInfo");
+        TalentVO cacheResult = StringToObjUtil.strToObj(mapStr, TalentVO.class);
+        if (cacheResult != null) {
             return new ResultVO(1000, cacheResult);
         }
 
@@ -528,7 +535,7 @@ public class TalentServiceImpl implements ITalentService {
         /**
          * 设置缓存
          */
-        this.redisMapUtil.hset(openId,"findInfo", JSON.toJSONString(talentVO));
+        this.redisMapUtil.hset(openId, "findInfo", JSON.toJSONString(talentVO));
         return new ResultVO(1000, talentVO);
 
     }
@@ -546,9 +553,10 @@ public class TalentServiceImpl implements ITalentService {
 
     /**
      * 清除用户redis缓存
+     *
      * @param openId
      */
-    private void cleanRedisCache(String openId){
+    private void cleanRedisCache(String openId) {
         /**
          * 清除redis缓存
          */

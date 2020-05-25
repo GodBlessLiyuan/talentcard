@@ -1,10 +1,11 @@
 package com.talentcard.wechat.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.utils.WechatApiUtil;
-import com.talentcard.common.vo.ResultVO;
+import com.talentcard.wechat.config.WxConfig;
 import com.talentcard.wechat.utils.AccessTokenUtil;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 /**
  * @author ChenXU
@@ -15,13 +16,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("menu")
 @RestController
 public class MenuController {
+
+    @Autowired
+    private WxConfig wxConfig;
+
     /**
      * 增加菜单
      * @param jsonObject
      * @return
      */
     @PostMapping("add")
-    public JSONObject add(@RequestBody JSONObject jsonObject) {
+    public JSONObject add(@RequestBody JSONObject jsonObject, @RequestHeader String token) {
+
+        if(!StringUtils.equals(this.wxConfig.getCheckToken(), token)){
+            return null;
+        }
+
         String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token="
                 + AccessTokenUtil.getAccessToken();
         JSONObject result = WechatApiUtil.postRequest(url, jsonObject);
@@ -33,7 +43,12 @@ public class MenuController {
      * @return
      */
     @RequestMapping("query")
-    public JSONObject query() {
+    public JSONObject query(@RequestHeader String token) {
+
+        if(!StringUtils.equals(this.wxConfig.getCheckToken(), token)){
+            return null;
+        }
+
         String url = "https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token="
                 + AccessTokenUtil.getAccessToken();
         JSONObject result = WechatApiUtil.getRequest(url);

@@ -141,7 +141,7 @@ public class CardUtil {
         customFiled2.setName("性别");
         customFiled2.setUrl("");
         CustomFiledPO customFiled3 = new CustomFiledPO();
-        customFiled3.setName("人才福利");
+        customFiled3.setName("免费服务");
         customFiled3.setUrl(WebParameterUtil.getFreeBenefitsUrl());
         memberCardPO.setCustom_field1(customFiled1);
         memberCardPO.setCustom_field2(customFiled2);

@@ -1,6 +1,5 @@
 package com.talentcard.wechat.service.impl;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.Arrays;
