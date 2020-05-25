@@ -296,4 +296,11 @@
         from t_policy
         where dr = 1 and num = #{num,jdbcType=CHAR}
     </select>
+  <select id="queryBankCardInfo" parameterType="java.lang.String" resultType="com.talentcard.common.pojo.BankPO">
+        SELECT tb.num,tb.`name` FROM `t_bank` tb
+        LEFT JOIN t_policy_apply pa ON tb.pa_id = pa.pa_id
+        LEFT JOIN t_talent t ON pa.talent_id = t.talent_id
+        WHERE open_id = #{openId,jdbcType=CHAR}
+        ORDER BY pa.create_time DESC
+  </select>
 </mapper>

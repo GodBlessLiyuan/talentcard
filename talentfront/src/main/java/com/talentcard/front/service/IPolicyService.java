@@ -42,4 +42,11 @@ public interface IPolicyService {
      * @return
      */
     ResultVO detail(Long paid);
+
+    /**
+     * 根據openId獲取銀行卡信息
+     * @param openId
+     * @return
+     */
+    ResultVO queryBankCardInfo(String openId);
 }

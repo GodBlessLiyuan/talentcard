@@ -1,5 +1,6 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.pojo.BankPO;
 import com.talentcard.common.pojo.PolicyPO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -26,4 +27,11 @@ public interface PolicyMapper extends BaseMapper<PolicyPO, Long> {
      * @return
      */
     PolicyPO queryByNum(String num);
+
+    /**
+     * 根據openId獲取銀行卡信息
+     * @param openId
+     * @return
+     */
+    List<BankPO> queryBankCardInfo(String openId);
 }
