@@ -6,6 +6,7 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.wechat.service.IEventService;
+import com.talentcard.wechat.service.IWxTalentService;
 import com.talentcard.wechat.utils.TalentInfoUpdateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,8 @@ public class EventServiceImpl implements IEventService {
     UserCurrentInfoMapper userCurrentInfoMapper;
     @Autowired
     CardMapper cardMapper;
+    @Autowired
+    IWxTalentService iWxTalentService;
 
     /**
      * 监控到用户领取卡的操作
@@ -161,6 +164,9 @@ public class EventServiceImpl implements IEventService {
                 //更新customField
                 TalentInfoUpdateUtil.updateSeniorCardCustomField(newCard.getCode(),
                         newCard.getWxCardId(), newCardTalentId);
+
+                iWxTalentService.cleanRedisCache(openId);
+
                 return new ResultVO(1000, "虽然是领取高级卡，但没有操作，用户删卡或者高级卡更换");
             }
             //取出旧卡的talentId和certId
@@ -171,6 +177,9 @@ public class EventServiceImpl implements IEventService {
             if (oldCardPO.getMemberNum() > 0) {
                 oldCardPO.setMemberNum(oldCardPO.getMemberNum() - 1);
             } else {
+
+                iWxTalentService.cleanRedisCache(openId);
+
                 return new ResultVO(2212, "卡当前数量是0，不能再减少了！");
 
             }
@@ -205,6 +214,10 @@ public class EventServiceImpl implements IEventService {
             TalentInfoUpdateUtil.updateSeniorCardCustomField(newCard.getCode(),
                     newCard.getWxCardId(), newCardTalentId);
         }
+
+
+        iWxTalentService.cleanRedisCache(openId);
+
         return new ResultVO(1000, result);
     }
 
@@ -279,6 +292,8 @@ public class EventServiceImpl implements IEventService {
         if (cardPO.getMemberNum() > 0) {
             cardPO.setMemberNum(cardPO.getMemberNum() - 1);
         } else {
+            iWxTalentService.cleanRedisCache(openId);
+
             return new ResultVO(2212, "卡当前数量是0，不能再减少了！");
         }
         cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
@@ -286,6 +301,9 @@ public class EventServiceImpl implements IEventService {
         if(result==0){
             logger.error("update cardMapper error");
         }
+
+        iWxTalentService.cleanRedisCache(openId);
+
         //修改状态
         return new ResultVO(1000);
     }

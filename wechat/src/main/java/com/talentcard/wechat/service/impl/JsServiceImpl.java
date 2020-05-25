@@ -1,8 +1,8 @@
 package com.talentcard.wechat.service.impl;
 
-import com.talentcard.common.mapper.UserCardMapper;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.wechat.service.IJsSdkService;
+import com.talentcard.wechat.service.IWxTalentService;
 import com.talentcard.wechat.utils.CommonUtil;
 import com.talentcard.wechat.utils.JsSdkUtil;
 import com.talentcard.wechat.utils.WxCardSign;
@@ -14,14 +14,14 @@ import java.util.HashMap;
 @Service
 public class JsServiceImpl implements IJsSdkService {
     @Autowired
-    private UserCardMapper userCardMapper;
+    private IWxTalentService iWxTalentService;
 
     @Override
     public ResultVO getSignature(String openId) {
-        HashMap hashMap = userCardMapper.findCurrentCard(openId, (byte) 1);
+        HashMap hashMap = iWxTalentService.findCurrentCard(openId, (byte) 1);
         //没有待领取的卡，找正在使用的
         if(hashMap==null){
-            hashMap = userCardMapper.findCurrentCard(openId, (byte) 2);
+            hashMap = iWxTalentService.findCurrentCard(openId, (byte) 2);
         }
         if(hashMap==null){
             return new ResultVO(2500,"查无此人！");
