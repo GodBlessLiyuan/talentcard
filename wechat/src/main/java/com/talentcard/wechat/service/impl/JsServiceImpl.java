@@ -24,7 +24,7 @@ public class JsServiceImpl implements IJsSdkService {
             hashMap = userCardMapper.findCurrentCard(openId, (byte) 2);
         }
         if(hashMap==null){
-            return new ResultVO(2500,"z查无此人！");
+            return new ResultVO(2500,"查无此人！");
         }
         String apiTicket = JsSdkUtil.getApiTicket();
         String timeStamp = String.valueOf((System.currentTimeMillis() / 1000));

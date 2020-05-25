@@ -268,7 +268,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
              * 用基本卡的当前人数和编号数据
              */
             CardPO defaultCardPO = cardMapper.findDefaultCard();
-            String membershipNumber = defaultCardPO.getInitialWord() + defaultCardPO.getAreaNum();
+            String membershipNumber = cardPO.getInitialWord() + cardPO.getAreaNum();
             //写死，初始后字段总共6位
             Integer initialNumLength = 6;
 
