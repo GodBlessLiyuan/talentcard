@@ -91,6 +91,8 @@ public class TalentServiceImpl implements ITalentService {
             if (currentCard == null) {
                 //都为空，说明这个人没有卡，需要注册
                 result.put("status", 2);
+
+                return new ResultVO(1000, result);
             } else {
                 //实在不行，给正在使用的卡
                 result.put("status", 1);
