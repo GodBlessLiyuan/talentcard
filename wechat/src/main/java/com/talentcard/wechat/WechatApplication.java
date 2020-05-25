@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 @AutoConfigurationPackage
 @MapperScan("com.talentcard.common.mapper")
 @ComponentScan("com.talentcard.common.utils.redis")
+@ComponentScan("com.talentcard.wechat")
 @SpringBootApplication
 @EnableConfigurationProperties()
 public class WechatApplication {
