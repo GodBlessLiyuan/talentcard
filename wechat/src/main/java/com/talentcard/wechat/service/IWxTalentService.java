@@ -3,7 +3,7 @@ package com.talentcard.wechat.service;
 import com.talentcard.common.pojo.UserCardPO;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author: velve
@@ -29,7 +29,7 @@ public interface IWxTalentService {
      * @param openId
      * @return
      */
-    HashMap<String, Object> findCurrentCard(@Param("openId") String openId, @Param("status") Byte status);
+    Map<String, Object> findCurrentCard(@Param("openId") String openId, @Param("status") Byte status);
 
     /**
      * 根据ucId更改对应的人卡表状态值，1是待使用，2是使用，3是失效
