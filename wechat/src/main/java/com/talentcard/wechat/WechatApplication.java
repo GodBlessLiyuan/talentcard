@@ -7,6 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
 @MapperScan("com.talentcard.common.mapper")
+@MapperScan("com.talentcard.common.utils.redis")
 @SpringBootApplication
 public class WechatApplication {
     public static void main(String[] args) {
