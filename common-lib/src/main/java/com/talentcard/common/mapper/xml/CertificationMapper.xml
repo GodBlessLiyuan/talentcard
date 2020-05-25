@@ -129,12 +129,14 @@
 
     <select id="queryAllCert" parameterType="java.util.Map" resultType="com.talentcard.common.bo.TalentCertStatusBO">
         select t.talent_id as talentId, t.name, t.sex, e.education, pt.category as ptCategory,
-        pq.category as pqCategory, ca.result, ce.create_time as createTime, ce.cert_id as certId
+        pq.category as pqCategory, ca.result, ce.create_time as createTime, ce.cert_id as certId,
+        th.honour_id as honour
         from t_talent t
         left join t_certification ce on t.talent_id = ce.talent_id
         left join t_education e on ce.cert_id = e.cert_id
         left join t_prof_title pt on ce.cert_id = pt.cert_id
         left join t_prof_quality pq on ce.cert_id = pq.cert_id
+        left join t_talent_honour th on ce.cert_id = th.cert_id
         <!--找出相同cert_id最新的时间记录-->
         left join (select a.cert_id, a.create_time, a.result from t_cert_approval a inner join
         ( select cert_id, max(create_time) as maxcreatetime from t_cert_approval group by cert_id) b
@@ -175,6 +177,9 @@
         </if>
         <if test="(startTime != null || startTime != '') and (endTime != null and endTime != '')">
             AND ce.create_time &lt;= #{endTime}
+        </if>
+        <if test="honour != null and honour != ''">
+            and th.honour_id = #{honour}
         </if>
         order by
         <!--  将待审批的记录置顶，按时间排序-->

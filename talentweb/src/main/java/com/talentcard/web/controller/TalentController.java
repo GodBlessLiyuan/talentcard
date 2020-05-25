@@ -35,7 +35,7 @@ public class TalentController {
                           @RequestParam(value = "title", defaultValue = "") Integer title,
                           @RequestParam(value = "quality", defaultValue = "") Integer quality,
                           @RequestParam(value = "card", defaultValue = "") String card,
-                          @RequestParam(value = "honourId", defaultValue = "") Long honourId) {
+                          @RequestParam(value = "honour", defaultValue = "") Long honour) {
 
         Map<String, Object> reqMap = new HashMap<>(10);
         if (!"".equals(end)) {
@@ -49,7 +49,7 @@ public class TalentController {
         reqMap.put("title", title);
         reqMap.put("quality", quality);
         reqMap.put("card", card);
-        reqMap.put("honour", honourId);
+        reqMap.put("honour", honour);
 
         return iTalentService.query(pageNum, pageSize, reqMap);
     }

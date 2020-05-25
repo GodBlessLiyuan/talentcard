@@ -32,4 +32,5 @@ public class TalentCertStatusBO {
     private Byte result;
 
     private Date createTime;
+    private Long honour;
 }

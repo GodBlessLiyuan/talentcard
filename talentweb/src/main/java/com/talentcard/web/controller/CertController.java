@@ -30,9 +30,10 @@ public class CertController {
                                     @RequestParam(value = "pqCategory", required = false) Integer pqCategory,
                                     @RequestParam(value = "ptCategory", required = false) Integer ptCategory,
                                     @RequestParam(value = "education", required = false) Integer education,
+                                    @RequestParam(value = "honour", required = false) Integer honour,
                                     @RequestParam(value = "result", required = false) String result,
                                     @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
-                                    @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime){
+                                    @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime) {
         if (!"".equals(startTime)) {
             startTime = startTime + " 00:00:00";
         }
@@ -42,21 +43,30 @@ public class CertController {
         String flag = "";
         if (result != null) {
             switch (result) {
-                case "0": flag = "";  break;
-                case "1": flag = "1"; break;
-                case "2": flag = "2"; break;
+                case "0":
+                    flag = "";
+                    break;
+                case "1":
+                    flag = "1";
+                    break;
+                case "2":
+                    flag = "2";
+                    break;
             }
         }
         Map<String, Object> reqData = new HashMap<>(9);
-        reqData.put("name", name.replaceAll("%", "\\\\%"));
-        reqData.put("sex",sex);
-        reqData.put("pqCategory",pqCategory);
-        reqData.put("ptCategory",ptCategory);
-        reqData.put("education",education);
-        reqData.put("result",result);
-        reqData.put("startTime",startTime);
-        reqData.put("endTime",endTime);
-        reqData.put("flag",flag);
-        return certService.queryCertStatus(pageNum, pageSize,reqData);
+        if (name != null && !name.equals("")) {
+            reqData.put("name", name.replaceAll("%", "\\\\%"));
+        }
+        reqData.put("sex", sex);
+        reqData.put("pqCategory", pqCategory);
+        reqData.put("ptCategory", ptCategory);
+        reqData.put("education", education);
+        reqData.put("result", result);
+        reqData.put("startTime", startTime);
+        reqData.put("endTime", endTime);
+        reqData.put("flag", flag);
+        reqData.put("honour", honour);
+        return certService.queryCertStatus(pageNum, pageSize, reqData);
     }
 }

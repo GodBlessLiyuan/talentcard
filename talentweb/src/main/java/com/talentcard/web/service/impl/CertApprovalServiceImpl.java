@@ -370,6 +370,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     public ResultVO findOne(Long talentId, Long certId) {
         // 和上面的检索status不同
         TalentBO talentBO = talentMapper.certApprovalDetail(certId);
+        if(talentBO==null){
+            return new ResultVO(2500, "查无此人");
+        }
         List<CertApprovalBO> certApprovalBOList = certApprovalMapper.queryApprovalById(talentId, certId);
         ApprovalTalentVO approvalTalentVO = ApprovalTalentVO.convert(talentBO, certApprovalBOList);
         return new ResultVO(1000, approvalTalentVO);

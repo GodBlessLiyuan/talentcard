@@ -61,10 +61,6 @@ public class TalentBO extends TalentPO {
      */
     private Long honour;
     /**
-     * 工作地点
-     */
-    private String workLocation;
-    /**
      * 政治面貌
      */
     private Byte political;
