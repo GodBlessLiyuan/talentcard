@@ -115,16 +115,18 @@ public class TalentServiceImpl implements ITalentService {
         }
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
 
-        if (talentPO.getStatus() == 1) {
-            result.put("ifCertificate", 1);
-        } else {
-            result.put("ifCertificate", 2);
-        }
+        if(talentPO != null) {
+            if (talentPO.getStatus() == 1) {
+                result.put("ifCertificate", 1);
+            } else {
+                result.put("ifCertificate", 2);
+            }
 
-        /**
-         * 设置缓存
-         */
-        this.redisMapUtil.hset(openId, "findStatus", JSON.toJSONString(result));
+            /**
+             * 设置缓存
+             */
+            this.redisMapUtil.hset(openId, "findStatus", JSON.toJSONString(result));
+        }
 
         return new ResultVO(1000, result);
     }
