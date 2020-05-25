@@ -78,7 +78,7 @@ public class PolicyController {
      * @return
      */
     @RequestMapping("bankInfo")
-    public ResultVO queryBankCardInfo(String openId){
+    public ResultVO queryBankCardInfo(@RequestParam(name = "openId") String openId){
         return service.queryBankCardInfo(openId);
     }
 }
