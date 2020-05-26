@@ -117,7 +117,7 @@ public class TalentServiceImpl implements ITalentService {
         }
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
 
-        if(talentPO != null) {
+        if (talentPO != null) {
             if (talentPO.getStatus() == 1) {
                 result.put("ifCertificate", 1);
             } else {
@@ -278,6 +278,8 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setCardId(cardId);
         //设置当前编号，组合起来，并且更新卡的currentNum
         String membershipNumber = cardPO.getInitialWord() + cardPO.getAreaNum();
+        //当前编号，以后换卡需要使用
+        String currentNum = "";
         //写死，长度为6
         Integer initialNumLength = 6;
         Integer currentNumLength = cardPO.getCurrNum().toString().length();
@@ -285,9 +287,12 @@ public class TalentServiceImpl implements ITalentService {
         if ((initialNumLength - currentNumLength) > 0) {
             for (int i = 0; i < (initialNumLength - currentNumLength); i++) {
                 membershipNumber = membershipNumber + "0";
+                currentNum = currentNum + "0";
             }
         }
+
         membershipNumber = membershipNumber + cardPO.getCurrNum();
+        currentNum = currentNum + cardPO.getCurrNum();
         userCardPO.setNum(membershipNumber);
         cardPO.setCurrNum(cardPO.getCurrNum() + 1);
         cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
@@ -295,6 +300,10 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setCreateTime(new Date());
         userCardPO.setStatus((byte) 1);
         userCardPO.setName(cardPO.getTitle());
+        /**
+         * 不含区域号，不含前缀，单纯的000001
+         */
+        userCardPO.setCurrentNum(currentNum);
         int updateResult = cardMapper.updateByPrimaryKeySelective(cardPO);
         if (updateResult == 0) {
             logger.error("update cardMapper error");
