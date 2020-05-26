@@ -266,7 +266,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             userCardPO.setCreateTime(new Date());
 
             /**
-             * 用基本卡的当前人数和编号数据
+             * 用上一张卡的当前人数和编号数据
              */
 
             HashMap<String, Object> currentCard = userCardMapper.findCurrentCard(openId, (byte) 2);

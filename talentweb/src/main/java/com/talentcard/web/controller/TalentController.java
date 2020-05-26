@@ -97,8 +97,45 @@ public class TalentController {
         return new ResultVO(1000);
     }
 
-    @RequestMapping("batch")
-    public ResultVO batch(@RequestParam(value = "file") MultipartFile file) {
-        return iTalentService.batch(file);
+    @RequestMapping("batchCertificate")
+    public ResultVO batchCertificate(@RequestParam(value = "cardId") Long cardId,
+                                     @RequestParam(value = "talentCategory") String talentCategory,
+                                     @RequestParam(value = "talentHonour") Long talentHonour,
+                                     @RequestParam(value = "file") MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        if (null == fileName) {
+            // 文件内表头信息或文件格式有误，请下载模板文件检查后重新上传！
+            return new ResultVO(1100);
+        }
+        String suffix = fileName.substring(fileName.lastIndexOf("."));
+        if (!".xlsx".equals(suffix)) {
+            // 文件内表头信息或文件格式有误，请下载模板文件检查后重新上传！
+            return new ResultVO(1100);
+        }
+        iTalentService.batchCertificate(cardId, talentCategory, talentHonour, file);
+        return new ResultVO(1000);
+    }
+
+    @RequestMapping("findBatchCertificate")
+    public ResultVO findBatchCertificate(
+            @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
+            @RequestParam(value = "fileName", required = false, defaultValue = "") String fileName,
+            @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
+            @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime,
+            @RequestParam(value = "status", required = false, defaultValue = "0") Integer status) {
+        HashMap<String, Object> hashMap = new HashMap<>(4);
+        if (!startTime.equals("")) {
+            startTime = startTime + " 00:00:00";
+        }
+        if (!endTime.equals("")) {
+            endTime = endTime + " 23:59:59";
+        }
+
+        hashMap.put("fileName", fileName);
+        hashMap.put("startTime", startTime);
+        hashMap.put("endTime", endTime);
+        hashMap.put("status", status);
+        return iTalentService.findBatchCertificate(pageNum, pageSize, hashMap);
     }
 }

@@ -6,6 +6,7 @@ import com.talentcard.web.vo.TalentVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -51,11 +52,13 @@ public interface ITalentService {
      * @param file
      * @return
      */
-    ResultVO batch(MultipartFile file);
+    ResultVO batchCertificate(Long cardId, String talentCategory, Long talentHonour, MultipartFile file);
 
     /**
      * 清理用户缓存
      * @param openId
      */
     void clearRedisCache(String openId);
+
+    ResultVO findBatchCertificate(int pageNum, int pageSize, HashMap<String, Object> hashMap);
 }
