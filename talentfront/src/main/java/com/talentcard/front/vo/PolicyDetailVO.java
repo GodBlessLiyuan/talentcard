@@ -50,5 +50,9 @@ public class PolicyDetailVO implements Serializable {
      * 提示文案
      */
     private String title;
+    /**
+     * 顏色
+     */
+    private String color;
 
 }

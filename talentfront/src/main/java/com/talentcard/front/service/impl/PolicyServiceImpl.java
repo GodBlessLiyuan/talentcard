@@ -160,6 +160,7 @@ public class PolicyServiceImpl implements IPolicyService {
             vo.setBank(po.getBank());
             vo.setAnnex(po.getAnnex());
             vo.setApply(po.getApply());
+            vo.setColor(po.getColor());
             po.getTimes();
             po.getUnit();
             po.getRate();

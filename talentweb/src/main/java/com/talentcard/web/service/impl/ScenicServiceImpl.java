@@ -180,6 +180,7 @@ public class ScenicServiceImpl implements IScenicService {
         List<Integer> educIds = new ArrayList<>();
         List<Integer> titleIds = new ArrayList<>();
         List<Integer> qualityIds = new ArrayList<>();
+        List<Long> honourIds = new ArrayList<>();
         for (ScenicEnjoyPO po : enjoyPOs) {
             Byte type = po.getType();
             if (type == 1) {
@@ -192,6 +193,8 @@ public class ScenicServiceImpl implements IScenicService {
                 titleIds.add(po.getTitleId());
             } else if (type == 5) {
                 qualityIds.add(po.getQuality());
+            }else if (type == 6) {
+                honourIds.add(po.getHonourId());
             }
         }
 
@@ -200,6 +203,7 @@ public class ScenicServiceImpl implements IScenicService {
         vo.setEducIds(educIds);
         vo.setTitleIds(titleIds);
         vo.setQualityIds(qualityIds);
+        vo.setHonourIds(honourIds);
 
         List<ScenicPicturePO> picPOs = scenicPictureMapper.queryByScenicId(scenicId);
         List<String> picture = new ArrayList<>();

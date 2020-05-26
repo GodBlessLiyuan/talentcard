@@ -51,8 +51,6 @@ public class TalentPO implements Serializable {
 
     private String workLocation;
 
-    private Long honour;
-
     /**
      * 1国内；
 2海外；

@@ -51,6 +51,14 @@ public class PolicyDTO implements Serializable {
      */
     private String[] qualityIds;
     /**
+     *可查看与申请此政策权益的人才荣誉IDs
+     */
+    private Long[] talentHonourIds;
+    /**
+     * 颜色，当apply是1的时候，这里必须给
+     */
+    private String color;
+    /**
      * 政策权益是否需要申请: 1：需要；2：不需要
      */
     private Byte apply;

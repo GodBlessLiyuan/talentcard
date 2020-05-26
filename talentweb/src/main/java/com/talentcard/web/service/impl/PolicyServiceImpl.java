@@ -103,7 +103,26 @@ public class PolicyServiceImpl implements IPolicyService {
         po.setApply(dto.getApply());
         po.setRate(dto.getRate());
         po.setUnit(dto.getUnit());
+        String honour = listLongToString(dto.getTalentHonourIds(), ",");
+        po.setHonourIds(honour);
+        po.setColor(dto.getColor());
 
         return po;
+    }
+
+    /**
+     * List<Long>轉化成String
+     * @param longs
+     * @param sign
+     * @return
+     */
+    private String listLongToString(Long[] longs, String sign){
+        StringBuffer sb = new StringBuffer();
+        int le = longs.length;
+        for(int i = 0; i < le - 1; i ++){
+            sb.append(longs[i]).append(",");
+        }
+        sb.append(longs[le - 1]);
+        return sb.toString();
     }
 }
