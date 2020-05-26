@@ -203,7 +203,7 @@ public class ScenicServiceImpl implements IScenicService {
         vo.setEducIds(educIds);
         vo.setTitleIds(titleIds);
         vo.setQualityIds(qualityIds);
-        vo.setHonourIds(honourIds);
+        vo.setTalentHonourIds(honourIds);
 
         List<ScenicPicturePO> picPOs = scenicPictureMapper.queryByScenicId(scenicId);
         List<String> picture = new ArrayList<>();
