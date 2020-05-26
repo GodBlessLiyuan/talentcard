@@ -31,7 +31,7 @@ public class JsServiceImpl implements IJsSdkService {
         String timeStamp = String.valueOf((System.currentTimeMillis() / 1000));
         String cardId = (String) hashMap.get("cardId");
         String code = (String) hashMap.get("code");
-        String noncestr = CommonUtil.getRandomString(8);
+        String noncestr = CommonUtil.getRandomString(18);
 
         WxCardSign signer = new WxCardSign();
         signer.AddData(apiTicket);
