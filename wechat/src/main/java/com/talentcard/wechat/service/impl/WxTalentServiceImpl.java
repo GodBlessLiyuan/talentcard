@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author: velve
@@ -33,17 +34,17 @@ public class WxTalentServiceImpl implements IWxTalentService {
     }
 
     @Override
-    public HashMap<String, Object> findCurrentCard(String openId, Byte status) {
+    public Map<String, Object> findCurrentCard(String openId, Byte status) {
 
         String redisCache = redisMapUtil.hget(openId, "findCurrentCard_" + status);
         if (!StringUtils.isEmpty(redisCache)) {
-            HashMap<String, Object> res = StringToObjUtil.strToObj(redisCache, HashMap.class);
+            Map<String, Object> res = StringToObjUtil.strToObj(redisCache, Map.class);
             if (res != null) {
                 return res;
             }
         }
 
-        HashMap user_card = userCardMapper.findCurrentCard(openId, status);
+        Map user_card = userCardMapper.findCurrentCard(openId, status);
         if(user_card!=null){
             redisMapUtil.hset(openId, "findCurrentCard_" + status, JSON.toJSONString(user_card));
         }

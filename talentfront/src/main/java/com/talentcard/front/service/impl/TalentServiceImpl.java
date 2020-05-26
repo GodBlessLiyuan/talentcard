@@ -91,6 +91,8 @@ public class TalentServiceImpl implements ITalentService {
             if (currentCard == null) {
                 //都为空，说明这个人没有卡，需要注册
                 result.put("status", 2);
+
+                return new ResultVO(1000, result);
             } else {
                 //实在不行，给正在使用的卡
                 result.put("status", 1);
@@ -115,16 +117,18 @@ public class TalentServiceImpl implements ITalentService {
         }
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
 
-        if (talentPO.getStatus() == 1) {
-            result.put("ifCertificate", 1);
-        } else {
-            result.put("ifCertificate", 2);
-        }
+        if(talentPO != null) {
+            if (talentPO.getStatus() == 1) {
+                result.put("ifCertificate", 1);
+            } else {
+                result.put("ifCertificate", 2);
+            }
 
-        /**
-         * 设置缓存
-         */
-        this.redisMapUtil.hset(openId, "findStatus", JSON.toJSONString(result));
+            /**
+             * 设置缓存
+             */
+            this.redisMapUtil.hset(openId, "findStatus", JSON.toJSONString(result));
+        }
 
         return new ResultVO(1000, result);
     }

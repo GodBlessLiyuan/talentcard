@@ -2,6 +2,7 @@ package com.talentcard.wechat.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * @author: velve
@@ -10,6 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @version: 1.0
  */
 @Data
+@Component
 @ConfigurationProperties(prefix = "vbooster.wx", ignoreUnknownFields = true)
 public class WxConfig {
     /**

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class JsServiceImpl implements IJsSdkService {
@@ -18,7 +19,7 @@ public class JsServiceImpl implements IJsSdkService {
 
     @Override
     public ResultVO getSignature(String openId) {
-        HashMap hashMap = iWxTalentService.findCurrentCard(openId, (byte) 1);
+        Map hashMap = iWxTalentService.findCurrentCard(openId, (byte) 1);
         //没有待领取的卡，找正在使用的
         if(hashMap==null){
             hashMap = iWxTalentService.findCurrentCard(openId, (byte) 2);
