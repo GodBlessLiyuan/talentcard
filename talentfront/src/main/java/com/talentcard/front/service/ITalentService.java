@@ -3,6 +3,7 @@ package com.talentcard.front.service;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.front.vo.TalentTypeVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.xml.transform.Result;
@@ -66,4 +67,12 @@ public interface ITalentService {
                             MultipartFile profTitlePicture,
                             MultipartFile profQualityPicture,
                             MultipartFile talentHonourPicture);
+
+
+    /**
+     * 获取微信用户信息，类型，会员卡号等
+     * @param openId
+     * @return
+     */
+    TalentTypeVO getTalentInfo(String openId);
 }
