@@ -158,4 +158,6 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
      * @return
      */
     TalentBO certApprovalDetail(@Param("certId") Long certId);
+
+    TalentPO selectByIdCard(@Param("idCard") String idCard);
 }

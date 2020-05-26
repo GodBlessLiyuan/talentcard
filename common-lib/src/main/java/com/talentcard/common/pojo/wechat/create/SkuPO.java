@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class SkuPO {
-    private final Integer quantity = 100000;
+    private final Integer quantity = 1000000;
 }

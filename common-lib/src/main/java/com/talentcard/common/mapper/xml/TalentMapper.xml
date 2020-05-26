@@ -835,4 +835,10 @@
         where c.cert_id = #{certId,jdbcType=BIGINT}
         and t.dr = 1
     </select>
+    <select id="selectByIdCard" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_talent
+        where id_card = #{idCard,jdbcType=CHAR}
+    </select>
 </mapper>

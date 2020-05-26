@@ -273,10 +273,12 @@ public class TalentServiceImpl implements ITalentService {
         return new ResultVO(1000);
     }
 
-
-
     @Override
     public void clearRedisCache(String openId) {
         this.redisMapUtil.del(openId);
+    }
+
+    public void certificate(String idCard){
+
     }
 }
