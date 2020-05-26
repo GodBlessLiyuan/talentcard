@@ -93,5 +93,5 @@ public class ScenicDetailVO implements Serializable {
     /**
      * 人才荣誉IDs
      */
-    private List<Long> honourIds;
+    private List<Long> talentHonourIds;
 }
