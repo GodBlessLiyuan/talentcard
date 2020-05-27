@@ -26,6 +26,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -270,37 +271,22 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             userCardPO.setCreateTime(new Date());
 
             /**
-             * 用基本卡的当前人数和编号数据
+             * 用上一张卡的当前人数和编号数据
              */
-            CardPO defaultCardPO = cardMapper.findDefaultCard();
-            String membershipNumber = cardPO.getInitialWord() + cardPO.getAreaNum();
-            //写死，初始后字段总共6位
-            Integer initialNumLength = 6;
 
-            if(defaultCardPO.getCurrNum()!=null){
-                Integer currentNumLength = defaultCardPO.getCurrNum().toString().length();
-                if ((initialNumLength - currentNumLength) > 0) {
-                    for (int i = 0; i < (initialNumLength - currentNumLength); i++) {
-                        membershipNumber = membershipNumber + "0";
-                    }
-                }
-                membershipNumber = membershipNumber + defaultCardPO.getCurrNum();
-
-                userCardPO.setNum(membershipNumber);
+            HashMap<String, Object> currentCard = userCardMapper.findCurrentCard(openId, (byte) 2);
+            if (currentCard == null) {
+                return new ResultVO<>(2500, "查无此人！");
             }
-
+            String currentNum = (String) currentCard.get("currentNum");
+            String membershipNumber = cardPO.getInitialWord() + cardPO.getAreaNum() + currentNum;
+            userCardPO.setNum(membershipNumber);
             userCardPO.setName(cardPO.getTitle());
+            userCardPO.setCurrentNum(currentNum);
 
-//            cardPO.setCurrNum(cardPO.getCurrNum() + 1);
             //高级卡更新待领取数量
             cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
             int updateResult = cardMapper.updateByPrimaryKeySelective(cardPO);
-            if (updateResult == 0) {
-                logger.error("update cardMapper error");
-            }
-            //基本卡更新下一张卡的编号（当前编号）
-            defaultCardPO.setCurrNum(cardPO.getCurrNum() + 1);
-            updateResult = cardMapper.updateByPrimaryKeySelective(defaultCardPO);
             if (updateResult == 0) {
                 logger.error("update cardMapper error");
             }
@@ -375,7 +361,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     public ResultVO findOne(Long talentId, Long certId) {
         // 和上面的检索status不同
         TalentBO talentBO = talentMapper.certApprovalDetail(certId);
-        if(talentBO==null){
+        if (talentBO == null) {
             return new ResultVO(2500, "查无此人");
         }
         List<CertApprovalBO> certApprovalBOList = certApprovalMapper.queryApprovalById(talentId, certId);

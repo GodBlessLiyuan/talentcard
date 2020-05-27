@@ -7,11 +7,12 @@
     <result column="card_id" jdbcType="BIGINT" property="cardId" />
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="num" jdbcType="CHAR" property="num" />
+    <result column="current_num" jdbcType="CHAR" property="currentNum" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    uc_id, talent_id, card_id, `name`, num, create_time, `status`
+    uc_id, talent_id, card_id, `name`, num, current_num, create_time, `status`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -25,10 +26,10 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.UserCardPO">
     insert into t_user_card (uc_id, talent_id, card_id, 
-      `name`, num, create_time, 
+      `name`, num, current_num, create_time, 
       `status`)
     values (#{ucId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT}, 
-      #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR}, #{currentNum,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.UserCardPO">
@@ -48,6 +49,9 @@
       </if>
       <if test="num != null">
         num,
+      </if>
+      <if test="currentNum != null">
+        current_num,
       </if>
       <if test="createTime != null">
         create_time,
@@ -72,6 +76,9 @@
       <if test="num != null">
         #{num,jdbcType=CHAR},
       </if>
+      <if test="currentNum != null">
+        #{currentNum,jdbcType=CHAR},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -95,6 +102,9 @@
       <if test="num != null">
         num = #{num,jdbcType=CHAR},
       </if>
+      <if test="currentNum != null">
+        current_num = #{currentNum,jdbcType=CHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -110,6 +120,7 @@
       card_id = #{cardId,jdbcType=BIGINT},
       `name` = #{name,jdbcType=CHAR},
       num = #{num,jdbcType=CHAR},
+      current_num = #{currentNum,jdbcType=CHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=TINYINT}
     where uc_id = #{ucId,jdbcType=BIGINT}
@@ -127,7 +138,8 @@
   </select>
   <select id="findCurrentCard" resultType="java.util.HashMap">
     select
-    wx_card_id as cardId, num as code, t.talent_id as talentId
+    wx_card_id as cardId, num as code, t.talent_id as talentId,
+    uc.current_num as currentNum
     from t_user_card uc
     left join t_talent t
     on t.talent_id = uc.talent_id
@@ -137,6 +149,7 @@
     t.open_id = #{openId,jdbcType=CHAR}
     and
     uc.status = #{status,jdbcType=TINYINT}
+    limit 1
   </select>
   <update id="updateStatusById">
     update t_user_card u

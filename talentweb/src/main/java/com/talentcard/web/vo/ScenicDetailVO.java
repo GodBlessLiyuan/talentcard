@@ -89,4 +89,9 @@ public class ScenicDetailVO implements Serializable {
      * 二维码
      */
     private String qrCode;
+
+    /**
+     * 人才荣誉IDs
+     */
+    private List<Long> talentHonourIds;
 }

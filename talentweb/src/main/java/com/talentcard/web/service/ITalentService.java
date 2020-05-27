@@ -2,10 +2,13 @@ package com.talentcard.web.service;
 
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.dto.BatchCertificateDTO;
 import com.talentcard.web.vo.TalentVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -48,14 +51,25 @@ public interface ITalentService {
     /**
      * 批量认证
      *
+     * @param batchCertificateDTO
+     * @return
+     */
+    ResultVO batchCertificate(BatchCertificateDTO batchCertificateDTO) throws InterruptedException;
+
+    /**
+     * 读取文件
+     * @param httpSession
      * @param file
      * @return
      */
-    ResultVO batch(MultipartFile file);
+    BatchCertificateDTO readCertificateFile(HttpSession httpSession, MultipartFile file);
 
     /**
      * 清理用户缓存
+     *
      * @param openId
      */
     void clearRedisCache(String openId);
+
+    ResultVO findBatchCertificate(int pageNum, int pageSize, HashMap<String, Object> hashMap);
 }

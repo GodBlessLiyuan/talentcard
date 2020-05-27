@@ -12,6 +12,7 @@ import com.talentcard.common.pojo.FarmhousePO;
 import com.talentcard.common.pojo.FarmhousePicturePO;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.QrCodeUtil;
+import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.FarmhouseDTO;
@@ -48,6 +49,8 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
     private FarmhouseGroupAuthorityMapper farmhouseGroupAuthorityMapper;
     @Autowired
     private FilePathConfig filePathConfig;
+    @Autowired
+    private RedisMapUtil redisMapUtil;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -130,6 +133,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
         }
 
         farmhouseGroupAuthorityMapper.clear();
+        redisMapUtil.del("talentfarmhouse");
         return new ResultVO(1000);
     }
 
@@ -142,6 +146,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
 
         farmhouseMapper.updateStatus(farmhouseId, status);
         farmhouseGroupAuthorityMapper.clear();
+        redisMapUtil.del("talentfarmhouse");
         return new ResultVO(1000);
     }
 

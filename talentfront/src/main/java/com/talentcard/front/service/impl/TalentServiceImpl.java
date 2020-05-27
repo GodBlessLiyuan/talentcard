@@ -13,7 +13,10 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.MessageUtil;
+import com.talentcard.front.utils.TalentActivityUtil;
+import com.talentcard.front.vo.TalentTypeVO;
 import com.talentcard.front.vo.TalentVO;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -117,7 +121,7 @@ public class TalentServiceImpl implements ITalentService {
         }
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
 
-        if(talentPO != null) {
+        if (talentPO != null) {
             if (talentPO.getStatus() == 1) {
                 result.put("ifCertificate", 1);
             } else {
@@ -278,6 +282,8 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setCardId(cardId);
         //设置当前编号，组合起来，并且更新卡的currentNum
         String membershipNumber = cardPO.getInitialWord() + cardPO.getAreaNum();
+        //当前编号，以后换卡需要使用
+        String currentNum = "";
         //写死，长度为6
         Integer initialNumLength = 6;
         Integer currentNumLength = cardPO.getCurrNum().toString().length();
@@ -285,9 +291,12 @@ public class TalentServiceImpl implements ITalentService {
         if ((initialNumLength - currentNumLength) > 0) {
             for (int i = 0; i < (initialNumLength - currentNumLength); i++) {
                 membershipNumber = membershipNumber + "0";
+                currentNum = currentNum + "0";
             }
         }
+
         membershipNumber = membershipNumber + cardPO.getCurrNum();
+        currentNum = currentNum + cardPO.getCurrNum();
         userCardPO.setNum(membershipNumber);
         cardPO.setCurrNum(cardPO.getCurrNum() + 1);
         cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
@@ -295,6 +304,10 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setCreateTime(new Date());
         userCardPO.setStatus((byte) 1);
         userCardPO.setName(cardPO.getTitle());
+        /**
+         * 不含区域号，不含前缀，单纯的000001
+         */
+        userCardPO.setCurrentNum(currentNum);
         int updateResult = cardMapper.updateByPrimaryKeySelective(cardPO);
         if (updateResult == 0) {
             logger.error("update cardMapper error");
@@ -565,5 +578,52 @@ public class TalentServiceImpl implements ITalentService {
          * 清除redis缓存
          */
         this.redisMapUtil.del(openId);
+    }
+
+    /**
+     * 获取微信用户信息，类型，会员卡号等
+     * @param openId
+     * @return
+     */
+    public TalentTypeVO getTalentInfo(String openId){
+
+        String redisCache = redisMapUtil.hget(openId, "getTalentInfo");
+        if(!StringUtils.isEmpty(redisCache)){
+            TalentTypeVO vo = StringToObjUtil.strToObj(redisCache,TalentTypeVO.class);
+            if(vo != null){
+                return vo;
+            }
+        }
+
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return null;
+        }
+        UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentPO.getTalentId());
+        if (userCurrentInfoPO == null) {
+            return null;
+        }
+        Long cardId = talentPO.getCardId();
+        ArrayList categoryList = null;
+        String talentCategory = userCurrentInfoPO.getTalentCategory();
+        //拆分人才类别
+        if (talentCategory != null && !talentCategory.equals("")) {
+            categoryList = TalentActivityUtil.splitCategory(userCurrentInfoPO.getTalentCategory());
+        }
+        Integer education = userCurrentInfoPO.getEducation();
+        Integer title = userCurrentInfoPO.getPtCategory();
+        Integer quality = userCurrentInfoPO.getPqCategory();
+        Long talentHonour = userCurrentInfoPO.getHonourId();
+
+        TalentTypeVO vo = new TalentTypeVO();
+        vo.setCardId(cardId);
+        vo.setCategoryList(categoryList);
+        vo.setEducation(education);
+        vo.setTitle(title);
+        vo.setQuality(quality);
+        vo.setTalentHonour(talentHonour);
+
+        redisMapUtil.hset(openId, "getTalentInfo", JSON.toJSONString(vo));
+        return vo;
     }
 }

@@ -12,6 +12,7 @@ import com.talentcard.common.pojo.ScenicPicturePO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.QrCodeUtil;
+import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.ScenicDTO;
@@ -53,7 +54,8 @@ public class ScenicServiceImpl implements IScenicService {
     private TripGroupAuthorityMapper tripGroupAuthorityMapper;
     @Autowired
     private FilePathConfig filePathConfig;
-
+    @Autowired
+    private RedisMapUtil redisMapUtil;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -136,6 +138,7 @@ public class ScenicServiceImpl implements IScenicService {
         }
 
         tripGroupAuthorityMapper.clear();
+        redisMapUtil.del("talentTrip");
         return new ResultVO(1000);
     }
 
@@ -149,6 +152,7 @@ public class ScenicServiceImpl implements IScenicService {
 
         scenicMapper.updateStatus(scenicId, status);
         tripGroupAuthorityMapper.clear();
+        redisMapUtil.del("talentTrip");
         return new ResultVO(1000);
     }
 
@@ -180,6 +184,7 @@ public class ScenicServiceImpl implements IScenicService {
         List<Integer> educIds = new ArrayList<>();
         List<Integer> titleIds = new ArrayList<>();
         List<Integer> qualityIds = new ArrayList<>();
+        List<Long> honourIds = new ArrayList<>();
         for (ScenicEnjoyPO po : enjoyPOs) {
             Byte type = po.getType();
             if (type == 1) {
@@ -192,6 +197,8 @@ public class ScenicServiceImpl implements IScenicService {
                 titleIds.add(po.getTitleId());
             } else if (type == 5) {
                 qualityIds.add(po.getQuality());
+            }else if (type == 6) {
+                honourIds.add(po.getHonourId());
             }
         }
 
@@ -200,6 +207,7 @@ public class ScenicServiceImpl implements IScenicService {
         vo.setEducIds(educIds);
         vo.setTitleIds(titleIds);
         vo.setQualityIds(qualityIds);
+        vo.setTalentHonourIds(honourIds);
 
         List<ScenicPicturePO> picPOs = scenicPictureMapper.queryByScenicId(scenicId);
         List<String> picture = new ArrayList<>();
