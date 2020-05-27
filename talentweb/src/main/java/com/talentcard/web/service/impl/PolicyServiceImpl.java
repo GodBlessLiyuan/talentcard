@@ -103,6 +103,7 @@ public class PolicyServiceImpl implements IPolicyService {
         po.setApply(dto.getApply());
         po.setRate(dto.getRate());
         po.setUnit(dto.getUnit());
+        po.setDescription(dto.getDesc());
         String honour = listLongToString(dto.getTalentHonourIds(), ",");
         po.setHonourIds(honour);
         po.setColor(dto.getColor());
