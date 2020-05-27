@@ -37,7 +37,7 @@ public class CardVO {
     private String updatePerson;
     private Date createTime;
     private Date updateTime;
-
+    private String areaNum;
 
     /**
      * PO转VO
@@ -65,6 +65,7 @@ public class CardVO {
         cardVO.setUpdatePerson(cardPO.getUpdatePerson());
         cardVO.setCreateTime(cardPO.getCreateTime());
         cardVO.setUpdateTime(cardPO.getUpdateTime());
+        cardVO.setAreaNum(cardPO.getAreaNum());
 
         //背景图
         if (cardVO.getPicture() != null && cardVO.getPicture() != "") {
