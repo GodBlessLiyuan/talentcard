@@ -81,6 +81,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
                 qrCode = QrCodeUtil.encode(url, null, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getQrCodeDir(), null, true);
             } catch (Exception e) {
                 e.printStackTrace();
+                return new ResultVO(2000);
             }
             farmhousePO.setQrCode(qrCode);
             farmhouseMapper.updateByPrimaryKey(farmhousePO);
