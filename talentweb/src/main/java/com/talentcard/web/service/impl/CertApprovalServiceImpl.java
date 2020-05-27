@@ -188,6 +188,11 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             messageDTO.setFirst("您提交的认证信息与本人真实情况存在不符，请修改后重新提交。");
             MessageUtil.sendTemplateMessage(messageDTO);
 
+            /**
+             * 清除redis缓存
+             */
+            talentService.clearRedisCache(openId);
+
         } else {
             /**
              * 审批通过
