@@ -7,6 +7,7 @@ import com.talentcard.web.vo.TalentVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +56,13 @@ public interface ITalentService {
      */
     ResultVO batchCertificate(BatchCertificateDTO batchCertificateDTO) throws InterruptedException;
 
-    BatchCertificateDTO readCertificateFile(MultipartFile file);
+    /**
+     * 读取文件
+     * @param httpSession
+     * @param file
+     * @return
+     */
+    BatchCertificateDTO readCertificateFile(HttpSession httpSession, MultipartFile file);
 
     /**
      * 清理用户缓存

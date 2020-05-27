@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +26,21 @@ public class TalentController {
     @Autowired
     private ITalentService iTalentService;
 
+    /**
+     * 普通用户查询
+     * @param pageNum
+     * @param pageSize
+     * @param start
+     * @param end
+     * @param name
+     * @param sex
+     * @param educ
+     * @param title
+     * @param quality
+     * @param card
+     * @param honour
+     * @return
+     */
     @RequestMapping("query")
     public ResultVO query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
@@ -55,11 +71,32 @@ public class TalentController {
         return iTalentService.query(pageNum, pageSize, reqMap);
     }
 
+    /**
+     * 普通用户；查看详情
+     * @param tid
+     * @return
+     */
     @RequestMapping("detail")
     public ResultVO detail(@RequestParam(value = "tid") Long tid) {
         return iTalentService.detail(tid);
     }
 
+    /**
+     * 认证人才查询
+     * @param pageNum
+     * @param pageSize
+     * @param start
+     * @param end
+     * @param name
+     * @param sex
+     * @param educ
+     * @param title
+     * @param quality
+     * @param card
+     * @param category
+     * @param honour
+     * @return
+     */
     @RequestMapping("queryCert")
     public ResultVO queryCert(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                               @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
@@ -98,14 +135,25 @@ public class TalentController {
         return new ResultVO(1000);
     }
 
+    /**
+     * 批量认证
+     * @param httpSession
+     * @param cardId
+     * @param talentCategory
+     * @param talentHonour
+     * @param file
+     * @return
+     * @throws InterruptedException
+     */
     @RequestMapping("batchCertificate")
-    public ResultVO batchCertificate(@RequestParam(value = "cardId") Long cardId,
+    public ResultVO batchCertificate(HttpSession httpSession,
+                                     @RequestParam(value = "cardId") Long cardId,
                                      @RequestParam(value = "talentCategory") String talentCategory,
                                      @RequestParam(value = "talentHonour") Long talentHonour,
                                      @RequestParam(value = "file") MultipartFile file) throws InterruptedException {
-        BatchCertificateDTO batchCertificateDTO = iTalentService.readCertificateFile(file);
+        BatchCertificateDTO batchCertificateDTO = iTalentService.readCertificateFile(httpSession, file);
         if (batchCertificateDTO == null || batchCertificateDTO.getResultStatus() != 1000) {
-            new ResultVO(1100);
+            return new ResultVO(1100);
         }
         batchCertificateDTO.setTalentCategory(talentCategory);
         batchCertificateDTO.setTalentHonour(talentHonour);
@@ -114,6 +162,16 @@ public class TalentController {
         return new ResultVO(1000);
     }
 
+    /**
+     * 批量认证查询
+     * @param pageNum
+     * @param pageSize
+     * @param fileName
+     * @param startTime
+     * @param endTime
+     * @param status
+     * @return
+     */
     @RequestMapping("findBatchCertificate")
     public ResultVO findBatchCertificate(
             @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,

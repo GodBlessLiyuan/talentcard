@@ -2,6 +2,7 @@ package com.talentcard.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
+import com.netflix.ribbon.proxy.annotation.Http;
 import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.config.FilePathConfig;
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import javax.smartcardio.Card;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -137,7 +139,7 @@ public class TalentServiceImpl implements ITalentService {
     }
 
     @Override
-    public BatchCertificateDTO readCertificateFile(MultipartFile file) {
+    public BatchCertificateDTO readCertificateFile(HttpSession httpSession, MultipartFile file) {
         String fileName = file.getOriginalFilename();
         BatchCertificateDTO batchCertificateDTO = new BatchCertificateDTO();
         if (null == fileName) {
@@ -155,6 +157,10 @@ public class TalentServiceImpl implements ITalentService {
         BatchCertificatePO batchCertificatePO = new BatchCertificatePO();
         batchCertificatePO.setStatus((byte) 1);
         batchCertificatePO.setCreateTime(new Date());
+        Long userId = (Long) httpSession.getAttribute("userId");
+        String userName = (String) httpSession.getAttribute("username");
+        batchCertificatePO.setUserId(userId);
+        batchCertificatePO.setUserName(userName);
         batchCertificateMapper.add(batchCertificatePO);
 
         List<String> names = new LinkedList<>();
