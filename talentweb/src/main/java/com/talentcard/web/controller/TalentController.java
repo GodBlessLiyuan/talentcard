@@ -1,6 +1,7 @@
 package com.talentcard.web.controller;
 
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.dto.BatchCertificateDTO;
 import com.talentcard.web.service.ITalentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,18 +102,15 @@ public class TalentController {
     public ResultVO batchCertificate(@RequestParam(value = "cardId") Long cardId,
                                      @RequestParam(value = "talentCategory") String talentCategory,
                                      @RequestParam(value = "talentHonour") Long talentHonour,
-                                     @RequestParam(value = "file") MultipartFile file) {
-        String fileName = file.getOriginalFilename();
-        if (null == fileName) {
-            // 文件内表头信息或文件格式有误，请下载模板文件检查后重新上传！
-            return new ResultVO(1100);
+                                     @RequestParam(value = "file") MultipartFile file) throws InterruptedException {
+        BatchCertificateDTO batchCertificateDTO = iTalentService.readCertificateFile(file);
+        if (batchCertificateDTO == null || batchCertificateDTO.getResultStatus() != 1000) {
+            new ResultVO(1100);
         }
-        String suffix = fileName.substring(fileName.lastIndexOf("."));
-        if (!".xlsx".equals(suffix)) {
-            // 文件内表头信息或文件格式有误，请下载模板文件检查后重新上传！
-            return new ResultVO(1100);
-        }
-        iTalentService.batchCertificate(cardId, talentCategory, talentHonour, file);
+        batchCertificateDTO.setTalentCategory(talentCategory);
+        batchCertificateDTO.setTalentHonour(talentHonour);
+        batchCertificateDTO.setCardId(cardId);
+        iTalentService.batchCertificate(batchCertificateDTO);
         return new ResultVO(1000);
     }
 

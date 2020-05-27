@@ -13,6 +13,7 @@ import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.dto.BatchCertificateDTO;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.utils.AccessTokenUtil;
@@ -26,6 +27,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -135,33 +137,70 @@ public class TalentServiceImpl implements ITalentService {
     }
 
     @Override
-    @Async
-    public ResultVO batchCertificate(Long cardId, String talentCategory, Long talentHonour, MultipartFile file) {
+    public BatchCertificateDTO readCertificateFile(MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        //定义所需要的参数
-        String url;
-        Integer successNum=0;
-        Integer failureNum=0;
+        BatchCertificateDTO batchCertificateDTO = new BatchCertificateDTO();
+        if (null == fileName) {
+            // 文件内表头信息或文件格式有误，请下载模板文件检查后重新上传！
+            batchCertificateDTO.setResultStatus(1100);
+            return batchCertificateDTO;
+        }
+        String suffix = fileName.substring(fileName.lastIndexOf("."));
+        if (!".xlsx".equals(suffix)) {
+            // 文件内表头信息或文件格式有误，请下载模板文件检查后重新上传！
+            batchCertificateDTO.setResultStatus(1100);
+            return batchCertificateDTO;
+        }
+        //新建表
         BatchCertificatePO batchCertificatePO = new BatchCertificatePO();
         batchCertificatePO.setStatus((byte) 1);
         batchCertificatePO.setCreateTime(new Date());
         batchCertificateMapper.add(batchCertificatePO);
+
+        List<String> names = new LinkedList<>();
+        List<String> idCards = new LinkedList<>();
         try {
             XSSFWorkbook wb = new XSSFWorkbook(file.getInputStream());
             XSSFSheet sheet = wb.getSheetAt(0);
             if (!ExcelUtil.isNormTitle(sheet.getRow(1), EXCEL_TITLE)) {
                 // 文件内表头信息或文件格式有误，请下载模板文件检查后重新上传！
-                return new ResultVO(1100);
+                batchCertificateDTO.setResultStatus(1100);
+                return batchCertificateDTO;
             }
 
-            List<String> names = new LinkedList<>();
-            List<String> idCards = new LinkedList<>();
             for (int r = 2; r <= sheet.getLastRowNum(); r++) {
                 XSSFRow row = sheet.getRow(r);
                 names.add(ExcelUtil.getStringValue(row, 0));
                 idCards.add(ExcelUtil.getStringValue(row, 1));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            batchCertificateDTO.setResultStatus(1100);
+            return batchCertificateDTO;
+        }
+        batchCertificateDTO.setNames(names);
+        batchCertificateDTO.setIdCards(idCards);
+        batchCertificateDTO.setResultStatus(1000);
+        batchCertificateDTO.setBatchCertificatePO(batchCertificatePO);
+        return batchCertificateDTO;
+    }
 
+    @Override
+    @Async
+    public ResultVO batchCertificate(BatchCertificateDTO batchCertificateDTO) throws InterruptedException {
+        String fileName = batchCertificateDTO.getFileName();
+        List<String> names = batchCertificateDTO.getNames();
+        List<String> idCards = batchCertificateDTO.getIdCards();
+        BatchCertificatePO batchCertificatePO = batchCertificateDTO.getBatchCertificatePO();
+        String talentCategory = batchCertificateDTO.getTalentCategory();
+        Long talentHonour = batchCertificateDTO.getTalentHonour();
+        Long cardId = batchCertificateDTO.getCardId();
+//        Thread.sleep(15000);
+        //定义所需要的参数
+        String url;
+        Integer successNum = 0;
+        Integer failureNum = 0;
+        try {
             // TODO: 业务逻辑
             List<Integer> resultList = new ArrayList<>();
             Integer result;
@@ -203,12 +242,13 @@ public class TalentServiceImpl implements ITalentService {
             return new ResultVO(1100);
         }
 
+        //更新表
         batchCertificatePO.setSuccessNum(successNum);
         batchCertificatePO.setFailureNum(failureNum);
-        batchCertificatePO.setTotalNum(successNum+failureNum);
+        batchCertificatePO.setTotalNum(successNum + failureNum);
         batchCertificatePO.setDownloadUrl(url);
         batchCertificatePO.setUpdateTime(new Date());
-        batchCertificatePO.setStatus((byte)2);
+        batchCertificatePO.setStatus((byte) 2);
         batchCertificatePO.setFileName(fileName);
         batchCertificateMapper.updateByPrimaryKeySelective(batchCertificatePO);
 

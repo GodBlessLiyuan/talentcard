@@ -2,6 +2,7 @@ package com.talentcard.web.service;
 
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.dto.BatchCertificateDTO;
 import com.talentcard.web.vo.TalentVO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,13 +50,16 @@ public interface ITalentService {
     /**
      * 批量认证
      *
-     * @param file
+     * @param batchCertificateDTO
      * @return
      */
-    ResultVO batchCertificate(Long cardId, String talentCategory, Long talentHonour, MultipartFile file);
+    ResultVO batchCertificate(BatchCertificateDTO batchCertificateDTO) throws InterruptedException;
+
+    BatchCertificateDTO readCertificateFile(MultipartFile file);
 
     /**
      * 清理用户缓存
+     *
      * @param openId
      */
     void clearRedisCache(String openId);
