@@ -119,6 +119,7 @@ public class PolicyServiceImpl implements IPolicyService {
     private String listLongToString(Long[] longs, String sign){
         StringBuffer sb = new StringBuffer();
         int le = longs.length;
+        if (le == 0) {return null;}
         for(int i = 0; i < le - 1; i ++){
             sb.append(longs[i]).append(",");
         }
