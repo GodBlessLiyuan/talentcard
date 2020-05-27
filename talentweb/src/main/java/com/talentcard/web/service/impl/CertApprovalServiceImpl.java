@@ -189,6 +189,11 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             messageDTO.setFirst("您提交的认证信息与本人真实情况存在不符，请修改后重新提交。");
             MessageUtil.sendTemplateMessage(messageDTO);
 
+            /**
+             * 清除redis缓存
+             */
+            talentService.clearRedisCache(openId);
+
         } else {
             /**
              * 审批通过
@@ -266,7 +271,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             userCardPO.setCreateTime(new Date());
 
             /**
-             * 用基本卡的当前人数和编号数据
+             * 用上一张卡的当前人数和编号数据
              */
 
             HashMap<String, Object> currentCard = userCardMapper.findCurrentCard(openId, (byte) 2);

@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @EnableEurekaClient
 @SpringBootApplication
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("com.talentcard.common.utils")
 @ComponentScan("com.talentcard.web")
 @EnableConfigurationProperties({FilePathConfig.class})
+@EnableAsync
 public class WebApplication {
 
     public static void main(String[] args) {

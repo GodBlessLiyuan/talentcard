@@ -599,6 +599,7 @@
                t.id_card       as idCard,
                t.work_unit     as workUnit,
                t.industry,
+               t.industry_second as industrySecond,
                t.phone,
                t.political     as political,
                t.card_type     as cardType,

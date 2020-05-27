@@ -76,6 +76,7 @@ public class TalentDetailVO implements Serializable {
      * 所在行业
      */
     private Integer industry;
+    private Integer industrySecond;
     /**
      * 现工作单位
      */
@@ -141,6 +142,7 @@ public class TalentDetailVO implements Serializable {
         vo.setCardType(bo.getCardType());
         vo.setPassport(bo.getPassport());
         vo.setDriverCard(bo.getDriverCard());
+        vo.setIndustrySecond(bo.getIndustrySecond());
 
         return vo;
     }
