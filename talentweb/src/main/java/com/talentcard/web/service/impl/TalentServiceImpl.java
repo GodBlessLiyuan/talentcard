@@ -216,7 +216,14 @@ public class TalentServiceImpl implements ITalentService {
             }
 
             CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
-            String talentCard = cardPO.getTitle() + "/" + cardPO.getInitialWord();
+            if (cardPO == null) {
+                logger.info("拿不到cardPO，cardId为：{}", cardId);
+            }
+            String initialWord = cardPO.getInitialWord();
+            if (initialWord == null) {
+                initialWord = "";
+            }
+            String talentCard = cardPO.getTitle() + "/" + initialWord;
             String[][] rows = new String[names.size()][];
             for (int i = 0; i < names.size(); i++) {
                 String[] row = new String[EXCEL_TITLE_RES.length];
