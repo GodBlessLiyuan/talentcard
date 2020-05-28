@@ -52,7 +52,7 @@ public class JsSdkUtil {
     public static String getApiTicket() throws WechatException {
         //100分钟，更换apiTicket
         String apiTicket = (String) myRedis.opsForValue().get("apiTicket");
-        if (apiTicket == null || apiTicket == "") {
+        if (apiTicket == null || apiTicket.equals("")) {
             JsSdkUtil.applyApiTicket();
             apiTicket = (String) myRedis.opsForValue().get("apiTicket");
         }

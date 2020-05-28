@@ -99,7 +99,7 @@ public class StaffServiceImpl implements IStaffService {
          */
         String activitySecondContentName = StaffActivityUtil.getActivitySecondContentName(activityFirstContentId,
                 activitySecondContentId);
-        if (activitySecondContentName == "") {
+        if (activitySecondContentName.equals("")) {
             return new ResultVO(2502, "没有此活动");
         }
         staffPO.setActivitySecondContentName(activitySecondContentName);
@@ -225,7 +225,7 @@ public class StaffServiceImpl implements IStaffService {
          */
         if (farmhouseIdList != null && farmhouseIdList.size() == 0) {
             farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality, talentHonour);
-            if (farmhouseIdList != null &&farmhouseIdList.size() == 0) {
+            if (farmhouseIdList != null && farmhouseIdList.size() == 0) {
                 return new ResultVO(1001, "查无景区!不具备此农家乐权益!");
             }
             //去重

@@ -68,7 +68,7 @@ public class AccessTokenUtil {
     public static String getAccessToken() throws WechatException {
         //一小时，更换accessToken
         String accessToken = (String) myRedis.opsForValue().get("accessToken");
-        if (accessToken == null || accessToken == "") {
+        if (accessToken == null || accessToken.equals("")) {
             AccessTokenUtil.applyAccessToken();
             accessToken = (String) myRedis.opsForValue().get("accessToken");
         }

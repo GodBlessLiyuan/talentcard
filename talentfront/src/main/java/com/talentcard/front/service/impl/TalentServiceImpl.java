@@ -398,7 +398,7 @@ public class TalentServiceImpl implements ITalentService {
             talentHonourUrl = FileUtil.uploadFile
                     (talentHonourPicture, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getTalentHonourDir(), "talentHonour");
         }
-        if (educUrl == "" && profTitleUrl == "" && profQualityUrl == "" && talentHonourUrl == "") {
+        if (educUrl.equals("") && profTitleUrl.equals("") && profQualityUrl.equals("") && talentHonourUrl.equals("")) {
             return new ResultVO(2304, "上传文件失败");
         }
 

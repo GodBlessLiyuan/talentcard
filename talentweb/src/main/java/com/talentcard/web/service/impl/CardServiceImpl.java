@@ -68,7 +68,7 @@ public class CardServiceImpl implements ICardService {
         //转为json格式，再转为url，去掉反斜线
         JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
         pictureCDN = pictureObject.getString("url");
-        if (pictureCDN == null || pictureCDN == "") {
+        if (pictureCDN == null || pictureCDN.equals("")) {
             return new ResultVO(2321, "会员卡背景图上传失败");
         }
         //上传logo图片
@@ -83,7 +83,7 @@ public class CardServiceImpl implements ICardService {
         //转为json格式，再转为url，去掉反斜线
         JSONObject logoObject = JSONObject.parseObject(logoCDN);
         logoCDN = logoObject.getString("url");
-        if (logoCDN == null || logoCDN == "") {
+        if (logoCDN == null || logoCDN.equals("")) {
             return new ResultVO(2325, "会员卡logo图CDN上传失败");
         }
         //创建卡，微信端
@@ -163,7 +163,7 @@ public class CardServiceImpl implements ICardService {
             pictureCDN = CardUtil.uploadPicture(pictureUploadCdnUrl);
             JSONObject pictureObject = JSONObject.parseObject(pictureCDN);
             pictureCDN = pictureObject.getString("url");
-            if (pictureCDN == null || pictureCDN == "") {
+            if (pictureCDN == null || pictureCDN.equals("")) {
                 return new ResultVO(2321, "会员卡背景图上传失败");
             }
         }

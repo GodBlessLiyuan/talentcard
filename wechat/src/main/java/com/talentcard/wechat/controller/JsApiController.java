@@ -32,7 +32,7 @@ public class JsApiController {
     @GetMapping("getTicket")
     public ResultVO jsApiTicket() {
         String jsApiTicket = JsApiTicketUtil.getJsApiTicket();
-        if (jsApiTicket == null || jsApiTicket == "") {
+        if (jsApiTicket == null || jsApiTicket.equals("")) {
             return new ResultVO(2201);
         }
         return new ResultVO(1000, jsApiTicket);
