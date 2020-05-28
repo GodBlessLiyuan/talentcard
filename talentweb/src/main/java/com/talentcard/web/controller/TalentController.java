@@ -152,8 +152,8 @@ public class TalentController {
     @RequestMapping("batchCertificate")
     public ResultVO batchCertificate(HttpSession httpSession,
                                      @RequestParam(value = "cardId") Long cardId,
-                                     @RequestParam(value = "talentCategory") String talentCategory,
-                                     @RequestParam(value = "talentHonour") Long talentHonour,
+                                     @RequestParam(value = "talentCategory", required = false, defaultValue = "") String talentCategory,
+                                     @RequestParam(value = "talentHonour", required = false, defaultValue = "0") Long talentHonour,
                                      @RequestParam(value = "file") MultipartFile file) throws InterruptedException {
         BatchCertificateDTO batchCertificateDTO = iTalentService.readCertificateFile(httpSession, file);
         if (batchCertificateDTO == null || batchCertificateDTO.getResultStatus() != 1000) {
