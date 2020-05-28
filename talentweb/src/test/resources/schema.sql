@@ -5,10 +5,12 @@ DROP TABLE IF EXISTS t_annex;
 DROP TABLE IF EXISTS t_role_authority;
 DROP TABLE IF EXISTS t_authority;
 DROP TABLE IF EXISTS t_bank;
+DROP TABLE IF EXISTS t_batch_certificate;
 DROP TABLE IF EXISTS t_cert_approval;
 DROP TABLE IF EXISTS t_education;
 DROP TABLE IF EXISTS t_prof_quality;
 DROP TABLE IF EXISTS t_prof_title;
+DROP TABLE IF EXISTS t_talent_honour;
 DROP TABLE IF EXISTS t_certification;
 DROP TABLE IF EXISTS t_policy_approval;
 DROP TABLE IF EXISTS t_policy_apply;
@@ -80,6 +82,27 @@ CREATE TABLE t_bank
 );
 
 
+CREATE TABLE t_batch_certificate
+(
+	bc_id bigint unsigned NOT NULL,
+	file_name char(255),
+	-- 1认证中
+	-- 2认证结束
+	status tinyint unsigned COMMENT '1认证中
+2认证结束',
+	total_num int unsigned,
+	success_num int unsigned,
+	failure_num int unsigned,
+	download_url char(255),
+	user_id bigint unsigned,
+	user_name char(32),
+	create_time datetime,
+	update_time datetime,
+	PRIMARY KEY (bc_id),
+	UNIQUE (bc_id)
+);
+
+
 CREATE TABLE t_card
 (
 	card_id bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -97,7 +120,8 @@ CREATE TABLE t_card
 	logo_url char(255),
 	prerogative varchar(2048),
 	initial_word char(32) NOT NULL,
-	initial_num char(32) NOT NULL,
+	initial_num char(32),
+	area_num char(128),
 	business_description char(255),
 	create_person char(16),
 	update_person char(16),
@@ -121,14 +145,14 @@ CREATE TABLE t_certification
 	-- 1.正常使用
 	-- 2.注册没领卡（待领卡）
 	-- 3.发起过认证未审批（待审批）
-	-- 4.已有卡，且审批通过但未领卡（待领卡）
+	-- 4.已有基础卡，且审批通过但未领卡（待领卡）
 	-- 5.基础卡正常使用
 	-- 9. 基本卡失效
 	-- 10.其他情况失效
 	status tinyint DEFAULT 2 COMMENT '1.正常使用
 2.注册没领卡（待领卡）
 3.发起过认证未审批（待审批）
-4.已有卡，且审批通过但未领卡（待领卡）
+4.已有基础卡，且审批通过但未领卡（待领卡）
 5.基础卡正常使用
 9. 基本卡失效
 10.其他情况失效',
@@ -140,12 +164,14 @@ CREATE TABLE t_certification
 2 职称
 3 职业资格
 4 全都有',
-	-- 1是基本卡
-	-- 2是基本卡换的高级卡
-	-- 3是高级卡换的高级卡
-	type tinyint COMMENT '1是基本卡
-2是基本卡换的高级卡
-3是高级卡换的高级卡',
+	-- 1 是基本卡
+	-- 2 是基本卡换的高级卡
+	-- 3 是高级卡换的高级卡
+	-- 4 批量认证成功的高级卡
+	type tinyint COMMENT '1 是基本卡
+2 是基本卡换的高级卡
+3 是高级卡换的高级卡
+4 批量认证成功的高级卡',
 	PRIMARY KEY (cert_id),
 	UNIQUE (cert_id)
 );
@@ -195,17 +221,23 @@ CREATE TABLE t_education
 	-- 1.正常使用
 	-- 2.注册没领卡（待领卡）
 	-- 3.发起过认证未审批（待审批）
-	-- 4.已有卡，且审批通过但未领卡（待领卡）
+	-- 4.已有基础卡，且审批通过但未领卡（待领卡）
 	-- 5.基础卡正常使用
 	-- 9. 基本卡失效
 	-- 10.其他情况失效
 	status tinyint COMMENT '1.正常使用
 2.注册没领卡（待领卡）
 3.发起过认证未审批（待审批）
-4.已有卡，且审批通过但未领卡（待领卡）
+4.已有基础卡，且审批通过但未领卡（待领卡）
 5.基础卡正常使用
 9. 基本卡失效
 10.其他情况失效',
+	-- 1 已认证；
+	-- 2 未认证；
+	-- 10 本次不认证
+	if_certificate tinyint unsigned COMMENT '1 已认证；
+2 未认证；
+10 本次不认证',
 	PRIMARY KEY (educ_id),
 	UNIQUE (educ_id)
 );
@@ -215,16 +247,14 @@ CREATE TABLE t_farmhouse
 (
 	farmhouse_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	name char(16) NOT NULL,
-	discount double(2,1),
+	discount decimal (2,1),
 	avatar char(255),
 	description text,
 	extra text,
 	qr_code char(255),
-	-- 1：上架；2：下架
-	status tinyint COMMENT '1：上架；2：下架',
+	status tinyint,
 	create_time datetime,
-	-- 1 未删除  2 已删除
-	dr tinyint COMMENT '1 未删除  2 已删除',
+	dr tinyint,
 	PRIMARY KEY (farmhouse_id),
 	UNIQUE (farmhouse_id),
 	UNIQUE (name)
@@ -240,8 +270,9 @@ CREATE TABLE t_farmhouse_enjoy
 	education_id int unsigned,
 	title_id int unsigned,
 	quality int unsigned,
-	-- 1：人才卡；2：人才类别；3：人才学历；4：职称；5：职业资格
-	type tinyint COMMENT '1：人才卡；2：人才类别；3：人才学历；4：职称；5：职业资格',
+	honour_id bigint unsigned,
+	-- 1：人才卡；2：人才类别；3：人才学历；4：职称；5：职业资格；6：人才荣誉
+	type tinyint COMMENT '1：人才卡；2：人才类别；3：人才学历；4：职称；5：职业资格；6：人才荣誉',
 	PRIMARY KEY (fe_id),
 	UNIQUE (fe_id)
 );
@@ -278,8 +309,10 @@ CREATE TABLE t_policy
 	educations char(255),
 	titles char(255),
 	qualities char(255),
+	honour_ids varchar(2048),
 	-- 1：需要；2：不需要
 	apply tinyint DEFAULT 2 COMMENT '1：需要；2：不需要',
+	color char(64),
 	rate int,
 	unit tinyint,
 	times int,
@@ -340,17 +373,23 @@ CREATE TABLE t_prof_quality
 	-- 1.正常使用
 	-- 2.注册没领卡（待领卡）
 	-- 3.发起过认证未审批（待审批）
-	-- 4.已有卡，且审批通过但未领卡（待领卡）
+	-- 4.已有基础卡，且审批通过但未领卡（待领卡）
 	-- 5.基础卡正常使用
 	-- 9. 基本卡失效
 	-- 10.其他情况失效
 	status tinyint COMMENT '1.正常使用
 2.注册没领卡（待领卡）
 3.发起过认证未审批（待审批）
-4.已有卡，且审批通过但未领卡（待领卡）
+4.已有基础卡，且审批通过但未领卡（待领卡）
 5.基础卡正常使用
 9. 基本卡失效
 10.其他情况失效',
+	-- 1 已认证；
+	-- 2 未认证；
+	-- 10 本次不认证
+	if_certificate tinyint unsigned COMMENT '1 已认证；
+2 未认证；
+10 本次不认证',
 	PRIMARY KEY (pq_id),
 	UNIQUE (pq_id)
 );
@@ -367,17 +406,23 @@ CREATE TABLE t_prof_title
 	-- 1.正常使用
 	-- 2.注册没领卡（待领卡）
 	-- 3.发起过认证未审批（待审批）
-	-- 4.已有卡，且审批通过但未领卡（待领卡）
+	-- 4.已有基础卡，且审批通过但未领卡（待领卡）
 	-- 5.基础卡正常使用
 	-- 9. 基本卡失效
 	-- 10.其他情况失效
 	status tinyint COMMENT '1.正常使用
 2.注册没领卡（待领卡）
 3.发起过认证未审批（待审批）
-4.已有卡，且审批通过但未领卡（待领卡）
+4.已有基础卡，且审批通过但未领卡（待领卡）
 5.基础卡正常使用
 9. 基本卡失效
 10.其他情况失效',
+	-- 1 已认证；
+	-- 2 未认证；
+	-- 10 本次不认证
+	if_certificate tinyint unsigned COMMENT '1 已认证；
+2 未认证；
+10 本次不认证',
 	PRIMARY KEY (pt_id),
 	UNIQUE (pt_id)
 );
@@ -439,8 +484,9 @@ CREATE TABLE t_scenic_enjoy
 	education_id int unsigned,
 	title_id int unsigned,
 	quality int unsigned,
-	-- 1：人才卡；2：人才类别；3：人才学历；4：职称；5：职业资格
-	type tinyint COMMENT '1：人才卡；2：人才类别；3：人才学历；4：职称；5：职业资格',
+	honour_id bigint unsigned,
+	-- 1：人才卡；2：人才类别；3：人才学历；4：职称；5：职业资格；6：人才荣誉
+	type tinyint COMMENT '1：人才卡；2：人才类别；3：人才学历；4：职称；5：职业资格；6：人才荣誉',
 	PRIMARY KEY (se_id),
 	UNIQUE (se_id)
 );
@@ -469,7 +515,7 @@ CREATE TABLE t_staff
 	activity_second_content_name char(32) NOT NULL,
 	-- 1：男；2：女
 	sex tinyint COMMENT '1：男；2：女',
-	id_card char(18),
+	id_card char(128),
 	phone char(32),
 	create_time datetime,
 	-- 1正在使用
@@ -485,29 +531,38 @@ CREATE TABLE t_talent
 (
 	talent_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	open_id char(128) NOT NULL,
-	name char(64) NOT NULL,
+	name char(64),
 	-- 1：男；2：女
 	sex tinyint COMMENT '1：男；2：女',
-	id_card char(18) NOT NULL,
+	id_card char(128),
 	passport char(32),
-	work_unit char(255) NOT NULL,
+	driver_card char(128),
+	-- 1身份证2护照3驾照
+	card_type tinyint unsigned COMMENT '1身份证2护照3驾照',
+	work_unit char(255),
 	industry int unsigned,
 	industry_second int unsigned,
 	phone char(32) NOT NULL,
-	create_time datetime,
+	political tinyint,
 	category char(255),
+	work_location char(255),
+	-- 1国内；
+	-- 2海外；
+	work_location_type tinyint COMMENT '1国内；
+2海外；',
+	card_id bigint unsigned,
 	-- 1 认证通过
 	-- 2 认证没通过
 	status tinyint DEFAULT 2 COMMENT '1 认证通过
 2 认证没通过',
-	card_id bigint unsigned,
+	create_time datetime,
 	-- 1正在使用
 	-- 2删除
 	dr tinyint unsigned COMMENT '1正在使用
 2删除',
 	PRIMARY KEY (talent_id),
 	UNIQUE (talent_id),
-	UNIQUE (id_card)
+	UNIQUE (open_id)
 );
 
 
@@ -538,7 +593,7 @@ CREATE TABLE t_talent_farmhouse
 	open_id char(128) NOT NULL,
 	farmhouse_id bigint unsigned NOT NULL,
 	staff_id bigint unsigned,
-	discount double(2,1),
+	discount decimal (2,1),
 	effective_time datetime,
 	update_time datetime,
 	status tinyint unsigned,
@@ -546,6 +601,39 @@ CREATE TABLE t_talent_farmhouse
 	dr tinyint COMMENT '1 未删除  2 已删除',
 	PRIMARY KEY (tt_id),
 	UNIQUE (tt_id)
+);
+
+
+CREATE TABLE t_talent_honour
+(
+	th_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	honour_id bigint unsigned,
+	honour_picture char(255),
+	info char(255),
+	cert_id bigint unsigned NOT NULL,
+	talent_id bigint unsigned NOT NULL,
+	-- 1.正常使用
+	-- 2.注册没领卡（待领卡）
+	-- 3.发起过认证未审批（待审批）
+	-- 4.已有基础卡，且审批通过但未领卡（待领卡）
+	-- 5.基础卡正常使用
+	-- 9. 基本卡失效
+	-- 10.其他情况失效
+	status tinyint COMMENT '1.正常使用
+2.注册没领卡（待领卡）
+3.发起过认证未审批（待审批）
+4.已有基础卡，且审批通过但未领卡（待领卡）
+5.基础卡正常使用
+9. 基本卡失效
+10.其他情况失效',
+	-- 1 已认证；
+	-- 2 未认证；
+	-- 10 本次不认证
+	if_certificate tinyint unsigned COMMENT '1 已认证；
+2 未认证；
+10 本次不认证',
+	PRIMARY KEY (th_id),
+	UNIQUE (th_id)
 );
 
 
@@ -601,6 +689,8 @@ CREATE TABLE t_user_card
 	card_id bigint unsigned,
 	name char(16),
 	num char(32) NOT NULL,
+	-- 当前用户带的号码，不含区域号和前缀
+	current_num char(64) COMMENT '当前用户带的号码，不含区域号和前缀',
 	create_time datetime,
 	-- 1 待领卡
 	-- 2 已领卡，使用中
@@ -628,6 +718,8 @@ CREATE TABLE t_user_current_info
 	pq_category int,
 	pq_info char(255),
 	talent_category char(255),
+	honour_id bigint unsigned,
+	th_info char(255),
 	PRIMARY KEY (uci_id),
 	UNIQUE (uci_id)
 );
@@ -693,6 +785,14 @@ ALTER TABLE t_prof_quality
 
 
 ALTER TABLE t_prof_title
+	ADD FOREIGN KEY (cert_id)
+	REFERENCES t_certification (cert_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_talent_honour
 	ADD FOREIGN KEY (cert_id)
 	REFERENCES t_certification (cert_id)
 	ON UPDATE RESTRICT
@@ -868,6 +968,14 @@ ALTER TABLE t_prof_title
 ;
 
 
+ALTER TABLE t_talent_honour
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE t_user_card
 	ADD FOREIGN KEY (talent_id)
 	REFERENCES t_talent (talent_id)
@@ -879,6 +987,14 @@ ALTER TABLE t_user_card
 ALTER TABLE t_user_current_info
 	ADD FOREIGN KEY (talent_id)
 	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_batch_certificate
+	ADD FOREIGN KEY (user_id)
+	REFERENCES t_user (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
