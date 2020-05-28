@@ -161,6 +161,7 @@ public class TalentServiceImpl implements ITalentService {
         String userName = (String) httpSession.getAttribute("username");
         batchCertificatePO.setUserId(userId);
         batchCertificatePO.setUserName(userName);
+        batchCertificatePO.setFileName(fileName);
         batchCertificateMapper.add(batchCertificatePO);
 
         List<String> names = new LinkedList<>();
@@ -265,7 +266,6 @@ public class TalentServiceImpl implements ITalentService {
         batchCertificatePO.setDownloadUrl(url);
         batchCertificatePO.setUpdateTime(new Date());
         batchCertificatePO.setStatus((byte) 2);
-        batchCertificatePO.setFileName(fileName);
         batchCertificateMapper.updateByPrimaryKeySelective(batchCertificatePO);
 
         return new ResultVO(1000, url);
