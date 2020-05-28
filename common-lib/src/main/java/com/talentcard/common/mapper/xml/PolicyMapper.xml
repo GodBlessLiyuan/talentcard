@@ -26,7 +26,7 @@
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
   </resultMap>
   <sql id="Base_Column_List">
-    policy_id, `name`, num, cards, categories, educations, titles, qualities, honour_ids,
+    policy_id, `name`, num, description, cards, categories, educations, titles, qualities, honour_ids,
     apply, color, rate, unit, times, bank, annex, user_id, create_time, dr
   </sql>
   <sql id="Blob_Column_List">
