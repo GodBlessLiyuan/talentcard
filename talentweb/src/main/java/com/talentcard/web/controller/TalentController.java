@@ -28,6 +28,7 @@ public class TalentController {
 
     /**
      * 普通用户查询
+     *
      * @param pageNum
      * @param pageSize
      * @param start
@@ -73,6 +74,7 @@ public class TalentController {
 
     /**
      * 普通用户；查看详情
+     *
      * @param tid
      * @return
      */
@@ -83,6 +85,7 @@ public class TalentController {
 
     /**
      * 认证人才查询
+     *
      * @param pageNum
      * @param pageSize
      * @param start
@@ -137,6 +140,7 @@ public class TalentController {
 
     /**
      * 批量认证
+     *
      * @param httpSession
      * @param cardId
      * @param talentCategory
@@ -148,12 +152,12 @@ public class TalentController {
     @RequestMapping("batchCertificate")
     public ResultVO batchCertificate(HttpSession httpSession,
                                      @RequestParam(value = "cardId") Long cardId,
-                                     @RequestParam(value = "talentCategory") String talentCategory,
-                                     @RequestParam(value = "talentHonour") Long talentHonour,
+                                     @RequestParam(value = "talentCategory", required = false, defaultValue = "") String talentCategory,
+                                     @RequestParam(value = "talentHonour", required = false, defaultValue = "0") Long talentHonour,
                                      @RequestParam(value = "file") MultipartFile file) throws InterruptedException {
         BatchCertificateDTO batchCertificateDTO = iTalentService.readCertificateFile(httpSession, file);
         if (batchCertificateDTO == null || batchCertificateDTO.getResultStatus() != 1000) {
-            return new ResultVO(1100);
+            return new ResultVO(2800);
         }
         batchCertificateDTO.setTalentCategory(talentCategory);
         batchCertificateDTO.setTalentHonour(talentHonour);
@@ -164,6 +168,7 @@ public class TalentController {
 
     /**
      * 批量认证查询
+     *
      * @param pageNum
      * @param pageSize
      * @param fileName

@@ -161,6 +161,7 @@ public class TalentServiceImpl implements ITalentService {
         String userName = (String) httpSession.getAttribute("username");
         batchCertificatePO.setUserId(userId);
         batchCertificatePO.setUserName(userName);
+        batchCertificatePO.setFileName(fileName);
         batchCertificateMapper.add(batchCertificatePO);
 
         List<String> names = new LinkedList<>();
@@ -216,7 +217,14 @@ public class TalentServiceImpl implements ITalentService {
             }
 
             CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
-            String talentCard = cardPO.getTitle() + "/" + cardPO.getInitialWord();
+            if (cardPO == null) {
+                logger.info("拿不到cardPO，cardId为：{}", cardId);
+            }
+            String initialWord = cardPO.getInitialWord();
+            if (initialWord == null) {
+                initialWord = "";
+            }
+            String talentCard = cardPO.getTitle() + "/" + initialWord;
             String[][] rows = new String[names.size()][];
             for (int i = 0; i < names.size(); i++) {
                 String[] row = new String[EXCEL_TITLE_RES.length];
@@ -233,7 +241,10 @@ public class TalentServiceImpl implements ITalentService {
                 } else if (result.equals(NO_TALENT)) {
                     row[5] = "找不到此用户";
                     failureNum++;
-                } else if (result.equals(ERROR_TALENT_STATUS)) {
+                } else if (result.equals(IN_CERTIFICATE_STATUS)) {
+                    row[5] = "已认证或认证中";
+                    failureNum++;
+                } else {
                     row[5] = "人才状态错误";
                     failureNum++;
                 }
@@ -255,7 +266,6 @@ public class TalentServiceImpl implements ITalentService {
         batchCertificatePO.setDownloadUrl(url);
         batchCertificatePO.setUpdateTime(new Date());
         batchCertificatePO.setStatus((byte) 2);
-        batchCertificatePO.setFileName(fileName);
         batchCertificateMapper.updateByPrimaryKeySelective(batchCertificatePO);
 
         return new ResultVO(1000, url);
@@ -285,6 +295,8 @@ public class TalentServiceImpl implements ITalentService {
             return NO_TALENT;
         }
         String openId = talentPO.getOpenId();
+        //清缓存
+        clearRedisCache(openId);
         Long talentId = talentPO.getTalentId();
         //判断是否处在认证状态中
         Integer checkIfCertificate = talentMapper.ifInAudit(openId);
