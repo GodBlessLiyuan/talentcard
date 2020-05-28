@@ -137,6 +137,14 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
     Integer ifInAudit(String openId);
 
     /**
+     * 根据openId和c表status=3或者4或者1是否有数据来判断是否在审核状态中，或者是审核成功待领卡，或者正在使用高级卡
+     *
+     * @param openId
+     * @return
+     */
+    Integer IfCertificate(String openId);
+
+    /**
      * 根据openid查询
      *
      * @param openid

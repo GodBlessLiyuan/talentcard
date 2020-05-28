@@ -162,7 +162,6 @@ public class TalentServiceImpl implements ITalentService {
         batchCertificatePO.setUserId(userId);
         batchCertificatePO.setUserName(userName);
         batchCertificatePO.setFileName(fileName);
-        batchCertificateMapper.add(batchCertificatePO);
 
         List<String> names = new LinkedList<>();
         List<String> idCards = new LinkedList<>();
@@ -189,6 +188,9 @@ public class TalentServiceImpl implements ITalentService {
         batchCertificateDTO.setIdCards(idCards);
         batchCertificateDTO.setResultStatus(1000);
         batchCertificateDTO.setBatchCertificatePO(batchCertificatePO);
+
+        //都成功了再添加表
+        batchCertificateMapper.add(batchCertificatePO);
         return batchCertificateDTO;
     }
 
@@ -301,7 +303,7 @@ public class TalentServiceImpl implements ITalentService {
         clearRedisCache(openId);
         Long talentId = talentPO.getTalentId();
         //判断是否处在认证状态中
-        Integer checkIfCertificate = talentMapper.ifInAudit(openId);
+        Integer checkIfCertificate = talentMapper.ifCertificate(openId);
         if (checkIfCertificate != 0) {
             return IN_CERTIFICATE_STATUS;
         }
