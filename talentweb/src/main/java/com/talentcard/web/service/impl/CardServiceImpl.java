@@ -15,6 +15,7 @@ import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.CardUtil;
 import com.talentcard.web.vo.CardIdAndNameVO;
 import com.talentcard.web.vo.CardVO;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,8 +145,8 @@ public class CardServiceImpl implements ICardService {
 
     @Override
     public ResultVO edit(Long cardId, String title, String businessDescription, MultipartFile background, HttpSession httpSession) {
-        if ((title == null || title.equals(""))
-                && (businessDescription == null || businessDescription.equals(""))
+        if (StringUtils.isEmpty(title)
+                && StringUtils.isEmpty(businessDescription)
                 && background == null) {
             return new ResultVO(2324, "会员卡编辑失败，啥参数都没给啊");
         }
@@ -192,8 +193,8 @@ public class CardServiceImpl implements ICardService {
 
         String url = "https://api.weixin.qq.com/card/update?access_token="
                 + AccessTokenUtil.getAccessToken();
-        if ((pictureCDN != null && !pictureCDN.equals(""))
-                || (title != null && !title.equals(""))) {
+        if (!StringUtils.isEmpty(pictureCDN)
+                || !StringUtils.isEmpty(title)) {
             JSONObject result = WechatApiUtil.postRequest(url, paramObject);
         }
         //从session里取出更新者信息

@@ -40,7 +40,7 @@ public class WxCardServiceImpl implements WxCardService {
     @Override
     @SuppressWarnings("unchecked")
     public  Map<String,String> parseRequest(HttpServletRequest request){
-        Map<String,String> map = new HashMap<>();
+
         try{
             SAXReader reader = new SAXReader();
             InputStream inputStream=request.getInputStream();
@@ -50,14 +50,16 @@ public class WxCardServiceImpl implements WxCardService {
             Element root = document.getRootElement();
             //获取根节点的所有字节点
             List<Element> elements = root.elements();
+            Map<String,String> map = new HashMap<>(elements.size());
             for(Element e : elements){
                 map.put(e.getName(),e.getStringValue());
             }
             inputStream.close();
+            return map;
         }catch (Exception e){
             e.printStackTrace();
         }
-        return map;
+        return new HashMap<>(0);
     }
 
     /**

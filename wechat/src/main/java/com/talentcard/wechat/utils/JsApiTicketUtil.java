@@ -7,9 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -74,7 +72,7 @@ public class JsApiTicketUtil {
      */
     public static String getSignature(String noncestr, String jsApiTicket, String timestamp, String url) {
         //1）将token、timestamp、nonce三个参数进行字典序排序
-        HashMap hashMap = new HashMap();
+        HashMap hashMap = new HashMap(4);
         hashMap.put("noncestr", noncestr);
         hashMap.put("jsapi_ticket", jsApiTicket);
         hashMap.put("timestamp", timestamp);
