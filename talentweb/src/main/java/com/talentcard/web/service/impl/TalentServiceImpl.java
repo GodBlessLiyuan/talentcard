@@ -288,6 +288,8 @@ public class TalentServiceImpl implements ITalentService {
             return NO_TALENT;
         }
         String openId = talentPO.getOpenId();
+        //清缓存
+        clearRedisCache(openId);
         Long talentId = talentPO.getTalentId();
         //判断是否处在认证状态中
         Integer checkIfCertificate = talentMapper.ifInAudit(openId);
