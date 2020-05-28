@@ -233,7 +233,10 @@ public class TalentServiceImpl implements ITalentService {
                 } else if (result.equals(NO_TALENT)) {
                     row[5] = "找不到此用户";
                     failureNum++;
-                } else if (result.equals(ERROR_TALENT_STATUS)) {
+                } else if (result.equals(IN_CERTIFICATE_STATUS)) {
+                    row[5] = "已认证或认证中";
+                    failureNum++;
+                } else {
                     row[5] = "人才状态错误";
                     failureNum++;
                 }
