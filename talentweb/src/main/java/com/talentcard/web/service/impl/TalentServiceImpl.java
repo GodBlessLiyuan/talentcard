@@ -234,7 +234,9 @@ public class TalentServiceImpl implements ITalentService {
                 if (result.equals(SUCCESS)) {
                     row[2] = talentCard;
                     row[3] = talentCategory;
-                    row[4] = talentHonour.toString();
+                    if (talentHonour != null) {
+                        row[4] = talentHonour.toString();
+                    }
                     row[5] = "成功";
                     row[6] = "";
                     successNum++;

@@ -585,6 +585,7 @@ public class TalentServiceImpl implements ITalentService {
      * @param openId
      * @return
      */
+    @Override
     public TalentTypeVO getTalentInfo(String openId){
 
         String redisCache = redisMapUtil.hget(openId, "getTalentInfo");
