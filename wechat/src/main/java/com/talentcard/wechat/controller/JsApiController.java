@@ -50,7 +50,7 @@ public class JsApiController {
         String timeStamp = String.valueOf((System.currentTimeMillis() / 1000));
 
         String signature = JsApiTicketUtil.getSignature(noncestr, jsApiTicket, timeStamp, url);
-        HashMap<String, Object> hashMap = new HashMap();
+        HashMap<String, Object> hashMap = new HashMap(5);
         hashMap.put("noncestr", noncestr);
         hashMap.put("jsApiTicket", jsApiTicket);
         hashMap.put("timeStamp", timeStamp);
