@@ -21,10 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -104,7 +103,9 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
         if(!StringUtils.isEmpty(s_list)){
             list = StringToObjUtil.strToObj(mapStr, List.class);
         }
-        String lon = redisMapUtil.hget("talentfarmhouse","benefitNum");
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String lon = redisMapUtil.hget("talentfarmhouse","benefitNum" + date.format(formatter));
 
         Map<String, Object> resultMap = new HashMap<>(2);
 
@@ -156,7 +157,7 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
                 resultMap.put("farmhouseVOList", farmhouseVOList);
                 resultMap.put("benefitNum", benefitNum);
                 redisMapUtil.hset("talentfarmhouse", code, JSON.toJSONString(farmhouseVOList));
-                redisMapUtil.hset("talentfarmhouse","benefitNum", String.valueOf(benefitNum));
+                redisMapUtil.hset("talentfarmhouse","benefitNum" + date.format(formatter), String.valueOf(benefitNum));
                 if(log.isInfoEnabled()) {
                     log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: farmhouseVOList In DB [{}]:",
                             farmhouseVOList);
