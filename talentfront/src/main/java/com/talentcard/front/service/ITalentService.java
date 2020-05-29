@@ -3,11 +3,8 @@ package com.talentcard.front.service;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
-import com.talentcard.front.vo.TalentTypeVO;
+import com.talentcard.common.vo.TalentTypeVO;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.xml.transform.Result;
-import java.util.HashMap;
 
 /**
  * @Author：chenXU

@@ -7,7 +7,7 @@ import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ITalentActivityService;
 import com.talentcard.front.service.ITalentService;
-import com.talentcard.front.vo.TalentTypeVO;
+import com.talentcard.common.vo.TalentTypeVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

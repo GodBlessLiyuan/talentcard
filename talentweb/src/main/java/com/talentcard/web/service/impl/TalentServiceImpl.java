@@ -570,6 +570,8 @@ public class TalentServiceImpl implements ITalentService {
         userCardMapper.insertSelective(newUserCardPO);
 
         TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
+        clearRedisCache(talentPO.getOpenId());
+
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
         //openId

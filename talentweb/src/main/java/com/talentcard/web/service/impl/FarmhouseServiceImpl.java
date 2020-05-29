@@ -134,7 +134,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
         }
 
         farmhouseGroupAuthorityMapper.clear();
-        redisMapUtil.del("talentfarmhouse");
+        deleteRedisCache();
         return new ResultVO(1000);
     }
 
@@ -147,7 +147,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
 
         farmhouseMapper.updateStatus(farmhouseId, status);
         farmhouseGroupAuthorityMapper.clear();
-        redisMapUtil.del("talentfarmhouse");
+        deleteRedisCache();
         return new ResultVO(1000);
     }
 
@@ -168,5 +168,9 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
     public ResultVO upload(MultipartFile file) {
         String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getFarmHouseDir(), "farmhouse");
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
+    }
+
+    private void deleteRedisCache(){
+        redisMapUtil.del("talentfarmhouse");
     }
 }
