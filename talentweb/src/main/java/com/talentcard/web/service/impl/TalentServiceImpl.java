@@ -242,20 +242,23 @@ public class TalentServiceImpl implements ITalentService {
                     row[6] = "";
                     successNum++;
                 } else if (result.equals(NO_TALENT)) {
-                    row[5] = "找不到此用户";
+                    row[5] = "失败";
+                    row[6] = "找不到此用户";
                     failureNum++;
                 } else if (result.equals(IN_CERTIFICATE_STATUS)) {
-                    row[5] = "已认证或认证中";
+                    row[5] = "失败";
+                    row[6] = "已认证或认证中";
                     failureNum++;
                 } else {
-                    row[5] = "人才状态错误";
+                    row[5] = "失败";
+                    row[6] = "人才状态错误";
                     failureNum++;
                 }
                 rows[i] = row;
             }
 
             url = ExcelUtil.save(ExcelUtil.buildExcel("批量认证结果", EXCEL_TITLE_RES, rows),
-                    filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getExcelDir(), "批量认证结果");
+                    filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getExcelDir(), "batch_certificate_result");
 
         } catch (Exception e) {
             e.printStackTrace();
