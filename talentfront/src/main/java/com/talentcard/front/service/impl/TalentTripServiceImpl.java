@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -187,7 +189,9 @@ public class TalentTripServiceImpl implements ITalentTripService {
         talentTripMapper.insertSelective(talentTripPO);
         ActivityResidueNumUtil.minusOneResidueNum();
 
-        redisMapUtil.hdel("talentfarmhouse","benefitNum");
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        redisMapUtil.hdel("talentfarmhouse","benefitNum" + date.format(formatter));
 
         return new ResultVO(1000, "领取成功");
     }
