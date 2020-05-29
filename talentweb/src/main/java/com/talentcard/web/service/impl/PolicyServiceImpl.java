@@ -41,7 +41,7 @@ public class PolicyServiceImpl implements IPolicyService {
         PolicyPO existPO = policyMapper.queryByNum(dto.getNum());
         if (null != existPO) {
             // 编号不能重复
-            return new ResultVO(1001);
+            return new ResultVO(2422);
         }
 
         PolicyPO po = buildPOByDTO(new PolicyPO(), dto);
@@ -67,7 +67,12 @@ public class PolicyServiceImpl implements IPolicyService {
 
     @Override
     public ResultVO delete(Long pid) {
-        policyMapper.deleteByPrimaryKey(pid);
+        PolicyPO policyPO = policyMapper.selectByPrimaryKey(pid);
+        if (policyPO == null) {
+            return new ResultVO(2402, "查无此政策！");
+        }
+        policyPO.setDr((byte) 2);
+        policyMapper.updateByPrimaryKey(policyPO);
         return new ResultVO(1000);
     }
 
@@ -113,15 +118,18 @@ public class PolicyServiceImpl implements IPolicyService {
 
     /**
      * List<Long>轉化成String
+     *
      * @param longs
      * @param sign
      * @return
      */
-    private String listLongToString(Long[] longs, String sign){
+    private String listLongToString(Long[] longs, String sign) {
         StringBuffer sb = new StringBuffer();
         int le = longs.length;
-        if (le == 0) {return null;}
-        for(int i = 0; i < le - 1; i ++){
+        if (le == 0) {
+            return null;
+        }
+        for (int i = 0; i < le - 1; i++) {
             sb.append(longs[i]).append(",");
         }
         sb.append(longs[le - 1]);
