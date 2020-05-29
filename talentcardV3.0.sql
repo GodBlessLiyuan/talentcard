@@ -313,7 +313,7 @@ CREATE TABLE t_policy
 	educations char(255),
 	titles char(255),
 	qualities char(255),
-	honour_ids varchar(2048),
+	honour_ids char(255),
 	-- 1：需要；2：不需要
 	apply tinyint DEFAULT 2 COMMENT '1：需要；2：不需要',
 	color char(64),
