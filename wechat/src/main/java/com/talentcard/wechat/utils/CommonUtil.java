@@ -1,10 +1,5 @@
 package com.talentcard.wechat.utils;
 
-import com.alibaba.fastjson.JSONObject;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.*;
-import org.springframework.web.client.RestTemplate;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
