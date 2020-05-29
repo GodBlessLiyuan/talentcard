@@ -15,6 +15,7 @@ import com.talentcard.front.service.ITalentFarmhouseService;
 import com.talentcard.front.utils.ActivityResidueNumUtil;
 import com.talentcard.front.utils.TalentActivityUtil;
 import com.talentcard.front.vo.FarmhouseVO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
  * @description
  */
 @Service
+@Slf4j
 public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
     @Autowired
     private TalentMapper talentMapper;
@@ -54,6 +56,8 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
     public ResultVO findSecondContent(String openId) {
         //先从redis中获取数据
         String mapStr = this.redisMapUtil.hget(openId, "findTalentType");
+        log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: TalentType Data In Redis [{}]:",mapStr,
+                " : With Redis Key [{}]:", openId, "findTalentType");
         TalentTypeVO talentTypeVO = null;
         if(!StringUtils.isEmpty(mapStr)){
             talentTypeVO = StringToObjUtil.strToObj(mapStr, TalentTypeVO.class);
@@ -81,7 +85,7 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
             talentTypeVO.setQuality(userCurrentInfoPO.getPqCategory());
             talentTypeVO.setTalentHonour(userCurrentInfoPO.getHonourId());
             talentTypeVO.setCategoryList(categoryList);
-
+            log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: TalentType Data In DB [{}]:", talentTypeVO);
             this.redisMapUtil.hset(openId,"findTalentType", JSON.toJSONString(talentTypeVO));
         }
 
@@ -97,7 +101,10 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
         String lon = redisMapUtil.hget("talentfarmhouse","benefitNum");
 
         Map<String, Object> resultMap = new HashMap<>(2);
-
+        log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl:Talent Benefit Farmhouse In Redis [{}]:",
+                s_list, " : With Redis Key [{}]:", "talentfarmhouse ", code);
+        log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: Number Of Benefit In Redis [{}]:",
+                lon, " : With Redis Key [{}]:", "talentfarmhouse benefitNum");
         /**
          * 农家乐idList，去中间表查询
          */
@@ -141,7 +148,10 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
                 resultMap.put("benefitNum", benefitNum);
                 redisMapUtil.hset("talentfarmhouse", code, JSON.toJSONString(farmhouseVOList));
                 redisMapUtil.hset("talentfarmhouse","benefitNum", String.valueOf(benefitNum));
-
+                log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: farmhouseVOList In DB [{}]:",
+                        farmhouseVOList);
+                log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: benefitNum In DB [{}]:",
+                        farmhouseVOList);
             }else {
                 resultMap.put("farmhouseVOList", new ArrayList<>(0));
                 resultMap.put("benefitNum", 0);
