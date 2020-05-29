@@ -198,7 +198,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             /**
              * 审批通过
              */
-            //校验是否存在脏数据
+            /**
+             * 校验是否存在脏数据
+             */
             Integer checkIfDirty = certificationMapper.checkIfDirty(talentId, (byte) 5, (byte) 2);
             Integer checkIfInCertificate = certificationMapper.checkIfDirty(talentId, (byte) 3, null);
             Integer checkIfCompleteCertificate = certificationMapper.checkIfDirty(talentId, (byte) 4, null);
