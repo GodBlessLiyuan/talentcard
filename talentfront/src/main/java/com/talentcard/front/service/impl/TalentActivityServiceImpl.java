@@ -56,7 +56,6 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
         Map<String, Object> resultHashMap = new HashMap<>(2);
         /**
          * 每一个活动挨个枚举
-         * todo 加入中间表判断
          */
 
         String s_trip = redisMapUtil.hget("talentTrip",talentType);

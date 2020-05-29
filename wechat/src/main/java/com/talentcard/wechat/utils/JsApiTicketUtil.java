@@ -53,7 +53,7 @@ public class JsApiTicketUtil {
     public static String getJsApiTicket() throws WechatException {
         //100分钟，更换jsApiTicket
         String jsApiTicket = (String) myRedis.opsForValue().get("jsApiTicket");
-        if (jsApiTicket == null || jsApiTicket == "") {
+        if (jsApiTicket == null || jsApiTicket.equals("")) {
             JsApiTicketUtil.applyJsApiTicket();
             jsApiTicket = (String) myRedis.opsForValue().get("jsApiTicket");
         }

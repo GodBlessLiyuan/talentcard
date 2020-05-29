@@ -362,10 +362,24 @@ public class TalentServiceImpl implements ITalentService {
                                    MultipartFile profTitlePicture,
                                    MultipartFile profQualityPicture,
                                    MultipartFile talentHonourPicture) {
+        //人才表；通过openId获取talent表里唯一的信息
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500, "查无此人！");
+        }
+        Long talentId = talentPO.getTalentId();
+        /**
+         * 校验脏数据
+         */
         //校验数据库是否存在状态3的数据
         Integer ifWaitingApproval = certificationMapper.ifWaitingApproval(openId);
         if (ifWaitingApproval != null && ifWaitingApproval != 0) {
             return new ResultVO(2308, "该用户已有待审批数据");
+        }
+        Integer checkIfDirty = certificationMapper.checkIfDirty(talentId, (byte) 5, (byte) 2);
+        Integer checkIfCompleteCertificate = certificationMapper.checkIfDirty(talentId, (byte) 4, null);
+        if (checkIfDirty != 1 || checkIfCompleteCertificate != 0) {
+            return new ResultVO(2311, "当前有脏数据，无法发起认证");
         }
         /**
          * 校验数据库是否存在状态9的数据
@@ -398,16 +412,9 @@ public class TalentServiceImpl implements ITalentService {
             talentHonourUrl = FileUtil.uploadFile
                     (talentHonourPicture, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getTalentHonourDir(), "talentHonour");
         }
-        if (educUrl == "" && profTitleUrl == "" && profQualityUrl == "" && talentHonourUrl == "") {
+        if (educUrl.equals("") && profTitleUrl.equals("") && profQualityUrl.equals("") && talentHonourUrl.equals("")) {
             return new ResultVO(2304, "上传文件失败");
         }
-
-        //人才表；通过openId获取talent表里唯一的信息
-        TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        if (talentPO == null) {
-            return new ResultVO(2500, "查无此人！");
-        }
-        Long talentId = talentPO.getTalentId();
 
         //认证表
         CertificationPO certificationPO = new CertificationPO();
@@ -582,15 +589,17 @@ public class TalentServiceImpl implements ITalentService {
 
     /**
      * 获取微信用户信息，类型，会员卡号等
+     *
      * @param openId
      * @return
      */
-    public TalentTypeVO getTalentInfo(String openId){
+    @Override
+    public TalentTypeVO getTalentInfo(String openId) {
 
         String redisCache = redisMapUtil.hget(openId, "getTalentInfo");
-        if(!StringUtils.isEmpty(redisCache)){
-            TalentTypeVO vo = StringToObjUtil.strToObj(redisCache,TalentTypeVO.class);
-            if(vo != null){
+        if (!StringUtils.isEmpty(redisCache)) {
+            TalentTypeVO vo = StringToObjUtil.strToObj(redisCache, TalentTypeVO.class);
+            if (vo != null) {
                 return vo;
             }
         }

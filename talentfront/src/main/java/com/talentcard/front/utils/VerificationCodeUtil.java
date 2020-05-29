@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -19,8 +20,8 @@ import java.util.concurrent.TimeUnit;
 public class VerificationCodeUtil {
     private static final Logger logger = LoggerFactory.getLogger(VerificationCodeUtil.class);
     @Autowired
-    private RedisTemplate redisTemplate;
-    private static RedisTemplate myRedis;
+    private StringRedisTemplate redisTemplate;
+    private static StringRedisTemplate myRedis;
 
     /**
      * 构造方法执行后的初始化

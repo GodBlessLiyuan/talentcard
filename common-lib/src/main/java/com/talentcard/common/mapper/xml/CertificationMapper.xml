@@ -278,6 +278,8 @@
     t.dr = 1
     and t.talent_id = #{talentId,jdbcType=BIGINT}
     and c.status =  #{cStatus,jdbcType=TINYINT}
+    <if test="ucStatus != null">
     and uc.status = #{ucStatus,jdbcType=TINYINT}
+    </if>
   </select>
 </mapper>

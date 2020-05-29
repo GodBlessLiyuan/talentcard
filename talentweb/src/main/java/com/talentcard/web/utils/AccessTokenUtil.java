@@ -56,7 +56,7 @@ public class AccessTokenUtil {
         //判断拿到accessToken是否为空，若为空，抛异常
         //不为空，则如下，更新accessToken，且记录当前时间
         if (applyAccessToken != null) {
-            myRedis.opsForValue().set("accessToken", applyAccessToken, accessTokenTime, TimeUnit.MINUTES);
+            myRedis.opsForValue().set("wechatAccessToken", applyAccessToken, accessTokenTime, TimeUnit.MINUTES);
             logger.info("成功拿到token：{}", applyAccessToken);
 //            String accessToken = (String) myRedis.opsForValue().get("accessToken");
 //            logger.info("成功存入token：{}", accessToken);
@@ -67,10 +67,10 @@ public class AccessTokenUtil {
 
     public static String getAccessToken() throws WechatException {
         //一小时，更换accessToken
-        String accessToken = (String) myRedis.opsForValue().get("accessToken");
-        if (accessToken == null || accessToken == "") {
+        String accessToken = (String) myRedis.opsForValue().get("wechatAccessToken");
+        if (accessToken == null || accessToken.equals("")) {
             AccessTokenUtil.applyAccessToken();
-            accessToken = (String) myRedis.opsForValue().get("accessToken");
+            accessToken = (String) myRedis.opsForValue().get("wechatAccessToken");
         }
         return accessToken;
     }

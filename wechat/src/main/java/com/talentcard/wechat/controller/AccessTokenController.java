@@ -3,6 +3,7 @@ package com.talentcard.wechat.controller;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.wechat.utils.AccessTokenUtil;
 import org.springframework.web.bind.annotation.*;
+
 /**
  * @author ChenXU
  * @version 1.0
@@ -20,7 +21,7 @@ public class AccessTokenController {
     @GetMapping("getToken")
     public ResultVO getAccessToken() {
         String accessToken = AccessTokenUtil.getAccessToken();
-        if (accessToken == null || accessToken == "") {
+        if (accessToken == null || accessToken.equals("")) {
             return new ResultVO(2200);
         }
         return new ResultVO(1000, accessToken);

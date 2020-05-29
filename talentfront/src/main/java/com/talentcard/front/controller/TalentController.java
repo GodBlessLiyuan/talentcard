@@ -51,7 +51,7 @@ public class TalentController {
         String phone = jsonObject.getString("phone");
         //判断验证码
         String verificationCode = VerificationCodeUtil.getCode(phone);
-        if (verificationCode == null || verificationCode == "") {
+        if (verificationCode == null || verificationCode.equals("")) {
             //查不到验证码
             return new ResultVO(2302);
         }
