@@ -10,6 +10,7 @@ import com.talentcard.web.service.IRoleService;
 import com.talentcard.web.vo.ManageRoleVO;
 import com.talentcard.web.vo.RoleNameIdVO;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,14 +44,14 @@ public class RoleServiceImpl implements IRoleService {
             endTime = endTime + " 23:59:59";
         }
         // 1 先在角色基础表中查询当前角色信息
-        List<RolePO> rolePOS = roleMapper.queryRoleByTime(roleName,startTime,endTime);
+        List<RolePO> rolePOS = roleMapper.queryRoleByTime(roleName, startTime, endTime);
         if (rolePOS.size() == 0) {
             // 角色列表查询当前为空
-            return new ResultVO(2111);
+            return new ResultVO(1000, null);
         }
         List<ManageRoleVO> manageRoleVOS = new ArrayList<>();
         // 2 根据角色id在角色权限关联表中，查询其所拥有权限，若拥有权限状态码status为1
-        for (RolePO rolePO:rolePOS) {
+        for (RolePO rolePO : rolePOS) {
             ManageRoleVO manageRoleVO = new ManageRoleVO();
             Long roleId = rolePO.getRoleId();
             List<RoleAuthorityAddNameBO> bos = roleAuthorityMapper.queryByRoleIdName(roleId);
@@ -61,7 +62,7 @@ public class RoleServiceImpl implements IRoleService {
             manageRoleVO.setRoleName(rolePO.getName());
             manageRoleVOS.add(manageRoleVO);
         }
-        return new ResultVO(1000,manageRoleVOS);
+        return new ResultVO(1000, manageRoleVOS);
     }
 
     @Override
@@ -71,6 +72,6 @@ public class RoleServiceImpl implements IRoleService {
             // 当前无任何角色
             return new ResultVO(2666);
         }
-        return new ResultVO(1000,vos);
+        return new ResultVO(1000, vos);
     }
 }
