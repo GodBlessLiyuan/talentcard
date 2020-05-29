@@ -14,7 +14,7 @@ import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.MessageUtil;
 import com.talentcard.front.utils.TalentActivityUtil;
-import com.talentcard.front.vo.TalentTypeVO;
+import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.front.vo.TalentVO;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;

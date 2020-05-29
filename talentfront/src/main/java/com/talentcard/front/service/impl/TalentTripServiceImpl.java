@@ -3,6 +3,7 @@ package com.talentcard.front.service.impl;
 import com.talentcard.common.bo.ScenicBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ITalentTripService;
 import com.talentcard.front.utils.ActivityResidueNumUtil;
@@ -38,6 +39,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
     private TalentTripMapper talentTripMapper;
     @Autowired
     private TripGroupAuthorityMapper tripGroupAuthorityMapper;
+    @Autowired
+    private RedisMapUtil redisMapUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -183,6 +186,9 @@ public class TalentTripServiceImpl implements ITalentTripService {
         talentTripPO.setDr((byte) 1);
         talentTripMapper.insertSelective(talentTripPO);
         ActivityResidueNumUtil.minusOneResidueNum();
+
+        redisMapUtil.hdel("talentfarmhouse","benefitNum");
+
         return new ResultVO(1000, "领取成功");
     }
 
