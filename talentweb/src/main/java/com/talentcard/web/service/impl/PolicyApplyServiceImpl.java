@@ -119,7 +119,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
 
     @Override
     public ResultVO count() {
-        Long count = policyApplyMapper.countByStatus((byte) 3);
+        Long count = policyApplyMapper.countByStatus((byte) 2);
         return new ResultVO<>(1000, count);
     }
 
