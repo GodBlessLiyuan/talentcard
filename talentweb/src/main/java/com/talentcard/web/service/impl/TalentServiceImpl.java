@@ -257,7 +257,7 @@ public class TalentServiceImpl implements ITalentService {
                 rows[i] = row;
             }
 
-            url = ExcelUtil.save(ExcelUtil.buildExcel("batch_certificate_result", EXCEL_TITLE_RES, rows),
+            url = ExcelUtil.save(ExcelUtil.buildExcel("批量认证结果", EXCEL_TITLE_RES, rows),
                     filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getExcelDir(), "batch_certificate_result");
 
         } catch (Exception e) {
