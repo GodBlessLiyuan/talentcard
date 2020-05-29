@@ -60,7 +60,7 @@
             <result column="e_cert_id" jdbcType="BIGINT" property="certId"/>
             <result column="e_talent_id" jdbcType="BIGINT" property="talentId"/>
             <result column="e_status" jdbcType="TINYINT" property="status"/>
-            <result column="e_if_certificate" jdbcType="TINYINT" property="ifCertificate" />
+            <result column="e_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
         </collection>
         <collection property="profTitlePOList" ofType="com.talentcard.common.pojo.ProfTitlePO">
             <id column="pt_pt_id" jdbcType="BIGINT" property="ptId"/>
@@ -70,7 +70,7 @@
             <result column="pt_cert_id" jdbcType="BIGINT" property="certId"/>
             <result column="pt_talent_id" jdbcType="BIGINT" property="talentId"/>
             <result column="pt_status" jdbcType="TINYINT" property="status"/>
-            <result column="pt_if_certificate" jdbcType="TINYINT" property="ifCertificate" />
+            <result column="pt_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
         </collection>
         <collection property="profQualityPOList" ofType="com.talentcard.common.pojo.ProfQualityPO">
             <id column="pq_pq_id" jdbcType="BIGINT" property="pqId"/>
@@ -80,17 +80,17 @@
             <result column="pq_cert_id" jdbcType="BIGINT" property="certId"/>
             <result column="pq_talent_id" jdbcType="BIGINT" property="talentId"/>
             <result column="pq_status" jdbcType="TINYINT" property="status"/>
-            <result column="pq_if_certificate" jdbcType="TINYINT" property="ifCertificate" />
+            <result column="pq_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
         </collection>
         <collection property="talentHonourPOList" ofType="com.talentcard.common.pojo.TalentHonourPO">
-            <id column="th_th_id" jdbcType="BIGINT" property="thId" />
-            <result column="th_honour_id" jdbcType="BIGINT" property="honourId" />
-            <result column="th_honour_picture" jdbcType="CHAR" property="honourPicture" />
-            <result column="th_info" jdbcType="CHAR" property="info" />
-            <result column="th_cert_id" jdbcType="BIGINT" property="certId" />
-            <result column="th_talent_id" jdbcType="BIGINT" property="talentId" />
-            <result column="th_status" jdbcType="TINYINT" property="status" />
-            <result column="th_if_certificate" jdbcType="TINYINT" property="ifCertificate" />
+            <id column="th_th_id" jdbcType="BIGINT" property="thId"/>
+            <result column="th_honour_id" jdbcType="BIGINT" property="honourId"/>
+            <result column="th_honour_picture" jdbcType="CHAR" property="honourPicture"/>
+            <result column="th_info" jdbcType="CHAR" property="info"/>
+            <result column="th_cert_id" jdbcType="BIGINT" property="certId"/>
+            <result column="th_talent_id" jdbcType="BIGINT" property="talentId"/>
+            <result column="th_status" jdbcType="TINYINT" property="status"/>
+            <result column="th_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
         </collection>
     </resultMap>
     <sql id="Base_Column_List">
@@ -724,7 +724,7 @@
                  left join t_certification c
                            on t.talent_id = c.talent_id
         where t.open_id = #{openId, jdbcType=CHAR}
-          and c.status = 9
+          and (c.status = 1 or c.status = 3 or c.status = 4)
           and t.dr = 1
     </select>
 

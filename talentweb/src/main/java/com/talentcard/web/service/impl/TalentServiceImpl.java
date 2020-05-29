@@ -197,7 +197,6 @@ public class TalentServiceImpl implements ITalentService {
     @Override
     @Async
     public ResultVO batchCertificate(BatchCertificateDTO batchCertificateDTO) throws InterruptedException {
-        String fileName = batchCertificateDTO.getFileName();
         List<String> names = batchCertificateDTO.getNames();
         List<String> idCards = batchCertificateDTO.getIdCards();
         BatchCertificatePO batchCertificatePO = batchCertificateDTO.getBatchCertificatePO();
