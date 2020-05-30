@@ -210,8 +210,10 @@
         </if>
     </select>
     <select id="countByStatus" resultType="java.lang.Long">
-        select count(*)
-        from t_policy_apply
-        where `status` = #{status,jdbcType=TINYINT}
+        select count(pa_id)
+        from t_policy_apply pa
+        left join t_policy p on pa.policy_id = p.policy_id
+        where pa.`status` = #{status,jdbcType=TINYINT}
+        and p.dr = 1
     </select>
 </mapper>
