@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.BannerMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.BannerPO">
+    <id column="banner_id" jdbcType="BIGINT" property="bannerId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="picture" jdbcType="CHAR" property="picture" />
+    <result column="jump" jdbcType="CHAR" property="jump" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="extra" jdbcType="CHAR" property="extra" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    banner_id, `name`, picture, jump, `type`, extra, create_time, `status`, dr
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_banner
+    where banner_id = #{bannerId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_banner
+    where banner_id = #{bannerId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.BannerPO">
+    insert into t_banner (banner_id, `name`, picture, 
+      jump, `type`, extra, create_time, 
+      `status`, dr)
+    values (#{bannerId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{picture,jdbcType=CHAR}, 
+      #{jump,jdbcType=CHAR}, #{type,jdbcType=TINYINT}, #{extra,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.BannerPO">
+    insert into t_banner
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bannerId != null">
+        banner_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+      <if test="jump != null">
+        jump,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="extra != null">
+        extra,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="dr != null">
+        dr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bannerId != null">
+        #{bannerId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=CHAR},
+      </if>
+      <if test="jump != null">
+        #{jump,jdbcType=CHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="extra != null">
+        #{extra,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.BannerPO">
+    update t_banner
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=CHAR},
+      </if>
+      <if test="jump != null">
+        jump = #{jump,jdbcType=CHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="extra != null">
+        extra = #{extra,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
+    </set>
+    where banner_id = #{bannerId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.BannerPO">
+    update t_banner
+    set `name` = #{name,jdbcType=CHAR},
+      picture = #{picture,jdbcType=CHAR},
+      jump = #{jump,jdbcType=CHAR},
+      `type` = #{type,jdbcType=TINYINT},
+      extra = #{extra,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=TINYINT},
+      dr = #{dr,jdbcType=TINYINT}
+    where banner_id = #{bannerId,jdbcType=BIGINT}
+  </update>
+</mapper>

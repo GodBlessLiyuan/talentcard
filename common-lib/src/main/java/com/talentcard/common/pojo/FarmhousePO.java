@@ -36,5 +36,15 @@ public class FarmhousePO implements Serializable {
      */
     private Byte dr;
 
+    private String subtitle;
+
+    private Byte starlevel;
+
+    private Integer area;
+
+    private String location;
+
+    private Long averageCost;
+
     private static final long serialVersionUID = 1L;
 }

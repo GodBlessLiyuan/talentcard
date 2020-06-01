@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.FeedbackMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.FeedbackPO">
+    <id column="feedback_id" jdbcType="BIGINT" property="feedbackId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="contact" jdbcType="CHAR" property="contact" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="picture" jdbcType="CHAR" property="picture" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    feedback_id, talent_id, contact, create_time, content, picture
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_feedback
+    where feedback_id = #{feedbackId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_feedback
+    where feedback_id = #{feedbackId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.FeedbackPO">
+    insert into t_feedback (feedback_id, talent_id, contact, 
+      create_time, content, picture
+      )
+    values (#{feedbackId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{contact,jdbcType=CHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, #{picture,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FeedbackPO">
+    insert into t_feedback
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="feedbackId != null">
+        feedback_id,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="feedbackId != null">
+        #{feedbackId,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.FeedbackPO">
+    update t_feedback
+    <set>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=CHAR},
+      </if>
+    </set>
+    where feedback_id = #{feedbackId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.FeedbackPO">
+    update t_feedback
+    set talent_id = #{talentId,jdbcType=BIGINT},
+      contact = #{contact,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=CHAR}
+    where feedback_id = #{feedbackId,jdbcType=BIGINT}
+  </update>
+</mapper>
