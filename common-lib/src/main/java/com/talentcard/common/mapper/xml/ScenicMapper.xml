@@ -52,7 +52,7 @@
     delete from t_scenic
     where scenic_id = #{scenicId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.ScenicPO">
+  <insert id="insert"  useGeneratedKeys="true" keyProperty="scenicId" parameterType="com.talentcard.common.pojo.ScenicPO ">
     insert into t_scenic (scenic_id, `name`, rate, 
       unit, times, avatar, description, 
       extra, qr_code, `status`, 
