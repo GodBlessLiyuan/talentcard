@@ -256,7 +256,6 @@ public class TalentTripServiceImpl implements ITalentTripService {
         }
         if (title == null) {
             title = 0;
-            title = 0;
         }
         if (quality == null) {
             quality = 0;

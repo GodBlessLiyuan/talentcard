@@ -81,6 +81,7 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
                 categoryList = TalentActivityUtil.splitCategory(category);
             }
             //封装人才特点加redis缓存
+            talentTypeVO = new TalentTypeVO();
             talentTypeVO.setCardId(talentPO.getCardId());
             talentTypeVO.setCategory(userCurrentInfoPO.getTalentCategory());
             talentTypeVO.setEducation(userCurrentInfoPO.getEducation());
