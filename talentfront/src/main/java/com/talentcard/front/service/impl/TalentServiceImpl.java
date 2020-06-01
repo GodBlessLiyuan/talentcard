@@ -519,7 +519,7 @@ public class TalentServiceImpl implements ITalentService {
 
         //根据openId和c表status=9是否有数据来判断是否认证过
         //status=9说明基本卡已经作废，证明认证完成
-        Integer ifCertificate = talentMapper.ifCertificate(openId);
+        Integer ifCertificate = talentMapper.ifCompleteCertificate(openId);
         TalentBO talentBO;
         if (ifCertificate != 0) {
             //有作废的基础卡，说明认证通过

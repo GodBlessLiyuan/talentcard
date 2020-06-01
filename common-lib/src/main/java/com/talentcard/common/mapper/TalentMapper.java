@@ -86,6 +86,15 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
     List<TalentBO> queryCert(Map<String, Object> reqMap);
 
     /**
+     * 根据openId和c表status=9是否有数据来判断是否认证过
+     * status=9说明基本卡已经作废，证明认证完成
+     * @param openId
+     * @return
+     */
+    Integer ifCompleteCertificate(String openId);
+
+
+    /**
      * 根据openId和c表状态决定一条完整的记录，带4表的所有信息
      *
      * @param hashMap
@@ -103,14 +112,6 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
      */
     TalentBO findRegisterOne(String openId);
 
-    /**
-     * 根据openId和c表status=9是否有数据来判断是否认证过
-     * status=9说明基本卡已经作废，证明认证完成
-     *
-     * @param openId
-     * @return
-     */
-    Integer ifCertificate(String openId);
 
 //    /**
 //     * 根据openId用uci表查找当前的基本信息
