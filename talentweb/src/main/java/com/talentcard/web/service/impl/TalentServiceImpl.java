@@ -305,7 +305,7 @@ public class TalentServiceImpl implements ITalentService {
         clearRedisCache(openId);
         Long talentId = talentPO.getTalentId();
         //判断是否处在认证状态中
-        Integer checkIfCertificate = talentMapper.ifCertificate(openId);
+        Integer checkIfCertificate = talentMapper.ifInCertificate(openId);
         if (checkIfCertificate != 0) {
             return IN_CERTIFICATE_STATUS;
         }

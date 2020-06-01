@@ -143,7 +143,7 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
      * @param openId
      * @return
      */
-    Integer IfCertificate(String openId);
+    Integer ifInCertificate(String openId);
 
     /**
      * 根据openid查询

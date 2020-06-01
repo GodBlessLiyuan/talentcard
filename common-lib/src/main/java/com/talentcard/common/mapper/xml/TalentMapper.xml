@@ -743,7 +743,7 @@
           and (c.status = 3 or c.status = 4)
           and t.dr = 1
     </select>
-    <select id="IfCertificate" parameterType="java.lang.String" resultType="java.lang.Integer">
+    <select id="ifInCertificate" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(t.talent_id)
         from t_talent t
                  left join t_certification c
