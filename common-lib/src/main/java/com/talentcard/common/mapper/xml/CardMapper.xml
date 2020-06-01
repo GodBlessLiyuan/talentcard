@@ -319,7 +319,8 @@
         from t_card c
         where c.dr=1
         <if test="title != null and title != ''">
-            and trim(replace(c.title,' ','')) like trim(replace ('%' #{title,jdbcType=CHAR} '%' ,' ',''))
+            and trim(replace(c.title,' ',''))
+            like trim(replace ('%' #{title,jdbcType=CHAR} '%' ,' ',''))
         </if>
         <if test="startTime != null and startTime != ''">
             and <![CDATA[ c.create_time >= #{startTime}]]>
@@ -328,7 +329,7 @@
             and <![CDATA[ c.create_time <= #{endTime}]]>
         </if>
         <if test="cardNum != null and cardNum != ''">
-            and trim(replace(concat(c.initial_word, c.initial_num),' ',''))
+            and trim(replace(initial_word,' ',''))
             like trim(replace ('%' #{cardNum,jdbcType=CHAR} '%' ,' ',''))
         </if>
     </select>
