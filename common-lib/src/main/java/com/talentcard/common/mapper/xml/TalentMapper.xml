@@ -773,7 +773,7 @@
     </select>
 
     <select id="certApprovalDetail" resultMap="TalentResultMap">
-         select t.talent_id    as t_talent_id,
+            select t.talent_id    as t_talent_id,
                t.open_id as t_open_id,
                t.`name` as t_name,
                t.sex as t_sex,

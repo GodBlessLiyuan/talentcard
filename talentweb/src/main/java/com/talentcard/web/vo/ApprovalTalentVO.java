@@ -41,6 +41,8 @@ public class ApprovalTalentVO {
     private String workLocation;
     private Byte workLocationType;
     private Byte cardType;
+    private String passport;
+    private String driverCard;
     /**
      * 三个表信息
      */
@@ -78,6 +80,9 @@ public class ApprovalTalentVO {
         approvalTalentVO.setCardType(talentBO.getCardType());
         approvalTalentVO.setWorkLocationType(talentBO.getWorkLocationType());
         approvalTalentVO.setWorkLocation(talentBO.getWorkLocation());
+        approvalTalentVO.setCardType(talentBO.getCardType());
+        approvalTalentVO.setDriverCard(talentBO.getDriverCard());
+        approvalTalentVO.setPassport(talentBO.getPassport());
 
         //学历文件
         if (talentBO.getEducationPOList() != null) {
