@@ -18,6 +18,7 @@ DROP TABLE IF EXISTS t_certification;
 DROP TABLE IF EXISTS t_feedback;
 DROP TABLE IF EXISTS t_policy_approval;
 DROP TABLE IF EXISTS t_policy_apply;
+DROP TABLE IF EXISTS t_talent_activity_collect;
 DROP TABLE IF EXISTS t_user_card;
 DROP TABLE IF EXISTS t_user_current_info;
 DROP TABLE IF EXISTS t_talent;
@@ -220,7 +221,7 @@ CREATE TABLE t_cert_approval
 CREATE TABLE t_config
 (
 	config_key char(64) NOT NULL,
-	config_value char(255),
+	config_value varchar(4096),
 	create_time datetime,
 	update_time datetime,
 	PRIMARY KEY (config_key),
@@ -510,7 +511,7 @@ CREATE TABLE t_scenic
 	-- 1 未删除  2 已删除
 	dr tinyint COMMENT '1 未删除  2 已删除',
 	subtitle char(64),
-	starLevel tinyint unsigned,
+	starlevel tinyint unsigned,
 	area int unsigned,
 	location char(128),
 	PRIMARY KEY (scenic_id),
@@ -606,6 +607,23 @@ CREATE TABLE t_talent
 	PRIMARY KEY (talent_id),
 	UNIQUE (talent_id),
 	UNIQUE (open_id)
+);
+
+
+CREATE TABLE t_talent_activity_collect
+(
+	tac_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	talent_id bigint unsigned,
+	-- 1 旅游
+	-- 2 农家乐
+	activity_first_content_id bigint unsigned COMMENT '1 旅游
+2 农家乐',
+	activity_second_content_id bigint unsigned,
+	create_time datetime,
+	-- 1收藏；2未收藏
+	status tinyint unsigned COMMENT '1收藏；2未收藏',
+	PRIMARY KEY (tac_id),
+	UNIQUE (tac_id)
 );
 
 
@@ -1012,6 +1030,14 @@ ALTER TABLE t_prof_quality
 
 
 ALTER TABLE t_prof_title
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_talent_activity_collect
 	ADD FOREIGN KEY (talent_id)
 	REFERENCES t_talent (talent_id)
 	ON UPDATE RESTRICT
