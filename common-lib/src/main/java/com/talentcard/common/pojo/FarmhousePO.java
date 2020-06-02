@@ -38,8 +38,6 @@ public class FarmhousePO implements Serializable {
 
     private String subtitle;
 
-    private Byte starlevel;
-
     private Integer area;
 
     private String location;
