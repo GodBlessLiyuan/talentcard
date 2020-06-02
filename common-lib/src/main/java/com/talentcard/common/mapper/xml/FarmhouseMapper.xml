@@ -13,7 +13,6 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
     <result column="subtitle" jdbcType="CHAR" property="subtitle" />
-    <result column="starLevel" jdbcType="TINYINT" property="starlevel" />
     <result column="area" jdbcType="INTEGER" property="area" />
     <result column="location" jdbcType="CHAR" property="location" />
     <result column="average_cost" jdbcType="DECIMAL" property="averageCost" />
@@ -37,7 +36,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     farmhouse_id, `name`, discount, avatar, description, extra, qr_code, `status`, create_time, 
-    dr, subtitle, starLevel, area, `location`, average_cost
+    dr, subtitle, area, `location`, average_cost
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -54,15 +53,13 @@
     insert into t_farmhouse (farmhouse_id, `name`, discount, 
       avatar, description, extra, 
       qr_code, `status`, create_time, 
-      dr, subtitle, starLevel, 
-      area, `location`, average_cost
-      )
+      dr, subtitle, area, `location`, 
+      average_cost)
     values (#{farmhouseId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{discount,jdbcType=DOUBLE}, 
       #{avatar,jdbcType=CHAR}, #{description,jdbcType=VARCHAR}, #{extra,jdbcType=VARCHAR}, 
       #{qrCode,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{dr,jdbcType=TINYINT}, #{subtitle,jdbcType=CHAR}, #{starlevel,jdbcType=TINYINT}, 
-      #{area,jdbcType=INTEGER}, #{location,jdbcType=CHAR}, #{averageCost,jdbcType=DECIMAL}
-      )
+      #{dr,jdbcType=TINYINT}, #{subtitle,jdbcType=CHAR}, #{area,jdbcType=INTEGER}, #{location,jdbcType=CHAR}, 
+      #{averageCost,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FarmhousePO">
     insert into t_farmhouse
@@ -99,9 +96,6 @@
       </if>
       <if test="subtitle != null">
         subtitle,
-      </if>
-      <if test="starlevel != null">
-        starLevel,
       </if>
       <if test="area != null">
         area,
@@ -147,9 +141,6 @@
       <if test="subtitle != null">
         #{subtitle,jdbcType=CHAR},
       </if>
-      <if test="starlevel != null">
-        #{starlevel,jdbcType=TINYINT},
-      </if>
       <if test="area != null">
         #{area,jdbcType=INTEGER},
       </if>
@@ -194,9 +185,6 @@
       <if test="subtitle != null">
         subtitle = #{subtitle,jdbcType=CHAR},
       </if>
-      <if test="starlevel != null">
-        starLevel = #{starlevel,jdbcType=TINYINT},
-      </if>
       <if test="area != null">
         area = #{area,jdbcType=INTEGER},
       </if>
@@ -221,7 +209,6 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       dr = #{dr,jdbcType=TINYINT},
       subtitle = #{subtitle,jdbcType=CHAR},
-      starLevel = #{starlevel,jdbcType=TINYINT},
       area = #{area,jdbcType=INTEGER},
       `location` = #{location,jdbcType=CHAR},
       average_cost = #{averageCost,jdbcType=DECIMAL}

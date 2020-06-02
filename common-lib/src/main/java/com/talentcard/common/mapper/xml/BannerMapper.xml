@@ -136,4 +136,11 @@
       dr = #{dr,jdbcType=TINYINT}
     where banner_id = #{bannerId,jdbcType=BIGINT}
   </update>
+  <select id="bannerQuery" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_banner
+    where dr = 1
+    order by create_time desc
+  </select>
 </mapper>
