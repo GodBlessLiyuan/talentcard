@@ -220,7 +220,7 @@ CREATE TABLE t_cert_approval
 CREATE TABLE t_config
 (
 	config_key char(64) NOT NULL,
-	config_value char(255),
+	config_value varchar(4096),
 	create_time datetime,
 	update_time datetime,
 	PRIMARY KEY (config_key),
