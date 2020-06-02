@@ -18,6 +18,7 @@ import com.talentcard.web.dto.BatchCertificateDTO;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.utils.AccessTokenUtil;
+import com.talentcard.web.utils.BatchCertificateUtil;
 import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.TalentDetailVO;
@@ -200,10 +201,15 @@ public class TalentServiceImpl implements ITalentService {
         List<String> names = batchCertificateDTO.getNames();
         List<String> idCards = batchCertificateDTO.getIdCards();
         BatchCertificatePO batchCertificatePO = batchCertificateDTO.getBatchCertificatePO();
+        /**
+         * 去工具类字典里把人才类别和人才荣誉一一对应
+         */
         String talentCategory = batchCertificateDTO.getTalentCategory();
         Long talentHonour = batchCertificateDTO.getTalentHonour();
+        String honour = BatchCertificateUtil.convertTalentHonour(talentHonour);
+        talentCategory = BatchCertificateUtil.convertTalentCategory(talentCategory);
+
         Long cardId = batchCertificateDTO.getCardId();
-//        Thread.sleep(15000);
         //定义所需要的参数
         String url;
         Integer successNum = 0;
@@ -235,9 +241,7 @@ public class TalentServiceImpl implements ITalentService {
                 if (result.equals(SUCCESS)) {
                     row[2] = talentCard;
                     row[3] = talentCategory;
-                    if (talentHonour != null) {
-                        row[4] = talentHonour.toString();
-                    }
+                    row[4] = honour;
                     row[5] = "成功";
                     row[6] = "";
                     successNum++;
