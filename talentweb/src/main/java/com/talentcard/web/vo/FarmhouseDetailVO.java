@@ -33,6 +33,26 @@ public class FarmhouseDetailVO implements Serializable {
     private String name;
 
     /**
+     * 特色简介
+     */
+    private String intro;
+
+    /**
+     * 农家乐区域
+     */
+    private Integer area;
+
+    /**
+     * 农家乐位置
+     */
+    private String location;
+
+    /**
+     * 人均消费
+     */
+    private Long consume;
+
+    /**
      * 优惠折扣
      */
     private Double discount;
@@ -103,6 +123,10 @@ public class FarmhouseDetailVO implements Serializable {
         FarmhouseDetailVO vo = new FarmhouseDetailVO();
         vo.setFarmhouseId(farmhousePO.getFarmhouseId());
         vo.setName(farmhousePO.getName());
+        vo.setIntro(farmhousePO.getSubtitle());
+        vo.setArea(farmhousePO.getArea());
+        vo.setLocation(farmhousePO.getLocation());
+        vo.setConsume(farmhousePO.getAverageCost());
         vo.setDiscount(farmhousePO.getDiscount());
         if (null != farmhousePO.getAvatar()) {
             vo.setAvatar(FilePathConfig.getStaticPublicBasePath() + farmhousePO.getAvatar());

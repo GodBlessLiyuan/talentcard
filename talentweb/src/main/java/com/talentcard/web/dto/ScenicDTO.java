@@ -31,6 +31,26 @@ public class ScenicDTO implements Serializable {
     private String name;
 
     /**
+     * 景区等级
+     */
+    private Byte grade;
+
+    /**
+     * 景区区域
+     */
+    private Integer area;
+
+    /**
+     * 特色简介
+     */
+    private String intro;
+
+    /**
+     * 景区位置
+     */
+    private String location;
+
+    /**
      * 入园限制 - 频
      */
     private Integer rate;
@@ -103,6 +123,10 @@ public class ScenicDTO implements Serializable {
      */
     public static ScenicPO buildPO(ScenicPO po, ScenicDTO dto) {
         po.setName(dto.getName());
+        po.setStarlevel(dto.getGrade());
+        po.setSubtitle(dto.getIntro());
+        po.setArea(dto.getArea());
+        po.setLocation(dto.getLocation());
         po.setRate(dto.getRate());
         po.setUnit(dto.getUnit());
         po.setTimes(dto.getTimes());

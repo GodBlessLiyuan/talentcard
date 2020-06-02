@@ -166,6 +166,10 @@ public class ScenicServiceImpl implements IScenicService {
         ScenicDetailVO vo = new ScenicDetailVO();
         vo.setScenicId(scenicPO.getScenicId());
         vo.setName(scenicPO.getName());
+        vo.setGrade(scenicPO.getStarlevel());
+        vo.setIntro(scenicPO.getSubtitle());
+        vo.setArea(scenicPO.getArea());
+        vo.setLocation(scenicPO.getLocation());
         vo.setRate(scenicPO.getRate());
         vo.setUnit(scenicPO.getUnit());
         vo.setTimes(scenicPO.getTimes());

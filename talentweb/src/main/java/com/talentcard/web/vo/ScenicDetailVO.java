@@ -26,6 +26,26 @@ public class ScenicDetailVO implements Serializable {
     private String name;
 
     /**
+     * 景区等级
+     */
+    private Byte grade;
+
+    /**
+     * 景区区域
+     */
+    private Integer area;
+
+    /**
+     * 特色简介
+     */
+    private String intro;
+
+    /**
+     * 景区位置
+     */
+    private String location;
+
+    /**
      * 入园限制 - 频
      */
     private Integer rate;

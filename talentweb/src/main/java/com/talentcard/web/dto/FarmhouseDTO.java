@@ -31,6 +31,26 @@ public class FarmhouseDTO implements Serializable {
     private String name;
 
     /**
+     * 特色简介
+     */
+    private String intro;
+
+    /**
+     * 农家乐区域
+     */
+    private Integer area;
+
+    /**
+     * 农家乐位置
+     */
+    private String location;
+
+    /**
+     * 人均消费
+     */
+    private Long consume;
+
+    /**
      * 优惠折扣
      */
     private Double discount;
@@ -93,6 +113,10 @@ public class FarmhouseDTO implements Serializable {
      */
     public static FarmhousePO buildPO(FarmhousePO po, FarmhouseDTO dto) {
         po.setName(dto.getName());
+        po.setSubtitle(dto.getIntro());
+        po.setArea(dto.getArea());
+        po.setLocation(dto.getLocation());
+        po.setAverageCost(dto.getConsume());
         po.setDiscount(dto.getDiscount());
         if (null != dto.getAvatar()) {
             po.setAvatar(dto.getAvatar().split(FilePathConfig.getStaticPublicBasePath())[1]);
