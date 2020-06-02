@@ -1,5 +1,6 @@
 package com.talentcard.web.dto;
 
+import com.talentcard.common.pojo.BannerPO;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -34,4 +35,20 @@ public class BannerDTO implements Serializable {
      * 备注
      */
     private String extra;
+
+    /**
+     * po 转 dto
+     *
+     * @param po
+     * @param dto
+     * @return
+     */
+    public static BannerPO buildPO(BannerPO po, BannerDTO dto) {
+        po.setName(dto.getName());
+        po.setPicture(dto.getPicture());
+        po.setJump(dto.getJump());
+        po.setType(dto.getType());
+        po.setExtra(dto.getExtra());
+        return po;
+    }
 }
