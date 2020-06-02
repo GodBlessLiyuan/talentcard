@@ -7,11 +7,15 @@ DROP TABLE IF EXISTS t_annex;
 DROP TABLE IF EXISTS t_role_authority;
 DROP TABLE IF EXISTS t_authority;
 DROP TABLE IF EXISTS t_bank;
+DROP TABLE IF EXISTS t_banner;
+DROP TABLE IF EXISTS t_batch_certificate;
 DROP TABLE IF EXISTS t_cert_approval;
 DROP TABLE IF EXISTS t_education;
 DROP TABLE IF EXISTS t_prof_quality;
 DROP TABLE IF EXISTS t_prof_title;
+DROP TABLE IF EXISTS t_talent_honour;
 DROP TABLE IF EXISTS t_certification;
+DROP TABLE IF EXISTS t_feedback;
 DROP TABLE IF EXISTS t_policy_approval;
 DROP TABLE IF EXISTS t_policy_apply;
 DROP TABLE IF EXISTS t_user_card;
@@ -61,14 +65,14 @@ CREATE TABLE t_annex
 );
 
 
--- æƒé™è¡¨
+-- È¨ÏŞ±í
 CREATE TABLE t_authority
 (
 	authority_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	name char(32),
 	PRIMARY KEY (authority_id),
 	UNIQUE (authority_id)
-) COMMENT = 'æƒé™è¡¨';
+) COMMENT = 'È¨ÏŞ±í';
 
 
 CREATE TABLE t_bank
@@ -76,9 +80,47 @@ CREATE TABLE t_bank
 	bank_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	num char(32) NOT NULL,
 	name char(32) NOT NULL,
-	pa_id bigint unsigned NOT NULL,
+	pa_id bigint unsigned,
 	PRIMARY KEY (bank_id),
 	UNIQUE (bank_id)
+);
+
+
+CREATE TABLE t_banner
+(
+	banner_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	name char(255),
+	picture char(255),
+	jump char(255),
+	type tinyint unsigned,
+	extra char(255),
+	create_time datetime,
+	status tinyint unsigned,
+	-- 1 Î´É¾³ı  2 ÒÑÉ¾³ı
+	dr tinyint COMMENT '1 Î´É¾³ı  2 ÒÑÉ¾³ı',
+	PRIMARY KEY (banner_id),
+	UNIQUE (banner_id)
+);
+
+
+CREATE TABLE t_batch_certificate
+(
+	bc_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	file_name char(255),
+	-- 1ÈÏÖ¤ÖĞ
+	-- 2ÈÏÖ¤½áÊø
+	status tinyint unsigned COMMENT '1ÈÏÖ¤ÖĞ
+2ÈÏÖ¤½áÊø',
+	total_num int unsigned,
+	success_num int unsigned,
+	failure_num int unsigned,
+	download_url char(255),
+	user_id bigint unsigned,
+	user_name char(32),
+	create_time datetime,
+	update_time datetime,
+	PRIMARY KEY (bc_id),
+	UNIQUE (bc_id)
 );
 
 
@@ -88,8 +130,8 @@ CREATE TABLE t_card
 	wx_card_id char(255),
 	name char(16),
 	title char(32) NOT NULL,
-	-- 1ï¼šé»˜è®¤ï¼›2ï¼šéé»˜è®¤
-	status tinyint COMMENT '1ï¼šé»˜è®¤ï¼›2ï¼šéé»˜è®¤',
+	-- 1£ºÄ¬ÈÏ£»2£º·ÇÄ¬ÈÏ
+	status tinyint COMMENT '1£ºÄ¬ÈÏ£»2£º·ÇÄ¬ÈÏ',
 	member_num bigint unsigned,
 	waiting_member_num bigint unsigned,
 	curr_num bigint unsigned DEFAULT 0,
@@ -99,16 +141,17 @@ CREATE TABLE t_card
 	logo_url char(255),
 	prerogative varchar(2048),
 	initial_word char(32) NOT NULL,
-	initial_num char(32) NOT NULL,
+	initial_num char(32),
+	area_num char(128),
 	business_description char(255),
 	create_person char(16),
 	update_person char(16),
 	create_time datetime,
 	update_time datetime,
-	-- 1æ­£åœ¨ä½¿ç”¨
-	-- 2åˆ é™¤
-	dr tinyint unsigned COMMENT '1æ­£åœ¨ä½¿ç”¨
-2åˆ é™¤',
+	-- 1ÕıÔÚÊ¹ÓÃ
+	-- 2É¾³ı
+	dr tinyint unsigned COMMENT '1ÕıÔÚÊ¹ÓÃ
+2É¾³ı',
 	PRIMARY KEY (card_id),
 	UNIQUE (card_id)
 );
@@ -120,34 +163,36 @@ CREATE TABLE t_certification
 	talent_id bigint unsigned,
 	political tinyint,
 	create_time datetime,
-	-- 1.æ­£å¸¸ä½¿ç”¨
-	-- 2.æ³¨å†Œæ²¡é¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-	-- 3.å‘èµ·è¿‡è®¤è¯æœªå®¡æ‰¹ï¼ˆå¾…å®¡æ‰¹ï¼‰
-	-- 4.å·²æœ‰å¡ï¼Œä¸”å®¡æ‰¹é€šè¿‡ä½†æœªé¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-	-- 5.åŸºç¡€å¡æ­£å¸¸ä½¿ç”¨
-	-- 9. åŸºæœ¬å¡å¤±æ•ˆ
-	-- 10.å…¶ä»–æƒ…å†µå¤±æ•ˆ
-	status tinyint DEFAULT 2 COMMENT '1.æ­£å¸¸ä½¿ç”¨
-2.æ³¨å†Œæ²¡é¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-3.å‘èµ·è¿‡è®¤è¯æœªå®¡æ‰¹ï¼ˆå¾…å®¡æ‰¹ï¼‰
-4.å·²æœ‰å¡ï¼Œä¸”å®¡æ‰¹é€šè¿‡ä½†æœªé¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-5.åŸºç¡€å¡æ­£å¸¸ä½¿ç”¨
-9. åŸºæœ¬å¡å¤±æ•ˆ
-10.å…¶ä»–æƒ…å†µå¤±æ•ˆ',
-	-- 1 å­¦å†
-	-- 2 èŒç§°
-	-- 3 èŒä¸šèµ„æ ¼
-	-- 4 å…¨éƒ½æœ‰
-	current_type tinyint DEFAULT 4 COMMENT '1 å­¦å†
-2 èŒç§°
-3 èŒä¸šèµ„æ ¼
-4 å…¨éƒ½æœ‰',
-	-- 1æ˜¯åŸºæœ¬å¡
-	-- 2æ˜¯åŸºæœ¬å¡æ¢çš„é«˜çº§å¡
-	-- 3æ˜¯é«˜çº§å¡æ¢çš„é«˜çº§å¡
-	type tinyint COMMENT '1æ˜¯åŸºæœ¬å¡
-2æ˜¯åŸºæœ¬å¡æ¢çš„é«˜çº§å¡
-3æ˜¯é«˜çº§å¡æ¢çš„é«˜çº§å¡',
+	-- 1.Õı³£Ê¹ÓÃ
+	-- 2.×¢²áÃ»Áì¿¨£¨´ıÁì¿¨£©
+	-- 3.·¢Æğ¹ıÈÏÖ¤Î´ÉóÅú£¨´ıÉóÅú£©
+	-- 4.ÒÑÓĞ»ù´¡¿¨£¬ÇÒÉóÅúÍ¨¹ıµ«Î´Áì¿¨£¨´ıÁì¿¨£©
+	-- 5.»ù´¡¿¨Õı³£Ê¹ÓÃ
+	-- 9. »ù±¾¿¨Ê§Ğ§
+	-- 10.ÆäËûÇé¿öÊ§Ğ§
+	status tinyint DEFAULT 2 COMMENT '1.Õı³£Ê¹ÓÃ
+2.×¢²áÃ»Áì¿¨£¨´ıÁì¿¨£©
+3.·¢Æğ¹ıÈÏÖ¤Î´ÉóÅú£¨´ıÉóÅú£©
+4.ÒÑÓĞ»ù´¡¿¨£¬ÇÒÉóÅúÍ¨¹ıµ«Î´Áì¿¨£¨´ıÁì¿¨£©
+5.»ù´¡¿¨Õı³£Ê¹ÓÃ
+9. »ù±¾¿¨Ê§Ğ§
+10.ÆäËûÇé¿öÊ§Ğ§',
+	-- 1 Ñ§Àú
+	-- 2 Ö°³Æ
+	-- 3 Ö°Òµ×Ê¸ñ
+	-- 4 È«¶¼ÓĞ
+	current_type tinyint DEFAULT 4 COMMENT '1 Ñ§Àú
+2 Ö°³Æ
+3 Ö°Òµ×Ê¸ñ
+4 È«¶¼ÓĞ',
+	-- 1 ÊÇ»ù±¾¿¨
+	-- 2 ÊÇ»ù±¾¿¨»»µÄ¸ß¼¶¿¨
+	-- 3 ÊÇ¸ß¼¶¿¨»»µÄ¸ß¼¶¿¨
+	-- 4 ÅúÁ¿ÈÏÖ¤³É¹¦µÄ¸ß¼¶¿¨
+	type tinyint COMMENT '1 ÊÇ»ù±¾¿¨
+2 ÊÇ»ù±¾¿¨»»µÄ¸ß¼¶¿¨
+3 ÊÇ¸ß¼¶¿¨»»µÄ¸ß¼¶¿¨
+4 ÅúÁ¿ÈÏÖ¤³É¹¦µÄ¸ß¼¶¿¨',
 	PRIMARY KEY (cert_id),
 	UNIQUE (cert_id)
 );
@@ -158,14 +203,14 @@ CREATE TABLE t_cert_approval
 	approval_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	cert_id bigint unsigned NOT NULL,
 	create_time datetime,
-	-- 1ï¼šæäº¤ï¼›2ï¼šå®¡æ‰¹
-	type tinyint COMMENT '1ï¼šæäº¤ï¼›2ï¼šå®¡æ‰¹',
+	-- 1£ºÌá½»£»2£ºÉóÅú
+	type tinyint COMMENT '1£ºÌá½»£»2£ºÉóÅú',
 	card_id bigint unsigned,
 	category char(255),
 	user_id bigint unsigned,
 	update_time datetime,
-	-- 1ï¼šåŒæ„ï¼›2ï¼šæ‹’ç»
-	result tinyint COMMENT '1ï¼šåŒæ„ï¼›2ï¼šæ‹’ç»',
+	-- 1£ºÍ¬Òâ£»2£º¾Ü¾ø
+	result tinyint COMMENT '1£ºÍ¬Òâ£»2£º¾Ü¾ø',
 	opinion char(255),
 	PRIMARY KEY (approval_id),
 	UNIQUE (approval_id)
@@ -188,26 +233,32 @@ CREATE TABLE t_education
 	educ_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	education int,
 	school char(255),
-	-- 1ï¼šæ˜¯ï¼›2ï¼šå¦
-	first_class tinyint COMMENT '1ï¼šæ˜¯ï¼›2ï¼šå¦',
+	-- 1£ºÊÇ£»2£º·ñ
+	first_class tinyint COMMENT '1£ºÊÇ£»2£º·ñ',
 	major char(255),
 	educ_picture char(255),
 	cert_id bigint unsigned NOT NULL,
 	talent_id bigint unsigned NOT NULL,
-	-- 1.æ­£å¸¸ä½¿ç”¨
-	-- 2.æ³¨å†Œæ²¡é¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-	-- 3.å‘èµ·è¿‡è®¤è¯æœªå®¡æ‰¹ï¼ˆå¾…å®¡æ‰¹ï¼‰
-	-- 4.å·²æœ‰å¡ï¼Œä¸”å®¡æ‰¹é€šè¿‡ä½†æœªé¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-	-- 5.åŸºç¡€å¡æ­£å¸¸ä½¿ç”¨
-	-- 9. åŸºæœ¬å¡å¤±æ•ˆ
-	-- 10.å…¶ä»–æƒ…å†µå¤±æ•ˆ
-	status tinyint COMMENT '1.æ­£å¸¸ä½¿ç”¨
-2.æ³¨å†Œæ²¡é¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-3.å‘èµ·è¿‡è®¤è¯æœªå®¡æ‰¹ï¼ˆå¾…å®¡æ‰¹ï¼‰
-4.å·²æœ‰å¡ï¼Œä¸”å®¡æ‰¹é€šè¿‡ä½†æœªé¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-5.åŸºç¡€å¡æ­£å¸¸ä½¿ç”¨
-9. åŸºæœ¬å¡å¤±æ•ˆ
-10.å…¶ä»–æƒ…å†µå¤±æ•ˆ',
+	-- 1.Õı³£Ê¹ÓÃ
+	-- 2.×¢²áÃ»Áì¿¨£¨´ıÁì¿¨£©
+	-- 3.·¢Æğ¹ıÈÏÖ¤Î´ÉóÅú£¨´ıÉóÅú£©
+	-- 4.ÒÑÓĞ»ù´¡¿¨£¬ÇÒÉóÅúÍ¨¹ıµ«Î´Áì¿¨£¨´ıÁì¿¨£©
+	-- 5.»ù´¡¿¨Õı³£Ê¹ÓÃ
+	-- 9. »ù±¾¿¨Ê§Ğ§
+	-- 10.ÆäËûÇé¿öÊ§Ğ§
+	status tinyint COMMENT '1.Õı³£Ê¹ÓÃ
+2.×¢²áÃ»Áì¿¨£¨´ıÁì¿¨£©
+3.·¢Æğ¹ıÈÏÖ¤Î´ÉóÅú£¨´ıÉóÅú£©
+4.ÒÑÓĞ»ù´¡¿¨£¬ÇÒÉóÅúÍ¨¹ıµ«Î´Áì¿¨£¨´ıÁì¿¨£©
+5.»ù´¡¿¨Õı³£Ê¹ÓÃ
+9. »ù±¾¿¨Ê§Ğ§
+10.ÆäËûÇé¿öÊ§Ğ§',
+	-- 1 ÒÑÈÏÖ¤£»
+	-- 2 Î´ÈÏÖ¤£»
+	-- 10 ±¾´Î²»ÈÏÖ¤
+	if_certificate tinyint unsigned COMMENT '1 ÒÑÈÏÖ¤£»
+2 Î´ÈÏÖ¤£»
+10 ±¾´Î²»ÈÏÖ¤',
 	PRIMARY KEY (educ_id),
 	UNIQUE (educ_id)
 );
@@ -219,14 +270,19 @@ CREATE TABLE t_farmhouse
 	name char(16) NOT NULL,
 	discount double(2,1),
 	avatar char(255),
-	description text,
-	extra text,
+	description varchar(2048),
+	extra varchar(2048),
 	qr_code char(255),
-	-- 1ï¼šä¸Šæ¶ï¼›2ï¼šä¸‹æ¶
-	status tinyint COMMENT '1ï¼šä¸Šæ¶ï¼›2ï¼šä¸‹æ¶',
+	-- 1£ºÉÏ¼Ü£»2£ºÏÂ¼Ü
+	status tinyint COMMENT '1£ºÉÏ¼Ü£»2£ºÏÂ¼Ü',
 	create_time datetime,
-	-- 1 æœªåˆ é™¤  2 å·²åˆ é™¤
-	dr tinyint COMMENT '1 æœªåˆ é™¤  2 å·²åˆ é™¤',
+	-- 1 Î´É¾³ı  2 ÒÑÉ¾³ı
+	dr tinyint COMMENT '1 Î´É¾³ı  2 ÒÑÉ¾³ı',
+	subtitle char(64),
+	starLevel tinyint unsigned,
+	area int unsigned,
+	location char(128),
+	average_cost decimal,
 	PRIMARY KEY (farmhouse_id),
 	UNIQUE (farmhouse_id),
 	UNIQUE (name)
@@ -242,8 +298,9 @@ CREATE TABLE t_farmhouse_enjoy
 	education_id int unsigned,
 	title_id int unsigned,
 	quality int unsigned,
-	-- 1ï¼šäººæ‰å¡ï¼›2ï¼šäººæ‰ç±»åˆ«ï¼›3ï¼šäººæ‰å­¦å†ï¼›4ï¼šèŒç§°ï¼›5ï¼šèŒä¸šèµ„æ ¼
-	type tinyint COMMENT '1ï¼šäººæ‰å¡ï¼›2ï¼šäººæ‰ç±»åˆ«ï¼›3ï¼šäººæ‰å­¦å†ï¼›4ï¼šèŒç§°ï¼›5ï¼šèŒä¸šèµ„æ ¼',
+	honour_id bigint unsigned,
+	-- 1£ºÈË²Å¿¨£»2£ºÈË²ÅÀà±ğ£»3£ºÈË²ÅÑ§Àú£»4£ºÖ°³Æ£»5£ºÖ°Òµ×Ê¸ñ£»6£ºÈË²ÅÈÙÓş
+	type tinyint COMMENT '1£ºÈË²Å¿¨£»2£ºÈË²ÅÀà±ğ£»3£ºÈË²ÅÑ§Àú£»4£ºÖ°³Æ£»5£ºÖ°Òµ×Ê¸ñ£»6£ºÈË²ÅÈÙÓş',
 	PRIMARY KEY (fe_id),
 	UNIQUE (fe_id)
 );
@@ -269,6 +326,19 @@ CREATE TABLE t_farmhouse_picture
 );
 
 
+CREATE TABLE t_feedback
+(
+	feedback_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	talent_id bigint unsigned,
+	contact char(255),
+	create_time datetime,
+	content varchar(1024),
+	picture char(255),
+	PRIMARY KEY (feedback_id),
+	UNIQUE (feedback_id)
+);
+
+
 CREATE TABLE t_policy
 (
 	policy_id bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -280,19 +350,21 @@ CREATE TABLE t_policy
 	educations char(255),
 	titles char(255),
 	qualities char(255),
-	-- 1ï¼šéœ€è¦ï¼›2ï¼šä¸éœ€è¦
-	apply tinyint DEFAULT 2 COMMENT '1ï¼šéœ€è¦ï¼›2ï¼šä¸éœ€è¦',
+	honour_ids char(255),
+	-- 1£ºĞèÒª£»2£º²»ĞèÒª
+	apply tinyint DEFAULT 2 COMMENT '1£ºĞèÒª£»2£º²»ĞèÒª',
+	color char(64),
 	rate int,
 	unit tinyint,
 	times int,
-	-- 1ï¼šéœ€è¦ï¼›2ï¼šä¸éœ€è¦ï¼›
-	bank tinyint COMMENT '1ï¼šéœ€è¦ï¼›2ï¼šä¸éœ€è¦ï¼›',
-	-- 1ï¼šéœ€è¦ï¼›2ï¼šä¸éœ€è¦ï¼›
-	annex tinyint COMMENT '1ï¼šéœ€è¦ï¼›2ï¼šä¸éœ€è¦ï¼›',
+	-- 1£ºĞèÒª£»2£º²»ĞèÒª£»
+	bank tinyint COMMENT '1£ºĞèÒª£»2£º²»ĞèÒª£»',
+	-- 1£ºĞèÒª£»2£º²»ĞèÒª£»
+	annex tinyint COMMENT '1£ºĞèÒª£»2£º²»ĞèÒª£»',
 	user_id bigint unsigned,
 	create_time datetime,
-	-- 1 æœªåˆ é™¤  2 å·²åˆ é™¤
-	dr tinyint COMMENT '1 æœªåˆ é™¤  2 å·²åˆ é™¤',
+	-- 1 Î´É¾³ı  2 ÒÑÉ¾³ı
+	dr tinyint COMMENT '1 Î´É¾³ı  2 ÒÑÉ¾³ı',
 	PRIMARY KEY (policy_id),
 	UNIQUE (policy_id)
 );
@@ -306,8 +378,8 @@ CREATE TABLE t_policy_apply
 	policy_id bigint unsigned NOT NULL,
 	policy_name char(32),
 	create_time datetime,
-	-- 1ï¼šå·²åŒæ„ï¼›2ï¼šå·²é©³å›ï¼›3ï¼šå¾…å®¡æ‰¹
-	status tinyint DEFAULT 3 COMMENT '1ï¼šå·²åŒæ„ï¼›2ï¼šå·²é©³å›ï¼›3ï¼šå¾…å®¡æ‰¹',
+	-- 1£ºÒÑÍ¬Òâ£»2£ºÒÑ²µ»Ø£»3£º´ıÉóÅú
+	status tinyint DEFAULT 3 COMMENT '1£ºÒÑÍ¬Òâ£»2£ºÒÑ²µ»Ø£»3£º´ıÉóÅú',
 	PRIMARY KEY (pa_id),
 	UNIQUE (pa_id)
 );
@@ -318,13 +390,13 @@ CREATE TABLE t_policy_approval
 	approval_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	pa_id bigint unsigned NOT NULL,
 	create_time datetime,
-	-- 1ï¼šæäº¤ï¼›2ï¼šå®¡æ‰¹
-	type tinyint COMMENT '1ï¼šæäº¤ï¼›2ï¼šå®¡æ‰¹',
+	-- 1£ºÌá½»£»2£ºÉóÅú
+	type tinyint COMMENT '1£ºÌá½»£»2£ºÉóÅú',
 	user_id bigint unsigned,
 	username char(32),
 	update_time datetime,
-	-- 1ï¼šåŒæ„ï¼›2ï¼šæ‹’ç»
-	result tinyint COMMENT '1ï¼šåŒæ„ï¼›2ï¼šæ‹’ç»',
+	-- 1£ºÍ¬Òâ£»2£º¾Ü¾ø
+	result tinyint COMMENT '1£ºÍ¬Òâ£»2£º¾Ü¾ø',
 	opinion char(255),
 	PRIMARY KEY (approval_id),
 	UNIQUE (approval_id)
@@ -339,20 +411,26 @@ CREATE TABLE t_prof_quality
 	info char(255),
 	cert_id bigint unsigned NOT NULL,
 	talent_id bigint unsigned NOT NULL,
-	-- 1.æ­£å¸¸ä½¿ç”¨
-	-- 2.æ³¨å†Œæ²¡é¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-	-- 3.å‘èµ·è¿‡è®¤è¯æœªå®¡æ‰¹ï¼ˆå¾…å®¡æ‰¹ï¼‰
-	-- 4.å·²æœ‰å¡ï¼Œä¸”å®¡æ‰¹é€šè¿‡ä½†æœªé¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-	-- 5.åŸºç¡€å¡æ­£å¸¸ä½¿ç”¨
-	-- 9. åŸºæœ¬å¡å¤±æ•ˆ
-	-- 10.å…¶ä»–æƒ…å†µå¤±æ•ˆ
-	status tinyint COMMENT '1.æ­£å¸¸ä½¿ç”¨
-2.æ³¨å†Œæ²¡é¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-3.å‘èµ·è¿‡è®¤è¯æœªå®¡æ‰¹ï¼ˆå¾…å®¡æ‰¹ï¼‰
-4.å·²æœ‰å¡ï¼Œä¸”å®¡æ‰¹é€šè¿‡ä½†æœªé¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-5.åŸºç¡€å¡æ­£å¸¸ä½¿ç”¨
-9. åŸºæœ¬å¡å¤±æ•ˆ
-10.å…¶ä»–æƒ…å†µå¤±æ•ˆ',
+	-- 1.Õı³£Ê¹ÓÃ
+	-- 2.×¢²áÃ»Áì¿¨£¨´ıÁì¿¨£©
+	-- 3.·¢Æğ¹ıÈÏÖ¤Î´ÉóÅú£¨´ıÉóÅú£©
+	-- 4.ÒÑÓĞ»ù´¡¿¨£¬ÇÒÉóÅúÍ¨¹ıµ«Î´Áì¿¨£¨´ıÁì¿¨£©
+	-- 5.»ù´¡¿¨Õı³£Ê¹ÓÃ
+	-- 9. »ù±¾¿¨Ê§Ğ§
+	-- 10.ÆäËûÇé¿öÊ§Ğ§
+	status tinyint COMMENT '1.Õı³£Ê¹ÓÃ
+2.×¢²áÃ»Áì¿¨£¨´ıÁì¿¨£©
+3.·¢Æğ¹ıÈÏÖ¤Î´ÉóÅú£¨´ıÉóÅú£©
+4.ÒÑÓĞ»ù´¡¿¨£¬ÇÒÉóÅúÍ¨¹ıµ«Î´Áì¿¨£¨´ıÁì¿¨£©
+5.»ù´¡¿¨Õı³£Ê¹ÓÃ
+9. »ù±¾¿¨Ê§Ğ§
+10.ÆäËûÇé¿öÊ§Ğ§',
+	-- 1 ÒÑÈÏÖ¤£»
+	-- 2 Î´ÈÏÖ¤£»
+	-- 10 ±¾´Î²»ÈÏÖ¤
+	if_certificate tinyint unsigned COMMENT '1 ÒÑÈÏÖ¤£»
+2 Î´ÈÏÖ¤£»
+10 ±¾´Î²»ÈÏÖ¤',
 	PRIMARY KEY (pq_id),
 	UNIQUE (pq_id)
 );
@@ -366,26 +444,32 @@ CREATE TABLE t_prof_title
 	picture char(255),
 	cert_id bigint unsigned NOT NULL,
 	talent_id bigint unsigned NOT NULL,
-	-- 1.æ­£å¸¸ä½¿ç”¨
-	-- 2.æ³¨å†Œæ²¡é¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-	-- 3.å‘èµ·è¿‡è®¤è¯æœªå®¡æ‰¹ï¼ˆå¾…å®¡æ‰¹ï¼‰
-	-- 4.å·²æœ‰å¡ï¼Œä¸”å®¡æ‰¹é€šè¿‡ä½†æœªé¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-	-- 5.åŸºç¡€å¡æ­£å¸¸ä½¿ç”¨
-	-- 9. åŸºæœ¬å¡å¤±æ•ˆ
-	-- 10.å…¶ä»–æƒ…å†µå¤±æ•ˆ
-	status tinyint COMMENT '1.æ­£å¸¸ä½¿ç”¨
-2.æ³¨å†Œæ²¡é¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-3.å‘èµ·è¿‡è®¤è¯æœªå®¡æ‰¹ï¼ˆå¾…å®¡æ‰¹ï¼‰
-4.å·²æœ‰å¡ï¼Œä¸”å®¡æ‰¹é€šè¿‡ä½†æœªé¢†å¡ï¼ˆå¾…é¢†å¡ï¼‰
-5.åŸºç¡€å¡æ­£å¸¸ä½¿ç”¨
-9. åŸºæœ¬å¡å¤±æ•ˆ
-10.å…¶ä»–æƒ…å†µå¤±æ•ˆ',
+	-- 1.Õı³£Ê¹ÓÃ
+	-- 2.×¢²áÃ»Áì¿¨£¨´ıÁì¿¨£©
+	-- 3.·¢Æğ¹ıÈÏÖ¤Î´ÉóÅú£¨´ıÉóÅú£©
+	-- 4.ÒÑÓĞ»ù´¡¿¨£¬ÇÒÉóÅúÍ¨¹ıµ«Î´Áì¿¨£¨´ıÁì¿¨£©
+	-- 5.»ù´¡¿¨Õı³£Ê¹ÓÃ
+	-- 9. »ù±¾¿¨Ê§Ğ§
+	-- 10.ÆäËûÇé¿öÊ§Ğ§
+	status tinyint COMMENT '1.Õı³£Ê¹ÓÃ
+2.×¢²áÃ»Áì¿¨£¨´ıÁì¿¨£©
+3.·¢Æğ¹ıÈÏÖ¤Î´ÉóÅú£¨´ıÉóÅú£©
+4.ÒÑÓĞ»ù´¡¿¨£¬ÇÒÉóÅúÍ¨¹ıµ«Î´Áì¿¨£¨´ıÁì¿¨£©
+5.»ù´¡¿¨Õı³£Ê¹ÓÃ
+9. »ù±¾¿¨Ê§Ğ§
+10.ÆäËûÇé¿öÊ§Ğ§',
+	-- 1 ÒÑÈÏÖ¤£»
+	-- 2 Î´ÈÏÖ¤£»
+	-- 10 ±¾´Î²»ÈÏÖ¤
+	if_certificate tinyint unsigned COMMENT '1 ÒÑÈÏÖ¤£»
+2 Î´ÈÏÖ¤£»
+10 ±¾´Î²»ÈÏÖ¤',
 	PRIMARY KEY (pt_id),
 	UNIQUE (pt_id)
 );
 
 
--- è§’è‰²è¡¨
+-- ½ÇÉ«±í
 CREATE TABLE t_role
 (
 	role_id bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -394,14 +478,14 @@ CREATE TABLE t_role
 	create_time datetime,
 	PRIMARY KEY (role_id),
 	UNIQUE (role_id)
-) COMMENT = 'è§’è‰²è¡¨';
+) COMMENT = '½ÇÉ«±í';
 
 
 CREATE TABLE t_role_authority
 (
 	ra_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	-- 1æƒé™å¼€æ”¾; 2æƒé™å…³é—­
-	status tinyint(4) DEFAULT 1 COMMENT '1æƒé™å¼€æ”¾; 2æƒé™å…³é—­    ',
+	-- 1È¨ÏŞ¿ª·Å; 2È¨ÏŞ¹Ø±Õ    
+	status tinyint(4) DEFAULT 1 COMMENT '1È¨ÏŞ¿ª·Å; 2È¨ÏŞ¹Ø±Õ    ',
 	authority_id bigint unsigned NOT NULL,
 	role_id bigint unsigned NOT NULL,
 	PRIMARY KEY (ra_id),
@@ -412,23 +496,26 @@ CREATE TABLE t_role_authority
 CREATE TABLE t_scenic
 (
 	scenic_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	name char(16) NOT NULL,
+	name char(16),
 	rate int,
-	-- 1ï¼šå¹´ï¼›2ï¼šå­£ï¼›3ï¼šæœˆ
-	unit tinyint COMMENT '1ï¼šå¹´ï¼›2ï¼šå­£ï¼›3ï¼šæœˆ',
+	-- 1£ºÄê£»2£º¼¾£»3£ºÔÂ
+	unit tinyint COMMENT '1£ºÄê£»2£º¼¾£»3£ºÔÂ',
 	times int,
 	avatar char(255),
-	description text,
-	extra text,
+	description varchar(2048),
+	extra varchar(2048),
 	qr_code char(255),
-	-- 1ï¼šä¸Šæ¶ï¼›2ï¼šä¸‹æ¶
-	status tinyint COMMENT '1ï¼šä¸Šæ¶ï¼›2ï¼šä¸‹æ¶',
+	-- 1£ºÉÏ¼Ü£»2£ºÏÂ¼Ü
+	status tinyint COMMENT '1£ºÉÏ¼Ü£»2£ºÏÂ¼Ü',
 	create_time datetime,
-	-- 1 æœªåˆ é™¤  2 å·²åˆ é™¤
-	dr tinyint COMMENT '1 æœªåˆ é™¤  2 å·²åˆ é™¤',
+	-- 1 Î´É¾³ı  2 ÒÑÉ¾³ı
+	dr tinyint COMMENT '1 Î´É¾³ı  2 ÒÑÉ¾³ı',
+	subtitle char(64),
+	starLevel tinyint unsigned,
+	area int unsigned,
+	location char(128),
 	PRIMARY KEY (scenic_id),
-	UNIQUE (scenic_id),
-	UNIQUE (name)
+	UNIQUE (scenic_id)
 );
 
 
@@ -441,8 +528,9 @@ CREATE TABLE t_scenic_enjoy
 	education_id int unsigned,
 	title_id int unsigned,
 	quality int unsigned,
-	-- 1ï¼šäººæ‰å¡ï¼›2ï¼šäººæ‰ç±»åˆ«ï¼›3ï¼šäººæ‰å­¦å†ï¼›4ï¼šèŒç§°ï¼›5ï¼šèŒä¸šèµ„æ ¼
-	type tinyint COMMENT '1ï¼šäººæ‰å¡ï¼›2ï¼šäººæ‰ç±»åˆ«ï¼›3ï¼šäººæ‰å­¦å†ï¼›4ï¼šèŒç§°ï¼›5ï¼šèŒä¸šèµ„æ ¼',
+	honour_id bigint unsigned,
+	-- 1£ºÈË²Å¿¨£»2£ºÈË²ÅÀà±ğ£»3£ºÈË²ÅÑ§Àú£»4£ºÖ°³Æ£»5£ºÖ°Òµ×Ê¸ñ£»6£ºÈË²ÅÈÙÓş
+	type tinyint COMMENT '1£ºÈË²Å¿¨£»2£ºÈË²ÅÀà±ğ£»3£ºÈË²ÅÑ§Àú£»4£ºÖ°³Æ£»5£ºÖ°Òµ×Ê¸ñ£»6£ºÈË²ÅÈÙÓş',
 	PRIMARY KEY (se_id),
 	UNIQUE (se_id)
 );
@@ -463,21 +551,21 @@ CREATE TABLE t_staff
 	staff_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	open_id char(128),
 	name char(32),
-	-- 1 æ—…æ¸¸
-	-- 2 å†œå®¶ä¹
-	activity_first_content_id bigint unsigned NOT NULL COMMENT '1 æ—…æ¸¸
-2 å†œå®¶ä¹',
+	-- 1 ÂÃÓÎ
+	-- 2 Å©¼ÒÀÖ
+	activity_first_content_id bigint unsigned NOT NULL COMMENT '1 ÂÃÓÎ
+2 Å©¼ÒÀÖ',
 	activity_second_content_id bigint unsigned NOT NULL,
 	activity_second_content_name char(32) NOT NULL,
-	-- 1ï¼šç”·ï¼›2ï¼šå¥³
-	sex tinyint COMMENT '1ï¼šç”·ï¼›2ï¼šå¥³',
-	id_card char(18),
+	-- 1£ºÄĞ£»2£ºÅ®
+	sex tinyint COMMENT '1£ºÄĞ£»2£ºÅ®',
+	id_card char(128),
 	phone char(32),
 	create_time datetime,
-	-- 1æ­£åœ¨ä½¿ç”¨
-	-- 2åˆ é™¤
-	dr tinyint unsigned COMMENT '1æ­£åœ¨ä½¿ç”¨
-2åˆ é™¤',
+	-- 1ÕıÔÚÊ¹ÓÃ
+	-- 2É¾³ı
+	dr tinyint unsigned COMMENT '1ÕıÔÚÊ¹ÓÃ
+2É¾³ı',
 	PRIMARY KEY (staff_id),
 	UNIQUE (staff_id)
 );
@@ -487,29 +575,38 @@ CREATE TABLE t_talent
 (
 	talent_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	open_id char(128) NOT NULL,
-	name char(64) NOT NULL,
-	-- 1ï¼šç”·ï¼›2ï¼šå¥³
-	sex tinyint COMMENT '1ï¼šç”·ï¼›2ï¼šå¥³',
-	id_card char(18) NOT NULL,
+	name char(64),
+	-- 1£ºÄĞ£»2£ºÅ®
+	sex tinyint COMMENT '1£ºÄĞ£»2£ºÅ®',
+	id_card char(128),
 	passport char(32),
-	work_unit char(255) NOT NULL,
+	driver_card char(128),
+	-- 1Éí·İÖ¤2»¤ÕÕ3¼İÕÕ
+	card_type tinyint unsigned COMMENT '1Éí·İÖ¤2»¤ÕÕ3¼İÕÕ',
+	work_unit char(255),
 	industry int unsigned,
 	industry_second int unsigned,
 	phone char(32) NOT NULL,
-	create_time datetime,
+	political tinyint,
 	category char(255),
-	-- 1 è®¤è¯é€šè¿‡
-	-- 2 è®¤è¯æ²¡é€šè¿‡
-	status tinyint DEFAULT 2 COMMENT '1 è®¤è¯é€šè¿‡
-2 è®¤è¯æ²¡é€šè¿‡',
+	work_location char(255),
+	-- 1¹úÄÚ£»
+	-- 2º£Íâ£»
+	work_location_type tinyint COMMENT '1¹úÄÚ£»
+2º£Íâ£»',
 	card_id bigint unsigned,
-	-- 1æ­£åœ¨ä½¿ç”¨
-	-- 2åˆ é™¤
-	dr tinyint unsigned COMMENT '1æ­£åœ¨ä½¿ç”¨
-2åˆ é™¤',
+	-- 1 ÈÏÖ¤Í¨¹ı
+	-- 2 ÈÏÖ¤Ã»Í¨¹ı
+	status tinyint DEFAULT 2 COMMENT '1 ÈÏÖ¤Í¨¹ı
+2 ÈÏÖ¤Ã»Í¨¹ı',
+	create_time datetime,
+	-- 1ÕıÔÚÊ¹ÓÃ
+	-- 2É¾³ı
+	dr tinyint unsigned COMMENT '1ÕıÔÚÊ¹ÓÃ
+2É¾³ı',
 	PRIMARY KEY (talent_id),
 	UNIQUE (talent_id),
-	UNIQUE (id_card)
+	UNIQUE (open_id)
 );
 
 
@@ -518,17 +615,17 @@ CREATE TABLE t_talent_activity_history
 	tah_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	open_id char(128) NOT NULL,
 	staff_id bigint unsigned,
-	-- 1 æ—…æ¸¸
-	-- 2 å†œå®¶ä¹
-	activity_first_content_id bigint unsigned COMMENT '1 æ—…æ¸¸
-2 å†œå®¶ä¹',
+	-- 1 ÂÃÓÎ
+	-- 2 Å©¼ÒÀÖ
+	activity_first_content_id bigint unsigned COMMENT '1 ÂÃÓÎ
+2 Å©¼ÒÀÖ',
 	activity_second_content_id bigint unsigned,
 	activity_second_content_name char(32),
 	ip_address char(255),
 	create_time datetime,
 	status tinyint unsigned,
-	-- 1 æœªåˆ é™¤  2 å·²åˆ é™¤
-	dr tinyint COMMENT '1 æœªåˆ é™¤  2 å·²åˆ é™¤',
+	-- 1 Î´É¾³ı  2 ÒÑÉ¾³ı
+	dr tinyint COMMENT '1 Î´É¾³ı  2 ÒÑÉ¾³ı',
 	PRIMARY KEY (tah_id),
 	UNIQUE (tah_id)
 );
@@ -544,10 +641,43 @@ CREATE TABLE t_talent_farmhouse
 	effective_time datetime,
 	update_time datetime,
 	status tinyint unsigned,
-	-- 1 æœªåˆ é™¤  2 å·²åˆ é™¤
-	dr tinyint COMMENT '1 æœªåˆ é™¤  2 å·²åˆ é™¤',
+	-- 1 Î´É¾³ı  2 ÒÑÉ¾³ı
+	dr tinyint COMMENT '1 Î´É¾³ı  2 ÒÑÉ¾³ı',
 	PRIMARY KEY (tt_id),
 	UNIQUE (tt_id)
+);
+
+
+CREATE TABLE t_talent_honour
+(
+	th_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	honour_id bigint unsigned,
+	honour_picture char(255),
+	info char(255),
+	cert_id bigint unsigned NOT NULL,
+	talent_id bigint unsigned NOT NULL,
+	-- 1.Õı³£Ê¹ÓÃ
+	-- 2.×¢²áÃ»Áì¿¨£¨´ıÁì¿¨£©
+	-- 3.·¢Æğ¹ıÈÏÖ¤Î´ÉóÅú£¨´ıÉóÅú£©
+	-- 4.ÒÑÓĞ»ù´¡¿¨£¬ÇÒÉóÅúÍ¨¹ıµ«Î´Áì¿¨£¨´ıÁì¿¨£©
+	-- 5.»ù´¡¿¨Õı³£Ê¹ÓÃ
+	-- 9. »ù±¾¿¨Ê§Ğ§
+	-- 10.ÆäËûÇé¿öÊ§Ğ§
+	status tinyint COMMENT '1.Õı³£Ê¹ÓÃ
+2.×¢²áÃ»Áì¿¨£¨´ıÁì¿¨£©
+3.·¢Æğ¹ıÈÏÖ¤Î´ÉóÅú£¨´ıÉóÅú£©
+4.ÒÑÓĞ»ù´¡¿¨£¬ÇÒÉóÅúÍ¨¹ıµ«Î´Áì¿¨£¨´ıÁì¿¨£©
+5.»ù´¡¿¨Õı³£Ê¹ÓÃ
+9. »ù±¾¿¨Ê§Ğ§
+10.ÆäËûÇé¿öÊ§Ğ§',
+	-- 1 ÒÑÈÏÖ¤£»
+	-- 2 Î´ÈÏÖ¤£»
+	-- 10 ±¾´Î²»ÈÏÖ¤
+	if_certificate tinyint unsigned COMMENT '1 ÒÑÈÏÖ¤£»
+2 Î´ÈÏÖ¤£»
+10 ±¾´Î²»ÈÏÖ¤',
+	PRIMARY KEY (th_id),
+	UNIQUE (th_id)
 );
 
 
@@ -561,8 +691,8 @@ CREATE TABLE t_talent_trip
 	effective_time datetime NOT NULL,
 	update_time datetime,
 	status tinyint unsigned,
-	-- 1 æœªåˆ é™¤  2 å·²åˆ é™¤
-	dr tinyint COMMENT '1 æœªåˆ é™¤  2 å·²åˆ é™¤',
+	-- 1 Î´É¾³ı  2 ÒÑÉ¾³ı
+	dr tinyint COMMENT '1 Î´É¾³ı  2 ÒÑÉ¾³ı',
 	PRIMARY KEY (tt_id),
 	UNIQUE (tt_id)
 );
@@ -578,7 +708,7 @@ CREATE TABLE t_trip_group_authority
 );
 
 
--- äººæ‰å¡ç”¨æˆ·åŸºæœ¬ä¿¡æ¯è¡¨
+-- ÈË²Å¿¨ÓÃ»§»ù±¾ĞÅÏ¢±í
 CREATE TABLE t_user
 (
 	user_id bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -586,14 +716,14 @@ CREATE TABLE t_user
 	name char(32),
 	password char(32),
 	create_time datetime,
-	-- 1 æœªåˆ é™¤  2 å·²åˆ é™¤
-	dr tinyint COMMENT '1 æœªåˆ é™¤  2 å·²åˆ é™¤',
+	-- 1 Î´É¾³ı  2 ÒÑÉ¾³ı
+	dr tinyint COMMENT '1 Î´É¾³ı  2 ÒÑÉ¾³ı',
 	extra char(255),
 	role_id bigint unsigned NOT NULL,
 	PRIMARY KEY (user_id),
 	UNIQUE (user_id),
 	UNIQUE (username)
-) COMMENT = 'äººæ‰å¡ç”¨æˆ·åŸºæœ¬ä¿¡æ¯è¡¨';
+) COMMENT = 'ÈË²Å¿¨ÓÃ»§»ù±¾ĞÅÏ¢±í';
 
 
 CREATE TABLE t_user_card
@@ -603,13 +733,15 @@ CREATE TABLE t_user_card
 	card_id bigint unsigned,
 	name char(16),
 	num char(32) NOT NULL,
+	-- µ±Ç°ÓÃ»§´øµÄºÅÂë£¬²»º¬ÇøÓòºÅºÍÇ°×º
+	current_num char(64) COMMENT 'µ±Ç°ÓÃ»§´øµÄºÅÂë£¬²»º¬ÇøÓòºÅºÍÇ°×º',
 	create_time datetime,
-	-- 1 å¾…é¢†å¡
-	-- 2 å·²é¢†å¡ï¼Œä½¿ç”¨ä¸­
-	-- 3 åºŸå¼ƒ
-	status tinyint DEFAULT 1 COMMENT '1 å¾…é¢†å¡
-2 å·²é¢†å¡ï¼Œä½¿ç”¨ä¸­
-3 åºŸå¼ƒ',
+	-- 1 ´ıÁì¿¨
+	-- 2 ÒÑÁì¿¨£¬Ê¹ÓÃÖĞ
+	-- 3 ·ÏÆú
+	status tinyint DEFAULT 1 COMMENT '1 ´ıÁì¿¨
+2 ÒÑÁì¿¨£¬Ê¹ÓÃÖĞ
+3 ·ÏÆú',
 	PRIMARY KEY (uc_id),
 	UNIQUE (uc_id)
 );
@@ -622,14 +754,16 @@ CREATE TABLE t_user_current_info
 	political tinyint,
 	education int,
 	school char(255),
-	-- 1ï¼šæ˜¯ï¼›2ï¼šå¦
-	first_class tinyint COMMENT '1ï¼šæ˜¯ï¼›2ï¼šå¦',
+	-- 1£ºÊÇ£»2£º·ñ
+	first_class tinyint COMMENT '1£ºÊÇ£»2£º·ñ',
 	major char(255),
 	pt_category int,
 	pt_info char(255),
 	pq_category int,
 	pq_info char(255),
 	talent_category char(255),
+	honour_id bigint unsigned,
+	th_info char(255),
 	PRIMARY KEY (uci_id),
 	UNIQUE (uci_id)
 );
@@ -695,6 +829,14 @@ ALTER TABLE t_prof_quality
 
 
 ALTER TABLE t_prof_title
+	ADD FOREIGN KEY (cert_id)
+	REFERENCES t_certification (cert_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_talent_honour
 	ADD FOREIGN KEY (cert_id)
 	REFERENCES t_certification (cert_id)
 	ON UPDATE RESTRICT
@@ -846,6 +988,14 @@ ALTER TABLE t_education
 ;
 
 
+ALTER TABLE t_feedback
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE t_policy_apply
 	ADD FOREIGN KEY (talent_id)
 	REFERENCES t_talent (talent_id)
@@ -870,6 +1020,14 @@ ALTER TABLE t_prof_title
 ;
 
 
+ALTER TABLE t_talent_honour
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE t_user_card
 	ADD FOREIGN KEY (talent_id)
 	REFERENCES t_talent (talent_id)
@@ -881,6 +1039,14 @@ ALTER TABLE t_user_card
 ALTER TABLE t_user_current_info
 	ADD FOREIGN KEY (talent_id)
 	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_batch_certificate
+	ADD FOREIGN KEY (user_id)
+	REFERENCES t_user (user_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
