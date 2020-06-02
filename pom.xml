@@ -15,6 +15,7 @@
         <module>wechat</module>
         <module>talentadmin</module>
         <module>talenteureka</module>
+        <module>miniprogram</module>
     </modules>
 
     <name>talentcard</name>
