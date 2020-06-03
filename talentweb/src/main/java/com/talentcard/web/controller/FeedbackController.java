@@ -38,7 +38,7 @@ public class FeedbackController {
     public ResultVO query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                           @RequestParam(value = "name", defaultValue = "") String name,
-                          @RequestParam(value = "contact", defaultValue = "0") String contact,
+                          @RequestParam(value = "contact", defaultValue = "") String contact,
                           @RequestParam(value = "start", defaultValue = "") String start,
                           @RequestParam(value = "end", defaultValue = "") String end) {
 
