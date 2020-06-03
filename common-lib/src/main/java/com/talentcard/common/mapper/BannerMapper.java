@@ -12,12 +12,4 @@ import java.util.List;
 @Mapper
 public interface BannerMapper extends BaseMapper<BannerPO, Long> {
     List<BannerPO> bannerQuery();
-
-    /**
-     * 设置状态
-     *
-     * @param bid
-     * @param status
-     */
-    void status(@Param("bannerId") Long bid, @Param("status") Byte status);
 }

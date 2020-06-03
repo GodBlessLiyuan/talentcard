@@ -46,7 +46,19 @@ public class BannerServiceImpl implements IBannerService {
 
     @Override
     public ResultVO status(Long bid, Byte status) {
-        bannerMapper.status(bid, status);
+        BannerPO po = bannerMapper.selectByPrimaryKey(bid);
+        if (null == po) {
+            return new ResultVO(1101);
+        }
+
+        if (1 == status) {
+            po.setUpdateTime(new Date());
+        } else if (2 == status) {
+            po.setUpdateTime(null);
+        }
+        po.setStatus(status);
+        bannerMapper.updateByPrimaryKey(po);
+
         return new ResultVO(1000);
     }
 
