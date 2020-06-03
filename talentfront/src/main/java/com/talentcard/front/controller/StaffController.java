@@ -6,6 +6,7 @@ import com.talentcard.front.service.IStaffService;
 import com.talentcard.front.service.ITalentActivityService;
 import com.talentcard.front.service.impl.TalentActivityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,8 @@ public class StaffController {
     private IStaffService iStaffService;
     @Autowired
     private ITalentActivityService iTalentActivityService;
+    @Autowired
+    private StringRedisTemplate template;
 
     /**
      * 判断当前员工是否注册
@@ -73,25 +76,14 @@ public class StaffController {
                             @RequestParam(value = "staffOpenId") String staffOpenId,
                             @RequestParam(value = "activityFirstContentId") Long activityFirstContentId,
                             @RequestParam(value = "activitySecondContentId") Long activitySecondContentId) {
-        ResultVO resultVO = null;
-        String talentOpenId = iTalentActivityService.getOpenId(cardNum);
+
+        String talentOpenId = cardNum.length() < 30 ? iTalentActivityService.getOpenId(cardNum) : template.opsForValue().get(cardNum);
         if (talentOpenId == null || talentOpenId.equals("")) {
             return new ResultVO(2500);
         }
-        /**
-         * 1.旅游
-         */
-        if (activityFirstContentId == 1) {
-            resultVO = iStaffService.tripVertify(httpServletRequest, talentOpenId,
-                    staffOpenId, activitySecondContentId);
-        }
-        /**
-         * 农家乐
-         */
-        if (activityFirstContentId == 2) {
-            resultVO = iStaffService.farmhouseVertify(httpServletRequest, talentOpenId,
-                    staffOpenId, activitySecondContentId);
-        }
-        return resultVO;
+
+        return activityFirstContentId == 1 ? iStaffService.tripVertify(httpServletRequest, talentOpenId,
+                staffOpenId, activitySecondContentId) : iStaffService.farmhouseVertify(httpServletRequest, talentOpenId,
+                staffOpenId, activitySecondContentId);
     }
 }
