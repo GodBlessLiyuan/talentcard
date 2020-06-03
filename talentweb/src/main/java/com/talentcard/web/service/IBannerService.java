@@ -2,6 +2,7 @@ package com.talentcard.web.service;
 
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.BannerDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -19,4 +20,6 @@ public interface IBannerService {
     ResultVO status(Long bid, Byte status);
 
     ResultVO delete(Long bid);
+
+    ResultVO upload(MultipartFile file);
 }

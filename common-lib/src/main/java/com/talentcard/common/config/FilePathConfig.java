@@ -42,6 +42,10 @@ public class FilePathConfig {
      */
     private String scenicDir = "/scenic/";
     /**
+     * 轮播图片目录
+     */
+    private String bannerDir = "/banner /";
+    /**
      * 农家乐图片目录
      */
     private String farmHouseDir = "/farmhouse/";

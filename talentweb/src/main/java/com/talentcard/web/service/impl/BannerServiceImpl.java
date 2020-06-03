@@ -2,8 +2,10 @@ package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.BannerMapper;
 import com.talentcard.common.pojo.BannerPO;
+import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.BannerDTO;
@@ -11,6 +13,7 @@ import com.talentcard.web.service.IBannerService;
 import com.talentcard.web.vo.BannerVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -26,6 +29,8 @@ import java.util.Map;
 public class BannerServiceImpl implements IBannerService {
     @Autowired
     private BannerMapper bannerMapper;
+    @Autowired
+    private FilePathConfig filePathConfig;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -66,5 +71,11 @@ public class BannerServiceImpl implements IBannerService {
     public ResultVO delete(Long bid) {
         bannerMapper.deleteByPrimaryKey(bid);
         return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO upload(MultipartFile file) {
+        String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getBannerDir(), "banner");
+        return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 }

@@ -1,5 +1,6 @@
 package com.talentcard.web.dto;
 
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.BannerPO;
 import lombok.Data;
 
@@ -45,7 +46,9 @@ public class BannerDTO implements Serializable {
      */
     public static BannerPO buildPO(BannerPO po, BannerDTO dto) {
         po.setName(dto.getName());
-        po.setPicture(dto.getPicture());
+        if (null != dto.getPicture()) {
+            po.setPicture(dto.getPicture().split(FilePathConfig.getStaticPublicBasePath())[1]);
+        }
         po.setJump(dto.getJump());
         po.setType(dto.getType());
         po.setExtra(dto.getExtra());

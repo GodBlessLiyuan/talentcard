@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -87,5 +88,16 @@ public class BannerController {
     @RequestMapping("delete")
     public ResultVO delete(@Param("bid") Long bid) {
         return bannerService.delete(bid);
+    }
+
+    /**
+     * 上传
+     *
+     * @param file
+     * @return
+     */
+    @RequestMapping("upload")
+    public ResultVO upload(@Param("file") MultipartFile file) {
+        return bannerService.upload(file);
     }
 }
