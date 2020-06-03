@@ -163,6 +163,10 @@
         <include refid="Base_Column_List"/>
         from t_banner
         where dr = 1
+        <if test="start != null and start !=''">and create_time >= #{start}</if>
+        <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
+        <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
+        <if test="status != null and status !=0">and `status` = #{status}</if>
         order by create_time desc
     </select>
 </mapper>
