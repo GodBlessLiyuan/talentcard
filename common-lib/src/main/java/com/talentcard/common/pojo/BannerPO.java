@@ -24,6 +24,8 @@ public class BannerPO implements Serializable {
 
     private Date createTime;
 
+    private Date updateTime;
+
     private Byte status;
 
     /**

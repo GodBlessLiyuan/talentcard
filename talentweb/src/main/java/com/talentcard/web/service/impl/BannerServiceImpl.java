@@ -12,6 +12,7 @@ import com.talentcard.web.vo.BannerVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,9 @@ public class BannerServiceImpl implements IBannerService {
     @Override
     public ResultVO insert(BannerDTO dto) {
         BannerPO po = BannerDTO.buildPO(new BannerPO(), dto);
+        po.setCreateTime(new Date());
+        po.setStatus((byte) 2);
+        po.setDr((byte) 1);
         bannerMapper.insert(po);
         return new ResultVO(1000);
     }

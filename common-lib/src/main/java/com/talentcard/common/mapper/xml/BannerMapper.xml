@@ -9,11 +9,13 @@
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="extra" jdbcType="CHAR" property="extra" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
-    banner_id, `name`, picture, jump, `type`, extra, create_time, `status`, dr
+    banner_id, `name`, picture, jump, `type`, extra, create_time, update_time, `status`, 
+    dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -28,10 +30,12 @@
   <insert id="insert" parameterType="com.talentcard.common.pojo.BannerPO">
     insert into t_banner (banner_id, `name`, picture, 
       jump, `type`, extra, create_time, 
-      `status`, dr)
+      update_time, `status`, dr
+      )
     values (#{bannerId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{picture,jdbcType=CHAR}, 
       #{jump,jdbcType=CHAR}, #{type,jdbcType=TINYINT}, #{extra,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT})
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.BannerPO">
     insert into t_banner
@@ -56,6 +60,9 @@
       </if>
       <if test="createTime != null">
         create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
       </if>
       <if test="status != null">
         `status`,
@@ -86,6 +93,9 @@
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
       </if>
@@ -115,6 +125,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
       </if>
@@ -132,6 +145,7 @@
       `type` = #{type,jdbcType=TINYINT},
       extra = #{extra,jdbcType=CHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=TINYINT},
       dr = #{dr,jdbcType=TINYINT}
     where banner_id = #{bannerId,jdbcType=BIGINT}
