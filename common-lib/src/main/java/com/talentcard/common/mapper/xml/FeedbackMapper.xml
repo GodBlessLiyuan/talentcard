@@ -105,14 +105,20 @@
 
     <select id="query" resultType="com.talentcard.common.bo.FeedbackBO">
         select f.feedback_id as feedbackId,
-               t.name,
-               uc.name       as card,
-               f.contact,
-               f.create_time as createTime,
-               f.content,
-               f.picture
+        t.name,
+        uc.name as card,
+        f.contact,
+        f.create_time as createTime,
+        f.content,
+        f.picture
         from t_feedback f
-                 left join t_talent t on f.talent_id = t.talent_id
-                 left join t_user_card uc on t.talent_id = uc.talent_id
+        left join t_talent t on f.talent_id = t.talent_id
+        left join t_user_card uc on t.talent_id = uc.talent_id
+        <where>
+            <if test="start != null and start !=''">and f.create_time >= #{start}</if>
+            <if test="end != null and end !=''">and f.create_time &lt;= #{end}</if>
+            <if test="name != null and name !=''">and t.`name` like '%' #{name} '%'</if>
+            <if test="contact != null and contact !=''">and f.contact like '%' #{contact} '%'</if>
+        </where>
     </select>
 </mapper>
