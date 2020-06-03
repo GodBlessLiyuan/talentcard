@@ -44,7 +44,7 @@ public class FilePathConfig {
     /**
      * 轮播图片目录
      */
-    private String bannerDir = "/banner /";
+    private String bannerDir = "/banner/";
     /**
      * 农家乐图片目录
      */

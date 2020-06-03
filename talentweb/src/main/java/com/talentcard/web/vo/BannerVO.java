@@ -1,5 +1,6 @@
 package com.talentcard.web.vo;
 
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.BannerPO;
 import lombok.Data;
 
@@ -47,7 +48,7 @@ public class BannerVO implements Serializable {
 
         vo.setBid(po.getBannerId());
         vo.setName(po.getName());
-        vo.setPicture(po.getPicture());
+        vo.setPicture(FilePathConfig.getStaticPublicBasePath() + po.getPicture());
         vo.setJump(po.getJump());
         vo.setType(po.getType());
         vo.setStatus(po.getStatus());
