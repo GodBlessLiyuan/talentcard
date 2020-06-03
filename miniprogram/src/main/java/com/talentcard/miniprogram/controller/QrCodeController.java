@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * @author: xiahui
  * @date: Created in 2020/6/3 15:48
@@ -22,7 +20,7 @@ public class QrCodeController {
     private IQrCodeService qrCodeService;
 
     @RequestMapping("create")
-    public ResultVO create(HttpServletResponse res, @Param("openId") String openId) {
-        return qrCodeService.create(res, openId);
+    public ResultVO create(@Param("openId") String openId) {
+        return qrCodeService.create(openId);
     }
 }
