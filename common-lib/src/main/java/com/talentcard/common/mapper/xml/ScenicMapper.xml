@@ -288,7 +288,7 @@
         <if test="starLevel != null and starLevel !=0 ">
             and starLevel = #{starLevel, jdbcType=TINYINT}
         </if>
-        <if test="area != null">
+        <if test="area != null and area!=0">
             and area = #{area, jdbcType=TINYINT}
         </if>
         <if test="order == 1">
