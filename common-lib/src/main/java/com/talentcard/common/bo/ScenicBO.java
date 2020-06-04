@@ -15,4 +15,5 @@ import java.util.List;
 @Data
 public class ScenicBO extends ScenicPO {
     private List<ScenicPicturePO> scenicPicturePOList;
+
 }

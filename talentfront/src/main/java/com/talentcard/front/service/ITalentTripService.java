@@ -13,21 +13,24 @@ import java.text.ParseException;
 public interface ITalentTripService {
     /**
      * 根据openId查找当前用户所拥有特权的二级目录有哪些
+     *
      * @param openId
      * @return
      */
-    ResultVO findSecondContent(String openId);
+    ResultVO findSecondContent(String openId, String name, Byte starLevel, Byte area, Byte order);
 
     /**
      * 根据activitySecondContentId查找景区detail
+     *
      * @param activitySecondContentId
      * @return
      */
-    ResultVO findOne(Long activitySecondContentId);
+    ResultVO findOne(Long activitySecondContentId, String openId);
 
 
     /**
      * 领取景区福利
+     *
      * @param openId
      * @param activitySecondContentId
      * @return
@@ -36,6 +39,7 @@ public interface ITalentTripService {
 
     /**
      * 得到当前人才某个景区福利的剩余次数
+     *
      * @param openId
      * @param activitySecondContentId
      * @return

@@ -1,59 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.ScenicMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ScenicPO">
-    <id column="scenic_id" jdbcType="BIGINT" property="scenicId" />
-    <result column="name" jdbcType="CHAR" property="name" />
-    <result column="rate" jdbcType="INTEGER" property="rate" />
-    <result column="unit" jdbcType="TINYINT" property="unit" />
-    <result column="times" jdbcType="INTEGER" property="times" />
-    <result column="avatar" jdbcType="CHAR" property="avatar" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="extra" jdbcType="VARCHAR" property="extra" />
-    <result column="qr_code" jdbcType="CHAR" property="qrCode" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="dr" jdbcType="TINYINT" property="dr" />
-    <result column="subtitle" jdbcType="CHAR" property="subtitle" />
-    <result column="starLevel" jdbcType="TINYINT" property="starlevel" />
-    <result column="area" jdbcType="INTEGER" property="area" />
-    <result column="location" jdbcType="CHAR" property="location" />
-  </resultMap>
-  <resultMap id="ScenicDetailResultMap" type="com.talentcard.common.bo.ScenicBO">
-    <id column="s_scenic_id" jdbcType="BIGINT" property="scenicId"/>
-    <result column="name" jdbcType="CHAR" property="name"/>
-    <result column="rate" jdbcType="INTEGER" property="rate"/>
-    <result column="unit" jdbcType="TINYINT" property="unit"/>
-    <result column="times" jdbcType="INTEGER" property="times"/>
-    <result column="avatar" jdbcType="CHAR" property="avatar"/>
-    <result column="description" jdbcType="CHAR" property="description"/>
-    <result column="extra" jdbcType="CHAR" property="extra"/>
-    <result column="qr_code" jdbcType="CHAR" property="qrCode"/>
-    <result column="status" jdbcType="TINYINT" property="status"/>
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-    <result column="dr" jdbcType="TINYINT" property="dr"/>
-    <collection property="scenicPicturePOList" ofType="com.talentcard.common.pojo.ScenicPicturePO">
-      <id column="sp_id" jdbcType="BIGINT" property="spId"/>
-      <result column="sp_scenic_id" jdbcType="BIGINT" property="scenicId"/>
-      <result column="picture" jdbcType="CHAR" property="picture"/>
-    </collection>
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ScenicPO">
+        <id column="scenic_id" jdbcType="BIGINT" property="scenicId"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="rate" jdbcType="INTEGER" property="rate"/>
+        <result column="unit" jdbcType="TINYINT" property="unit"/>
+        <result column="times" jdbcType="INTEGER" property="times"/>
+        <result column="avatar" jdbcType="CHAR" property="avatar"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="extra" jdbcType="VARCHAR" property="extra"/>
+        <result column="qr_code" jdbcType="CHAR" property="qrCode"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="dr" jdbcType="TINYINT" property="dr"/>
+        <result column="subtitle" jdbcType="CHAR" property="subtitle"/>
+        <result column="starLevel" jdbcType="TINYINT" property="starlevel"/>
+        <result column="area" jdbcType="INTEGER" property="area"/>
+        <result column="location" jdbcType="CHAR" property="location"/>
+    </resultMap>
+    <resultMap id="ScenicDetailResultMap" type="com.talentcard.common.bo.ScenicBO">
+        <id column="s_scenic_id" jdbcType="BIGINT" property="scenicId"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="rate" jdbcType="INTEGER" property="rate"/>
+        <result column="unit" jdbcType="TINYINT" property="unit"/>
+        <result column="times" jdbcType="INTEGER" property="times"/>
+        <result column="avatar" jdbcType="CHAR" property="avatar"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="extra" jdbcType="VARCHAR" property="extra"/>
+        <result column="qr_code" jdbcType="CHAR" property="qrCode"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="dr" jdbcType="TINYINT" property="dr"/>
+        <result column="subtitle" jdbcType="CHAR" property="subtitle"/>
+        <result column="starLevel" jdbcType="TINYINT" property="starlevel"/>
+        <result column="area" jdbcType="INTEGER" property="area"/>
+        <result column="location" jdbcType="CHAR" property="location"/>
+        <collection property="scenicPicturePOList" ofType="com.talentcard.common.pojo.ScenicPicturePO">
+            <id column="sp_id" jdbcType="BIGINT" property="spId"/>
+            <result column="sp_scenic_id" jdbcType="BIGINT" property="scenicId"/>
+            <result column="picture" jdbcType="CHAR" property="picture"/>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
     scenic_id, `name`, rate, unit, times, avatar, description, extra, qr_code, `status`, 
     create_time, dr, subtitle, starLevel, area, `location`
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_scenic
-    where scenic_id = #{scenicId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_scenic
+        where scenic_id = #{scenicId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_scenic
     where scenic_id = #{scenicId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.ScenicPO"
-          useGeneratedKeys="true" keyProperty="scenicId">
+    <insert id="insert" parameterType="com.talentcard.common.pojo.ScenicPO"
+            useGeneratedKeys="true" keyProperty="scenicId">
     insert into t_scenic (scenic_id, `name`, rate, 
       unit, times, avatar, description, 
       extra, qr_code, `status`, 
@@ -67,161 +71,161 @@
       #{starlevel,jdbcType=TINYINT}, #{area,jdbcType=INTEGER}, #{location,jdbcType=CHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ScenicPO">
-    insert into t_scenic
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="scenicId != null">
-        scenic_id,
-      </if>
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="rate != null">
-        rate,
-      </if>
-      <if test="unit != null">
-        unit,
-      </if>
-      <if test="times != null">
-        times,
-      </if>
-      <if test="avatar != null">
-        avatar,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="extra != null">
-        extra,
-      </if>
-      <if test="qrCode != null">
-        qr_code,
-      </if>
-      <if test="status != null">
-        `status`,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="dr != null">
-        dr,
-      </if>
-      <if test="subtitle != null">
-        subtitle,
-      </if>
-      <if test="starlevel != null">
-        starLevel,
-      </if>
-      <if test="area != null">
-        area,
-      </if>
-      <if test="location != null">
-        `location`,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="scenicId != null">
-        #{scenicId,jdbcType=BIGINT},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=CHAR},
-      </if>
-      <if test="rate != null">
-        #{rate,jdbcType=INTEGER},
-      </if>
-      <if test="unit != null">
-        #{unit,jdbcType=TINYINT},
-      </if>
-      <if test="times != null">
-        #{times,jdbcType=INTEGER},
-      </if>
-      <if test="avatar != null">
-        #{avatar,jdbcType=CHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="extra != null">
-        #{extra,jdbcType=VARCHAR},
-      </if>
-      <if test="qrCode != null">
-        #{qrCode,jdbcType=CHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dr != null">
-        #{dr,jdbcType=TINYINT},
-      </if>
-      <if test="subtitle != null">
-        #{subtitle,jdbcType=CHAR},
-      </if>
-      <if test="starlevel != null">
-        #{starlevel,jdbcType=TINYINT},
-      </if>
-      <if test="area != null">
-        #{area,jdbcType=INTEGER},
-      </if>
-      <if test="location != null">
-        #{location,jdbcType=CHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.ScenicPO">
-    update t_scenic
-    <set>
-      <if test="name != null">
-        `name` = #{name,jdbcType=CHAR},
-      </if>
-      <if test="rate != null">
-        rate = #{rate,jdbcType=INTEGER},
-      </if>
-      <if test="unit != null">
-        unit = #{unit,jdbcType=TINYINT},
-      </if>
-      <if test="times != null">
-        times = #{times,jdbcType=INTEGER},
-      </if>
-      <if test="avatar != null">
-        avatar = #{avatar,jdbcType=CHAR},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="extra != null">
-        extra = #{extra,jdbcType=VARCHAR},
-      </if>
-      <if test="qrCode != null">
-        qr_code = #{qrCode,jdbcType=CHAR},
-      </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dr != null">
-        dr = #{dr,jdbcType=TINYINT},
-      </if>
-      <if test="subtitle != null">
-        subtitle = #{subtitle,jdbcType=CHAR},
-      </if>
-      <if test="starlevel != null">
-        starLevel = #{starlevel,jdbcType=TINYINT},
-      </if>
-      <if test="area != null">
-        area = #{area,jdbcType=INTEGER},
-      </if>
-      <if test="location != null">
-        `location` = #{location,jdbcType=CHAR},
-      </if>
-    </set>
-    where scenic_id = #{scenicId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.ScenicPO">
+    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ScenicPO">
+        insert into t_scenic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="scenicId != null">
+                scenic_id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="rate != null">
+                rate,
+            </if>
+            <if test="unit != null">
+                unit,
+            </if>
+            <if test="times != null">
+                times,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="extra != null">
+                extra,
+            </if>
+            <if test="qrCode != null">
+                qr_code,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="dr != null">
+                dr,
+            </if>
+            <if test="subtitle != null">
+                subtitle,
+            </if>
+            <if test="starlevel != null">
+                starLevel,
+            </if>
+            <if test="area != null">
+                area,
+            </if>
+            <if test="location != null">
+                `location`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="scenicId != null">
+                #{scenicId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=CHAR},
+            </if>
+            <if test="rate != null">
+                #{rate,jdbcType=INTEGER},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=TINYINT},
+            </if>
+            <if test="times != null">
+                #{times,jdbcType=INTEGER},
+            </if>
+            <if test="avatar != null">
+                #{avatar,jdbcType=CHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="extra != null">
+                #{extra,jdbcType=VARCHAR},
+            </if>
+            <if test="qrCode != null">
+                #{qrCode,jdbcType=CHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dr != null">
+                #{dr,jdbcType=TINYINT},
+            </if>
+            <if test="subtitle != null">
+                #{subtitle,jdbcType=CHAR},
+            </if>
+            <if test="starlevel != null">
+                #{starlevel,jdbcType=TINYINT},
+            </if>
+            <if test="area != null">
+                #{area,jdbcType=INTEGER},
+            </if>
+            <if test="location != null">
+                #{location,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.ScenicPO">
+        update t_scenic
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=CHAR},
+            </if>
+            <if test="rate != null">
+                rate = #{rate,jdbcType=INTEGER},
+            </if>
+            <if test="unit != null">
+                unit = #{unit,jdbcType=TINYINT},
+            </if>
+            <if test="times != null">
+                times = #{times,jdbcType=INTEGER},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar,jdbcType=CHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="extra != null">
+                extra = #{extra,jdbcType=VARCHAR},
+            </if>
+            <if test="qrCode != null">
+                qr_code = #{qrCode,jdbcType=CHAR},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dr != null">
+                dr = #{dr,jdbcType=TINYINT},
+            </if>
+            <if test="subtitle != null">
+                subtitle = #{subtitle,jdbcType=CHAR},
+            </if>
+            <if test="starlevel != null">
+                starLevel = #{starlevel,jdbcType=TINYINT},
+            </if>
+            <if test="area != null">
+                area = #{area,jdbcType=INTEGER},
+            </if>
+            <if test="location != null">
+                `location` = #{location,jdbcType=CHAR},
+            </if>
+        </set>
+        where scenic_id = #{scenicId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.ScenicPO">
     update t_scenic
     set `name` = #{name,jdbcType=CHAR},
       rate = #{rate,jdbcType=INTEGER},
@@ -242,59 +246,65 @@
   </update>
 
 
-  <select id="query" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_scenic
-    where dr = 1
-    <if test="start != null and start !=''">and create_time >= #{start}</if>
-    <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
-    <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
-    <if test="status != null and status !=0">and `status` = #{status}</if>
-    order by status asc, create_time asc
-  </select>
+    <select id="query" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_scenic
+        where dr = 1
+        <if test="start != null and start !=''">and create_time >= #{start}</if>
+        <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
+        <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
+        <if test="status != null and status !=0">and `status` = #{status}</if>
+        order by status asc, create_time asc
+    </select>
 
-  <select id="queryByName" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_scenic
-    where `name` = #{name,jdbcType=CHAR} and dr = 1
-  </select>
+    <select id="queryByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_scenic
+        where `name` = #{name,jdbcType=CHAR} and dr = 1
+    </select>
 
-  <update id="updateStatus">
+    <update id="updateStatus">
         update t_scenic
         set `status` = #{status,jdbcType=TINYINT}
         where scenic_id = #{scenicId,jdbcType=BIGINT}
     </update>
 
-  <select id="findEnjoyScenic" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_scenic
-    where
-    (<foreach collection="scenicIdList" separator="or" item="scenicId">
-    scenic_id = #{scenicId, jdbcType=BIGINT}
-  </foreach>)
-    and status = 1
-    and dr = 1
-  </select>
+    <select id="findEnjoyScenic" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_scenic
+        where
+        (<foreach collection="scenicIdList" separator="or" item="scenicId">
+        scenic_id = #{scenicId, jdbcType=BIGINT}
+    </foreach>)
+        and status = 1
+        and dr = 1
+        <if test="name != null and name !=''">
+            and trim(replace(`name` ,' ',''))
+            like trim(replace ('%' #{name,jdbcType=CHAR} '%' ,' ',''))
+        </if>
+        <if test="starLevel != null">
+            and starLevel = #{starLevel, jdbcType=TINYINT}
+        </if>
+        <if test="area != null">
+            and area = #{area, jdbcType=TINYINT}
+        </if>
+        <if test="order == 1">
+            order by create_time asc
+        </if>
+        <if test="order == 2">
+            order by create_time desc
+        </if>
+    </select>
 
-  <select id="findOne" resultMap="ScenicDetailResultMap">
-        select s.scenic_id  as s_scenic_id,
-               `name`,
-               rate,
-               unit,
-               times,
-               avatar,
-               description,
-               extra,
-               qr_code,
-               `status`,
-               create_time,
-               dr,
-               sp_id,
-               sp.scenic_id as sp_scenic_id,
-               picture
+    <select id="findOne" resultMap="ScenicDetailResultMap">
+        select s.scenic_id as s_scenic_id,
+        `name`, rate, unit, times, avatar, description, extra,
+        qr_code, `status`, create_time, dr, subtitle,
+         starLevel, area, `location`,
+        sp_id, sp.scenic_id as sp_scenic_id, picture
         from t_scenic s
                  left join t_scenic_picture sp
                            on s.scenic_id = sp.scenic_id

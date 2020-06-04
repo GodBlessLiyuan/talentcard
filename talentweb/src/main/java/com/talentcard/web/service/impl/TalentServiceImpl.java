@@ -326,6 +326,14 @@ public class TalentServiceImpl implements ITalentService {
         /**
          * 正常认证业务逻辑
          */
+        //老BO
+        HashMap<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("openId", openId);
+        paramsMap.put("status", (byte) 5);
+        TalentBO oldTalentBO = talentMapper.findOne(paramsMap);
+        if (oldTalentBO == null) {
+            return NO_TALENT;
+        }
         //设置状态值 状态1为已认证
         Byte status = (byte) 4;
         //人才表
@@ -348,6 +356,17 @@ public class TalentServiceImpl implements ITalentService {
         educationPO.setTalentId(talentId);
         educationPO.setStatus(status);
         educationPO.setIfCertificate((byte) 1);
+        //老BO里取值
+        if (oldTalentBO.getEducationPOList() != null) {
+            EducationPO oldEducationPO = oldTalentBO.getEducationPOList().get(0);
+            if (oldEducationPO != null) {
+                educationPO.setEducation(oldEducationPO.getEducation());
+                educationPO.setSchool(oldEducationPO.getSchool());
+                educationPO.setFirstClass(oldEducationPO.getFirstClass());
+                educationPO.setMajor(oldEducationPO.getMajor());
+                educationPO.setEducPicture(oldEducationPO.getEducPicture());
+            }
+        }
         educationMapper.insertSelective(educationPO);
 
         //职称表
@@ -356,6 +375,15 @@ public class TalentServiceImpl implements ITalentService {
         profTitlePO.setTalentId(talentId);
         profTitlePO.setStatus(status);
         profTitlePO.setIfCertificate((byte) 1);
+        //老BO里取值
+        if (oldTalentBO.getProfTitlePOList() != null) {
+            ProfTitlePO oldProfTitlePO = oldTalentBO.getProfTitlePOList().get(0);
+            if (oldProfTitlePO != null) {
+                profTitlePO.setCategory(oldProfTitlePO.getCategory());
+                profTitlePO.setInfo(oldProfTitlePO.getInfo());
+                profTitlePO.setPicture(oldProfTitlePO.getPicture());
+            }
+        }
         profTitleMapper.insertSelective(profTitlePO);
 
 
@@ -365,6 +393,15 @@ public class TalentServiceImpl implements ITalentService {
         profQualityPO.setTalentId(talentId);
         profQualityPO.setStatus(status);
         profQualityPO.setIfCertificate((byte) 1);
+        //老BO里取值
+        if (oldTalentBO.getProfQualityPOList() != null) {
+            ProfQualityPO oldProfQualityPO = oldTalentBO.getProfQualityPOList().get(0);
+            if (oldProfQualityPO != null) {
+                profQualityPO.setCategory(oldProfQualityPO.getCategory());
+                profQualityPO.setInfo(oldProfQualityPO.getInfo());
+                profQualityPO.setPicture(oldProfQualityPO.getPicture());
+            }
+        }
         profQualityMapper.insertSelective(profQualityPO);
 
         //荣誉表
@@ -373,6 +410,15 @@ public class TalentServiceImpl implements ITalentService {
         talentHonourPO.setTalentId(talentId);
         talentHonourPO.setStatus(status);
         talentHonourPO.setIfCertificate((byte) 1);
+        //老BO里取值
+        if (oldTalentBO.getTalentHonourPOList() != null) {
+            TalentHonourPO oldTalentHonourPO = oldTalentBO.getTalentHonourPOList().get(0);
+            if (oldTalentHonourPO != null) {
+                talentHonourPO.setHonourId(talentHonour);
+                talentHonourPO.setHonourPicture(oldTalentHonourPO.getHonourPicture());
+                talentHonourPO.setInfo(oldTalentHonourPO.getInfo());
+            }
+        }
         talentHonourMapper.insertSelective(talentHonourPO);
 
         ActivcateBO oldCard = talentMapper.activate(talentPO.getOpenId(), (byte) 5, (byte) 2);
@@ -429,7 +475,6 @@ public class TalentServiceImpl implements ITalentService {
 
         sendMessage(talentPO);
         return SUCCESS;
-
     }
 
     private void sendMessage(TalentPO talentPO) {
