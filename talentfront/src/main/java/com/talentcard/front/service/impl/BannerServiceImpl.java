@@ -5,6 +5,7 @@ import com.talentcard.common.mapper.BannerMapper;
 import com.talentcard.common.pojo.BannerPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IBannerService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +30,9 @@ public class BannerServiceImpl implements IBannerService {
         String picture;
         for (BannerPO bannerPO : bannerPOList) {
             picture = bannerPO.getPicture();
-            if (picture != null && !picture.equals("")) {
-                System.out.println(filePathConfig.getPublicBasePath());
+            if (picture != null && !StringUtils.isEmpty(picture)) {
                 picture = filePathConfig.getPublicBasePath() + picture;
                 bannerPO.setPicture(picture);
-                System.out.println(picture);
             }
         }
         return new ResultVO(1000, bannerPOList);

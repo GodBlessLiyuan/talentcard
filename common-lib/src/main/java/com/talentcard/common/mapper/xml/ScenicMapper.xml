@@ -285,7 +285,7 @@
             and trim(replace(`name` ,' ',''))
             like trim(replace ('%' #{name,jdbcType=CHAR} '%' ,' ',''))
         </if>
-        <if test="starLevel != null">
+        <if test="starLevel != null and starLevel !=0 ">
             and starLevel = #{starLevel, jdbcType=TINYINT}
         </if>
         <if test="area != null">
