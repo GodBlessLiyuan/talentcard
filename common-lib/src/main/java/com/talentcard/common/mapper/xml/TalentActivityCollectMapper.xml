@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.TalentActivityCollectMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentActivityCollectPO">
+    <id column="tac_id" jdbcType="BIGINT" property="tacId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="activity_first_content_id" jdbcType="BIGINT" property="activityFirstContentId" />
+    <result column="activity_second_content_id" jdbcType="BIGINT" property="activitySecondContentId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tac_id, talent_id, activity_first_content_id, activity_second_content_id, create_time, 
+    `status`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_talent_activity_collect
+    where tac_id = #{tacId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_talent_activity_collect
+    where tac_id = #{tacId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.TalentActivityCollectPO">
+    insert into t_talent_activity_collect (tac_id, talent_id, activity_first_content_id, 
+      activity_second_content_id, create_time, `status`
+      )
+    values (#{tacId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{activityFirstContentId,jdbcType=BIGINT}, 
+      #{activitySecondContentId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentActivityCollectPO">
+    insert into t_talent_activity_collect
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tacId != null">
+        tac_id,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="activityFirstContentId != null">
+        activity_first_content_id,
+      </if>
+      <if test="activitySecondContentId != null">
+        activity_second_content_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tacId != null">
+        #{tacId,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="activityFirstContentId != null">
+        #{activityFirstContentId,jdbcType=BIGINT},
+      </if>
+      <if test="activitySecondContentId != null">
+        #{activitySecondContentId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentActivityCollectPO">
+    update t_talent_activity_collect
+    <set>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="activityFirstContentId != null">
+        activity_first_content_id = #{activityFirstContentId,jdbcType=BIGINT},
+      </if>
+      <if test="activitySecondContentId != null">
+        activity_second_content_id = #{activitySecondContentId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where tac_id = #{tacId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentActivityCollectPO">
+    update t_talent_activity_collect
+    set talent_id = #{talentId,jdbcType=BIGINT},
+      activity_first_content_id = #{activityFirstContentId,jdbcType=BIGINT},
+      activity_second_content_id = #{activitySecondContentId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=TINYINT}
+    where tac_id = #{tacId,jdbcType=BIGINT}
+  </update>
+
+  <select id="findMyCollect" resultType="java.lang.Long">
+    select
+    tac.activity_second_content_id as activitySecondContentId
+    from t_talent_activity_collect tac
+    left join t_talent t
+    on tac.talent_id = t.talent_id
+    where tac.activity_first_content_id = #{activityFirstContentId,jdbcType=BIGINT}
+    and t.open_id = #{openId,jdbcType=CHAR}
+    and tac.status = 1
+  </select>
+</mapper>

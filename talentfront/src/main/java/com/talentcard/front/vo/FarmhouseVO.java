@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,6 +28,13 @@ public class FarmhouseVO {
     private String qrCode;
     private Date createTime;
 
+    private String subtitle;
+    private Integer area;
+    private String location;
+    private Long averageCost;
+
+    //是否收藏
+    private Byte ifCollect;
     private List<FarmhousePicturePO> farmhousePicturePOList;
 
 
@@ -44,6 +52,10 @@ public class FarmhouseVO {
         farmhouseVO.setDescription(farmhousePO.getDescription());
         farmhouseVO.setExtra(farmhousePO.getExtra());
         farmhouseVO.setCreateTime(farmhousePO.getCreateTime());
+        farmhouseVO.setSubtitle(farmhousePO.getSubtitle());
+        farmhouseVO.setArea(farmhousePO.getArea());
+        farmhouseVO.setLocation(farmhousePO.getLocation());
+        farmhouseVO.setAverageCost(farmhousePO.getAverageCost());
 
         //avatar
         if (farmhousePO.getAvatar() != null && !farmhousePO.getAvatar().equals("")) {
@@ -89,5 +101,49 @@ public class FarmhouseVO {
             farmhouseVOList.add(FarmhouseVO.convert(farmhousePO));
         }
         return farmhouseVOList;
+    }
+    /**
+     * 判断是否收藏
+     * @param farmhouseVOList
+     * @param activitySecondContentIdList
+     * @return
+     */
+    public static List<FarmhouseVO> setIfCollect(List<FarmhouseVO> farmhouseVOList, List<Long> activitySecondContentIdList) {
+        HashMap hashMap = new HashMap();
+        if (activitySecondContentIdList != null) {
+            for (Long activitySecondContentId : activitySecondContentIdList) {
+                hashMap.put(activitySecondContentId, activitySecondContentId);
+            }
+        }
+        for (FarmhouseVO farmhouseVO : farmhouseVOList) {
+            if (hashMap.get(farmhouseVO.getFarmhouseId()) != null) {
+                farmhouseVO.setIfCollect((byte) 1);
+            } else {
+                farmhouseVO.setIfCollect((byte) 2);
+            }
+        }
+        return farmhouseVOList;
+    }
+
+    /**
+     * 判断是否收藏
+     *
+     * @param farmhouseVO
+     * @param activitySecondContentIdList
+     * @return
+     */
+    public static FarmhouseVO setIfCollect(FarmhouseVO farmhouseVO, List<Long> activitySecondContentIdList) {
+        HashMap<Long, Long> hashMap = new HashMap();
+        if (activitySecondContentIdList != null) {
+            for (Long activitySecondContentId : activitySecondContentIdList) {
+                hashMap.put(activitySecondContentId, activitySecondContentId);
+            }
+        }
+        if (hashMap.get(farmhouseVO.getFarmhouseId()) != null) {
+            farmhouseVO.setIfCollect((byte) 1);
+        } else {
+            farmhouseVO.setIfCollect((byte) 2);
+        }
+        return farmhouseVO;
     }
 }

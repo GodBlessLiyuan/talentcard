@@ -5,6 +5,7 @@ import com.talentcard.common.pojo.ScenicPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -32,7 +33,11 @@ public interface ScenicMapper extends BaseMapper<ScenicPO, Long> {
      * 查询符合条件的景区
      * @param scenicIdList
      */
-    List<ScenicPO> findEnjoyScenic(@Param("scenicIdList") List<Long> scenicIdList);
+    List<ScenicPO> findEnjoyScenic(@Param("scenicIdList") List<Long> scenicIdList,
+                                   @Param("name") String name,
+                                   @Param("starLevel") Byte starLevel,
+                                   @Param("area") Byte area,
+                                   @Param("order") Byte order);
 
     /**
      * 根据目录id得到一个具体信息
