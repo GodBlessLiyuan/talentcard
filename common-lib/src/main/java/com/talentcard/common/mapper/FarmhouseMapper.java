@@ -34,7 +34,10 @@ public interface FarmhouseMapper extends BaseMapper<FarmhousePO, Long> {
      * 查询符合条件的景区
      * @param farmhouseList
      */
-    List<FarmhousePO> findEnjoyFarmhouse(@Param("farmhouseList") List<Long> farmhouseList);
+    List<FarmhousePO> findEnjoyFarmhouse(@Param("farmhouseList") List<Long> farmhouseList,
+                                         @Param("name") String name,
+                                         @Param("area") Byte area,
+                                         @Param("order") Byte order);
 
     /**
      * 根据目录id得到一个具体信息

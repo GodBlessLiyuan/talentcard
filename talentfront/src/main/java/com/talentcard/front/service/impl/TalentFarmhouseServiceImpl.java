@@ -15,6 +15,7 @@ import com.talentcard.front.service.ITalentFarmhouseService;
 import com.talentcard.front.utils.ActivityResidueNumUtil;
 import com.talentcard.front.utils.TalentActivityUtil;
 import com.talentcard.front.vo.FarmhouseVO;
+import com.talentcard.front.vo.ScenicVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,23 +49,25 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
     private FarmhouseGroupAuthorityMapper farmhouseGroupAuthorityMapper;
     @Autowired
     private RedisMapUtil redisMapUtil;
+    @Autowired
+    private TalentActivityCollectMapper talentActivityCollectMapper;
 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO findSecondContent(String openId) {
+    public ResultVO findSecondContent(String openId, String name, Byte area, Byte order) {
         //先从redis中获取数据
         String mapStr = this.redisMapUtil.hget(openId, "findTalentType");
-        if(log.isInfoEnabled()) {
+        if (log.isInfoEnabled()) {
             log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: TalentType Data In Redis [{}]:", mapStr,
                     " : With Redis Key [{}]:", openId, "findTalentType");
         }
         TalentTypeVO talentTypeVO = null;
-        if(!StringUtils.isEmpty(mapStr)){
+        if (!StringUtils.isEmpty(mapStr)) {
             talentTypeVO = StringToObjUtil.strToObj(mapStr, TalentTypeVO.class);
         }
 
-        if(talentTypeVO == null){
+        if (talentTypeVO == null) {
             TalentPO talentPO = talentMapper.selectByOpenId(openId);
             if (talentPO == null) {
                 return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
@@ -89,10 +92,10 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
             talentTypeVO.setQuality(userCurrentInfoPO.getPqCategory());
             talentTypeVO.setTalentHonour(userCurrentInfoPO.getHonourId());
             talentTypeVO.setCategoryList(categoryList);
-            if(log.isInfoEnabled()) {
+            if (log.isInfoEnabled()) {
                 log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: TalentType Data In DB [{}]:", talentTypeVO);
             }
-            this.redisMapUtil.hset(openId,"findTalentType", JSON.toJSONString(talentTypeVO));
+            this.redisMapUtil.hset(openId, "findTalentType", JSON.toJSONString(talentTypeVO));
         }
 
 
@@ -101,16 +104,16 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
         List<FarmhouseVO> list = null;
 
         String s_list = redisMapUtil.hget("talentfarmhouse", code);
-        if(!StringUtils.isEmpty(s_list)){
+        if (!StringUtils.isEmpty(s_list)) {
             list = StringToObjUtil.strToObj(mapStr, List.class);
         }
         LocalDate date = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String lon = redisMapUtil.hget("talentfarmhouse","benefitNum" + date.format(formatter));
+        String lon = redisMapUtil.hget("talentfarmhouse", "benefitNum" + date.format(formatter));
 
         Map<String, Object> resultMap = new HashMap<>(2);
 
-        if(log.isInfoEnabled()) {
+        if (log.isInfoEnabled()) {
             log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl:Talent Benefit Farmhouse In Redis [{}]:",
                     s_list, " : With Redis Key [{}]:", "talentfarmhouse ", code);
             log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: Number Of Benefit In Redis [{}]:",
@@ -149,28 +152,31 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
                 farmhouseIdList = farmhouseIdList.stream().distinct().collect(Collectors.toList());
             }
             //景区表，查询符合条件的景区
-            List<FarmhousePO> farmhousePOList = farmhouseMapper.findEnjoyFarmhouse(farmhouseIdList);
+            List<FarmhousePO> farmhousePOList = farmhouseMapper.findEnjoyFarmhouse(farmhouseIdList, name, area, order);
 
-            if(farmhousePOList !=null && farmhousePOList.size() > 0){
+            if (farmhousePOList != null && farmhousePOList.size() > 0) {
                 List<FarmhouseVO> farmhouseVOList = FarmhouseVO.convert(farmhousePOList);
+                //我的收藏
+                List<Long> activitySecondContentIdList = talentActivityCollectMapper.findMyCollect(openId, (long) 2);
+                farmhouseVOList = FarmhouseVO.setIfCollect(farmhouseVOList, activitySecondContentIdList);
                 //拼结果
                 Long benefitNum = ActivityResidueNumUtil.getResidueNum();
                 resultMap.put("farmhouseVOList", farmhouseVOList);
                 resultMap.put("benefitNum", benefitNum);
                 redisMapUtil.hset("talentfarmhouse", code, JSON.toJSONString(farmhouseVOList));
-                redisMapUtil.hset("talentfarmhouse","benefitNum" + date.format(formatter), String.valueOf(benefitNum));
-                if(log.isInfoEnabled()) {
+                redisMapUtil.hset("talentfarmhouse", "benefitNum" + date.format(formatter), String.valueOf(benefitNum));
+                if (log.isInfoEnabled()) {
                     log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: farmhouseVOList In DB [{}]:",
                             farmhouseVOList);
                     log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: benefitNum In DB [{}]:",
                             farmhouseVOList);
                 }
-            }else {
+            } else {
                 resultMap.put("farmhouseVOList", new ArrayList<>(0));
                 resultMap.put("benefitNum", 0);
             }
 
-        }else{
+        } else {
             resultMap.put("farmhouseVOList", list);
             resultMap.put("benefitNum", Long.parseLong(lon));
         }
@@ -178,12 +184,21 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
     }
 
     @Override
-    public ResultVO findOne(Long activitySecondContentId) {
+    public ResultVO findOne(Long activitySecondContentId, String openId) {
         FarmhouseBO farmhouseBO = farmhouseMapper.findOne(activitySecondContentId);
         if (farmhouseBO == null) {
             return new ResultVO(2504, "查无农家乐");
         }
         FarmhouseVO farmhouseVO = FarmhouseVO.convert(farmhouseBO);
+        /**
+         * openId不为null，说明要给是否收藏，次数等信息
+         */
+        //算次数
+        if (openId != null) {
+            //我的收藏
+            List<Long> activitySecondContentIdList = talentActivityCollectMapper.findMyCollect(openId, (long) 1);
+            farmhouseVO = FarmhouseVO.setIfCollect(farmhouseVO, activitySecondContentIdList);
+        }
         return new ResultVO(1000, farmhouseVO);
     }
 

@@ -22,14 +22,20 @@ public class TalentTripController {
     private ITalentTripService iTalentTripService;
 
     /**
-     * 根据openId查找当前用户所拥有特权的二级目录有哪些
-     *
      * @param openId
+     * @param name
+     * @param starLevel
+     * @param area
+     * @param order
      * @return
      */
     @RequestMapping("findSecondContent")
-    public ResultVO findSecondContent(@RequestParam("openId") String openId) {
-        return iTalentTripService.findSecondContent(openId);
+    public ResultVO findSecondContent(@RequestParam(value = "openId") String openId,
+                                      @RequestParam(value = "name", required = false, defaultValue = "") String name,
+                                      @RequestParam(value = "starLevel", required = false) Byte starLevel,
+                                      @RequestParam(value = "area", required = false) Byte area,
+                                      @RequestParam(value = "order", required = false, defaultValue = "1") Byte order) {
+        return iTalentTripService.findSecondContent(openId, name, starLevel, area, order);
     }
 
     /**
@@ -39,8 +45,9 @@ public class TalentTripController {
      * @return
      */
     @RequestMapping("findOne")
-    public ResultVO findOne(@RequestParam("activitySecondContentId") Long activitySecondContentId) {
-        return iTalentTripService.findOne(activitySecondContentId);
+    public ResultVO findOne(@RequestParam("activitySecondContentId") Long activitySecondContentId,
+                            @RequestParam(value = "openId", required = false) String openId) {
+        return iTalentTripService.findOne(activitySecondContentId, openId);
     }
 
     /**

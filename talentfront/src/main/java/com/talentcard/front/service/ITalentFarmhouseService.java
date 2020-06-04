@@ -16,12 +16,12 @@ public interface ITalentFarmhouseService {
      * @param openId
      * @return
      */
-    ResultVO findSecondContent(String openId);
+    ResultVO findSecondContent(String openId, String name, Byte area, Byte order);
 
     /**
      * 根据scenicId查找景区detail
      * @param scenicId
      * @return
      */
-    ResultVO findOne(Long scenicId);
+    ResultVO findOne(Long scenicId, String openId);
 }

@@ -3,11 +3,11 @@ package com.talentcard.front.vo;
 import com.talentcard.common.bo.ScenicBO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.*;
+import com.talentcard.front.service.impl.TalentServiceImpl;
+import com.talentcard.front.service.impl.TalentTripServiceImpl;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author ChenXU
@@ -29,8 +29,18 @@ public class ScenicVO {
     private String avatar;
     private String qrCode;
 
-    private List<ScenicPicturePO> scenicPicturePOList;
+    private String subtitle;
+    private Byte starlevel;
+    private Integer area;
+    private String location;
 
+    //是否收藏
+    private Byte ifCollect;
+    //已使用次数
+    private Integer getTimes;
+    //使用期限
+    private String usagePeriod;
+    private List<ScenicPicturePO> scenicPicturePOList;
 
     /**
      * PO转VO
@@ -48,6 +58,10 @@ public class ScenicVO {
         scenicVO.setDescription(scenicPO.getDescription());
         scenicVO.setExtra(scenicPO.getExtra());
         scenicVO.setCreateTime(scenicPO.getCreateTime());
+        scenicVO.setSubtitle(scenicPO.getSubtitle());
+        scenicVO.setStarlevel(scenicPO.getStarlevel());
+        scenicVO.setArea(scenicPO.getArea());
+        scenicVO.setLocation(scenicPO.getLocation());
 
         //avatar
         if (scenicPO.getAvatar() != null && !scenicPO.getAvatar().equals("")) {
@@ -93,5 +107,68 @@ public class ScenicVO {
             scenicVOList.add(ScenicVO.convert(scenicPO));
         }
         return scenicVOList;
+    }
+
+    /**
+     * 判断是否收藏
+     *
+     * @param scenicVOList
+     * @param activitySecondContentIdList
+     * @return
+     */
+    public static List<ScenicVO> assignIfCollect(List<ScenicVO> scenicVOList, List<Long> activitySecondContentIdList) {
+        HashMap hashMap = new HashMap();
+        if (activitySecondContentIdList != null) {
+            for (Long activitySecondContentId : activitySecondContentIdList) {
+                hashMap.put(activitySecondContentId, activitySecondContentId);
+            }
+        }
+        for (ScenicVO scenicVO : scenicVOList) {
+            if (hashMap.get(scenicVO.getScenicId()) != null) {
+                scenicVO.setIfCollect((byte) 1);
+            } else {
+                scenicVO.setIfCollect((byte) 2);
+            }
+        }
+        return scenicVOList;
+    }
+
+    /**
+     * 判断是否收藏
+     *
+     * @param scenicVO
+     * @param activitySecondContentIdList
+     * @return
+     */
+    public static ScenicVO assignIfCollect(ScenicVO scenicVO, List<Long> activitySecondContentIdList) {
+        HashMap<Long, Long> hashMap = new HashMap();
+        if (activitySecondContentIdList != null) {
+            for (Long activitySecondContentId : activitySecondContentIdList) {
+                hashMap.put(activitySecondContentId, activitySecondContentId);
+            }
+        }
+        if (hashMap.get(scenicVO.getScenicId()) != null) {
+            scenicVO.setIfCollect((byte) 1);
+        } else {
+            scenicVO.setIfCollect((byte) 2);
+        }
+        return scenicVO;
+    }
+
+    public static ScenicVO assignUsagePeriod(ScenicVO scenicVO) {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int lastDay = 0;
+        if (month == 2) {
+            lastDay = calendar.getLeastMaximum(Calendar.DAY_OF_MONTH);
+        } else {
+            lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        }
+        String startTime = year + "-" + month + "-01";
+        String endTime = year + "-" + month + "-" + lastDay;
+        String usagePeriod = startTime + "~" + endTime;
+        scenicVO.setUsagePeriod(usagePeriod);
+        return scenicVO;
     }
 }

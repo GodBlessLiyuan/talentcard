@@ -27,8 +27,11 @@ public class TalentFarmhouseController {
      * @return
      */
     @RequestMapping("findSecondContent")
-    public ResultVO findSecondContent(@RequestParam("openId") String openId) {
-        return iTalentFarmhouseService.findSecondContent(openId);
+    public ResultVO findSecondContent(@RequestParam(value = "openId") String openId,
+                                      @RequestParam(value = "name", required = false, defaultValue = "") String name,
+                                      @RequestParam(value = "area", required = false) Byte area,
+                                      @RequestParam(value = "order", required = false, defaultValue = "2") Byte order) {
+        return iTalentFarmhouseService.findSecondContent(openId, name, area, order);
     }
 
     /**
@@ -38,8 +41,9 @@ public class TalentFarmhouseController {
      * @return
      */
     @RequestMapping("findOne")
-    public ResultVO findOne(@RequestParam("activitySecondContentId") Long activitySecondContentId) {
-        return iTalentFarmhouseService.findOne(activitySecondContentId);
+    public ResultVO findOne(@RequestParam("activitySecondContentId") Long activitySecondContentId,
+                            @RequestParam(value = "openId", required = false) String openId) {
+        return iTalentFarmhouseService.findOne(activitySecondContentId, openId);
     }
 
 }
