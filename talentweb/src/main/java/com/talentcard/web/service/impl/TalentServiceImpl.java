@@ -207,7 +207,7 @@ public class TalentServiceImpl implements ITalentService {
         String talentCategory = batchCertificateDTO.getTalentCategory();
         Long talentHonour = batchCertificateDTO.getTalentHonour();
         String honour = BatchCertificateUtil.convertTalentHonour(talentHonour);
-        talentCategory = BatchCertificateUtil.convertTalentCategory(talentCategory);
+        String talentCategoryString = BatchCertificateUtil.convertTalentCategory(talentCategory);
 
         Long cardId = batchCertificateDTO.getCardId();
         //定义所需要的参数
@@ -240,7 +240,7 @@ public class TalentServiceImpl implements ITalentService {
                 result = resultList.get(i);
                 if (result.equals(SUCCESS)) {
                     row[2] = talentCard;
-                    row[3] = talentCategory;
+                    row[3] = talentCategoryString;
                     row[4] = honour;
                     row[5] = "成功";
                     row[6] = "";

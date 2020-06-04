@@ -1,4 +1,4 @@
-package com.talentcard.wechat.utils;
+package com.talentcard.miniprogram.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.exception.WechatException;
@@ -7,19 +7,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 @Component
 public class JsSdkUtil {
     private static final Logger logger = LoggerFactory.getLogger(JsSdkUtil.class);
     @Autowired
-    private StringRedisTemplate redisTemplate;
-    private static StringRedisTemplate myRedis;
+    private RedisTemplate redisTemplate;
+    private static RedisTemplate myRedis;
 
     /**
      * 构造方法执行后的初始化
@@ -43,19 +41,19 @@ public class JsSdkUtil {
         //判断拿到apiTicket是否为空，若为空，抛异常
         //不为空，则如下，更新apiTicket，且记录当前时间
         if (apiTicket != null) {
-            myRedis.opsForValue().set("apiTicket", apiTicket, 100L, TimeUnit.MINUTES);
-            logger.info("成功拿到apiTicket：{}", apiTicket);
+            myRedis.opsForValue().set("miniProgramApiTicket", apiTicket, 100L, TimeUnit.MINUTES);
+            logger.info("成功拿到miniProgramApiTicket：{}", apiTicket);
         } else {
-            throw new WechatException("apiTicket拿不到");
+            throw new WechatException("miniProgramApiTicket拿不到");
         }
     }
 
     public static String getApiTicket() throws WechatException {
         //100分钟，更换apiTicket
-        String apiTicket = (String) myRedis.opsForValue().get("apiTicket");
+        String apiTicket = (String) myRedis.opsForValue().get("miniProgramApiTicket");
         if (apiTicket == null || apiTicket.equals("")) {
             JsSdkUtil.applyApiTicket();
-            apiTicket = (String) myRedis.opsForValue().get("apiTicket");
+            apiTicket = (String) myRedis.opsForValue().get("miniProgramApiTicket");
         }
         return apiTicket;
     }

@@ -30,7 +30,7 @@ public class TalentFarmhouseController {
     public ResultVO findSecondContent(@RequestParam(value = "openId") String openId,
                                       @RequestParam(value = "name", required = false, defaultValue = "") String name,
                                       @RequestParam(value = "area", required = false) Byte area,
-                                      @RequestParam(value = "order", required = false, defaultValue = "2") Byte order) {
+                                      @RequestParam(value = "order", required = false, defaultValue = "1") Byte order) {
         return iTalentFarmhouseService.findSecondContent(openId, name, area, order);
     }
 

@@ -20,9 +20,9 @@ public class TalentTripPO implements Serializable {
 
     private Date createTime;
 
-    private Date updateTime;
-
     private Date effectiveTime;
+
+    private Date updateTime;
 
     private Byte status;
 
@@ -30,6 +30,10 @@ public class TalentTripPO implements Serializable {
      * 1 未删除  2 已删除
      */
     private Byte dr;
+
+    private String usagePeriod;
+
+    private Date effectiveTimeStart;
 
     private static final long serialVersionUID = 1L;
 }

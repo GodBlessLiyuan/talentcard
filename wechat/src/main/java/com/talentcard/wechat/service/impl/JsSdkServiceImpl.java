@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class JsServiceImpl implements IJsSdkService {
+public class JsSdkServiceImpl implements IJsSdkService {
     @Autowired
     private IWxTalentService iWxTalentService;
 

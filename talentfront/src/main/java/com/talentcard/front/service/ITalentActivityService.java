@@ -30,4 +30,6 @@ public interface ITalentActivityService{
      */
     String getOpenId(String cardNum);
 
+    ResultVO findActivityTicket(String openId, Byte type);
+
 }

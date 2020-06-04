@@ -3,6 +3,7 @@ package com.talentcard.front.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.TalentActivityHistoryPO;
+import com.talentcard.common.pojo.TalentTripPO;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.ITalentActivityService;
@@ -12,6 +13,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,13 +43,15 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
     private ITalentService iTalentService;
     @Autowired
     private RedisMapUtil redisMapUtil;
+    @Autowired
+    private TalentTripMapper talentTripMapper;
 
     @Override
     public ResultVO findFirstContent(String openId) {
 
         TalentTypeVO vo = iTalentService.getTalentInfo(openId);
 
-        if(vo == null){
+        if (vo == null) {
             return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
         }
 
@@ -58,8 +63,8 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
          * 每一个活动挨个枚举
          */
 
-        String s_trip = redisMapUtil.hget("talentTrip",talentType);
-        if(StringUtils.isEmpty(s_trip)){
+        String s_trip = redisMapUtil.hget("talentTrip", talentType);
+        if (StringUtils.isEmpty(s_trip)) {
             List<Long> scenicIdList;
             /**
              * 旅游
@@ -73,18 +78,18 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
                 s_trip = String.valueOf(2);
             }
 
-            redisMapUtil.hset("talentTrip",talentType, s_trip);
-        }else {
+            redisMapUtil.hset("talentTrip", talentType, s_trip);
+        } else {
             try {
                 resultHashMap.put("trip", Integer.valueOf(s_trip));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 resultHashMap.put("trip", Integer.valueOf(2));
             }
         }
 
-        String s_farmhouse = redisMapUtil.hget("talentfarmhouse",talentType);
-        if(StringUtils.isEmpty(s_farmhouse)){
+        String s_farmhouse = redisMapUtil.hget("talentfarmhouse", talentType);
+        if (StringUtils.isEmpty(s_farmhouse)) {
             List<Long> farmhouseList;
 
             /**
@@ -99,11 +104,11 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
                 s_farmhouse = String.valueOf(2);
             }
 
-            redisMapUtil.hset("talentfarmhouse",talentType, s_farmhouse);
-        }else {
+            redisMapUtil.hset("talentfarmhouse", talentType, s_farmhouse);
+        } else {
             try {
                 resultHashMap.put("farmhouse", Integer.valueOf(s_farmhouse));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 resultHashMap.put("farmhouse", 2);
             }
@@ -121,5 +126,13 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
     @Override
     public String getOpenId(String cardNum) {
         return userCardMapper.findOpenIdByCardNum(cardNum);
+    }
+
+    @Override
+    public ResultVO findActivityTicket(String openId, Byte type) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = simpleDateFormat.format(new Date());
+        List<TalentTripPO> talentTripPOList = talentTripMapper.findActivityCardTicket(openId, currentTime, type);
+        return new ResultVO(1000, talentTripPOList);
     }
 }
