@@ -26,6 +26,7 @@ public class BannerVO implements Serializable {
     private Byte type;
     private Byte status;
     private Date ctime;
+    private String extra;
 
     /**
      * pos 转 vos
@@ -53,6 +54,7 @@ public class BannerVO implements Serializable {
         vo.setType(po.getType());
         vo.setStatus(po.getStatus());
         vo.setCtime(po.getCreateTime());
+        vo.setExtra(po.getExtra());
 
         return vo;
     }
