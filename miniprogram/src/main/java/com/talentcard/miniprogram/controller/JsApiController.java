@@ -67,7 +67,7 @@ public class JsApiController {
      */
     @PostMapping("getJsToken")
     public ResultVO getJsToken(String code) {
-        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appId
+        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appId
                 + "&secret=" + appSecret
                 + "&js_code=" + code
                 + "&grant_type=authorization_code";
