@@ -28,6 +28,10 @@
     <result column="status" jdbcType="TINYINT" property="status"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="dr" jdbcType="TINYINT" property="dr"/>
+    <result column="subtitle" jdbcType="CHAR" property="subtitle" />
+    <result column="area" jdbcType="INTEGER" property="area" />
+    <result column="location" jdbcType="CHAR" property="location" />
+    <result column="average_cost" jdbcType="DECIMAL" property="averageCost" />
     <collection property="farmhousePicturePOList" ofType="com.talentcard.common.pojo.FarmhousePicturePO">
       <id column="fp_id" jdbcType="BIGINT" property="fpId"/>
       <result column="fp_farmhouse_id" jdbcType="BIGINT" property="farmhouseId"/>
@@ -281,9 +285,8 @@
                qr_code,
                `status`,
                create_time,
-               dr
-                                  create_time,
                dr,
+               subtitle, area, `location`, average_cost,
                fp_id,
                fp.farmhouse_id as fp_farmhouse_id,
                picture,
