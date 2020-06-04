@@ -114,7 +114,7 @@
         from t_feedback f
         left join t_talent t on f.talent_id = t.talent_id
         left join t_user_card uc on t.talent_id = uc.talent_id
-        where uc.status != 3
+        where uc.status = 2
         <if test="start != null and start !=''">and f.create_time >= #{start}</if>
         <if test="end != null and end !=''">and f.create_time &lt;= #{end}</if>
         <if test="name != null and name !=''">and t.`name` like '%' #{name} '%'</if>
