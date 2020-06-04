@@ -85,6 +85,11 @@ public class FilePathConfig {
     private String talentHonourDir = "/talentHonourDir/";
 
     /**
+     * 意见反馈
+     */
+    private String activityFeedBack = "activityFeedBack/";
+
+    /**
      * 内部调用对外访问网络地址
      */
     private static String staticPublicBasePath;
