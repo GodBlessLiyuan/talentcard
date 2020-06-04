@@ -69,7 +69,7 @@ public class JsApiController {
     public ResultVO getJsToken(String code) {
         String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appId
                 + "&secret=" + appSecret
-                + "&code=" + code
+                + "&js_code=" + code
                 + "&grant_type=authorization_code";
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
