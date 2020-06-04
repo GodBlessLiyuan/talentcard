@@ -1,4 +1,4 @@
-package com.talentcard.web.service;
+package com.talentcard.miniprogram.service;
 
 import com.talentcard.common.vo.ResultVO;
 
@@ -16,13 +16,4 @@ public interface IConfigService {
      * @return
      */
     ResultVO query(String key);
-
-    /**
-     * 编辑配置信息
-     *
-     * @param key
-     * @param value
-     * @return
-     */
-    ResultVO edit(String key, String value);
 }

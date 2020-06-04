@@ -1,7 +1,7 @@
-package com.talentcard.web.controller;
+package com.talentcard.miniprogram.controller;
 
 import com.talentcard.common.vo.ResultVO;
-import com.talentcard.web.service.IConfigService;
+import com.talentcard.miniprogram.service.IConfigService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +22,5 @@ public class ConfigController {
     @RequestMapping("query")
     public ResultVO query(@Param("key") String key) {
         return configService.query(key);
-    }
-
-    @RequestMapping("edit")
-    public ResultVO edit(@Param("key") String key, @Param("value") String value) {
-        return configService.edit(key, value);
     }
 }
