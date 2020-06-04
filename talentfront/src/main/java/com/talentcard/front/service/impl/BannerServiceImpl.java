@@ -26,12 +26,14 @@ public class BannerServiceImpl implements IBannerService {
     @Override
     public ResultVO query() {
         List<BannerPO> bannerPOList = bannerMapper.bannerQuery();
-        String picture = "";
+        String picture;
         for (BannerPO bannerPO : bannerPOList) {
             picture = bannerPO.getPicture();
             if (picture != null && !picture.equals("")) {
+                System.out.println(filePathConfig.getPublicBasePath());
                 picture = filePathConfig.getPublicBasePath() + picture;
                 bannerPO.setPicture(picture);
+                System.out.println(picture);
             }
         }
         return new ResultVO(1000, bannerPOList);
