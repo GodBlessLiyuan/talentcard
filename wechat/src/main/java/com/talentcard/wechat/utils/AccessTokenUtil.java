@@ -59,7 +59,15 @@ public class AccessTokenUtil {
             myRedis.opsForValue().set("wechatAccessToken", applyAccessToken, accessTokenTime, TimeUnit.MINUTES);
             logger.info("成功拿到accessToken：{}", applyAccessToken);
         } else {
-            throw new WechatException("token拿不到");
+            jsonObject = WechatApiUtil.getRequest(url);
+            applyAccessToken = jsonObject.getString("access_token");
+            if (applyAccessToken != null) {
+                myRedis.opsForValue().set("wechatAccessToken", applyAccessToken, accessTokenTime, TimeUnit.MINUTES);
+                logger.info("重试成功拿到accessToken：{}", applyAccessToken);
+            }else {
+                logger.error("重试失败拿到accessToken");
+                throw new WechatException("token拿不到");
+            }
         }
     }
 
