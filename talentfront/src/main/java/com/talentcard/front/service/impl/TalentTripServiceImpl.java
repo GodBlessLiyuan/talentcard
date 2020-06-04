@@ -214,6 +214,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
         talentTripPO.setEffectiveTime(effectiveTime);
         talentTripPO.setStatus((byte) 1);
         talentTripPO.setDr((byte) 1);
+        talentTripPO.setUsagePeriod(timeList.get(3));
         talentTripMapper.insertSelective(talentTripPO);
         ActivityResidueNumUtil.minusOneResidueNum();
 
@@ -234,6 +235,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
         String startTime;
         String endTime;
         String effectiveTime;
+        String effectiveTimeStart;
+        String usage;
         List<String> timeList = new ArrayList();
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -254,9 +257,11 @@ public class TalentTripServiceImpl implements ITalentTripService {
             endTime = year + "-" + month + "-" + lastDay + " 23:59:59";
         }
         effectiveTime = year + "-" + month + "-" + lastDay + " 23:59:59";
+        usage = year + "-" + month + "-" + "01" + "~" + year + "-" + month + "-" + lastDay;
         timeList.add(startTime);
         timeList.add(endTime);
         timeList.add(effectiveTime);
+        timeList.add(usage);
         return timeList;
     }
 

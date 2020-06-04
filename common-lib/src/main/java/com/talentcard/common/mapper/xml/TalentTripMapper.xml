@@ -7,14 +7,16 @@
     <result column="scenic_id" jdbcType="BIGINT" property="scenicId" />
     <result column="staff_id" jdbcType="BIGINT" property="staffId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="effective_time" jdbcType="TIMESTAMP" property="effectiveTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
+    <result column="usage_period" jdbcType="CHAR" property="usagePeriod" />
+    <result column="effective_time_start" jdbcType="TIMESTAMP" property="effectiveTimeStart" />
   </resultMap>
   <sql id="Base_Column_List">
-    tt_id, open_id, scenic_id, staff_id, create_time, update_time, effective_time, `status`, 
-    dr
+    tt_id, open_id, scenic_id, staff_id, create_time, effective_time, update_time, `status`, 
+    dr, usage_period, effective_time_start
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -28,13 +30,13 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.TalentTripPO">
     insert into t_talent_trip (tt_id, open_id, scenic_id, 
-      staff_id, create_time, update_time, 
-      effective_time, `status`, dr
-      )
+      staff_id, create_time, effective_time, 
+      update_time, `status`, dr, 
+      usage_period, effective_time_start)
     values (#{ttId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{scenicId,jdbcType=BIGINT}, 
-      #{staffId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{effectiveTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT}
-      )
+      #{staffId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{effectiveTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT}, 
+      #{usagePeriod,jdbcType=CHAR}, #{effectiveTimeStart,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentTripPO">
     insert into t_talent_trip
@@ -54,17 +56,23 @@
       <if test="createTime != null">
         create_time,
       </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
       <if test="effectiveTime != null">
         effective_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
       </if>
       <if test="status != null">
         `status`,
       </if>
       <if test="dr != null">
         dr,
+      </if>
+      <if test="usagePeriod != null">
+        usage_period,
+      </if>
+      <if test="effectiveTimeStart != null">
+        effective_time_start,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -83,17 +91,23 @@
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="effectiveTime != null">
         #{effectiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
       </if>
       <if test="dr != null">
         #{dr,jdbcType=TINYINT},
+      </if>
+      <if test="usagePeriod != null">
+        #{usagePeriod,jdbcType=CHAR},
+      </if>
+      <if test="effectiveTimeStart != null">
+        #{effectiveTimeStart,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -112,17 +126,23 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="effectiveTime != null">
         effective_time = #{effectiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="dr != null">
         dr = #{dr,jdbcType=TINYINT},
+      </if>
+      <if test="usagePeriod != null">
+        usage_period = #{usagePeriod,jdbcType=CHAR},
+      </if>
+      <if test="effectiveTimeStart != null">
+        effective_time_start = #{effectiveTimeStart,jdbcType=TIMESTAMP},
       </if>
     </set>
     where tt_id = #{ttId,jdbcType=BIGINT}
@@ -133,26 +153,28 @@
       scenic_id = #{scenicId,jdbcType=BIGINT},
       staff_id = #{staffId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
       effective_time = #{effectiveTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=TINYINT},
-      dr = #{dr,jdbcType=TINYINT}
+      dr = #{dr,jdbcType=TINYINT},
+      usage_period = #{usagePeriod,jdbcType=CHAR},
+      effective_time_start = #{effectiveTimeStart,jdbcType=TIMESTAMP}
     where tt_id = #{ttId,jdbcType=BIGINT}
   </update>
-    <select id="findOneNotExpired" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_talent_trip
-        where
-        open_id = #{openId,jdbcType=CHAR}
-        and dr = 1
-        and `status` = 1
-        and scenic_id = #{activitySecondContentId,jdbcType=BIGINT}
-        <if test="currentTime != null and currentTime!=''">
-            and <![CDATA[ effective_time >= #{currentTime}]]>
-        </if>
-    </select>
-    <select id="talentGetTimes" resultType="java.lang.Integer">
+  <select id="findOneNotExpired" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_talent_trip
+    where
+    open_id = #{openId,jdbcType=CHAR}
+    and dr = 1
+    and `status` = 1
+    and scenic_id = #{activitySecondContentId,jdbcType=BIGINT}
+    <if test="currentTime != null and currentTime!=''">
+      and <![CDATA[ effective_time >= #{currentTime}]]>
+    </if>
+  </select>
+  <select id="talentGetTimes" resultType="java.lang.Integer">
     select
     count(tt_id)
     from t_talent_trip t
@@ -174,6 +196,28 @@
     </if>
     <if test="endTime != null and endTime != ''">
       and <![CDATA[ create_time <= #{endTime}]]>
+    </if>
+  </select>
+  <select id="findActivityCardTicket" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_talent_trip
+    where
+    dr = 1
+    and open_id = #{openId,jdbcType=CHAR}
+    /*待使用*/
+    <if test="type==1">
+      and <![CDATA[ effective_time >= #{currentTime}]]>
+      and status = 1
+    </if>
+    /*已使用*/
+    <if test="type==2">
+      and status = 2
+    </if>
+    /*已过期*/
+    <if test="type==3">
+      and <![CDATA[ effective_time <= #{currentTime}]]>
+      and status = 1
     </if>
   </select>
 </mapper>

@@ -40,4 +40,17 @@ public class TalentActivityController {
     public ResultVO findHistory(@RequestParam("openId") String openId) {
         return iTalentActivityService.findHistory(openId);
     }
+
+    /**
+     * 根据openId查找当前用户活动的卡券记录列表
+     *
+     * @param openId
+     * @param type
+     * @return
+     */
+    @RequestMapping("findActivityTicket")
+    public ResultVO findActivityTicket(@RequestParam("openId") String openId,
+                                       @RequestParam("type") Byte type) {
+        return iTalentActivityService.findActivityTicket(openId, type);
+    }
 }
