@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -17,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class JsApiTicketUtil {
     private static final Logger logger = LoggerFactory.getLogger(JsApiTicketUtil.class);
     @Autowired
-    private RedisTemplate redisTemplate;
+    private StringRedisTemplate redisTemplate;
     private static RedisTemplate myRedis;
 
     /**
@@ -42,20 +43,20 @@ public class JsApiTicketUtil {
         //判断拿到jsApiTicket是否为空，若为空，抛异常
         //不为空，则如下，更新jsApiTicket，且记录当前时间
         if (jsApiTicket != null) {
-            myRedis.opsForValue().set("jsApiTicket", jsApiTicket, 100L, TimeUnit.MINUTES);
-            logger.info("成功拿到jsApiTicket：{}", jsApiTicket);
+            myRedis.opsForValue().set("miniProgramJsApiTicket", jsApiTicket, 100L, TimeUnit.MINUTES);
+            logger.info("成功拿到miniProgramJsApiTicket：{}", jsApiTicket);
         } else {
-            logger.info("jsApiTicket拿不到报错：{}", jsonObject.toString());
-            throw new WechatException("jsApiTicket拿不到");
+            logger.info("miniProgramJsApiTicket拿不到报错：{}", jsonObject.toString());
+            throw new WechatException("miniProgramJsApiTicket拿不到");
         }
     }
 
     public static String getJsApiTicket() throws WechatException {
         //100分钟，更换jsApiTicket
-        String jsApiTicket = (String) myRedis.opsForValue().get("jsApiTicket");
+        String jsApiTicket = (String) myRedis.opsForValue().get("miniProgramJsApiTicket");
         if (jsApiTicket == null || jsApiTicket.equals("")) {
             JsApiTicketUtil.applyJsApiTicket();
-            jsApiTicket = (String) myRedis.opsForValue().get("jsApiTicket");
+            jsApiTicket = (String) myRedis.opsForValue().get("miniProgramJsApiTicket");
         }
         return jsApiTicket;
     }
