@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,6 +36,8 @@ public class MyActivityServiceImpl implements IMyActivityService {
     private ScenicMapper scenicMapper;
     @Autowired
     private FarmhouseMapper farmhouseMapper;
+    @Autowired
+    private UserCardMapper userCardMapper;
 
     @Override
     public ResultVO addFeedBack(String openId, String content, MultipartFile file, String contact) {

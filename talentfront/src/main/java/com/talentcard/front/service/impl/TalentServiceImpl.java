@@ -127,7 +127,7 @@ public class TalentServiceImpl implements ITalentService {
             } else {
                 result.put("ifCertificate", 2);
             }
-
+            result.put("name", talentPO.getName());
             /**
              * 设置缓存
              */

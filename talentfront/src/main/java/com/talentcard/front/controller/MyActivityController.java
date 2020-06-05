@@ -46,8 +46,6 @@ public class MyActivityController {
      */
     @PostMapping("footprint")
     public ResultVO footprint(@RequestParam(value = "openId") String openId) {
-
         return iMyActivityService.footprint(openId);
     }
-
 }
