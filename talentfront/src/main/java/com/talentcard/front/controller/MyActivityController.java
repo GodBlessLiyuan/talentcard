@@ -32,10 +32,10 @@ public class MyActivityController {
     @PostMapping("addFeedBack")
     public ResultVO addFeedBack(@RequestParam(value = "openId") String openId,
                                 @RequestParam(value = "content") String content,
-                                @RequestParam(value = "picture", required = false) MultipartFile file,
+                                @RequestParam(value = "picture", required = false,defaultValue = "") String picture,
                                 @RequestParam(value = "contact", required = false, defaultValue = "") String contact) {
 
-        return iMyActivityService.addFeedBack(openId, content, file, contact);
+        return iMyActivityService.addFeedBack(openId, content, picture, contact);
     }
 
 
