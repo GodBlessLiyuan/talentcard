@@ -18,7 +18,7 @@ public interface IMyActivityService {
      * @param contact
      * @return
      */
-    ResultVO addFeedBack(String openId, String content, MultipartFile picture, String contact);
+    ResultVO addFeedBack(String openId, String content, String picture, String contact);
 
     /**
      * 我的足迹

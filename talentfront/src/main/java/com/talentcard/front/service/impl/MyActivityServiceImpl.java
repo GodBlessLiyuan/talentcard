@@ -40,12 +40,7 @@ public class MyActivityServiceImpl implements IMyActivityService {
     private UserCardMapper userCardMapper;
 
     @Override
-    public ResultVO addFeedBack(String openId, String content, MultipartFile file, String contact) {
-        String picture = "";
-        if (file != null) {
-            picture = FileUtil.uploadFile
-                    (file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getActivityFeedBack(), "feedBack");
-        }
+    public ResultVO addFeedBack(String openId, String content, String picture, String contact) {
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
         if (talentPO == null) {
             return new ResultVO(2500, "查无此人！");
