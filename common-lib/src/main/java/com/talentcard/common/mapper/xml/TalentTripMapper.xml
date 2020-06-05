@@ -198,26 +198,29 @@
       and <![CDATA[ create_time <= #{endTime}]]>
     </if>
   </select>
-  <select id="findActivityCardTicket" resultMap="BaseResultMap">
+  <select id="findActivityCardTicket" resultType="com.talentcard.common.bo.ActivityCardTicketBO">
     select
-    <include refid="Base_Column_List"/>
-    from t_talent_trip
+    tt.scenic_id as activitySecondContentId, s.name as activitySecondContentName,usage_period as usagePeriod,
+    1 as activityFirstContentId
+    from t_talent_trip tt
+    left join t_scenic s
+    on tt.scenic_id = s.scenic_id
     where
-    dr = 1
-    and open_id = #{openId,jdbcType=CHAR}
+    tt.dr = 1
+    and tt.open_id = #{openId,jdbcType=CHAR}
     /*待使用*/
     <if test="type==1">
-      and <![CDATA[ effective_time >= #{currentTime}]]>
-      and status = 1
+      and <![CDATA[ tt.effective_time >= #{currentTime}]]>
+      and tt.status = 1
     </if>
     /*已使用*/
     <if test="type==2">
-      and status = 2
+      and tt.status = 2
     </if>
     /*已过期*/
     <if test="type==3">
-      and <![CDATA[ effective_time <= #{currentTime}]]>
-      and status = 1
+      and <![CDATA[ tt.effective_time <= #{currentTime}]]>
+      and tt.status = 1
     </if>
   </select>
 </mapper>

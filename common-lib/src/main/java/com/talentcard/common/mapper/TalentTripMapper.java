@@ -1,5 +1,6 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.bo.ActivityCardTicketBO;
 import com.talentcard.common.pojo.TalentActivityHistoryPO;
 import com.talentcard.common.pojo.TalentTripPO;
 import org.apache.ibatis.annotations.Mapper;
@@ -57,7 +58,7 @@ public interface TalentTripMapper extends BaseMapper<TalentTripPO, Long> {
      * @param type
      * @return
      */
-    List<TalentTripPO> findActivityCardTicket(@Param("openId") String openId,
-                                              @Param("currentTime") String currentTime,
-                                              @Param("type") Byte type);
+    List<ActivityCardTicketBO> findActivityCardTicket(@Param("openId") String openId,
+                                                      @Param("currentTime") String currentTime,
+                                                      @Param("type") Byte type);
 }
