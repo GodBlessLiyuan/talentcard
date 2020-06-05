@@ -81,7 +81,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
             scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList,
                     education, title, quality, talentHonour);
             if (scenicIdList.size() == 0) {
-                return new ResultVO(2504, "查无景区！");
+                //查无景区
+                return new ResultVO(1000, null);
             }
             //去重
             scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());

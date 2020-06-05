@@ -135,7 +135,8 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
                         talentTypeVO.getQuality(), talentTypeVO.getTalentHonour());
 
                 if (farmhouseIdList.size() == 0) {
-                    return new ResultVO(2504, "查无景区！");
+                    //查无景区
+                    return new ResultVO(1000, null);
                 }
 
                 //去重
