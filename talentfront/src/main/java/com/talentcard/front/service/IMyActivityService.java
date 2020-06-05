@@ -11,4 +11,5 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface IMyActivityService {
     ResultVO addFeedBack(String openId, String content, MultipartFile picture, String contact);
+    ResultVO footprint(String openId);
 }

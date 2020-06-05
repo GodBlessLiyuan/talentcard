@@ -34,7 +34,7 @@ public class TalentTripController {
                                       @RequestParam(value = "name", required = false, defaultValue = "") String name,
                                       @RequestParam(value = "starLevel", required = false) Byte starLevel,
                                       @RequestParam(value = "area", required = false) Byte area,
-                                      @RequestParam(value = "order", required = false, defaultValue = "1") Byte order) {
+                                      @RequestParam(value = "order", required = false, defaultValue = "2") Byte order) {
         return iTalentTripService.findSecondContent(openId, name, starLevel, area, order);
     }
 
