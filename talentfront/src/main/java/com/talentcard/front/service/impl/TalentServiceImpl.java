@@ -212,13 +212,13 @@ public class TalentServiceImpl implements ITalentService {
          * @author xiahui
          * 根据 openid 查询 unionid, 插入到人才表中
          */
-//        String userInfo = new RestTemplate().getForObject("https://api.weixin.qq.com/sns/userinfo?access_token={1}&openid={2}&lang=zh_CN",
-//                String.class, AccessTokenUtil.getAccessToken(), openId);
-//        String unionId = JSONObject.parseObject(userInfo).getString("unionid");
-//        if (null == unionId || "".equals(unionId)) {
-//            return new ResultVO(1222);
-//        }
-//        talentPO.setUnionId(unionId);
+        String userInfo = new RestTemplate().getForObject("https://api.weixin.qq.com/cgi-bin/user/info?access_token={1}&openid={2}&lang=zh_CN",
+                String.class, AccessTokenUtil.getAccessToken(), openId);
+        String unionId = JSONObject.parseObject(userInfo).getString("unionid");
+        if (null == unionId || "".equals(unionId)) {
+            return new ResultVO(1222);
+        }
+        talentPO.setUnionId(unionId);
         talentMapper.add(talentPO);
         Long talentId = talentPO.getTalentId();
 
