@@ -278,6 +278,7 @@ public class StaffServiceImpl implements IStaffService {
         talentActivityHistoryPO.setActivitySecondContentName(farmhousePO.getName());
         talentActivityHistoryPO.setCreateTime(new Date());
         talentActivityHistoryPO.setDr((byte) 1);
+        talentActivityHistoryPO.setStatus((byte) 2);
         //得到ip
         String ipAddress = HttpServletRequestUtil.getIpAddr(httpServletRequest);
         talentActivityHistoryPO.setIpAddress(ipAddress);
