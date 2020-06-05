@@ -120,5 +120,6 @@
         <if test="end != null and end !=''">and f.create_time &lt;= #{end}</if>
         <if test="name != null and name !=''">and t.`name` like '%' #{name} '%'</if>
         <if test="contact != null and contact !=''">and f.contact like '%' #{contact} '%'</if>
+        order by f.create_time desc
     </select>
 </mapper>

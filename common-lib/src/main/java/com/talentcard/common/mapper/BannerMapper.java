@@ -12,4 +12,12 @@ import java.util.List;
 @Mapper
 public interface BannerMapper extends BaseMapper<BannerPO, Long> {
     List<BannerPO> bannerQuery();
+
+    /**
+     * 根据姓名查询
+     *
+     * @param name
+     * @return
+     */
+    BannerPO queryByName(String name);
 }

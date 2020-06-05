@@ -169,4 +169,10 @@
         <if test="status != null and status !=0">and `status` = #{status}</if>
         order by create_time desc
     </select>
+    <select id="queryByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_banner
+        where dr = 1 and `name` = #{name,jdbcType=CHAR} limit 1
+    </select>
 </mapper>
