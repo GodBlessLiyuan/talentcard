@@ -43,7 +43,7 @@ public class BannerServiceImpl implements IBannerService {
     public ResultVO insert(BannerDTO dto) {
         BannerPO existPO = bannerMapper.queryByName(dto.getName());
         if(null != existPO) {
-            return new ResultVO(1102);
+            return new ResultVO(1103);
         }
         BannerPO po = BannerDTO.buildPO(new BannerPO(), dto);
         po.setCreateTime(new Date());
