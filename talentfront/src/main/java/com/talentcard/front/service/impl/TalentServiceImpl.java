@@ -2,6 +2,7 @@ package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.sun.org.apache.regexp.internal.RE;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
@@ -12,6 +13,7 @@ import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.ITalentService;
+import com.talentcard.front.utils.AccessTokenUtil;
 import com.talentcard.front.utils.MessageUtil;
 import com.talentcard.front.utils.TalentActivityUtil;
 import com.talentcard.common.vo.TalentTypeVO;
@@ -23,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
@@ -204,6 +207,18 @@ public class TalentServiceImpl implements ITalentService {
         CardPO cardPO = cardMapper.findDefaultCard();
         Long cardId = cardPO.getCardId();
         talentPO.setCardId(cardId);
+
+        /**
+         * @author xiahui
+         * 根据 openid 查询 unionid, 插入到人才表中
+         */
+//        String userInfo = new RestTemplate().getForObject("https://api.weixin.qq.com/sns/userinfo?access_token={1}&openid={2}&lang=zh_CN",
+//                String.class, AccessTokenUtil.getAccessToken(), openId);
+//        String unionId = JSONObject.parseObject(userInfo).getString("unionid");
+//        if (null == unionId || "".equals(unionId)) {
+//            return new ResultVO(1222);
+//        }
+//        talentPO.setUnionId(unionId);
         talentMapper.add(talentPO);
         Long talentId = talentPO.getTalentId();
 

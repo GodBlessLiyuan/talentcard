@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * t_talent
- * @author
+ * @author 
  */
 @Data
 public class TalentPO implements Serializable {
@@ -38,14 +38,9 @@ public class TalentPO implements Serializable {
 
     private Integer industrySecond;
 
-    /**
-     * 政治面貌
-     */
-    private Byte political;
-
     private String phone;
 
-    private Date createTime;
+    private Byte political;
 
     private String category;
 
@@ -57,19 +52,23 @@ public class TalentPO implements Serializable {
      */
     private Byte workLocationType;
 
+    private Long cardId;
+
     /**
      * 1 认证通过
 2 认证没通过
      */
     private Byte status;
 
-    private Long cardId;
+    private Date createTime;
 
     /**
      * 1正在使用
 2删除
      */
     private Byte dr;
+
+    private String unionId;
 
     private static final long serialVersionUID = 1L;
 }

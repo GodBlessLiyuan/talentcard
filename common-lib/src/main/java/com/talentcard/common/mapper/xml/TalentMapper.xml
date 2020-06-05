@@ -13,14 +13,14 @@
         <result column="work_unit" jdbcType="CHAR" property="workUnit"/>
         <result column="industry" jdbcType="INTEGER" property="industry"/>
         <result column="industry_second" jdbcType="INTEGER" property="industrySecond"/>
-        <result column="political" jdbcType="TINYINT" property="political"/>
         <result column="phone" jdbcType="CHAR" property="phone"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="political" jdbcType="TINYINT" property="political"/>
         <result column="category" jdbcType="CHAR" property="category"/>
         <result column="work_location" jdbcType="CHAR" property="workLocation"/>
         <result column="work_location_type" jdbcType="TINYINT" property="workLocationType"/>
-        <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="card_id" jdbcType="BIGINT" property="cardId"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="dr" jdbcType="TINYINT" property="dr"/>
     </resultMap>
     <resultMap id="TalentResultMap" type="com.talentcard.common.bo.TalentBO">
@@ -94,10 +94,10 @@
         </collection>
     </resultMap>
     <sql id="Base_Column_List">
-    talent_id, open_id, `name`, sex, id_card, passport, driver_card, card_type, work_unit,
-    industry, industry_second, political, phone, create_time, category, work_location,
-    work_location_type, `status`, card_id, dr
-  </sql>
+        talent_id, open_id, `name`, sex, id_card, passport, driver_card, card_type, work_unit,
+    industry, industry_second, phone, political, category, work_location, work_location_type, 
+    card_id, `status`, create_time, dr, union_id
+    </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -105,25 +105,27 @@
         where talent_id = #{talentId,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_talent
-    where talent_id = #{talentId,jdbcType=BIGINT}
-  </delete>
+        delete
+        from t_talent
+        where talent_id = #{talentId,jdbcType=BIGINT}
+    </delete>
     <insert id="insert" parameterType="com.talentcard.common.pojo.TalentPO">
-    insert into t_talent (talent_id, open_id, `name`,
-      sex, id_card, passport, driver_card,
-      card_type, work_unit, industry,
-      industry_second, political, phone,
-      create_time, category, work_location,
-      work_location_type, `status`, card_id,
-      dr)
-    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
-      #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{driverCard,jdbcType=CHAR},
-      #{cardType,jdbcType=TINYINT}, #{workUnit,jdbcType=CHAR}, #{industry,jdbcType=INTEGER},
-      #{industrySecond,jdbcType=INTEGER}, #{political,jdbcType=TINYINT}, #{phone,jdbcType=CHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{category,jdbcType=CHAR}, #{workLocation,jdbcType=CHAR},
-      #{workLocationType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{cardId,jdbcType=BIGINT},
-      #{dr,jdbcType=TINYINT})
-  </insert>
+        insert into t_talent (talent_id, open_id, `name`,
+                              sex, id_card, passport, driver_card,
+                              card_type, work_unit, industry,
+                              industry_second, phone, political,
+                              category, work_location, work_location_type,
+                              card_id, `status`, create_time,
+                              dr, union_id)
+        values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
+                #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR},
+                #{driverCard,jdbcType=CHAR},
+                #{cardType,jdbcType=TINYINT}, #{workUnit,jdbcType=CHAR}, #{industry,jdbcType=INTEGER},
+                #{industrySecond,jdbcType=INTEGER}, #{phone,jdbcType=CHAR}, #{political,jdbcType=TINYINT},
+                #{category,jdbcType=CHAR}, #{workLocation,jdbcType=CHAR}, #{workLocationType,jdbcType=TINYINT},
+                #{cardId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP},
+                #{dr,jdbcType=TINYINT}, #{unionId,jdbcType=CHAR})
+    </insert>
     <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentPO">
         insert into t_talent
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -160,14 +162,11 @@
             <if test="industrySecond != null">
                 industry_second,
             </if>
-            <if test="political != null">
-                political,
-            </if>
             <if test="phone != null">
                 phone,
             </if>
-            <if test="createTime != null">
-                create_time,
+            <if test="political != null">
+                political,
             </if>
             <if test="category != null">
                 category,
@@ -178,14 +177,20 @@
             <if test="workLocationType != null">
                 work_location_type,
             </if>
-            <if test="status != null">
-                `status`,
-            </if>
             <if test="cardId != null">
                 card_id,
             </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
             <if test="dr != null">
                 dr,
+            </if>
+            <if test="unionId != null">
+                union_id,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -222,14 +227,11 @@
             <if test="industrySecond != null">
                 #{industrySecond,jdbcType=INTEGER},
             </if>
-            <if test="political != null">
-                #{political,jdbcType=TINYINT},
-            </if>
             <if test="phone != null">
                 #{phone,jdbcType=CHAR},
             </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
+            <if test="political != null">
+                #{political,jdbcType=TINYINT},
             </if>
             <if test="category != null">
                 #{category,jdbcType=CHAR},
@@ -240,14 +242,20 @@
             <if test="workLocationType != null">
                 #{workLocationType,jdbcType=TINYINT},
             </if>
-            <if test="status != null">
-                #{status,jdbcType=TINYINT},
-            </if>
             <if test="cardId != null">
                 #{cardId,jdbcType=BIGINT},
             </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="dr != null">
                 #{dr,jdbcType=TINYINT},
+            </if>
+            <if test="unionId != null">
+                #{unionId,jdbcType=CHAR},
             </if>
         </trim>
     </insert>
@@ -284,14 +292,11 @@
             <if test="industrySecond != null">
                 industry_second = #{industrySecond,jdbcType=INTEGER},
             </if>
-            <if test="political != null">
-                political = #{political,jdbcType=TINYINT},
-            </if>
             <if test="phone != null">
                 phone = #{phone,jdbcType=CHAR},
             </if>
-            <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
+            <if test="political != null">
+                political = #{political,jdbcType=TINYINT},
             </if>
             <if test="category != null">
                 category = #{category,jdbcType=CHAR},
@@ -302,58 +307,67 @@
             <if test="workLocationType != null">
                 work_location_type = #{workLocationType,jdbcType=TINYINT},
             </if>
-            <if test="status != null">
-                `status` = #{status,jdbcType=TINYINT},
-            </if>
             <if test="cardId != null">
                 card_id = #{cardId,jdbcType=BIGINT},
             </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
             <if test="dr != null">
                 dr = #{dr,jdbcType=TINYINT},
+            </if>
+            <if test="unionId != null">
+                union_id = #{unionId,jdbcType=CHAR},
             </if>
         </set>
         where talent_id = #{talentId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentPO">
-    update t_talent
-    set open_id = #{openId,jdbcType=CHAR},
-      `name` = #{name,jdbcType=CHAR},
-      sex = #{sex,jdbcType=TINYINT},
-      id_card = #{idCard,jdbcType=CHAR},
-      passport = #{passport,jdbcType=CHAR},
-      driver_card = #{driverCard,jdbcType=CHAR},
-      card_type = #{cardType,jdbcType=TINYINT},
-      work_unit = #{workUnit,jdbcType=CHAR},
-      industry = #{industry,jdbcType=INTEGER},
-      industry_second = #{industrySecond,jdbcType=INTEGER},
-      political = #{political,jdbcType=TINYINT},
-      phone = #{phone,jdbcType=CHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      category = #{category,jdbcType=CHAR},
-      work_location = #{workLocation,jdbcType=CHAR},
-      work_location_type = #{workLocationType,jdbcType=TINYINT},
-      `status` = #{status,jdbcType=TINYINT},
-      card_id = #{cardId,jdbcType=BIGINT},
-      dr = #{dr,jdbcType=TINYINT}
-    where talent_id = #{talentId,jdbcType=BIGINT}
-  </update>
+        update t_talent
+        set open_id            = #{openId,jdbcType=CHAR},
+            `name`             = #{name,jdbcType=CHAR},
+            sex                = #{sex,jdbcType=TINYINT},
+            id_card            = #{idCard,jdbcType=CHAR},
+            passport           = #{passport,jdbcType=CHAR},
+            driver_card        = #{driverCard,jdbcType=CHAR},
+            card_type          = #{cardType,jdbcType=TINYINT},
+            work_unit          = #{workUnit,jdbcType=CHAR},
+            industry           = #{industry,jdbcType=INTEGER},
+            industry_second    = #{industrySecond,jdbcType=INTEGER},
+            phone              = #{phone,jdbcType=CHAR},
+            political          = #{political,jdbcType=TINYINT},
+            category           = #{category,jdbcType=CHAR},
+            work_location      = #{workLocation,jdbcType=CHAR},
+            work_location_type = #{workLocationType,jdbcType=TINYINT},
+            card_id            = #{cardId,jdbcType=BIGINT},
+            `status`           = #{status,jdbcType=TINYINT},
+            create_time        = #{createTime,jdbcType=TIMESTAMP},
+            dr                 = #{dr,jdbcType=TINYINT},
+            union_id           = #{unionId,jdbcType=CHAR}
+        where talent_id = #{talentId,jdbcType=BIGINT}
+    </update>
+
     <!--  insert，且返回主键-->
     <insert id="add" useGeneratedKeys="true" keyProperty="talentId" parameterType="com.talentcard.common.pojo.TalentPO">
-    insert into t_talent (talent_id, open_id, `name`,
-      sex, id_card, passport, driver_card,
-      card_type, work_unit, industry,
-      industry_second, political, phone,
-      create_time, category, work_location,
-      work_location_type, `status`, card_id,
-      dr)
-    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
-      #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR}, #{driverCard,jdbcType=CHAR},
-      #{cardType,jdbcType=TINYINT}, #{workUnit,jdbcType=CHAR}, #{industry,jdbcType=INTEGER},
-      #{industrySecond,jdbcType=INTEGER}, #{political,jdbcType=TINYINT}, #{phone,jdbcType=CHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{category,jdbcType=CHAR}, #{workLocation,jdbcType=CHAR},
-      #{workLocationType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{cardId,jdbcType=BIGINT},
-      #{dr,jdbcType=TINYINT})
-   </insert>
+        insert into t_talent (talent_id, open_id, union_id, `name`,
+                              sex, id_card, passport, driver_card,
+                              card_type, work_unit, industry,
+                              industry_second, political, phone,
+                              create_time, category, work_location,
+                              work_location_type, `status`, card_id,
+                              dr)
+        values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{unionId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
+                #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR},
+                #{driverCard,jdbcType=CHAR},
+                #{cardType,jdbcType=TINYINT}, #{workUnit,jdbcType=CHAR}, #{industry,jdbcType=INTEGER},
+                #{industrySecond,jdbcType=INTEGER}, #{political,jdbcType=TINYINT}, #{phone,jdbcType=CHAR},
+                #{createTime,jdbcType=TIMESTAMP}, #{category,jdbcType=CHAR}, #{workLocation,jdbcType=CHAR},
+                #{workLocationType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{cardId,jdbcType=BIGINT},
+                #{dr,jdbcType=TINYINT})
+    </insert>
     <!--    <select id="findBaseInfo" parameterType="java.lang.String" resultType="java.util.HashMap">-->
     <!--        select t.talent_id as talentId,-->
     <!--               `name`,-->
@@ -377,65 +391,70 @@
     <!--    </select>-->
 
     <select id="findOne" resultMap="TalentResultMap">
-        select t.talent_id    as t_talent_id,
-               t.open_id as t_open_id,
-               t.`name` as t_name,
-               t.sex as t_sex,
-               t.id_card as t_id_card,
-               t.passport as t_passport,
-               t.driver_card as t_driver_card,
-               t.card_type as t_card_type,
-               t.work_unit as t_work_unit,
-               t.industry as t_industry,
-               t.industry_second as t_industry_second,
-               t.political as t_political,
-               t.phone as t_phone,
-               t.create_time  as t_create_time,
-               t.`status`     as t_status,
-               t.category     as t_category,
-               t.work_location as t_work_location,
+        select t.talent_id          as t_talent_id,
+               t.open_id            as t_open_id,
+               t.`name`             as t_name,
+               t.sex                as t_sex,
+               t.id_card            as t_id_card,
+               t.passport           as t_passport,
+               t.driver_card        as t_driver_card,
+               t.card_type          as t_card_type,
+               t.work_unit          as t_work_unit,
+               t.industry           as t_industry,
+               t.industry_second    as t_industry_second,
+               t.political          as t_political,
+               t.phone              as t_phone,
+               t.create_time        as t_create_time,
+               t.`status`           as t_status,
+               t.category           as t_category,
+               t.work_location      as t_work_location,
                t.work_location_type as t_work_location_type,
-               t.card_id      as t_card_id,
-               t.dr as t_dr,
+               t.card_id            as t_card_id,
+               t.dr                 as t_dr,
 
-               c.cert_id      as c_cert_id,
-               c.political    as c_political,
-               c.status       as c_status,
+               c.cert_id            as c_cert_id,
+               c.political          as c_political,
+               c.status             as c_status,
                current_type,
 
-               e.educ_id      as e_educ_id,
-               e.education    as e_education,
-               e.school       as e_school,
-               e.first_class  as e_first_class,
-               e.major        as e_major,
-               e.educ_picture as e_educ_picture,
-               e.cert_id      as e_cert_id,
-               e.talent_id    as e_talent_id,
-               e.status       as e_status,
-               e.if_certificate as e_if_certificate,
+               e.educ_id            as e_educ_id,
+               e.education          as e_education,
+               e.school             as e_school,
+               e.first_class        as e_first_class,
+               e.major              as e_major,
+               e.educ_picture       as e_educ_picture,
+               e.cert_id            as e_cert_id,
+               e.talent_id          as e_talent_id,
+               e.status             as e_status,
+               e.if_certificate     as e_if_certificate,
 
-               pt.pt_id       as pt_pt_id,
-               pt.category    as pt_category,
-               pt.info        as pt_info,
-               pt.picture     as pt_picture,
-               pt.cert_id     as pt_cert_id,
-               pt.talent_id   as pt_talent_id,
-               pt.status      as pt_status,
-               pt.if_certificate as pt_if_certificate,
+               pt.pt_id             as pt_pt_id,
+               pt.category          as pt_category,
+               pt.info              as pt_info,
+               pt.picture           as pt_picture,
+               pt.cert_id           as pt_cert_id,
+               pt.talent_id         as pt_talent_id,
+               pt.status            as pt_status,
+               pt.if_certificate    as pt_if_certificate,
 
-               pq.pq_id       as pq_pq_id,
-               pq.category    as pq_category,
-               pq.info        as pq_info,
-               pq.picture     as pq_picture,
-               pq.cert_id     as pq_cert_id,
-               pq.talent_id   as pq_talent_id,
-               pq.status      as pq_status,
-               pq.if_certificate as pq_if_certificate,
+               pq.pq_id             as pq_pq_id,
+               pq.category          as pq_category,
+               pq.info              as pq_info,
+               pq.picture           as pq_picture,
+               pq.cert_id           as pq_cert_id,
+               pq.talent_id         as pq_talent_id,
+               pq.status            as pq_status,
+               pq.if_certificate    as pq_if_certificate,
 
-               th.th_id as th_th_id, th.honour_id as th_honour_id, th.honour_picture as th_honour_picture,
-               th.info as th_info, th.cert_id as th_cert_id, th.talent_id as th_talent_id,
-               th.`status` as th_status, th.if_certificate as th_if_certificate
-         from t_talent t
+               th.th_id             as th_th_id,
+               th.honour_id         as th_honour_id,
+               th.honour_picture    as th_honour_picture,
+               th.info              as th_info,
+               th.cert_id           as th_cert_id,
+               th.talent_id         as th_talent_id,
+               th.`status`          as th_status,
+               th.if_certificate    as th_if_certificate
+        from t_talent t
                  left join t_certification c
                            on t.talent_id = c.talent_id
                  left join t_education e
@@ -452,64 +471,69 @@
     </select>
 
     <select id="findRegisterOne" parameterType="java.lang.String" resultMap="TalentResultMap">
-               select t.talent_id    as t_talent_id,
-               t.open_id as t_open_id,
-               t.`name` as t_name,
-               t.sex as t_sex,
-               t.id_card as t_id_card,
-               t.passport as t_passport,
-               t.driver_card as t_driver_card,
-               t.card_type as t_card_type,
-               t.work_unit as t_work_unit,
-               t.industry as t_industry,
-               t.industry_second as t_industry_second,
-               t.political as t_political,
-               t.phone as t_phone,
-               t.create_time  as t_create_time,
-               t.`status`     as t_status,
-               t.category     as t_category,
-               t.work_location as t_work_location,
+        select t.talent_id          as t_talent_id,
+               t.open_id            as t_open_id,
+               t.`name`             as t_name,
+               t.sex                as t_sex,
+               t.id_card            as t_id_card,
+               t.passport           as t_passport,
+               t.driver_card        as t_driver_card,
+               t.card_type          as t_card_type,
+               t.work_unit          as t_work_unit,
+               t.industry           as t_industry,
+               t.industry_second    as t_industry_second,
+               t.political          as t_political,
+               t.phone              as t_phone,
+               t.create_time        as t_create_time,
+               t.`status`           as t_status,
+               t.category           as t_category,
+               t.work_location      as t_work_location,
                t.work_location_type as t_work_location_type,
-               t.card_id      as t_card_id,
-               t.dr as t_dr,
+               t.card_id            as t_card_id,
+               t.dr                 as t_dr,
 
-               c.cert_id      as c_cert_id,
-               c.political    as c_political,
-               c.status       as c_status,
+               c.cert_id            as c_cert_id,
+               c.political          as c_political,
+               c.status             as c_status,
                current_type,
 
-               e.educ_id      as e_educ_id,
-               e.education    as e_education,
-               e.school       as e_school,
-               e.first_class  as e_first_class,
-               e.major        as e_major,
-               e.educ_picture as e_educ_picture,
-               e.cert_id      as e_cert_id,
-               e.talent_id    as e_talent_id,
-               e.status       as e_status,
-               e.if_certificate as e_if_certificate,
+               e.educ_id            as e_educ_id,
+               e.education          as e_education,
+               e.school             as e_school,
+               e.first_class        as e_first_class,
+               e.major              as e_major,
+               e.educ_picture       as e_educ_picture,
+               e.cert_id            as e_cert_id,
+               e.talent_id          as e_talent_id,
+               e.status             as e_status,
+               e.if_certificate     as e_if_certificate,
 
-               pt.pt_id       as pt_pt_id,
-               pt.category    as pt_category,
-               pt.info        as pt_info,
-               pt.picture     as pt_picture,
-               pt.cert_id     as pt_cert_id,
-               pt.talent_id   as pt_talent_id,
-               pt.status      as pt_status,
-               pt.if_certificate as pt_if_certificate,
+               pt.pt_id             as pt_pt_id,
+               pt.category          as pt_category,
+               pt.info              as pt_info,
+               pt.picture           as pt_picture,
+               pt.cert_id           as pt_cert_id,
+               pt.talent_id         as pt_talent_id,
+               pt.status            as pt_status,
+               pt.if_certificate    as pt_if_certificate,
 
-               pq.pq_id       as pq_pq_id,
-               pq.category    as pq_category,
-               pq.info        as pq_info,
-               pq.picture     as pq_picture,
-               pq.cert_id     as pq_cert_id,
-               pq.talent_id   as pq_talent_id,
-               pq.status      as pq_status,
-               pq.if_certificate as pq_if_certificate,
+               pq.pq_id             as pq_pq_id,
+               pq.category          as pq_category,
+               pq.info              as pq_info,
+               pq.picture           as pq_picture,
+               pq.cert_id           as pq_cert_id,
+               pq.talent_id         as pq_talent_id,
+               pq.status            as pq_status,
+               pq.if_certificate    as pq_if_certificate,
 
-               th.th_id as th_th_id, th.honour_id as th_honour_id, th.honour_picture as th_honour_picture,
-               th.info as th_info, th.cert_id as th_cert_id, th.talent_id as th_talent_id,
-               th.`status` as th_status, th.if_certificate as th_if_certificate
+               th.th_id             as th_th_id,
+               th.honour_id         as th_honour_id,
+               th.honour_picture    as th_honour_picture,
+               th.info              as th_info,
+               th.cert_id           as th_cert_id,
+               th.talent_id         as th_talent_id,
+               th.`status`          as th_status,
+               th.if_certificate    as th_if_certificate
         from t_talent t
                  left join t_certification c
                            on t.talent_id = c.talent_id
@@ -592,32 +616,32 @@
         order by t.create_time desc
     </select>
     <select id="queryDetail" parameterType="java.lang.Long" resultType="com.talentcard.common.bo.TalentBO">
-        select t.talent_id     as talentId,
-               t.create_time   as createTime,
+        select t.talent_id       as talentId,
+               t.create_time     as createTime,
                t.`name`,
                t.sex,
-               t.id_card       as idCard,
-               t.work_unit     as workUnit,
+               t.id_card         as idCard,
+               t.work_unit       as workUnit,
                t.industry,
                t.industry_second as industrySecond,
                t.phone,
-               t.political     as political,
-               t.card_type     as cardType,
-               t.id_card       as idCard,
-               t.passport      as passport,
-               t.driver_card   as driverCard,
-               t.work_location as workLocation,
-               uci.education   as educ,
+               t.political       as political,
+               t.card_type       as cardType,
+               t.id_card         as idCard,
+               t.passport        as passport,
+               t.driver_card     as driverCard,
+               t.work_location   as workLocation,
+               uci.education     as educ,
                uci.school,
-               uci.first_class as first,
+               uci.first_class   as first,
                uci.major,
-               uci.pt_category as title,
-               uci.pt_info     as ptInfo,
-               uci.pq_category as quality,
-               uci.pq_info     as pqInfo,
-               uci.honour_id       as honour,
-               c.name          as cname,
-               c.num           as cnum
+               uci.pt_category   as title,
+               uci.pt_info       as ptInfo,
+               uci.pq_category   as quality,
+               uci.pq_info       as pqInfo,
+               uci.honour_id     as honour,
+               c.name            as cname,
+               c.num             as cnum
         from t_talent t
                  left join t_user_current_info uci on t.talent_id = uci.talent_id
                  left join t_user_card c on t.talent_id = c.talent_id
@@ -760,77 +784,84 @@
     </select>
 
     <select id="findCurrentSeniorCard" resultType="java.util.HashMap">
-        select t.talent_id as talentId, c.cert_id as certId, uc.card_id as cardId,
-        uc.uc_id as ucId
+        select t.talent_id as talentId,
+               c.cert_id   as certId,
+               uc.card_id  as cardId,
+               uc.uc_id    as ucId
         from t_talent t
-        left join t_certification c
-        on t.talent_id = c.talent_id
-        left join t_user_card uc
-        on t.talent_id = uc.talent_id
+                 left join t_certification c
+                           on t.talent_id = c.talent_id
+                 left join t_user_card uc
+                           on t.talent_id = uc.talent_id
         where t.talent_id = #{talentId,jdbcType=BIGINT}
-        and c.status = 1
-        and uc.status = 2
+          and c.status = 1
+          and uc.status = 2
     </select>
 
     <select id="certApprovalDetail" resultMap="TalentResultMap">
-            select t.talent_id    as t_talent_id,
-               t.open_id as t_open_id,
-               t.`name` as t_name,
-               t.sex as t_sex,
-               t.id_card as t_id_card,
-               t.passport as t_passport,
-               t.driver_card as t_driver_card,
-               t.card_type as t_card_type,
-               t.work_unit as t_work_unit,
-               t.industry as t_industry,
-               t.industry_second as t_industry_second,
-               t.political as t_political,
-               t.phone as t_phone,
-               t.create_time  as t_create_time,
-               t.`status`     as t_status,
-               t.category     as t_category,
-               t.work_location as t_work_location,
+        select t.talent_id          as t_talent_id,
+               t.open_id            as t_open_id,
+               t.`name`             as t_name,
+               t.sex                as t_sex,
+               t.id_card            as t_id_card,
+               t.passport           as t_passport,
+               t.driver_card        as t_driver_card,
+               t.card_type          as t_card_type,
+               t.work_unit          as t_work_unit,
+               t.industry           as t_industry,
+               t.industry_second    as t_industry_second,
+               t.political          as t_political,
+               t.phone              as t_phone,
+               t.create_time        as t_create_time,
+               t.`status`           as t_status,
+               t.category           as t_category,
+               t.work_location      as t_work_location,
                t.work_location_type as t_work_location_type,
-               t.card_id      as t_card_id,
-               t.dr as t_dr,
+               t.card_id            as t_card_id,
+               t.dr                 as t_dr,
 
-               c.cert_id      as c_cert_id,
-               c.political    as c_political,
-               c.status       as c_status,
+               c.cert_id            as c_cert_id,
+               c.political          as c_political,
+               c.status             as c_status,
                current_type,
 
-               e.educ_id      as e_educ_id,
-               e.education    as e_education,
-               e.school       as e_school,
-               e.first_class  as e_first_class,
-               e.major        as e_major,
-               e.educ_picture as e_educ_picture,
-               e.cert_id      as e_cert_id,
-               e.talent_id    as e_talent_id,
-               e.status       as e_status,
-               e.if_certificate as e_if_certificate,
+               e.educ_id            as e_educ_id,
+               e.education          as e_education,
+               e.school             as e_school,
+               e.first_class        as e_first_class,
+               e.major              as e_major,
+               e.educ_picture       as e_educ_picture,
+               e.cert_id            as e_cert_id,
+               e.talent_id          as e_talent_id,
+               e.status             as e_status,
+               e.if_certificate     as e_if_certificate,
 
-               pt.pt_id       as pt_pt_id,
-               pt.category    as pt_category,
-               pt.info        as pt_info,
-               pt.picture     as pt_picture,
-               pt.cert_id     as pt_cert_id,
-               pt.talent_id   as pt_talent_id,
-               pt.status      as pt_status,
-               pt.if_certificate as pt_if_certificate,
+               pt.pt_id             as pt_pt_id,
+               pt.category          as pt_category,
+               pt.info              as pt_info,
+               pt.picture           as pt_picture,
+               pt.cert_id           as pt_cert_id,
+               pt.talent_id         as pt_talent_id,
+               pt.status            as pt_status,
+               pt.if_certificate    as pt_if_certificate,
 
-               pq.pq_id       as pq_pq_id,
-               pq.category    as pq_category,
-               pq.info        as pq_info,
-               pq.picture     as pq_picture,
-               pq.cert_id     as pq_cert_id,
-               pq.talent_id   as pq_talent_id,
-               pq.status      as pq_status,
-               pq.if_certificate as pq_if_certificate,
+               pq.pq_id             as pq_pq_id,
+               pq.category          as pq_category,
+               pq.info              as pq_info,
+               pq.picture           as pq_picture,
+               pq.cert_id           as pq_cert_id,
+               pq.talent_id         as pq_talent_id,
+               pq.status            as pq_status,
+               pq.if_certificate    as pq_if_certificate,
 
-               th.th_id as th_th_id, th.honour_id as th_honour_id, th.honour_picture as th_honour_picture,
-               th.info as th_info, th.cert_id as th_cert_id, th.talent_id as th_talent_id,
-               th.`status` as th_status, th.if_certificate as th_if_certificate
+               th.th_id             as th_th_id,
+               th.honour_id         as th_honour_id,
+               th.honour_picture    as th_honour_picture,
+               th.info              as th_info,
+               th.cert_id           as th_cert_id,
+               th.talent_id         as th_talent_id,
+               th.`status`          as th_status,
+               th.if_certificate    as th_if_certificate
         from t_talent t
                  left join t_certification c
                            on t.talent_id = c.talent_id
@@ -840,10 +871,10 @@
                            on c.cert_id = pt.cert_id
                  left join t_prof_quality pq
                            on c.cert_id = pq.cert_id
-                left join t_talent_honour th
+                 left join t_talent_honour th
                            on c.cert_id = th.cert_id
         where c.cert_id = #{certId,jdbcType=BIGINT}
-        and t.dr = 1
+          and t.dr = 1
     </select>
     <select id="selectByIdCard" parameterType="java.lang.String" resultMap="BaseResultMap">
         select

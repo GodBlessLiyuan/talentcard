@@ -576,6 +576,7 @@ CREATE TABLE t_talent
 (
     talent_id bigint unsigned NOT NULL AUTO_INCREMENT,
     open_id char(128) NOT NULL,
+    union_id char(32),
     name char(64),
     -- 1：男；2：女
     sex tinyint COMMENT '1：男；2：女',
@@ -641,7 +642,10 @@ CREATE TABLE t_talent_activity_history
     activity_second_content_name char(32),
     ip_address char(255),
     create_time datetime,
-    status tinyint unsigned,
+    -- 1待使用
+    -- 2已使用
+    status tinyint unsigned COMMENT '1待使用
+2已使用',
     -- 1 未删除  2 已删除
     dr tinyint COMMENT '1 未删除  2 已删除',
     PRIMARY KEY (tah_id),
@@ -658,7 +662,10 @@ CREATE TABLE t_talent_farmhouse
     discount double(2,1),
     effective_time datetime,
     update_time datetime,
-    status tinyint unsigned,
+    -- 1待使用
+    -- 2已使用
+    status tinyint unsigned COMMENT '1待使用
+2已使用',
     -- 1 未删除  2 已删除
     dr tinyint COMMENT '1 未删除  2 已删除',
     PRIMARY KEY (tt_id),
@@ -708,9 +715,14 @@ CREATE TABLE t_talent_trip
     create_time datetime,
     effective_time datetime NOT NULL,
     update_time datetime,
-    status tinyint unsigned,
+    -- 1待使用
+    -- 2已使用
+    status tinyint unsigned COMMENT '1待使用
+2已使用',
     -- 1 未删除  2 已删除
     dr tinyint COMMENT '1 未删除  2 已删除',
+    usage_period char(128),
+    effective_time_start datetime,
     PRIMARY KEY (tt_id),
     UNIQUE (tt_id)
 );
