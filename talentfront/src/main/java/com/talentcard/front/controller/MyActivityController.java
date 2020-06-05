@@ -25,7 +25,7 @@ public class MyActivityController {
      *
      * @param openId
      * @param content
-     * @param file
+     * @param picture
      * @param contact
      * @return
      */
