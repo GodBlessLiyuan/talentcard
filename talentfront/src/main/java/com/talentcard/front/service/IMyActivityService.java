@@ -10,5 +10,20 @@ import org.springframework.web.multipart.MultipartFile;
  * @description
  */
 public interface IMyActivityService {
+    /**
+     * s意见反馈
+     * @param openId
+     * @param content
+     * @param picture
+     * @param contact
+     * @return
+     */
     ResultVO addFeedBack(String openId, String content, MultipartFile picture, String contact);
+
+    /**
+     * 我的足迹
+     * @param openId
+     * @return
+     */
+    ResultVO footprint(String openId);
 }

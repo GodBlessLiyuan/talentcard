@@ -1,6 +1,7 @@
 package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.talentcard.common.bo.ActivityCardTicketBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.TalentActivityHistoryPO;
 import com.talentcard.common.pojo.TalentTripPO;
@@ -132,7 +133,7 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
     public ResultVO findActivityTicket(String openId, Byte type) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = simpleDateFormat.format(new Date());
-        List<TalentTripPO> talentTripPOList = talentTripMapper.findActivityCardTicket(openId, currentTime, type);
+        List<ActivityCardTicketBO> talentTripPOList = talentTripMapper.findActivityCardTicket(openId, currentTime, type);
         return new ResultVO(1000, talentTripPOList);
     }
 }

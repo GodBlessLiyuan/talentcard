@@ -1,5 +1,6 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.bo.FootprintBO;
 import com.talentcard.common.pojo.TalentActivityHistoryPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -38,4 +39,12 @@ public interface TalentActivityHistoryMapper extends BaseMapper<TalentActivityHi
      */
     Long getCostTimes(@Param("startTime") String startTime,
                       @Param("endTime") String endTime);
+
+    /**
+     * 我的足迹
+     *
+     * @param openId
+     * @return
+     */
+    List<FootprintBO> footprint(@Param("openId") String openId);
 }

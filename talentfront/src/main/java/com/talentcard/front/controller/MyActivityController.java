@@ -38,4 +38,14 @@ public class MyActivityController {
         return iMyActivityService.addFeedBack(openId, content, file, contact);
     }
 
+
+    /**
+     *我的足迹接口
+     * @param openId
+     * @return
+     */
+    @PostMapping("footprint")
+    public ResultVO footprint(@RequestParam(value = "openId") String openId) {
+        return iMyActivityService.footprint(openId);
+    }
 }

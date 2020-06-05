@@ -1,11 +1,10 @@
 package com.talentcard.front.service.impl;
 
 import com.netflix.discovery.converters.Auto;
+import com.talentcard.common.bo.FootprintBO;
 import com.talentcard.common.config.FilePathConfig;
-import com.talentcard.common.mapper.FeedbackMapper;
-import com.talentcard.common.mapper.TalentMapper;
-import com.talentcard.common.pojo.FeedbackPO;
-import com.talentcard.common.pojo.TalentPO;
+import com.talentcard.common.mapper.*;
+import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IMyActivityService;
@@ -14,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author ChenXU
@@ -29,6 +30,14 @@ public class MyActivityServiceImpl implements IMyActivityService {
     private FeedbackMapper feedbackMapper;
     @Autowired
     private TalentMapper talentMapper;
+    @Autowired
+    private TalentActivityHistoryMapper talentActivityHistoryMapper;
+    @Autowired
+    private ScenicMapper scenicMapper;
+    @Autowired
+    private FarmhouseMapper farmhouseMapper;
+    @Autowired
+    private UserCardMapper userCardMapper;
 
     @Override
     public ResultVO addFeedBack(String openId, String content, MultipartFile file, String contact) {
@@ -49,5 +58,39 @@ public class MyActivityServiceImpl implements IMyActivityService {
         feedbackPO.setCreateTime(new Date());
         feedbackMapper.insertSelective(feedbackPO);
         return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO footprint(String openId) {
+        List<FootprintBO> footprintBOList = talentActivityHistoryMapper.footprint(openId);
+        if (footprintBOList != null) {
+            footprintBOList = setFootPrintInfo(footprintBOList);
+        }
+        return new ResultVO(1000, footprintBOList);
+    }
+
+    public List<FootprintBO> setFootPrintInfo(List<FootprintBO> footprintBOList) {
+        ScenicPO scenicPO;
+        FarmhousePO farmhousePO;
+        for (FootprintBO footprintBO : footprintBOList) {
+            if (footprintBO.getActivityFirstContentId() == 1) {
+                scenicPO = scenicMapper.selectByPrimaryKey(footprintBO.getActivitySecondContentId());
+                if (scenicPO != null) {
+                    footprintBO.setLocation(scenicPO.getLocation());
+                    footprintBO.setSubtitle(scenicPO.getSubtitle());
+                    scenicPO = null;
+                }
+
+            } else {
+                farmhousePO = farmhouseMapper.selectByPrimaryKey(footprintBO.getActivitySecondContentId());
+                if (farmhousePO != null) {
+                    footprintBO.setLocation(farmhousePO.getLocation());
+                    footprintBO.setSubtitle(farmhousePO.getSubtitle());
+                    farmhousePO = null;
+                }
+
+            }
+        }
+        return footprintBOList;
     }
 }
