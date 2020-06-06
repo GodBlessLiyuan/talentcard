@@ -32,7 +32,7 @@ public class MyActivityController {
     @PostMapping("addFeedBack")
     public ResultVO addFeedBack(@RequestParam(value = "openId") String openId,
                                 @RequestParam(value = "content") String content,
-                                @RequestParam(value = "picture", required = false,defaultValue = "") String picture,
+                                @RequestParam(value = "picture", required = false, defaultValue = "") String picture,
                                 @RequestParam(value = "contact", required = false, defaultValue = "") String contact) {
 
         return iMyActivityService.addFeedBack(openId, content, picture, contact);
@@ -40,12 +40,38 @@ public class MyActivityController {
 
 
     /**
-     *我的足迹接口
+     * 我的足迹接口
+     *
      * @param openId
      * @return
      */
     @PostMapping("footprint")
     public ResultVO footprint(@RequestParam(value = "openId") String openId) {
         return iMyActivityService.footprint(openId);
+    }
+
+    /**
+     * 我的收藏设定
+     *
+     * @param openId
+     * @return
+     */
+    @PostMapping("collect")
+    public ResultVO collect(@RequestParam(value = "openId") String openId,
+                            @RequestParam(value = "activityFirstContentId") Long activityFirstContentId,
+                            @RequestParam(value = "activitySecondContentId") Long activitySecondContentId,
+                            @RequestParam(value = "ifCollect") Byte ifCollect) {
+        return iMyActivityService.collect(openId, activityFirstContentId, activitySecondContentId, ifCollect);
+    }
+
+    /**
+     * 我的收藏查询接口
+     *
+     * @param openId
+     * @return
+     */
+    @PostMapping("findMyCollect")
+    public ResultVO findMyCollect(@RequestParam(value = "openId") String openId) {
+        return iMyActivityService.findMyCollect(openId);
     }
 }

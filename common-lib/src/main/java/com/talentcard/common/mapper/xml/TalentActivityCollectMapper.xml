@@ -105,7 +105,7 @@
     where tac_id = #{tacId,jdbcType=BIGINT}
   </update>
 
-  <select id="findMyCollect" resultType="java.lang.Long">
+  <select id="findSecondContentIdByCollect" resultType="java.lang.Long">
     select
     tac.activity_second_content_id as activitySecondContentId
     from t_talent_activity_collect tac
@@ -115,4 +115,41 @@
     and t.open_id = #{openId,jdbcType=CHAR}
     and tac.status = 1
   </select>
+
+  <select id="findMyCollect" resultMap="BaseResultMap">
+    select
+    tac_id, tac.talent_id as talent_id, activity_first_content_id,
+    activity_second_content_id, tac.create_time as create_time ,
+    tac.`status` as `status`
+    from t_talent_activity_collect tac
+    left join t_talent t
+    on tac.talent_id = t.talent_id
+    where
+    t.open_id = #{openId,jdbcType=CHAR}
+    and tac.status = 1
+  </select>
+
+  <select id="findOne" resultMap="BaseResultMap">
+    select
+    tac_id, tac.talent_id as talent_id, activity_first_content_id,
+    activity_second_content_id, tac.create_time as create_time,
+    tac.`status` as `status`
+    from t_talent_activity_collect tac
+    left join t_talent t
+    on tac.talent_id = t.talent_id
+    where
+    t.open_id = #{openId,jdbcType=CHAR}
+    and tac.status = 1
+    and tac.activity_first_content_id = #{activityFirstContentId, jdbcType=BIGINT}
+    and tac.activity_second_content_id = #{activitySecondContentId, jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByFactor">
+    delete
+    from t_talent_activity_collect
+    where
+    talent_id = #{talentId, jdbcType=BIGINT}
+    and activity_first_content_id = #{activityFirstContentId, jdbcType=BIGINT}
+    and activity_second_content_id = #{activitySecondContentId, jdbcType=BIGINT}
+  </delete>
 </mapper>

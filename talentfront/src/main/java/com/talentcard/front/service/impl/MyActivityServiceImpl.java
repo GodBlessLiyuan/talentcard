@@ -8,6 +8,7 @@ import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IMyActivityService;
+import com.talentcard.front.vo.TalentActivityCollectVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,6 +39,8 @@ public class MyActivityServiceImpl implements IMyActivityService {
     private FarmhouseMapper farmhouseMapper;
     @Autowired
     private UserCardMapper userCardMapper;
+    @Autowired
+    private TalentActivityCollectMapper talentActivityCollectMapper;
 
     @Override
     public ResultVO addFeedBack(String openId, String content, String picture, String contact) {
@@ -62,6 +65,47 @@ public class MyActivityServiceImpl implements IMyActivityService {
             footprintBOList = setFootPrintInfo(footprintBOList);
         }
         return new ResultVO(1000, footprintBOList);
+    }
+
+    @Override
+    public ResultVO collect(String openId, Long activityFirstContentId,
+                            Long activitySecondContentId, Byte ifCollect) {
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500, "查无此人！");
+        }
+        Long talentId = talentPO.getTalentId();
+        List<TalentActivityCollectPO> talentActivityCollectPOList
+                = talentActivityCollectMapper.findOne(openId, activityFirstContentId, activitySecondContentId);
+        /**
+         * 收藏
+         */
+        if (ifCollect == 1) {
+            //如果同一个活动数据存在，修正
+            if (talentActivityCollectPOList.size() >= 1) {
+                talentActivityCollectMapper.deleteByFactor(talentId, activityFirstContentId, activitySecondContentId);
+            }
+            TalentActivityCollectPO talentActivityCollectPO = new TalentActivityCollectPO();
+            talentActivityCollectPO.setActivityFirstContentId(activityFirstContentId);
+            talentActivityCollectPO.setActivitySecondContentId(activitySecondContentId);
+            talentActivityCollectPO.setCreateTime(new Date());
+            talentActivityCollectPO.setStatus((byte) 1);
+            talentActivityCollectPO.setTalentId(talentId);
+            talentActivityCollectMapper.insertSelective(talentActivityCollectPO);
+        } else {
+            /**
+             * 取消收藏
+             */
+            talentActivityCollectMapper.deleteByFactor(talentId, activityFirstContentId, activitySecondContentId);
+        }
+        return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO findMyCollect(String openId) {
+        List<TalentActivityCollectPO> talentActivityCollectPOList = talentActivityCollectMapper.findMyCollect(openId);
+        List<TalentActivityCollectVO> talentActivityCollectVOList = TalentActivityCollectVO.convert(talentActivityCollectPOList);
+        return new ResultVO(1000, talentActivityCollectVOList);
     }
 
     public List<FootprintBO> setFootPrintInfo(List<FootprintBO> footprintBOList) {
