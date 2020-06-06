@@ -85,7 +85,9 @@ public class JsApiController {
 
         if (null != jsTokenPO && null != jsTokenPO.getUnionid()) {
             TalentPO talentPO = talentMapper.queryByUnionId(jsTokenPO.getUnionid());
-            jsTokenPO.setWxOpenId(talentPO.getOpenId());
+            if (null != talentPO) {
+                jsTokenPO.setWxOpenId(talentPO.getOpenId());
+            }
         }
         return new ResultVO<>(1000, jsTokenPO);
     }
