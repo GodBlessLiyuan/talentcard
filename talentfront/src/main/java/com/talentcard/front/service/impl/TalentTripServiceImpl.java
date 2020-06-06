@@ -102,7 +102,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
         List<ScenicPO> scenicPOList = scenicMapper.findEnjoyScenic(scenicIdList, name, starLevel, area, order);
         List<ScenicVO> scenicVOList = ScenicVO.convert(scenicPOList);
         //我的收藏
-        List<Long> activitySecondContentIdList = talentActivityCollectMapper.findMyCollect(openId, (long) 1);
+        List<Long> activitySecondContentIdList = talentActivityCollectMapper
+                .findSecondContentIdByCollect(openId, (long) 1);
         scenicVOList = ScenicVO.assignIfCollect(scenicVOList, activitySecondContentIdList);
         //剩余次数
         scenicVOList = setGetTimes(openId, scenicVOList);
@@ -137,7 +138,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
             Integer getTimes = scenicVO.getTimes() - getBenefitTimes - vertifyTimes;
             scenicVO.setGetTimes(getTimes);
             //我的收藏
-            List<Long> activitySecondContentIdList = talentActivityCollectMapper.findMyCollect(openId, (long) 1);
+            List<Long> activitySecondContentIdList = talentActivityCollectMapper.findSecondContentIdByCollect(openId, (long) 1);
             scenicVO = ScenicVO.assignIfCollect(scenicVO, activitySecondContentIdList);
         }
         //使用期限
