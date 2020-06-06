@@ -88,6 +88,7 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
     /**
      * 根据openId和c表status=9是否有数据来判断是否认证过
      * status=9说明基本卡已经作废，证明认证完成
+     *
      * @param openId
      * @return
      */
@@ -169,4 +170,12 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
     TalentBO certApprovalDetail(@Param("certId") Long certId);
 
     TalentPO selectByIdCard(@Param("idCard") String idCard);
+
+    /**
+     * 根据unionId 查询 openId
+     *
+     * @param unionid
+     * @return
+     */
+    TalentPO queryByUnionId(String unionid);
 }

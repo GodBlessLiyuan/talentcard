@@ -1,10 +1,13 @@
 package com.talentcard.miniprogram.controller;
 
+import com.talentcard.common.mapper.TalentMapper;
+import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.miniprogram.pojo.JsTokenPO;
 import com.talentcard.miniprogram.utils.CommonUtil;
 import com.talentcard.miniprogram.utils.JsApiTicketUtil;
 import com.talentcard.miniprogram.utils.WxMappingJackson2HttpMessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -24,6 +27,9 @@ import java.util.HashMap;
 public class JsApiController {
     private static String appId;
     private static String appSecret;
+
+    @Autowired
+    private TalentMapper talentMapper;
 
     /**
      * 获取jsApiTicket
@@ -76,7 +82,12 @@ public class JsApiController {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         restTemplate.getMessageConverters().add(new WxMappingJackson2HttpMessageConverter());
         JsTokenPO jsTokenPO = restTemplate.getForObject(url, JsTokenPO.class);
-        return new ResultVO(1000, jsTokenPO);
+
+        if (null != jsTokenPO && null != jsTokenPO.getUnionid()) {
+            TalentPO talentPO = talentMapper.queryByUnionId(jsTokenPO.getUnionid());
+            jsTokenPO.setWxOpenId(talentPO.getOpenId());
+        }
+        return new ResultVO<>(1000, jsTokenPO);
     }
 
     @Value("${miniProgram.appId}")
