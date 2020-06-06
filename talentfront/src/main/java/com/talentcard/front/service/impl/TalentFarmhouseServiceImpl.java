@@ -197,7 +197,7 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
         //算次数
         if (openId != null) {
             //我的收藏
-            List<Long> activitySecondContentIdList = talentActivityCollectMapper.findSecondContentIdByCollect(openId, (long) 1);
+            List<Long> activitySecondContentIdList = talentActivityCollectMapper.findSecondContentIdByCollect(openId, (long) 2);
             farmhouseVO = FarmhouseVO.setIfCollect(farmhouseVO, activitySecondContentIdList);
         }
         return new ResultVO(1000, farmhouseVO);
