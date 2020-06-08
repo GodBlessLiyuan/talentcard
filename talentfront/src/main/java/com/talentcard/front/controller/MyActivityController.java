@@ -100,16 +100,19 @@ public class MyActivityController {
         }
         HashMap<String, Object> result = new HashMap<>();
         HashMap<String, Object> tripResult = (HashMap<String, Object>) tripResultVO.getData();
-
         HashMap<String, Object> farmhouseResult = (HashMap<String, Object>) farmhouseResultVO.getData();
         if (tripResult != null) {
             if (tripResult.get("scenicList") != null) {
                 result.put("tripResult", tripResult.get("scenicList"));
+            } else {
+                result.put("tripResult", null);
             }
         }
         if (farmhouseResult != null) {
             if (farmhouseResult.get("farmhouseVOList") != null) {
                 result.put("farmhouseResult", farmhouseResult.get("farmhouseVOList"));
+            } else {
+                result.put("farmhouseResult", null);
             }
         }
         return new ResultVO(1000, result);
