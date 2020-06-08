@@ -2,8 +2,10 @@ package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.IStaffService;
@@ -48,6 +50,8 @@ public class StaffServiceImpl implements IStaffService {
     private FarmhouseGroupAuthorityMapper farmhouseGroupAuthorityMapper;
     @Autowired
     private FarmhouseMapper farmhouseMapper;
+    @Autowired
+    private RedisMapUtil redisMapUtil;
 
     @Override
     public ResultVO ifEnableRegister(String openId, Long activityFirstContentId, Long activitySecondContentId) {
@@ -180,6 +184,8 @@ public class StaffServiceImpl implements IStaffService {
         HashMap<String, Object> result = new HashMap<>(1);
         result.put("vertifyNum", vertifyNum);
         sendMessage(talentOpenId, staffOpenId, (long) 1, activitySecondContentId);
+
+        this.redisMapUtil.hdel(talentOpenId, TalentConstant.TALENT_FOOTPIRNT);
         return new ResultVO(1000, result);
     }
 
@@ -294,6 +300,9 @@ public class StaffServiceImpl implements IStaffService {
         HashMap<String, Object> result = new HashMap<>(1);
         result.put("vertifyNum", vertifyNum);
         sendMessage(talentOpenId, staffOpenId, (long) 2, activitySecondContentId);
+
+        this.redisMapUtil.hdel(talentOpenId, TalentConstant.TALENT_FOOTPIRNT);
+
         return new ResultVO(1000, result);
     }
 

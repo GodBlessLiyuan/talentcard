@@ -1,20 +1,21 @@
 package com.talentcard.front.service.impl;
 
-import com.netflix.discovery.converters.Auto;
+import com.alibaba.fastjson.JSON;
 import com.talentcard.common.bo.FootprintBO;
 import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
-import com.talentcard.common.utils.FileUtil;
+import com.talentcard.common.utils.StringToObjUtil;
+import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IMyActivityService;
 import com.talentcard.front.vo.TalentActivityCollectVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,9 +39,9 @@ public class MyActivityServiceImpl implements IMyActivityService {
     @Autowired
     private FarmhouseMapper farmhouseMapper;
     @Autowired
-    private UserCardMapper userCardMapper;
-    @Autowired
     private TalentActivityCollectMapper talentActivityCollectMapper;
+    @Autowired
+    private RedisMapUtil redisMapUtil;
 
     @Override
     public ResultVO addFeedBack(String openId, String content, String picture, String contact) {
@@ -60,10 +61,23 @@ public class MyActivityServiceImpl implements IMyActivityService {
 
     @Override
     public ResultVO footprint(String openId) {
+
+        String mapStr = this.redisMapUtil.hget(openId, TalentConstant.TALENT_FOOTPIRNT);
+        if(!StringUtils.isEmpty(mapStr)){
+            List<FootprintBO> footprintBOList = StringToObjUtil.strToObj(mapStr, List.class);
+            if(footprintBOList != null){
+                return new ResultVO(1000, footprintBOList);
+            }
+        }
+
+
         List<FootprintBO> footprintBOList = talentActivityHistoryMapper.footprint(openId);
         if (footprintBOList != null) {
             footprintBOList = setFootPrintInfo(footprintBOList);
         }
+
+        this.redisMapUtil.hset(openId, TalentConstant.TALENT_FOOTPIRNT, JSON.toJSONString(footprintBOList));
+
         return new ResultVO(1000, footprintBOList);
     }
 
@@ -98,13 +112,28 @@ public class MyActivityServiceImpl implements IMyActivityService {
              */
             talentActivityCollectMapper.deleteByFactor(talentId, activityFirstContentId, activitySecondContentId);
         }
+
+        this.redisMapUtil.hdel(openId, TalentConstant.TALENT_MYCOLLECT);
+
         return new ResultVO(1000);
     }
 
     @Override
     public ResultVO findMyCollect(String openId) {
+
+        String mapStr = this.redisMapUtil.hget(openId, TalentConstant.TALENT_MYCOLLECT);
+        if(!StringUtils.isEmpty(mapStr)){
+            List<TalentActivityCollectVO> talentActivityCollectVOList = StringToObjUtil.strToObj(mapStr,List.class);
+            if(talentActivityCollectVOList != null){
+                return new ResultVO(1000, talentActivityCollectVOList);
+            }
+        }
+
         List<TalentActivityCollectPO> talentActivityCollectPOList = talentActivityCollectMapper.findMyCollect(openId);
         List<TalentActivityCollectVO> talentActivityCollectVOList = TalentActivityCollectVO.convert(talentActivityCollectPOList);
+
+        this.redisMapUtil.hset(openId, TalentConstant.TALENT_MYCOLLECT, JSON.toJSONString(talentActivityCollectVOList));
+
         return new ResultVO(1000, talentActivityCollectVOList);
     }
 
@@ -117,7 +146,6 @@ public class MyActivityServiceImpl implements IMyActivityService {
                 if (scenicPO != null) {
                     footprintBO.setLocation(scenicPO.getLocation());
                     footprintBO.setSubtitle(scenicPO.getSubtitle());
-                    scenicPO = null;
                 }
 
             } else {
@@ -125,7 +153,6 @@ public class MyActivityServiceImpl implements IMyActivityService {
                 if (farmhousePO != null) {
                     footprintBO.setLocation(farmhousePO.getLocation());
                     footprintBO.setSubtitle(farmhousePO.getSubtitle());
-                    farmhousePO = null;
                 }
 
             }

@@ -631,7 +631,7 @@ public class TalentServiceImpl implements ITalentService {
         ArrayList categoryList = null;
         String talentCategory = userCurrentInfoPO.getTalentCategory();
         //拆分人才类别
-        if (talentCategory != null && !talentCategory.equals("")) {
+        if (!StringUtils.isEmpty(talentCategory)) {
             categoryList = TalentActivityUtil.splitCategory(userCurrentInfoPO.getTalentCategory());
         }
         Integer education = userCurrentInfoPO.getEducation();
@@ -646,6 +646,7 @@ public class TalentServiceImpl implements ITalentService {
         vo.setTitle(title);
         vo.setQuality(quality);
         vo.setTalentHonour(talentHonour);
+        vo.setCategory(talentCategory);
 
         redisMapUtil.hset(openId, "getTalentInfo", JSON.toJSONString(vo));
         return vo;
