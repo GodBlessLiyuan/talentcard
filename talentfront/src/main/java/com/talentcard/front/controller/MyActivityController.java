@@ -95,17 +95,19 @@ public class MyActivityController {
                                  @RequestParam(value = "name", required = false, defaultValue = "") String name) {
         ResultVO tripResultVO = iTalentTripService.findSecondContent(openId, name, null, null, (byte) 1);
         ResultVO farmhouseResultVO = iTalentFarmhouseService.findSecondContent(openId, name, null, (byte) 1);
+        if (tripResultVO == null || farmhouseResultVO == null) {
+            return new ResultVO(2510, "全局搜索resultVO返回空指针异常！");
+        }
         HashMap<String, Object> result = new HashMap<>();
-        HashMap<String, Object> tripResult;
-        HashMap<String, Object> farmhouseResult;
-        if (tripResultVO != null) {
-            tripResult = (HashMap<String, Object>) tripResultVO.getData();
+        HashMap<String, Object> tripResult = (HashMap<String, Object>) tripResultVO.getData();
+
+        HashMap<String, Object> farmhouseResult = (HashMap<String, Object>) farmhouseResultVO.getData();
+        if (tripResult != null) {
             if (tripResult.get("scenicList") != null) {
                 result.put("tripResult", tripResult.get("scenicList"));
             }
         }
-        if (farmhouseResultVO != null) {
-            farmhouseResult = (HashMap<String, Object>) farmhouseResultVO.getData();
+        if (farmhouseResult != null) {
             if (farmhouseResult.get("farmhouseVOList") != null) {
                 result.put("farmhouseResult", farmhouseResult.get("farmhouseVOList"));
             }
