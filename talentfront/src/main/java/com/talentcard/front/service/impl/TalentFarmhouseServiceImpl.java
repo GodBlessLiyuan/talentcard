@@ -157,9 +157,9 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
 
             if (farmhousePOList != null && farmhousePOList.size() > 0) {
                 List<FarmhouseVO> farmhouseVOList = FarmhouseVO.convert(farmhousePOList);
-                //我的收藏
-                List<Long> activitySecondContentIdList = talentActivityCollectMapper.findSecondContentIdByCollect(openId, (long) 2);
-                farmhouseVOList = FarmhouseVO.setIfCollect(farmhouseVOList, activitySecondContentIdList);
+//                //我的收藏
+//                List<Long> activitySecondContentIdList = talentActivityCollectMapper.findSecondContentIdByCollect(openId, (long) 2);
+//                farmhouseVOList = FarmhouseVO.setIfCollect(farmhouseVOList, activitySecondContentIdList);
                 //拼结果
                 Long benefitNum = ActivityResidueNumUtil.getResidueNum();
                 resultMap.put("farmhouseVOList", farmhouseVOList);

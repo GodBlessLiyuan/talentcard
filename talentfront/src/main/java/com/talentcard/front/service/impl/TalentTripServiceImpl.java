@@ -101,10 +101,10 @@ public class TalentTripServiceImpl implements ITalentTripService {
         //景区表，查询符合条件的景区
         List<ScenicPO> scenicPOList = scenicMapper.findEnjoyScenic(scenicIdList, name, starLevel, area, order);
         List<ScenicVO> scenicVOList = ScenicVO.convert(scenicPOList);
-        //我的收藏
-        List<Long> activitySecondContentIdList = talentActivityCollectMapper
-                .findSecondContentIdByCollect(openId, (long) 1);
-        scenicVOList = ScenicVO.assignIfCollect(scenicVOList, activitySecondContentIdList);
+//        //我的收藏
+//        List<Long> activitySecondContentIdList = talentActivityCollectMapper
+//                .findSecondContentIdByCollect(openId, (long) 1);
+//        scenicVOList = ScenicVO.assignIfCollect(scenicVOList, activitySecondContentIdList);
         //剩余次数
         scenicVOList = setGetTimes(openId, scenicVOList);
         //拼结果
