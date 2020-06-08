@@ -37,6 +37,8 @@ public class TalentActivityCollectVO {
     private String avatar;
     private Byte starlevel;
     private Double discount;
+    //是否上下架
+    private Byte ifReady;
 
     private static ScenicMapper scenicMapper;
     private static FarmhouseMapper farmhouseMapper;
@@ -93,6 +95,7 @@ public class TalentActivityCollectVO {
                 talentActivityCollectVO.setLocation(scenicPO.getLocation());
                 talentActivityCollectVO.setStarlevel(scenicPO.getStarlevel());
                 talentActivityCollectVO.setSubtitle(scenicPO.getSubtitle());
+                talentActivityCollectVO.setIfReady(scenicPO.getStatus());
             }
         } else {
             /**
@@ -107,6 +110,7 @@ public class TalentActivityCollectVO {
             talentActivityCollectVO.setLocation(farmhousePO.getLocation());
             talentActivityCollectVO.setDiscount(farmhousePO.getDiscount());
             talentActivityCollectVO.setSubtitle(farmhousePO.getSubtitle());
+            talentActivityCollectVO.setIfReady(farmhousePO.getStatus());
         }
 
         return talentActivityCollectVO;
