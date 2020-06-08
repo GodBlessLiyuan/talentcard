@@ -24,7 +24,7 @@ public class TalentTripController {
     /**
      * @param openId
      * @param name
-     * @param starLevel
+     * @param starlevel
      * @param area
      * @param order
      * @return
@@ -32,10 +32,10 @@ public class TalentTripController {
     @RequestMapping("findSecondContent")
     public ResultVO findSecondContent(@RequestParam(value = "openId") String openId,
                                       @RequestParam(value = "name", required = false, defaultValue = "") String name,
-                                      @RequestParam(value = "starLevel", required = false) Byte starLevel,
+                                      @RequestParam(value = "starlevel", required = false) Byte starlevel,
                                       @RequestParam(value = "area", required = false) Byte area,
                                       @RequestParam(value = "order", required = false, defaultValue = "2") Byte order) {
-        return iTalentTripService.findSecondContent(openId, name, starLevel, area, order);
+        return iTalentTripService.findSecondContent(openId, name, starlevel, area, order);
     }
 
     /**
