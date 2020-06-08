@@ -75,12 +75,12 @@ public class MyActivityServiceImpl implements IMyActivityService {
             return new ResultVO(2500, "查无此人！");
         }
         Long talentId = talentPO.getTalentId();
-        List<TalentActivityCollectPO> talentActivityCollectPOList
-                = talentActivityCollectMapper.findOne(openId, activityFirstContentId, activitySecondContentId);
         /**
          * 收藏
          */
         if (ifCollect == 1) {
+            List<TalentActivityCollectPO> talentActivityCollectPOList
+                    = talentActivityCollectMapper.findOne(openId, activityFirstContentId, activitySecondContentId);
             //如果同一个活动数据存在，修正
             if (talentActivityCollectPOList.size() >= 1) {
                 talentActivityCollectMapper.deleteByFactor(talentId, activityFirstContentId, activitySecondContentId);
