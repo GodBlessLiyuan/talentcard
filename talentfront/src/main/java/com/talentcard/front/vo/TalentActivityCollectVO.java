@@ -42,15 +42,6 @@ public class TalentActivityCollectVO {
 
     private static ScenicMapper scenicMapper;
     private static FarmhouseMapper farmhouseMapper;
-//    @Autowired
-//    private ScenicMapper sMapper;
-//    @Autowired
-//    private FarmhouseMapper fMapper;
-//    @PostConstruct
-//    public void TalentActivityCollectVOInitialize() {
-//        scenicMapper = sMapper;
-//        farmhouseMapper = fMapper;
-//    }
 
     /**
      * POList转VOList
