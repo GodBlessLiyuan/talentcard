@@ -60,6 +60,7 @@ public interface ITalentService {
                             Integer profTitleCategory,
                             String profTitleInfo,
                             Long honourId,
+                            String graduateTime,
                             MultipartFile educPicture,
                             MultipartFile profTitlePicture,
                             MultipartFile profQualityPicture,

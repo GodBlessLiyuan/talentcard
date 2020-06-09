@@ -1,116 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.TalentMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentPO">
-    <id column="talent_id" jdbcType="BIGINT" property="talentId" />
-    <result column="open_id" jdbcType="CHAR" property="openId" />
-    <result column="union_id" jdbcType="CHAR" property="unionId" />
-    <result column="name" jdbcType="CHAR" property="name" />
-    <result column="sex" jdbcType="TINYINT" property="sex" />
-    <result column="id_card" jdbcType="CHAR" property="idCard" />
-    <result column="passport" jdbcType="CHAR" property="passport" />
-    <result column="driver_card" jdbcType="CHAR" property="driverCard" />
-    <result column="card_type" jdbcType="TINYINT" property="cardType" />
-    <result column="work_unit" jdbcType="CHAR" property="workUnit" />
-    <result column="industry" jdbcType="INTEGER" property="industry" />
-    <result column="industry_second" jdbcType="INTEGER" property="industrySecond" />
-    <result column="phone" jdbcType="CHAR" property="phone" />
-    <result column="political" jdbcType="TINYINT" property="political" />
-    <result column="category" jdbcType="CHAR" property="category" />
-    <result column="work_location" jdbcType="CHAR" property="workLocation" />
-    <result column="work_location_type" jdbcType="TINYINT" property="workLocationType" />
-    <result column="card_id" jdbcType="BIGINT" property="cardId" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="dr" jdbcType="TINYINT" property="dr" />
-    <result column="talent_source" jdbcType="INTEGER" property="talentSource" />
-  </resultMap>
-  <resultMap id="TalentResultMap" type="com.talentcard.common.bo.TalentBO">
-    <id column="t_talent_id" jdbcType="BIGINT" property="talentId"/>
-    <result column="t_open_id" jdbcType="CHAR" property="openId"/>
-    <result column="t_name" jdbcType="CHAR" property="name"/>
-    <result column="t_sex" jdbcType="TINYINT" property="sex"/>
-    <result column="t_id_card" jdbcType="CHAR" property="idCard"/>
-    <result column="t_passport" jdbcType="CHAR" property="passport"/>
-    <result column="t_driver_card" jdbcType="CHAR" property="driverCard"/>
-    <result column="t_card_type" jdbcType="TINYINT" property="cardType"/>
-    <result column="t_work_unit" jdbcType="CHAR" property="workUnit"/>
-    <result column="t_industry" jdbcType="INTEGER" property="industry"/>
-    <result column="t_industry_second" jdbcType="INTEGER" property="industrySecond"/>
-    <result column="t_political" jdbcType="TINYINT" property="political"/>
-    <result column="t_phone" jdbcType="CHAR" property="phone"/>
-    <result column="t_create_time" jdbcType="TIMESTAMP" property="createTime"/>
-    <result column="t_category" jdbcType="CHAR" property="category"/>
-    <result column="t_work_location" jdbcType="CHAR" property="workLocation"/>
-    <result column="t_work_location_type" jdbcType="TINYINT" property="workLocationType"/>
-    <result column="t_status" jdbcType="TINYINT" property="status"/>
-    <result column="t_card_id" jdbcType="BIGINT" property="cardId"/>
-    <result column="t_dr" jdbcType="TINYINT" property="dr"/>
+    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentPO">
+        <id column="talent_id" jdbcType="BIGINT" property="talentId"/>
+        <result column="open_id" jdbcType="CHAR" property="openId"/>
+        <result column="union_id" jdbcType="CHAR" property="unionId"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="sex" jdbcType="TINYINT" property="sex"/>
+        <result column="id_card" jdbcType="CHAR" property="idCard"/>
+        <result column="passport" jdbcType="CHAR" property="passport"/>
+        <result column="driver_card" jdbcType="CHAR" property="driverCard"/>
+        <result column="card_type" jdbcType="TINYINT" property="cardType"/>
+        <result column="work_unit" jdbcType="CHAR" property="workUnit"/>
+        <result column="industry" jdbcType="INTEGER" property="industry"/>
+        <result column="industry_second" jdbcType="INTEGER" property="industrySecond"/>
+        <result column="phone" jdbcType="CHAR" property="phone"/>
+        <result column="political" jdbcType="TINYINT" property="political"/>
+        <result column="category" jdbcType="CHAR" property="category"/>
+        <result column="work_location" jdbcType="CHAR" property="workLocation"/>
+        <result column="work_location_type" jdbcType="TINYINT" property="workLocationType"/>
+        <result column="card_id" jdbcType="BIGINT" property="cardId"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="dr" jdbcType="TINYINT" property="dr"/>
+        <result column="talent_source" jdbcType="INTEGER" property="talentSource"/>
+    </resultMap>
+    <resultMap id="TalentResultMap" type="com.talentcard.common.bo.TalentBO">
+        <id column="t_talent_id" jdbcType="BIGINT" property="talentId"/>
+        <result column="t_open_id" jdbcType="CHAR" property="openId"/>
+        <result column="t_name" jdbcType="CHAR" property="name"/>
+        <result column="t_sex" jdbcType="TINYINT" property="sex"/>
+        <result column="t_id_card" jdbcType="CHAR" property="idCard"/>
+        <result column="t_passport" jdbcType="CHAR" property="passport"/>
+        <result column="t_driver_card" jdbcType="CHAR" property="driverCard"/>
+        <result column="t_card_type" jdbcType="TINYINT" property="cardType"/>
+        <result column="t_work_unit" jdbcType="CHAR" property="workUnit"/>
+        <result column="t_industry" jdbcType="INTEGER" property="industry"/>
+        <result column="t_industry_second" jdbcType="INTEGER" property="industrySecond"/>
+        <result column="t_political" jdbcType="TINYINT" property="political"/>
+        <result column="t_phone" jdbcType="CHAR" property="phone"/>
+        <result column="t_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="t_category" jdbcType="CHAR" property="category"/>
+        <result column="t_work_location" jdbcType="CHAR" property="workLocation"/>
+        <result column="t_work_location_type" jdbcType="TINYINT" property="workLocationType"/>
+        <result column="t_status" jdbcType="TINYINT" property="status"/>
+        <result column="t_card_id" jdbcType="BIGINT" property="cardId"/>
+        <result column="t_dr" jdbcType="TINYINT" property="dr"/>
 
-    <result column="c_cert_id" jdbcType="BIGINT" property="certId"/>
-    <result column="c_political" jdbcType="CHAR" property="political"/>
-    <result column="c_status" jdbcType="TINYINT" property="certificationStatus"/>
-    <result column="current_type" jdbcType="TINYINT" property="currentType"/>
+        <result column="c_cert_id" jdbcType="BIGINT" property="certId"/>
+        <result column="c_political" jdbcType="CHAR" property="political"/>
+        <result column="c_status" jdbcType="TINYINT" property="certificationStatus"/>
+        <result column="current_type" jdbcType="TINYINT" property="currentType"/>
 
-    <collection property="educationPOList" ofType="com.talentcard.common.pojo.EducationPO">
-      <id column="e_educ_id" jdbcType="BIGINT" property="educId"/>
-      <result column="e_education" jdbcType="INTEGER" property="education"/>
-      <result column="e_school" jdbcType="CHAR" property="school"/>
-      <result column="e_first_class" jdbcType="TINYINT" property="firstClass"/>
-      <result column="e_major" jdbcType="CHAR" property="major"/>
-      <result column="e_educ_picture" jdbcType="CHAR" property="educPicture"/>
-      <result column="e_cert_id" jdbcType="BIGINT" property="certId"/>
-      <result column="e_talent_id" jdbcType="BIGINT" property="talentId"/>
-      <result column="e_status" jdbcType="TINYINT" property="status"/>
-      <result column="e_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
-    </collection>
-    <collection property="profTitlePOList" ofType="com.talentcard.common.pojo.ProfTitlePO">
-      <id column="pt_pt_id" jdbcType="BIGINT" property="ptId"/>
-      <result column="pt_category" jdbcType="INTEGER" property="category"/>
-      <result column="pt_info" jdbcType="CHAR" property="info"/>
-      <result column="pt_picture" jdbcType="CHAR" property="picture"/>
-      <result column="pt_cert_id" jdbcType="BIGINT" property="certId"/>
-      <result column="pt_talent_id" jdbcType="BIGINT" property="talentId"/>
-      <result column="pt_status" jdbcType="TINYINT" property="status"/>
-      <result column="pt_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
-    </collection>
-    <collection property="profQualityPOList" ofType="com.talentcard.common.pojo.ProfQualityPO">
-      <id column="pq_pq_id" jdbcType="BIGINT" property="pqId"/>
-      <result column="pq_category" jdbcType="INTEGER" property="category"/>
-      <result column="pq_info" jdbcType="CHAR" property="info"/>
-      <result column="pq_picture" jdbcType="CHAR" property="picture"/>
-      <result column="pq_cert_id" jdbcType="BIGINT" property="certId"/>
-      <result column="pq_talent_id" jdbcType="BIGINT" property="talentId"/>
-      <result column="pq_status" jdbcType="TINYINT" property="status"/>
-      <result column="pq_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
-    </collection>
-    <collection property="talentHonourPOList" ofType="com.talentcard.common.pojo.TalentHonourPO">
-      <id column="th_th_id" jdbcType="BIGINT" property="thId"/>
-      <result column="th_honour_id" jdbcType="BIGINT" property="honourId"/>
-      <result column="th_honour_picture" jdbcType="CHAR" property="honourPicture"/>
-      <result column="th_info" jdbcType="CHAR" property="info"/>
-      <result column="th_cert_id" jdbcType="BIGINT" property="certId"/>
-      <result column="th_talent_id" jdbcType="BIGINT" property="talentId"/>
-      <result column="th_status" jdbcType="TINYINT" property="status"/>
-      <result column="th_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
-    </collection>
-  </resultMap>
-  <sql id="Base_Column_List">
+        <collection property="educationPOList" ofType="com.talentcard.common.pojo.EducationPO">
+            <id column="e_educ_id" jdbcType="BIGINT" property="educId"/>
+            <result column="e_education" jdbcType="INTEGER" property="education"/>
+            <result column="e_school" jdbcType="CHAR" property="school"/>
+            <result column="e_first_class" jdbcType="TINYINT" property="firstClass"/>
+            <result column="e_major" jdbcType="CHAR" property="major"/>
+            <result column="e_educ_picture" jdbcType="CHAR" property="educPicture"/>
+            <result column="e_cert_id" jdbcType="BIGINT" property="certId"/>
+            <result column="e_talent_id" jdbcType="BIGINT" property="talentId"/>
+            <result column="e_status" jdbcType="TINYINT" property="status"/>
+            <result column="e_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
+        </collection>
+        <collection property="profTitlePOList" ofType="com.talentcard.common.pojo.ProfTitlePO">
+            <id column="pt_pt_id" jdbcType="BIGINT" property="ptId"/>
+            <result column="pt_category" jdbcType="INTEGER" property="category"/>
+            <result column="pt_info" jdbcType="CHAR" property="info"/>
+            <result column="pt_picture" jdbcType="CHAR" property="picture"/>
+            <result column="pt_cert_id" jdbcType="BIGINT" property="certId"/>
+            <result column="pt_talent_id" jdbcType="BIGINT" property="talentId"/>
+            <result column="pt_status" jdbcType="TINYINT" property="status"/>
+            <result column="pt_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
+        </collection>
+        <collection property="profQualityPOList" ofType="com.talentcard.common.pojo.ProfQualityPO">
+            <id column="pq_pq_id" jdbcType="BIGINT" property="pqId"/>
+            <result column="pq_category" jdbcType="INTEGER" property="category"/>
+            <result column="pq_info" jdbcType="CHAR" property="info"/>
+            <result column="pq_picture" jdbcType="CHAR" property="picture"/>
+            <result column="pq_cert_id" jdbcType="BIGINT" property="certId"/>
+            <result column="pq_talent_id" jdbcType="BIGINT" property="talentId"/>
+            <result column="pq_status" jdbcType="TINYINT" property="status"/>
+            <result column="pq_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
+        </collection>
+        <collection property="talentHonourPOList" ofType="com.talentcard.common.pojo.TalentHonourPO">
+            <id column="th_th_id" jdbcType="BIGINT" property="thId"/>
+            <result column="th_honour_id" jdbcType="BIGINT" property="honourId"/>
+            <result column="th_honour_picture" jdbcType="CHAR" property="honourPicture"/>
+            <result column="th_info" jdbcType="CHAR" property="info"/>
+            <result column="th_cert_id" jdbcType="BIGINT" property="certId"/>
+            <result column="th_talent_id" jdbcType="BIGINT" property="talentId"/>
+            <result column="th_status" jdbcType="TINYINT" property="status"/>
+            <result column="th_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
     talent_id, open_id, union_id, `name`, sex, id_card, passport, driver_card, card_type, 
     work_unit, industry, industry_second, phone, political, category, work_location, 
     work_location_type, card_id, `status`, create_time, dr, talent_source
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_talent
-    where talent_id = #{talentId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_talent
+        where talent_id = #{talentId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_talent
     where talent_id = #{talentId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.TalentPO">
+    <insert id="insert" parameterType="com.talentcard.common.pojo.TalentPO">
     insert into t_talent (talent_id, open_id, union_id, 
       `name`, sex, id_card, passport, 
       driver_card, card_type, work_unit, 
@@ -128,215 +128,215 @@
       #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, #{talentSource,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentPO">
-    insert into t_talent
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="talentId != null">
-        talent_id,
-      </if>
-      <if test="openId != null">
-        open_id,
-      </if>
-      <if test="unionId != null">
-        union_id,
-      </if>
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="sex != null">
-        sex,
-      </if>
-      <if test="idCard != null">
-        id_card,
-      </if>
-      <if test="passport != null">
-        passport,
-      </if>
-      <if test="driverCard != null">
-        driver_card,
-      </if>
-      <if test="cardType != null">
-        card_type,
-      </if>
-      <if test="workUnit != null">
-        work_unit,
-      </if>
-      <if test="industry != null">
-        industry,
-      </if>
-      <if test="industrySecond != null">
-        industry_second,
-      </if>
-      <if test="phone != null">
-        phone,
-      </if>
-      <if test="political != null">
-        political,
-      </if>
-      <if test="category != null">
-        category,
-      </if>
-      <if test="workLocation != null">
-        work_location,
-      </if>
-      <if test="workLocationType != null">
-        work_location_type,
-      </if>
-      <if test="cardId != null">
-        card_id,
-      </if>
-      <if test="status != null">
-        `status`,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="dr != null">
-        dr,
-      </if>
-      <if test="talentSource != null">
-        talent_source,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="talentId != null">
-        #{talentId,jdbcType=BIGINT},
-      </if>
-      <if test="openId != null">
-        #{openId,jdbcType=CHAR},
-      </if>
-      <if test="unionId != null">
-        #{unionId,jdbcType=CHAR},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=CHAR},
-      </if>
-      <if test="sex != null">
-        #{sex,jdbcType=TINYINT},
-      </if>
-      <if test="idCard != null">
-        #{idCard,jdbcType=CHAR},
-      </if>
-      <if test="passport != null">
-        #{passport,jdbcType=CHAR},
-      </if>
-      <if test="driverCard != null">
-        #{driverCard,jdbcType=CHAR},
-      </if>
-      <if test="cardType != null">
-        #{cardType,jdbcType=TINYINT},
-      </if>
-      <if test="workUnit != null">
-        #{workUnit,jdbcType=CHAR},
-      </if>
-      <if test="industry != null">
-        #{industry,jdbcType=INTEGER},
-      </if>
-      <if test="industrySecond != null">
-        #{industrySecond,jdbcType=INTEGER},
-      </if>
-      <if test="phone != null">
-        #{phone,jdbcType=CHAR},
-      </if>
-      <if test="political != null">
-        #{political,jdbcType=TINYINT},
-      </if>
-      <if test="category != null">
-        #{category,jdbcType=CHAR},
-      </if>
-      <if test="workLocation != null">
-        #{workLocation,jdbcType=CHAR},
-      </if>
-      <if test="workLocationType != null">
-        #{workLocationType,jdbcType=TINYINT},
-      </if>
-      <if test="cardId != null">
-        #{cardId,jdbcType=BIGINT},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dr != null">
-        #{dr,jdbcType=TINYINT},
-      </if>
-      <if test="talentSource != null">
-        #{talentSource,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentPO">
-    update t_talent
-    <set>
-      <if test="openId != null">
-        open_id = #{openId,jdbcType=CHAR},
-      </if>
-      <if test="unionId != null">
-        union_id = #{unionId,jdbcType=CHAR},
-      </if>
-      <if test="name != null">
-        `name` = #{name,jdbcType=CHAR},
-      </if>
-      <if test="sex != null">
-        sex = #{sex,jdbcType=TINYINT},
-      </if>
-      <if test="idCard != null">
-        id_card = #{idCard,jdbcType=CHAR},
-      </if>
-      <if test="passport != null">
-        passport = #{passport,jdbcType=CHAR},
-      </if>
-      <if test="driverCard != null">
-        driver_card = #{driverCard,jdbcType=CHAR},
-      </if>
-      <if test="cardType != null">
-        card_type = #{cardType,jdbcType=TINYINT},
-      </if>
-      <if test="workUnit != null">
-        work_unit = #{workUnit,jdbcType=CHAR},
-      </if>
-      <if test="industry != null">
-        industry = #{industry,jdbcType=INTEGER},
-      </if>
-      <if test="industrySecond != null">
-        industry_second = #{industrySecond,jdbcType=INTEGER},
-      </if>
-      <if test="phone != null">
-        phone = #{phone,jdbcType=CHAR},
-      </if>
-      <if test="political != null">
-        political = #{political,jdbcType=TINYINT},
-      </if>
-      <if test="category != null">
-        category = #{category,jdbcType=CHAR},
-      </if>
-      <if test="workLocation != null">
-        work_location = #{workLocation,jdbcType=CHAR},
-      </if>
-      <if test="workLocationType != null">
-        work_location_type = #{workLocationType,jdbcType=TINYINT},
-      </if>
-      <if test="cardId != null">
-        card_id = #{cardId,jdbcType=BIGINT},
-      </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dr != null">
-        dr = #{dr,jdbcType=TINYINT},
-      </if>
-      <if test="talentSource != null">
-        talent_source = #{talentSource,jdbcType=INTEGER},
-      </if>
-    </set>
-    where talent_id = #{talentId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentPO">
+    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentPO">
+        insert into t_talent
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="talentId != null">
+                talent_id,
+            </if>
+            <if test="openId != null">
+                open_id,
+            </if>
+            <if test="unionId != null">
+                union_id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="idCard != null">
+                id_card,
+            </if>
+            <if test="passport != null">
+                passport,
+            </if>
+            <if test="driverCard != null">
+                driver_card,
+            </if>
+            <if test="cardType != null">
+                card_type,
+            </if>
+            <if test="workUnit != null">
+                work_unit,
+            </if>
+            <if test="industry != null">
+                industry,
+            </if>
+            <if test="industrySecond != null">
+                industry_second,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="political != null">
+                political,
+            </if>
+            <if test="category != null">
+                category,
+            </if>
+            <if test="workLocation != null">
+                work_location,
+            </if>
+            <if test="workLocationType != null">
+                work_location_type,
+            </if>
+            <if test="cardId != null">
+                card_id,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="dr != null">
+                dr,
+            </if>
+            <if test="talentSource != null">
+                talent_source,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="talentId != null">
+                #{talentId,jdbcType=BIGINT},
+            </if>
+            <if test="openId != null">
+                #{openId,jdbcType=CHAR},
+            </if>
+            <if test="unionId != null">
+                #{unionId,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=CHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="idCard != null">
+                #{idCard,jdbcType=CHAR},
+            </if>
+            <if test="passport != null">
+                #{passport,jdbcType=CHAR},
+            </if>
+            <if test="driverCard != null">
+                #{driverCard,jdbcType=CHAR},
+            </if>
+            <if test="cardType != null">
+                #{cardType,jdbcType=TINYINT},
+            </if>
+            <if test="workUnit != null">
+                #{workUnit,jdbcType=CHAR},
+            </if>
+            <if test="industry != null">
+                #{industry,jdbcType=INTEGER},
+            </if>
+            <if test="industrySecond != null">
+                #{industrySecond,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=CHAR},
+            </if>
+            <if test="political != null">
+                #{political,jdbcType=TINYINT},
+            </if>
+            <if test="category != null">
+                #{category,jdbcType=CHAR},
+            </if>
+            <if test="workLocation != null">
+                #{workLocation,jdbcType=CHAR},
+            </if>
+            <if test="workLocationType != null">
+                #{workLocationType,jdbcType=TINYINT},
+            </if>
+            <if test="cardId != null">
+                #{cardId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dr != null">
+                #{dr,jdbcType=TINYINT},
+            </if>
+            <if test="talentSource != null">
+                #{talentSource,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentPO">
+        update t_talent
+        <set>
+            <if test="openId != null">
+                open_id = #{openId,jdbcType=CHAR},
+            </if>
+            <if test="unionId != null">
+                union_id = #{unionId,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=CHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="idCard != null">
+                id_card = #{idCard,jdbcType=CHAR},
+            </if>
+            <if test="passport != null">
+                passport = #{passport,jdbcType=CHAR},
+            </if>
+            <if test="driverCard != null">
+                driver_card = #{driverCard,jdbcType=CHAR},
+            </if>
+            <if test="cardType != null">
+                card_type = #{cardType,jdbcType=TINYINT},
+            </if>
+            <if test="workUnit != null">
+                work_unit = #{workUnit,jdbcType=CHAR},
+            </if>
+            <if test="industry != null">
+                industry = #{industry,jdbcType=INTEGER},
+            </if>
+            <if test="industrySecond != null">
+                industry_second = #{industrySecond,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=CHAR},
+            </if>
+            <if test="political != null">
+                political = #{political,jdbcType=TINYINT},
+            </if>
+            <if test="category != null">
+                category = #{category,jdbcType=CHAR},
+            </if>
+            <if test="workLocation != null">
+                work_location = #{workLocation,jdbcType=CHAR},
+            </if>
+            <if test="workLocationType != null">
+                work_location_type = #{workLocationType,jdbcType=TINYINT},
+            </if>
+            <if test="cardId != null">
+                card_id = #{cardId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dr != null">
+                dr = #{dr,jdbcType=TINYINT},
+            </if>
+            <if test="talentSource != null">
+                talent_source = #{talentSource,jdbcType=INTEGER},
+            </if>
+        </set>
+        where talent_id = #{talentId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentPO">
     update t_talent
     set open_id = #{openId,jdbcType=CHAR},
       union_id = #{unionId,jdbcType=CHAR},
@@ -361,23 +361,24 @@
       talent_source = #{talentSource,jdbcType=INTEGER}
     where talent_id = #{talentId,jdbcType=BIGINT}
   </update>
-  <!--  insert，且返回主键-->
-  <insert id="add" useGeneratedKeys="true" keyProperty="talentId" parameterType="com.talentcard.common.pojo.TalentPO">
-        insert into t_talent (talent_id, open_id, union_id, `name`,
-                              sex, id_card, passport, driver_card,
-                              card_type, work_unit, industry,
-                              industry_second, political, phone,
-                              create_time, category, work_location,
-                              work_location_type, `status`, card_id,
-                              dr)
-        values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{unionId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
-                #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR},
-                #{driverCard,jdbcType=CHAR},
-                #{cardType,jdbcType=TINYINT}, #{workUnit,jdbcType=CHAR}, #{industry,jdbcType=INTEGER},
-                #{industrySecond,jdbcType=INTEGER}, #{political,jdbcType=TINYINT}, #{phone,jdbcType=CHAR},
-                #{createTime,jdbcType=TIMESTAMP}, #{category,jdbcType=CHAR}, #{workLocation,jdbcType=CHAR},
-                #{workLocationType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{cardId,jdbcType=BIGINT},
-                #{dr,jdbcType=TINYINT})
+    <!--  insert，且返回主键-->
+    <insert id="add" useGeneratedKeys="true" keyProperty="talentId" parameterType="com.talentcard.common.pojo.TalentPO">
+    insert into t_talent (talent_id, open_id, union_id,
+      `name`, sex, id_card, passport,
+      driver_card, card_type, work_unit,
+      industry, industry_second, phone,
+      political, category, work_location,
+      work_location_type, card_id, `status`,
+      create_time, dr, talent_source
+      )
+    values (#{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{unionId,jdbcType=CHAR},
+      #{name,jdbcType=CHAR}, #{sex,jdbcType=TINYINT}, #{idCard,jdbcType=CHAR}, #{passport,jdbcType=CHAR},
+      #{driverCard,jdbcType=CHAR}, #{cardType,jdbcType=TINYINT}, #{workUnit,jdbcType=CHAR},
+      #{industry,jdbcType=INTEGER}, #{industrySecond,jdbcType=INTEGER}, #{phone,jdbcType=CHAR},
+      #{political,jdbcType=TINYINT}, #{category,jdbcType=CHAR}, #{workLocation,jdbcType=CHAR},
+      #{workLocationType,jdbcType=TINYINT}, #{cardId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, #{talentSource,jdbcType=INTEGER}
+      )
     </insert>
     <!--    <select id="findBaseInfo" parameterType="java.lang.String" resultType="java.util.HashMap">-->
     <!--        select t.talent_id as talentId,-->

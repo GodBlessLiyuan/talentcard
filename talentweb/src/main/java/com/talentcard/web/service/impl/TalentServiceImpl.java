@@ -365,6 +365,7 @@ public class TalentServiceImpl implements ITalentService {
                 educationPO.setFirstClass(oldEducationPO.getFirstClass());
                 educationPO.setMajor(oldEducationPO.getMajor());
                 educationPO.setEducPicture(oldEducationPO.getEducPicture());
+                educationPO.setGraduateTime(oldEducationPO.getGraduateTime());
             }
         }
         educationMapper.insertSelective(educationPO);
