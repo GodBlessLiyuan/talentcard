@@ -161,6 +161,7 @@ public class StaffServiceImpl implements IStaffService {
         talentActivityHistoryPO.setStaffId(staffId);
         talentActivityHistoryPO.setActivityFirstContentId((long) 1);
         talentActivityHistoryPO.setActivitySecondContentId(activitySecondContentId);
+        talentActivityHistoryPO.setStatus((byte) 2);
         ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
         if (scenicPO == null) {
             return new ResultVO(2504);
