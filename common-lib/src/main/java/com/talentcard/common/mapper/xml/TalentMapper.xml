@@ -442,7 +442,7 @@
                e.talent_id          as e_talent_id,
                e.status             as e_status,
                e.if_certificate     as e_if_certificate,
-               e.graduate_time      as e_graduate_time
+               e.graduate_time      as e_graduate_time,
 
                pt.pt_id             as pt_pt_id,
                pt.category          as pt_category,
@@ -524,7 +524,7 @@
                e.talent_id          as e_talent_id,
                e.status             as e_status,
                e.if_certificate     as e_if_certificate,
-               e.graduate_time      as e_graduate_time
+               e.graduate_time      as e_graduate_time,
 
                pt.pt_id             as pt_pt_id,
                pt.category          as pt_category,
@@ -854,7 +854,7 @@
                e.talent_id          as e_talent_id,
                e.status             as e_status,
                e.if_certificate     as e_if_certificate,
-               e.graduate_time      as e_graduate_time
+               e.graduate_time      as e_graduate_time,
 
                pt.pt_id             as pt_pt_id,
                pt.category          as pt_category,
