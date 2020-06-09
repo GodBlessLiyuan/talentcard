@@ -42,8 +42,6 @@ import java.util.Map;
 @Service
 public class ScenicServiceImpl implements IScenicService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ScenicServiceImpl.class);
-
     @Autowired
     private ScenicMapper scenicMapper;
     @Autowired

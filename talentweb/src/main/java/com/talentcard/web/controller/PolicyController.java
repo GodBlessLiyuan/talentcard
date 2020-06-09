@@ -1,15 +1,15 @@
 package com.talentcard.web.controller;
 
-import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.PolicyDTO;
 import com.talentcard.web.service.IPolicyService;
-import com.talentcard.web.vo.PolicyVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -66,5 +66,16 @@ public class PolicyController {
     @RequestMapping("detail")
     public ResultVO detail(@RequestParam(value = "pid") Long pid) {
         return service.detail(pid);
+    }
+
+    /**
+     * 上传
+     *
+     * @param file
+     * @return
+     */
+    @RequestMapping("upload")
+    public ResultVO upload(@Param("file") MultipartFile file) {
+        return service.upload(file);
     }
 }

@@ -51,7 +51,7 @@ public class PolicyDTO implements Serializable {
      */
     private String[] qualityIds;
     /**
-     *可查看与申请此政策权益的人才荣誉IDs
+     * 可查看与申请此政策权益的人才荣誉IDs
      */
     private Long[] talentHonourIds;
     /**
@@ -79,7 +79,19 @@ public class PolicyDTO implements Serializable {
      */
     private Byte bank;
     /**
-     * 附件信息；1：需要；2：不需要
+     * 附件信息；1：必填；2：不填；3：选填
      */
     private Byte annex;
+    /**
+     * 附件信息描述
+     */
+    private String info;
+    /**
+     * 申请表单
+     */
+    private String form;
+    /**
+     * 政策资金
+     */
+    private Integer funds;
 }

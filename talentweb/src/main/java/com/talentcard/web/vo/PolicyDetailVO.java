@@ -1,8 +1,10 @@
 package com.talentcard.web.vo;
 
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.PolicyPO;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 
@@ -82,9 +84,21 @@ public class PolicyDetailVO implements Serializable {
      */
     private Byte bank;
     /**
-     * 附件信息；1：需要；2：不需要
+     * 附件信息；1：必填；2：不填；3：选填
      */
     private Byte annex;
+    /**
+     * 附件信息描述
+     */
+    private String info;
+    /**
+     * 申请表单
+     */
+    private String form;
+    /**
+     * 政策资金
+     */
+    private Integer funds;
 
     /**
      * po 转 vo
@@ -112,19 +126,26 @@ public class PolicyDetailVO implements Serializable {
         vo.setTimes(po.getTimes());
         vo.setBank(po.getBank());
         vo.setAnnex(po.getAnnex());
+        vo.setInfo(po.getAnnexInfo());
+        if (!StringUtils.isEmpty(po.getApplyForm())) {
+            vo.setForm(FilePathConfig.getStaticPublicBasePath() + po.getApplyForm());
+        }
+        vo.setFunds(po.getFunds());
 
         return vo;
     }
 
-    private static Long[] stringToLongList(String target, String sign){
-        if (target == null) {return null;}
+    private static Long[] stringToLongList(String target, String sign) {
+        if (target == null) {
+            return null;
+        }
         String[] temp = target.split(sign);
         int le = temp.length;
         Long[] longs = new Long[le];
-        for (int i = 0; i < le; i ++) {
-            try{
+        for (int i = 0; i < le; i++) {
+            try {
                 longs[i] = Long.parseLong(temp[i]);
-            }catch(Exception e){
+            } catch (Exception e) {
                 log.info("com.talentcard.web.vo.PolicyDetailVO人才荣誉Id错误:[{}]", target);
                 return null;
             }

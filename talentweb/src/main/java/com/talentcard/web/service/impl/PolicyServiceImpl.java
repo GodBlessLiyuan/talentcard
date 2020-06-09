@@ -1,16 +1,21 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.PolicyMapper;
 import com.talentcard.common.pojo.PolicyPO;
-import com.talentcard.common.vo.PageInfoVO;
+import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.PolicyDTO;
 import com.talentcard.web.service.IPolicyService;
 import com.talentcard.web.vo.PolicyDetailVO;
 import com.talentcard.web.vo.PolicyVO;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -28,6 +33,8 @@ import java.util.Map;
 public class PolicyServiceImpl implements IPolicyService {
     @Resource
     private PolicyMapper policyMapper;
+    @Autowired
+    private FilePathConfig filePathConfig;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -87,6 +94,12 @@ public class PolicyServiceImpl implements IPolicyService {
         return new ResultVO<>(1000, PolicyDetailVO.convert(po));
     }
 
+    @Override
+    public ResultVO upload(MultipartFile file) {
+        String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getAnnexDir(), "annex");
+        return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
+    }
+
     /**
      * 根据 dto 构建 po
      *
@@ -112,6 +125,11 @@ public class PolicyServiceImpl implements IPolicyService {
         String honour = listLongToString(dto.getTalentHonourIds(), ",");
         po.setHonourIds(honour);
         po.setColor(dto.getColor());
+        po.setAnnexInfo(dto.getInfo());
+        if (!StringUtils.isEmpty(po.getApplyForm())) {
+            po.setApplyForm(dto.getForm().split(FilePathConfig.getStaticPublicBasePath())[1]);
+        }
+        po.setFunds(dto.getFunds());
 
         return po;
     }

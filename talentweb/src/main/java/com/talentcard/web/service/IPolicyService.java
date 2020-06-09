@@ -4,6 +4,7 @@ import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.PolicyDTO;
 import com.talentcard.web.vo.PolicyVO;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
@@ -58,4 +59,12 @@ public interface IPolicyService {
      * @return
      */
     ResultVO detail(Long pid);
+
+    /**
+     * 上传文件
+     *
+     * @param file
+     * @return
+     */
+    ResultVO upload(MultipartFile file);
 }
