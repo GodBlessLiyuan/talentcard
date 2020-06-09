@@ -46,6 +46,7 @@
         <result column="t_status" jdbcType="TINYINT" property="status"/>
         <result column="t_card_id" jdbcType="BIGINT" property="cardId"/>
         <result column="t_dr" jdbcType="TINYINT" property="dr"/>
+        <result column="t_talent_source" jdbcType="INTEGER" property="talentSource"/>
 
         <result column="c_cert_id" jdbcType="BIGINT" property="certId"/>
         <result column="c_political" jdbcType="CHAR" property="political"/>
@@ -63,6 +64,7 @@
             <result column="e_talent_id" jdbcType="BIGINT" property="talentId"/>
             <result column="e_status" jdbcType="TINYINT" property="status"/>
             <result column="e_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
+            <result column="e_graduate_time" jdbcType="CHAR" property="graduateTime"/>
         </collection>
         <collection property="profTitlePOList" ofType="com.talentcard.common.pojo.ProfTitlePO">
             <id column="pt_pt_id" jdbcType="BIGINT" property="ptId"/>
@@ -423,6 +425,7 @@
                t.work_location_type as t_work_location_type,
                t.card_id            as t_card_id,
                t.dr                 as t_dr,
+               t.talent_source      as t_talent_source,
 
                c.cert_id            as c_cert_id,
                c.political          as c_political,
@@ -439,6 +442,7 @@
                e.talent_id          as e_talent_id,
                e.status             as e_status,
                e.if_certificate     as e_if_certificate,
+               e.graduate_time      as e_graduate_time
 
                pt.pt_id             as pt_pt_id,
                pt.category          as pt_category,
@@ -503,6 +507,7 @@
                t.work_location_type as t_work_location_type,
                t.card_id            as t_card_id,
                t.dr                 as t_dr,
+               t.talent_source      as t_talent_source,
 
                c.cert_id            as c_cert_id,
                c.political          as c_political,
@@ -519,6 +524,7 @@
                e.talent_id          as e_talent_id,
                e.status             as e_status,
                e.if_certificate     as e_if_certificate,
+               e.graduate_time      as e_graduate_time
 
                pt.pt_id             as pt_pt_id,
                pt.category          as pt_category,
@@ -831,6 +837,7 @@
                t.work_location_type as t_work_location_type,
                t.card_id            as t_card_id,
                t.dr                 as t_dr,
+               t.talent_source      as t_talent_source,
 
                c.cert_id            as c_cert_id,
                c.political          as c_political,
@@ -847,6 +854,7 @@
                e.talent_id          as e_talent_id,
                e.status             as e_status,
                e.if_certificate     as e_if_certificate,
+               e.graduate_time      as e_graduate_time
 
                pt.pt_id             as pt_pt_id,
                pt.category          as pt_category,
