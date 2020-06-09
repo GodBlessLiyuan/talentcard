@@ -203,6 +203,7 @@ public class TalentServiceImpl implements ITalentService {
         talentPO.setStatus(status);
         talentPO.setPolitical(jsonObject.getByte("political"));
         talentPO.setDr((byte) 1);
+        talentPO.setTalentSource(jsonObject.getInteger("talentSource"));
         //人才表的初级卡cardId
         CardPO cardPO = cardMapper.findDefaultCard();
         Long cardId = cardPO.getCardId();
@@ -215,9 +216,9 @@ public class TalentServiceImpl implements ITalentService {
         String userInfo = new RestTemplate().getForObject("https://api.weixin.qq.com/cgi-bin/user/info?access_token={1}&openid={2}&lang=zh_CN",
                 String.class, AccessTokenUtil.getAccessToken(), openId);
         String unionId = JSONObject.parseObject(userInfo).getString("unionid");
-        if (null == unionId || "".equals(unionId)) {
-            return new ResultVO(1222);
-        }
+//        if (null == unionId || "".equals(unionId)) {
+//            return new ResultVO(1222);
+//        }
         talentPO.setUnionId(unionId);
         talentMapper.add(talentPO);
         Long talentId = talentPO.getTalentId();
@@ -242,6 +243,7 @@ public class TalentServiceImpl implements ITalentService {
         educationPO.setTalentId(talentId);
         educationPO.setStatus(status);
         educationPO.setIfCertificate((byte) 10);
+        educationPO.setGraduateTime(jsonObject.getString("graduateTime"));
         educationMapper.insertSelective(educationPO);
 
         //职称表
@@ -373,6 +375,7 @@ public class TalentServiceImpl implements ITalentService {
                                    Integer profTitleCategory,
                                    String profTitleInfo,
                                    Long honourId,
+                                   String graduateTime,
                                    MultipartFile educPicture,
                                    MultipartFile profTitlePicture,
                                    MultipartFile profQualityPicture,
@@ -458,6 +461,7 @@ public class TalentServiceImpl implements ITalentService {
         educationPO.setCertId(certificationId);
         educationPO.setTalentId(talentId);
         educationPO.setStatus(status);
+        educationPO.setGraduateTime(graduateTime);
         if (education == null) {
             //10代表本次不认证
             educationPO.setIfCertificate((byte) 10);

@@ -93,9 +93,12 @@ public class TalentController {
      * @param profQualityInfo
      * @param profTitleCategory
      * @param profTitleInfo
+     * @param honourId
+     * @param graduateTime
      * @param educPicture
      * @param profTitlePicture
      * @param profQualityPicture
+     * @param talentHonourPicture
      * @return
      */
     @PostMapping("identification")
@@ -109,13 +112,14 @@ public class TalentController {
                                    @RequestParam(value = "profTitleCategory", required = false) Integer profTitleCategory,
                                    @RequestParam(value = "profTitleInfo", required = false) String profTitleInfo,
                                    @RequestParam(value = "honourId", required = false) Long honourId,
+                                   @RequestParam(value = "graduateTime", required = false) String graduateTime,
                                    @RequestParam(value = "educPicture", required = false) MultipartFile educPicture,
                                    @RequestParam(value = "profTitlePicture", required = false) MultipartFile profTitlePicture,
                                    @RequestParam(value = "profQualityPicture", required = false) MultipartFile profQualityPicture,
                                    @RequestParam(value = "talentHonourPicture", required = false) MultipartFile talentHonourPicture) {
         return iTalentService.identification(openId, education, school, firstClass,
                 major, profQualityCategory, profQualityInfo, profTitleCategory, profTitleInfo,
-                honourId, educPicture, profTitlePicture, profQualityPicture, talentHonourPicture);
+                honourId, graduateTime, educPicture, profTitlePicture, profQualityPicture, talentHonourPicture);
     }
 
     /**

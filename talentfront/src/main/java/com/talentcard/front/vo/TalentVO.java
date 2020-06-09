@@ -41,6 +41,7 @@ public class TalentVO {
     private Byte currentType;
     private Byte workLocationType;
     private String workLocation;
+    private Integer TalentSource;
     private List<EducationPO> educationPOList;
     private List<ProfTitlePO> profTitlePOList;
     private List<ProfQualityPO> profQualityPOList;
@@ -74,7 +75,7 @@ public class TalentVO {
         talentVO.setWorkLocation(talentBO.getWorkLocation());
         talentVO.setWorkLocationType(talentBO.getWorkLocationType());
         talentVO.setDriverCard(talentBO.getDriverCard());
-
+        talentVO.setTalentSource(talentBO.getTalentSource());
         //学历文件
         if (talentBO.getEducationPOList() != null) {
             for (EducationPO educationPO : talentBO.getEducationPOList()) {
@@ -104,7 +105,7 @@ public class TalentVO {
         //人才荣誉
         if (talentBO.getTalentHonourPOList() != null) {
             for (TalentHonourPO talentHonourPO : talentBO.getTalentHonourPOList()) {
-                if (talentHonourPO.getHonourPicture() != null && !talentHonourPO.getHonourPicture() .equals("")) {
+                if (talentHonourPO.getHonourPicture() != null && !talentHonourPO.getHonourPicture().equals("")) {
                     talentHonourPO.setHonourPicture(FilePathConfig.getStaticPublicBasePath() + talentHonourPO.getHonourPicture());
                 }
             }
