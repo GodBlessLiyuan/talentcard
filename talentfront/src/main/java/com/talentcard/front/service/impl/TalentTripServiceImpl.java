@@ -2,12 +2,16 @@ package com.talentcard.front.service.impl;
 
 import com.talentcard.common.bo.ScenicBO;
 import com.talentcard.common.mapper.*;
-import com.talentcard.common.pojo.*;
+import com.talentcard.common.pojo.ScenicPO;
+import com.talentcard.common.pojo.TalentPO;
+import com.talentcard.common.pojo.TalentTripPO;
+import com.talentcard.common.pojo.TripGroupAuthorityPO;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.common.vo.TalentTypeVO;
+import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.service.ITalentTripService;
 import com.talentcard.front.utils.ActivityResidueNumUtil;
-import com.talentcard.front.utils.TalentActivityUtil;
 import com.talentcard.front.vo.ScenicVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,41 +49,32 @@ public class TalentTripServiceImpl implements ITalentTripService {
     private RedisMapUtil redisMapUtil;
     @Autowired
     private TalentActivityCollectMapper talentActivityCollectMapper;
+    @Autowired
+    private ITalentService iTalentService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO findSecondContent(String openId, String name, Byte starLevel, Byte area, Byte order) {
-        TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        if (talentPO == null) {
-            return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
-        }
-        UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentPO.getTalentId());
-        if (userCurrentInfoPO == null) {
-            return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
-        }
-        Long cardId = talentPO.getCardId();
-        String category = userCurrentInfoPO.getTalentCategory();
-        ArrayList categoryList = null;
-        //拆分人才类别
-        if (category != null && !category.equals("")) {
-            categoryList = TalentActivityUtil.splitCategory(userCurrentInfoPO.getTalentCategory());
-        }
-        Integer education = userCurrentInfoPO.getEducation();
-        Integer title = userCurrentInfoPO.getPtCategory();
-        Integer quality = userCurrentInfoPO.getPqCategory();
-        Long talentHonour = userCurrentInfoPO.getHonourId();
-        List<Long> scenicIdList;
-        /**景区idList，去中间表查询
-         *
+
+        /**
+         * 获取用户类型
          */
-        String code = getMiddleTableString(cardId, category, education, title, quality, talentHonour);
-        scenicIdList = tripGroupAuthorityMapper.findByCode(code);
+        TalentTypeVO vo = iTalentService.getTalentInfo(openId);
+        if (vo == null) {
+            return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
+        }
+
+        /**
+         * 景区idList，去中间表查询
+         */
+        String code = vo.toString();
+
+        List<Long> scenicIdList = tripGroupAuthorityMapper.findByCode(code);
         /**
          *  中间表没找到景区idList，去大表查询
          */
         if (scenicIdList.size() == 0) {
-            scenicIdList = scenicEnjoyMapper.findSecondContent(cardId, categoryList,
-                    education, title, quality, talentHonour);
+            scenicIdList = scenicEnjoyMapper.findSecondContent(vo.getCardId(), vo.getCategoryList(), vo.getEducation(), vo.getTitle(), vo.getQuality(), vo.getTalentHonour());
             if (scenicIdList.size() == 0) {
                 //查无景区
                 return new ResultVO(1000, null);
@@ -267,41 +262,6 @@ public class TalentTripServiceImpl implements ITalentTripService {
         return timeList;
     }
 
-    /**
-     * 根据五个条件获得中间表唯一字符串
-     *
-     * @param cardId
-     * @param category
-     * @param education
-     * @param title
-     * @param quality
-     * @return
-     */
-    public static String getMiddleTableString(Long cardId, String category, Integer education,
-                                              Integer title, Integer quality, Long talentHonour) {
-        String middleTableString;
-        if (cardId == null) {
-            cardId = (long) 0;
-        }
-        if (category == null || category.equals("")) {
-            category = "0";
-        }
-        if (education == null) {
-            education = 0;
-        }
-        if (title == null) {
-            title = 0;
-        }
-        if (quality == null) {
-            quality = 0;
-        }
-        if (talentHonour == null) {
-            talentHonour = (long) 0;
-        }
-        middleTableString = "" + cardId + "-" + category + "-"
-                + education + "-" + title + "-" + quality + "-" + talentHonour;
-        return middleTableString;
-    }
 
     /**
      * 设置剩余次数
