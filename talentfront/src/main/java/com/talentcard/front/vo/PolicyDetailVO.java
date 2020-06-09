@@ -62,8 +62,4 @@ public class PolicyDetailVO implements Serializable {
      * 申请表单
      */
     private String form;
-    /**
-     * 政策资金
-     */
-    private Integer funds;
 }
