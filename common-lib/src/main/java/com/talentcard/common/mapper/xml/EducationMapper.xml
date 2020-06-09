@@ -12,10 +12,11 @@
     <result column="talent_id" jdbcType="BIGINT" property="talentId" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="if_certificate" jdbcType="TINYINT" property="ifCertificate" />
+    <result column="graduate_time" jdbcType="CHAR" property="graduateTime" />
   </resultMap>
   <sql id="Base_Column_List">
     educ_id, education, school, first_class, major, educ_picture, cert_id, talent_id, 
-    `status`, if_certificate
+    `status`, if_certificate, graduate_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -31,11 +32,11 @@
     insert into t_education (educ_id, education, school, 
       first_class, major, educ_picture, 
       cert_id, talent_id, `status`, 
-      if_certificate)
+      if_certificate, graduate_time)
     values (#{educId,jdbcType=BIGINT}, #{education,jdbcType=INTEGER}, #{school,jdbcType=CHAR}, 
       #{firstClass,jdbcType=TINYINT}, #{major,jdbcType=CHAR}, #{educPicture,jdbcType=CHAR}, 
       #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
-      #{ifCertificate,jdbcType=TINYINT})
+      #{ifCertificate,jdbcType=TINYINT}, #{graduateTime,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EducationPO">
     insert into t_education
@@ -70,6 +71,9 @@
       <if test="ifCertificate != null">
         if_certificate,
       </if>
+      <if test="graduateTime != null">
+        graduate_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="educId != null">
@@ -101,6 +105,9 @@
       </if>
       <if test="ifCertificate != null">
         #{ifCertificate,jdbcType=TINYINT},
+      </if>
+      <if test="graduateTime != null">
+        #{graduateTime,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
@@ -134,6 +141,9 @@
       <if test="ifCertificate != null">
         if_certificate = #{ifCertificate,jdbcType=TINYINT},
       </if>
+      <if test="graduateTime != null">
+        graduate_time = #{graduateTime,jdbcType=CHAR},
+      </if>
     </set>
     where educ_id = #{educId,jdbcType=BIGINT}
   </update>
@@ -147,7 +157,8 @@
       cert_id = #{certId,jdbcType=BIGINT},
       talent_id = #{talentId,jdbcType=BIGINT},
       `status` = #{status,jdbcType=TINYINT},
-      if_certificate = #{ifCertificate,jdbcType=TINYINT}
+      if_certificate = #{ifCertificate,jdbcType=TINYINT},
+      graduate_time = #{graduateTime,jdbcType=CHAR}
     where educ_id = #{educId,jdbcType=BIGINT}
   </update>
 

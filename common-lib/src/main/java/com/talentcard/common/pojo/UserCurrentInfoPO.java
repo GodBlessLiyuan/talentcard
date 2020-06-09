@@ -40,5 +40,7 @@ public class UserCurrentInfoPO implements Serializable {
 
     private String thInfo;
 
+    private String graduateTime;
+
     private static final long serialVersionUID = 1L;
 }
