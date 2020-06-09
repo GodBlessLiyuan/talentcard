@@ -11,6 +11,7 @@ import com.talentcard.front.service.IPolicyService;
 import com.talentcard.front.vo.PolicyAppliesVO;
 import com.talentcard.front.vo.PolicyApplyDetailVO;
 import com.talentcard.front.vo.PolicyDetailVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -161,9 +162,10 @@ public class PolicyServiceImpl implements IPolicyService {
             vo.setAnnex(po.getAnnex());
             vo.setApply(po.getApply());
             vo.setColor(po.getColor());
-            po.getTimes();
-            po.getUnit();
-            po.getRate();
+            vo.setInfo(po.getAnnexInfo());
+            if (!StringUtils.isEmpty(po.getApplyForm())) {
+                vo.setForm(filePathConfig.getPublicBasePath() + po.getApplyForm());
+            }
 
             if (null != po.getApply() && po.getApply() == 1) {
                 // 根据频次计算相隔月份

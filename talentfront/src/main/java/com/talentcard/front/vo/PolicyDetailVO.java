@@ -43,7 +43,7 @@ public class PolicyDetailVO implements Serializable {
      */
     private Byte bank;
     /**
-     * 是否需要附件 1: 需要； 2：不需要
+     * 是否需要附件 1：必填；2：不填；3：选填
      */
     private Byte annex;
     /**
@@ -54,5 +54,16 @@ public class PolicyDetailVO implements Serializable {
      * 顏色
      */
     private String color;
-
+    /**
+     * 附件信息描述
+     */
+    private String info;
+    /**
+     * 申请表单
+     */
+    private String form;
+    /**
+     * 政策资金
+     */
+    private Integer funds;
 }
