@@ -16,10 +16,11 @@
     <result column="talent_category" jdbcType="CHAR" property="talentCategory" />
     <result column="honour_id" jdbcType="BIGINT" property="honourId" />
     <result column="th_info" jdbcType="CHAR" property="thInfo" />
+    <result column="graduate_time" jdbcType="CHAR" property="graduateTime" />
   </resultMap>
   <sql id="Base_Column_List">
     uci_id, talent_id, political, education, school, first_class, major, pt_category, 
-    pt_info, pq_category, pq_info, talent_category, honour_id, th_info
+    pt_info, pq_category, pq_info, talent_category, honour_id, th_info, graduate_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -36,12 +37,14 @@
       education, school, first_class, 
       major, pt_category, pt_info, 
       pq_category, pq_info, talent_category, 
-      honour_id, th_info)
+      honour_id, th_info, graduate_time
+      )
     values (#{uciId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{political,jdbcType=TINYINT}, 
       #{education,jdbcType=INTEGER}, #{school,jdbcType=CHAR}, #{firstClass,jdbcType=TINYINT}, 
       #{major,jdbcType=CHAR}, #{ptCategory,jdbcType=INTEGER}, #{ptInfo,jdbcType=CHAR}, 
       #{pqCategory,jdbcType=INTEGER}, #{pqInfo,jdbcType=CHAR}, #{talentCategory,jdbcType=CHAR}, 
-      #{honourId,jdbcType=BIGINT}, #{thInfo,jdbcType=CHAR})
+      #{honourId,jdbcType=BIGINT}, #{thInfo,jdbcType=CHAR}, #{graduateTime,jdbcType=CHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.UserCurrentInfoPO">
     insert into t_user_current_info
@@ -88,6 +91,9 @@
       <if test="thInfo != null">
         th_info,
       </if>
+      <if test="graduateTime != null">
+        graduate_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uciId != null">
@@ -131,6 +137,9 @@
       </if>
       <if test="thInfo != null">
         #{thInfo,jdbcType=CHAR},
+      </if>
+      <if test="graduateTime != null">
+        #{graduateTime,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
@@ -176,6 +185,9 @@
       <if test="thInfo != null">
         th_info = #{thInfo,jdbcType=CHAR},
       </if>
+      <if test="graduateTime != null">
+        graduate_time = #{graduateTime,jdbcType=CHAR},
+      </if>
     </set>
     where uci_id = #{uciId,jdbcType=BIGINT}
   </update>
@@ -193,7 +205,8 @@
       pq_info = #{pqInfo,jdbcType=CHAR},
       talent_category = #{talentCategory,jdbcType=CHAR},
       honour_id = #{honourId,jdbcType=BIGINT},
-      th_info = #{thInfo,jdbcType=CHAR}
+      th_info = #{thInfo,jdbcType=CHAR},
+      graduate_time = #{graduateTime,jdbcType=CHAR}
     where uci_id = #{uciId,jdbcType=BIGINT}
   </update>
 

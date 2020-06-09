@@ -14,6 +14,8 @@ public class TalentPO implements Serializable {
 
     private String openId;
 
+    private String unionId;
+
     private String name;
 
     /**
@@ -68,7 +70,7 @@ public class TalentPO implements Serializable {
      */
     private Byte dr;
 
-    private String unionId;
+    private Integer talentSource;
 
     private static final long serialVersionUID = 1L;
 }
