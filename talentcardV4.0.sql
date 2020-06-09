@@ -261,6 +261,7 @@ CREATE TABLE t_education
     if_certificate tinyint unsigned COMMENT '1 已认证；
 2 未认证；
 10 本次不认证',
+    graduate_time char(64),
     PRIMARY KEY (educ_id),
     UNIQUE (educ_id)
 );
@@ -360,8 +361,11 @@ CREATE TABLE t_policy
     times int,
     -- 1：需要；2：不需要；
     bank tinyint COMMENT '1：需要；2：不需要；',
-    -- 1：需要；2：不需要；
-    annex tinyint COMMENT '1：需要；2：不需要；',
+    -- 1：必填；2：不填；3：选填
+    annex tinyint COMMENT '1：必填；2：不填；3：选填',
+    annex_info char(255),
+    apply_form char(255),
+    funds int,
     user_id bigint unsigned,
     create_time datetime,
     -- 1 未删除  2 已删除
@@ -606,6 +610,7 @@ CREATE TABLE t_talent
     -- 2删除
     dr tinyint unsigned COMMENT '1正在使用
 2删除',
+    talent_source int unsigned,
     PRIMARY KEY (talent_id),
     UNIQUE (talent_id),
     UNIQUE (open_id)
