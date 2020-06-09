@@ -126,7 +126,7 @@ public class PolicyServiceImpl implements IPolicyService {
         po.setHonourIds(honour);
         po.setColor(dto.getColor());
         po.setAnnexInfo(dto.getInfo());
-        if (!StringUtils.isEmpty(po.getApplyForm())) {
+        if (!StringUtils.isEmpty(dto.getForm())) {
             po.setApplyForm(dto.getForm().split(FilePathConfig.getStaticPublicBasePath())[1]);
         }
         po.setFunds(dto.getFunds());
