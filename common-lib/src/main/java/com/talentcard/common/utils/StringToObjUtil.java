@@ -2,7 +2,10 @@ package com.talentcard.common.utils;
 
 import com.alibaba.fastjson.JSON;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 
 /**
@@ -22,8 +25,14 @@ public class StringToObjUtil {
      */
     public static <T> T strToObj(String str, Class<T> clazz){
         if(!StringUtils.isEmpty(str)){
+
             try {
-                return (T) JSON.toJavaObject(JSON.parseObject(str), clazz);
+                if(clazz == List.class){
+                    return (T)  JSON.toJavaObject(JSONObject.parseArray(str),clazz);
+                }else {
+                    return (T) JSON.toJavaObject(JSON.parseObject(str), clazz);
+                }
+
             }catch (Exception e){
                 e.printStackTrace();
             }
