@@ -10,7 +10,7 @@
     <result column="educations" jdbcType="CHAR" property="educations" />
     <result column="titles" jdbcType="CHAR" property="titles" />
     <result column="qualities" jdbcType="CHAR" property="qualities" />
-    <result column="honour_ids" jdbcType="VARCHAR" property="honourIds" />
+    <result column="honour_ids" jdbcType="CHAR" property="honourIds" />
     <result column="apply" jdbcType="TINYINT" property="apply" />
     <result column="color" jdbcType="CHAR" property="color" />
     <result column="rate" jdbcType="INTEGER" property="rate" />
@@ -21,19 +21,23 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
+    <result column="annex_info" jdbcType="CHAR" property="annexInfo" />
+    <result column="apply_form" jdbcType="CHAR" property="applyForm" />
+    <result column="funds" jdbcType="INTEGER" property="funds" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.talentcard.common.pojo.PolicyPO">
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
   </resultMap>
   <sql id="Base_Column_List">
-    policy_id, `name`, num, description, cards, categories, educations, titles, qualities, honour_ids,
-    apply, color, rate, unit, times, bank, annex, user_id, create_time, dr
+    policy_id, `name`, num, cards, categories, educations, titles, qualities, honour_ids, 
+    apply, color, rate, unit, times, bank, annex, user_id, create_time, dr, annex_info, 
+    apply_form, funds
   </sql>
   <sql id="Blob_Column_List">
     description
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
-    select
+    select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
@@ -45,19 +49,21 @@
     where policy_id = #{policyId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyPO">
-    insert into t_policy (policy_id, `name`, num,
-      cards, categories, educations,
-      titles, qualities, honour_ids,
-      apply, color, rate, unit,
-      times, bank, annex,
-      user_id, create_time, dr,
+    insert into t_policy (policy_id, `name`, num, 
+      cards, categories, educations, 
+      titles, qualities, honour_ids, 
+      apply, color, rate, unit, 
+      times, bank, annex, 
+      user_id, create_time, dr, 
+      annex_info, apply_form, funds, 
       description)
-    values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR},
-      #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR}, #{educations,jdbcType=CHAR},
-      #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR}, #{honourIds,jdbcType=VARCHAR},
-      #{apply,jdbcType=TINYINT}, #{color,jdbcType=CHAR}, #{rate,jdbcType=INTEGER}, #{unit,jdbcType=TINYINT},
-      #{times,jdbcType=INTEGER}, #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT},
-      #{userId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT},
+    values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR}, 
+      #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR}, #{educations,jdbcType=CHAR}, 
+      #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR}, #{honourIds,jdbcType=CHAR}, 
+      #{apply,jdbcType=TINYINT}, #{color,jdbcType=CHAR}, #{rate,jdbcType=INTEGER}, #{unit,jdbcType=TINYINT}, 
+      #{times,jdbcType=INTEGER}, #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT}, 
+      #{userId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, 
+      #{annexInfo,jdbcType=CHAR}, #{applyForm,jdbcType=CHAR}, #{funds,jdbcType=INTEGER}, 
       #{description,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyPO">
@@ -120,6 +126,15 @@
       <if test="dr != null">
         dr,
       </if>
+      <if test="annexInfo != null">
+        annex_info,
+      </if>
+      <if test="applyForm != null">
+        apply_form,
+      </if>
+      <if test="funds != null">
+        funds,
+      </if>
       <if test="description != null">
         description,
       </if>
@@ -150,7 +165,7 @@
         #{qualities,jdbcType=CHAR},
       </if>
       <if test="honourIds != null">
-        #{honourIds,jdbcType=VARCHAR},
+        #{honourIds,jdbcType=CHAR},
       </if>
       <if test="apply != null">
         #{apply,jdbcType=TINYINT},
@@ -182,6 +197,15 @@
       <if test="dr != null">
         #{dr,jdbcType=TINYINT},
       </if>
+      <if test="annexInfo != null">
+        #{annexInfo,jdbcType=CHAR},
+      </if>
+      <if test="applyForm != null">
+        #{applyForm,jdbcType=CHAR},
+      </if>
+      <if test="funds != null">
+        #{funds,jdbcType=INTEGER},
+      </if>
       <if test="description != null">
         #{description,jdbcType=LONGVARCHAR},
       </if>
@@ -212,7 +236,7 @@
         qualities = #{qualities,jdbcType=CHAR},
       </if>
       <if test="honourIds != null">
-        honour_ids = #{honourIds,jdbcType=VARCHAR},
+        honour_ids = #{honourIds,jdbcType=CHAR},
       </if>
       <if test="apply != null">
         apply = #{apply,jdbcType=TINYINT},
@@ -244,6 +268,15 @@
       <if test="dr != null">
         dr = #{dr,jdbcType=TINYINT},
       </if>
+      <if test="annexInfo != null">
+        annex_info = #{annexInfo,jdbcType=CHAR},
+      </if>
+      <if test="applyForm != null">
+        apply_form = #{applyForm,jdbcType=CHAR},
+      </if>
+      <if test="funds != null">
+        funds = #{funds,jdbcType=INTEGER},
+      </if>
       <if test="description != null">
         description = #{description,jdbcType=LONGVARCHAR},
       </if>
@@ -259,7 +292,7 @@
       educations = #{educations,jdbcType=CHAR},
       titles = #{titles,jdbcType=CHAR},
       qualities = #{qualities,jdbcType=CHAR},
-      honour_ids = #{honourIds,jdbcType=VARCHAR},
+      honour_ids = #{honourIds,jdbcType=CHAR},
       apply = #{apply,jdbcType=TINYINT},
       color = #{color,jdbcType=CHAR},
       rate = #{rate,jdbcType=INTEGER},
@@ -270,6 +303,9 @@
       user_id = #{userId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       dr = #{dr,jdbcType=TINYINT},
+      annex_info = #{annexInfo,jdbcType=CHAR},
+      apply_form = #{applyForm,jdbcType=CHAR},
+      funds = #{funds,jdbcType=INTEGER},
       description = #{description,jdbcType=LONGVARCHAR}
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>
@@ -277,13 +313,12 @@
     update t_policy
     set `name` = #{name,jdbcType=CHAR},
       num = #{num,jdbcType=CHAR},
-      description = #{description,jdbcType=LONGVARCHAR},
       cards = #{cards,jdbcType=CHAR},
       categories = #{categories,jdbcType=CHAR},
       educations = #{educations,jdbcType=CHAR},
       titles = #{titles,jdbcType=CHAR},
       qualities = #{qualities,jdbcType=CHAR},
-      honour_ids = #{honourIds,jdbcType=VARCHAR},
+      honour_ids = #{honourIds,jdbcType=CHAR},
       apply = #{apply,jdbcType=TINYINT},
       color = #{color,jdbcType=CHAR},
       rate = #{rate,jdbcType=INTEGER},
@@ -293,7 +328,10 @@
       annex = #{annex,jdbcType=TINYINT},
       user_id = #{userId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      dr = #{dr,jdbcType=TINYINT}
+      dr = #{dr,jdbcType=TINYINT},
+      annex_info = #{annexInfo,jdbcType=CHAR},
+      apply_form = #{applyForm,jdbcType=CHAR},
+      funds = #{funds,jdbcType=INTEGER}
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>
 
