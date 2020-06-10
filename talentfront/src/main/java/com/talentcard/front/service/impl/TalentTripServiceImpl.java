@@ -6,6 +6,7 @@ import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.pojo.TalentTripPO;
 import com.talentcard.common.pojo.TripGroupAuthorityPO;
+import com.talentcard.common.utils.StringToObjUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.common.vo.TalentTypeVO;
@@ -13,6 +14,7 @@ import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.service.ITalentTripService;
 import com.talentcard.front.utils.ActivityResidueNumUtil;
 import com.talentcard.front.vo.ScenicVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,32 +72,41 @@ public class TalentTripServiceImpl implements ITalentTripService {
         /**
          * 景区idList，去中间表查询
          */
-        String code = vo.toString();
+        String code = "list_"+vo.toString();
 
-        List<Long> scenicIdList = tripGroupAuthorityMapper.findByCode(code);
-        /**
-         *  中间表没找到景区idList，去大表查询
-         */
-        if (scenicIdList.size() == 0) {
-            scenicIdList = scenicEnjoyMapper.findSecondContent(vo.getCardId(), vo.getCategoryList(), vo.getEducation(), vo.getTitle(), vo.getQuality(), vo.getTalentHonour());
-            if (scenicIdList.size() == 0) {
-                //查无景区
-                return new ResultVO(1000, null);
-            }
-            //去重
-            scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
+        String s_scenicIdList =  redisMapUtil.hget("talentTrip",code);
 
-            for (Long scenicId : scenicIdList) {
-                //新增中间表
-                TripGroupAuthorityPO tripGroupAuthorityPO = new TripGroupAuthorityPO();
-                tripGroupAuthorityPO.setAuthorityCode(code);
-                tripGroupAuthorityPO.setScenicId(scenicId);
-                tripGroupAuthorityMapper.insertSelective(tripGroupAuthorityPO);
-            }
-        } else {
-            //去重
-            scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
+        List<Long> scenicIdList = null;
+        if(!StringUtils.isEmpty(s_scenicIdList)){
+            scenicIdList = StringToObjUtil.strToObj(s_scenicIdList,List.class);
         }
+        if(scenicIdList == null){
+            scenicIdList = tripGroupAuthorityMapper.findByCode(code);
+            /**
+             *  中间表没找到景区idList，去大表查询
+             */
+            if (scenicIdList == null || scenicIdList.size() == 0) {
+                scenicIdList = scenicEnjoyMapper.findSecondContent(vo.getCardId(), vo.getCategoryList(), vo.getEducation(), vo.getTitle(), vo.getQuality(), vo.getTalentHonour());
+                if (scenicIdList.size() == 0) {
+                    //查无景区
+                    return new ResultVO(1000, null);
+                }
+                //去重
+                scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
+
+                for (Long scenicId : scenicIdList) {
+                    //新增中间表
+                    TripGroupAuthorityPO tripGroupAuthorityPO = new TripGroupAuthorityPO();
+                    tripGroupAuthorityPO.setAuthorityCode(code);
+                    tripGroupAuthorityPO.setScenicId(scenicId);
+                    tripGroupAuthorityMapper.insertSelective(tripGroupAuthorityPO);
+                }
+            } else {
+                //去重
+                scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
+            }
+        }
+
         //景区表，查询符合条件的景区
         List<ScenicPO> scenicPOList = scenicMapper.findEnjoyScenic(scenicIdList, name, starLevel, area, order);
         List<ScenicVO> scenicVOList = ScenicVO.convert(scenicPOList);

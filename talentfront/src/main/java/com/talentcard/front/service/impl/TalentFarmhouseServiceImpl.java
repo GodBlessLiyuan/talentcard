@@ -69,7 +69,7 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
 
         //先从redis中找
         String code = talentTypeVO.toString();
-        List<FarmhouseVO> list = null;
+        List<Long> list = null;
 
         String s_list = redisMapUtil.hget("talentfarmhouse", code);
         if (!StringUtils.isEmpty(s_list)) {
@@ -81,18 +81,13 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
 
         Map<String, Object> resultMap = new HashMap<>(2);
 
-        if (log.isInfoEnabled()) {
-            log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl:Talent Benefit Farmhouse In Redis [{}]:",
-                    s_list, " : With Redis Key [{}]:", "talentfarmhouse ", code);
-            log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: Number Of Benefit In Redis [{}]:",
-                    lon, " : With Redis Key [{}]:", "talentfarmhouse benefitNum");
-        }
+        List<Long> farmhouseIdList = null;
         /**
          * 农家乐idList，去中间表查询
          */
         if (list == null || StringUtils.isEmpty(lon)) {
 
-            List<Long> farmhouseIdList = farmhouseGroupAuthorityMapper.findByCode(code);
+            farmhouseIdList = farmhouseGroupAuthorityMapper.findByCode(code);
             /**
              *  中间表没找到景区idList，去大表查询
              */
@@ -120,35 +115,31 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
                 //去重
                 farmhouseIdList = farmhouseIdList.stream().distinct().collect(Collectors.toList());
             }
+
+            Long benefitNum = ActivityResidueNumUtil.getResidueNum();
+            resultMap.put("benefitNum", benefitNum);
+
+            redisMapUtil.hset("talentfarmhouse", "benefitNum" + date.format(formatter), String.valueOf(benefitNum));
+            redisMapUtil.hset("talentfarmhouse", code, JSON.toJSONString(farmhouseIdList));
+        } else {
+            farmhouseIdList = list;
+            resultMap.put("benefitNum", Long.parseLong(lon));
+        }
+
+        if(farmhouseIdList != null && farmhouseIdList.size() > 0){
             //景区表，查询符合条件的景区
             List<FarmhousePO> farmhousePOList = farmhouseMapper.findEnjoyFarmhouse(farmhouseIdList, name, area, order);
 
             if (farmhousePOList != null && farmhousePOList.size() > 0) {
                 List<FarmhouseVO> farmhouseVOList = FarmhouseVO.convert(farmhousePOList);
-//                //我的收藏
-//                List<Long> activitySecondContentIdList = talentActivityCollectMapper.findSecondContentIdByCollect(openId, (long) 2);
-//                farmhouseVOList = FarmhouseVO.setIfCollect(farmhouseVOList, activitySecondContentIdList);
-                //拼结果
-                Long benefitNum = ActivityResidueNumUtil.getResidueNum();
                 resultMap.put("farmhouseVOList", farmhouseVOList);
-                resultMap.put("benefitNum", benefitNum);
-                redisMapUtil.hset("talentfarmhouse", code, JSON.toJSONString(farmhouseVOList));
-                redisMapUtil.hset("talentfarmhouse", "benefitNum" + date.format(formatter), String.valueOf(benefitNum));
-                if (log.isInfoEnabled()) {
-                    log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: farmhouseVOList In DB [{}]:",
-                            farmhouseVOList);
-                    log.info("com.talentcard.front.service.impl.TalentFarmhouseServiceImpl: benefitNum In DB [{}]:",
-                            farmhouseVOList);
-                }
             } else {
                 resultMap.put("farmhouseVOList", new ArrayList<>(0));
-                resultMap.put("benefitNum", 0);
             }
-
         } else {
-            resultMap.put("farmhouseVOList", list);
-            resultMap.put("benefitNum", Long.parseLong(lon));
+            resultMap.put("farmhouseVOList", new ArrayList<>(0));
         }
+
         return new ResultVO(1000, resultMap);
     }
 

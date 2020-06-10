@@ -57,7 +57,7 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
         }
 
 
-        String talentType = JSON.toJSONString(vo);
+        String talentType = "show_"+vo.toString();
 
         Map<String, Object> resultHashMap = new HashMap<>(2);
         /**
