@@ -190,5 +190,6 @@
     <if test="talentHonour != null">
       or sc.honour_id = #{talentHonour, jdbcType=BIGINT}
     </if>)
+    order by s.update_time desc
   </select>
 </mapper>
