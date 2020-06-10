@@ -212,16 +212,18 @@
     <if test="type==1">
       and <![CDATA[ tt.effective_time >= #{currentTime}]]>
       and tt.status = 1
+      order by tt.create_time desc
     </if>
     /*已使用*/
     <if test="type==2">
       and tt.status = 2
+      order by tt.update_time desc
     </if>
     /*已过期*/
     <if test="type==3">
       and <![CDATA[ tt.effective_time <= #{currentTime}]]>
       and tt.status = 1
+      order by tt.create_time desc
     </if>
-    order by tt.create_time desc
   </select>
 </mapper>

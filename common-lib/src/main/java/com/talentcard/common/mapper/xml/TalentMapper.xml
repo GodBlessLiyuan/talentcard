@@ -659,7 +659,7 @@
                uci.pq_category   as quality,
                uci.pq_info       as pqInfo,
                uci.honour_id     as honour,
-               uci.education_time as educationTime,
+               uci.graduate_time as graduateTime,
                c.name            as cname,
                c.num             as cnum
         from t_talent t
