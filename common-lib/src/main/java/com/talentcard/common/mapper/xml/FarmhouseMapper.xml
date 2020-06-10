@@ -40,7 +40,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     farmhouse_id, `name`, discount, avatar, description, extra, qr_code, `status`, create_time, 
-    dr, subtitle, area, `location`, average_cost
+    dr, subtitle, area, `location`, average_cost, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -52,18 +52,17 @@
     delete from t_farmhouse
     where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhousePO"
-          useGeneratedKeys="true" keyProperty="farmhouseId">
+  <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhousePO">
     insert into t_farmhouse (farmhouse_id, `name`, discount, 
       avatar, description, extra, 
       qr_code, `status`, create_time, 
       dr, subtitle, area, `location`, 
-      average_cost)
+      average_cost, update_time)
     values (#{farmhouseId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{discount,jdbcType=DOUBLE}, 
       #{avatar,jdbcType=CHAR}, #{description,jdbcType=VARCHAR}, #{extra,jdbcType=VARCHAR}, 
       #{qrCode,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{dr,jdbcType=TINYINT}, #{subtitle,jdbcType=CHAR}, #{area,jdbcType=INTEGER}, #{location,jdbcType=CHAR}, 
-      #{averageCost,jdbcType=DECIMAL})
+      #{averageCost,jdbcType=DECIMAL}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FarmhousePO">
     insert into t_farmhouse
@@ -110,6 +109,9 @@
       <if test="averageCost != null">
         average_cost,
       </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="farmhouseId != null">
@@ -153,6 +155,9 @@
       </if>
       <if test="averageCost != null">
         #{averageCost,jdbcType=DECIMAL},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -198,6 +203,9 @@
       <if test="averageCost != null">
         average_cost = #{averageCost,jdbcType=DECIMAL},
       </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
   </update>
@@ -215,7 +223,8 @@
       subtitle = #{subtitle,jdbcType=CHAR},
       area = #{area,jdbcType=INTEGER},
       `location` = #{location,jdbcType=CHAR},
-      average_cost = #{averageCost,jdbcType=DECIMAL}
+      average_cost = #{averageCost,jdbcType=DECIMAL},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where farmhouse_id = #{farmhouseId,jdbcType=BIGINT}
   </update>
 

@@ -44,5 +44,7 @@ public class FarmhousePO implements Serializable {
 
     private Long averageCost;
 
+    private Date updateTime;
+
     private static final long serialVersionUID = 1L;
 }

@@ -145,7 +145,13 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
             return new ResultVO(1102);
         }
 
-        farmhouseMapper.updateStatus(farmhouseId, status);
+        if(status == 1) {
+            farmhousePO.setUpdateTime(new Date());
+        }else {
+            farmhousePO.setUpdateTime(null);
+        }
+        farmhouseMapper.updateByPrimaryKey(farmhousePO);
+//        farmhouseMapper.updateStatus(farmhouseId, status);
         farmhouseGroupAuthorityMapper.clear();
         deleteRedisCache();
         return new ResultVO(1000);

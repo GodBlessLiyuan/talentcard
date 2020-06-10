@@ -51,5 +51,7 @@ public class ScenicPO implements Serializable {
 
     private String location;
 
+    private Date updateTime;
+
     private static final long serialVersionUID = 1L;
 }

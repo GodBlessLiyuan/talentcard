@@ -148,7 +148,14 @@ public class ScenicServiceImpl implements IScenicService {
             return new ResultVO(1102);
         }
 
-        scenicMapper.updateStatus(scenicId, status);
+        if (1 == status) {
+            scenicPO.setUpdateTime(new Date());
+        } else {
+            scenicPO.setUpdateTime(null);
+        }
+        scenicMapper.updateByPrimaryKey(scenicPO);
+
+//        scenicMapper.updateStatus(scenicId, status);
         tripGroupAuthorityMapper.clear();
         redisMapUtil.del("talentTrip");
         return new ResultVO(1000);
@@ -199,7 +206,7 @@ public class ScenicServiceImpl implements IScenicService {
                 titleIds.add(po.getTitleId());
             } else if (type == 5) {
                 qualityIds.add(po.getQuality());
-            }else if (type == 6) {
+            } else if (type == 6) {
                 honourIds.add(po.getHonourId());
             }
         }
