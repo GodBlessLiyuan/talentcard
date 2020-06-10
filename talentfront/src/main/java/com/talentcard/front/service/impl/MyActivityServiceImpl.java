@@ -146,6 +146,9 @@ public class MyActivityServiceImpl implements IMyActivityService {
                 if (scenicPO != null) {
                     footprintBO.setLocation(scenicPO.getLocation());
                     footprintBO.setSubtitle(scenicPO.getSubtitle());
+                    if (scenicPO.getAvatar() != null && !StringUtils.isEmpty(scenicPO.getAvatar())) {
+                        footprintBO.setAvatar(FilePathConfig.getStaticPublicBasePath() + scenicPO.getAvatar());
+                    }
                 }
 
             } else {
@@ -153,6 +156,9 @@ public class MyActivityServiceImpl implements IMyActivityService {
                 if (farmhousePO != null) {
                     footprintBO.setLocation(farmhousePO.getLocation());
                     footprintBO.setSubtitle(farmhousePO.getSubtitle());
+                    if (farmhousePO.getAvatar() != null && !StringUtils.isEmpty(farmhousePO.getAvatar())) {
+                        footprintBO.setAvatar(FilePathConfig.getStaticPublicBasePath() + farmhousePO.getAvatar());
+                    }
                 }
 
             }
