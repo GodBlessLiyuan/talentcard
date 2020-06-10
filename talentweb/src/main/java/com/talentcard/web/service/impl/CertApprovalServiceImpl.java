@@ -52,6 +52,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     @Resource
     ProfTitleMapper profTitleMapper;
     @Resource
+    TalentHonourMapper talentHonourMapper;
+    @Resource
     UserCardMapper userCardMapper;
     @Resource
     CardMapper cardMapper;
@@ -231,8 +233,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 return new ResultVO(2114);
             }
             //(3) 更新人才表
-            TalentPO talentPO = new TalentPO();
-            talentPO.setTalentId(talentId);
+            TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
             talentPO.setStatus((byte) 1);
             talentPO.setCardId(cardId);
             talentPO.setCategory(category);
@@ -259,9 +260,31 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 //更新职称表状态失败
                 return new ResultVO(2370);
             }
+            //更新人才荣誉表
+            talentHonourMapper.updateStatusByCertId(certId, (byte) 4);
+            /**
+             * 更新uci表
+             */
+            UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentId);
+            EducationPO educationPO = educationMapper.selectByCertId(certId);
+            ProfQualityPO profQualityPO = profQualityMapper.selectByCertId(certId);
+            ProfTitlePO profTitlePO = profTitleMapper.selectByCertId(certId);
+            TalentHonourPO talentHonourPO = talentHonourMapper.selectByCertId(certId);
 
-            //(7) 将人才类别更新到t_user_current_info当中
-            int resultUserCurrentInfo = userCurrentInfoMapper.updateCategoryByTalentId(talentId, category);
+            userCurrentInfoPO.setPolitical(talentPO.getPolitical());
+            userCurrentInfoPO.setEducation(educationPO.getEducation());
+            userCurrentInfoPO.setSchool(educationPO.getSchool());
+            userCurrentInfoPO.setFirstClass(educationPO.getFirstClass());
+            userCurrentInfoPO.setMajor(educationPO.getMajor());
+            userCurrentInfoPO.setGraduateTime(educationPO.getGraduateTime());
+            userCurrentInfoPO.setPtCategory(profTitlePO.getCategory());
+            userCurrentInfoPO.setPtInfo(profTitlePO.getInfo());
+            userCurrentInfoPO.setPqCategory(profQualityPO.getCategory());
+            userCurrentInfoPO.setPqInfo(profQualityPO.getInfo());
+            userCurrentInfoPO.setTalentCategory(category);
+            userCurrentInfoPO.setHonourId(talentHonourPO.getHonourId());
+            userCurrentInfoPO.setThInfo(talentHonourPO.getInfo());
+            int resultUserCurrentInfo = userCurrentInfoMapper.updateByPrimaryKeySelective(userCurrentInfoPO);
             if (resultUserCurrentInfo == 0) {
                 //更新人才用户信息状态失败
                 return new ResultVO(2372);

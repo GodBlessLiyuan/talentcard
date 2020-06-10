@@ -289,6 +289,7 @@ public class TalentServiceImpl implements ITalentService {
         userCurrentInfoPO.setPqInfo(jsonObject.getString("profQualityInfo"));
         userCurrentInfoPO.setPolitical(jsonObject.getByte("political"));
         userCurrentInfoPO.setHonourId(jsonObject.getLong("honourId"));
+        userCurrentInfoPO.setGraduateTime(jsonObject.getString("graduateTime"));
         userCurrentInfoMapper.insertSelective(userCurrentInfoPO);
 
         //人卡表新增；更新card表里currNum（+1）
