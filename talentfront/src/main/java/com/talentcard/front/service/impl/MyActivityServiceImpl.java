@@ -147,6 +147,7 @@ public class MyActivityServiceImpl implements IMyActivityService {
                     footprintBO.setLocation(scenicPO.getLocation());
                     footprintBO.setSubtitle(scenicPO.getSubtitle());
                     footprintBO.setStatlevel(scenicPO.getStarlevel());
+                    footprintBO.setIfReady(scenicPO.getStatus());
                     if (scenicPO.getAvatar() != null && !StringUtils.isEmpty(scenicPO.getAvatar())) {
                         footprintBO.setAvatar(FilePathConfig.getStaticPublicBasePath() + scenicPO.getAvatar());
                     }
@@ -157,6 +158,7 @@ public class MyActivityServiceImpl implements IMyActivityService {
                 if (farmhousePO != null) {
                     footprintBO.setLocation(farmhousePO.getLocation());
                     footprintBO.setSubtitle(farmhousePO.getSubtitle());
+                    footprintBO.setIfReady(farmhousePO.getStatus());
                     if (farmhousePO.getAvatar() != null && !StringUtils.isEmpty(farmhousePO.getAvatar())) {
                         footprintBO.setAvatar(FilePathConfig.getStaticPublicBasePath() + farmhousePO.getAvatar());
                     }
