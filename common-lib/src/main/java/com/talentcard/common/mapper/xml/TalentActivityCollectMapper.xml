@@ -127,6 +127,7 @@
     where
     t.open_id = #{openId,jdbcType=CHAR}
     and tac.status = 1
+    order by tac.create_time desc
   </select>
 
   <select id="findOne" resultMap="BaseResultMap">
