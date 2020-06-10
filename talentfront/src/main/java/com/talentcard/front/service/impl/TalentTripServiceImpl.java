@@ -63,7 +63,10 @@ public class TalentTripServiceImpl implements ITalentTripService {
         if (vo == null) {
             return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
         }
-
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO.getStatus() == 2) {
+            return new ResultVO(2520, "用户无查看权限！");
+        }
         /**
          * 景区idList，去中间表查询
          */
