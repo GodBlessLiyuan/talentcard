@@ -80,6 +80,10 @@ public class TalentBO extends TalentPO {
      * 驾照号
      */
     private String driverCard;
+    /**
+     * 毕业时间
+     */
+    private String graduateTime;
 
     private Long certId;
     private Byte certificationStatus;

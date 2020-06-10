@@ -649,15 +649,17 @@
                t.passport        as passport,
                t.driver_card     as driverCard,
                t.work_location   as workLocation,
+               t.talent_source as talentSource,
                uci.education     as educ,
                uci.school,
-               uci.first_class   as first,
+               uci.first_class   as `first`,
                uci.major,
                uci.pt_category   as title,
                uci.pt_info       as ptInfo,
                uci.pq_category   as quality,
                uci.pq_info       as pqInfo,
                uci.honour_id     as honour,
+               uci.education_time as educationTime,
                c.name            as cname,
                c.num             as cnum
         from t_talent t

@@ -222,5 +222,6 @@
       and <![CDATA[ tt.effective_time <= #{currentTime}]]>
       and tt.status = 1
     </if>
+    order by tt.create_time desc
   </select>
 </mapper>
