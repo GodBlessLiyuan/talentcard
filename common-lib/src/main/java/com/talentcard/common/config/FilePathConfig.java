@@ -90,6 +90,11 @@ public class FilePathConfig {
     private String activityFeedBack = "activityFeedBack/";
 
     /**
+     * 景区图片目录
+     */
+    private String miniDir = "mini/";
+
+    /**
      * 内部调用对外访问网络地址
      */
     private static String staticPublicBasePath;

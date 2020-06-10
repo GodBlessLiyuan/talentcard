@@ -1,5 +1,6 @@
 package com.talentcard.miniprogram;
 
+import com.talentcard.common.config.FilePathConfig;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
@@ -13,7 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 @MapperScan("com.talentcard.common.mapper")
 @ComponentScan("com.talentcard.common")
 @ComponentScan("com.talentcard.miniprogram")
-@EnableConfigurationProperties()
+@EnableConfigurationProperties({FilePathConfig.class})
 @SpringBootApplication
 public class MiniProgramApplication {
 
