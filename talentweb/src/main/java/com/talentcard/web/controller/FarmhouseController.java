@@ -76,7 +76,7 @@ public class FarmhouseController {
      * @return
      */
     @RequestMapping("status")
-    public ResultVO status(@Param("farmhouseId") Long farmhouseId, @Param("status") Long status) {
+    public ResultVO status(@Param("farmhouseId") Long farmhouseId, @Param("status") Byte status) {
         return farmhouseService.status(farmhouseId, status);
     }
 

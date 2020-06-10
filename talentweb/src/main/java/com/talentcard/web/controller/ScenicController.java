@@ -76,7 +76,7 @@ public class ScenicController {
      * @return
      */
     @RequestMapping("status")
-    public ResultVO status(@Param("scenicId") Long scenicId, @Param("status") Long status) {
+    public ResultVO status(@Param("scenicId") Long scenicId, @Param("status") Byte status) {
         return scenicService.status(scenicId, status);
     }
 
