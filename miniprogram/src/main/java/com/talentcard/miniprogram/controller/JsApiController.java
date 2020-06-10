@@ -89,6 +89,8 @@ public class JsApiController {
                 jsTokenPO.setWxOpenId(talentPO.getOpenId());
             }
         }
+        //TODO
+//        jsTokenPO.setWxOpenId("xxxxxxx");
         return new ResultVO<>(1000, jsTokenPO);
     }
 
