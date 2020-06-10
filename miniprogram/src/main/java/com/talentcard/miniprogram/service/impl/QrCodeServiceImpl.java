@@ -35,7 +35,7 @@ public class QrCodeServiceImpl implements IQrCodeService {
                 RandomUtil.getRandomString(8) +
                 DateUtil.date2Str(new Date(), DateUtil.YMD_HMS);
         String qrCodeUrl = DigestUtils.md5DigestAsHex(sb.getBytes());
-        redisTemplate.opsForValue().set(qrCodeUrl, openId, 1, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(qrCodeUrl, openId, 10, TimeUnit.MINUTES);
 
         try {
             BufferedImage image = QrCodeUtil.createImage(qrCodeUrl, null, true);
