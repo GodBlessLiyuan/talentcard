@@ -139,17 +139,18 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
     }
 
     @Override
-    public ResultVO status(Long farmhouseId, Long status) {
+    public ResultVO status(Long farmhouseId, Byte status) {
         FarmhousePO farmhousePO = farmhouseMapper.selectByPrimaryKey(farmhouseId);
         if (null == farmhousePO) {
             return new ResultVO(1102);
         }
 
-        if(status == 1) {
+        if (status == 1) {
             farmhousePO.setUpdateTime(new Date());
-        }else {
+        } else {
             farmhousePO.setUpdateTime(null);
         }
+        farmhousePO.setStatus(status);
         farmhouseMapper.updateByPrimaryKey(farmhousePO);
 //        farmhouseMapper.updateStatus(farmhouseId, status);
         farmhouseGroupAuthorityMapper.clear();
@@ -176,7 +177,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 
-    private void deleteRedisCache(){
+    private void deleteRedisCache() {
         redisMapUtil.del("talentfarmhouse");
     }
 }

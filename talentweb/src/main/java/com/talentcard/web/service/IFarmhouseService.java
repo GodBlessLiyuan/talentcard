@@ -17,7 +17,7 @@ public interface IFarmhouseService {
 
     ResultVO edit(FarmhouseDTO dto);
 
-    ResultVO status(Long farmhouseId, Long status);
+    ResultVO status(Long farmhouseId, Byte status);
 
     ResultVO detail(Long farmhouseId);
 

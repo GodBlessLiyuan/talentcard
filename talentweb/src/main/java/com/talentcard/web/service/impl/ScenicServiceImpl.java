@@ -142,7 +142,7 @@ public class ScenicServiceImpl implements IScenicService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultVO status(Long scenicId, Long status) {
+    public ResultVO status(Long scenicId, Byte status) {
         ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(scenicId);
         if (null == scenicPO) {
             return new ResultVO(1102);
@@ -153,6 +153,7 @@ public class ScenicServiceImpl implements IScenicService {
         } else {
             scenicPO.setUpdateTime(null);
         }
+        scenicPO.setStatus(status);
         scenicMapper.updateByPrimaryKey(scenicPO);
 
 //        scenicMapper.updateStatus(scenicId, status);

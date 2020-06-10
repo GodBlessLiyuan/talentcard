@@ -17,7 +17,7 @@ public interface IScenicService {
 
     ResultVO edit(ScenicDTO dto);
 
-    ResultVO status(Long scenicId, Long status);
+    ResultVO status(Long scenicId, Byte status);
 
     ResultVO detail(Long scenicId);
 
