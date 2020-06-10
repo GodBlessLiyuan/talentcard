@@ -21,4 +21,5 @@ public class FootprintBO {
     private String subtitle;
     private String useTimes;
     private String avatar;
+    private Byte statlevel;
 }
