@@ -20,4 +20,5 @@ public class FootprintBO {
     private String location;
     private String subtitle;
     private String useTimes;
+    private String avatar;
 }
