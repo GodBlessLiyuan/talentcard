@@ -130,5 +130,10 @@
     set th.`status` = #{status}
     where th.cert_id = #{certId,jdbcType=BIGINT}
   </update>
-
+  <select id="selectByCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_talent_honour
+    where cert_id = #{certId,jdbcType=BIGINT}
+  </select>
 </mapper>

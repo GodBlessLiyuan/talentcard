@@ -109,6 +109,11 @@ public class TalentDetailVO implements Serializable {
      * 驾照号
      */
     private String driverCard;
+    private Integer talentSource;
+    /**
+     * 毕业时间
+     */
+    private String graduateTime;
 
     /**
      * bo 转 vo
@@ -143,7 +148,8 @@ public class TalentDetailVO implements Serializable {
         vo.setPassport(bo.getPassport());
         vo.setDriverCard(bo.getDriverCard());
         vo.setIndustrySecond(bo.getIndustrySecond());
-
+        vo.setTalentSource(bo.getTalentSource());
+        vo.setGraduateTime(bo.getGraduateTime());
         return vo;
     }
 }

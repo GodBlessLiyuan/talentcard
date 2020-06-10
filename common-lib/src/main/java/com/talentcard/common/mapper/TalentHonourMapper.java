@@ -1,5 +1,6 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.pojo.ProfQualityPO;
 import com.talentcard.common.pojo.TalentHonourPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -16,5 +17,12 @@ public interface TalentHonourMapper extends BaseMapper<TalentHonourPO, Long> {
      * @return
      */
     int updateStatusByCertId(@Param("certId") Long certId, @Param("status") Byte status);
+
+    /**
+     * 根据certId查找对应th表信息
+     * @param certId
+     * @return
+     */
+    TalentHonourPO selectByCertId(@Param("certId") Long certId);
 
 }
