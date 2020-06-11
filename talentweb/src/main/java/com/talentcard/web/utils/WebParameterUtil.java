@@ -19,6 +19,8 @@ public class WebParameterUtil {
     private static String myInfoAlreadyCertificateUrl;
     private static String myApplicationUrl;
     private static String freeBenefitsUrl;
+    private static String appBrandPass;
+    private static String appBrandUserName;
 
     public static String getIndexUrl() {
         return indexUrl;
@@ -50,6 +52,14 @@ public class WebParameterUtil {
 
     public static String getFreeBenefitsUrl() {
         return freeBenefitsUrl;
+    }
+
+    public static String getAppBrandPass() {
+        return appBrandPass;
+    }
+
+    public static String getAppBrandUserName() {
+        return appBrandUserName;
     }
 
     @Value("${project.indexUrl}")
@@ -90,5 +100,16 @@ public class WebParameterUtil {
     @Value("${project.freeBenefitsUrl}")
     private void setFreeBenefitsUrl(String freeBenefitsUrl) {
         WebParameterUtil.freeBenefitsUrl = freeBenefitsUrl;
+    }
+
+    @Value("${project.appBrandPass}")
+    private void setAppBrandPass(String appBrandPass) {
+        WebParameterUtil.appBrandPass = appBrandPass;
+        System.out.println(WebParameterUtil.getAppBrandPass());
+    }
+
+    @Value("${project.appBrandUserName}")
+    private void setAppBrandUserName(String appBrandUserName) {
+        WebParameterUtil.appBrandUserName = appBrandUserName;
     }
 }
