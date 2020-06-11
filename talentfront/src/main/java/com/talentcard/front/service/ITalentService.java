@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ITalentService {
     /**
      * 根据和openId，返回当前状态和卡号
+     *
      * @param openId
      * @return
      */
@@ -30,6 +31,7 @@ public interface ITalentService {
     /**
      * 根据OpenId查找认证完成之前的基本信息
      * 或者认证之后的信息
+     *
      * @param openId
      * @return
      */
@@ -69,8 +71,16 @@ public interface ITalentService {
 
     /**
      * 获取微信用户信息，类型，会员卡号等
+     *
      * @param openId
      * @return
      */
     TalentTypeVO getTalentInfo(String openId);
+
+    /**
+     * 填充 Union Id
+     *
+     * @return
+     */
+    ResultVO fillUnion();
 }

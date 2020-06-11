@@ -178,4 +178,10 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
      * @return
      */
     TalentPO queryByUnionId(String unionid);
+
+    /**
+     * 查询所有unionid 为 null 的数据
+     * @return
+     */
+    List<TalentPO> queryAllNullUnionId();
 }

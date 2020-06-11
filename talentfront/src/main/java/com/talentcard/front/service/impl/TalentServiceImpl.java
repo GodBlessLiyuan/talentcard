@@ -2,7 +2,6 @@ package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.org.apache.regexp.internal.RE;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
@@ -11,12 +10,12 @@ import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.StringToObjUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.AccessTokenUtil;
 import com.talentcard.front.utils.MessageUtil;
 import com.talentcard.front.utils.TalentActivityUtil;
-import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.front.vo.TalentVO;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -29,10 +28,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 人才注册/认证相关
@@ -213,10 +209,8 @@ public class TalentServiceImpl implements ITalentService {
          * @author xiahui
          * 根据 openid 查询 unionid, 插入到人才表中
          */
-        String userInfo = new RestTemplate().getForObject("https://api.weixin.qq.com/cgi-bin/user/info?access_token={1}&openid={2}&lang=zh_CN",
-                String.class, AccessTokenUtil.getAccessToken(), openId);
-        String unionId = JSONObject.parseObject(userInfo).getString("unionid");
-//        if (null == unionId || "".equals(unionId)) {
+        String unionId = getUnionIdByOpenId(openId);
+//        if (StringUtils.isEmpty(unionId)) {
 //            return new ResultVO(1222);
 //        }
         talentPO.setUnionId(unionId);
@@ -655,5 +649,27 @@ public class TalentServiceImpl implements ITalentService {
 
         redisMapUtil.hset(openId, "getTalentInfo", JSON.toJSONString(vo));
         return vo;
+    }
+
+    @Override
+    public ResultVO fillUnion() {
+        List<TalentPO> pos = talentMapper.queryAllNullUnionId();
+        if (null != pos && pos.size() > 0) {
+            for (TalentPO po : pos) {
+                String unionId = getUnionIdByOpenId(po.getOpenId());
+                if (!StringUtils.isEmpty(unionId)) {
+                    po.setUnionId(unionId);
+                    // talent表中unionId 为 null 的数据较少，故直接使用单条数据插入
+                    talentMapper.updateByPrimaryKey(po);
+                }
+            }
+        }
+        return new ResultVO(1000);
+    }
+
+    public String getUnionIdByOpenId(String openId) {
+        String userInfo = new RestTemplate().getForObject("https://api.weixin.qq.com/cgi-bin/user/info?access_token={1}&openid={2}&lang=zh_CN",
+                String.class, AccessTokenUtil.getAccessToken(), openId);
+        return JSONObject.parseObject(userInfo).getString("unionid");
     }
 }

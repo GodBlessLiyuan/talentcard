@@ -133,4 +133,12 @@ public class TalentController {
     public ResultVO findInfo(@RequestParam(value = "openId") String openId) {
         return iTalentService.findInfo(openId);
     }
+
+    /**
+     * 填充UnionId
+     */
+    @RequestMapping("fillUnion")
+    public ResultVO fullUnion() {
+        return iTalentService.fillUnion();
+    }
 }
