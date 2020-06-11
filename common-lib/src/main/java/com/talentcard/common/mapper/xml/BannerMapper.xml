@@ -156,6 +156,7 @@
         <include refid="Base_Column_List"/>
         from t_banner
         where dr = 1
+        and status = 1
         order by create_time desc
     </select>
     <select id="query" resultMap="BaseResultMap">
