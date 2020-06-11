@@ -12,4 +12,6 @@ import lombok.Data;
 public class CustomFiledPO {
     private String name;
     private String url;
+    private String app_brand_user_name;
+    private String app_brand_pass;
 }
