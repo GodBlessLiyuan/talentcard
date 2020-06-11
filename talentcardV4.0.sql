@@ -273,8 +273,8 @@ CREATE TABLE t_farmhouse
     name char(16) NOT NULL,
     discount double(2,1),
     avatar char(255),
-    description varchar(2048),
-    extra varchar(2048),
+    description text,
+    extra text,
     qr_code char(255),
     -- 1：上架；2：下架
     status tinyint COMMENT '1：上架；2：下架',
@@ -508,8 +508,8 @@ CREATE TABLE t_scenic
     unit tinyint COMMENT '1：年；2：季；3：月',
     times int,
     avatar char(255),
-    description varchar(2048),
-    extra varchar(2048),
+    description text,
+    extra text,
     qr_code char(255),
     -- 1：上架；2：下架
     status tinyint COMMENT '1：上架；2：下架',
