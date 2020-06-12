@@ -1,15 +1,16 @@
 package com.talentcard.front.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IMyActivityService;
 import com.talentcard.front.service.ITalentFarmhouseService;
 import com.talentcard.front.service.ITalentTripService;
-import com.talentcard.front.utils.VerificationCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -105,15 +106,19 @@ public class MyActivityController {
             if (tripResult.get("scenicList") != null) {
                 result.put("tripResult", tripResult.get("scenicList"));
             } else {
-                result.put("tripResult", null);
+                result.put("tripResult", new ArrayList<>(0));
             }
+        } else {
+            result.put("tripResult", new ArrayList<>(0));
         }
         if (farmhouseResult != null) {
             if (farmhouseResult.get("farmhouseVOList") != null) {
                 result.put("farmhouseResult", farmhouseResult.get("farmhouseVOList"));
             } else {
-                result.put("farmhouseResult", null);
+                result.put("farmhouseResult", new ArrayList<>(0));
             }
+        }else {
+            result.put("farmhouseResult", new ArrayList<>(0));
         }
         return new ResultVO(1000, result);
     }
