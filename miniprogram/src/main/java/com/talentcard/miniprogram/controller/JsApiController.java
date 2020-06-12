@@ -72,14 +72,12 @@ public class JsApiController {
      * @return
      */
     @PostMapping("getJsToken")
-    public ResultVO getJsToken(String code) {
+    public ResultVO getJsToken(@RequestParam(value = "code") String code) {
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appId
                 + "&secret=" + appSecret
                 + "&js_code=" + code
                 + "&grant_type=authorization_code";
         RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         restTemplate.getMessageConverters().add(new WxMappingJackson2HttpMessageConverter());
         JsTokenPO jsTokenPO = restTemplate.getForObject(url, JsTokenPO.class);
 

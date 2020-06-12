@@ -46,17 +46,27 @@ public class WxCardController {
             String openId = requestMap.get("FromUserName");
             String event = requestMap.get("Event");
             String cardId = requestMap.get("CardId");
-            logger.info("event：{} ", event);
+            if(logger.isInfoEnabled()) {
+                logger.info("event：{} ", event);
+            }
             if ("user_get_card".equalsIgnoreCase(event)) {
                 //用户领取卡事件，激活接口
-                logger.info("用户开始领卡");
+                if(logger.isInfoEnabled()) {
+                    logger.info("用户开始领卡");
+                }
                 iEventService.activate(openId);
-                logger.info("用户领取卡成功");
+                if(logger.isInfoEnabled()) {
+                    logger.info("用户领取卡成功");
+                }
             } else if ("user_del_card".equalsIgnoreCase(event)) {
                 //用户删除卡券事件，删除接口
-                logger.info("用户开始删卡");
+                if(logger.isInfoEnabled()) {
+                    logger.info("用户开始删卡");
+                }
                 iEventService.delete(openId, cardId);
-                logger.info("用户删除卡成功");
+                if(logger.isInfoEnabled()) {
+                    logger.info("用户删除卡成功");
+                }
             }
 
 
@@ -66,12 +76,13 @@ public class WxCardController {
             out.print(respxml);
             out.flush();
             out.close();
-            logger.info("回复成功", respxml);
+            if(logger.isInfoEnabled()) {
+                logger.info("回复成功", respxml);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info("接收消息失败");
-
+            logger.error("接收消息失败",e);
         }
     }
 
@@ -95,7 +106,6 @@ public class WxCardController {
             out.flush();
             out.close();
             logger.info("连接服务器成功");
-
         } else {
             logger.info("连接服务器失败");
         }

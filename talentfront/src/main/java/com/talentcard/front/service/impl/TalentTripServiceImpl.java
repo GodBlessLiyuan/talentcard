@@ -72,15 +72,15 @@ public class TalentTripServiceImpl implements ITalentTripService {
         /**
          * 景区idList，去中间表查询
          */
-        String code = "list_"+vo.toString();
+        String code = "list_" + vo.toString();
 
-        String s_scenicIdList =  redisMapUtil.hget("talentTrip",code);
+        String s_scenicIdList = redisMapUtil.hget("talentTrip", code);
 
         List<Long> scenicIdList = null;
-        if(!StringUtils.isEmpty(s_scenicIdList)){
-            scenicIdList = StringToObjUtil.strToObj(s_scenicIdList,List.class);
+        if (!StringUtils.isEmpty(s_scenicIdList)) {
+            scenicIdList = StringToObjUtil.strToObj(s_scenicIdList, List.class);
         }
-        if(scenicIdList == null){
+        if (scenicIdList == null) {
             scenicIdList = tripGroupAuthorityMapper.findByCode(code);
             /**
              *  中间表没找到景区idList，去大表查询
@@ -202,6 +202,9 @@ public class TalentTripServiceImpl implements ITalentTripService {
         ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
         if (scenicPO == null) {
             return new ResultVO(2504, "查无景区");
+        }
+        if (scenicPO.getStatus() == 2) {
+            return new ResultVO(2511, "该景区已经下架");
         }
         Byte unit = scenicPO.getUnit();
         Integer times = scenicPO.getTimes();
