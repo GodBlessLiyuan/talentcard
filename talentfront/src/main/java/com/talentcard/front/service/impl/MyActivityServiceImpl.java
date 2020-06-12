@@ -159,6 +159,7 @@ public class MyActivityServiceImpl implements IMyActivityService {
                     footprintBO.setLocation(farmhousePO.getLocation());
                     footprintBO.setSubtitle(farmhousePO.getSubtitle());
                     footprintBO.setIfReady(farmhousePO.getStatus());
+                    footprintBO.setDiscount(farmhousePO.getDiscount());
                     if (farmhousePO.getAvatar() != null && !StringUtils.isEmpty(farmhousePO.getAvatar())) {
                         footprintBO.setAvatar(FilePathConfig.getStaticPublicBasePath() + farmhousePO.getAvatar());
                     }
