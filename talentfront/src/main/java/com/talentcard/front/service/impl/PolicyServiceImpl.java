@@ -286,7 +286,7 @@ public class PolicyServiceImpl implements IPolicyService {
             bankPO.setPaId(applyPO.getPaId());
             bankMapper.insert(bankPO);
         }
-        if (null != dto.getFiles() && dto.getFiles().length > 0 && policyPO.getAnnex() == 1) {
+        if (null != dto.getFiles() && dto.getFiles().length > 0) {
             List<AnnexPO> annexPOs = new ArrayList<>();
             for (MultipartFile file : dto.getFiles()) {
                 AnnexPO annexPO = new AnnexPO();
