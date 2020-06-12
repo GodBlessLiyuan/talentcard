@@ -5,6 +5,7 @@
     <id column="policy_id" jdbcType="BIGINT" property="policyId" />
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="num" jdbcType="CHAR" property="num" />
+    <result column="description" jdbcType="CHAR" property="description" />
     <result column="cards" jdbcType="CHAR" property="cards" />
     <result column="categories" jdbcType="CHAR" property="categories" />
     <result column="educations" jdbcType="CHAR" property="educations" />
@@ -18,29 +19,21 @@
     <result column="times" jdbcType="INTEGER" property="times" />
     <result column="bank" jdbcType="TINYINT" property="bank" />
     <result column="annex" jdbcType="TINYINT" property="annex" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="dr" jdbcType="TINYINT" property="dr" />
     <result column="annex_info" jdbcType="CHAR" property="annexInfo" />
     <result column="apply_form" jdbcType="CHAR" property="applyForm" />
     <result column="funds" jdbcType="INTEGER" property="funds" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.talentcard.common.pojo.PolicyPO">
-    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
-    policy_id, `name`, num, cards, categories, educations, titles, qualities, honour_ids, 
-    apply, color, rate, unit, times, bank, annex, user_id, create_time, dr, annex_info, 
-    apply_form, funds
+    policy_id, `name`, num, description, cards, categories, educations, titles, qualities,
+    honour_ids, apply, color, rate, unit, times, bank, annex, annex_info, apply_form, 
+    funds, user_id, create_time, dr
   </sql>
-  <sql id="Blob_Column_List">
-    description
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
-    select 
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from t_policy
     where policy_id = #{policyId,jdbcType=BIGINT}
   </select>
@@ -49,22 +42,22 @@
     where policy_id = #{policyId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyPO">
-    insert into t_policy (policy_id, `name`, num, 
-      cards, categories, educations, 
-      titles, qualities, honour_ids, 
-      apply, color, rate, unit, 
-      times, bank, annex, 
-      user_id, create_time, dr, 
-      annex_info, apply_form, funds, 
-      description)
-    values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR}, 
-      #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR}, #{educations,jdbcType=CHAR}, 
-      #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR}, #{honourIds,jdbcType=CHAR}, 
-      #{apply,jdbcType=TINYINT}, #{color,jdbcType=CHAR}, #{rate,jdbcType=INTEGER}, #{unit,jdbcType=TINYINT}, 
-      #{times,jdbcType=INTEGER}, #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT}, 
-      #{userId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, 
-      #{annexInfo,jdbcType=CHAR}, #{applyForm,jdbcType=CHAR}, #{funds,jdbcType=INTEGER}, 
-      #{description,jdbcType=LONGVARCHAR})
+    insert into t_policy (policy_id, `name`, num,
+      description, cards, categories,
+      educations, titles, qualities,
+      honour_ids, apply, color,
+      rate, unit, times,
+      bank, annex, annex_info,
+      apply_form, funds, user_id,
+      create_time, dr)
+    values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR},
+      #{description,jdbcType=CHAR}, #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR},
+      #{educations,jdbcType=CHAR}, #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR},
+      #{honourIds,jdbcType=CHAR}, #{apply,jdbcType=TINYINT}, #{color,jdbcType=CHAR},
+      #{rate,jdbcType=INTEGER}, #{unit,jdbcType=TINYINT}, #{times,jdbcType=INTEGER},
+      #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT}, #{annexInfo,jdbcType=CHAR},
+      #{applyForm,jdbcType=CHAR}, #{funds,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyPO">
     insert into t_policy
@@ -77,6 +70,9 @@
       </if>
       <if test="num != null">
         num,
+      </if>
+      <if test="description != null">
+        description,
       </if>
       <if test="cards != null">
         cards,
@@ -117,15 +113,6 @@
       <if test="annex != null">
         annex,
       </if>
-      <if test="userId != null">
-        user_id,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="dr != null">
-        dr,
-      </if>
       <if test="annexInfo != null">
         annex_info,
       </if>
@@ -135,8 +122,14 @@
       <if test="funds != null">
         funds,
       </if>
-      <if test="description != null">
-        description,
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="dr != null">
+        dr,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -148,6 +141,9 @@
       </if>
       <if test="num != null">
         #{num,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=CHAR},
       </if>
       <if test="cards != null">
         #{cards,jdbcType=CHAR},
@@ -188,15 +184,6 @@
       <if test="annex != null">
         #{annex,jdbcType=TINYINT},
       </if>
-      <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dr != null">
-        #{dr,jdbcType=TINYINT},
-      </if>
       <if test="annexInfo != null">
         #{annexInfo,jdbcType=CHAR},
       </if>
@@ -206,8 +193,14 @@
       <if test="funds != null">
         #{funds,jdbcType=INTEGER},
       </if>
-      <if test="description != null">
-        #{description,jdbcType=LONGVARCHAR},
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -219,6 +212,9 @@
       </if>
       <if test="num != null">
         num = #{num,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=CHAR},
       </if>
       <if test="cards != null">
         cards = #{cards,jdbcType=CHAR},
@@ -259,15 +255,6 @@
       <if test="annex != null">
         annex = #{annex,jdbcType=TINYINT},
       </if>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dr != null">
-        dr = #{dr,jdbcType=TINYINT},
-      </if>
       <if test="annexInfo != null">
         annex_info = #{annexInfo,jdbcType=CHAR},
       </if>
@@ -277,42 +264,23 @@
       <if test="funds != null">
         funds = #{funds,jdbcType=INTEGER},
       </if>
-      <if test="description != null">
-        description = #{description,jdbcType=LONGVARCHAR},
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
       </if>
     </set>
-    where policy_id = #{policyId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.talentcard.common.pojo.PolicyPO">
-    update t_policy
-    set `name` = #{name,jdbcType=CHAR},
-      num = #{num,jdbcType=CHAR},
-      cards = #{cards,jdbcType=CHAR},
-      categories = #{categories,jdbcType=CHAR},
-      educations = #{educations,jdbcType=CHAR},
-      titles = #{titles,jdbcType=CHAR},
-      qualities = #{qualities,jdbcType=CHAR},
-      honour_ids = #{honourIds,jdbcType=CHAR},
-      apply = #{apply,jdbcType=TINYINT},
-      color = #{color,jdbcType=CHAR},
-      rate = #{rate,jdbcType=INTEGER},
-      unit = #{unit,jdbcType=TINYINT},
-      times = #{times,jdbcType=INTEGER},
-      bank = #{bank,jdbcType=TINYINT},
-      annex = #{annex,jdbcType=TINYINT},
-      user_id = #{userId,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      dr = #{dr,jdbcType=TINYINT},
-      annex_info = #{annexInfo,jdbcType=CHAR},
-      apply_form = #{applyForm,jdbcType=CHAR},
-      funds = #{funds,jdbcType=INTEGER},
-      description = #{description,jdbcType=LONGVARCHAR}
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PolicyPO">
     update t_policy
     set `name` = #{name,jdbcType=CHAR},
       num = #{num,jdbcType=CHAR},
+      description = #{description,jdbcType=CHAR},
       cards = #{cards,jdbcType=CHAR},
       categories = #{categories,jdbcType=CHAR},
       educations = #{educations,jdbcType=CHAR},
@@ -326,12 +294,12 @@
       times = #{times,jdbcType=INTEGER},
       bank = #{bank,jdbcType=TINYINT},
       annex = #{annex,jdbcType=TINYINT},
-      user_id = #{userId,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      dr = #{dr,jdbcType=TINYINT},
       annex_info = #{annexInfo,jdbcType=CHAR},
       apply_form = #{applyForm,jdbcType=CHAR},
-      funds = #{funds,jdbcType=INTEGER}
+      funds = #{funds,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      dr = #{dr,jdbcType=TINYINT}
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>
 

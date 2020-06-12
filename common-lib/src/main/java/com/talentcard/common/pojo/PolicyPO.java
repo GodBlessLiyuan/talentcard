@@ -16,6 +16,8 @@ public class PolicyPO implements Serializable {
 
     private String num;
 
+    private String description;
+
     private String cards;
 
     private String categories;
@@ -29,7 +31,7 @@ public class PolicyPO implements Serializable {
     private String honourIds;
 
     /**
-     * 1：必填；2：不填；3：选填
+     * 1：需要；2：不需要
      */
     private Byte apply;
 
@@ -47,9 +49,15 @@ public class PolicyPO implements Serializable {
     private Byte bank;
 
     /**
-     * 1：需要；2：不需要；
+     * 1：必填；2：不填；3：选填
      */
     private Byte annex;
+
+    private String annexInfo;
+
+    private String applyForm;
+
+    private Integer funds;
 
     private Long userId;
 
@@ -59,14 +67,6 @@ public class PolicyPO implements Serializable {
      * 1 未删除  2 已删除
      */
     private Byte dr;
-
-    private String annexInfo;
-
-    private String applyForm;
-
-    private Integer funds;
-
-    private String description;
 
     private static final long serialVersionUID = 1L;
 }
