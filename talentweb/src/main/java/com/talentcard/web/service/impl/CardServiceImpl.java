@@ -220,6 +220,9 @@ public class CardServiceImpl implements ICardService {
     @Override
     public ResultVO findOne(Long cardId) {
         CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
+        if (cardPO == null) {
+            return new ResultVO(2600, "查无此卡！");
+        }
         CardVO cardVO = CardVO.convert(cardPO);
         ArrayList<String> policyInfo = new ArrayList<>();
         //取得卡号的String类型
