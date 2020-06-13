@@ -1,24 +1,20 @@
 package com.talentcard.front.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.talentcard.common.bo.ActivityCardTicketBO;
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.TalentActivityHistoryPO;
-import com.talentcard.common.pojo.TalentTripPO;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.front.service.ITalentActivityService;
 import com.talentcard.front.service.ITalentService;
-import com.talentcard.common.vo.TalentTypeVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ChenXU
@@ -28,10 +24,6 @@ import java.util.Map;
  */
 @Service
 public class TalentActivityServiceImpl implements ITalentActivityService {
-    @Autowired
-    private TalentMapper talentMapper;
-    @Autowired
-    private UserCurrentInfoMapper userCurrentInfoMapper;
     @Autowired
     private ScenicEnjoyMapper scenicEnjoyMapper;
     @Autowired
@@ -49,6 +41,10 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
 
     @Override
     public ResultVO findFirstContent(String openId) {
+
+        if(StringUtils.isEmpty(openId)){
+            openId = TalentConstant.DEFAULT_TALENT_OPENID;
+        }
 
         TalentTypeVO vo = iTalentService.getTalentInfo(openId);
 
@@ -120,6 +116,11 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
 
     @Override
     public ResultVO findHistory(String openId) {
+
+        if(TalentConstant.isDefaultTalent(openId)){
+            return new ResultVO(1000,new ArrayList<>(0));
+        }
+
         List<TalentActivityHistoryPO> resultList = talentActivityHistoryMapper.findByOpenId(openId);
         return new ResultVO(1000, resultList);
     }
@@ -131,6 +132,11 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
 
     @Override
     public ResultVO findActivityTicket(String openId, Byte type) {
+
+        if(TalentConstant.isDefaultTalent(openId)){
+            return new ResultVO(1000,new ArrayList<>(0));
+        }
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = simpleDateFormat.format(new Date());
         List<ActivityCardTicketBO> talentTripPOList = talentTripMapper.findActivityCardTicket(openId, currentTime, type);

@@ -1,5 +1,6 @@
 package com.talentcard.miniprogram.controller;
 
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.TalentMapper;
 import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
@@ -72,7 +73,7 @@ public class JsApiController {
      * @return
      */
     @PostMapping("getJsToken")
-    public ResultVO getJsToken(@RequestParam(value = "code") String code) {
+    public ResultVO getJsToken(@RequestParam(value = "code") String code,@RequestParam(value = "version", defaultValue="1.0.0") String version) {
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appId
                 + "&secret=" + appSecret
                 + "&js_code=" + code
@@ -85,6 +86,8 @@ public class JsApiController {
             TalentPO talentPO = talentMapper.queryByUnionId(jsTokenPO.getUnionid());
             if (null != talentPO) {
                 jsTokenPO.setWxOpenId(talentPO.getOpenId());
+            } else {
+                jsTokenPO.setWxOpenId(TalentConstant.DEFAULT_TALENT_OPENID);
             }
         }
         //TODO

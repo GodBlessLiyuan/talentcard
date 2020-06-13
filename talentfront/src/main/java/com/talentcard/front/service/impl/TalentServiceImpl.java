@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.FileUtil;
@@ -94,6 +95,8 @@ public class TalentServiceImpl implements ITalentService {
             if (currentCard == null) {
                 //都为空，说明这个人没有卡，需要注册
                 result.put("status", 2);
+                result.put("name", "游客");
+                result.put("code", "000000000");
 
                 return new ResultVO(1000, result);
             } else {
@@ -131,6 +134,8 @@ public class TalentServiceImpl implements ITalentService {
              * 设置缓存
              */
             this.redisMapUtil.hset(openId, "findStatus", JSON.toJSONString(result));
+        }else {
+            result.put("name", "游客");
         }
 
         return new ResultVO(1000, result);
@@ -620,8 +625,12 @@ public class TalentServiceImpl implements ITalentService {
 
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
         if (talentPO == null) {
-            return null;
+            talentPO = getDefaultTalent();
+            if (talentPO == null) {
+                return null;
+            }
         }
+
         UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentPO.getTalentId());
         if (userCurrentInfoPO == null) {
             return null;
@@ -649,6 +658,23 @@ public class TalentServiceImpl implements ITalentService {
 
         redisMapUtil.hset(openId, "getTalentInfo", JSON.toJSONString(vo));
         return vo;
+    }
+
+    /**
+     * 获取游客账号
+     * @return
+     */
+    private TalentPO getDefaultTalent(){
+        TalentPO talentPO = null;
+        String defaultTalent = redisMapUtil.hget(TalentConstant.DEFAULT_TALENT_OPENID,"getTalentInfo");
+        if(!StringUtils.isEmpty(defaultTalent)){
+            talentPO = StringToObjUtil.strToObj(defaultTalent, TalentPO.class);
+        }
+        if(talentPO == null) {
+            talentPO = talentMapper.selectByOpenId(TalentConstant.DEFAULT_TALENT_OPENID);
+            redisMapUtil.hset(TalentConstant.DEFAULT_TALENT_OPENID, "getTalentInfo", JSON.toJSONString(talentPO));
+        }
+        return talentPO;
     }
 
     @Override

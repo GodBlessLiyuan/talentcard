@@ -2,6 +2,7 @@ package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.talentcard.common.bo.FarmhouseBO;
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.FarmhouseEnjoyMapper;
 import com.talentcard.common.mapper.FarmhouseGroupAuthorityMapper;
 import com.talentcard.common.mapper.FarmhouseMapper;
@@ -57,7 +58,9 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO findSecondContent(String openId, String name, Byte area, Byte order) {
 
-
+        if(StringUtils.isEmpty(openId) || StringUtils.equalsIgnoreCase(openId, "null")){
+            openId = TalentConstant.DEFAULT_TALENT_OPENID;
+        }
         /**
          * 获取用户类型
          */

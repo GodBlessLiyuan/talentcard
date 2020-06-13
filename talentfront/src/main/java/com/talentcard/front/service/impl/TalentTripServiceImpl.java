@@ -1,6 +1,7 @@
 package com.talentcard.front.service.impl;
 
 import com.talentcard.common.bo.ScenicBO;
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.TalentPO;
@@ -57,6 +58,10 @@ public class TalentTripServiceImpl implements ITalentTripService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO findSecondContent(String openId, String name, Byte starLevel, Byte area, Byte order) {
+
+        if(StringUtils.isEmpty(openId)){
+            openId = TalentConstant.DEFAULT_TALENT_OPENID;
+        }
 
         /**
          * 获取用户类型
@@ -187,6 +192,12 @@ public class TalentTripServiceImpl implements ITalentTripService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO getBenefit(String openId, Long activitySecondContentId) throws ParseException {
+
+        if(StringUtils.isEmpty(openId) || StringUtils.equalsIgnoreCase(openId,TalentConstant.DEFAULT_TALENT_OPENID)){
+            return new ResultVO(1001, "当前福利已被领取完");
+        }
+
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = simpleDateFormat.format(new Date());
         TalentTripPO ifExistOne = talentTripMapper.findOneNotExpired(openId, activitySecondContentId, currentTime);

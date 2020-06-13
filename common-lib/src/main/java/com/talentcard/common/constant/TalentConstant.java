@@ -1,5 +1,7 @@
 package com.talentcard.common.constant;
 
+
+
 /**
  * @author: velve
  * @date: Created in 2020/6/8 14:10
@@ -15,4 +17,20 @@ public class TalentConstant {
      * 用户收藏
      */
     public static final String TALENT_MYCOLLECT = "MyCollect";
+
+    public static final String DEFAULT_TALENT_OPENID = "000000000000000";
+
+
+    /**
+     * 判断是否为默认游客账号
+     * @param openId
+     * @return
+     */
+    public static boolean isDefaultTalent(String openId){
+        if(openId == null || openId.length()==0 || DEFAULT_TALENT_OPENID.equals(DEFAULT_TALENT_OPENID)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

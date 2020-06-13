@@ -1,5 +1,6 @@
 package com.talentcard.miniprogram.service.impl;
 
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.QrCodeUtil;
 import com.talentcard.common.utils.RandomUtil;
@@ -31,6 +32,11 @@ public class QrCodeServiceImpl implements IQrCodeService {
 
     @Override
     public ResultVO create(String openId) {
+
+        if(TalentConstant.isDefaultTalent(openId)){
+            return new ResultVO(1000);
+        }
+
         String sb = openId +
                 RandomUtil.getRandomString(8) +
                 DateUtil.date2Str(new Date(), DateUtil.YMD_HMS);
