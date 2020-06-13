@@ -33,7 +33,7 @@ public class QrCodeServiceImpl implements IQrCodeService {
     @Override
     public ResultVO create(String openId) {
 
-        if(TalentConstant.isDefaultTalent(openId)){
+        if(!"000000000000000".equals(openId) && TalentConstant.isDefaultTalent(openId)){
             return new ResultVO(1000);
         }
 
