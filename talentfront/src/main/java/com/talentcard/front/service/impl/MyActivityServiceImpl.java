@@ -63,9 +63,9 @@ public class MyActivityServiceImpl implements IMyActivityService {
     public ResultVO footprint(String openId) {
 
         String mapStr = this.redisMapUtil.hget(openId, TalentConstant.TALENT_FOOTPIRNT);
-        if(!StringUtils.isEmpty(mapStr)){
+        if (!StringUtils.isEmpty(mapStr)) {
             List<FootprintBO> footprintBOList = StringToObjUtil.strToObj(mapStr, List.class);
-            if(footprintBOList != null){
+            if (footprintBOList != null) {
                 return new ResultVO(1000, footprintBOList);
             }
         }
@@ -89,6 +89,9 @@ public class MyActivityServiceImpl implements IMyActivityService {
             return new ResultVO(2500, "查无此人！");
         }
         Long talentId = talentPO.getTalentId();
+        if (talentPO.getStatus() != 1) {
+            return new ResultVO(2520, "无此权限！！");
+        }
         /**
          * 收藏
          */
@@ -122,9 +125,9 @@ public class MyActivityServiceImpl implements IMyActivityService {
     public ResultVO findMyCollect(String openId) {
 
         String mapStr = this.redisMapUtil.hget(openId, TalentConstant.TALENT_MYCOLLECT);
-        if(!StringUtils.isEmpty(mapStr)){
-            List<TalentActivityCollectVO> talentActivityCollectVOList = StringToObjUtil.strToObj(mapStr,List.class);
-            if(talentActivityCollectVOList != null){
+        if (!StringUtils.isEmpty(mapStr)) {
+            List<TalentActivityCollectVO> talentActivityCollectVOList = StringToObjUtil.strToObj(mapStr, List.class);
+            if (talentActivityCollectVOList != null) {
                 return new ResultVO(1000, talentActivityCollectVOList);
             }
         }
