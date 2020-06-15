@@ -197,8 +197,8 @@ public class StaffServiceImpl implements IStaffService {
         if (talentPO == null) {
             return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
         }
-        if(talentPO.getStatus()!=1){
-            return new ResultVO(2520);
+        if (talentPO.getStatus() != 1) {
+            return new ResultVO(2520, "当前人才无权限！");
         }
         //得到staffPO
         StaffPO staffPO = staffMapper.findOneByOpenId(staffOpenId);
