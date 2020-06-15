@@ -79,7 +79,7 @@ public class StaffController {
                             @RequestParam(value = "activitySecondContentId") Long activitySecondContentId) {
 
         String talentOpenId = cardNum.length() < 30 ? iTalentActivityService.getOpenId(cardNum) : template.opsForValue().get(cardNum);
-        if (talentOpenId == null || StringUtils.isEmpty(talentOpenId)) {
+        if (StringUtils.isEmpty(talentOpenId)) {
             return new ResultVO(2500);
         }
         return activityFirstContentId == 1 ? iStaffService.tripVertify(httpServletRequest, talentOpenId,
