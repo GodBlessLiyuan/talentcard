@@ -59,7 +59,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO findSecondContent(String openId, String name, Byte starLevel, Byte area, Byte order) {
 
-        if(StringUtils.isEmpty(openId)){
+        if (StringUtils.isEmpty(openId)) {
             openId = TalentConstant.DEFAULT_TALENT_OPENID;
         }
 
@@ -193,7 +193,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO getBenefit(String openId, Long activitySecondContentId) throws ParseException {
 
-        if(StringUtils.isEmpty(openId) || StringUtils.equalsIgnoreCase(openId,TalentConstant.DEFAULT_TALENT_OPENID)){
+        if (StringUtils.isEmpty(openId) || StringUtils.equalsIgnoreCase(openId, TalentConstant.DEFAULT_TALENT_OPENID)) {
             return new ResultVO(1001, "当前福利已被领取完");
         }
 
@@ -201,6 +201,16 @@ public class TalentTripServiceImpl implements ITalentTripService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = simpleDateFormat.format(new Date());
         TalentTripPO ifExistOne = talentTripMapper.findOneNotExpired(openId, activitySecondContentId, currentTime);
+        /**
+         * 判断用户身份
+         */
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
+        }
+        if (talentPO.getStatus() != 1) {
+            return new ResultVO(2520, "当前人才无权限！");
+        }
         //用户是否已领取还未过期的福利
         if (ifExistOne != null) {
             return new ResultVO(1002, "当前人才已经有没用完的券");
