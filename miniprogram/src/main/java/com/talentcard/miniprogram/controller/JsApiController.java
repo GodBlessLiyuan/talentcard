@@ -8,6 +8,7 @@ import com.talentcard.miniprogram.pojo.JsTokenPO;
 import com.talentcard.miniprogram.utils.CommonUtil;
 import com.talentcard.miniprogram.utils.JsApiTicketUtil;
 import com.talentcard.miniprogram.utils.WxMappingJackson2HttpMessageConverter;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -83,12 +84,20 @@ public class JsApiController {
         JsTokenPO jsTokenPO = restTemplate.getForObject(url, JsTokenPO.class);
 
         if (null != jsTokenPO && null != jsTokenPO.getUnionid()) {
-            TalentPO talentPO = talentMapper.queryByUnionId(jsTokenPO.getUnionid());
-            if (null != talentPO) {
-                jsTokenPO.setWxOpenId(talentPO.getOpenId());
-            } else {
+            if(StringUtils.isEmpty(jsTokenPO.getOpenid())){
+                jsTokenPO.setOpenid(TalentConstant.DEFAULT_TALENT_OPENID);
                 jsTokenPO.setWxOpenId(TalentConstant.DEFAULT_TALENT_OPENID);
+            } else {
+                TalentPO talentPO = talentMapper.queryByUnionId(jsTokenPO.getUnionid());
+                if (null != talentPO) {
+                    jsTokenPO.setWxOpenId(talentPO.getOpenId());
+                } else {
+                    jsTokenPO.setWxOpenId(TalentConstant.DEFAULT_TALENT_OPENID);
+                }
             }
+        }else if(jsTokenPO != null){
+            jsTokenPO.setOpenid(TalentConstant.DEFAULT_TALENT_OPENID);
+            jsTokenPO.setWxOpenId(TalentConstant.DEFAULT_TALENT_OPENID);
         }
         //TODO
 //        jsTokenPO.setWxOpenId("xxxxxxx");

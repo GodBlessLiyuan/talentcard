@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
@@ -33,8 +34,8 @@ public class QrCodeServiceImpl implements IQrCodeService {
     @Override
     public ResultVO create(String openId) {
 
-        if(!"000000000000000".equals(openId) && TalentConstant.isDefaultTalent(openId)){
-            return new ResultVO(1000);
+        if(StringUtils.isEmpty(openId)){
+            openId = TalentConstant.DEFAULT_TALENT_OPENID;
         }
 
         String sb = openId +
