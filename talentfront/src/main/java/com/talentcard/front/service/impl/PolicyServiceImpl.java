@@ -103,7 +103,7 @@ public class PolicyServiceImpl implements IPolicyService {
             boolean show = false;
             if (null != cardIds) {
                 for (String cardId : cardIds) {
-                    if (existCardId.toString().equals(cardId)) {
+                    if (!StringUtils.isEmpty(cardId) && existCardId.toString().equals(cardId)) {
                         show = true;
                         break;
                     }
@@ -113,7 +113,7 @@ public class PolicyServiceImpl implements IPolicyService {
                 for (String category : categories) {
                     if (!show) {
                         for (String existCategory : existCategories) {
-                            if (category.equals(existCategory)) {
+                            if (!StringUtils.isEmpty(existCategory) && category.equals(existCategory)) {
                                 show = true;
                                 break;
                             }
@@ -123,7 +123,7 @@ public class PolicyServiceImpl implements IPolicyService {
             }
             if (!show && null != educations) {
                 for (String educ : educations) {
-                    if (existEducations.toString().contains(educ)) {
+                    if (!StringUtils.isEmpty(educ) && existEducations.toString().contains(educ)) {
                         show = true;
                         break;
                     }
@@ -131,7 +131,7 @@ public class PolicyServiceImpl implements IPolicyService {
             }
             if (!show && null != titles) {
                 for (String title : titles) {
-                    if (existTitles.toString().contains(title)) {
+                    if (!StringUtils.isEmpty(title) && existTitles.toString().contains(title)) {
                         show = true;
                         break;
                     }
@@ -139,7 +139,7 @@ public class PolicyServiceImpl implements IPolicyService {
             }
             if (!show && null != qualities) {
                 for (String quality : qualities) {
-                    if (existQualities.toString().contains(quality)) {
+                    if (!StringUtils.isEmpty(quality) && existQualities.toString().contains(quality)) {
                         show = true;
                         break;
                     }
