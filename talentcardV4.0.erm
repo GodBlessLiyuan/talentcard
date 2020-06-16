@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2020-04-08 11:16:39</creation_date>
-			<updated_date>2020-06-16 08:55:05</updated_date>
+			<updated_date>2020-06-16 08:57:10</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -2088,7 +2088,7 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>open_id</logical_name>
+			<logical_name>openId</logical_name>
 			<physical_name>open_id</physical_name>
 			<type>character(n)</type>
 		</word>

@@ -64,6 +64,8 @@ public class TalentServiceImpl implements ITalentService {
     private FilePathConfig filePathConfig;
     @Autowired
     private RedisMapUtil redisMapUtil;
+    @Autowired
+    private TestTalentInfoMapper testTalentInfoMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -340,6 +342,16 @@ public class TalentServiceImpl implements ITalentService {
         if (updateResult == 0) {
             logger.error("update cardMapper error");
         }
+        /**
+         * 我是标记，测试完毕后删除
+         */
+        TestTalentInfoPO testTalentInfoPO = testTalentInfoMapper.selectByOpenId(openId);
+        if(testTalentInfoPO!=null){
+            userCardPO.setNum(testTalentInfoPO.getPrimaryCardNum());
+        }
+        /**
+         * 我是结束标记，测试完毕后删除
+         */
         userCardMapper.insertSelective(userCardPO);
 
         //用消息模板推送微信消息
