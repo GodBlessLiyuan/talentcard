@@ -39,6 +39,7 @@ DROP TABLE IF EXISTS t_trip_group_authority;
 DROP TABLE IF EXISTS t_scenic;
 DROP TABLE IF EXISTS t_staff;
 DROP TABLE IF EXISTS t_talent_activity_history;
+DROP TABLE IF EXISTS t_test_talent_info;
 
 
 
@@ -732,6 +733,17 @@ CREATE TABLE t_talent_trip
 	effective_time_start datetime,
 	PRIMARY KEY (tt_id),
 	UNIQUE (tt_id)
+);
+
+
+CREATE TABLE t_test_talent_info
+(
+	tti_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	open_id char(255),
+	primary_card_num char(64),
+	senior_card_num char(64),
+	PRIMARY KEY (tti_id),
+	UNIQUE (tti_id)
 );
 
 
