@@ -19,6 +19,7 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.vo.ApprovalTalentVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,6 +62,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     UserCurrentInfoMapper userCurrentInfoMapper;
     @Resource
     ITalentService talentService;
+    @Autowired
+    TestTalentInfoMapper testTalentInfoMapper;
 
     /**
      * 审批result的值含义
@@ -328,10 +331,22 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             //模版编号
             messageDTO.setTemplateId(1);
             /**
+             * 我是标记，测试完毕后删除
+             */
+            int flagTest = 0;
+            TestTalentInfoPO testTalentInfoPO = testTalentInfoMapper.selectByOpenId(openId);
+            if (testTalentInfoPO != null) {
+                userCardPO.setNum(testTalentInfoPO.getSeniorCardNum());
+                flagTest = 1;
+            }
+            /**
+             * 我是结束标记，测试完毕后删除
+             */
+            /**
              * 设置旧卡券失效
              */
             ActivcateBO oldCard = talentMapper.activate(openId, (byte) 5, (byte) 2);
-            if (oldCard != null) {
+            if (oldCard != null && flagTest == 0) {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("code", oldCard.getCode());
                 jsonObject.put("card_id", oldCard.getWxCardId());

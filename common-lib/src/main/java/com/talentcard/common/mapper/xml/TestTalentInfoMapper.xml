@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.TestTalentInfoMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TestTalentInfoPO">
+    <id column="tti_id" jdbcType="BIGINT" property="ttiId" />
+    <result column="open_id" jdbcType="CHAR" property="openId" />
+    <result column="primary_card_num" jdbcType="CHAR" property="primaryCardNum" />
+    <result column="senior_card_num" jdbcType="CHAR" property="seniorCardNum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tti_id, open_id, primary_card_num, senior_card_num
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_test_talent_info
+    where tti_id = #{ttiId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_test_talent_info
+    where tti_id = #{ttiId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.TestTalentInfoPO">
+    insert into t_test_talent_info (tti_id, open_id, primary_card_num, 
+      senior_card_num)
+    values (#{ttiId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{primaryCardNum,jdbcType=CHAR}, 
+      #{seniorCardNum,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TestTalentInfoPO">
+    insert into t_test_talent_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ttiId != null">
+        tti_id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="primaryCardNum != null">
+        primary_card_num,
+      </if>
+      <if test="seniorCardNum != null">
+        senior_card_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ttiId != null">
+        #{ttiId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=CHAR},
+      </if>
+      <if test="primaryCardNum != null">
+        #{primaryCardNum,jdbcType=CHAR},
+      </if>
+      <if test="seniorCardNum != null">
+        #{seniorCardNum,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TestTalentInfoPO">
+    update t_test_talent_info
+    <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=CHAR},
+      </if>
+      <if test="primaryCardNum != null">
+        primary_card_num = #{primaryCardNum,jdbcType=CHAR},
+      </if>
+      <if test="seniorCardNum != null">
+        senior_card_num = #{seniorCardNum,jdbcType=CHAR},
+      </if>
+    </set>
+    where tti_id = #{ttiId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TestTalentInfoPO">
+    update t_test_talent_info
+    set open_id = #{openId,jdbcType=CHAR},
+      primary_card_num = #{primaryCardNum,jdbcType=CHAR},
+      senior_card_num = #{seniorCardNum,jdbcType=CHAR}
+    where tti_id = #{ttiId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByOpenId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_test_talent_info
+    where open_id = #{openId,jdbcType=CHAR}
+  </select>
+</mapper>
