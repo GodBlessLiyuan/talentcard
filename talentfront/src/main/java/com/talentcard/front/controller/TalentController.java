@@ -141,4 +141,10 @@ public class TalentController {
     public ResultVO fullUnion() {
         return iTalentService.fillUnion();
     }
+
+
+    @PostMapping("updateUnionId")
+    public ResultVO updateUnionId(@RequestParam(value = "token")String token, @RequestParam(value = "openId")String openId){
+        return iTalentService.updateUnionId(token, openId);
+    }
 }

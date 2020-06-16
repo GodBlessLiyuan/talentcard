@@ -31,7 +31,13 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
      * @return
      */
     TalentPO selectByOpenId(String openId);
-
+    /**
+     * 根据openId，返回相应的talentPO
+     *
+     * @param openId
+     * @return
+     */
+    TalentPO selectByOpenIdNotDr(String openId);
 
     /**
      * 根据信息检索符合条件的人才信息

@@ -896,10 +896,17 @@
           and t.dr = 1
     </select>
     <select id="selectByIdCard" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_talent
+    where id_card = #{idCard,jdbcType=CHAR}
+    </select>
+
+    <select id="selectByOpenIdNotDr" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_talent
-        where id_card = #{idCard,jdbcType=CHAR}
+        where open_id = #{openId,jdbcType=CHAR}
     </select>
 
     <select id="queryByUnionId" parameterType="java.lang.String" resultMap="BaseResultMap">

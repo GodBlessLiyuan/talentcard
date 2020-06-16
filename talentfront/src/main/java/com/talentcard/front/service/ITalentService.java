@@ -83,4 +83,7 @@ public interface ITalentService {
      * @return
      */
     ResultVO fillUnion();
+
+
+    ResultVO updateUnionId(String token, String openId);
 }

@@ -6,8 +6,6 @@ import com.talentcard.wechat.utils.CommonUtil;
 import com.talentcard.wechat.utils.JsApiTicketUtil;
 import com.talentcard.wechat.utils.WxMappingJackson2HttpMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -71,8 +69,6 @@ public class JsApiController {
                 + "&code=" + code
                 + "&grant_type=authorization_code";
         RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         restTemplate.getMessageConverters().add(new WxMappingJackson2HttpMessageConverter());
         JsTokenPO jsTokenPO = restTemplate.getForObject(url, JsTokenPO.class);
         return new ResultVO(1000, jsTokenPO);

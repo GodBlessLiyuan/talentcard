@@ -124,6 +124,13 @@ public class TalentServiceImpl implements ITalentService {
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
 
         if (talentPO != null) {
+
+            if(StringUtils.isEmpty(talentPO.getUnionId())){
+                String unionId = getUnionIdByOpenId(openId);
+                talentPO.setUnionId(unionId);
+                talentMapper.updateByPrimaryKey(talentPO);
+            }
+
             if (talentPO.getStatus() == 1) {
                 result.put("ifCertificate", 1);
             } else {
@@ -215,9 +222,13 @@ public class TalentServiceImpl implements ITalentService {
          * 根据 openid 查询 unionid, 插入到人才表中
          */
         String unionId = getUnionIdByOpenId(openId);
-//        if (StringUtils.isEmpty(unionId)) {
-//            return new ResultVO(1222);
-//        }
+        if (StringUtils.isEmpty(unionId)) {
+            if(jsonObject.containsKey("token")) {
+                String access_token = jsonObject.getString("token");
+                unionId = getUserInfoUnionId(access_token, openId);
+            }
+        }
+
         talentPO.setUnionId(unionId);
         talentMapper.add(talentPO);
         Long talentId = talentPO.getTalentId();
@@ -359,7 +370,9 @@ public class TalentServiceImpl implements ITalentService {
          * 清除redis缓存
          */
         cleanRedisCache(openId);
-
+        if(StringUtils.isEmpty(unionId)){
+            return new ResultVO(2213);
+        }
         return new ResultVO(1000);
     }
 
@@ -693,9 +706,41 @@ public class TalentServiceImpl implements ITalentService {
         return new ResultVO(1000);
     }
 
+    @Override
+    public ResultVO updateUnionId(String token, String openId) {
+
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if(talentPO != null){
+            if(StringUtils.isEmpty(talentPO.getUnionId())){
+                String unionId = getUserInfoUnionId(token, openId);
+                if(!StringUtils.isEmpty( unionId)){
+                    talentPO.setUnionId(unionId);
+                    talentMapper.add(talentPO);
+                }
+            }
+        }
+        return new ResultVO(1000);
+    }
+
     public String getUnionIdByOpenId(String openId) {
         String userInfo = new RestTemplate().getForObject("https://api.weixin.qq.com/cgi-bin/user/info?access_token={1}&openid={2}&lang=zh_CN",
                 String.class, AccessTokenUtil.getAccessToken(), openId);
+
+        if(logger.isDebugEnabled()){
+            logger.info("getUnionIdByOpenId openId:{} result:{}",openId,userInfo);
+        }
         return JSONObject.parseObject(userInfo).getString("unionid");
+    }
+
+
+    public String getUserInfoUnionId(String access_token, String openId){
+
+        String userInfo = new RestTemplate().getForObject("https://api.weixin.qq.com/sns/userinfo?access_token={1}&openid={2}&lang=zh_CN",
+                String.class, access_token, openId );
+        if(logger.isDebugEnabled()) {
+            logger.info("getUserInfoUnionId openId:{} result:{}", openId, userInfo);
+        }
+        return JSONObject.parseObject(userInfo).getString("unionid");
+
     }
 }
