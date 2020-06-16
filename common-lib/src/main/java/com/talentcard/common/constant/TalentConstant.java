@@ -27,7 +27,7 @@ public class TalentConstant {
      * @return
      */
     public static boolean isDefaultTalent(String openId){
-        if(openId == null || openId.length()==0 || DEFAULT_TALENT_OPENID.equals(DEFAULT_TALENT_OPENID)){
+        if(openId == null || openId.length()==0 || DEFAULT_TALENT_OPENID.equals(openId)){
             return true;
         } else {
             return false;
