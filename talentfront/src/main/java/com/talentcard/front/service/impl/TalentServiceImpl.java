@@ -127,7 +127,7 @@ public class TalentServiceImpl implements ITalentService {
 
         if (talentPO != null) {
 
-            if(StringUtils.isEmpty(talentPO.getUnionId())){
+            if (StringUtils.isEmpty(talentPO.getUnionId())) {
                 String unionId = getUnionIdByOpenId(openId);
                 talentPO.setUnionId(unionId);
                 talentMapper.updateByPrimaryKey(talentPO);
@@ -143,7 +143,7 @@ public class TalentServiceImpl implements ITalentService {
              * 设置缓存
              */
             this.redisMapUtil.hset(openId, "findStatus", JSON.toJSONString(result));
-        }else {
+        } else {
             result.put("name", "游客");
         }
 
@@ -225,7 +225,7 @@ public class TalentServiceImpl implements ITalentService {
          */
         String unionId = getUnionIdByOpenId(openId);
         if (StringUtils.isEmpty(unionId)) {
-            if(jsonObject.containsKey("token")) {
+            if (jsonObject.containsKey("token")) {
                 String access_token = jsonObject.getString("token");
                 unionId = getUserInfoUnionId(access_token, openId);
             }
@@ -335,6 +335,18 @@ public class TalentServiceImpl implements ITalentService {
         userCardPO.setStatus((byte) 1);
         userCardPO.setName(cardPO.getTitle());
         /**
+         * 我是标记，测试完毕后删除
+         */
+        TestTalentInfoPO testTalentInfoPO = testTalentInfoMapper.selectByOpenId(openId);
+        if (testTalentInfoPO != null) {
+            userCardPO.setNum(testTalentInfoPO.getPrimaryCardNum());
+            cardPO.setCurrNum(cardPO.getCurrNum() - 1);
+        }
+        /**
+         * 我是结束标记，测试完毕后删除
+         */
+
+        /**
          * 不含区域号，不含前缀，单纯的000001
          */
         userCardPO.setCurrentNum(currentNum);
@@ -342,16 +354,6 @@ public class TalentServiceImpl implements ITalentService {
         if (updateResult == 0) {
             logger.error("update cardMapper error");
         }
-        /**
-         * 我是标记，测试完毕后删除
-         */
-        TestTalentInfoPO testTalentInfoPO = testTalentInfoMapper.selectByOpenId(openId);
-        if(testTalentInfoPO!=null){
-            userCardPO.setNum(testTalentInfoPO.getPrimaryCardNum());
-        }
-        /**
-         * 我是结束标记，测试完毕后删除
-         */
         userCardMapper.insertSelective(userCardPO);
 
         //用消息模板推送微信消息
@@ -382,7 +384,7 @@ public class TalentServiceImpl implements ITalentService {
          * 清除redis缓存
          */
         cleanRedisCache(openId);
-        if(StringUtils.isEmpty(unionId)){
+        if (StringUtils.isEmpty(unionId)) {
             return new ResultVO(2213);
         }
         return new ResultVO(1000);
@@ -687,15 +689,16 @@ public class TalentServiceImpl implements ITalentService {
 
     /**
      * 获取游客账号
+     *
      * @return
      */
-    private TalentPO getDefaultTalent(){
+    private TalentPO getDefaultTalent() {
         TalentPO talentPO = null;
-        String defaultTalent = redisMapUtil.hget(TalentConstant.DEFAULT_TALENT_OPENID,"getTalentInfo");
-        if(!StringUtils.isEmpty(defaultTalent)){
+        String defaultTalent = redisMapUtil.hget(TalentConstant.DEFAULT_TALENT_OPENID, "getTalentInfo");
+        if (!StringUtils.isEmpty(defaultTalent)) {
             talentPO = StringToObjUtil.strToObj(defaultTalent, TalentPO.class);
         }
-        if(talentPO == null) {
+        if (talentPO == null) {
             talentPO = talentMapper.selectByOpenId(TalentConstant.DEFAULT_TALENT_OPENID);
             redisMapUtil.hset(TalentConstant.DEFAULT_TALENT_OPENID, "getTalentInfo", JSON.toJSONString(talentPO));
         }
@@ -722,10 +725,10 @@ public class TalentServiceImpl implements ITalentService {
     public ResultVO updateUnionId(String token, String openId) {
 
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        if(talentPO != null){
-            if(StringUtils.isEmpty(talentPO.getUnionId())){
+        if (talentPO != null) {
+            if (StringUtils.isEmpty(talentPO.getUnionId())) {
                 String unionId = getUserInfoUnionId(token, openId);
-                if(!StringUtils.isEmpty( unionId)){
+                if (!StringUtils.isEmpty(unionId)) {
                     talentPO.setUnionId(unionId);
                     talentMapper.add(talentPO);
                 }
@@ -738,18 +741,18 @@ public class TalentServiceImpl implements ITalentService {
         String userInfo = new RestTemplate().getForObject("https://api.weixin.qq.com/cgi-bin/user/info?access_token={1}&openid={2}&lang=zh_CN",
                 String.class, AccessTokenUtil.getAccessToken(), openId);
 
-        if(logger.isDebugEnabled()){
-            logger.info("getUnionIdByOpenId openId:{} result:{}",openId,userInfo);
+        if (logger.isDebugEnabled()) {
+            logger.info("getUnionIdByOpenId openId:{} result:{}", openId, userInfo);
         }
         return JSONObject.parseObject(userInfo).getString("unionid");
     }
 
 
-    public String getUserInfoUnionId(String access_token, String openId){
+    public String getUserInfoUnionId(String access_token, String openId) {
 
         String userInfo = new RestTemplate().getForObject("https://api.weixin.qq.com/sns/userinfo?access_token={1}&openid={2}&lang=zh_CN",
-                String.class, access_token, openId );
-        if(logger.isDebugEnabled()) {
+                String.class, access_token, openId);
+        if (logger.isDebugEnabled()) {
             logger.info("getUserInfoUnionId openId:{} result:{}", openId, userInfo);
         }
         return JSONObject.parseObject(userInfo).getString("unionid");
