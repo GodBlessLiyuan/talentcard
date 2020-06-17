@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.invoke.ConstantCallSite;
 import java.util.Date;
 import java.util.List;
 
@@ -84,6 +85,9 @@ public class MyActivityServiceImpl implements IMyActivityService {
     @Override
     public ResultVO collect(String openId, Long activityFirstContentId,
                             Long activitySecondContentId, Byte ifCollect) {
+        if (TalentConstant.isDefaultTalent(openId)) {
+            return new ResultVO(1000, null);
+        }
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
         if (talentPO == null) {
             return new ResultVO(2500, "查无此人！");
