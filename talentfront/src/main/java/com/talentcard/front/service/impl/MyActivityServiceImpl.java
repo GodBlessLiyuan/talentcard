@@ -62,6 +62,9 @@ public class MyActivityServiceImpl implements IMyActivityService {
 
     @Override
     public ResultVO footprint(String openId) {
+        if (TalentConstant.isDefaultTalent(openId)) {
+            return new ResultVO(1000, null);
+        }
 
         String mapStr = this.redisMapUtil.hget(openId, TalentConstant.TALENT_FOOTPIRNT);
         if (!StringUtils.isEmpty(mapStr)) {
@@ -70,7 +73,6 @@ public class MyActivityServiceImpl implements IMyActivityService {
                 return new ResultVO(1000, footprintBOList);
             }
         }
-
 
         List<FootprintBO> footprintBOList = talentActivityHistoryMapper.footprint(openId);
         if (footprintBOList != null) {
