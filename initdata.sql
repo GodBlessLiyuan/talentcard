@@ -101,3 +101,4 @@ INSERT INTO `t_user`(`user_id`, `username`, `name`, `password`, `create_time`, `
 /*游客*/
 INSERT INTO `talentcard`.`t_talent`(`talent_id`, `open_id`, `union_id`, `name`, `sex`, `id_card`, `passport`, `driver_card`, `card_type`, `work_unit`, `industry`, `industry_second`, `phone`, `political`, `category`, `work_location`, `work_location_type`, `card_id`, `status`, `create_time`, `dr`, `talent_source`) VALUES (1, '000000000000000', '000000000000000', '游客', 1, '000000000000000', NULL, NULL, NULL, NULL, NULL, NULL, '00000000000', NULL, '100', NULL, NULL, NULL, 2, NULL, 1, NULL);
 
+INSERT INTO `talentcard`.`t_user_current_info`(`uci_id`, `talent_id`, `political`, `education`, `school`, `first_class`, `major`, `pt_category`, `pt_info`, `pq_category`, `pq_info`, `talent_category`, `honour_id`, `th_info`, `graduate_time`) VALUES (1, 9, 100, 100, '100', 100, '100', 100, '100', 100, '100', '100', NULL, NULL, NULL);
