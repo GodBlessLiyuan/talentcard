@@ -626,7 +626,7 @@
         <if test="title != null and title !=0">and uci.pt_category = #{title}</if>
         <if test="quality != null and quality !=0">and uci.pq_category = #{quality}</if>
         <if test="card != null and card !=''">and (uc.name like '%' #{card} '%' or uc.num like '%' #{card} '%')</if>
-        <if test="category != null and category !=0">and uci.talent_category = #{category}</if>
+        <if test="category != null and category!=''">and uci.talent_category like '%' #{category} '%'</if>
         <if test="honour != null and honour != 0">and uci.honour_id = #{honour}</if>
         order by t.create_time desc
     </select>
@@ -896,10 +896,10 @@
           and t.dr = 1
     </select>
     <select id="selectByIdCard" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_talent
-    where id_card = #{idCard,jdbcType=CHAR}
+        select
+        <include refid="Base_Column_List"/>
+        from t_talent
+        where id_card = #{idCard,jdbcType=CHAR}
     </select>
 
     <select id="selectByOpenIdNotDr" parameterType="java.lang.String" resultMap="BaseResultMap">
