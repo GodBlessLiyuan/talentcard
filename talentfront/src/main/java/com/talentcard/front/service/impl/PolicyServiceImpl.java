@@ -44,6 +44,8 @@ public class PolicyServiceImpl implements IPolicyService {
     private ProfTitleMapper profTitleMapper;
     @Resource
     private ProfQualityMapper profQualityMapper;
+    @Autowired
+    private TalentHonourMapper talentHonourMapper;
     @Resource
     private PolicyApprovalMapper policyApprovalMapper;
     @Resource
@@ -69,6 +71,7 @@ public class PolicyServiceImpl implements IPolicyService {
         List<Integer> existEducations = educationMapper.queryNameByTalentId(talentId);
         List<Integer> existTitles = profTitleMapper.queryNameByTalentId(talentId);
         List<Integer> existQualities = profQualityMapper.queryNameByTalentId(talentId);
+        List<Long> existHonours = talentHonourMapper.queryNameByTalentId(talentId);
         String[] existCategories = null;
         if (null != talentPO.getCategory()) {
             existCategories = talentPO.getCategory().split(",");
@@ -84,6 +87,7 @@ public class PolicyServiceImpl implements IPolicyService {
             String[] educations = null;
             String[] titles = null;
             String[] qualities = null;
+            String[] honourIds = null;
             if (null != po.getCards()) {
                 cardIds = po.getCards().split(",");
             }
@@ -98,6 +102,9 @@ public class PolicyServiceImpl implements IPolicyService {
             }
             if (null != po.getQualities()) {
                 qualities = po.getQualities().split(",");
+            }
+            if (null != po.getHonourIds()) {
+                honourIds = po.getHonourIds().split(",");
             }
 
             boolean show = false;
@@ -140,6 +147,15 @@ public class PolicyServiceImpl implements IPolicyService {
             if (!show && null != qualities) {
                 for (String quality : qualities) {
                     if (!StringUtils.isEmpty(quality) && existQualities.toString().contains(quality)) {
+                        show = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!show && null != honourIds) {
+                for (String honourId : honourIds) {
+                    if (!StringUtils.isEmpty(honourId) && existHonours.toString().contains(honourId)) {
                         show = true;
                         break;
                     }
