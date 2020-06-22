@@ -7,9 +7,10 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
-    insert_cert_id, talent_id, `status`, `type`, create_time
+    insert_cert_id, talent_id, `status`, `type`, create_time, dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -23,9 +24,11 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.InsertCertificationPO">
     insert into t_insert_certification (insert_cert_id, talent_id, `status`, 
-      `type`, create_time)
+      `type`, create_time, dr
+      )
     values (#{insertCertId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
-      #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
+      #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.InsertCertificationPO">
     insert into t_insert_certification
@@ -45,6 +48,9 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="dr != null">
+        dr,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="insertCertId != null">
@@ -61,6 +67,9 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -79,6 +88,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
     </set>
     where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
   </update>
@@ -87,7 +99,8 @@
     set talent_id = #{talentId,jdbcType=BIGINT},
       `status` = #{status,jdbcType=TINYINT},
       `type` = #{type,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      dr = #{dr,jdbcType=TINYINT}
     where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
   </update>
   <insert id="add"  useGeneratedKeys="true" keyProperty="insertCertId" parameterType="com.talentcard.common.pojo.InsertCertificationPO">

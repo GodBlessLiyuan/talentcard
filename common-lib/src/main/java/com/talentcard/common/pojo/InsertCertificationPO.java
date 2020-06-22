@@ -26,5 +26,10 @@ public class InsertCertificationPO implements Serializable {
 
     private Date createTime;
 
+    /**
+     * 1 未删除  2 已删除
+     */
+    private Byte dr;
+
     private static final long serialVersionUID = 1L;
 }

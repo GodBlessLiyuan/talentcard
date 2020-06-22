@@ -9,9 +9,11 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="insert_cert_id" jdbcType="BIGINT" property="insertCertId" />
     <result column="open_id" jdbcType="CHAR" property="openId" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
-    insert_th_id, honour_id, honour_picture, info, `status`, insert_cert_id, open_id
+    insert_th_id, honour_id, honour_picture, info, `status`, insert_cert_id, open_id, 
+    dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -26,10 +28,10 @@
   <insert id="insert" parameterType="com.talentcard.common.pojo.InsertHonourPO">
     insert into t_insert_honour (insert_th_id, honour_id, honour_picture, 
       info, `status`, insert_cert_id, 
-      open_id)
+      open_id, dr)
     values (#{insertThId,jdbcType=BIGINT}, #{honourId,jdbcType=BIGINT}, #{honourPicture,jdbcType=CHAR}, 
       #{info,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{insertCertId,jdbcType=BIGINT}, 
-      #{openId,jdbcType=CHAR})
+      #{openId,jdbcType=CHAR}, #{dr,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.InsertHonourPO">
     insert into t_insert_honour
@@ -55,6 +57,9 @@
       <if test="openId != null">
         open_id,
       </if>
+      <if test="dr != null">
+        dr,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="insertThId != null">
@@ -77,6 +82,9 @@
       </if>
       <if test="openId != null">
         #{openId,jdbcType=CHAR},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -101,6 +109,9 @@
       <if test="openId != null">
         open_id = #{openId,jdbcType=CHAR},
       </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
     </set>
     where insert_th_id = #{insertThId,jdbcType=BIGINT}
   </update>
@@ -111,7 +122,14 @@
       info = #{info,jdbcType=CHAR},
       `status` = #{status,jdbcType=TINYINT},
       insert_cert_id = #{insertCertId,jdbcType=BIGINT},
-      open_id = #{openId,jdbcType=CHAR}
+      open_id = #{openId,jdbcType=CHAR},
+      dr = #{dr,jdbcType=TINYINT}
     where insert_th_id = #{insertThId,jdbcType=BIGINT}
   </update>
+  <select id="selectByInsertCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_insert_honour
+    where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+  </select>
 </mapper>

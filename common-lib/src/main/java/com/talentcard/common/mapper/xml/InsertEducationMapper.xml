@@ -12,10 +12,11 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="graduate_time" jdbcType="CHAR" property="graduateTime" />
     <result column="insert_cert_id" jdbcType="BIGINT" property="insertCertId" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
     insert_educ_id, education, school, first_class, major, educ_picture, open_id, `status`, 
-    graduate_time, insert_cert_id
+    graduate_time, insert_cert_id, dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -31,11 +32,11 @@
     insert into t_insert_education (insert_educ_id, education, school, 
       first_class, major, educ_picture, 
       open_id, `status`, graduate_time, 
-      insert_cert_id)
+      insert_cert_id, dr)
     values (#{insertEducId,jdbcType=BIGINT}, #{education,jdbcType=INTEGER}, #{school,jdbcType=CHAR}, 
       #{firstClass,jdbcType=TINYINT}, #{major,jdbcType=CHAR}, #{educPicture,jdbcType=CHAR}, 
       #{openId,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{graduateTime,jdbcType=CHAR}, 
-      #{insertCertId,jdbcType=BIGINT})
+      #{insertCertId,jdbcType=BIGINT}, #{dr,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.InsertEducationPO">
     insert into t_insert_education
@@ -70,6 +71,9 @@
       <if test="insertCertId != null">
         insert_cert_id,
       </if>
+      <if test="dr != null">
+        dr,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="insertEducId != null">
@@ -101,6 +105,9 @@
       </if>
       <if test="insertCertId != null">
         #{insertCertId,jdbcType=BIGINT},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -134,6 +141,9 @@
       <if test="insertCertId != null">
         insert_cert_id = #{insertCertId,jdbcType=BIGINT},
       </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
     </set>
     where insert_educ_id = #{insertEducId,jdbcType=BIGINT}
   </update>
@@ -147,7 +157,14 @@
       open_id = #{openId,jdbcType=CHAR},
       `status` = #{status,jdbcType=TINYINT},
       graduate_time = #{graduateTime,jdbcType=CHAR},
-      insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+      insert_cert_id = #{insertCertId,jdbcType=BIGINT},
+      dr = #{dr,jdbcType=TINYINT}
     where insert_educ_id = #{insertEducId,jdbcType=BIGINT}
   </update>
+  <select id="selectByInsertCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_insert_education
+    where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+  </select>
 </mapper>

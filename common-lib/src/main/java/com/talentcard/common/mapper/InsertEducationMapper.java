@@ -1,5 +1,6 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.pojo.InsertCertificationPO;
 import com.talentcard.common.pojo.InsertEducationPO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -8,4 +9,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface InsertEducationMapper extends BaseMapper<InsertEducationPO, Long> {
+    InsertEducationPO selectByInsertCertId(Long insertCertId);
 }

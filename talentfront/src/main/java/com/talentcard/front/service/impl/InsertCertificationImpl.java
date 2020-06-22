@@ -262,20 +262,44 @@ public class InsertCertificationImpl implements IInsertCertificationService {
                 return new ResultVO(2551, "查无此新增认证！");
             }
         }
+        insertCertificationPO.setDr((byte) 2);
+        insertCertificationMapper.updateByPrimaryKeySelective(insertCertificationPO);
         Byte type = insertCertificationPO.getType();
-        if(type==1){
+        if (type == 1) {
             //学历
-
-        }else if(type==2){
+            InsertEducationPO insertEducationPO = insertEducationMapper.selectByInsertCertId(insertCertId);
+            if (insertEducationPO == null) {
+                return new ResultVO(2551, "查无此新增认证！");
+            }
+            insertEducationPO.setStatus((byte) 2);
+            insertEducationMapper.updateByPrimaryKeySelective(insertEducationPO);
+        } else if (type == 2) {
             //职称
-
-        }else if(type==3){
+            InsertTitlePO insertTitlePO = insertTitleMapper.selectByInsertCertId(insertCertId);
+            if (insertTitlePO == null) {
+                return new ResultVO(2551, "查无此新增认证！");
+            }
+            insertTitlePO.setStatus((byte) 2);
+            insertTitleMapper.updateByPrimaryKeySelective(insertTitlePO);
+        } else if (type == 3) {
             //职业资格
+            InsertQualityPO insertQualityPO = insertQualityMapper.selectByInsertCertId(insertCertId);
+            if (insertQualityPO == null) {
+                return new ResultVO(2551, "查无此新增认证！");
+            }
+            insertQualityPO.setStatus((byte) 2);
+            insertQualityMapper.updateByPrimaryKeySelective(insertQualityPO);
 
-        }else{
+        } else {
             //人才荣誉
+            InsertHonourPO insertHonourPO = insertHonourMapper.selectByInsertCertId(insertCertId);
+            if (insertHonourPO == null) {
+                return new ResultVO(2551, "查无此新增认证！");
+            }
+            insertHonourPO.setStatus((byte) 2);
+            insertHonourMapper.updateByPrimaryKeySelective(insertHonourPO);
 
         }
-        return null;
+        return new ResultVO(1000);
     }
 }
