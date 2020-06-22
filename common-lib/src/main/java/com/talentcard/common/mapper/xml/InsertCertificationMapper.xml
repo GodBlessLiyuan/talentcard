@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.InsertCertificationMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.InsertCertificationPO">
+    <id column="insert_cert_id" jdbcType="BIGINT" property="insertCertId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    insert_cert_id, talent_id, `status`, `type`, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_insert_certification
+    where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_insert_certification
+    where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.InsertCertificationPO">
+    insert into t_insert_certification (insert_cert_id, talent_id, `status`, 
+      `type`, create_time)
+    values (#{insertCertId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
+      #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.InsertCertificationPO">
+    insert into t_insert_certification
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="insertCertId != null">
+        insert_cert_id,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="insertCertId != null">
+        #{insertCertId,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.InsertCertificationPO">
+    update t_insert_certification
+    <set>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.InsertCertificationPO">
+    update t_insert_certification
+    set talent_id = #{talentId,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=TINYINT},
+      `type` = #{type,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+  </update>
+  <insert id="add"  useGeneratedKeys="true" keyProperty="insertCertId" parameterType="com.talentcard.common.pojo.InsertCertificationPO">
+    insert into t_insert_certification (insert_cert_id, talent_id, `status`,
+      `type`, create_time)
+    values (#{insertCertId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT},
+      #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+</mapper>

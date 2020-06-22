@@ -1,0 +1,30 @@
+package com.talentcard.common.pojo;
+
+import java.io.Serializable;
+import java.util.Date;
+import lombok.Data;
+
+/**
+ * t_insert_certification
+ * @author 
+ */
+@Data
+public class InsertCertificationPO implements Serializable {
+    private Long insertCertId;
+
+    private Long talentId;
+
+    private Byte status;
+
+    /**
+     * 1 学历
+2 职称
+3 职业资格
+4 人才荣誉
+     */
+    private Byte type;
+
+    private Date createTime;
+
+    private static final long serialVersionUID = 1L;
+}

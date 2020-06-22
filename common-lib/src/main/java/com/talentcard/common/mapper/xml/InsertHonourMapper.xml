@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.InsertHonourMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.InsertHonourPO">
+    <id column="insert_th_id" jdbcType="BIGINT" property="insertThId" />
+    <result column="honour_id" jdbcType="BIGINT" property="honourId" />
+    <result column="honour_picture" jdbcType="CHAR" property="honourPicture" />
+    <result column="info" jdbcType="CHAR" property="info" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="insert_cert_id" jdbcType="BIGINT" property="insertCertId" />
+    <result column="open_id" jdbcType="CHAR" property="openId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    insert_th_id, honour_id, honour_picture, info, `status`, insert_cert_id, open_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_insert_honour
+    where insert_th_id = #{insertThId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_insert_honour
+    where insert_th_id = #{insertThId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.InsertHonourPO">
+    insert into t_insert_honour (insert_th_id, honour_id, honour_picture, 
+      info, `status`, insert_cert_id, 
+      open_id)
+    values (#{insertThId,jdbcType=BIGINT}, #{honourId,jdbcType=BIGINT}, #{honourPicture,jdbcType=CHAR}, 
+      #{info,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{insertCertId,jdbcType=BIGINT}, 
+      #{openId,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.InsertHonourPO">
+    insert into t_insert_honour
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="insertThId != null">
+        insert_th_id,
+      </if>
+      <if test="honourId != null">
+        honour_id,
+      </if>
+      <if test="honourPicture != null">
+        honour_picture,
+      </if>
+      <if test="info != null">
+        info,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="insertCertId != null">
+        insert_cert_id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="insertThId != null">
+        #{insertThId,jdbcType=BIGINT},
+      </if>
+      <if test="honourId != null">
+        #{honourId,jdbcType=BIGINT},
+      </if>
+      <if test="honourPicture != null">
+        #{honourPicture,jdbcType=CHAR},
+      </if>
+      <if test="info != null">
+        #{info,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="insertCertId != null">
+        #{insertCertId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.InsertHonourPO">
+    update t_insert_honour
+    <set>
+      <if test="honourId != null">
+        honour_id = #{honourId,jdbcType=BIGINT},
+      </if>
+      <if test="honourPicture != null">
+        honour_picture = #{honourPicture,jdbcType=CHAR},
+      </if>
+      <if test="info != null">
+        info = #{info,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="insertCertId != null">
+        insert_cert_id = #{insertCertId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=CHAR},
+      </if>
+    </set>
+    where insert_th_id = #{insertThId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.InsertHonourPO">
+    update t_insert_honour
+    set honour_id = #{honourId,jdbcType=BIGINT},
+      honour_picture = #{honourPicture,jdbcType=CHAR},
+      info = #{info,jdbcType=CHAR},
+      `status` = #{status,jdbcType=TINYINT},
+      insert_cert_id = #{insertCertId,jdbcType=BIGINT},
+      open_id = #{openId,jdbcType=CHAR}
+    where insert_th_id = #{insertThId,jdbcType=BIGINT}
+  </update>
+</mapper>

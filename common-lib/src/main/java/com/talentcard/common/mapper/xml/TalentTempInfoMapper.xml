@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.TalentTempInfoMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentTempInfoPO">
+    <id column="tti_id" jdbcType="BIGINT" property="ttiId" />
+    <result column="info" jdbcType="VARCHAR" property="info" />
+    <result column="open_id" jdbcType="CHAR" property="openId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tti_id, info, open_id, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_talent_temp_info
+    where tti_id = #{ttiId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_talent_temp_info
+    where tti_id = #{ttiId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.TalentTempInfoPO">
+    insert into t_talent_temp_info (tti_id, info, open_id, 
+      create_time)
+    values (#{ttiId,jdbcType=BIGINT}, #{info,jdbcType=VARCHAR}, #{openId,jdbcType=CHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentTempInfoPO">
+    insert into t_talent_temp_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ttiId != null">
+        tti_id,
+      </if>
+      <if test="info != null">
+        info,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ttiId != null">
+        #{ttiId,jdbcType=BIGINT},
+      </if>
+      <if test="info != null">
+        #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentTempInfoPO">
+    update t_talent_temp_info
+    <set>
+      <if test="info != null">
+        info = #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where tti_id = #{ttiId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentTempInfoPO">
+    update t_talent_temp_info
+    set info = #{info,jdbcType=VARCHAR},
+      open_id = #{openId,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where tti_id = #{ttiId,jdbcType=BIGINT}
+  </update>
+</mapper>

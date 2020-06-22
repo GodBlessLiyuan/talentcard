@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.InsertTitleMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.InsertTitlePO">
+    <id column="insert_pt_id" jdbcType="BIGINT" property="insertPtId" />
+    <result column="category" jdbcType="INTEGER" property="category" />
+    <result column="info" jdbcType="CHAR" property="info" />
+    <result column="picture" jdbcType="CHAR" property="picture" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="insert_cert_id" jdbcType="BIGINT" property="insertCertId" />
+    <result column="open_id" jdbcType="CHAR" property="openId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    insert_pt_id, category, info, picture, `status`, insert_cert_id, open_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_insert_title
+    where insert_pt_id = #{insertPtId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_insert_title
+    where insert_pt_id = #{insertPtId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.InsertTitlePO">
+    insert into t_insert_title (insert_pt_id, category, info, 
+      picture, `status`, insert_cert_id, 
+      open_id)
+    values (#{insertPtId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{info,jdbcType=CHAR}, 
+      #{picture,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{insertCertId,jdbcType=BIGINT}, 
+      #{openId,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.InsertTitlePO">
+    insert into t_insert_title
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="insertPtId != null">
+        insert_pt_id,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="info != null">
+        info,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="insertCertId != null">
+        insert_cert_id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="insertPtId != null">
+        #{insertPtId,jdbcType=BIGINT},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="info != null">
+        #{info,jdbcType=CHAR},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="insertCertId != null">
+        #{insertCertId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.InsertTitlePO">
+    update t_insert_title
+    <set>
+      <if test="category != null">
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="info != null">
+        info = #{info,jdbcType=CHAR},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="insertCertId != null">
+        insert_cert_id = #{insertCertId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=CHAR},
+      </if>
+    </set>
+    where insert_pt_id = #{insertPtId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.InsertTitlePO">
+    update t_insert_title
+    set category = #{category,jdbcType=INTEGER},
+      info = #{info,jdbcType=CHAR},
+      picture = #{picture,jdbcType=CHAR},
+      `status` = #{status,jdbcType=TINYINT},
+      insert_cert_id = #{insertCertId,jdbcType=BIGINT},
+      open_id = #{openId,jdbcType=CHAR}
+    where insert_pt_id = #{insertPtId,jdbcType=BIGINT}
+  </update>
+</mapper>
