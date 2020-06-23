@@ -85,6 +85,15 @@ public class TalentBO extends TalentPO {
      */
     private String graduateTime;
 
+    /**
+     * 卡片title
+     */
+    private String cTitle;
+    /**
+     * 卡片前缀
+     */
+    private String cInitialWord;
+
     private Long certId;
     private Byte certificationStatus;
     private Byte currentType;
