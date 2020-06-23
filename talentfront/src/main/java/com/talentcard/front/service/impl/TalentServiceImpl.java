@@ -316,20 +316,21 @@ public class TalentServiceImpl implements ITalentService {
         String membershipNumber = cardPO.getInitialWord() + cardPO.getAreaNum();
         //当前编号，以后换卡需要使用
         String currentNum = "";
-        Long cardPOCurrNum=cardPO.getCurrNum();
+        Long cardPOCurrNum = cardPO.getCurrNum();
         /**
          * 看是否是尊贵的vip人才，目前保留1-10
          */
         if (cardType == 1) {
             TalentCardHoldListPO talentCardHoldListPO = talentCardHoldListMapper.selectByIdCard(idCard);
             if (talentCardHoldListPO != null) {
-                cardPOCurrNum=talentCardHoldListPO.getNum();
+                cardPOCurrNum = talentCardHoldListPO.getNum();
+                cardPO.setCurrNum(cardPO.getCurrNum() - 1);
             }
         }
 
         //写死，长度为6
         Integer initialNumLength = 6;
-        Integer currentNumLength = cardPO.getCurrNum().toString().length();
+        Integer currentNumLength = cardPOCurrNum.toString().length();
         //补0
         if ((initialNumLength - currentNumLength) > 0) {
             for (int i = 0; i < (initialNumLength - currentNumLength); i++) {
@@ -338,8 +339,8 @@ public class TalentServiceImpl implements ITalentService {
             }
         }
 
-        membershipNumber = membershipNumber + cardPO.getCurrNum();
-        currentNum = currentNum + cardPO.getCurrNum();
+        membershipNumber = membershipNumber + cardPOCurrNum;
+        currentNum = currentNum + cardPOCurrNum;
         userCardPO.setNum(membershipNumber);
         cardPO.setCurrNum(cardPO.getCurrNum() + 1);
         cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
