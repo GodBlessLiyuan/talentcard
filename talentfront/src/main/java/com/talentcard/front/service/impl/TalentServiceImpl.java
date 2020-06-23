@@ -66,6 +66,8 @@ public class TalentServiceImpl implements ITalentService {
     private RedisMapUtil redisMapUtil;
     @Autowired
     private TestTalentInfoMapper testTalentInfoMapper;
+    @Autowired
+    private TalentCardHoldListMapper talentCardHoldListMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -314,6 +316,17 @@ public class TalentServiceImpl implements ITalentService {
         String membershipNumber = cardPO.getInitialWord() + cardPO.getAreaNum();
         //当前编号，以后换卡需要使用
         String currentNum = "";
+        Long cardPOCurrNum=cardPO.getCurrNum();
+        /**
+         * 看是否是尊贵的vip人才，目前保留1-10
+         */
+        if (cardType == 1) {
+            TalentCardHoldListPO talentCardHoldListPO = talentCardHoldListMapper.selectByIdCard(idCard);
+            if (talentCardHoldListPO != null) {
+                cardPOCurrNum=talentCardHoldListPO.getNum();
+            }
+        }
+
         //写死，长度为6
         Integer initialNumLength = 6;
         Integer currentNumLength = cardPO.getCurrNum().toString().length();
