@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentCardHoldListPO">
     <id column="tchl_id" jdbcType="BIGINT" property="tchlId" />
     <result column="id_card" jdbcType="CHAR" property="idCard" />
-    <result column="num" jdbcType="CHAR" property="num" />
+    <result column="num" jdbcType="BIGINT" property="num" />
   </resultMap>
   <sql id="Base_Column_List">
     tchl_id, id_card, num
@@ -20,8 +20,10 @@
     where tchl_id = #{tchlId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.TalentCardHoldListPO">
-    insert into t_talent_card_hold_list (tchl_id, id_card, num)
-    values (#{tchlId,jdbcType=BIGINT}, #{idCard,jdbcType=CHAR}, #{num,jdbcType=CHAR})
+    insert into t_talent_card_hold_list (tchl_id, id_card, num
+      )
+    values (#{tchlId,jdbcType=BIGINT}, #{idCard,jdbcType=CHAR}, #{num,jdbcType=BIGINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentCardHoldListPO">
     insert into t_talent_card_hold_list
@@ -44,7 +46,7 @@
         #{idCard,jdbcType=CHAR},
       </if>
       <if test="num != null">
-        #{num,jdbcType=CHAR},
+        #{num,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -55,7 +57,7 @@
         id_card = #{idCard,jdbcType=CHAR},
       </if>
       <if test="num != null">
-        num = #{num,jdbcType=CHAR},
+        num = #{num,jdbcType=BIGINT},
       </if>
     </set>
     where tchl_id = #{tchlId,jdbcType=BIGINT}
@@ -63,7 +65,7 @@
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentCardHoldListPO">
     update t_talent_card_hold_list
     set id_card = #{idCard,jdbcType=CHAR},
-      num = #{num,jdbcType=CHAR}
+      num = #{num,jdbcType=BIGINT}
     where tchl_id = #{tchlId,jdbcType=BIGINT}
   </update>
   <select id="selectByIdCard" parameterType="java.lang.String" resultMap="BaseResultMap">

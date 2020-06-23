@@ -13,7 +13,7 @@ public class TalentCardHoldListPO implements Serializable {
 
     private String idCard;
 
-    private String num;
+    private Long num;
 
     private static final long serialVersionUID = 1L;
 }
