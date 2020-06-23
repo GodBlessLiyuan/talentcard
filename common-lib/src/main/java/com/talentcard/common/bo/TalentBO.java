@@ -90,7 +90,7 @@ public class TalentBO extends TalentPO {
      */
     private String cTitle;
     /**
-     * 卡片前缀
+     * 卡片初始字段
      */
     private String cInitialWord;
 
