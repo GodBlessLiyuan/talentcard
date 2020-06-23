@@ -108,7 +108,7 @@ public class TalentVO implements Serializable {
         vo.setHonour(bo.getHonour());
         vo.setCnum(bo.getCnum());
         vo.setCTitle(bo.getCTitle());
-        vo.setCname(bo.getCname());
+        vo.setCInitialWord(bo.getCInitialWord());
         if (null == bo.getCategory() || "".equals(bo.getCategory())) {
             vo.setCategory("无");
         } else {
