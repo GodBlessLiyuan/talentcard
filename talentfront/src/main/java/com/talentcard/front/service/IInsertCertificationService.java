@@ -1,9 +1,6 @@
 package com.talentcard.front.service;
 
-import com.talentcard.common.dto.EducationDTO;
-import com.talentcard.common.dto.ProfQualityDTO;
-import com.talentcard.common.dto.ProfTitleDTO;
-import com.talentcard.common.dto.TalentHonourDTO;
+import com.talentcard.common.dto.*;
 import com.talentcard.common.pojo.ProfTitlePO;
 import com.talentcard.common.vo.ResultVO;
 
@@ -42,4 +39,10 @@ public interface IInsertCertificationService {
      * 删除新增认证
      */
     ResultVO delete(Long insertCertId);
+
+
+    /**
+     * 编辑基本信息
+     */
+    ResultVO editBasicInfo(BasicInfoDTO basicInfoDTO);
 }

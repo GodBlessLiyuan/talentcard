@@ -1,11 +1,9 @@
 package com.talentcard.front.controller;
 
-import com.talentcard.common.dto.EducationDTO;
-import com.talentcard.common.dto.ProfQualityDTO;
-import com.talentcard.common.dto.ProfTitleDTO;
-import com.talentcard.common.dto.TalentHonourDTO;
+import com.talentcard.common.dto.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IInsertCertificationService;
+import com.talentcard.front.utils.VerificationCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +21,7 @@ public class InsertCertificationController {
 
     /**
      * 学历
+     *
      * @param educationDTO
      * @return
      */
@@ -33,6 +32,7 @@ public class InsertCertificationController {
 
     /**
      * 职业资格
+     *
      * @param profQualityDTO
      * @return
      */
@@ -43,6 +43,7 @@ public class InsertCertificationController {
 
     /**
      * 职称
+     *
      * @param profTitleDTO
      * @return
      */
@@ -53,6 +54,7 @@ public class InsertCertificationController {
 
     /**
      * 人才荣誉
+     *
      * @param talentHonourDTO
      * @return
      */
@@ -63,6 +65,7 @@ public class InsertCertificationController {
 
     /**
      * 删除
+     *
      * @param insertCertId
      * @return
      */
@@ -71,4 +74,25 @@ public class InsertCertificationController {
         return iInsertCertificationService.delete(insertCertId);
     }
 
+    /**
+     * 编辑基本信息
+     *
+     * @param basicInfoDTO
+     * @return
+     */
+    @RequestMapping("editBasicInfo")
+    public ResultVO editBasicInfo(@RequestBody BasicInfoDTO basicInfoDTO) {
+        String phone = basicInfoDTO.getPhone();
+        //判断验证码
+        String verificationCode = VerificationCodeUtil.getCode(phone);
+        if (verificationCode == null || verificationCode.equals("")) {
+            //查不到验证码
+            return new ResultVO(2302);
+        }
+        if (!verificationCode.equals(basicInfoDTO.getPhone())) {
+            //验证码错误
+            return new ResultVO(2301);
+        }
+        return iInsertCertificationService.editBasicInfo(basicInfoDTO);
+    }
 }

@@ -1,9 +1,6 @@
 package com.talentcard.front.service.impl;
 
-import com.talentcard.common.dto.EducationDTO;
-import com.talentcard.common.dto.ProfQualityDTO;
-import com.talentcard.common.dto.ProfTitleDTO;
-import com.talentcard.common.dto.TalentHonourDTO;
+import com.talentcard.common.dto.*;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
@@ -300,6 +297,29 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             insertHonourMapper.updateByPrimaryKeySelective(insertHonourPO);
 
         }
+        return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO editBasicInfo(BasicInfoDTO basicInfoDTO) {
+        TalentPO talentPO = talentMapper.selectByOpenId(basicInfoDTO.getOpenId());
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        talentPO.setCategory(basicInfoDTO.getCategory());
+        talentPO.setPolitical(basicInfoDTO.getPolitical());
+        talentPO.setSex(basicInfoDTO.getSex());
+        talentPO.setName(basicInfoDTO.getName());
+        talentPO.setCardType(basicInfoDTO.getCardType());
+        talentPO.setIdCard(basicInfoDTO.getIdCard());
+        talentPO.setPassport(basicInfoDTO.getPassport());
+        talentPO.setDriverCard(basicInfoDTO.getDriverCard());
+        talentPO.setWorkLocation(basicInfoDTO.getWorkLocation());
+        talentPO.setWorkLocationType(basicInfoDTO.getWorkLocationType());
+        talentPO.setIndustry(basicInfoDTO.getIndustry());
+        talentPO.setIndustrySecond(basicInfoDTO.getIndustrySecond());
+        talentPO.setPhone(basicInfoDTO.getPhone());
+        talentPO.setTalentSource(basicInfoDTO.getTalentSource());
         return new ResultVO(1000);
     }
 }
