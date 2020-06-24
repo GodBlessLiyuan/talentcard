@@ -64,6 +64,15 @@ public class TalentVO implements Serializable {
     private Long honour;
 
     /**
+     * 卡片title
+     */
+    private String cTitle;
+    /**
+     * 卡片前缀
+     */
+    private String cInitialWord;
+
+    /**
      * bos 转 vos
      *
      * @param bos
@@ -98,6 +107,8 @@ public class TalentVO implements Serializable {
         vo.setCname(bo.getCname());
         vo.setHonour(bo.getHonour());
         vo.setCnum(bo.getCnum());
+        vo.setCTitle(bo.getCTitle());
+        vo.setCInitialWord(bo.getCInitialWord());
         if (null == bo.getCategory() || "".equals(bo.getCategory())) {
             vo.setCategory("无");
         } else {

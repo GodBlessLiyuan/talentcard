@@ -611,7 +611,9 @@
         uc.name as cname,
         uc.num as cnum,
         uci.talent_category as category,
-        uci.honour_id as honour
+        uci.honour_id as honour,
+        c.title as cTitle,
+        c.initial_word as cInitialWord
         from t_talent t
         left join t_user_current_info uci on t.talent_id = uci.talent_id
         left join t_user_card uc on t.talent_id = uc.talent_id
