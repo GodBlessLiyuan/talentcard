@@ -104,7 +104,7 @@ public class InsertCertificationController {
      */
     @RequestMapping("findOneDetail")
     public ResultVO findOneDetail(@RequestParam(value = "openId") String openId,
-                                  @RequestParam(value = "insertCertificationId") Long insertCertificationId) {
-        return iInsertCertificationService.findOneDetail(openId, insertCertificationId);
+                                  @RequestParam(value = "insertCertId") Long insertCertId) {
+        return iInsertCertificationService.findOneDetail(openId, insertCertId);
     }
 }
