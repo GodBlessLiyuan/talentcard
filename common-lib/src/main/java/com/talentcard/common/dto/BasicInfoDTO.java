@@ -28,4 +28,5 @@ public class BasicInfoDTO {
     private Byte workLocationType;
     private Long cardId;
     private Integer talentSource;
+    private String verificationCode;
 }

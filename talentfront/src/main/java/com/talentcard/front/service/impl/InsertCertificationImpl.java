@@ -33,13 +33,13 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     InsertTitleMapper insertTitleMapper;
     @Autowired
     InsertHonourMapper insertHonourMapper;
+    @Autowired
+    InsertCertApprovalMapper insertCertApprovalMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO addEducation(EducationDTO educationDTO) {
         Long insertEducId = educationDTO.getInsertEducId();
-        InsertEducationPO insertEducationPO;
-        Boolean ifInsert = Boolean.TRUE;
         TalentPO talentPO = talentMapper.selectByOpenId(educationDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
@@ -47,34 +47,45 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 判断新增还是编辑
          */
-        if (insertEducId == null) {
-            /**
-             * 新增
-             */
-            insertEducationPO = new InsertEducationPO();
-            //新增认证表
-            InsertCertificationPO insertCertificationPO = new InsertCertificationPO();
-            insertCertificationPO.setCreateTime(new Date());
-            insertCertificationPO.setStatus((byte) 2);
-            insertCertificationPO.setType((byte) 1);
-            insertCertificationPO.setTalentId(talentPO.getTalentId());
-            insertCertificationPO.setCertinfo(educationDTO.getEducation().longValue());
-            insertCertificationMapper.add(insertCertificationPO);
-            insertEducationPO.setInsertCertId(insertCertificationPO.getInsertCertId());
-        } else {
+        if (insertEducId != null) {
             /**
              * 编辑
              */
-            insertEducationPO = insertEducationMapper.selectByPrimaryKey(insertEducId);
-            if (insertEducationPO == null) {
+            //学历
+            InsertEducationPO oldInsertEducationPO =
+                    insertEducationMapper.selectByPrimaryKey(insertEducId);
+            if (oldInsertEducationPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
-            if (insertEducationPO.getStatus() != 3) {
+            if (oldInsertEducationPO.getStatus() != 3) {
                 return new ResultVO(2552, "状态不对，此认证无法编辑！");
             }
-            ifInsert = Boolean.FALSE;
-
+            oldInsertEducationPO.setStatus((byte) 10);
+            insertEducationMapper.updateByPrimaryKeySelective(oldInsertEducationPO);
+            //认证
+            InsertCertificationPO oldInsertCertificationPO =
+                    insertCertificationMapper.selectByPrimaryKey(educationDTO.getInsertCertId());
+            if (oldInsertCertificationPO == null) {
+                return new ResultVO(2551, "查无此新增认证！");
+            }
+            oldInsertCertificationPO.setStatus((byte) 10);
+            insertCertificationMapper.updateByPrimaryKeySelective(oldInsertCertificationPO);
         }
+
+        /**
+         * 新增
+         */
+        InsertEducationPO insertEducationPO = new InsertEducationPO();
+        //新增认证表
+        InsertCertificationPO insertCertificationPO = new InsertCertificationPO();
+        insertCertificationPO.setCreateTime(new Date());
+        insertCertificationPO.setStatus((byte) 2);
+        insertCertificationPO.setType((byte) 1);
+        insertCertificationPO.setTalentId(talentPO.getTalentId());
+        insertCertificationPO.setCertInfo(educationDTO.getEducation().longValue());
+        insertCertificationMapper.add(insertCertificationPO);
+        //学历
+        insertEducationPO.setInsertCertId(insertCertificationPO.getInsertCertId());
         insertEducationPO.setEducation(educationDTO.getEducation());
         insertEducationPO.setEducPicture(educationDTO.getEducPicture());
         insertEducationPO.setFirstClass(educationDTO.getFirstClass());
@@ -83,12 +94,16 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertEducationPO.setSchool(educationDTO.getSchool());
         insertEducationPO.setStatus((byte) 2);
         insertEducationPO.setOpenId(educationDTO.getOpenId());
-        if (ifInsert.equals(Boolean.TRUE)) {
-            //新增
-            insertEducationMapper.insertSelective(insertEducationPO);
-        } else {
-            insertEducationMapper.updateByPrimaryKeySelective(insertEducationPO);
-        }
+        insertEducationPO.setDr((byte) 1);
+        insertEducationMapper.insertSelective(insertEducationPO);
+        //审批表
+        InsertCertApprovalPO insertCertApprovalPO = new InsertCertApprovalPO();
+        insertCertApprovalPO.setInsertCertId(insertCertApprovalPO.getInsertCertId());
+        insertCertApprovalPO.setCreateTime(new Date());
+        insertCertApprovalPO.setDr((byte) 1);
+        insertCertApprovalPO.setResult((byte) 8);
+        insertCertApprovalPO.setType((byte) 1);
+        insertCertApprovalMapper.insertSelective(insertCertApprovalPO);
         return new ResultVO(1000);
     }
 
@@ -96,8 +111,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO addProfQuality(ProfQualityDTO profQualityDTO) {
         Long insertQualityId = profQualityDTO.getInsertQualityId();
-        InsertQualityPO insertQualityPO;
-        Boolean ifInsert = Boolean.TRUE;
         TalentPO talentPO = talentMapper.selectByOpenId(profQualityDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
@@ -107,43 +120,58 @@ public class InsertCertificationImpl implements IInsertCertificationService {
          */
         if (insertQualityId == null) {
             /**
-             * 新增
-             */
-            insertQualityPO = new InsertQualityPO();
-            //新增认证表
-            InsertCertificationPO insertCertificationPO = new InsertCertificationPO();
-            insertCertificationPO.setCreateTime(new Date());
-            insertCertificationPO.setStatus((byte) 2);
-            insertCertificationPO.setType((byte) 1);
-            insertCertificationPO.setTalentId(talentPO.getTalentId());
-            insertCertificationPO.setCertinfo(profQualityDTO.getCategory().longValue());
-            insertCertificationMapper.add(insertCertificationPO);
-            insertQualityPO.setInsertCertId(insertCertificationPO.getInsertCertId());
-        } else {
-            /**
              * 编辑
              */
-            insertQualityPO = insertQualityMapper.selectByPrimaryKey(insertQualityId);
-            if (insertQualityPO == null) {
+            //职业资格
+            InsertQualityPO oldInsertQualityPO = insertQualityMapper.selectByPrimaryKey(insertQualityId);
+            if (oldInsertQualityPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
-            if (insertQualityPO.getStatus() != 3) {
+            if (oldInsertQualityPO.getStatus() != 3) {
                 return new ResultVO(2552, "状态不对，此认证无法编辑！");
             }
-            ifInsert = Boolean.FALSE;
+            oldInsertQualityPO.setStatus((byte) 10);
+            insertQualityMapper.updateByPrimaryKeySelective(oldInsertQualityPO);
+
+            //认证
+            InsertCertificationPO oldInsertCertificationPO =
+                    insertCertificationMapper.selectByPrimaryKey(profQualityDTO.getInsertCertId());
+            if (oldInsertCertificationPO == null) {
+                return new ResultVO(2551, "查无此新增认证！");
+            }
+            oldInsertCertificationPO.setStatus((byte) 10);
+            insertCertificationMapper.updateByPrimaryKeySelective(oldInsertCertificationPO);
 
         }
+        /**
+         * 新增
+         */
+        InsertQualityPO insertQualityPO = new InsertQualityPO();
+        //新增认证表
+        InsertCertificationPO insertCertificationPO = new InsertCertificationPO();
+        insertCertificationPO.setCreateTime(new Date());
+        insertCertificationPO.setStatus((byte) 2);
+        insertCertificationPO.setType((byte) 3);
+        insertCertificationPO.setTalentId(talentPO.getTalentId());
+        insertCertificationPO.setCertInfo(profQualityDTO.getCategory().longValue());
+        insertCertificationMapper.add(insertCertificationPO);
+        //职业资格
+        insertQualityPO.setInsertCertId(insertCertificationPO.getInsertCertId());
         insertQualityPO.setCategory(profQualityDTO.getCategory());
         insertQualityPO.setInfo(profQualityDTO.getInfo());
         insertQualityPO.setOpenId(profQualityDTO.getOpenId());
         insertQualityPO.setPicture(profQualityDTO.getPicture());
         insertQualityPO.setStatus((byte) 2);
-        if (ifInsert.equals(Boolean.TRUE)) {
-            //新增
-            insertQualityMapper.insertSelective(insertQualityPO);
-        } else {
-            insertQualityMapper.updateByPrimaryKeySelective(insertQualityPO);
-        }
+        insertQualityPO.setDr((byte) 1);
+        insertQualityMapper.insertSelective(insertQualityPO);
+        //审批表
+        InsertCertApprovalPO insertCertApprovalPO = new InsertCertApprovalPO();
+        insertCertApprovalPO.setInsertCertId(insertCertApprovalPO.getInsertCertId());
+        insertCertApprovalPO.setCreateTime(new Date());
+        insertCertApprovalPO.setDr((byte) 1);
+        insertCertApprovalPO.setResult((byte) 8);
+        insertCertApprovalPO.setType((byte) 1);
+        insertCertApprovalMapper.insertSelective(insertCertApprovalPO);
         return new ResultVO(1000);
     }
 
@@ -151,8 +179,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO addProfTitle(ProfTitleDTO profTitleDTO) {
         Long insertTitleId = profTitleDTO.getInsertTitleId();
-        InsertTitlePO insertTitlePO;
-        Boolean ifInsert = Boolean.TRUE;
         TalentPO talentPO = talentMapper.selectByOpenId(profTitleDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
@@ -160,45 +186,59 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 判断新增还是编辑
          */
-        if (insertTitleId == null) {
-            /**
-             * 新增
-             */
-            insertTitlePO = new InsertTitlePO();
-            //新增认证表
-            InsertCertificationPO insertCertificationPO = new InsertCertificationPO();
-            insertCertificationPO.setCreateTime(new Date());
-            insertCertificationPO.setStatus((byte) 2);
-            insertCertificationPO.setType((byte) 1);
-            insertCertificationPO.setTalentId(talentPO.getTalentId());
-            insertCertificationPO.setCertinfo(profTitleDTO.getCategory().longValue());
-            insertCertificationMapper.add(insertCertificationPO);
-            insertTitlePO.setInsertCertId(insertCertificationPO.getInsertCertId());
-        } else {
+        if (insertTitleId != null) {
             /**
              * 编辑
              */
-            insertTitlePO = insertTitleMapper.selectByPrimaryKey(insertTitleId);
-            if (insertTitlePO == null) {
+            InsertTitlePO oldInsertTitlePO = insertTitleMapper.selectByPrimaryKey(insertTitleId);
+            if (oldInsertTitlePO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
-            if (insertTitlePO.getStatus() != 3) {
+            if (oldInsertTitlePO.getStatus() != 3) {
                 return new ResultVO(2552, "状态不对，此认证无法编辑！");
             }
-            ifInsert = Boolean.FALSE;
+            oldInsertTitlePO.setStatus((byte) 10);
+            insertTitleMapper.updateByPrimaryKeySelective(oldInsertTitlePO);
 
+            //认证
+            InsertCertificationPO oldInsertCertificationPO =
+                    insertCertificationMapper.selectByPrimaryKey(profTitleDTO.getInsertCertId());
+            if (oldInsertCertificationPO == null) {
+                return new ResultVO(2551, "查无此新增认证！");
+            }
+            oldInsertCertificationPO.setStatus((byte) 10);
+            insertCertificationMapper.updateByPrimaryKeySelective(oldInsertCertificationPO);
         }
+        /**
+         * 新增
+         */
+        InsertTitlePO insertTitlePO = new InsertTitlePO();
+        //新增认证表
+        InsertCertificationPO insertCertificationPO = new InsertCertificationPO();
+        insertCertificationPO.setCreateTime(new Date());
+        insertCertificationPO.setStatus((byte) 2);
+        insertCertificationPO.setType((byte) 2);
+        insertCertificationPO.setTalentId(talentPO.getTalentId());
+        insertCertificationPO.setCertInfo(profTitleDTO.getCategory().longValue());
+        insertCertificationMapper.add(insertCertificationPO);
+
+        insertTitlePO.setInsertCertId(insertCertificationPO.getInsertCertId());
         insertTitlePO.setCategory(profTitleDTO.getCategory());
         insertTitlePO.setInfo(profTitleDTO.getInfo());
         insertTitlePO.setOpenId(profTitleDTO.getOpenId());
         insertTitlePO.setPicture(profTitleDTO.getPicture());
         insertTitlePO.setStatus((byte) 2);
-        if (ifInsert.equals(Boolean.TRUE)) {
-            //新增
-            insertTitleMapper.insertSelective(insertTitlePO);
-        } else {
-            insertTitleMapper.updateByPrimaryKeySelective(insertTitlePO);
-        }
+        insertTitlePO.setDr((byte) 1);
+        insertTitleMapper.insertSelective(insertTitlePO);
+
+        //审批表
+        InsertCertApprovalPO insertCertApprovalPO = new InsertCertApprovalPO();
+        insertCertApprovalPO.setInsertCertId(insertCertApprovalPO.getInsertCertId());
+        insertCertApprovalPO.setCreateTime(new Date());
+        insertCertApprovalPO.setDr((byte) 1);
+        insertCertApprovalPO.setResult((byte) 8);
+        insertCertApprovalPO.setType((byte) 1);
+        insertCertApprovalMapper.insertSelective(insertCertApprovalPO);
         return new ResultVO(1000);
     }
 
@@ -206,8 +246,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO addTalentHonour(TalentHonourDTO talentHonourDTO) {
         Long insertTalentHonourId = talentHonourDTO.getInsertTalentHonourId();
-        InsertHonourPO insertHonourPO;
-        Boolean ifInsert = Boolean.TRUE;
         TalentPO talentPO = talentMapper.selectByOpenId(talentHonourDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
@@ -215,45 +253,60 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 判断新增还是编辑
          */
-        if (insertTalentHonourId == null) {
-            /**
-             * 新增
-             */
-            insertHonourPO = new InsertHonourPO();
-            //新增认证表
-            InsertCertificationPO insertCertificationPO = new InsertCertificationPO();
-            insertCertificationPO.setCreateTime(new Date());
-            insertCertificationPO.setStatus((byte) 2);
-            insertCertificationPO.setType((byte) 1);
-            insertCertificationPO.setTalentId(talentPO.getTalentId());
-            insertCertificationPO.setCertinfo(talentHonourDTO.getHonourId());
-            insertCertificationMapper.add(insertCertificationPO);
-            insertHonourPO.setInsertCertId(insertCertificationPO.getInsertCertId());
-        } else {
+        if (insertTalentHonourId != null) {
             /**
              * 编辑
              */
-            insertHonourPO = insertHonourMapper.selectByPrimaryKey(insertTalentHonourId);
-            if (insertHonourPO == null) {
+            InsertHonourPO oldInsertHonourPO = insertHonourMapper.selectByPrimaryKey(insertTalentHonourId);
+            if (oldInsertHonourPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
-            if (insertHonourPO.getStatus() != 3) {
+            if (oldInsertHonourPO.getStatus() != 3) {
                 return new ResultVO(2552, "状态不对，此认证无法编辑！");
             }
-            ifInsert = Boolean.FALSE;
+            oldInsertHonourPO.setStatus((byte) 10);
+            insertHonourMapper.updateByPrimaryKeySelective(oldInsertHonourPO);
 
+            //认证
+            InsertCertificationPO oldInsertCertificationPO =
+                    insertCertificationMapper.selectByPrimaryKey(talentHonourDTO.getInsertCertId());
+            if (oldInsertCertificationPO == null) {
+                return new ResultVO(2551, "查无此新增认证！");
+            }
+            oldInsertCertificationPO.setStatus((byte) 10);
+            insertCertificationMapper.updateByPrimaryKeySelective(oldInsertCertificationPO);
         }
+
+        /**
+         * 新增
+         */
+        InsertHonourPO insertHonourPO = new InsertHonourPO();
+        //新增认证表
+        InsertCertificationPO insertCertificationPO = new InsertCertificationPO();
+        insertCertificationPO.setCreateTime(new Date());
+        insertCertificationPO.setStatus((byte) 2);
+        insertCertificationPO.setType((byte) 4);
+        insertCertificationPO.setTalentId(talentPO.getTalentId());
+        insertCertificationPO.setCertInfo(talentHonourDTO.getHonourId());
+        insertCertificationMapper.add(insertCertificationPO);
+
+        insertHonourPO.setInsertCertId(insertCertificationPO.getInsertCertId());
         insertHonourPO.setHonourId(talentHonourDTO.getHonourId());
         insertHonourPO.setInfo(talentHonourDTO.getInfo());
         insertHonourPO.setOpenId(talentHonourDTO.getOpenId());
         insertHonourPO.setHonourPicture(talentHonourDTO.getHonourPicture());
         insertHonourPO.setStatus((byte) 2);
-        if (ifInsert.equals(Boolean.TRUE)) {
-            //新增
-            insertHonourMapper.insertSelective(insertHonourPO);
-        } else {
-            insertHonourMapper.updateByPrimaryKeySelective(insertHonourPO);
-        }
+        insertHonourPO.setDr((byte) 1);
+        insertHonourMapper.insertSelective(insertHonourPO);
+
+        //审批表
+        InsertCertApprovalPO insertCertApprovalPO = new InsertCertApprovalPO();
+        insertCertApprovalPO.setInsertCertId(insertCertApprovalPO.getInsertCertId());
+        insertCertApprovalPO.setCreateTime(new Date());
+        insertCertApprovalPO.setDr((byte) 1);
+        insertCertApprovalPO.setResult((byte) 8);
+        insertCertApprovalPO.setType((byte) 1);
+        insertCertApprovalMapper.insertSelective(insertCertApprovalPO);
         return new ResultVO(1000);
     }
 
@@ -265,6 +318,9 @@ public class InsertCertificationImpl implements IInsertCertificationService {
                 return new ResultVO(2551, "查无此新增认证！");
             }
         }
+        if (insertCertificationPO.getStatus() != 3) {
+            return new ResultVO(2554, "状态不对，此认证无法删除！");
+        }
         insertCertificationPO.setDr((byte) 2);
         insertCertificationMapper.updateByPrimaryKeySelective(insertCertificationPO);
         Byte type = insertCertificationPO.getType();
@@ -274,7 +330,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             if (insertEducationPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
-            insertEducationPO.setStatus((byte) 2);
+            insertEducationPO.setDr((byte) 2);
             insertEducationMapper.updateByPrimaryKeySelective(insertEducationPO);
         } else if (type == 2) {
             //职称
@@ -282,7 +338,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             if (insertTitlePO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
-            insertTitlePO.setStatus((byte) 2);
+            insertTitlePO.setDr((byte) 2);
             insertTitleMapper.updateByPrimaryKeySelective(insertTitlePO);
         } else if (type == 3) {
             //职业资格
@@ -290,7 +346,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             if (insertQualityPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
-            insertQualityPO.setStatus((byte) 2);
+            insertQualityPO.setDr((byte) 2);
             insertQualityMapper.updateByPrimaryKeySelective(insertQualityPO);
 
         } else {
@@ -299,7 +355,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             if (insertHonourPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
-            insertHonourPO.setStatus((byte) 2);
+            insertHonourPO.setDr((byte) 2);
             insertHonourMapper.updateByPrimaryKeySelective(insertHonourPO);
 
         }
@@ -326,6 +382,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         talentPO.setIndustrySecond(basicInfoDTO.getIndustrySecond());
         talentPO.setPhone(basicInfoDTO.getPhone());
         talentPO.setTalentSource(basicInfoDTO.getTalentSource());
+        talentMapper.updateByPrimaryKeySelective(talentPO);
         return new ResultVO(1000);
     }
 

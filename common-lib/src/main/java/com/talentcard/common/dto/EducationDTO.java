@@ -18,4 +18,5 @@ public class EducationDTO {
     private String educPicture;
     private String openId;
     private String graduateTime;
+    private Long insertCertId;
 }

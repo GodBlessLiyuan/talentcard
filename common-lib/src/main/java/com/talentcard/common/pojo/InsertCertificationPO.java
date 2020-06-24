@@ -36,7 +36,7 @@ public class InsertCertificationPO implements Serializable {
      */
     private Byte dr;
 
-    private Long certinfo;
+    private Long certInfo;
 
     private static final long serialVersionUID = 1L;
 }

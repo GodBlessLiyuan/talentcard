@@ -8,17 +8,16 @@
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
-    <result column="certInfo" jdbcType="BIGINT" property="certinfo" />
+    <result column="cert_info" jdbcType="BIGINT" property="certInfo" />
   </resultMap>
-
   <resultMap id="InsertCertificationResultMap" type="com.talentcard.common.bo.InsertCertificationBO">
-    <id column="ici_insert_cert_id" jdbcType="BIGINT" property="insertCertId"/>
-    <result column="ici_talent_id" jdbcType="BIGINT" property="talentId"/>
-    <result column="ici_status" jdbcType="TINYINT" property="status"/>
-    <result column="ici_type" jdbcType="TINYINT" property="type"/>
-    <result column="ici_create_time" jdbcType="TIMESTAMP" property="createTime"/>
-    <result column="ici_dr" jdbcType="TINYINT" property="dr"/>
-    <result column="ici_certInfo" jdbcType="BIGINT" property="certinfo" />
+    <id column="ic_insert_cert_id" jdbcType="BIGINT" property="insertCertId"/>
+    <result column="ic_talent_id" jdbcType="BIGINT" property="talentId"/>
+    <result column="ic_status" jdbcType="TINYINT" property="status"/>
+    <result column="ic_type" jdbcType="TINYINT" property="type"/>
+    <result column="ic_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="ic_dr" jdbcType="TINYINT" property="dr"/>
+    <result column="ic_cert_info" jdbcType="BIGINT" property="certInfo" />
     <association property="insertEducationPO" javaType="com.talentcard.common.pojo.InsertEducationPO">
       <id column="ie_insert_educ_id" jdbcType="BIGINT" property="insertEducId"/>
       <result column="ie_education" jdbcType="INTEGER" property="education"/>
@@ -64,8 +63,8 @@
     </association>
   </resultMap>
   <sql id="InsertCertification_Column_List">
-    ic.insert_cert_id as ici_insert_cert_id, ic.talent_id as ici_talent_id, ic.`status` as ici_status,
-    ic.`type` as ici_type, ic.create_time as ici_create_time, ic.dr as ici_dr, ici.certInfo as ici_certInfo,
+    ic.insert_cert_id as ic_insert_cert_id, ic.talent_id as ic_talent_id, ic.`status` as ic_status,
+    ic.`type` as ic_type, ic.create_time as ic_create_time, ic.dr as ic_dr, ic.cert_info as ic_certInfo,
 
     ie.insert_educ_id as ie_insert_educ_id, ie.education as ie_education, ie.school as ie_school, ie.first_class as ie_first_class,
     ie.major as ie_major, ie.educ_picture as ie_educ_picture, ie.open_id as ie_open_id , ie.`status`as ie_status,
@@ -82,7 +81,7 @@
     </sql>
 
   <sql id="Base_Column_List">
-    insert_cert_id, talent_id, `status`, `type`, create_time, dr, certInfo
+    insert_cert_id, talent_id, `status`, `type`, create_time, dr, cert_info
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -97,10 +96,10 @@
   <insert id="insert" parameterType="com.talentcard.common.pojo.InsertCertificationPO">
     insert into t_insert_certification (insert_cert_id, talent_id, `status`, 
       `type`, create_time, dr, 
-      certInfo)
+      cert_info)
     values (#{insertCertId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
       #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, 
-      #{certinfo,jdbcType=BIGINT})
+      #{certInfo,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.InsertCertificationPO">
     insert into t_insert_certification
@@ -123,8 +122,8 @@
       <if test="dr != null">
         dr,
       </if>
-      <if test="certinfo != null">
-        certInfo,
+      <if test="certInfo != null">
+        cert_info,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -146,8 +145,8 @@
       <if test="dr != null">
         #{dr,jdbcType=TINYINT},
       </if>
-      <if test="certinfo != null">
-        #{certinfo,jdbcType=BIGINT},
+      <if test="certInfo != null">
+        #{certInfo,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -169,8 +168,8 @@
       <if test="dr != null">
         dr = #{dr,jdbcType=TINYINT},
       </if>
-      <if test="certinfo != null">
-        certInfo = #{certinfo,jdbcType=BIGINT},
+      <if test="certInfo != null">
+        cert_info = #{certInfo,jdbcType=BIGINT},
       </if>
     </set>
     where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
@@ -182,17 +181,17 @@
       `type` = #{type,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       dr = #{dr,jdbcType=TINYINT},
-      certInfo = #{certinfo,jdbcType=BIGINT}
+      cert_info = #{certInfo,jdbcType=BIGINT}
     where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
   </update>
     <insert id="add" useGeneratedKeys="true" keyProperty="insertCertId"
             parameterType="com.talentcard.common.pojo.InsertCertificationPO">
     insert into t_insert_certification (insert_cert_id, talent_id, `status`,
       `type`, create_time, dr,
-      certInfo)
+      cert_info)
     values (#{insertCertId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT},
       #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT},
-      #{certinfo,jdbcType=BIGINT})
+      #{certInfo,jdbcType=BIGINT})
   </insert>
     <select id="selectByOpenId" resultMap="InsertCertificationResultMap">
         select
@@ -243,10 +242,9 @@
     <select id="query" parameterType="java.util.HashMap" resultType="com.talentcard.common.bo.InsertCertificationBO">
         select
         t.name as name, t.sex as sex,
-        ic.insert_cert_id as ici_insert_cert_id,
-        ic.talent_id as ici_talent_id, ic.`status` as ici_status,
-        ic.`type` as ici_type, ic.create_time as ici_create_time,
-        ic.dr as ici_dr, ici.certInfo as ici_certInfo
+        ic.insert_cert_id as insertCertId, ic.talent_id as talentId,
+        ic.`status` as status, ic.`type` as type, ic.create_time as createTime,
+        ic.dr as dr, ic.cert_info as certInfo
         from t_insert_certification ic
         left join t_talent t
         on ic.talent_id = t.talent_id

@@ -11,6 +11,7 @@ import lombok.Data;
 @Data
 public class TalentHonourDTO {
     private Long insertTalentHonourId;
+    private Long insertCertId;
     private Long honourId;
     private String honourPicture;
     private String info;

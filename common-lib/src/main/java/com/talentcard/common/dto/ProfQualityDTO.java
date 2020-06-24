@@ -11,6 +11,7 @@ import lombok.Data;
 @Data
 public class ProfQualityDTO {
     private Long insertQualityId;
+    private Long insertCertId;
     private Integer category;
     private String picture;
     private String info;

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 /**
@@ -41,6 +42,21 @@ public class InsertCertificationController {
         hashMap.put("startTime", startTime);
         hashMap.put("endTime", endTime);
         return iInsertCertificationService.query(pageNum, pageSize, hashMap);
+    }
+
+    @RequestMapping("certResult")
+    public ResultVO certResult(HttpSession httpSession,
+                               @RequestParam(value = "talentId") Long talentId,
+                               @RequestParam(value = "insertCertId") Long insertCertId,
+                               @RequestParam(value = "result") Byte result,
+                               @RequestParam(value = "opinion", required = false, defaultValue = "") String opinion) {
+        return iInsertCertificationService.certResult(httpSession, talentId, insertCertId, result, opinion);
+    }
+
+    @RequestMapping("findOne")
+    public ResultVO findOne(@RequestParam(value = "talentId") Long talentId,
+                            @RequestParam(value = "insertCertId") Long insertCertId) {
+        return iInsertCertificationService.findOne(talentId, insertCertId);
     }
 
 }

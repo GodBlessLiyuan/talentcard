@@ -89,7 +89,7 @@ public class InsertCertificationController {
             //查不到验证码
             return new ResultVO(2302);
         }
-        if (!verificationCode.equals(basicInfoDTO.getPhone())) {
+        if (!verificationCode.equals(basicInfoDTO.getVerificationCode())) {
             //验证码错误
             return new ResultVO(2301);
         }
