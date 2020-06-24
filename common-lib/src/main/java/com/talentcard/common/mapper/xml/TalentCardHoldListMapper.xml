@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.TalentCardHoldListMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentCardHoldListPO">
+    <id column="tchl_id" jdbcType="BIGINT" property="tchlId" />
+    <result column="id_card" jdbcType="CHAR" property="idCard" />
+    <result column="num" jdbcType="BIGINT" property="num" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tchl_id, id_card, num
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_talent_card_hold_list
+    where tchl_id = #{tchlId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_talent_card_hold_list
+    where tchl_id = #{tchlId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.TalentCardHoldListPO">
+    insert into t_talent_card_hold_list (tchl_id, id_card, num
+      )
+    values (#{tchlId,jdbcType=BIGINT}, #{idCard,jdbcType=CHAR}, #{num,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentCardHoldListPO">
+    insert into t_talent_card_hold_list
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tchlId != null">
+        tchl_id,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tchlId != null">
+        #{tchlId,jdbcType=BIGINT},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=CHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentCardHoldListPO">
+    update t_talent_card_hold_list
+    <set>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=CHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=BIGINT},
+      </if>
+    </set>
+    where tchl_id = #{tchlId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentCardHoldListPO">
+    update t_talent_card_hold_list
+    set id_card = #{idCard,jdbcType=CHAR},
+      num = #{num,jdbcType=BIGINT}
+    where tchl_id = #{tchlId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByIdCard" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_talent_card_hold_list
+    where id_card = #{idCard,jdbcType=BIGINT}
+  </select>
+</mapper>

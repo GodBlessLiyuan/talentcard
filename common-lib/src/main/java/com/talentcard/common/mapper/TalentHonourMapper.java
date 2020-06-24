@@ -5,6 +5,8 @@ import com.talentcard.common.pojo.TalentHonourPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * TalentHonourMapper继承基类
  */
@@ -24,5 +26,14 @@ public interface TalentHonourMapper extends BaseMapper<TalentHonourPO, Long> {
      * @return
      */
     TalentHonourPO selectByCertId(@Param("certId") Long certId);
+
+    /**
+     * 根据人才ID查询
+     *
+     * @param talentId
+     * @return
+     */
+    List<Long> queryNameByTalentId(Long talentId);
+
 
 }

@@ -327,7 +327,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             logger.info("getIndexUrl之前");
             messageDTO.setUrl(WebParameterUtil.getIndexUrl());
             logger.info("getIndexUrl之前");
-            messageDTO.setFirst("您好，请您领取衢江区人才卡");
+            messageDTO.setFirst("您好，您的认证申请已通过，请您点击领取衢江人才卡");
             //模版编号
             messageDTO.setTemplateId(1);
             /**
