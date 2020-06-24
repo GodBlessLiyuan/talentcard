@@ -13,6 +13,7 @@ import com.talentcard.common.vo.ResultVO;
 public interface IInsertCertificationService {
     /**
      * 新增/编辑学历
+     *
      * @param educationDTO
      * @return
      */
@@ -45,4 +46,9 @@ public interface IInsertCertificationService {
      * 编辑基本信息
      */
     ResultVO editBasicInfo(BasicInfoDTO basicInfoDTO);
+
+    /**
+     * 根据id查找单个基本信息的详情
+     */
+    ResultVO findOneDetail(String openId, Long insertCertificationId);
 }

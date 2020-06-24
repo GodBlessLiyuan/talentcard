@@ -95,4 +95,16 @@ public class InsertCertificationController {
         }
         return iInsertCertificationService.editBasicInfo(basicInfoDTO);
     }
+
+    /**
+     * 根据id查找单个基本信息的详情
+     * @param openId
+     * @param insertCertificationId
+     * @return
+     */
+    @RequestMapping("findOneDetail")
+    public ResultVO findOneDetail(@RequestParam(value = "openId") String openId,
+                                  @RequestParam(value = "insertCertificationId") Long insertCertificationId) {
+        return iInsertCertificationService.findOneDetail(openId, insertCertificationId);
+    }
 }

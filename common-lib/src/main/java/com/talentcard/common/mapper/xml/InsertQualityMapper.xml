@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.InsertQualityMapper">
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.InsertQualityPO">
-    <id column="pq_id" jdbcType="BIGINT" property="pqId" />
+    <id column="insert_pq_id" jdbcType="BIGINT" property="insertPqId" />
     <result column="category" jdbcType="INTEGER" property="category" />
     <result column="picture" jdbcType="CHAR" property="picture" />
     <result column="info" jdbcType="CHAR" property="info" />
@@ -12,31 +12,31 @@
     <result column="dr" jdbcType="TINYINT" property="dr" />
   </resultMap>
   <sql id="Base_Column_List">
-    pq_id, category, picture, info, `status`, insert_cert_id, open_id, dr
+    insert_pq_id, category, picture, info, `status`, insert_cert_id, open_id, dr
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_insert_quality
-    where pq_id = #{pqId,jdbcType=BIGINT}
+    where insert_pq_id = #{insertPqId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_insert_quality
-    where pq_id = #{pqId,jdbcType=BIGINT}
+    where insert_pq_id = #{insertPqId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.InsertQualityPO">
-    insert into t_insert_quality (pq_id, category, picture, 
+    insert into t_insert_quality (insert_pq_id, category, picture, 
       info, `status`, insert_cert_id, 
       open_id, dr)
-    values (#{pqId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{picture,jdbcType=CHAR}, 
+    values (#{insertPqId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{picture,jdbcType=CHAR}, 
       #{info,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{insertCertId,jdbcType=BIGINT}, 
       #{openId,jdbcType=CHAR}, #{dr,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.InsertQualityPO">
     insert into t_insert_quality
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="pqId != null">
-        pq_id,
+      <if test="insertPqId != null">
+        insert_pq_id,
       </if>
       <if test="category != null">
         category,
@@ -61,8 +61,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="pqId != null">
-        #{pqId,jdbcType=BIGINT},
+      <if test="insertPqId != null">
+        #{insertPqId,jdbcType=BIGINT},
       </if>
       <if test="category != null">
         #{category,jdbcType=INTEGER},
@@ -112,7 +112,7 @@
         dr = #{dr,jdbcType=TINYINT},
       </if>
     </set>
-    where pq_id = #{pqId,jdbcType=BIGINT}
+    where insert_pq_id = #{insertPqId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.InsertQualityPO">
     update t_insert_quality
@@ -123,7 +123,7 @@
       insert_cert_id = #{insertCertId,jdbcType=BIGINT},
       open_id = #{openId,jdbcType=CHAR},
       dr = #{dr,jdbcType=TINYINT}
-    where pq_id = #{pqId,jdbcType=BIGINT}
+    where insert_pq_id = #{insertPqId,jdbcType=BIGINT}
   </update>
   <select id="selectByInsertCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select

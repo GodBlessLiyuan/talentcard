@@ -16,4 +16,6 @@ public class InsertCertificationBO extends InsertCertificationPO {
     private InsertQualityPO insertQualityPO;
     private InsertTitlePO insertTitlePO;
     private InsertHonourPO insertHonourPO;
+    private String name;
+    private Byte sex;
 }

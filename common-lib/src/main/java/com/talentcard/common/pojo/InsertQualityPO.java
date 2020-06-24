@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class InsertQualityPO implements Serializable {
-    private Long pqId;
+    private Long insertPqId;
 
     private Integer category;
 
@@ -18,13 +18,9 @@ public class InsertQualityPO implements Serializable {
     private String info;
 
     /**
-     * 1.正常使用
-2.注册没领卡（待领卡）
-3.发起过认证未审批（待审批）
-4.已有基础卡，且审批通过但未领卡（待领卡）
-5.基础卡正常使用
-9. 基本卡失效
-10.其他情况失效
+     * 1认证通过
+2待审批
+3驳回
      */
     private Byte status;
 

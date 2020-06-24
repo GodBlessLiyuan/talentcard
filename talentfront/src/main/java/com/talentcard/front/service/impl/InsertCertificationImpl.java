@@ -1,10 +1,12 @@
 package com.talentcard.front.service.impl;
 
+import com.talentcard.common.bo.InsertCertificationBO;
 import com.talentcard.common.dto.*;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IInsertCertificationService;
+import com.talentcard.front.vo.InsertCertificationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -321,5 +323,21 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         talentPO.setPhone(basicInfoDTO.getPhone());
         talentPO.setTalentSource(basicInfoDTO.getTalentSource());
         return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO findOneDetail(String openId, Long insertCertificationId) {
+        InsertCertificationBO insertCertificationBO = insertCertificationMapper.findOne(openId, insertCertificationId);
+        if (insertCertificationBO == null) {
+            return new ResultVO(2551);
+        }
+        InsertCertificationVO insertCertificationVO = InsertCertificationVO.convert(insertCertificationBO);
+        Byte type = insertCertificationVO.getType();
+        if (type == null) {
+            return new ResultVO(2553, "新增认证type错误为null!");
+        }
+        Integer currentCertificationTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, type);
+        insertCertificationVO.setCurrentCertificationTimes(currentCertificationTimes);
+        return new ResultVO(1000, insertCertificationVO);
     }
 }
