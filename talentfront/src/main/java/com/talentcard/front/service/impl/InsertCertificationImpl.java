@@ -387,8 +387,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     }
 
     @Override
-    public ResultVO findOneDetail(String openId, Long insertCertificationId) {
-        InsertCertificationBO insertCertificationBO = insertCertificationMapper.findOne(openId, insertCertificationId);
+    public ResultVO findOneDetail(String openId, Long insertCertId) {
+        InsertCertificationBO insertCertificationBO = insertCertificationMapper.findOne(openId, insertCertId);
         if (insertCertificationBO == null) {
             return new ResultVO(2551);
         }

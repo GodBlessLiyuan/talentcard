@@ -208,7 +208,7 @@
         left join t_talent t
         on ic.talent_id = t.talent_id
         where t.open_id = #{openId,jdbcType=CHAR}
-        and ic.status = 2
+        and (ic.status = 2 or ic.status = 3)
         and ic.dr = 1
     </select>
     <select id="findOne" resultMap="InsertCertificationResultMap">
