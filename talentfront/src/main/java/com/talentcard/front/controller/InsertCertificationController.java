@@ -4,6 +4,8 @@ import com.talentcard.common.dto.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IInsertCertificationService;
 import com.talentcard.front.utils.VerificationCodeUtil;
+import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,24 +84,39 @@ public class InsertCertificationController {
      */
     @RequestMapping("editBasicInfo")
     public ResultVO editBasicInfo(@RequestBody BasicInfoDTO basicInfoDTO) {
-        String phone = basicInfoDTO.getPhone();
-        //判断验证码
-        String verificationCode = VerificationCodeUtil.getCode(phone);
-        if (verificationCode == null || verificationCode.equals("")) {
-            //查不到验证码
-            return new ResultVO(2302);
-        }
-        if (!verificationCode.equals(basicInfoDTO.getVerificationCode())) {
-            //验证码错误
-            return new ResultVO(2301);
-        }
         return iInsertCertificationService.editBasicInfo(basicInfoDTO);
     }
 
     /**
-     * 根据id查找单个基本信息的详情
+     * 编辑手机号
+     *
      * @param openId
-     * @param insertCertificationId
+     * @param phone
+     * @param verificationCode
+     * @return
+     */
+    @RequestMapping("editPhone")
+    public ResultVO editPhone(@RequestParam(value = "openId") String openId,
+                              @RequestParam(value = "phone") String phone,
+                              @RequestParam(value = "verificationCode") String verificationCode) {
+        //判断验证码
+        String correctVerificationCode = VerificationCodeUtil.getCode(phone);
+        if (StringUtils.isEmpty(correctVerificationCode)) {
+            //查不到验证码
+            return new ResultVO(2302);
+        }
+        if (!correctVerificationCode.equals(verificationCode)) {
+            //验证码错误
+            return new ResultVO(2301);
+        }
+        return iInsertCertificationService.editPhone(openId, phone);
+    }
+
+    /**
+     * 根据id查找单个基本信息的详情
+     *
+     * @param openId
+     * @param insertCertId
      * @return
      */
     @RequestMapping("findOneDetail")
