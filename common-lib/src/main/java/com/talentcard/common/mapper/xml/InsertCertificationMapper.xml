@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.InsertCertificationMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.InsertCertificationPO">
+    <id column="insert_cert_id" jdbcType="BIGINT" property="insertCertId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+    <result column="cert_info" jdbcType="BIGINT" property="certInfo" />
+  </resultMap>
+  <resultMap id="InsertCertificationResultMap" type="com.talentcard.common.bo.InsertCertificationBO">
+    <id column="ic_insert_cert_id" jdbcType="BIGINT" property="insertCertId"/>
+    <result column="ic_talent_id" jdbcType="BIGINT" property="talentId"/>
+    <result column="ic_status" jdbcType="TINYINT" property="status"/>
+    <result column="ic_type" jdbcType="TINYINT" property="type"/>
+    <result column="ic_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="ic_dr" jdbcType="TINYINT" property="dr"/>
+    <result column="ic_cert_info" jdbcType="BIGINT" property="certInfo" />
+    <association property="insertEducationPO" javaType="com.talentcard.common.pojo.InsertEducationPO">
+      <id column="ie_insert_educ_id" jdbcType="BIGINT" property="insertEducId"/>
+      <result column="ie_education" jdbcType="INTEGER" property="education"/>
+      <result column="ie_school" jdbcType="CHAR" property="school"/>
+      <result column="ie_first_class" jdbcType="TINYINT" property="firstClass"/>
+      <result column="ie_major" jdbcType="CHAR" property="major"/>
+      <result column="ie_educ_picture" jdbcType="CHAR" property="educPicture"/>
+      <result column="ie_open_id" jdbcType="CHAR" property="openId"/>
+      <result column="ie_status" jdbcType="TINYINT" property="status"/>
+      <result column="ie_graduate_time" jdbcType="CHAR" property="graduateTime"/>
+      <result column="ie_insert_cert_id" jdbcType="BIGINT" property="insertCertId"/>
+      <result column="ie_dr" jdbcType="TINYINT" property="dr"/>
+    </association>
+    <association property="insertQualityPO" javaType="com.talentcard.common.pojo.InsertQualityPO">
+      <id column="iq_insert_pq_id" jdbcType="BIGINT" property="insertPqId"/>
+      <result column="iq_category" jdbcType="INTEGER" property="category"/>
+      <result column="iq_picture" jdbcType="CHAR" property="picture"/>
+      <result column="iq_info" jdbcType="CHAR" property="info"/>
+      <result column="iq_status" jdbcType="TINYINT" property="status"/>
+      <result column="iq_insert_cert_id" jdbcType="BIGINT" property="insertCertId"/>
+      <result column="iq_open_id" jdbcType="CHAR" property="openId"/>
+      <result column="iq_dr" jdbcType="TINYINT" property="dr"/>
+    </association>
+    <association property="insertTitlePO" javaType="com.talentcard.common.pojo.InsertTitlePO">
+      <id column="it_insert_pt_id" jdbcType="BIGINT" property="insertPtId"/>
+      <result column="it_category" jdbcType="INTEGER" property="category"/>
+      <result column="it_info" jdbcType="CHAR" property="info"/>
+      <result column="it_picture" jdbcType="CHAR" property="picture"/>
+      <result column="it_status" jdbcType="TINYINT" property="status"/>
+      <result column="it_insert_cert_id" jdbcType="BIGINT" property="insertCertId"/>
+      <result column="it_open_id" jdbcType="CHAR" property="openId"/>
+      <result column="it_dr" jdbcType="TINYINT" property="dr"/>
+    </association>
+    <association property="insertHonourPO" javaType="com.talentcard.common.pojo.InsertHonourPO">
+      <id column="ih_insert_th_id" jdbcType="BIGINT" property="insertThId"/>
+      <result column="ih_honour_id" jdbcType="BIGINT" property="honourId"/>
+      <result column="ih_honour_picture" jdbcType="CHAR" property="honourPicture"/>
+      <result column="ih_info" jdbcType="CHAR" property="info"/>
+      <result column="ih_status" jdbcType="TINYINT" property="status"/>
+      <result column="ih_insert_cert_id" jdbcType="BIGINT" property="insertCertId"/>
+      <result column="ih_open_id" jdbcType="CHAR" property="openId"/>
+      <result column="ih_dr" jdbcType="TINYINT" property="dr"/>
+    </association>
+  </resultMap>
+  <sql id="InsertCertification_Column_List">
+    ic.insert_cert_id as ic_insert_cert_id, ic.talent_id as ic_talent_id, ic.`status` as ic_status,
+    ic.`type` as ic_type, ic.create_time as ic_create_time, ic.dr as ic_dr, ic.cert_info as ic_certInfo,
+
+    ie.insert_educ_id as ie_insert_educ_id, ie.education as ie_education, ie.school as ie_school, ie.first_class as ie_first_class,
+    ie.major as ie_major, ie.educ_picture as ie_educ_picture, ie.open_id as ie_open_id , ie.`status`as ie_status,
+    ie.graduate_time as ie_graduate_time, ie.insert_cert_id as ie_insert_cert_id, ie.dr as ie_dr,
+
+    iq.insert_pq_id as iq_insert_pq_id, iq.category as iq_category, iq.picture as iq_picture, iq.info as iq_info,
+    iq.`status` as iq_status, iq.insert_cert_id as iq_insert_cert_id, iq.open_id as iq_open_id, iq.dr as iq_dr,
+
+    it.insert_pt_id as it_insert_pt_id,  it.category as it_category,  it.info as it_info,  it.picture as it_picture,
+     it.`status` as it_status,  it.insert_cert_id as it_insert_cert_id,  it.open_id as it_open_id, it.dr as it_dr,
+
+    ih.insert_th_id as ih_insert_th_id, ih.honour_id as ih_honour_id, ih.honour_picture as ih_honour_picture, ih.info as ih_info,
+    ih.`status` as ih_status, ih.insert_cert_id as ih_insert_cert_id, ih.open_id as ih_open_id, ih.dr as ih_dr
+    </sql>
+
+  <sql id="Base_Column_List">
+    insert_cert_id, talent_id, `status`, `type`, create_time, dr, cert_info
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_insert_certification
+    where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_insert_certification
+    where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.InsertCertificationPO">
+    insert into t_insert_certification (insert_cert_id, talent_id, `status`, 
+      `type`, create_time, dr, 
+      cert_info)
+    values (#{insertCertId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
+      #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, 
+      #{certInfo,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.InsertCertificationPO">
+    insert into t_insert_certification
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="insertCertId != null">
+        insert_cert_id,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="dr != null">
+        dr,
+      </if>
+      <if test="certInfo != null">
+        cert_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="insertCertId != null">
+        #{insertCertId,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
+      </if>
+      <if test="certInfo != null">
+        #{certInfo,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.InsertCertificationPO">
+    update t_insert_certification
+    <set>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
+      <if test="certInfo != null">
+        cert_info = #{certInfo,jdbcType=BIGINT},
+      </if>
+    </set>
+    where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.InsertCertificationPO">
+    update t_insert_certification
+    set talent_id = #{talentId,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=TINYINT},
+      `type` = #{type,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      dr = #{dr,jdbcType=TINYINT},
+      cert_info = #{certInfo,jdbcType=BIGINT}
+    where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+  </update>
+    <insert id="add" useGeneratedKeys="true" keyProperty="insertCertId"
+            parameterType="com.talentcard.common.pojo.InsertCertificationPO">
+    insert into t_insert_certification (insert_cert_id, talent_id, `status`,
+      `type`, create_time, dr,
+      cert_info)
+    values (#{insertCertId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT},
+      #{type,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT},
+      #{certInfo,jdbcType=BIGINT})
+  </insert>
+    <select id="selectByOpenId" resultMap="InsertCertificationResultMap">
+        select
+        <include refid="InsertCertification_Column_List"/>
+        from t_insert_certification ic
+        left join t_insert_education ie
+        on ic.insert_cert_id = ie.insert_cert_id
+        left join t_insert_title it
+        on ic.insert_cert_id = it.insert_cert_id
+        left join t_insert_quality iq
+        on ic.insert_cert_id = iq.insert_cert_id
+        left join t_insert_honour ih
+        on ic.insert_cert_id = ih.insert_cert_id
+        left join t_talent t
+        on ic.talent_id = t.talent_id
+        where t.open_id = #{openId,jdbcType=CHAR}
+        and ic.status = 2
+        and ic.dr = 1
+    </select>
+    <select id="findOne" resultMap="InsertCertificationResultMap">
+        select
+        <include refid="InsertCertification_Column_List"/>
+        from t_insert_certification ic
+        left join t_insert_education ie
+        on ic.insert_cert_id = ie.insert_cert_id
+        left join t_insert_title it
+        on ic.insert_cert_id = it.insert_cert_id
+        left join t_insert_quality iq
+        on ic.insert_cert_id = iq.insert_cert_id
+        left join t_insert_honour ih
+        on ic.insert_cert_id = ih.insert_cert_id
+        left join t_talent t
+        on ic.talent_id = t.talent_id
+        where t.open_id = #{openId,jdbcType=CHAR}
+        and ic.insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+    </select>
+    <select id="findCurrentCertificationTimes" resultType="java.lang.Integer">
+        select
+        count(ic.insert_cert_id)
+        from t_insert_certification ic
+        left join t_talent t
+        on ic.talent_id = t.talent_id
+        where t.open_id = #{openId,jdbcType=CHAR}
+        and ic.type = #{type,jdbcType=TINYINT}
+        and (ic.status = 1 or ic.status = 2)
+        and ic.dr = 1
+    </select>
+    <select id="query" parameterType="java.util.HashMap" resultType="com.talentcard.common.bo.InsertCertificationBO">
+        select
+        t.name as name, t.sex as sex,
+        ic.insert_cert_id as insertCertId, ic.talent_id as talentId,
+        ic.`status` as status, ic.`type` as type, ic.create_time as createTime,
+        ic.dr as dr, ic.cert_info as certInfo
+        from t_insert_certification ic
+        left join t_talent t
+        on ic.talent_id = t.talent_id
+        where
+        1 = 1
+        <if test="name != null and name != ''">
+            and trim(replace(t.name,' ','')) like trim(replace ('%' #{name,jdbcType=CHAR} '%' ,' ',''))
+        </if>
+        <if test="sex != null and sex != 0">
+            and t.sex = #{sex,jdbcType=TINYINT}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and <![CDATA[ ic.create_time >= #{startTime}]]>
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and <![CDATA[ ic.create_time <= #{endTime}]]>
+        </if>
+    </select>
+</mapper>
