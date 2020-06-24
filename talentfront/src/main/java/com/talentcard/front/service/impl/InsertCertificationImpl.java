@@ -58,6 +58,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             insertCertificationPO.setStatus((byte) 2);
             insertCertificationPO.setType((byte) 1);
             insertCertificationPO.setTalentId(talentPO.getTalentId());
+            insertCertificationPO.setCertinfo(educationDTO.getEducation().longValue());
             insertCertificationMapper.add(insertCertificationPO);
             insertEducationPO.setInsertCertId(insertCertificationPO.getInsertCertId());
         } else {
@@ -115,6 +116,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             insertCertificationPO.setStatus((byte) 2);
             insertCertificationPO.setType((byte) 1);
             insertCertificationPO.setTalentId(talentPO.getTalentId());
+            insertCertificationPO.setCertinfo(profQualityDTO.getCategory().longValue());
             insertCertificationMapper.add(insertCertificationPO);
             insertQualityPO.setInsertCertId(insertCertificationPO.getInsertCertId());
         } else {
@@ -169,6 +171,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             insertCertificationPO.setStatus((byte) 2);
             insertCertificationPO.setType((byte) 1);
             insertCertificationPO.setTalentId(talentPO.getTalentId());
+            insertCertificationPO.setCertinfo(profTitleDTO.getCategory().longValue());
             insertCertificationMapper.add(insertCertificationPO);
             insertTitlePO.setInsertCertId(insertCertificationPO.getInsertCertId());
         } else {
@@ -223,6 +226,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             insertCertificationPO.setStatus((byte) 2);
             insertCertificationPO.setType((byte) 1);
             insertCertificationPO.setTalentId(talentPO.getTalentId());
+            insertCertificationPO.setCertinfo(talentHonourDTO.getHonourId());
             insertCertificationMapper.add(insertCertificationPO);
             insertHonourPO.setInsertCertId(insertCertificationPO.getInsertCertId());
         } else {

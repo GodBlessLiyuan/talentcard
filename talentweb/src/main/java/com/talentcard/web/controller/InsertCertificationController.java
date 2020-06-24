@@ -25,7 +25,7 @@ public class InsertCertificationController {
     public ResultVO query(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                           @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                           @RequestParam(value = "name", required = false, defaultValue = "") String name,
-                          @RequestParam(value = "sex") Byte sex,
+                          @RequestParam(value = "sex", required = false) Byte sex,
                           @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
                           @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime) {
         HashMap<String, Object> hashMap = new HashMap<>(4);

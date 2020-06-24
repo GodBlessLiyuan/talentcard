@@ -14,6 +14,11 @@ public class InsertCertificationPO implements Serializable {
 
     private Long talentId;
 
+    /**
+     * 1认证通过
+2待审批
+3驳回
+     */
     private Byte status;
 
     /**
@@ -30,6 +35,8 @@ public class InsertCertificationPO implements Serializable {
      * 1 未删除  2 已删除
      */
     private Byte dr;
+
+    private Long certinfo;
 
     private static final long serialVersionUID = 1L;
 }
