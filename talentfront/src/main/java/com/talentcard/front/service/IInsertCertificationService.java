@@ -51,4 +51,9 @@ public interface IInsertCertificationService {
      * 根据id查找单个基本信息的详情
      */
     ResultVO findOneDetail(String openId, Long insertCertId);
+
+    /**
+     * 编辑手机号
+     */
+    ResultVO editPhone(String openId,String phone);
 }

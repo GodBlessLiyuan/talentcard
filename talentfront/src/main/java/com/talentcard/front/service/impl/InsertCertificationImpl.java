@@ -401,4 +401,15 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertificationVO.setCurrentCertificationTimes(currentCertificationTimes);
         return new ResultVO(1000, insertCertificationVO);
     }
+
+    @Override
+    public ResultVO editPhone(String openId, String phone) {
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        talentPO.setPhone(phone);
+        talentMapper.updateByPrimaryKeySelective(talentPO);
+        return new ResultVO(1000);
+    }
 }
