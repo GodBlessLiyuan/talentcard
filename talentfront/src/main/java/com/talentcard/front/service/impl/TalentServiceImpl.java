@@ -2,6 +2,7 @@ package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.bo.InsertCertificationBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.constant.TalentConstant;
@@ -66,6 +67,8 @@ public class TalentServiceImpl implements ITalentService {
     private RedisMapUtil redisMapUtil;
     @Autowired
     private TestTalentInfoMapper testTalentInfoMapper;
+    @Autowired
+    private InsertCertificationMapper insertCertificationMapper;
     @Autowired
     private TalentCardHoldListMapper talentCardHoldListMapper;
 
@@ -568,12 +571,14 @@ public class TalentServiceImpl implements ITalentService {
     @Override
     public ResultVO findInfo(String openId) {
 
+        List<InsertCertificationBO> insertCertificationBOList = insertCertificationMapper.selectByOpenId(openId);
         /**
          * 添加redis hash缓存
          */
         String mapStr = this.redisMapUtil.hget(openId, "findInfo");
         TalentVO cacheResult = StringToObjUtil.strToObj(mapStr, TalentVO.class);
         if (cacheResult != null) {
+            cacheResult = TalentVO.setInsertCertification(cacheResult, insertCertificationBOList);
             return new ResultVO(1000, cacheResult);
         }
 
@@ -620,6 +625,7 @@ public class TalentServiceImpl implements ITalentService {
          * 设置缓存
          */
         this.redisMapUtil.hset(openId, "findInfo", JSON.toJSONString(talentVO));
+        talentVO = TalentVO.setInsertCertification(talentVO, insertCertificationBOList);
         return new ResultVO(1000, talentVO);
 
     }

@@ -1,5 +1,6 @@
 package com.talentcard.front.vo;
 
+import com.talentcard.common.bo.InsertCertificationBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.EducationPO;
@@ -7,6 +8,7 @@ import com.talentcard.common.pojo.ProfQualityPO;
 import com.talentcard.common.pojo.ProfTitlePO;
 import com.talentcard.common.pojo.TalentHonourPO;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -46,6 +48,8 @@ public class TalentVO {
     private List<ProfTitlePO> profTitlePOList;
     private List<ProfQualityPO> profQualityPOList;
     private List<TalentHonourPO> talentHonourPOList;
+
+    private List<InsertCertificationBO> insertCertificationBOList;
 
     /**
      * Bo转VO
@@ -130,5 +134,56 @@ public class TalentVO {
         }
 
         return talentVOList;
+    }
+
+    public static TalentVO setInsertCertification(TalentVO talentVO, List<InsertCertificationBO> insertCertificationBOList) {
+        if (insertCertificationBOList == null) {
+            return talentVO;
+        }
+        for (InsertCertificationBO insertCertificationBO : insertCertificationBOList) {
+            if (insertCertificationBO != null) {
+                if (insertCertificationBO.getType() == 1) {
+                    //学历
+                    if (insertCertificationBO.getInsertEducationPO() != null) {
+                        String picture = insertCertificationBO.getInsertEducationPO().getEducPicture();
+                        if (!StringUtils.isEmpty(picture)) {
+                            insertCertificationBO.getInsertEducationPO().
+                                    setEducPicture(FilePathConfig.getStaticPublicBasePath() + picture);
+                        }
+                    }
+                } else if (insertCertificationBO.getType() == 2) {
+                    //职称
+                    if (insertCertificationBO.getInsertTitlePO() != null) {
+                        String picture = insertCertificationBO.getInsertTitlePO().getPicture();
+                        if (!StringUtils.isEmpty(picture)) {
+                            insertCertificationBO.getInsertTitlePO().
+                                    setPicture(FilePathConfig.getStaticPublicBasePath() + picture);
+                        }
+                    }
+                } else if (insertCertificationBO.getType() == 3) {
+                    //职业资格
+                    if (insertCertificationBO.getInsertQualityPO() != null) {
+                        String picture = insertCertificationBO.getInsertQualityPO().getPicture();
+                        if (!StringUtils.isEmpty(picture)) {
+                            insertCertificationBO.getInsertQualityPO().
+                                    setPicture(FilePathConfig.getStaticPublicBasePath() + picture);
+                        }
+                    }
+                } else {
+                    if (insertCertificationBO.getInsertHonourPO() != null) {
+                        //人才荣誉
+                        String picture = insertCertificationBO.getInsertHonourPO().getHonourPicture();
+                        if (!StringUtils.isEmpty(picture)) {
+                            insertCertificationBO.getInsertHonourPO().
+                                    setHonourPicture(FilePathConfig.getStaticPublicBasePath() + picture);
+                        }
+                    }
+
+                }
+            }
+        }
+
+        talentVO.setInsertCertificationBOList(insertCertificationBOList);
+        return talentVO;
     }
 }

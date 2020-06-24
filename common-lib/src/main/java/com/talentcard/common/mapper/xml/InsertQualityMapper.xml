@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.InsertQualityMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.InsertQualityPO">
+    <id column="insert_pq_id" jdbcType="BIGINT" property="insertPqId" />
+    <result column="category" jdbcType="INTEGER" property="category" />
+    <result column="picture" jdbcType="CHAR" property="picture" />
+    <result column="info" jdbcType="CHAR" property="info" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="insert_cert_id" jdbcType="BIGINT" property="insertCertId" />
+    <result column="open_id" jdbcType="CHAR" property="openId" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    insert_pq_id, category, picture, info, `status`, insert_cert_id, open_id, dr
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_insert_quality
+    where insert_pq_id = #{insertPqId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_insert_quality
+    where insert_pq_id = #{insertPqId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.InsertQualityPO">
+    insert into t_insert_quality (insert_pq_id, category, picture, 
+      info, `status`, insert_cert_id, 
+      open_id, dr)
+    values (#{insertPqId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{picture,jdbcType=CHAR}, 
+      #{info,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{insertCertId,jdbcType=BIGINT}, 
+      #{openId,jdbcType=CHAR}, #{dr,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.InsertQualityPO">
+    insert into t_insert_quality
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="insertPqId != null">
+        insert_pq_id,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+      <if test="info != null">
+        info,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="insertCertId != null">
+        insert_cert_id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="dr != null">
+        dr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="insertPqId != null">
+        #{insertPqId,jdbcType=BIGINT},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=CHAR},
+      </if>
+      <if test="info != null">
+        #{info,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="insertCertId != null">
+        #{insertCertId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=CHAR},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.InsertQualityPO">
+    update t_insert_quality
+    <set>
+      <if test="category != null">
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=CHAR},
+      </if>
+      <if test="info != null">
+        info = #{info,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="insertCertId != null">
+        insert_cert_id = #{insertCertId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=CHAR},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
+    </set>
+    where insert_pq_id = #{insertPqId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.InsertQualityPO">
+    update t_insert_quality
+    set category = #{category,jdbcType=INTEGER},
+      picture = #{picture,jdbcType=CHAR},
+      info = #{info,jdbcType=CHAR},
+      `status` = #{status,jdbcType=TINYINT},
+      insert_cert_id = #{insertCertId,jdbcType=BIGINT},
+      open_id = #{openId,jdbcType=CHAR},
+      dr = #{dr,jdbcType=TINYINT}
+    where insert_pq_id = #{insertPqId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByInsertCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_insert_quality
+    where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+  </select>
+</mapper>

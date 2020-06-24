@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.InsertCertApprovalMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.InsertCertApprovalPO">
+    <id column="ica_id" jdbcType="BIGINT" property="icaId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="result" jdbcType="TINYINT" property="result" />
+    <result column="opinion" jdbcType="CHAR" property="opinion" />
+    <result column="insert_cert_id" jdbcType="BIGINT" property="insertCertId" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ica_id, create_time, `type`, user_id, update_time, `result`, opinion, insert_cert_id, 
+    dr
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_insert_cert_approval
+    where ica_id = #{icaId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_insert_cert_approval
+    where ica_id = #{icaId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.InsertCertApprovalPO">
+    insert into t_insert_cert_approval (ica_id, create_time, `type`, 
+      user_id, update_time, `result`, 
+      opinion, insert_cert_id, dr
+      )
+    values (#{icaId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{type,jdbcType=TINYINT}, 
+      #{userId,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, #{result,jdbcType=TINYINT}, 
+      #{opinion,jdbcType=CHAR}, #{insertCertId,jdbcType=BIGINT}, #{dr,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.InsertCertApprovalPO">
+    insert into t_insert_cert_approval
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="icaId != null">
+        ica_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="result != null">
+        `result`,
+      </if>
+      <if test="opinion != null">
+        opinion,
+      </if>
+      <if test="insertCertId != null">
+        insert_cert_id,
+      </if>
+      <if test="dr != null">
+        dr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="icaId != null">
+        #{icaId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=TINYINT},
+      </if>
+      <if test="opinion != null">
+        #{opinion,jdbcType=CHAR},
+      </if>
+      <if test="insertCertId != null">
+        #{insertCertId,jdbcType=BIGINT},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.InsertCertApprovalPO">
+    update t_insert_cert_approval
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null">
+        `result` = #{result,jdbcType=TINYINT},
+      </if>
+      <if test="opinion != null">
+        opinion = #{opinion,jdbcType=CHAR},
+      </if>
+      <if test="insertCertId != null">
+        insert_cert_id = #{insertCertId,jdbcType=BIGINT},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
+    </set>
+    where ica_id = #{icaId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.InsertCertApprovalPO">
+    update t_insert_cert_approval
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      `type` = #{type,jdbcType=TINYINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      `result` = #{result,jdbcType=TINYINT},
+      opinion = #{opinion,jdbcType=CHAR},
+      insert_cert_id = #{insertCertId,jdbcType=BIGINT},
+      dr = #{dr,jdbcType=TINYINT}
+    where ica_id = #{icaId,jdbcType=BIGINT}
+  </update>
+  <select id="findRecord" resultType="com.talentcard.common.bo.InsertCertApprovalBO">
+    select
+    ica.create_time as `time`,
+    ica.user_id as userId,
+    ica.result as result,
+    ica.opinion as opinion,
+    c.title as cTitle,
+    c.initial_word as cInitialWord,
+    t.category as talentCategory
+    from t_insert_cert_approval ica
+    left join
+    t_insert_certification ic
+    on ica.insert_cert_id = ic.insert_cert_id
+    left join
+    t_talent t
+    on ic.talent_id = t.talent_id
+    left join
+    t_user_card uc
+    on t.talent_id = uc.talent_id
+    left join
+    t_card c
+    on c.card_id = uc.card_id
+    where t.talent_id = #{talentId,jdbcType=BIGINT}
+  </select>
+</mapper>
