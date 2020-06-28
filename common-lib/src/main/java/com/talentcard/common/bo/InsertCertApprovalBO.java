@@ -14,11 +14,12 @@ import java.util.Date;
 @Data
 @Component
 public class InsertCertApprovalBO {
-    private Date time;
+    private Date createTime;
     private Long userId;
     private Byte result;
+    private Byte type;
     private String opinion;
     private String cTitle;
     private String cInitialWord;
-    private String talentCategory;
+    private String category;
 }

@@ -42,4 +42,8 @@ public interface IEditTalentService {
      */
     ResultVO editTalentHonour(TalentHonourDTO talentHonourDTO);
 
+    /**
+     * 新增/编辑人才荣誉
+     */
+    ResultVO editTalentCategory(String openId, String talentCategory);
 }

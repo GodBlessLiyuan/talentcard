@@ -124,4 +124,15 @@ public class InsertCertificationController {
                                   @RequestParam(value = "insertCertId") Long insertCertId) {
         return iInsertCertificationService.findOneDetail(openId, insertCertId);
     }
+
+    /**
+     * 新增认证次数查询
+     *
+     * @param openId
+     * @return
+     */
+    @RequestMapping("findCertificationTimes")
+    public ResultVO findInsertCertificationTimes(@RequestParam(value = "openId") String openId) {
+        return iInsertCertificationService.findInsertCertificationTimes(openId);
+    }
 }

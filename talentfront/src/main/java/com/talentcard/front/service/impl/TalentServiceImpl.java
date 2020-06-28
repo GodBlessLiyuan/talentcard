@@ -400,7 +400,7 @@ public class TalentServiceImpl implements ITalentService {
         /**
          * 清除redis缓存
          */
-        cleanRedisCache(openId);
+        clearRedisCache(openId);
         if (StringUtils.isEmpty(unionId)) {
             return new ResultVO(2213);
         }
@@ -564,13 +564,13 @@ public class TalentServiceImpl implements ITalentService {
         /**
          * 清除redis缓存
          */
-        cleanRedisCache(openId);
+        clearRedisCache(openId);
         return new ResultVO(1000);
     }
 
     @Override
     public ResultVO findInfo(String openId) {
-
+        //新增认证信息
         List<InsertCertificationBO> insertCertificationBOList = insertCertificationMapper.selectByOpenId(openId);
         /**
          * 添加redis hash缓存
@@ -647,7 +647,7 @@ public class TalentServiceImpl implements ITalentService {
      * @param openId
      */
     @Override
-    public void cleanRedisCache(String openId) {
+    public void clearRedisCache(String openId) {
         /**
          * 清除redis缓存
          */

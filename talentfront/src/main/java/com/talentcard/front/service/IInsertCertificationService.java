@@ -56,4 +56,6 @@ public interface IInsertCertificationService {
      * 编辑手机号
      */
     ResultVO editPhone(String openId,String phone);
+
+    ResultVO findInsertCertificationTimes(String openId);
 }
