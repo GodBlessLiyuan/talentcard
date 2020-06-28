@@ -245,34 +245,30 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 //更新人才表失败
                 return new ResultVO(2113);
             }
-            //(4) 更新学历表的认证状态
-            int resultEducation = educationMapper.updateStatusByCertId(certId, (byte) 4);
-            if (resultEducation == 0) {
-                //更新学历表状态失败
-                return new ResultVO(2368);
-            }
-            //(5) 更新职称表的认证状态
-            int resultProfTitle = profTitleMapper.updateStatusByCertId(certId, (byte) 4);
-            if (resultProfTitle == 0) {
-                //更新职称表状态失败
-                return new ResultVO(2369);
-            }
-            //(6) 更新职业资格表的认证状态
-            int resultProfQuality = profQualityMapper.updateStatusByCertId(certId, (byte) 4);
-            if (resultProfQuality == 0) {
-                //更新职称表状态失败
-                return new ResultVO(2370);
-            }
+            //(4) 更新学历表
+            EducationPO educationPO = educationMapper.selectByCertId(certId);
+            educationPO.setStatus((byte)4);
+            educationPO.setIfCertificate((byte)1);
+            educationMapper.updateByPrimaryKeySelective(educationPO);
+            //(5) 更新职称表
+            ProfTitlePO profTitlePO = profTitleMapper.selectByCertId(certId);
+            profTitlePO.setStatus((byte)4);
+            profTitlePO.setIfCertificate((byte)1);
+            profTitleMapper.updateByPrimaryKeySelective(profTitlePO);
+            //(6) 更新职业资格
+            ProfQualityPO profQualityPO = profQualityMapper.selectByCertId(certId);
+            profQualityPO.setStatus((byte)4);
+            profQualityPO.setIfCertificate((byte)1);
+            profQualityMapper.updateByPrimaryKeySelective(profQualityPO);
             //更新人才荣誉表
-            talentHonourMapper.updateStatusByCertId(certId, (byte) 4);
+            TalentHonourPO talentHonourPO = talentHonourMapper.selectByCertId(certId);
+            talentHonourPO.setStatus((byte)4);
+            talentHonourPO.setIfCertificate((byte)1);
+            talentHonourMapper.updateByPrimaryKeySelective(talentHonourPO);
             /**
              * 更新uci表
              */
             UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentId);
-            EducationPO educationPO = educationMapper.selectByCertId(certId);
-            ProfQualityPO profQualityPO = profQualityMapper.selectByCertId(certId);
-            ProfTitlePO profTitlePO = profTitleMapper.selectByCertId(certId);
-            TalentHonourPO talentHonourPO = talentHonourMapper.selectByCertId(certId);
 
             userCurrentInfoPO.setPolitical(talentPO.getPolitical());
             userCurrentInfoPO.setEducation(educationPO.getEducation());

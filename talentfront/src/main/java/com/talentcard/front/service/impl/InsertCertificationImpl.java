@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * @author ChenXU
@@ -89,6 +90,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertificationPO.setType((byte) 1);
         insertCertificationPO.setTalentId(talentPO.getTalentId());
         insertCertificationPO.setCertInfo(educationDTO.getEducation().longValue());
+        insertCertificationPO.setDr((byte)1);
         insertCertificationMapper.add(insertCertificationPO);
         //学历
         insertEducationPO.setInsertCertId(insertCertificationPO.getInsertCertId());
@@ -113,7 +115,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 清除redis缓存
          */
-        iTalentService.cleanRedisCache(talentPO.getOpenId());
+        iTalentService.clearRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
@@ -157,7 +159,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             /**
              * 清除redis缓存
              */
-            iTalentService.cleanRedisCache(talentPO.getOpenId());
+            iTalentService.clearRedisCache(talentPO.getOpenId());
         }
         /**
          * 新增
@@ -170,6 +172,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertificationPO.setType((byte) 3);
         insertCertificationPO.setTalentId(talentPO.getTalentId());
         insertCertificationPO.setCertInfo(profQualityDTO.getCategory().longValue());
+        insertCertificationPO.setDr((byte)1);
         insertCertificationMapper.add(insertCertificationPO);
         //职业资格
         insertQualityPO.setInsertCertId(insertCertificationPO.getInsertCertId());
@@ -191,7 +194,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 清除redis缓存
          */
-        iTalentService.cleanRedisCache(talentPO.getOpenId());
+        iTalentService.clearRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
@@ -243,6 +246,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertificationPO.setType((byte) 2);
         insertCertificationPO.setTalentId(talentPO.getTalentId());
         insertCertificationPO.setCertInfo(profTitleDTO.getCategory().longValue());
+        insertCertificationPO.setDr((byte)1);
         insertCertificationMapper.add(insertCertificationPO);
 
         insertTitlePO.setInsertCertId(insertCertificationPO.getInsertCertId());
@@ -265,7 +269,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 清除redis缓存
          */
-        iTalentService.cleanRedisCache(talentPO.getOpenId());
+        iTalentService.clearRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
@@ -318,6 +322,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertificationPO.setType((byte) 4);
         insertCertificationPO.setTalentId(talentPO.getTalentId());
         insertCertificationPO.setCertInfo(talentHonourDTO.getHonourId());
+        insertCertificationPO.setDr((byte)1);
         insertCertificationMapper.add(insertCertificationPO);
 
         insertHonourPO.setInsertCertId(insertCertificationPO.getInsertCertId());
@@ -340,11 +345,12 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 清除redis缓存
          */
-        iTalentService.cleanRedisCache(talentPO.getOpenId());
+        iTalentService.clearRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO delete(Long insertCertId) {
         InsertCertificationPO insertCertificationPO = insertCertificationMapper.selectByPrimaryKey(insertCertId);
         if (insertCertificationPO == null) {
@@ -400,11 +406,12 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if(talentPO==null){
             return new ResultVO(2500);
         }
-        iTalentService.cleanRedisCache(talentPO.getOpenId());
+        iTalentService.clearRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO editBasicInfo(BasicInfoDTO basicInfoDTO) {
         TalentPO talentPO = talentMapper.selectByOpenId(basicInfoDTO.getOpenId());
         if (talentPO == null) {
@@ -412,7 +419,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         }
         talentPO.setPolitical(basicInfoDTO.getPolitical());
         talentPO.setIndustry(basicInfoDTO.getIndustry());
-        talentPO.setIndustrySecond(basicInfoDTO.getIndustrySecond());
         talentPO.setWorkUnit(basicInfoDTO.getWorkUnit());
         talentPO.setWorkLocation(basicInfoDTO.getWorkLocation());
         talentPO.setWorkLocationType(basicInfoDTO.getWorkLocationType());
@@ -420,7 +426,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 清除redis缓存
          */
-        iTalentService.cleanRedisCache(talentPO.getOpenId());
+        iTalentService.clearRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
@@ -441,6 +447,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO editPhone(String openId, String phone) {
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
         if (talentPO == null) {
@@ -451,7 +458,21 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 清除redis缓存
          */
-        iTalentService.cleanRedisCache(talentPO.getOpenId());
+        iTalentService.clearRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO findInsertCertificationTimes(String openId) {
+        Integer educTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 1);
+        Integer titleTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 2);
+        Integer qualityTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 3);
+        Integer honourTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 4);
+        HashMap<String, Object> hashMap = new HashMap<>(4);
+        hashMap.put("educTimes", educTimes);
+        hashMap.put("titleTimes", titleTimes);
+        hashMap.put("qualityTimes", qualityTimes);
+        hashMap.put("honourTimes", honourTimes);
+        return new ResultVO(1000, hashMap);
     }
 }
