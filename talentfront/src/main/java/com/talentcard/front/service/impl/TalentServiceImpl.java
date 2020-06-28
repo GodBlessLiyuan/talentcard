@@ -261,7 +261,9 @@ public class TalentServiceImpl implements ITalentService {
         educationPO.setStatus(status);
         educationPO.setIfCertificate((byte) 10);
         educationPO.setGraduateTime(jsonObject.getString("graduateTime"));
-        educationMapper.insertSelective(educationPO);
+        if (educationPO.getEducation() != null) {
+            educationMapper.insertSelective(educationPO);
+        }
 
         //职称表
         ProfTitlePO profTitlePO = new ProfTitlePO();
@@ -271,8 +273,9 @@ public class TalentServiceImpl implements ITalentService {
         profTitlePO.setTalentId(talentId);
         profTitlePO.setStatus(status);
         profTitlePO.setIfCertificate((byte) 10);
-        profTitleMapper.insertSelective(profTitlePO);
-
+        if (profTitlePO.getCategory() != null) {
+            profTitleMapper.insertSelective(profTitlePO);
+        }
 
         //职业资格表
         ProfQualityPO profQualityPO = new ProfQualityPO();
@@ -282,8 +285,9 @@ public class TalentServiceImpl implements ITalentService {
         profQualityPO.setTalentId(talentId);
         profQualityPO.setStatus(status);
         profQualityPO.setIfCertificate((byte) 10);
-        profQualityMapper.insertSelective(profQualityPO);
-
+        if (profQualityPO.getCategory() != null) {
+            profQualityMapper.insertSelective(profQualityPO);
+        }
         //荣誉表
         TalentHonourPO talentHonourPO = new TalentHonourPO();
         talentHonourPO.setHonourId(jsonObject.getLong("honourId"));
@@ -291,8 +295,9 @@ public class TalentServiceImpl implements ITalentService {
         talentHonourPO.setTalentId(talentId);
         talentHonourPO.setStatus(status);
         talentHonourPO.setIfCertificate((byte) 10);
-        talentHonourMapper.insertSelective(talentHonourPO);
-
+        if (talentHonourPO.getHonourId() != null) {
+            talentHonourMapper.insertSelective(talentHonourPO);
+        }
         //插入基本信息表
         UserCurrentInfoPO userCurrentInfoPO = new UserCurrentInfoPO();
         userCurrentInfoPO.setTalentId(talentId);
@@ -511,8 +516,8 @@ public class TalentServiceImpl implements ITalentService {
             educationPO.setIfCertificate((byte) 10);
         } else {
             educationPO.setIfCertificate((byte) 2);
+            educationMapper.insertSelective(educationPO);
         }
-        educationMapper.insertSelective(educationPO);
 
         //职称表
         ProfTitlePO profTitlePO = new ProfTitlePO();
@@ -522,14 +527,13 @@ public class TalentServiceImpl implements ITalentService {
         profTitlePO.setCertId(certificationId);
         profTitlePO.setTalentId(talentId);
         profTitlePO.setStatus(status);
-        if (profTitlePO == null) {
+        if (profTitleCategory == null) {
             //10代表本次不认证
             profTitlePO.setIfCertificate((byte) 10);
         } else {
             profTitlePO.setIfCertificate((byte) 2);
+            profTitleMapper.insertSelective(profTitlePO);
         }
-        profTitleMapper.insertSelective(profTitlePO);
-
 
         //职业资格表
         ProfQualityPO profQualityPO = new ProfQualityPO();
@@ -539,13 +543,13 @@ public class TalentServiceImpl implements ITalentService {
         profQualityPO.setCertId(certificationId);
         profQualityPO.setTalentId(talentId);
         profQualityPO.setStatus(status);
-        if (profQualityPO == null) {
+        if (profQualityCategory == null) {
             //10代表本次不认证
             profQualityPO.setIfCertificate((byte) 10);
         } else {
             profQualityPO.setIfCertificate((byte) 2);
+            profQualityMapper.insertSelective(profQualityPO);
         }
-        profQualityMapper.insertSelective(profQualityPO);
 
         //人才荣誉表
         TalentHonourPO talentHonourPO = new TalentHonourPO();
@@ -554,13 +558,13 @@ public class TalentServiceImpl implements ITalentService {
         talentHonourPO.setCertId(certificationId);
         talentHonourPO.setTalentId(talentId);
         talentHonourPO.setStatus(status);
-        if (talentHonourPO == null) {
+        if (honourId == null) {
             //10代表本次不认证
             talentHonourPO.setIfCertificate((byte) 10);
         } else {
             talentHonourPO.setIfCertificate((byte) 2);
+            talentHonourMapper.insertSelective(talentHonourPO);
         }
-        talentHonourMapper.insertSelective(talentHonourPO);
         /**
          * 清除redis缓存
          */
