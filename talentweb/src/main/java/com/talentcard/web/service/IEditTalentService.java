@@ -29,7 +29,7 @@ public interface IEditTalentService {
     /**
      * 新增/编辑职称
      */
-    ResultVO editrofQuality(ProfQualityDTO profQualityDTO);
+    ResultVO editProfQuality(ProfQualityDTO profQualityDTO);
 
 
     /**
