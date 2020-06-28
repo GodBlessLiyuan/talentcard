@@ -16,7 +16,7 @@
     <result column="ic_status" jdbcType="TINYINT" property="status"/>
     <result column="ic_type" jdbcType="TINYINT" property="type"/>
     <result column="ic_create_time" jdbcType="TIMESTAMP" property="createTime"/>
-    <result column="ic_dr" jdbcType="TINYINT" profperty="dr"/>
+    <result column="ic_dr" jdbcType="TINYINT" property="dr"/>
     <result column="ic_cert_info" jdbcType="BIGINT" property="certInfo" />
     <association property="insertEducationPO" javaType="com.talentcard.common.pojo.InsertEducationPO">
       <id column="ie_insert_educ_id" jdbcType="BIGINT" property="insertEducId"/>
