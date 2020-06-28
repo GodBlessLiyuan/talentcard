@@ -247,23 +247,23 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             }
             //(4) 更新学历表
             EducationPO educationPO = educationMapper.selectByCertId(certId);
-            educationPO.setStatus((byte)4);
-            educationPO.setIfCertificate((byte)1);
+            educationPO.setStatus((byte) 4);
+            educationPO.setIfCertificate((byte) 1);
             educationMapper.updateByPrimaryKeySelective(educationPO);
             //(5) 更新职称表
             ProfTitlePO profTitlePO = profTitleMapper.selectByCertId(certId);
-            profTitlePO.setStatus((byte)4);
-            profTitlePO.setIfCertificate((byte)1);
+            profTitlePO.setStatus((byte) 4);
+            profTitlePO.setIfCertificate((byte) 1);
             profTitleMapper.updateByPrimaryKeySelective(profTitlePO);
             //(6) 更新职业资格
             ProfQualityPO profQualityPO = profQualityMapper.selectByCertId(certId);
-            profQualityPO.setStatus((byte)4);
-            profQualityPO.setIfCertificate((byte)1);
+            profQualityPO.setStatus((byte) 4);
+            profQualityPO.setIfCertificate((byte) 1);
             profQualityMapper.updateByPrimaryKeySelective(profQualityPO);
             //更新人才荣誉表
             TalentHonourPO talentHonourPO = talentHonourMapper.selectByCertId(certId);
-            talentHonourPO.setStatus((byte)4);
-            talentHonourPO.setIfCertificate((byte)1);
+            talentHonourPO.setStatus((byte) 4);
+            talentHonourPO.setIfCertificate((byte) 1);
             talentHonourMapper.updateByPrimaryKeySelective(talentHonourPO);
             /**
              * 更新uci表
