@@ -6,6 +6,7 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IInsertCertificationService;
+import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.vo.InsertCertificationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     InsertHonourMapper insertHonourMapper;
     @Autowired
     InsertCertApprovalMapper insertCertApprovalMapper;
+    @Autowired
+    ITalentService iTalentService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -107,6 +110,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertApprovalPO.setResult((byte) 8);
         insertCertApprovalPO.setType((byte) 1);
         insertCertApprovalMapper.insertSelective(insertCertApprovalPO);
+        /**
+         * 清除redis缓存
+         */
+        iTalentService.cleanRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
@@ -147,7 +154,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             }
             oldInsertCertificationPO.setStatus((byte) 10);
             insertCertificationMapper.updateByPrimaryKeySelective(oldInsertCertificationPO);
-
+            /**
+             * 清除redis缓存
+             */
+            iTalentService.cleanRedisCache(talentPO.getOpenId());
         }
         /**
          * 新增
@@ -178,6 +188,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertApprovalPO.setResult((byte) 8);
         insertCertApprovalPO.setType((byte) 1);
         insertCertApprovalMapper.insertSelective(insertCertApprovalPO);
+        /**
+         * 清除redis缓存
+         */
+        iTalentService.cleanRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
@@ -248,6 +262,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertApprovalPO.setResult((byte) 8);
         insertCertApprovalPO.setType((byte) 1);
         insertCertApprovalMapper.insertSelective(insertCertApprovalPO);
+        /**
+         * 清除redis缓存
+         */
+        iTalentService.cleanRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
@@ -319,6 +337,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertApprovalPO.setResult((byte) 8);
         insertCertApprovalPO.setType((byte) 1);
         insertCertApprovalMapper.insertSelective(insertCertApprovalPO);
+        /**
+         * 清除redis缓存
+         */
+        iTalentService.cleanRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
@@ -371,6 +393,14 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             insertHonourMapper.updateByPrimaryKeySelective(insertHonourPO);
 
         }
+        /**
+         * 清除redis缓存
+         */
+        TalentPO talentPO = talentMapper.selectByPrimaryKey(insertCertificationPO.getTalentId());
+        if(talentPO==null){
+            return new ResultVO(2500);
+        }
+        iTalentService.cleanRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
@@ -380,21 +410,17 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (talentPO == null) {
             return new ResultVO(2500);
         }
-        talentPO.setCategory(basicInfoDTO.getCategory());
         talentPO.setPolitical(basicInfoDTO.getPolitical());
-        talentPO.setSex(basicInfoDTO.getSex());
-        talentPO.setName(basicInfoDTO.getName());
-        talentPO.setCardType(basicInfoDTO.getCardType());
-        talentPO.setIdCard(basicInfoDTO.getIdCard());
-        talentPO.setPassport(basicInfoDTO.getPassport());
-        talentPO.setDriverCard(basicInfoDTO.getDriverCard());
-        talentPO.setWorkLocation(basicInfoDTO.getWorkLocation());
-        talentPO.setWorkLocationType(basicInfoDTO.getWorkLocationType());
         talentPO.setIndustry(basicInfoDTO.getIndustry());
         talentPO.setIndustrySecond(basicInfoDTO.getIndustrySecond());
-        talentPO.setPhone(basicInfoDTO.getPhone());
-        talentPO.setTalentSource(basicInfoDTO.getTalentSource());
+        talentPO.setWorkUnit(basicInfoDTO.getWorkUnit());
+        talentPO.setWorkLocation(basicInfoDTO.getWorkLocation());
+        talentPO.setWorkLocationType(basicInfoDTO.getWorkLocationType());
         talentMapper.updateByPrimaryKeySelective(talentPO);
+        /**
+         * 清除redis缓存
+         */
+        iTalentService.cleanRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
@@ -422,6 +448,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         }
         talentPO.setPhone(phone);
         talentMapper.updateByPrimaryKeySelective(talentPO);
+        /**
+         * 清除redis缓存
+         */
+        iTalentService.cleanRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 }

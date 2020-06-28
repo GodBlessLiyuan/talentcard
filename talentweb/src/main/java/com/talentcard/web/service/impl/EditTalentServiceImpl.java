@@ -61,7 +61,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
     }
 
     @Override
-    public ResultVO editrofQuality(ProfQualityDTO profQualityDTO) {
+    public ResultVO editProfQuality(ProfQualityDTO profQualityDTO) {
         return null;
     }
 
