@@ -646,7 +646,8 @@ public class TalentServiceImpl implements ITalentService {
      *
      * @param openId
      */
-    private void cleanRedisCache(String openId) {
+    @Override
+    public void cleanRedisCache(String openId) {
         /**
          * 清除redis缓存
          */

@@ -86,4 +86,10 @@ public interface ITalentService {
 
 
     ResultVO updateUnionId(String token, String openId);
+
+    /**
+     * 清除用户缓存信息
+     * @param openId
+     */
+    void cleanRedisCache(String openId);
 }
