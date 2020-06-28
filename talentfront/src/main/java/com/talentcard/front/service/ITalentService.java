@@ -91,5 +91,5 @@ public interface ITalentService {
      * 清除用户缓存信息
      * @param openId
      */
-    void cleanRedisCache(String openId);
+    void clearRedisCache(String openId);
 }

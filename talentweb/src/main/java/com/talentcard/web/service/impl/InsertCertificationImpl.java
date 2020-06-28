@@ -11,7 +11,9 @@ import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IInsertCertificationService;
+import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.vo.InsertCertificationVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.stereotype.Service;
@@ -53,6 +55,13 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     private ProfQualityMapper profQualityMapper;
     @Autowired
     private TalentHonourMapper talentHonourMapper;
+    @Autowired
+    private CardMapper cardMapper;
+    @Autowired
+    private UserCurrentInfoMapper userCurrentInfoMapper;
+    @Autowired
+    ITalentService iTalentService;
+
 
 
     @Override
@@ -97,7 +106,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
          */
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         if (activcateBO == null) {
-            return new ResultVO(2600, "新增审批时，人才状态不对！");
+            return new ResultVO(2900, "新增审批时，人才状态不对！");
         }
         InsertCertificationBO insertCertificationBO = insertCertificationMapper.findOne(openId, insertCertId);
         Long certId = activcateBO.getCertId();
@@ -166,26 +175,47 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             talentHonourPO.setStatus((byte) 1);
             talentHonourMapper.insertSelective(talentHonourPO);
         }
+        /**
+         * 清除redis缓存
+         */
+        iTalentService.clearRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
     @Override
     public ResultVO findOne(Long talentId, Long insertCertId) {
-        HashMap<String, Object> result = new HashMap<>();
+        HashMap<String, Object> result = new HashMap<>(5);
+        //基本信息
         TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
         if (talentPO == null) {
             return new ResultVO(2500);
         }
+        //新增认证信息
         InsertCertificationBO insertCertificationBO = insertCertificationMapper.findOne(talentPO.getOpenId(), insertCertId);
         if (insertCertificationBO == null) {
             return new ResultVO(2551);
         }
         InsertCertificationVO insertCertificationVO = InsertCertificationVO.convert(insertCertificationBO);
-
+        //记录信息
         List<InsertCertApprovalBO> insertCertApprovalBOList = insertCertApprovalMapper.findRecord(talentId);
+        //卡名和人才类别
+        CardPO cardPO = cardMapper.selectByPrimaryKey(talentPO.getCardId());
+        if (cardPO == null) {
+            return new ResultVO(2600);
+        }
+        String cardName = cardPO.getTitle();
+        if (!StringUtils.isEmpty(cardPO.getInitialWord())) {
+            cardName = cardName + cardPO.getInitialWord();
+        }
+        UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentId);
+        if (userCurrentInfoPO == null) {
+            return new ResultVO(2500);
+        }
         result.put("basicInfo", talentPO);
         result.put("insertCertInfo", insertCertificationVO);
         result.put("record", insertCertApprovalBOList);
+        result.put("cardName", cardName);
+        result.put("talentCategory", userCurrentInfoPO.getTalentCategory());
         return new ResultVO(1000, result);
     }
 }

@@ -141,13 +141,14 @@
   </update>
   <select id="findRecord" resultType="com.talentcard.common.bo.InsertCertApprovalBO">
     select
-    ica.create_time as `time`,
+    ica.create_time as createTime,
     ica.user_id as userId,
     ica.result as result,
     ica.opinion as opinion,
+    ica.type as type
     c.title as cTitle,
     c.initial_word as cInitialWord,
-    t.category as talentCategory
+    t.category as category
     from t_insert_cert_approval ica
     left join
     t_insert_certification ic
