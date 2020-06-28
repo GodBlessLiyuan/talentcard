@@ -44,6 +44,9 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (talentPO == null) {
             return new ResultVO<>(2500);
         }
+        if (talentPO.getStatus() != 1) {
+            return new ResultVO<>(2555, "人才无新增认证权限！");
+        }
         /**
          * 判断新增还是编辑
          */
@@ -115,10 +118,13 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (talentPO == null) {
             return new ResultVO<>(2500);
         }
+        if (talentPO.getStatus() != 1) {
+            return new ResultVO<>(2555, "人才无新增认证权限！");
+        }
         /**
          * 判断新增还是编辑
          */
-        if (insertQualityId == null) {
+        if (insertQualityId != null) {
             /**
              * 编辑
              */
@@ -182,6 +188,9 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         TalentPO talentPO = talentMapper.selectByOpenId(profTitleDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
+        }
+        if (talentPO.getStatus() != 1) {
+            return new ResultVO<>(2555, "人才无新增认证权限！");
         }
         /**
          * 判断新增还是编辑
@@ -249,6 +258,9 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         TalentPO talentPO = talentMapper.selectByOpenId(talentHonourDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
+        }
+        if (talentPO.getStatus() != 1) {
+            return new ResultVO<>(2555, "人才无新增认证权限！");
         }
         /**
          * 判断新增还是编辑
