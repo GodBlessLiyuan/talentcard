@@ -1,14 +1,12 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.InsertCertApprovalBO;
 import com.talentcard.common.bo.InsertCertificationBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.mapper.*;
-import com.talentcard.common.pojo.BatchCertificatePO;
-import com.talentcard.common.pojo.InsertCertApprovalPO;
-import com.talentcard.common.pojo.InsertCertificationPO;
-import com.talentcard.common.pojo.TalentPO;
+import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
@@ -45,6 +43,16 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     InsertHonourMapper insertHonourMapper;
     @Autowired
     InsertCertApprovalMapper insertCertApprovalMapper;
+    @Autowired
+    private CertificationMapper certificationMapper;
+    @Autowired
+    private EducationMapper educationMapper;
+    @Autowired
+    private ProfTitleMapper profTitleMapper;
+    @Autowired
+    private ProfQualityMapper profQualityMapper;
+    @Autowired
+    private TalentHonourMapper talentHonourMapper;
 
 
     @Override
@@ -60,6 +68,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (talentPO == null || talentPO.getDr() == 2) {
             return new ResultVO(2500);
         }
+        String openId = talentPO.getOpenId();
         InsertCertificationPO insertCertificationPO = insertCertificationMapper.selectByPrimaryKey(insertCertId);
         if (insertCertificationPO == null) {
             return new ResultVO(2521);
@@ -83,6 +92,80 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertApprovalPO.setInsertCertId(insertCertId);
         insertCertApprovalMapper.insertSelective(insertCertApprovalPO);
 
+        /**
+         * 链接学历职称职业资格人才荣誉
+         */
+        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
+        if (activcateBO == null) {
+            return new ResultVO(2600, "新增审批时，人才状态不对！");
+        }
+        InsertCertificationBO insertCertificationBO = insertCertificationMapper.findOne(openId, insertCertId);
+        Long certId = activcateBO.getCertId();
+        Byte type = insertCertificationBO.getType();
+        if (type == 1) {
+            //学历
+            EducationPO educationPO = new EducationPO();
+            InsertEducationPO insertEducationPO = insertCertificationBO.getInsertEducationPO();
+            if (insertEducationPO == null) {
+                return new ResultVO(2556);
+            }
+            educationPO.setGraduateTime(insertEducationPO.getGraduateTime());
+            educationPO.setFirstClass(insertEducationPO.getFirstClass());
+            educationPO.setEducPicture(insertEducationPO.getEducPicture());
+            educationPO.setSchool(insertEducationPO.getSchool());
+            educationPO.setMajor(insertEducationPO.getMajor());
+            educationPO.setEducation(insertEducationPO.getEducation());
+            educationPO.setIfCertificate((byte) 1);
+            educationPO.setCertId(certId);
+            educationPO.setStatus((byte) 1);
+            educationPO.setTalentId(talentId);
+            educationMapper.insertSelective(educationPO);
+        } else if (type == 2) {
+            //职称
+            ProfTitlePO profTitlePO = new ProfTitlePO();
+            InsertTitlePO insertTitlePO = insertCertificationBO.getInsertTitlePO();
+            if (insertTitlePO == null) {
+                return new ResultVO(2556);
+            }
+            profTitlePO.setPicture(insertTitlePO.getPicture());
+            profTitlePO.setInfo(insertTitlePO.getInfo());
+            profTitlePO.setCategory(insertTitlePO.getCategory());
+            profTitlePO.setCertId(certId);
+            profTitlePO.setStatus((byte) 1);
+            profTitlePO.setTalentId(talentId);
+            profTitlePO.setIfCertificate((byte) 1);
+            profTitleMapper.insertSelective(profTitlePO);
+        } else if (type == 3) {
+            //职业资格
+            ProfQualityPO profQualityPO = new ProfQualityPO();
+            InsertQualityPO insertQualityPO = insertCertificationBO.getInsertQualityPO();
+            if (insertQualityPO == null) {
+                return new ResultVO(2556);
+            }
+            profQualityPO.setPicture(insertQualityPO.getPicture());
+            profQualityPO.setStatus((byte) 1);
+            profQualityPO.setTalentId(talentId);
+            profQualityPO.setCertId(certId);
+            profQualityPO.setInfo(insertQualityPO.getInfo());
+            profQualityPO.setCategory(insertQualityPO.getCategory());
+            profQualityPO.setIfCertificate((byte) 1);
+            profQualityMapper.insertSelective(profQualityPO);
+        } else {
+            //人才荣誉
+            TalentHonourPO talentHonourPO = new TalentHonourPO();
+            InsertHonourPO insertHonourPO = insertCertificationBO.getInsertHonourPO();
+            if (insertHonourPO == null) {
+                return new ResultVO(2556);
+            }
+            talentHonourPO.setInfo(insertHonourPO.getInfo());
+            talentHonourPO.setHonourPicture(insertHonourPO.getHonourPicture());
+            talentHonourPO.setHonourId(insertHonourPO.getHonourId());
+            talentHonourPO.setCertId(certId);
+            talentHonourPO.setIfCertificate((byte) 1);
+            talentHonourPO.setTalentId(talentId);
+            talentHonourPO.setStatus((byte) 1);
+            talentHonourMapper.insertSelective(talentHonourPO);
+        }
         return new ResultVO(1000);
     }
 
