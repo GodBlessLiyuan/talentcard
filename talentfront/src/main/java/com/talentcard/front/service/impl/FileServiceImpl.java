@@ -29,7 +29,6 @@ public class FileServiceImpl implements IFileService {
         if (url == null || StringUtils.isEmpty(url)) {
             return new ResultVO(2810, "文件上传失败！");
         }
-        url = filePathConfig.getPublicBasePath() + url;
         return new ResultVO(1000, url);
     }
 }
