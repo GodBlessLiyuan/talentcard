@@ -17,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -72,6 +73,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO certResult(HttpSession httpSession, Long talentId, Long insertCertId, Byte result, String opinion) {
         TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
         if (talentPO == null || talentPO.getDr() == 2) {
