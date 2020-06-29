@@ -43,7 +43,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO addEducation(EducationDTO educationDTO) {
-        Long insertEducId = educationDTO.getInsertEducId();
+        Long insertCertId = educationDTO.getInsertCertId();
         TalentPO talentPO = talentMapper.selectByOpenId(educationDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
@@ -54,13 +54,13 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 判断新增还是编辑
          */
-        if (insertEducId != null) {
+        if (insertCertId != null) {
             /**
              * 编辑
              */
             //学历
             InsertEducationPO oldInsertEducationPO =
-                    insertEducationMapper.selectByPrimaryKey(insertEducId);
+                    insertEducationMapper.selectByInsertCertId(insertCertId);
             if (oldInsertEducationPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
@@ -71,7 +71,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             insertEducationMapper.updateByPrimaryKeySelective(oldInsertEducationPO);
             //认证
             InsertCertificationPO oldInsertCertificationPO =
-                    insertCertificationMapper.selectByPrimaryKey(educationDTO.getInsertCertId());
+                    insertCertificationMapper.selectByPrimaryKey(insertCertId);
             if (oldInsertCertificationPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
@@ -122,7 +122,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO addProfQuality(ProfQualityDTO profQualityDTO) {
-        Long insertQualityId = profQualityDTO.getInsertQualityId();
+        Long insertCertId = profQualityDTO.getInsertCertId();
         TalentPO talentPO = talentMapper.selectByOpenId(profQualityDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
@@ -133,12 +133,12 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 判断新增还是编辑
          */
-        if (insertQualityId != null) {
+        if (insertCertId != null) {
             /**
              * 编辑
              */
             //职业资格
-            InsertQualityPO oldInsertQualityPO = insertQualityMapper.selectByPrimaryKey(insertQualityId);
+            InsertQualityPO oldInsertQualityPO = insertQualityMapper.selectByInsertCertId(insertCertId);
             if (oldInsertQualityPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
@@ -150,7 +150,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
 
             //认证
             InsertCertificationPO oldInsertCertificationPO =
-                    insertCertificationMapper.selectByPrimaryKey(profQualityDTO.getInsertCertId());
+                    insertCertificationMapper.selectByPrimaryKey(insertCertId);
             if (oldInsertCertificationPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
@@ -201,7 +201,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO addProfTitle(ProfTitleDTO profTitleDTO) {
-        Long insertTitleId = profTitleDTO.getInsertTitleId();
+        Long insertCertId = profTitleDTO.getInsertCertId();
         TalentPO talentPO = talentMapper.selectByOpenId(profTitleDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
@@ -212,11 +212,11 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 判断新增还是编辑
          */
-        if (insertTitleId != null) {
+        if (insertCertId != null) {
             /**
              * 编辑
              */
-            InsertTitlePO oldInsertTitlePO = insertTitleMapper.selectByPrimaryKey(insertTitleId);
+            InsertTitlePO oldInsertTitlePO = insertTitleMapper.selectByInsertCertId(insertCertId);
             if (oldInsertTitlePO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
@@ -228,7 +228,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
 
             //认证
             InsertCertificationPO oldInsertCertificationPO =
-                    insertCertificationMapper.selectByPrimaryKey(profTitleDTO.getInsertCertId());
+                    insertCertificationMapper.selectByPrimaryKey(insertCertId);
             if (oldInsertCertificationPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
@@ -276,7 +276,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO addTalentHonour(TalentHonourDTO talentHonourDTO) {
-        Long insertTalentHonourId = talentHonourDTO.getInsertTalentHonourId();
+        Long insertCertId = talentHonourDTO.getInsertCertId();
         TalentPO talentPO = talentMapper.selectByOpenId(talentHonourDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
@@ -287,11 +287,11 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 判断新增还是编辑
          */
-        if (insertTalentHonourId != null) {
+        if (insertCertId != null) {
             /**
              * 编辑
              */
-            InsertHonourPO oldInsertHonourPO = insertHonourMapper.selectByPrimaryKey(insertTalentHonourId);
+            InsertHonourPO oldInsertHonourPO = insertHonourMapper.selectByInsertCertId(insertCertId);
             if (oldInsertHonourPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
@@ -303,7 +303,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
 
             //认证
             InsertCertificationPO oldInsertCertificationPO =
-                    insertCertificationMapper.selectByPrimaryKey(talentHonourDTO.getInsertCertId());
+                    insertCertificationMapper.selectByPrimaryKey(insertCertId);
             if (oldInsertCertificationPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
