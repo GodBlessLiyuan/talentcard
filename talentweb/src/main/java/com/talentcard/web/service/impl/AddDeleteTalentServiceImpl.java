@@ -59,36 +59,54 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         /**
          * 链接学历职称职业资格人才荣誉
          */
-
-        EducationPO educationPO = educationMapper.selectByPrimaryKey(educationDTO.getEducId());
-        if (educationPO == null) {
-            return new ResultVO(2661, "查无此认证！");
+        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
+        if (activcateBO == null) {
+            return new ResultVO(2900, "新增审批时，人才状态不对！");
         }
+        Long certId = activcateBO.getCertId();
+        Long talentId = activcateBO.getTalentId();
+        EducationPO educationPO = new EducationPO();
+        //学历
         educationPO.setGraduateTime(educationDTO.getGraduateTime());
         educationPO.setFirstClass(educationDTO.getFirstClass());
         educationPO.setEducPicture(educationDTO.getEducPicture());
         educationPO.setSchool(educationDTO.getSchool());
         educationPO.setMajor(educationDTO.getMajor());
         educationPO.setEducation(educationDTO.getEducation());
-        educationMapper.updateByPrimaryKeySelective(educationPO);
+        educationPO.setIfCertificate((byte) 1);
+        educationPO.setCertId(certId);
+        educationPO.setStatus((byte) 1);
+        educationPO.setTalentId(talentId);
+        educationMapper.insertSelective(educationPO);
         /**
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
         return new ResultVO(1000);
+
     }
 
     @Override
     public ResultVO addProfQuality(ProfQualityDTO profQualityDTO) {
         String openId = profQualityDTO.getOpenId();
-        ProfQualityPO profQualityPO = profQualityMapper.selectByPrimaryKey(profQualityDTO.getPqId());
-        if (profQualityPO == null) {
-            return new ResultVO(2661, "查无此认证！");
+        /**
+         * 链接学历职称职业资格人才荣誉
+         */
+        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
+        if (activcateBO == null) {
+            return new ResultVO(2900, "新增审批时，人才状态不对！");
         }
+        Long certId = activcateBO.getCertId();
+        Long talentId = activcateBO.getTalentId();
+        ProfQualityPO profQualityPO = new ProfQualityPO();
         profQualityPO.setPicture(profQualityDTO.getPicture());
+        profQualityPO.setStatus((byte) 1);
+        profQualityPO.setTalentId(talentId);
+        profQualityPO.setCertId(certId);
         profQualityPO.setInfo(profQualityDTO.getInfo());
         profQualityPO.setCategory(profQualityDTO.getCategory());
-        profQualityMapper.updateByPrimaryKeySelective(profQualityPO);
+        profQualityPO.setIfCertificate((byte) 1);
+        profQualityMapper.insertSelective(profQualityPO);
         /**
          * 清除redis缓存
          */
@@ -99,14 +117,24 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     @Override
     public ResultVO addProfTitle(ProfTitleDTO profTitleDTO) {
         String openId = profTitleDTO.getOpenId();
-        ProfTitlePO profTitlePO = profTitleMapper.selectByPrimaryKey(profTitleDTO.getInsertTitleId());
-        if (profTitlePO == null) {
-            return new ResultVO(2661, "查无此认证！");
+        /**
+         * 链接学历职称职业资格人才荣誉
+         */
+        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
+        if (activcateBO == null) {
+            return new ResultVO(2900, "新增审批时，人才状态不对！");
         }
+        Long certId = activcateBO.getCertId();
+        Long talentId = activcateBO.getTalentId();
+        ProfTitlePO profTitlePO = new ProfTitlePO();
         profTitlePO.setPicture(profTitleDTO.getPicture());
         profTitlePO.setInfo(profTitleDTO.getInfo());
         profTitlePO.setCategory(profTitleDTO.getCategory());
-        profTitleMapper.updateByPrimaryKeySelective(profTitlePO);
+        profTitlePO.setCertId(certId);
+        profTitlePO.setStatus((byte) 1);
+        profTitlePO.setTalentId(talentId);
+        profTitlePO.setIfCertificate((byte) 1);
+        profTitleMapper.insertSelective(profTitlePO);
         /**
          * 清除redis缓存
          */
@@ -117,14 +145,24 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     @Override
     public ResultVO addTalentHonour(TalentHonourDTO talentHonourDTO) {
         String openId = talentHonourDTO.getOpenId();
-        TalentHonourPO talentHonourPO = talentHonourMapper.selectByPrimaryKey(talentHonourDTO.getThId());
-        if (talentHonourPO == null) {
-            return new ResultVO(2661, "查无此认证！");
+        /**
+         * 链接学历职称职业资格人才荣誉
+         */
+        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
+        if (activcateBO == null) {
+            return new ResultVO(2900, "新增审批时，人才状态不对！");
         }
+        Long certId = activcateBO.getCertId();
+        Long talentId = activcateBO.getTalentId();
+        TalentHonourPO talentHonourPO = new TalentHonourPO();
         talentHonourPO.setInfo(talentHonourDTO.getInfo());
         talentHonourPO.setHonourPicture(talentHonourDTO.getHonourPicture());
         talentHonourPO.setHonourId(talentHonourDTO.getHonourId());
-        talentHonourMapper.updateByPrimaryKeySelective(talentHonourPO);
+        talentHonourPO.setCertId(certId);
+        talentHonourPO.setIfCertificate((byte) 1);
+        talentHonourPO.setTalentId(talentId);
+        talentHonourPO.setStatus((byte) 1);
+        talentHonourMapper.insertSelective(talentHonourPO);
         /**
          * 清除redis缓存
          */
@@ -134,38 +172,54 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
 
 
     @Override
-    public ResultVO deleteEducation(Long educId) {
+    public ResultVO deleteEducation(String openId, Long educId) {
         Integer result = educationMapper.deleteByPrimaryKey(educId);
         if (result != 1) {
             return new ResultVO(2662, "删除失败！");
         }
+        /**
+         * 清除redis缓存
+         */
+        iTalentService.clearRedisCache(openId);
         return new ResultVO(1000);
     }
 
     @Override
-    public ResultVO deleteProfQuality(Long pqId) {
+    public ResultVO deleteProfQuality(String openId, Long pqId) {
         Integer result = profQualityMapper.deleteByPrimaryKey(pqId);
         if (result != 1) {
             return new ResultVO(2662, "删除失败！");
         }
+        /**
+         * 清除redis缓存
+         */
+        iTalentService.clearRedisCache(openId);
         return new ResultVO(1000);
     }
 
     @Override
-    public ResultVO deleteProfTitle(Long ptId) {
+    public ResultVO deleteProfTitle(String openId, Long ptId) {
         Integer result = profTitleMapper.deleteByPrimaryKey(ptId);
         if (result != 1) {
             return new ResultVO(2662, "删除失败！");
         }
+        /**
+         * 清除redis缓存
+         */
+        iTalentService.clearRedisCache(openId);
         return new ResultVO(1000);
     }
 
     @Override
-    public ResultVO deleteTalentHonour(Long thId) {
+    public ResultVO deleteTalentHonour(String openId, Long thId) {
         Integer result = talentHonourMapper.deleteByPrimaryKey(thId);
         if (result != 1) {
             return new ResultVO(2662, "删除失败！");
         }
+        /**
+         * 清除redis缓存
+         */
+        iTalentService.clearRedisCache(openId);
         return new ResultVO(1000);
     }
 }
