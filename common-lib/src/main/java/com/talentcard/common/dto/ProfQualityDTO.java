@@ -16,4 +16,5 @@ public class ProfQualityDTO {
     private String picture;
     private String info;
     private String openId;
+    private Long pqId;
 }
