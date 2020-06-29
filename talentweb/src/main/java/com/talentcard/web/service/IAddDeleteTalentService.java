@@ -37,32 +37,34 @@ public interface IAddDeleteTalentService {
 
     /**
      * 删除
-     *
+     * @param openId
      * @param educId
      * @return
      */
-    ResultVO deleteEducation(Long educId);
+    ResultVO deleteEducation(String openId, Long educId);
 
 
     /**
      * 删除
+     * @param openId
      * @param pqId
      * @return
      */
-    ResultVO deleteProfQuality(Long pqId);
-
+    ResultVO deleteProfQuality(String openId, Long pqId);
 
     /**
      * 删除
+     * @param openId
      * @param ptId
      * @return
      */
-    ResultVO deleteProfTitle(Long ptId);
+    ResultVO deleteProfTitle(String openId, Long ptId);
 
     /**
      * 删除
+     * @param openId
      * @param thId
      * @return
      */
-    ResultVO deleteTalentHonour(Long thId);
+    ResultVO deleteTalentHonour(String openId, Long thId);
 }

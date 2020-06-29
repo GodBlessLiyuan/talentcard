@@ -23,7 +23,7 @@ public class AddDeleteTalentController {
     IAddDeleteTalentService iAddDeleteTalentService;
 
     /**
-     * 学历
+     * 新增学历
      *
      * @param educationDTO
      * @return
@@ -34,7 +34,7 @@ public class AddDeleteTalentController {
     }
 
     /**
-     * 职业资格
+     * 新增职业资格
      *
      * @param profQualityDTO
      * @return
@@ -45,7 +45,7 @@ public class AddDeleteTalentController {
     }
 
     /**
-     * 职称
+     * 新增职称
      *
      * @param profTitleDTO
      * @return
@@ -56,7 +56,7 @@ public class AddDeleteTalentController {
     }
 
     /**
-     * 人才荣誉
+     * 新增人才荣誉
      *
      * @param talentHonourDTO
      * @return
@@ -66,4 +66,51 @@ public class AddDeleteTalentController {
         return iAddDeleteTalentService.addTalentHonour(talentHonourDTO);
     }
 
+    /**
+     * 删除学历
+     * @param openId
+     * @param educId
+     * @return
+     */
+    @RequestMapping("deleteEducation")
+    public ResultVO deleteEducation(@RequestParam(value = "openId") String openId,
+                                    @RequestParam(value = "educId") Long educId) {
+        return iAddDeleteTalentService.deleteEducation(openId, educId);
+    }
+
+    /**
+     * 删除职业资格
+     * @param openId
+     * @param pqId
+     * @return
+     */
+    @RequestMapping("deleteProfQuality")
+    public ResultVO deleteProfQuality(@RequestParam(value = "openId") String openId,
+                                      @RequestParam(value = "pqId") Long pqId) {
+        return iAddDeleteTalentService.deleteProfQuality(openId, pqId);
+    }
+
+    /**
+     * 删除职称
+     * @param openId
+     * @param ptId
+     * @return
+     */
+    @RequestMapping("deleteProfTitle")
+    public ResultVO deleteProfTitle(@RequestParam(value = "openId") String openId,
+                                    @RequestParam(value = "ptId") Long ptId) {
+        return iAddDeleteTalentService.deleteProfTitle(openId, ptId);
+    }
+
+    /**
+     * 删除人才荣誉
+     * @param openId
+     * @param thId
+     * @return
+     */
+    @RequestMapping("deleteTalentHonour")
+    public ResultVO deleteTalentHonour(@RequestParam(value = "openId") String openId,
+                                       @RequestParam(value = "thId") Long thId) {
+        return iAddDeleteTalentService.deleteTalentHonour(openId, thId);
+    }
 }
