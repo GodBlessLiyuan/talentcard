@@ -441,8 +441,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (type == null) {
             return new ResultVO(2553, "新增认证type错误为null!");
         }
-        Integer currentCertificationTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, type);
-        insertCertificationVO.setCurrentCertificationTimes(currentCertificationTimes);
+//        Integer currentCertificationTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, type);
+//        insertCertificationVO.setCurrentCertificationTimes(currentCertificationTimes);
         return new ResultVO(1000, insertCertificationVO);
     }
 

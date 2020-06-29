@@ -145,7 +145,7 @@
     ica.user_id as userId,
     ica.result as result,
     ica.opinion as opinion,
-    ica.type as type
+    ica.type as type,
     c.title as cTitle,
     c.initial_word as cInitialWord,
     t.category as category
