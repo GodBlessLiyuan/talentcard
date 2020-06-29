@@ -45,7 +45,6 @@ public class EditTalentServiceImpl implements IEditTalentService {
     private TalentHonourMapper talentHonourMapper;
     @Autowired
     private UserCurrentInfoMapper userCurrentInfoMapper;
-
     @Autowired
     ITalentService iTalentService;
 
@@ -77,25 +76,18 @@ public class EditTalentServiceImpl implements IEditTalentService {
         /**
          * 链接学历职称职业资格人才荣誉
          */
-        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
-        if (activcateBO == null) {
-            return new ResultVO(2900, "新增审批时，人才状态不对！");
+
+        EducationPO educationPO = educationMapper.selectByPrimaryKey(educationDTO.getEducId());
+        if (educationPO == null) {
+            return new ResultVO(2661, "查无此认证！");
         }
-        Long certId = activcateBO.getCertId();
-        Long talentId = activcateBO.getTalentId();
-        EducationPO educationPO = new EducationPO();
-        //学历
         educationPO.setGraduateTime(educationDTO.getGraduateTime());
         educationPO.setFirstClass(educationDTO.getFirstClass());
         educationPO.setEducPicture(educationDTO.getEducPicture());
         educationPO.setSchool(educationDTO.getSchool());
         educationPO.setMajor(educationDTO.getMajor());
         educationPO.setEducation(educationDTO.getEducation());
-        educationPO.setIfCertificate((byte) 1);
-        educationPO.setCertId(certId);
-        educationPO.setStatus((byte) 1);
-        educationPO.setTalentId(talentId);
-        educationMapper.insertSelective(educationPO);
+        educationMapper.updateByPrimaryKeySelective(educationPO);
         /**
          * 清除redis缓存
          */
@@ -107,24 +99,14 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editProfQuality(ProfQualityDTO profQualityDTO) {
         String openId = profQualityDTO.getOpenId();
-        /**
-         * 链接学历职称职业资格人才荣誉
-         */
-        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
-        if (activcateBO == null) {
-            return new ResultVO(2900, "新增审批时，人才状态不对！");
+        ProfQualityPO profQualityPO = profQualityMapper.selectByPrimaryKey(profQualityDTO.getPqId());
+        if (profQualityPO == null) {
+            return new ResultVO(2661, "查无此认证！");
         }
-        Long certId = activcateBO.getCertId();
-        Long talentId = activcateBO.getTalentId();
-        ProfQualityPO profQualityPO = new ProfQualityPO();
         profQualityPO.setPicture(profQualityDTO.getPicture());
-        profQualityPO.setStatus((byte) 1);
-        profQualityPO.setTalentId(talentId);
-        profQualityPO.setCertId(certId);
         profQualityPO.setInfo(profQualityDTO.getInfo());
         profQualityPO.setCategory(profQualityDTO.getCategory());
-        profQualityPO.setIfCertificate((byte) 1);
-        profQualityMapper.insertSelective(profQualityPO);
+        profQualityMapper.updateByPrimaryKeySelective(profQualityPO);
         /**
          * 清除redis缓存
          */
@@ -136,24 +118,14 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editProfTitle(ProfTitleDTO profTitleDTO) {
         String openId = profTitleDTO.getOpenId();
-        /**
-         * 链接学历职称职业资格人才荣誉
-         */
-        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
-        if (activcateBO == null) {
-            return new ResultVO(2900, "新增审批时，人才状态不对！");
+        ProfTitlePO profTitlePO = profTitleMapper.selectByPrimaryKey(profTitleDTO.getPtId());
+        if (profTitlePO == null) {
+            return new ResultVO(2661, "查无此认证！");
         }
-        Long certId = activcateBO.getCertId();
-        Long talentId = activcateBO.getTalentId();
-        ProfTitlePO profTitlePO = new ProfTitlePO();
         profTitlePO.setPicture(profTitleDTO.getPicture());
         profTitlePO.setInfo(profTitleDTO.getInfo());
         profTitlePO.setCategory(profTitleDTO.getCategory());
-        profTitlePO.setCertId(certId);
-        profTitlePO.setStatus((byte) 1);
-        profTitlePO.setTalentId(talentId);
-        profTitlePO.setIfCertificate((byte) 1);
-        profTitleMapper.insertSelective(profTitlePO);
+        profTitleMapper.updateByPrimaryKeySelective(profTitlePO);
         /**
          * 清除redis缓存
          */
@@ -165,24 +137,14 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editTalentHonour(TalentHonourDTO talentHonourDTO) {
         String openId = talentHonourDTO.getOpenId();
-        /**
-         * 链接学历职称职业资格人才荣誉
-         */
-        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
-        if (activcateBO == null) {
-            return new ResultVO(2900, "新增审批时，人才状态不对！");
+        TalentHonourPO talentHonourPO = talentHonourMapper.selectByPrimaryKey(talentHonourDTO.getThId());
+        if (talentHonourPO == null) {
+            return new ResultVO(2661, "查无此认证！");
         }
-        Long certId = activcateBO.getCertId();
-        Long talentId = activcateBO.getTalentId();
-        TalentHonourPO talentHonourPO = new TalentHonourPO();
         talentHonourPO.setInfo(talentHonourDTO.getInfo());
         talentHonourPO.setHonourPicture(talentHonourDTO.getHonourPicture());
         talentHonourPO.setHonourId(talentHonourDTO.getHonourId());
-        talentHonourPO.setCertId(certId);
-        talentHonourPO.setIfCertificate((byte) 1);
-        talentHonourPO.setTalentId(talentId);
-        talentHonourPO.setStatus((byte) 1);
-        talentHonourMapper.insertSelective(talentHonourPO);
+        talentHonourMapper.updateByPrimaryKeySelective(talentHonourPO);
         /**
          * 清除redis缓存
          */
