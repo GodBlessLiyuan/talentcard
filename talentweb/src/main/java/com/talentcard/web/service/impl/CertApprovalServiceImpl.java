@@ -64,6 +64,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     ITalentService talentService;
     @Autowired
     TestTalentInfoMapper testTalentInfoMapper;
+    @Autowired
+    CertExamineRecordMapper certExamineRecordMapper;
 
     /**
      * 审批result的值含义
@@ -149,6 +151,12 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         certApprovalPo.setUserId(userId);
         certApprovalPo.setOpinion((String) reqData.get("opinion"));
         certApprovalPo.setUpdateTime(new Date());
+
+        //更新审批认证记录表
+        CertExamineRecordPO certExamineRecordPO = certExamineRecordMapper.selectByCertId(certId);
+        certExamineRecordPO.setResult(result);
+        certExamineRecordMapper.updateByPrimaryKeySelective(certExamineRecordPO);
+
         if (FAILURE.equals(result)) {
             /**
              * 驳回

@@ -2,6 +2,7 @@ package com.talentcard.web.service;
 
 import com.talentcard.common.vo.ResultVO;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,8 +17,8 @@ public interface ICertService {
      * 查询人才的审核状态信息
      * @param pageNum
      * @param pageSize
-     * @param map
+     * @param hashMap
      * @return
      */
-    ResultVO queryCertStatus(int pageNum, int pageSize,Map<String, Object> map);
+    ResultVO queryCertStatus(int pageNum, int pageSize, HashMap<String, Object> hashMap);
 }

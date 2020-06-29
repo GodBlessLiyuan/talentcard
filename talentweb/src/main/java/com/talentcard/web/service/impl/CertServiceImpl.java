@@ -3,14 +3,18 @@ package com.talentcard.web.service.impl;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.TalentCertStatusBO;
 import com.talentcard.common.bo.UserRoleBO;
+import com.talentcard.common.mapper.CertExamineRecordMapper;
 import com.talentcard.common.mapper.CertificationMapper;
+import com.talentcard.common.pojo.CertExamineRecordPO;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ICertService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,13 +28,15 @@ import java.util.Map;
 public class CertServiceImpl implements ICertService {
     @Resource
     CertificationMapper certificationMapper;
+    @Autowired
+    CertExamineRecordMapper certExamineRecordMapper;
 
 
     @Override
-    public ResultVO queryCertStatus(int pageNum, int pageSize,Map<String, Object> map){
-        Page<UserRoleBO> page = PageHelper.startPage(pageNum, pageSize);
-        // 根据开始结束时间，姓名，性别，学历，职称，职业资格，状态 检索
-        List<TalentCertStatusBO> bos =  certificationMapper.queryAllCert(map);
-        return new ResultVO(1000,new PageInfoVO<>(page.getTotal(), bos));
+    public ResultVO queryCertStatus(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
+        Page<CertExamineRecordPO> page = PageHelper.startPage(pageNum, pageSize);
+//        List<TalentCertStatusBO> bos =  certificationMapper.queryAllCert(map);
+        List<CertExamineRecordPO> examineRecordPOList = certExamineRecordMapper.query(hashMap);
+        return new ResultVO(1000, new PageInfoVO<>(page.getTotal(), examineRecordPOList));
     }
 }

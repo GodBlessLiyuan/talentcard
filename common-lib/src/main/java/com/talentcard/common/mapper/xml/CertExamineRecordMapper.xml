@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.CertExamineRecordMapper">
+    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.CertExamineRecordPO">
+        <id column="cea_id" jdbcType="BIGINT" property="ceaId"/>
+        <result column="talent_id" jdbcType="BIGINT" property="talentId"/>
+        <result column="cert_id" jdbcType="BIGINT" property="certId"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="sex" jdbcType="TINYINT" property="sex"/>
+        <result column="education" jdbcType="INTEGER" property="education"/>
+        <result column="pt_category" jdbcType="INTEGER" property="ptCategory"/>
+        <result column="pq_category" jdbcType="INTEGER" property="pqCategory"/>
+        <result column="honour_id" jdbcType="BIGINT" property="honourId"/>
+        <result column="result" jdbcType="TINYINT" property="result"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    cea_id, talent_id, cert_id, `name`, sex, education, pt_category, pq_category, honour_id, 
+    `result`, create_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_cert_examine_record
+        where cea_id = #{ceaId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_cert_examine_record
+    where cea_id = #{ceaId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.talentcard.common.pojo.CertExamineRecordPO">
+    insert into t_cert_examine_record (cea_id, talent_id, cert_id, 
+      `name`, sex, education, 
+      pt_category, pq_category, honour_id, 
+      `result`, create_time)
+    values (#{ceaId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{certId,jdbcType=BIGINT}, 
+      #{name,jdbcType=CHAR}, #{sex,jdbcType=TINYINT}, #{education,jdbcType=INTEGER}, 
+      #{ptCategory,jdbcType=INTEGER}, #{pqCategory,jdbcType=INTEGER}, #{honourId,jdbcType=BIGINT}, 
+      #{result,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CertExamineRecordPO">
+        insert into t_cert_examine_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ceaId != null">
+                cea_id,
+            </if>
+            <if test="talentId != null">
+                talent_id,
+            </if>
+            <if test="certId != null">
+                cert_id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="education != null">
+                education,
+            </if>
+            <if test="ptCategory != null">
+                pt_category,
+            </if>
+            <if test="pqCategory != null">
+                pq_category,
+            </if>
+            <if test="honourId != null">
+                honour_id,
+            </if>
+            <if test="result != null">
+                `result`,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ceaId != null">
+                #{ceaId,jdbcType=BIGINT},
+            </if>
+            <if test="talentId != null">
+                #{talentId,jdbcType=BIGINT},
+            </if>
+            <if test="certId != null">
+                #{certId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=CHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="education != null">
+                #{education,jdbcType=INTEGER},
+            </if>
+            <if test="ptCategory != null">
+                #{ptCategory,jdbcType=INTEGER},
+            </if>
+            <if test="pqCategory != null">
+                #{pqCategory,jdbcType=INTEGER},
+            </if>
+            <if test="honourId != null">
+                #{honourId,jdbcType=BIGINT},
+            </if>
+            <if test="result != null">
+                #{result,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.CertExamineRecordPO">
+        update t_cert_examine_record
+        <set>
+            <if test="talentId != null">
+                talent_id = #{talentId,jdbcType=BIGINT},
+            </if>
+            <if test="certId != null">
+                cert_id = #{certId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=CHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="education != null">
+                education = #{education,jdbcType=INTEGER},
+            </if>
+            <if test="ptCategory != null">
+                pt_category = #{ptCategory,jdbcType=INTEGER},
+            </if>
+            <if test="pqCategory != null">
+                pq_category = #{pqCategory,jdbcType=INTEGER},
+            </if>
+            <if test="honourId != null">
+                honour_id = #{honourId,jdbcType=BIGINT},
+            </if>
+            <if test="result != null">
+                `result` = #{result,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where cea_id = #{ceaId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.CertExamineRecordPO">
+    update t_cert_examine_record
+    set talent_id = #{talentId,jdbcType=BIGINT},
+      cert_id = #{certId,jdbcType=BIGINT},
+      `name` = #{name,jdbcType=CHAR},
+      sex = #{sex,jdbcType=TINYINT},
+      education = #{education,jdbcType=INTEGER},
+      pt_category = #{ptCategory,jdbcType=INTEGER},
+      pq_category = #{pqCategory,jdbcType=INTEGER},
+      honour_id = #{honourId,jdbcType=BIGINT},
+      `result` = #{result,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where cea_id = #{ceaId,jdbcType=BIGINT}
+  </update>
+    <select id="selectByCertId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_cert_examine_record
+        where cert_id = #{certId,jdbcType=BIGINT}
+    </select>
+    <select id="query" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_cert_examine_record
+        where
+        1 = 1
+        <if test="name != null and name != ''">
+            and trim(replace(name,' ','')) like trim(replace ('%' #{name,jdbcType=CHAR} '%' ,' ',''))
+        </if>
+        <if test="sex != null and sex != ''">
+            and sex = #{sex}
+        </if>
+        <if test="education != null and education != ''">
+            and education = #{education, jdbcType=INTEGER}
+        </if>
+        <if test="pqCategory != null and pqCategory != ''">
+            and pq_category = #{pqCategory, jdbcType=INTEGER}
+        </if>
+        <if test="ptCategory != null and ptCategory != ''">
+            and pt_category = #{ptCategory, jdbcType=INTEGER}
+        </if>
+        <if test="result != null and result != ''">
+            and result = #{result, jdbcType=TINYINT}
+        </if>
+        <if test="(startTime != null and startTime != '') and (endTime == null || endTime == '')">
+            and create_time &gt;= #{startTime, jdbcType=CHAR}
+        </if>
+        <if test="(startTime != null || startTime != '') and (endTime != null and endTime != '')">
+            and create_time &lt;= #{endTime, jdbcType=CHAR}
+        </if>
+        <if test="honour != null and honour != ''">
+            and honour_id = #{honour,jdbcType=BIGINT}
+        </if>
+        <!--  将待审批的记录置顶，按时间排序-->
+        order by result desc, create_time desc
+    </select>
+</mapper>
