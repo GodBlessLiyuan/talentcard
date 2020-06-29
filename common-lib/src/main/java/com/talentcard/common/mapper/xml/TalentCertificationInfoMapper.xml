@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.TalentCertificationInfoMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentCertificationInfoPO">
+    <id column="tci_id" jdbcType="BIGINT" property="tciId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="school" jdbcType="CHAR" property="school" />
+    <result column="first_class" jdbcType="TINYINT" property="firstClass" />
+    <result column="major" jdbcType="CHAR" property="major" />
+    <result column="pt_category" jdbcType="VARCHAR" property="ptCategory" />
+    <result column="pq_category" jdbcType="VARCHAR" property="pqCategory" />
+    <result column="talent_category" jdbcType="CHAR" property="talentCategory" />
+    <result column="honour_id" jdbcType="VARCHAR" property="honourId" />
+    <result column="graduate_time" jdbcType="CHAR" property="graduateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tci_id, talent_id, education, school, first_class, major, pt_category, pq_category, 
+    talent_category, honour_id, graduate_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_talent_certification_info
+    where tci_id = #{tciId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_talent_certification_info
+    where tci_id = #{tciId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.TalentCertificationInfoPO">
+    insert into t_talent_certification_info (tci_id, talent_id, education, 
+      school, first_class, major, 
+      pt_category, pq_category, talent_category, 
+      honour_id, graduate_time)
+    values (#{tciId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{education,jdbcType=VARCHAR}, 
+      #{school,jdbcType=CHAR}, #{firstClass,jdbcType=TINYINT}, #{major,jdbcType=CHAR}, 
+      #{ptCategory,jdbcType=VARCHAR}, #{pqCategory,jdbcType=VARCHAR}, #{talentCategory,jdbcType=CHAR}, 
+      #{honourId,jdbcType=VARCHAR}, #{graduateTime,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentCertificationInfoPO">
+    insert into t_talent_certification_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tciId != null">
+        tci_id,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="education != null">
+        education,
+      </if>
+      <if test="school != null">
+        school,
+      </if>
+      <if test="firstClass != null">
+        first_class,
+      </if>
+      <if test="major != null">
+        major,
+      </if>
+      <if test="ptCategory != null">
+        pt_category,
+      </if>
+      <if test="pqCategory != null">
+        pq_category,
+      </if>
+      <if test="talentCategory != null">
+        talent_category,
+      </if>
+      <if test="honourId != null">
+        honour_id,
+      </if>
+      <if test="graduateTime != null">
+        graduate_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tciId != null">
+        #{tciId,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="education != null">
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        #{school,jdbcType=CHAR},
+      </if>
+      <if test="firstClass != null">
+        #{firstClass,jdbcType=TINYINT},
+      </if>
+      <if test="major != null">
+        #{major,jdbcType=CHAR},
+      </if>
+      <if test="ptCategory != null">
+        #{ptCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="pqCategory != null">
+        #{pqCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="talentCategory != null">
+        #{talentCategory,jdbcType=CHAR},
+      </if>
+      <if test="honourId != null">
+        #{honourId,jdbcType=VARCHAR},
+      </if>
+      <if test="graduateTime != null">
+        #{graduateTime,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentCertificationInfoPO">
+    update t_talent_certification_info
+    <set>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="education != null">
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        school = #{school,jdbcType=CHAR},
+      </if>
+      <if test="firstClass != null">
+        first_class = #{firstClass,jdbcType=TINYINT},
+      </if>
+      <if test="major != null">
+        major = #{major,jdbcType=CHAR},
+      </if>
+      <if test="ptCategory != null">
+        pt_category = #{ptCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="pqCategory != null">
+        pq_category = #{pqCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="talentCategory != null">
+        talent_category = #{talentCategory,jdbcType=CHAR},
+      </if>
+      <if test="honourId != null">
+        honour_id = #{honourId,jdbcType=VARCHAR},
+      </if>
+      <if test="graduateTime != null">
+        graduate_time = #{graduateTime,jdbcType=CHAR},
+      </if>
+    </set>
+    where tci_id = #{tciId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentCertificationInfoPO">
+    update t_talent_certification_info
+    set talent_id = #{talentId,jdbcType=BIGINT},
+      education = #{education,jdbcType=VARCHAR},
+      school = #{school,jdbcType=CHAR},
+      first_class = #{firstClass,jdbcType=TINYINT},
+      major = #{major,jdbcType=CHAR},
+      pt_category = #{ptCategory,jdbcType=VARCHAR},
+      pq_category = #{pqCategory,jdbcType=VARCHAR},
+      talent_category = #{talentCategory,jdbcType=CHAR},
+      honour_id = #{honourId,jdbcType=VARCHAR},
+      graduate_time = #{graduateTime,jdbcType=CHAR}
+    where tci_id = #{tciId,jdbcType=BIGINT}
+  </update>
+</mapper>

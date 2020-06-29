@@ -71,6 +71,8 @@ public class TalentServiceImpl implements ITalentService {
     private InsertCertificationMapper insertCertificationMapper;
     @Autowired
     private TalentCardHoldListMapper talentCardHoldListMapper;
+    @Autowired
+    private CertExamineRecordMapper certExamineRecordMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -500,6 +502,20 @@ public class TalentServiceImpl implements ITalentService {
         certApprovalPO.setType((byte) 1);
         certApprovalMapper.insertSelective(certApprovalPO);
 
+        //认证审批记录表
+        CertExamineRecordPO certExamineRecordPO = new CertExamineRecordPO();
+        certExamineRecordPO.setCertId(certificationId);
+        certExamineRecordPO.setCreateTime(new Date());
+        certExamineRecordPO.setEducation(education);
+        certExamineRecordPO.setHonourId(honourId);
+        certExamineRecordPO.setPqCategory(profQualityCategory);
+        certExamineRecordPO.setPtCategory(profTitleCategory);
+        certExamineRecordPO.setName(talentPO.getName());
+        certExamineRecordPO.setSex(talentPO.getSex());
+        certExamineRecordPO.setTalentId(talentId);
+        certExamineRecordPO.setResult((byte) 3);
+        certExamineRecordMapper.insertSelective(certExamineRecordPO);
+
         //学历表
         EducationPO educationPO = new EducationPO();
         educationPO.setEducation(education);
@@ -511,7 +527,7 @@ public class TalentServiceImpl implements ITalentService {
         educationPO.setTalentId(talentId);
         educationPO.setStatus(status);
         educationPO.setGraduateTime(graduateTime);
-        if (education == null) {
+        if (education == 0) {
             //10代表本次不认证
             educationPO.setIfCertificate((byte) 10);
         } else {
@@ -527,7 +543,7 @@ public class TalentServiceImpl implements ITalentService {
         profTitlePO.setCertId(certificationId);
         profTitlePO.setTalentId(talentId);
         profTitlePO.setStatus(status);
-        if (profTitleCategory == null) {
+        if (profTitleCategory == 0) {
             //10代表本次不认证
             profTitlePO.setIfCertificate((byte) 10);
         } else {
@@ -543,7 +559,7 @@ public class TalentServiceImpl implements ITalentService {
         profQualityPO.setCertId(certificationId);
         profQualityPO.setTalentId(talentId);
         profQualityPO.setStatus(status);
-        if (profQualityCategory == null) {
+        if (profQualityCategory == 0) {
             //10代表本次不认证
             profQualityPO.setIfCertificate((byte) 10);
         } else {
@@ -558,7 +574,7 @@ public class TalentServiceImpl implements ITalentService {
         talentHonourPO.setCertId(certificationId);
         talentHonourPO.setTalentId(talentId);
         talentHonourPO.setStatus(status);
-        if (honourId == null) {
+        if (honourId == 0) {
             //10代表本次不认证
             talentHonourPO.setIfCertificate((byte) 10);
         } else {

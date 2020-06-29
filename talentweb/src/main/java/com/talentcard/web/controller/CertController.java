@@ -40,33 +40,16 @@ public class CertController {
         if (!"".equals(endTime)) {
             endTime = endTime + " 23:59:59";
         }
-        String flag = "";
-        if (result != null) {
-            switch (result) {
-                case "0":
-                    flag = "";
-                    break;
-                case "1":
-                    flag = "1";
-                    break;
-                case "2":
-                    flag = "2";
-                    break;
-            }
-        }
-        Map<String, Object> reqData = new HashMap<>(9);
-        if (name != null && !name.equals("")) {
-            reqData.put("name", name.replaceAll("%", "\\\\%"));
-        }
-        reqData.put("sex", sex);
-        reqData.put("pqCategory", pqCategory);
-        reqData.put("ptCategory", ptCategory);
-        reqData.put("education", education);
-        reqData.put("result", result);
-        reqData.put("startTime", startTime);
-        reqData.put("endTime", endTime);
-        reqData.put("flag", flag);
-        reqData.put("honour", honour);
-        return certService.queryCertStatus(pageNum, pageSize, reqData);
+        HashMap<String, Object> hashMap = new HashMap<>(9);
+        hashMap.put("name", name);
+        hashMap.put("sex", sex);
+        hashMap.put("pqCategory", pqCategory);
+        hashMap.put("ptCategory", ptCategory);
+        hashMap.put("education", education);
+        hashMap.put("result", result);
+        hashMap.put("startTime", startTime);
+        hashMap.put("endTime", endTime);
+        hashMap.put("honour", honour);
+        return certService.queryCertStatus(pageNum, pageSize, hashMap);
     }
 }
