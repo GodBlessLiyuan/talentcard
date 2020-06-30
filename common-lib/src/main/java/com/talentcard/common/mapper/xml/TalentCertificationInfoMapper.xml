@@ -161,4 +161,10 @@
       graduate_time = #{graduateTime,jdbcType=CHAR}
     where tci_id = #{tciId,jdbcType=BIGINT}
   </update>
+  <select id="selectByTalentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_talent_certification_info
+    where talent_id = #{talentId,jdbcType=BIGINT}
+  </select>
 </mapper>
