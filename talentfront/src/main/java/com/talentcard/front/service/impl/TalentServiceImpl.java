@@ -543,7 +543,7 @@ public class TalentServiceImpl implements ITalentService {
         profTitlePO.setCertId(certificationId);
         profTitlePO.setTalentId(talentId);
         profTitlePO.setStatus(status);
-        if (profTitleCategory == 0) {
+        if (profTitleCategory == null) {
             //10代表本次不认证
             profTitlePO.setIfCertificate((byte) 10);
         } else {
@@ -590,15 +590,13 @@ public class TalentServiceImpl implements ITalentService {
 
     @Override
     public ResultVO findInfo(String openId) {
-        //新增认证信息
-        List<InsertCertificationBO> insertCertificationBOList = insertCertificationMapper.selectByOpenId(openId);
+
         /**
          * 添加redis hash缓存
          */
         String mapStr = this.redisMapUtil.hget(openId, "findInfo");
         TalentVO cacheResult = StringToObjUtil.strToObj(mapStr, TalentVO.class);
         if (cacheResult != null) {
-            cacheResult = TalentVO.setInsertCertification(cacheResult, insertCertificationBOList);
             return new ResultVO(1000, cacheResult);
         }
 
@@ -641,11 +639,14 @@ public class TalentServiceImpl implements ITalentService {
             talentVO.setDriverCard(driverCard);
         }
 
+        //新增认证信息
+        List<InsertCertificationBO> insertCertificationBOList = insertCertificationMapper.selectByOpenId(openId);
+        talentVO = TalentVO.setInsertCertification(talentVO, insertCertificationBOList);
         /**
          * 设置缓存
          */
         this.redisMapUtil.hset(openId, "findInfo", JSON.toJSONString(talentVO));
-        talentVO = TalentVO.setInsertCertification(talentVO, insertCertificationBOList);
+
         return new ResultVO(1000, talentVO);
 
     }
