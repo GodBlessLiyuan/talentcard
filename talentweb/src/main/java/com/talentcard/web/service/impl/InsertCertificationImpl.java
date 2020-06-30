@@ -10,9 +10,12 @@ import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.IInsertCertificationService;
 import com.talentcard.web.service.ITalentInfoCertificationService;
 import com.talentcard.web.service.ITalentService;
+import com.talentcard.web.utils.MessageUtil;
+import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.InsertCertificationVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -224,6 +228,43 @@ public class InsertCertificationImpl implements IInsertCertificationService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(talentPO.getOpenId());
+
+        /**
+         * 发送推送消息
+         */
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(talentPO.getOpenId());
+        //姓名
+        messageDTO.setKeyword1(talentPO.getName());
+        //证件号码
+        String identificationCardNum = identificationCardEncryption(talentPO);
+        messageDTO.setKeyword2(identificationCardNum);
+        //通知时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        String currentTime = formatter.format(new Date());
+        messageDTO.setKeyword4(currentTime);
+        if (result == 1) {
+            //通过
+            //推送审批通过微信消息
+            messageDTO.setKeyword3("个人");
+            messageDTO.setRemark("领取后可享受多项人才权益哦");
+            messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+            messageDTO.setFirst("您好，您的认证申请已通过，请您点击领取衢江人才卡");
+            //模版编号
+            messageDTO.setTemplateId(1);
+            //领卡通知
+            MessageUtil.sendTemplateMessage(messageDTO);
+        } else {
+            //驳回
+            //模版编号
+            messageDTO.setTemplateId(2);
+            //推送驳回微信消息
+            messageDTO.setKeyword3("未通过");
+            messageDTO.setFirst("您提交的认证信息与本人真实情况存在不符，请修改后重新提交。");
+            MessageUtil.sendTemplateMessage(messageDTO);
+        }
         return new ResultVO(1000);
     }
 
@@ -247,5 +288,33 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         result.put("insertCertInfo", insertCertificationVO);
         result.put("record", insertCertApprovalBOList);
         return new ResultVO(1000, result);
+    }
+
+    /**
+     * 证件号码，后四位加密,打星星
+     *
+     * @return
+     */
+    public String identificationCardEncryption(TalentPO talentPO) {
+
+        Byte cardType = talentPO.getCardType();
+        String identificationCardNum = "";
+        if (cardType == 1) {
+            //身份证
+            identificationCardNum = talentPO.getIdCard();
+        } else if (cardType == 2) {
+            //护照
+            identificationCardNum = talentPO.getPassport();
+        } else if (cardType == 3) {
+            //驾照
+            identificationCardNum = talentPO.getDriverCard();
+        }
+        if (identificationCardNum.equals("") || identificationCardNum == null
+                || identificationCardNum.length() <= 4) {
+            return "当前号码出现异常！";
+        }
+        Integer end = identificationCardNum.length() - 4;
+        String encryptionIdCardNum = identificationCardNum.substring(0, end) + "****";
+        return encryptionIdCardNum;
     }
 }
