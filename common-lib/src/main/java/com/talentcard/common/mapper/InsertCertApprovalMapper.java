@@ -13,4 +13,5 @@ import java.util.List;
 @Mapper
 public interface InsertCertApprovalMapper extends BaseMapper<InsertCertApprovalPO, Long> {
     List<InsertCertApprovalBO> findRecord(@Param("talentId") Long talentId);
+    InsertCertApprovalPO findResultByInsertCertId(@Param("insertCertId") Long insertCertId);
 }

@@ -474,4 +474,9 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         hashMap.put("honourTimes", honourTimes);
         return new ResultVO(1000, hashMap);
     }
+    @Override
+    public ResultVO findResultByInsertCertId(Long insertCertId) {
+        InsertCertApprovalPO insertCertApprovalPO = insertCertApprovalMapper.findResultByInsertCertId(insertCertId);
+        return new ResultVO(1000, insertCertApprovalPO);
+    }
 }

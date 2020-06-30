@@ -57,5 +57,12 @@ public interface IInsertCertificationService {
      */
     ResultVO editPhone(String openId,String phone);
 
+    /**
+     * 根据openId查找新增认证待审批数量
+     * @param openId
+     * @return
+     */
     ResultVO findInsertCertificationTimes(String openId);
+
+    ResultVO findResultByInsertCertId(Long insertCertId);
 }
