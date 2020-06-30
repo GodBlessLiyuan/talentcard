@@ -66,7 +66,7 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
             /**
              * 旅游
              */
-            scenicIdList = scenicEnjoyMapper.findSecondContent(vo.getCardId(), vo.getCategoryList(), vo.getEducation(), vo.getTitle(), vo.getQuality(), vo.getTalentHonour());
+            scenicIdList = scenicEnjoyMapper.findSecondContent(vo.getCardId(), vo.getCategoryList(), vo.getEducationList(), vo.getTitleList(), vo.getQualityList(), vo.getHonourList());
             if (scenicIdList.size() > 0) {
                 resultHashMap.put("trip", 1);
                 s_trip = String.valueOf(1);
@@ -92,7 +92,7 @@ public class TalentActivityServiceImpl implements ITalentActivityService {
             /**
              * 农家乐
              */
-            farmhouseList = farmhouseEnjoyMapper.findSecondContent(vo.getCardId(), vo.getCategoryList(), vo.getEducation(), vo.getTitle(), vo.getQuality(), vo.getTalentHonour());
+            farmhouseList = farmhouseEnjoyMapper.findSecondContent(vo.getCardId(), vo.getCategoryList(), vo.getEducationList(), vo.getTitleList(), vo.getQualityList(), vo.getHonourList());
             if (farmhouseList.size() > 0) {
                 resultHashMap.put("farmhouse", 1);
                 s_farmhouse = String.valueOf(1);

@@ -250,8 +250,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             //推送审批通过微信消息
             messageDTO.setKeyword3("个人");
             messageDTO.setRemark("领取后可享受多项人才权益哦");
-            messageDTO.setUrl(WebParameterUtil.getIndexUrl());
-            messageDTO.setFirst("您好，您的认证申请已通过，请您点击领取衢江人才卡");
+            messageDTO.setUrl("");
+            messageDTO.setFirst("您好，您的新增认证申请已通过，请您点击领取衢江人才卡");
             //模版编号
             messageDTO.setTemplateId(1);
             //领卡通知

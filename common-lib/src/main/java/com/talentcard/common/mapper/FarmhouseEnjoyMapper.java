@@ -35,18 +35,19 @@ public interface FarmhouseEnjoyMapper extends BaseMapper<FarmhouseEnjoyPO, Long>
 
 
     /**
-     * 判断当前享受群体是否有满足的景区
      *
      * @param cardId
      * @param categoryList
-     * @param education
-     * @param title
-     * @param quality
-     * @param talentHonour
+     * @param educationList
+     * @param titleList
+     * @param qualityList
+     * @param honourList
      * @return
      */
-    List<Long> findSecondContent(@Param("cardId") Long cardId, @Param("categoryList") List<Long> categoryList,
-                                 @Param("education") Integer education, @Param("title") Integer title,
-                                 @Param("quality") Integer quality,
-                                 @Param("talentHonour") Long talentHonour);
+    List<Long> findSecondContent(@Param("cardId") Long cardId,
+                                 @Param("categoryList") List<Long> categoryList,
+                                 @Param("educationList") List<Long> educationList,
+                                 @Param("titleList") List<Long> titleList,
+                                 @Param("qualityList") List<Long> qualityList,
+                                 @Param("honourList") List<Long> honourList);
 }

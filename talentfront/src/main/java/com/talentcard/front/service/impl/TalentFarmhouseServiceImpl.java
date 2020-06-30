@@ -58,7 +58,7 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO findSecondContent(String openId, String name, Byte area, Byte order) {
 
-        if(StringUtils.isEmpty(openId) || StringUtils.equalsIgnoreCase(openId, "null")){
+        if (StringUtils.isEmpty(openId) || StringUtils.equalsIgnoreCase(openId, "null")) {
             openId = TalentConstant.DEFAULT_TALENT_OPENID;
         }
         /**
@@ -97,8 +97,8 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
             if (farmhouseIdList == null || farmhouseIdList.size() == 0) {
 
                 farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(talentTypeVO.getCardId(),
-                        talentTypeVO.getCategoryList(), talentTypeVO.getEducation(), talentTypeVO.getTitle(),
-                        talentTypeVO.getQuality(), talentTypeVO.getTalentHonour());
+                        talentTypeVO.getCategoryList(), talentTypeVO.getEducationList(), talentTypeVO.getTitleList(),
+                        talentTypeVO.getQualityList(), talentTypeVO.getHonourList());
 
                 if (farmhouseIdList.size() == 0) {
                     //查无景区
@@ -129,7 +129,7 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
             resultMap.put("benefitNum", Long.parseLong(lon));
         }
 
-        if(farmhouseIdList != null && farmhouseIdList.size() > 0){
+        if (farmhouseIdList != null && farmhouseIdList.size() > 0) {
             //景区表，查询符合条件的景区
             List<FarmhousePO> farmhousePOList = farmhouseMapper.findEnjoyFarmhouse(farmhouseIdList, name, area, order);
 

@@ -10,21 +10,28 @@ import java.util.List;
 public class TalentTypeVO {
     private Long cardId;
     private List<Long> categoryList;
+    private List<Long> educationList;
+    private List<Long> titleList;
+    private List<Long> qualityList;
+    private List<Long> honourList;
     private Integer education;
     private Integer title;
     private Integer quality;
     private Long talentHonour;
     private String category;
-
+    private String educationString;
+    private String titleString;
+    private String qualityString;
+    private String honourString;
     @Override
     public String toString(){
         StringBuffer sb = new StringBuffer();
         sb.append(cardId == null ? (long)0 : cardId).append("-")
                 .append(category == null || category.length() == 0 ? "0" : category).append("-")
-                .append(education == null ? 0 : education).append("-")
-                .append(title == null ? 0 : title).append("-")
-                .append(quality == null ? 0 : quality).append("-")
-                .append(talentHonour == null ? (long)0 : talentHonour).append("-");
+                .append(educationString == null || educationString.length() == 0 ? "0" : educationString).append("-")
+                .append(titleString == null || titleString.length() == 0 ? "0" : titleString).append("-")
+                .append(qualityString == null || qualityString.length() == 0 ? "0" : qualityString).append("-")
+                .append(honourString == null || honourString.length() == 0 ? "0" : honourString).append("-");
         return sb.toString();
     }
 

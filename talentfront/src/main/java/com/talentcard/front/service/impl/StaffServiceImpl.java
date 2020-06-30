@@ -7,8 +7,10 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.IStaffService;
+import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +54,8 @@ public class StaffServiceImpl implements IStaffService {
     private FarmhouseMapper farmhouseMapper;
     @Autowired
     private RedisMapUtil redisMapUtil;
+    @Autowired
+    private ITalentService iTalentService;
 
     @Override
     public ResultVO ifEnableRegister(String openId, Long activityFirstContentId, Long activitySecondContentId) {
@@ -193,6 +197,11 @@ public class StaffServiceImpl implements IStaffService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO farmhouseVertify(HttpServletRequest httpServletRequest, String talentOpenId, String staffOpenId, Long activitySecondContentId) {
+        TalentTypeVO vo = iTalentService.getTalentInfo(talentOpenId);
+        if (vo == null) {
+            return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
+        }
+
         TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
         if (talentPO == null) {
             return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
@@ -234,7 +243,8 @@ public class StaffServiceImpl implements IStaffService {
          *  中间表没找到景区idList，去大表查询
          */
         if (farmhouseIdList != null && farmhouseIdList.size() == 0) {
-            farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(cardId, categoryList, education, title, quality, talentHonour);
+            farmhouseIdList = farmhouseEnjoyMapper.findSecondContent(cardId, vo.getCategoryList(),
+                    vo.getEducationList(), vo.getTitleList(), vo.getQualityList(), vo.getHonourList());
             if (farmhouseIdList != null && farmhouseIdList.size() == 0) {
                 return new ResultVO(1001, "查无景区!不具备此农家乐权益!");
             }
