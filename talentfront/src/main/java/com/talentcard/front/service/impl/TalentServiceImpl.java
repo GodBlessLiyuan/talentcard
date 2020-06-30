@@ -136,8 +136,10 @@ public class TalentServiceImpl implements ITalentService {
 
             if (StringUtils.isEmpty(talentPO.getUnionId())) {
                 String unionId = getUnionIdByOpenId(openId);
-                talentPO.setUnionId(unionId);
-                talentMapper.updateByPrimaryKey(talentPO);
+                if(!StringUtils.isEmpty(unionId)) {
+                    talentPO.setUnionId(unionId);
+                    talentMapper.updateByPrimaryKey(talentPO);
+                }
             }
 
             if (talentPO.getStatus() == 1) {
