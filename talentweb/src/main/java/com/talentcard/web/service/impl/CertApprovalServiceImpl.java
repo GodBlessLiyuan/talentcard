@@ -291,6 +291,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 return new ResultVO(2500);
             }
             TalentCertificationInfoPO talentCertificationInfoPO = new TalentCertificationInfoPO();
+            talentCertificationInfoPO.setTalentId((talentId));
+            talentCertificationInfoPO.setTalentCategory(category);
             userCurrentInfoPO.setPolitical(talentPO.getPolitical());
             if (educationPO != null) {
                 userCurrentInfoPO.setEducation(educationPO.getEducation());
