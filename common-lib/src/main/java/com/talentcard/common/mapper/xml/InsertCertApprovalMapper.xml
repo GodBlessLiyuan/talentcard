@@ -164,11 +164,11 @@
     on c.card_id = uc.card_id
     where t.talent_id = #{talentId,jdbcType=BIGINT}
   </select>
-  <select id="findResultByInsertCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="findResultByInsertCertId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_insert_cert_approval
     where insert_cert_id = #{insertCertId,jdbcType=BIGINT}
-    and type = 2
+    and `type` = #{type,jdbcType=TINYINT}
   </select>
 </mapper>

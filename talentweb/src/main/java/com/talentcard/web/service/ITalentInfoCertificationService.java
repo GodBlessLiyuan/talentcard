@@ -6,7 +6,10 @@ package com.talentcard.web.service;
  * @createTime 2020-06-29 19:23
  * @description
  */
-public interface ITalentInfoCertificationService
-{
-
+public interface ITalentInfoCertificationService {
+    /**
+     * 更新已经完成认证的用户
+     * @param talentId
+     */
+    Integer update(Long talentId);
 }
