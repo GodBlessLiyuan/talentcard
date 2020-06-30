@@ -11,8 +11,8 @@
 	</page_setting>
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
-	<x>205</x>
-	<y>-516</y>
+	<x>563</x>
+	<y>365</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2020-04-08 11:16:39</creation_date>
-			<updated_date>2020-06-30 11:24:20</updated_date>
+			<updated_date>2020-06-30 18:53:49</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -12089,8 +12089,8 @@
 			<width>328</width>
 				<font_name>Microsoft YaHei UI</font_name>
 				<font_size>9</font_size>
-			<x>1207</x>
-			<y>2001</y>
+			<x>1188</x>
+			<y>2004</y>
 			<color>
 				<r>128</r>
 				<g>128</g>

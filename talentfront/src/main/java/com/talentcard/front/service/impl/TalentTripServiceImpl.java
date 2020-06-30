@@ -91,7 +91,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
              *  中间表没找到景区idList，去大表查询
              */
             if (scenicIdList == null || scenicIdList.size() == 0) {
-                scenicIdList = scenicEnjoyMapper.findSecondContent(vo.getCardId(), vo.getCategoryList(), vo.getEducation(), vo.getTitle(), vo.getQuality(), vo.getTalentHonour());
+                scenicIdList = scenicEnjoyMapper.findSecondContent(vo.getCardId(), vo.getCategoryList(), vo.getEducationList(), vo.getTitleList(), vo.getQualityList(), vo.getHonourList());
                 if (scenicIdList.size() == 0) {
                     //查无景区
                     return new ResultVO(1000, null);

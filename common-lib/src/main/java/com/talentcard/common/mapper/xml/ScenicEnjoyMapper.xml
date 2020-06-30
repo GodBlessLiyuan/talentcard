@@ -178,17 +178,26 @@
         or sc.category_id = #{category, jdbcType=BIGINT}
       </foreach>
     </if>
-    <if test="education != null">
-      or sc.education_id = #{education, jdbcType=INTEGER}
+    <if test="educationList != null">
+      <foreach collection="educationList" item="education">
+        or sc.education_id = #{education, jdbcType=BIGINT}
+      </foreach>
     </if>
-    <if test="title != null">
-      or sc.title_id = #{title, jdbcType=INTEGER}
+    <if test="titleList != null">
+      <foreach collection="titleList" item="title">
+        or sc.title_id = #{title, jdbcType=BIGINT}
+      </foreach>
     </if>
-    <if test="quality != null">
-      or sc.quality = #{quality, jdbcType=INTEGER}
+    <if test="qualityList != null">
+      <foreach collection="qualityList" item="quality">
+        or sc.quality = #{quality, jdbcType=BIGINT}
+      </foreach>
     </if>
-    <if test="talentHonour != null">
-      or sc.honour_id = #{talentHonour, jdbcType=BIGINT}
-    </if>)
+    <if test="honourList != null">
+      <foreach collection="honourList" item="honour">
+        or sc.honour_id = #{honour, jdbcType=BIGINT}
+      </foreach>
+    </if>
+    )
   </select>
 </mapper>

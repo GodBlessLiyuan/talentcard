@@ -180,17 +180,26 @@
         or fe.category_id = #{category, jdbcType=BIGINT}
       </foreach>
     </if>
-    <if test="education != null">
-      or fe.education_id = #{education, jdbcType=INTEGER}
+    <if test="educationList != null">
+      <foreach collection="educationList" item="education">
+        or fe.education_id = #{education, jdbcType=BIGINT}
+      </foreach>
     </if>
-    <if test="title != null">
-      or fe.title_id = #{title, jdbcType=INTEGER}
+    <if test="titleList != null">
+      <foreach collection="titleList" item="title">
+        or fe.title_id = #{title, jdbcType=BIGINT}
+      </foreach>
     </if>
-    <if test="quality != null">
-      or fe.quality = #{quality, jdbcType=INTEGER}
+    <if test="qualityList != null">
+      <foreach collection="qualityList" item="quality">
+        or fe.quality = #{quality, jdbcType=BIGINT}
+      </foreach>
     </if>
-    <if test="talentHonour != null">
-      or fe.honour_id = #{talentHonour, jdbcType=BIGINT}
-    </if>)
+    <if test="honourList != null">
+      <foreach collection="honourList" item="honour">
+        or fe.honour_id = #{honour, jdbcType=BIGINT}
+      </foreach>
+    </if>
+    )
   </select>
 </mapper>

@@ -73,6 +73,8 @@ public class TalentServiceImpl implements ITalentService {
     private TalentCardHoldListMapper talentCardHoldListMapper;
     @Autowired
     private CertExamineRecordMapper certExamineRecordMapper;
+    @Autowired
+    TalentCertificationInfoMapper talentCertificationInfoMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -136,7 +138,7 @@ public class TalentServiceImpl implements ITalentService {
 
             if (StringUtils.isEmpty(talentPO.getUnionId())) {
                 String unionId = getUnionIdByOpenId(openId);
-                if(!StringUtils.isEmpty(unionId)) {
+                if (!StringUtils.isEmpty(unionId)) {
                     talentPO.setUnionId(unionId);
                     talentMapper.updateByPrimaryKey(talentPO);
                 }
@@ -706,17 +708,53 @@ public class TalentServiceImpl implements ITalentService {
         if (userCurrentInfoPO == null) {
             return null;
         }
+
         Long cardId = talentPO.getCardId();
-        ArrayList categoryList = null;
         String talentCategory = userCurrentInfoPO.getTalentCategory();
-        //拆分人才类别
-        if (!StringUtils.isEmpty(talentCategory)) {
-            categoryList = TalentActivityUtil.splitCategory(userCurrentInfoPO.getTalentCategory());
-        }
         Integer education = userCurrentInfoPO.getEducation();
         Integer title = userCurrentInfoPO.getPtCategory();
         Integer quality = userCurrentInfoPO.getPqCategory();
         Long talentHonour = userCurrentInfoPO.getHonourId();
+        //拆分人才类别
+        ArrayList categoryList = null;
+        if (!StringUtils.isEmpty(talentCategory)) {
+            categoryList = TalentActivityUtil.splitCategory(userCurrentInfoPO.getTalentCategory());
+        }
+        /**
+         * 拆分学历；职称；职业资格；人才荣誉等
+         */
+        ArrayList educationList = null;
+        ArrayList titleList = null;
+        ArrayList qualityList = null;
+        ArrayList honourList = null;
+        String educationString = "";
+        String titleString = "";
+        String qualityString = "";
+        String honourString = "";
+        TalentCertificationInfoPO talentCertificationInfoPO =
+                talentCertificationInfoMapper.selectByTalentId(talentPO.getTalentId());
+        if (talentCertificationInfoPO != null) {
+            educationString = talentCertificationInfoPO.getEducation();
+            titleString = talentCertificationInfoPO.getPtCategory();
+            qualityString = talentCertificationInfoPO.getPqCategory();
+            honourString = talentCertificationInfoPO.getHonourId();
+        }
+        if (!StringUtils.isEmpty(educationString)) {
+            educationList = TalentActivityUtil.splitCategory(educationString);
+        }
+
+        if (!StringUtils.isEmpty(titleString)) {
+            titleList = TalentActivityUtil.splitCategory(titleString);
+        }
+
+        if (!StringUtils.isEmpty(qualityString)) {
+            qualityList = TalentActivityUtil.splitCategory(qualityString);
+        }
+
+        if (!StringUtils.isEmpty(honourString)) {
+            honourList = TalentActivityUtil.splitCategory(honourString);
+        }
+
 
         TalentTypeVO vo = new TalentTypeVO();
         vo.setCardId(cardId);
@@ -726,6 +764,16 @@ public class TalentServiceImpl implements ITalentService {
         vo.setQuality(quality);
         vo.setTalentHonour(talentHonour);
         vo.setCategory(talentCategory);
+
+        //学历；职称；职业资格；人才荣誉
+        vo.setEducationList(educationList);
+        vo.setQualityList(titleList);
+        vo.setTitleList(qualityList);
+        vo.setHonourList(honourList);
+        vo.setEducationString(educationString);
+        vo.setTitleString(titleString);
+        vo.setQualityString(qualityString);
+        vo.setHonourString(honourString);
 
         redisMapUtil.hset(openId, "getTalentInfo", JSON.toJSONString(vo));
         return vo;
