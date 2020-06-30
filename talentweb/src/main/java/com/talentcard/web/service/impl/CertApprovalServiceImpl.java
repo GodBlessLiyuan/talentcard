@@ -66,6 +66,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     TestTalentInfoMapper testTalentInfoMapper;
     @Autowired
     CertExamineRecordMapper certExamineRecordMapper;
+    @Autowired
+    TalentCertificationInfoMapper talentCertificationInfoMapper;
 
     /**
      * 审批result的值含义
@@ -282,10 +284,13 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 talentHonourMapper.updateByPrimaryKeySelective(talentHonourPO);
             }
             /**
-             * 更新uci表
+             * 更新uci表和tci表
              */
             UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentId);
-
+            if (userCurrentInfoPO == null) {
+                return new ResultVO(2500);
+            }
+            TalentCertificationInfoPO talentCertificationInfoPO = new TalentCertificationInfoPO();
             userCurrentInfoPO.setPolitical(talentPO.getPolitical());
             if (educationPO != null) {
                 userCurrentInfoPO.setEducation(educationPO.getEducation());
@@ -293,20 +298,26 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 userCurrentInfoPO.setFirstClass(educationPO.getFirstClass());
                 userCurrentInfoPO.setMajor(educationPO.getMajor());
                 userCurrentInfoPO.setGraduateTime(educationPO.getGraduateTime());
+                talentCertificationInfoPO.setEducation(educationPO.getEducation().toString());
             }
             if (profTitlePO != null) {
                 userCurrentInfoPO.setPtCategory(profTitlePO.getCategory());
                 userCurrentInfoPO.setPtInfo(profTitlePO.getInfo());
+                talentCertificationInfoPO.setPtCategory(profTitlePO.getCategory().toString());
             }
             if (profQualityPO != null) {
                 userCurrentInfoPO.setPqCategory(profQualityPO.getCategory());
                 userCurrentInfoPO.setPqInfo(profQualityPO.getInfo());
+                talentCertificationInfoPO.setPqCategory(profQualityPO.getCategory().toString());
             }
             userCurrentInfoPO.setTalentCategory(category);
             if (talentHonourPO != null) {
                 userCurrentInfoPO.setHonourId(talentHonourPO.getHonourId());
                 userCurrentInfoPO.setThInfo(talentHonourPO.getInfo());
+                talentCertificationInfoPO.setHonourId(talentHonourPO.getHonourId().toString());
             }
+            //新增tci表
+            talentCertificationInfoMapper.insertSelective(talentCertificationInfoPO);
             int resultUserCurrentInfo = userCurrentInfoMapper.updateByPrimaryKeySelective(userCurrentInfoPO);
             if (resultUserCurrentInfo == 0) {
                 //更新人才用户信息状态失败
@@ -399,9 +410,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
          * 更新认证审批表，发起认证（提交）的updateTime
          */
         CertApprovalPO oldCertApprovalPO = certApprovalMapper.findByCertId(certId, (byte) 1, null);
-        oldCertApprovalPO.setUpdateTime(new
-
-                Date());
+        oldCertApprovalPO.setUpdateTime(new Date());
         int updateResult = certApprovalMapper.updateByPrimaryKeySelective(oldCertApprovalPO);
         if (updateResult == 0) {
             logger.error("update certApprovalMapper error");
@@ -412,9 +421,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
          */
         talentService.clearRedisCache(openId);
 
-        return new
-
-                ResultVO(1000);
+        return new ResultVO(1000);
 
     }
 

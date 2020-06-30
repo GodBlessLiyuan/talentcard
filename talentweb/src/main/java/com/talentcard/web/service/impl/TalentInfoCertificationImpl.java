@@ -53,7 +53,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             for (int i = 0; i < educationPOList.size() - 1; i++) {
                 educationString = educationPOList.get(i).getEducation() + ",";
             }
-            educationString = educationString + educationPOList.get(educationPOList.size());
+            educationString = educationString + educationPOList.get(educationPOList.size() - 1).getEducation();
             talentCertificationInfoPO.setEducation(educationString);
         }
         //职称
@@ -63,7 +63,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             for (int i = 0; i < profTitlePOList.size() - 1; i++) {
                 titleString = profTitlePOList.get(i).getCategory() + ",";
             }
-            titleString = titleString + profTitlePOList.get(profTitlePOList.size());
+            titleString = titleString + profTitlePOList.get(profTitlePOList.size() - 1).getCategory();
             talentCertificationInfoPO.setPtCategory(titleString);
         }
         //职业资格
@@ -73,7 +73,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             for (int i = 0; i < profQualityPOList.size() - 1; i++) {
                 qualityString = profQualityPOList.get(i).getCategory() + ",";
             }
-            qualityString = qualityString + profQualityPOList.get(profQualityPOList.size());
+            qualityString = qualityString + profQualityPOList.get(profQualityPOList.size() - 1).getCategory();
             talentCertificationInfoPO.setPqCategory(qualityString);
         }
         //人才荣誉
@@ -83,9 +83,10 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             for (int i = 0; i < talentHonourPOList.size() - 1; i++) {
                 honourString = talentHonourPOList.get(i).getHonourId() + ",";
             }
-            honourString = honourString + talentHonourPOList.get(talentHonourPOList.size());
+            honourString = honourString + talentHonourPOList.get(talentHonourPOList.size() - 1).getHonourId();
             talentCertificationInfoPO.setHonourId(honourString);
         }
+        talentCertificationInfoMapper.updateByPrimaryKeySelective(talentCertificationInfoPO);
         return 0;
     }
 }

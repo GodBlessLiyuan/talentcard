@@ -237,7 +237,7 @@
         on ic.talent_id = t.talent_id
         where t.open_id = #{openId,jdbcType=CHAR}
         and ic.type = #{type,jdbcType=TINYINT}
-        and (ic.status = 1 or ic.status = 2)
+        and ic.status = 2
         and ic.dr = 1
     </select>
     <select id="query" parameterType="java.util.HashMap" resultType="com.talentcard.common.bo.InsertCertificationBO">
@@ -263,5 +263,13 @@
         <if test="endTime != null and endTime != ''">
             and <![CDATA[ ic.create_time <= #{endTime}]]>
         </if>
+    </select>
+    <select id="checkIfExistInsertCertification" resultType="java.lang.Integer">
+        select
+        count(insert_cert_id)
+        from t_insert_certification
+        where talent_id = #{talentId,jdbcType=BIGINT}
+        and cert_info = #{certInfo,jdbcType=BIGINT}
+        and type = #{type,jdbcType=TINYINT}
     </select>
 </mapper>

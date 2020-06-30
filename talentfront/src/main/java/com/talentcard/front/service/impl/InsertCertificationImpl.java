@@ -38,6 +38,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Autowired
     InsertCertApprovalMapper insertCertApprovalMapper;
     @Autowired
+    TalentCertificationInfoMapper talentCertificationInfoMapper;
+    @Autowired
     ITalentService iTalentService;
 
     @Override
@@ -49,6 +51,23 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         }
         if (talentPO.getStatus() != 1) {
             return new ResultVO<>(2555, "人才无新增认证权限！");
+        }
+        /**
+         *判断该认证是否重复
+         */
+        Long talentId = talentPO.getTalentId();
+        TalentCertificationInfoPO talentCertificationInfoPO =
+                talentCertificationInfoMapper.selectByTalentId(talentId);
+        if (talentCertificationInfoPO == null) {
+            return new ResultVO(2500);
+        }
+        if (talentCertificationInfoPO.getEducation().contains(educationDTO.getEducation().toString())) {
+            return new ResultVO(2558);
+        }
+        Integer ifExistInsertCertification = insertCertificationMapper.
+                checkIfExistInsertCertification(talentId, educationDTO.getEducation().longValue(), (byte) 1);
+        if (ifExistInsertCertification != 0) {
+            return new ResultVO(2558);
         }
         /**
          * 判断新增还是编辑
@@ -130,6 +149,24 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             return new ResultVO<>(2555, "人才无新增认证权限！");
         }
         /**
+         *判断该认证是否重复
+         */
+        Long talentId = talentPO.getTalentId();
+        TalentCertificationInfoPO talentCertificationInfoPO =
+                talentCertificationInfoMapper.selectByTalentId(talentId);
+        if (talentCertificationInfoPO == null) {
+            return new ResultVO(2500);
+        }
+        if (talentCertificationInfoPO.getPqCategory().contains(profQualityDTO.getCategory().toString())) {
+            return new ResultVO(2558);
+        }
+        Integer ifExistInsertCertification = insertCertificationMapper.
+                checkIfExistInsertCertification(talentId, profQualityDTO.getCategory().longValue(), (byte) 3);
+        if (ifExistInsertCertification != 0) {
+            return new ResultVO(2558);
+        }
+
+        /**
          * 判断新增还是编辑
          */
         Long insertCertId = profQualityDTO.getInsertCertId();
@@ -209,6 +246,24 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             return new ResultVO<>(2555, "人才无新增认证权限！");
         }
         /**
+         *判断该认证是否重复
+         */
+        Long talentId = talentPO.getTalentId();
+        TalentCertificationInfoPO talentCertificationInfoPO =
+                talentCertificationInfoMapper.selectByTalentId(talentId);
+        if (talentCertificationInfoPO == null) {
+            return new ResultVO(2500);
+        }
+        if (talentCertificationInfoPO.getPtCategory().contains(profTitleDTO.getCategory().toString())) {
+            return new ResultVO(2558);
+        }
+        Integer ifExistInsertCertification = insertCertificationMapper.
+                checkIfExistInsertCertification(talentId, profTitleDTO.getCategory().longValue(), (byte) 2);
+        if (ifExistInsertCertification != 0) {
+            return new ResultVO(2558);
+        }
+
+        /**
          * 判断新增还是编辑
          */
         Long insertCertId = profTitleDTO.getInsertCertId();
@@ -283,6 +338,24 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (talentPO.getStatus() != 1) {
             return new ResultVO<>(2555, "人才无新增认证权限！");
         }
+        /**
+         *判断该认证是否重复
+         */
+        Long talentId = talentPO.getTalentId();
+        TalentCertificationInfoPO talentCertificationInfoPO =
+                talentCertificationInfoMapper.selectByTalentId(talentId);
+        if (talentCertificationInfoPO == null) {
+            return new ResultVO(2500);
+        }
+        if (talentCertificationInfoPO.getHonourId().contains(talentHonourDTO.getHonourId().toString())) {
+            return new ResultVO(2558);
+        }
+        Integer ifExistInsertCertification = insertCertificationMapper.
+                checkIfExistInsertCertification(talentId, talentHonourDTO.getHonourId().longValue(), (byte) 4);
+        if (ifExistInsertCertification != 0) {
+            return new ResultVO(2558);
+        }
+
         /**
          * 判断新增还是编辑
          */
@@ -474,9 +547,11 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         hashMap.put("honourTimes", honourTimes);
         return new ResultVO(1000, hashMap);
     }
+
     @Override
     public ResultVO findResultByInsertCertId(Long insertCertId) {
-        InsertCertApprovalPO insertCertApprovalPO = insertCertApprovalMapper.findResultByInsertCertId(insertCertId);
+        InsertCertApprovalPO insertCertApprovalPO =
+                insertCertApprovalMapper.findResultByInsertCertId(insertCertId, (byte) 2);
         return new ResultVO(1000, insertCertApprovalPO);
     }
 }

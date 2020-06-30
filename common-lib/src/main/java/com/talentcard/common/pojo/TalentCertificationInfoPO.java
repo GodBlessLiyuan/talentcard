@@ -15,15 +15,6 @@ public class TalentCertificationInfoPO implements Serializable {
 
     private String education;
 
-    private String school;
-
-    /**
-     * 1双一流；2海外人才；3啥也不是
-     */
-    private Byte firstClass;
-
-    private String major;
-
     private String ptCategory;
 
     private String pqCategory;
@@ -31,8 +22,6 @@ public class TalentCertificationInfoPO implements Serializable {
     private String talentCategory;
 
     private String honourId;
-
-    private String graduateTime;
 
     private static final long serialVersionUID = 1L;
 }

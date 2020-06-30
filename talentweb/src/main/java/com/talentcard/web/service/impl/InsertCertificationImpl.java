@@ -11,6 +11,7 @@ import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IInsertCertificationService;
+import com.talentcard.web.service.ITalentInfoCertificationService;
 import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.vo.InsertCertificationVO;
 import org.apache.commons.lang.StringUtils;
@@ -62,6 +63,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     private UserCurrentInfoMapper userCurrentInfoMapper;
     @Autowired
     ITalentService iTalentService;
+    @Autowired
+    ITalentInfoCertificationService iTalentInfoCertificationService;
 
 
     @Override
@@ -209,6 +212,15 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             }
         }
         /**
+         * 新增认证审批通过同步更新tci表
+         */
+        if (result == 1) {
+            Integer updateTciResult = iTalentInfoCertificationService.update(talentId);
+            if (updateTciResult != 0) {
+                return new ResultVO(2663, "更新tci表失败！");
+            }
+        }
+        /**
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(talentPO.getOpenId());
@@ -231,19 +243,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         InsertCertificationVO insertCertificationVO = InsertCertificationVO.convert(insertCertificationBO);
         //记录信息
         List<InsertCertApprovalBO> insertCertApprovalBOList = insertCertApprovalMapper.findRecord(talentId);
-        //卡名和人才类别
-//        CardPO cardPO = cardMapper.selectByPrimaryKey(talentPO.getCardId());
-//        if (cardPO == null) {
-//            return new ResultVO(2600);
-//        }
-//        String cardName = cardPO.getTitle();
-//        if (!StringUtils.isEmpty(cardPO.getInitialWord())) {
-//            cardName = cardName + cardPO.getInitialWord();
-//        }
-//        UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentId);
-//        if (userCurrentInfoPO == null) {
-//            return new ResultVO(2500);
-//        }
         result.put("basicInfo", talentPO);
         result.put("insertCertInfo", insertCertificationVO);
         result.put("record", insertCertApprovalBOList);

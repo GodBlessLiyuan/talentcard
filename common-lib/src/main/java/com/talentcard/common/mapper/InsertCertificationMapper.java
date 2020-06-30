@@ -57,4 +57,15 @@ public interface InsertCertificationMapper extends BaseMapper<InsertCertificatio
      * @return
      */
     List<InsertCertificationBO> query(HashMap<String, Object> hashMap);
+
+    /**
+     *
+     * @param talentId
+     * @param certInfo
+     * @param type
+     * @return
+     */
+    Integer checkIfExistInsertCertification(@Param("talentId") Long talentId,
+                                            @Param("certInfo") Long certInfo,
+                                            @Param("type") Byte type);
 }

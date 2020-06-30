@@ -6,12 +6,10 @@ import com.talentcard.common.dto.ProfQualityDTO;
 import com.talentcard.common.dto.ProfTitleDTO;
 import com.talentcard.common.dto.TalentHonourDTO;
 import com.talentcard.common.mapper.*;
-import com.talentcard.common.pojo.EducationPO;
-import com.talentcard.common.pojo.ProfQualityPO;
-import com.talentcard.common.pojo.ProfTitlePO;
-import com.talentcard.common.pojo.TalentHonourPO;
+import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IAddDeleteTalentService;
+import com.talentcard.web.service.ITalentInfoCertificationService;
 import com.talentcard.web.service.ITalentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +50,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     private UserCurrentInfoMapper userCurrentInfoMapper;
     @Autowired
     private ITalentService iTalentService;
+    @Autowired
+    ITalentInfoCertificationService iTalentInfoCertificationService;
 
     @Override
     public ResultVO addEducation(EducationDTO educationDTO) {
@@ -78,6 +78,17 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         educationPO.setStatus((byte) 1);
         educationPO.setTalentId(talentId);
         educationMapper.insertSelective(educationPO);
+        /**
+         * 同步更新tci表
+         */
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        if (updateTciResult != 0) {
+            return new ResultVO(2663, "更新tci表失败！");
+        }
         /**
          * 清除redis缓存
          */
@@ -108,6 +119,17 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         profQualityPO.setIfCertificate((byte) 1);
         profQualityMapper.insertSelective(profQualityPO);
         /**
+         * 同步更新tci表
+         */
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        if (updateTciResult != 0) {
+            return new ResultVO(2663, "更新tci表失败！");
+        }
+        /**
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
@@ -135,6 +157,17 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         profTitlePO.setTalentId(talentId);
         profTitlePO.setIfCertificate((byte) 1);
         profTitleMapper.insertSelective(profTitlePO);
+        /**
+         * 同步更新tci表
+         */
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        if (updateTciResult != 0) {
+            return new ResultVO(2663, "更新tci表失败！");
+        }
         /**
          * 清除redis缓存
          */
@@ -164,6 +197,17 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         talentHonourPO.setStatus((byte) 1);
         talentHonourMapper.insertSelective(talentHonourPO);
         /**
+         * 同步更新tci表
+         */
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        if (updateTciResult != 0) {
+            return new ResultVO(2663, "更新tci表失败！");
+        }
+        /**
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
@@ -176,6 +220,17 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         Integer result = educationMapper.deleteByPrimaryKey(educId);
         if (result != 1) {
             return new ResultVO(2662, "删除失败！");
+        }
+        /**
+         * 同步更新tci表
+         */
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        if (updateTciResult != 0) {
+            return new ResultVO(2663, "更新tci表失败！");
         }
         /**
          * 清除redis缓存
@@ -191,6 +246,17 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
             return new ResultVO(2662, "删除失败！");
         }
         /**
+         * 同步更新tci表
+         */
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        if (updateTciResult != 0) {
+            return new ResultVO(2663, "更新tci表失败！");
+        }
+        /**
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
@@ -204,6 +270,17 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
             return new ResultVO(2662, "删除失败！");
         }
         /**
+         * 同步更新tci表
+         */
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        if (updateTciResult != 0) {
+            return new ResultVO(2663, "更新tci表失败！");
+        }
+        /**
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
@@ -215,6 +292,17 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         Integer result = talentHonourMapper.deleteByPrimaryKey(thId);
         if (result != 1) {
             return new ResultVO(2662, "删除失败！");
+        }
+        /**
+         * 同步更新tci表
+         */
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        if (updateTciResult != 0) {
+            return new ResultVO(2663, "更新tci表失败！");
         }
         /**
          * 清除redis缓存
