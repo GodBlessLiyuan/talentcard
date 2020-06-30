@@ -135,4 +135,16 @@ public class InsertCertificationController {
     public ResultVO findInsertCertificationTimes(@RequestParam(value = "openId") String openId) {
         return iInsertCertificationService.findInsertCertificationTimes(openId);
     }
+
+
+    /**
+     * 新增认证审批结果查询
+     *
+     * @param insertCertId
+     * @return
+     */
+    @RequestMapping("findResultByInsertCertId")
+    public ResultVO findResultByInsertCertId(@RequestParam(value = "insertCertId") Long insertCertId) {
+        return iInsertCertificationService.findResultByInsertCertId(insertCertId);
+    }
 }
