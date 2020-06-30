@@ -64,7 +64,7 @@
   </resultMap>
   <sql id="InsertCertification_Column_List">
     ic.insert_cert_id as ic_insert_cert_id, ic.talent_id as ic_talent_id, ic.`status` as ic_status,
-    ic.`type` as ic_type, ic.create_time as ic_create_time, ic.dr as ic_dr, ic.cert_info as ic_certInfo,
+    ic.`type` as ic_type, ic.create_time as ic_create_time, ic.dr as ic_dr, ic.cert_info as ic_cert_info,
 
     ie.insert_educ_id as ie_insert_educ_id, ie.education as ie_education, ie.school as ie_school, ie.first_class as ie_first_class,
     ie.major as ie_major, ie.educ_picture as ie_educ_picture, ie.open_id as ie_open_id , ie.`status`as ie_status,

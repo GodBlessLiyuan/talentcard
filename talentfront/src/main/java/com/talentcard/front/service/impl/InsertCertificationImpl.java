@@ -43,7 +43,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO addEducation(EducationDTO educationDTO) {
-        Long insertCertId = educationDTO.getInsertCertId();
         TalentPO talentPO = talentMapper.selectByOpenId(educationDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
@@ -54,6 +53,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 判断新增还是编辑
          */
+        Long insertCertId = educationDTO.getInsertCertId();
         if (insertCertId != null) {
             /**
              * 编辑
@@ -90,7 +90,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertificationPO.setType((byte) 1);
         insertCertificationPO.setTalentId(talentPO.getTalentId());
         insertCertificationPO.setCertInfo(educationDTO.getEducation().longValue());
-        insertCertificationPO.setDr((byte)1);
+        insertCertificationPO.setDr((byte) 1);
         insertCertificationMapper.add(insertCertificationPO);
         //学历
         insertEducationPO.setInsertCertId(insertCertificationPO.getInsertCertId());
@@ -122,7 +122,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO addProfQuality(ProfQualityDTO profQualityDTO) {
-        Long insertCertId = profQualityDTO.getInsertCertId();
         TalentPO talentPO = talentMapper.selectByOpenId(profQualityDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
@@ -133,6 +132,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 判断新增还是编辑
          */
+        Long insertCertId = profQualityDTO.getInsertCertId();
         if (insertCertId != null) {
             /**
              * 编辑
@@ -172,7 +172,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertificationPO.setType((byte) 3);
         insertCertificationPO.setTalentId(talentPO.getTalentId());
         insertCertificationPO.setCertInfo(profQualityDTO.getCategory().longValue());
-        insertCertificationPO.setDr((byte)1);
+        insertCertificationPO.setDr((byte) 1);
         insertCertificationMapper.add(insertCertificationPO);
         //职业资格
         insertQualityPO.setInsertCertId(insertCertificationPO.getInsertCertId());
@@ -201,7 +201,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO addProfTitle(ProfTitleDTO profTitleDTO) {
-        Long insertCertId = profTitleDTO.getInsertCertId();
         TalentPO talentPO = talentMapper.selectByOpenId(profTitleDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
@@ -212,6 +211,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 判断新增还是编辑
          */
+        Long insertCertId = profTitleDTO.getInsertCertId();
         if (insertCertId != null) {
             /**
              * 编辑
@@ -246,7 +246,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertificationPO.setType((byte) 2);
         insertCertificationPO.setTalentId(talentPO.getTalentId());
         insertCertificationPO.setCertInfo(profTitleDTO.getCategory().longValue());
-        insertCertificationPO.setDr((byte)1);
+        insertCertificationPO.setDr((byte) 1);
         insertCertificationMapper.add(insertCertificationPO);
 
         insertTitlePO.setInsertCertId(insertCertificationPO.getInsertCertId());
@@ -276,7 +276,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO addTalentHonour(TalentHonourDTO talentHonourDTO) {
-        Long insertCertId = talentHonourDTO.getInsertCertId();
         TalentPO talentPO = talentMapper.selectByOpenId(talentHonourDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO<>(2500);
@@ -287,6 +286,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 判断新增还是编辑
          */
+        Long insertCertId = talentHonourDTO.getInsertCertId();
         if (insertCertId != null) {
             /**
              * 编辑
@@ -322,7 +322,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertificationPO.setType((byte) 4);
         insertCertificationPO.setTalentId(talentPO.getTalentId());
         insertCertificationPO.setCertInfo(talentHonourDTO.getHonourId());
-        insertCertificationPO.setDr((byte)1);
+        insertCertificationPO.setDr((byte) 1);
         insertCertificationMapper.add(insertCertificationPO);
 
         insertHonourPO.setInsertCertId(insertCertificationPO.getInsertCertId());
@@ -354,10 +354,9 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     public ResultVO delete(Long insertCertId) {
         InsertCertificationPO insertCertificationPO = insertCertificationMapper.selectByPrimaryKey(insertCertId);
         if (insertCertificationPO == null) {
-            if (insertCertificationPO == null) {
-                return new ResultVO(2551, "查无此新增认证！");
-            }
+            return new ResultVO(2551, "查无此新增认证！");
         }
+
         if (insertCertificationPO.getStatus() != 3) {
             return new ResultVO(2554, "状态不对，此认证无法删除！");
         }
@@ -403,7 +402,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
          * 清除redis缓存
          */
         TalentPO talentPO = talentMapper.selectByPrimaryKey(insertCertificationPO.getTalentId());
-        if(talentPO==null){
+        if (talentPO == null) {
             return new ResultVO(2500);
         }
         iTalentService.clearRedisCache(talentPO.getOpenId());
