@@ -6,6 +6,7 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IEditTalentService;
+import com.talentcard.web.service.ITalentInfoCertificationService;
 import com.talentcard.web.service.ITalentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,11 @@ public class EditTalentServiceImpl implements IEditTalentService {
     private UserCurrentInfoMapper userCurrentInfoMapper;
     @Autowired
     ITalentService iTalentService;
+    @Autowired
+    ITalentInfoCertificationService iTalentInfoCertificationService;
+    @Autowired
+    TalentCertificationInfoMapper talentCertificationInfoMapper;
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -89,6 +95,17 @@ public class EditTalentServiceImpl implements IEditTalentService {
         educationPO.setEducation(educationDTO.getEducation());
         educationMapper.updateByPrimaryKeySelective(educationPO);
         /**
+         * 同步更新tci表
+         */
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        if (updateTciResult != 0) {
+            return new ResultVO(2663, "更新tci表失败！");
+        }
+        /**
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
@@ -107,6 +124,17 @@ public class EditTalentServiceImpl implements IEditTalentService {
         profQualityPO.setInfo(profQualityDTO.getInfo());
         profQualityPO.setCategory(profQualityDTO.getCategory());
         profQualityMapper.updateByPrimaryKeySelective(profQualityPO);
+        /**
+         * 同步更新tci表
+         */
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        if (updateTciResult != 0) {
+            return new ResultVO(2663, "更新tci表失败！");
+        }
         /**
          * 清除redis缓存
          */
@@ -127,6 +155,17 @@ public class EditTalentServiceImpl implements IEditTalentService {
         profTitlePO.setCategory(profTitleDTO.getCategory());
         profTitleMapper.updateByPrimaryKeySelective(profTitlePO);
         /**
+         * 同步更新tci表
+         */
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        if (updateTciResult != 0) {
+            return new ResultVO(2663, "更新tci表失败！");
+        }
+        /**
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
@@ -146,6 +185,17 @@ public class EditTalentServiceImpl implements IEditTalentService {
         talentHonourPO.setHonourId(talentHonourDTO.getHonourId());
         talentHonourMapper.updateByPrimaryKeySelective(talentHonourPO);
         /**
+         * 同步更新tci表
+         */
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        if (updateTciResult != 0) {
+            return new ResultVO(2663, "更新tci表失败！");
+        }
+        /**
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
@@ -156,14 +206,28 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editTalentCategory(String openId, String talentCategory) {
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        if(talentPO==null){
+        if (talentPO == null) {
             return new ResultVO(2500);
         }
         talentPO.setCategory(talentCategory);
         talentMapper.updateByPrimaryKeySelective(talentPO);
+        //更新uci表
         UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentPO.getTalentId());
+        if (userCurrentInfoPO == null) {
+            return new ResultVO(2500);
+        }
         userCurrentInfoPO.setTalentCategory(talentCategory);
         userCurrentInfoMapper.updateByPrimaryKeySelective(userCurrentInfoPO);
+        /**
+         * 更新tci表
+         */
+        TalentCertificationInfoPO talentCertificationInfoPO =
+                talentCertificationInfoMapper.selectByTalentId(talentPO.getTalentId());
+        if (talentCertificationInfoPO == null) {
+            return new ResultVO(2500);
+        }
+        talentCertificationInfoPO.setTalentCategory(talentCategory);
+        talentCertificationInfoMapper.updateByPrimaryKeySelective(talentCertificationInfoPO);
         /**
          * 清除redis缓存
          */

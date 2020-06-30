@@ -4,6 +4,7 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.BatchCertificateDTO;
 import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.utils.BatchCertificateUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -108,14 +109,17 @@ public class TalentController {
                               @RequestParam(value = "end", defaultValue = "") String end,
                               @RequestParam(value = "name", defaultValue = "") String name,
                               @RequestParam(value = "sex", defaultValue = "") Byte sex,
-                              @RequestParam(value = "educ", defaultValue = "") Integer educ,
+                              @RequestParam(value = "educ", defaultValue = "")  Integer educ,
                               @RequestParam(value = "title", defaultValue = "") Integer title,
                               @RequestParam(value = "quality", defaultValue = "") Integer quality,
                               @RequestParam(value = "card", defaultValue = "") String card,
                               @RequestParam(value = "category", defaultValue = "") String category,
                               @RequestParam(value = "honour", defaultValue = "") Long honour) {
         Map<String, Object> reqMap = new HashMap<>(10);
-        if (!"".equals(end)) {
+        if (!StringUtils.isEmpty(start)) {
+            start = start + " 00:00:00";
+        }
+        if (!StringUtils.isEmpty(end)) {
             end = end + " 23:59:59";
         }
         reqMap.put("start", start);

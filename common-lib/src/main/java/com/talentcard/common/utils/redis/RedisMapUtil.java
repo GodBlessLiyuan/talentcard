@@ -1,13 +1,17 @@
 package com.talentcard.common.utils.redis;
 
 import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.utils.StringToObjUtil;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.TimeoutUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
@@ -41,6 +45,22 @@ public class RedisMapUtil {
     public String hget(String key, String field) {
         Object val = redisTemplate.opsForHash().get(key, field);
         return val == null ? null : val.toString();
+    }
+
+    /**
+     * 获取list
+     * @param key
+     * @param field
+     * @return
+     */
+    public List hgetList(String key, String field){
+        String mapStr = hget(key,field);
+        if (!StringUtils.isEmpty(mapStr)) {
+            return StringToObjUtil.strToObj(mapStr, List.class);
+        }else {
+            return null;
+        }
+
     }
 
     /**

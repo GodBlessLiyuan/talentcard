@@ -5,6 +5,7 @@ import com.github.pagehelper.Page;
 import com.netflix.ribbon.proxy.annotation.Http;
 import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.TalentBO;
+import com.talentcard.common.bo.TalentCertificationBO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
@@ -76,6 +77,8 @@ public class TalentServiceImpl implements ITalentService {
     private TalentHonourMapper talentHonourMapper;
     @Autowired
     private BatchCertificateMapper batchCertificateMapper;
+    @Autowired
+    private TalentCertificationInfoMapper talentCertificationInfoMapper;
 
     private static final String[] EXCEL_TITLE = {"姓名", "证件号码"};
     private static final String[] EXCEL_TITLE_RES = {"姓名", "证件号码", "人才卡", "人才类别", "人才荣誉", "认证结果", "说明"};
@@ -106,21 +109,12 @@ public class TalentServiceImpl implements ITalentService {
 
     @Override
     public ResultVO queryCert(int pageNum, int pageSize, Map<String, Object> reqMap) {
-        Page<TalentBO> page = PageHelper.startPage(pageNum, pageSize);
-        List<TalentBO> bos = talentMapper.queryCert(reqMap);
-//        // 当状态1和2同时存在时，返回状态为1的数据
-//        Map<Long, TalentBO> boMap = new HashMap<>();
-//        for (TalentBO bo : bos) {
-//            Long key = bo.getTalentId();
-//            if (boMap.containsKey(key)) {
-//                if (bo.getCstatus() == 1) {
-//                    boMap.put(key, bo);
-//                }
-//            } else {
-//                boMap.put(key, bo);
-//            }
-//        }
-        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), TalentVO.convert(bos)));
+//        Page<TalentBO> page = PageHelper.startPage(pageNum, pageSize);
+//        List<TalentBO> bos = talentMapper.queryCert(reqMap);
+//        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), TalentVO.convert(bos)));
+        Page<TalentCertificationBO> page = PageHelper.startPage(pageNum, pageSize);
+        List<TalentCertificationBO> talentCertificationBOList = talentCertificationInfoMapper.queryCertTalent(reqMap);
+        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), talentCertificationBOList));
     }
 
 
