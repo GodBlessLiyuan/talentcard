@@ -342,7 +342,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             if (currentCard == null) {
                 return new ResultVO<>(2500, "查无此人！");
             }
+            //当前编号
             String currentNum = (String) currentCard.get("currentNum");
+            //人才卡编号
             String membershipNumber = cardPO.getInitialWord() + cardPO.getAreaNum() + currentNum;
             userCardPO.setNum(membershipNumber);
             userCardPO.setName(cardPO.getTitle());

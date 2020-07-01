@@ -1,21 +1,31 @@
 package com.talentcard.web.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.TalentBO;
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.dto.*;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.WechatApiUtil;
+import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.EditTalentPolicyDTO;
+import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.IEditTalentService;
 import com.talentcard.web.service.ITalentInfoCertificationService;
 import com.talentcard.web.service.ITalentService;
+import com.talentcard.web.utils.AccessTokenUtil;
+import com.talentcard.web.utils.MessageUtil;
+import com.talentcard.web.utils.WebParameterUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,6 +71,12 @@ public class EditTalentServiceImpl implements IEditTalentService {
     TalentCertificationInfoMapper talentCertificationInfoMapper;
     @Autowired
     PolicyMapper policyMapper;
+    @Autowired
+    private CertApprovalMapper certApprovalMapper;
+    @Autowired
+    private CardMapper cardMapper;
+    @Autowired
+    private UserCardMapper userCardMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -280,7 +296,109 @@ public class EditTalentServiceImpl implements IEditTalentService {
     }
 
     /**
+     * 根据talentId和cardId，高级卡更换高级卡
+     *
+     * @param talentId
+     * @param newCardId
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ResultVO changeCard(Long talentId, Long newCardId) {
+        TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        String openId = talentPO.getOpenId();
+
+        //找到uc表status=2，当前正在使用的卡的cardId
+        ActivcateBO talentInfo = talentMapper.activate(openId, (byte) 2, (byte) 1);
+        if (talentInfo == null) {
+            return new ResultVO(2500);
+        }
+        Long oldCardId = talentInfo.getCardId();
+        if (newCardId.equals(oldCardId)) {
+            return new ResultVO(2671, "更新卡与原本拥有卡号重复！");
+        }
+
+
+        CardPO oldCardPO = cardMapper.selectByPrimaryKey(oldCardId);
+        CardPO newCardPO = cardMapper.selectByPrimaryKey(newCardId);
+        UserCardPO oldUserCardPO = userCardMapper.selectByPrimaryKey(talentInfo.getUcId());
+        if (oldCardPO == null || newCardPO == null || oldUserCardPO == null) {
+            return new ResultVO<>(2600, "查无此卡！");
+        }
+        //当前编号
+        String currentNum = oldUserCardPO.getCurrentNum();
+        //人才卡编号
+        String membershipNumber = oldCardPO.getInitialWord() + oldCardPO.getAreaNum() + currentNum;
+        //新增uc表状态1；更新card表
+        UserCardPO newUserCardPO = new UserCardPO();
+        newUserCardPO.setCardId(newCardId);
+        newUserCardPO.setTalentId(talentId);
+        newUserCardPO.setNum(membershipNumber);
+        newUserCardPO.setName(newCardPO.getTitle());
+        newUserCardPO.setCurrentNum(currentNum);
+        newUserCardPO.setCreateTime(new Date());
+        newUserCardPO.setStatus((byte) 1);
+        userCardMapper.insertSelective(newUserCardPO);
+
+        /**
+         * 更新card表新旧卡
+         */
+        //新卡待领取数量+1
+        newCardPO.setWaitingMemberNum(newCardPO.getWaitingMemberNum() + 1);
+        cardMapper.updateByPrimaryKeySelective(newCardPO);
+        //旧卡会员数量-1
+        oldCardPO.setWaitingMemberNum(oldCardPO.getMemberNum() - 1);
+        cardMapper.updateByPrimaryKeySelective(oldCardPO);
+
+        /**
+         * 设置旧卡券失效
+         */
+        if (oldCardId != null) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("code", talentInfo.getCode());
+            jsonObject.put("card_id", talentInfo.getWxCardId());
+            String url = "https://api.weixin.qq.com/card/code/unavailable?access_token="
+                    + AccessTokenUtil.getAccessToken();
+        }
+
+        /**
+         * 用消息模板推送微信消息
+         */
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(talentPO.getOpenId());
+        //开头
+        messageDTO.setFirst("您好，请您领取衢江区人才卡");
+        //姓名
+        messageDTO.setKeyword1(talentPO.getName());
+        //身份证号，屏蔽八位
+        String encryptionIdCard = talentPO.getIdCard().substring(0, 9) + "********";
+        messageDTO.setKeyword2(encryptionIdCard);
+        //领卡机构
+        messageDTO.setKeyword3("个人");
+        //通知时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        String currentTime = formatter.format(new Date());
+        messageDTO.setKeyword4(currentTime);
+        //模版编号
+        messageDTO.setTemplateId(1);
+        //结束
+        messageDTO.setRemark("领取后可享受多项人才权益哦");
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+        MessageUtil.sendTemplateMessage(messageDTO);
+        /**
+         * 清缓存
+         */
+        iTalentService.clearRedisCache(talentPO.getOpenId());
+        return new ResultVO(1000);
+    }
+
+    /**
      * 政策查询工具类
+     *
      * @param editTalentPolicyDTO
      * @return
      */
@@ -385,4 +503,5 @@ public class EditTalentServiceImpl implements IEditTalentService {
         }
         return showPOs;
     }
+
 }

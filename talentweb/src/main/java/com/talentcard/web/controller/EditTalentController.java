@@ -80,12 +80,13 @@ public class EditTalentController {
      */
     @RequestMapping("editTalentCategory")
     public ResultVO editTalentCategory(@RequestParam(value = "openId") String openId,
-                                     @RequestParam(value = "talentCategory") String talentCategory) {
+                                       @RequestParam(value = "talentCategory") String talentCategory) {
         return iEditTalentService.editTalentCategory(openId, talentCategory);
     }
 
     /**
      * 根据属性查找政策权益
+     *
      * @param editTalentPolicyDTO
      * @return
      */
@@ -93,13 +94,20 @@ public class EditTalentController {
     public ResultVO findPolicy(@RequestBody EditTalentPolicyDTO editTalentPolicyDTO) {
         return iEditTalentService.findPolicy(editTalentPolicyDTO);
     }
+
     /**
-     * 认证人才详情查看编辑
      * @param openId
      * @return
      */
     @RequestMapping("findTalentCertificationDetail")
     public ResultVO findTalentCertificationDetail(@RequestParam(value = "openId") String openId) {
         return iEditTalentService.findTalentCertificationDetail(openId);
+    }
+
+    @RequestMapping("changeCard")
+    public ResultVO changeCard(@RequestParam(value = "talentId") Long talentId,
+                               @RequestParam(value = "cardId") Long cardId) {
+        iEditTalentService.changeCard(talentId, cardId);
+        return new ResultVO(1000);
     }
 }

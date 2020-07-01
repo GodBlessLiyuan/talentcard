@@ -58,5 +58,18 @@ public interface IEditTalentService {
      */
     ResultVO findPolicy(EditTalentPolicyDTO editTalentPolicyDTO);
 
+    /**
+     * 认证人才详情
+     * @param openId
+     * @return
+     */
     ResultVO findTalentCertificationDetail(String openId);
+
+    /**
+     * 换卡
+     * @param talentId
+     * @param cardId
+     * @return
+     */
+    ResultVO changeCard(Long talentId, Long cardId);
 }
