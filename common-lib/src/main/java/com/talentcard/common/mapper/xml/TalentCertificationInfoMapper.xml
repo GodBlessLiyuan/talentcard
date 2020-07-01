@@ -122,6 +122,7 @@
   </select>
   <select id="queryCertTalent" resultType="com.talentcard.common.bo.TalentCertificationBO">
     select t.talent_id as tId,
+    t.open_id as openId,
     t.create_time as cTime,
     t.`name` as name,
     t.sex as sex,
