@@ -51,7 +51,8 @@
         <result column="c_cert_id" jdbcType="BIGINT" property="certId"/>
         <result column="c_political" jdbcType="CHAR" property="political"/>
         <result column="c_status" jdbcType="TINYINT" property="certificationStatus"/>
-        <result column="current_type" jdbcType="TINYINT" property="currentType"/>
+        <result column="c_current_type" jdbcType="TINYINT" property="currentType"/>
+        <result column="c_create_time" jdbcType="TINYINT" property="firstCertificationTime"/>
 
         <collection property="educationPOList" ofType="com.talentcard.common.pojo.EducationPO">
             <id column="e_educ_id" jdbcType="BIGINT" property="educId"/>
@@ -98,9 +99,77 @@
         </collection>
     </resultMap>
     <sql id="Base_Column_List">
-        talent_id, open_id, union_id, `name`, sex, id_card, passport, driver_card, card_type,
+    talent_id, open_id, union_id, `name`, sex, id_card, passport, driver_card, card_type,
     work_unit, industry, industry_second, phone, political, category, work_location, 
     work_location_type, card_id, `status`, create_time, dr, talent_source
+    </sql>
+    <sql id="Talent_BO_List">
+    t.talent_id          as t_talent_id,
+               t.open_id            as t_open_id,
+               t.`name`             as t_name,
+               t.sex                as t_sex,
+               t.id_card            as t_id_card,
+               t.passport           as t_passport,
+               t.driver_card        as t_driver_card,
+               t.card_type          as t_card_type,
+               t.work_unit          as t_work_unit,
+               t.industry           as t_industry,
+               t.industry_second    as t_industry_second,
+               t.political          as t_political,
+               t.phone              as t_phone,
+               t.create_time        as t_create_time,
+               t.`status`           as t_status,
+               t.category           as t_category,
+               t.work_location      as t_work_location,
+               t.work_location_type as t_work_location_type,
+               t.card_id            as t_card_id,
+               t.dr                 as t_dr,
+               t.talent_source      as t_talent_source,
+
+               c.cert_id            as c_cert_id,
+               c.political          as c_political,
+               c.status             as c_status,
+               c.current_type       as c_current_type,
+               c.create_time        as c_create_time,
+
+               e.educ_id            as e_educ_id,
+               e.education          as e_education,
+               e.school             as e_school,
+               e.first_class        as e_first_class,
+               e.major              as e_major,
+               e.educ_picture       as e_educ_picture,
+               e.cert_id            as e_cert_id,
+               e.talent_id          as e_talent_id,
+               e.status             as e_status,
+               e.if_certificate     as e_if_certificate,
+               e.graduate_time      as e_graduate_time,
+
+               pt.pt_id             as pt_pt_id,
+               pt.category          as pt_category,
+               pt.info              as pt_info,
+               pt.picture           as pt_picture,
+               pt.cert_id           as pt_cert_id,
+               pt.talent_id         as pt_talent_id,
+               pt.status            as pt_status,
+               pt.if_certificate    as pt_if_certificate,
+
+               pq.pq_id             as pq_pq_id,
+               pq.category          as pq_category,
+               pq.info              as pq_info,
+               pq.picture           as pq_picture,
+               pq.cert_id           as pq_cert_id,
+               pq.talent_id         as pq_talent_id,
+               pq.status            as pq_status,
+               pq.if_certificate    as pq_if_certificate,
+
+               th.th_id             as th_th_id,
+               th.honour_id         as th_honour_id,
+               th.honour_picture    as th_honour_picture,
+               th.info              as th_info,
+               th.cert_id           as th_cert_id,
+               th.talent_id         as th_talent_id,
+               th.`status`          as th_status,
+               th.if_certificate    as th_if_certificate
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -402,71 +471,8 @@
     <!--    </select>-->
 
     <select id="findOne" resultMap="TalentResultMap">
-        select t.talent_id          as t_talent_id,
-               t.open_id            as t_open_id,
-               t.`name`             as t_name,
-               t.sex                as t_sex,
-               t.id_card            as t_id_card,
-               t.passport           as t_passport,
-               t.driver_card        as t_driver_card,
-               t.card_type          as t_card_type,
-               t.work_unit          as t_work_unit,
-               t.industry           as t_industry,
-               t.industry_second    as t_industry_second,
-               t.political          as t_political,
-               t.phone              as t_phone,
-               t.create_time        as t_create_time,
-               t.`status`           as t_status,
-               t.category           as t_category,
-               t.work_location      as t_work_location,
-               t.work_location_type as t_work_location_type,
-               t.card_id            as t_card_id,
-               t.dr                 as t_dr,
-               t.talent_source      as t_talent_source,
-
-               c.cert_id            as c_cert_id,
-               c.political          as c_political,
-               c.status             as c_status,
-               current_type,
-
-               e.educ_id            as e_educ_id,
-               e.education          as e_education,
-               e.school             as e_school,
-               e.first_class        as e_first_class,
-               e.major              as e_major,
-               e.educ_picture       as e_educ_picture,
-               e.cert_id            as e_cert_id,
-               e.talent_id          as e_talent_id,
-               e.status             as e_status,
-               e.if_certificate     as e_if_certificate,
-               e.graduate_time      as e_graduate_time,
-
-               pt.pt_id             as pt_pt_id,
-               pt.category          as pt_category,
-               pt.info              as pt_info,
-               pt.picture           as pt_picture,
-               pt.cert_id           as pt_cert_id,
-               pt.talent_id         as pt_talent_id,
-               pt.status            as pt_status,
-               pt.if_certificate    as pt_if_certificate,
-
-               pq.pq_id             as pq_pq_id,
-               pq.category          as pq_category,
-               pq.info              as pq_info,
-               pq.picture           as pq_picture,
-               pq.cert_id           as pq_cert_id,
-               pq.talent_id         as pq_talent_id,
-               pq.status            as pq_status,
-               pq.if_certificate    as pq_if_certificate,
-
-               th.th_id             as th_th_id,
-               th.honour_id         as th_honour_id,
-               th.honour_picture    as th_honour_picture,
-               th.info              as th_info,
-               th.cert_id           as th_cert_id,
-               th.talent_id         as th_talent_id,
-               th.`status`          as th_status,
-               th.if_certificate    as th_if_certificate
+        select
+        <include refid="Talent_BO_List"/>
         from t_talent t
                  left join t_certification c
                            on t.talent_id = c.talent_id
@@ -484,71 +490,8 @@
     </select>
 
     <select id="findRegisterOne" parameterType="java.lang.String" resultMap="TalentResultMap">
-        select t.talent_id          as t_talent_id,
-               t.open_id            as t_open_id,
-               t.`name`             as t_name,
-               t.sex                as t_sex,
-               t.id_card            as t_id_card,
-               t.passport           as t_passport,
-               t.driver_card        as t_driver_card,
-               t.card_type          as t_card_type,
-               t.work_unit          as t_work_unit,
-               t.industry           as t_industry,
-               t.industry_second    as t_industry_second,
-               t.political          as t_political,
-               t.phone              as t_phone,
-               t.create_time        as t_create_time,
-               t.`status`           as t_status,
-               t.category           as t_category,
-               t.work_location      as t_work_location,
-               t.work_location_type as t_work_location_type,
-               t.card_id            as t_card_id,
-               t.dr                 as t_dr,
-               t.talent_source      as t_talent_source,
-
-               c.cert_id            as c_cert_id,
-               c.political          as c_political,
-               c.status             as c_status,
-               current_type,
-
-               e.educ_id            as e_educ_id,
-               e.education          as e_education,
-               e.school             as e_school,
-               e.first_class        as e_first_class,
-               e.major              as e_major,
-               e.educ_picture       as e_educ_picture,
-               e.cert_id            as e_cert_id,
-               e.talent_id          as e_talent_id,
-               e.status             as e_status,
-               e.if_certificate     as e_if_certificate,
-               e.graduate_time      as e_graduate_time,
-
-               pt.pt_id             as pt_pt_id,
-               pt.category          as pt_category,
-               pt.info              as pt_info,
-               pt.picture           as pt_picture,
-               pt.cert_id           as pt_cert_id,
-               pt.talent_id         as pt_talent_id,
-               pt.status            as pt_status,
-               pt.if_certificate    as pt_if_certificate,
-
-               pq.pq_id             as pq_pq_id,
-               pq.category          as pq_category,
-               pq.info              as pq_info,
-               pq.picture           as pq_picture,
-               pq.cert_id           as pq_cert_id,
-               pq.talent_id         as pq_talent_id,
-               pq.status            as pq_status,
-               pq.if_certificate    as pq_if_certificate,
-
-               th.th_id             as th_th_id,
-               th.honour_id         as th_honour_id,
-               th.honour_picture    as th_honour_picture,
-               th.info              as th_info,
-               th.cert_id           as th_cert_id,
-               th.talent_id         as th_talent_id,
-               th.`status`          as th_status,
-               th.if_certificate    as th_if_certificate
+        select
+        <include refid="Talent_BO_List"/>
         from t_talent t
                  left join t_certification c
                            on t.talent_id = c.talent_id
@@ -818,71 +761,8 @@
     </select>
 
     <select id="certApprovalDetail" resultMap="TalentResultMap">
-        select t.talent_id          as t_talent_id,
-               t.open_id            as t_open_id,
-               t.`name`             as t_name,
-               t.sex                as t_sex,
-               t.id_card            as t_id_card,
-               t.passport           as t_passport,
-               t.driver_card        as t_driver_card,
-               t.card_type          as t_card_type,
-               t.work_unit          as t_work_unit,
-               t.industry           as t_industry,
-               t.industry_second    as t_industry_second,
-               t.political          as t_political,
-               t.phone              as t_phone,
-               t.create_time        as t_create_time,
-               t.`status`           as t_status,
-               t.category           as t_category,
-               t.work_location      as t_work_location,
-               t.work_location_type as t_work_location_type,
-               t.card_id            as t_card_id,
-               t.dr                 as t_dr,
-               t.talent_source      as t_talent_source,
-
-               c.cert_id            as c_cert_id,
-               c.political          as c_political,
-               c.status             as c_status,
-               current_type,
-
-               e.educ_id            as e_educ_id,
-               e.education          as e_education,
-               e.school             as e_school,
-               e.first_class        as e_first_class,
-               e.major              as e_major,
-               e.educ_picture       as e_educ_picture,
-               e.cert_id            as e_cert_id,
-               e.talent_id          as e_talent_id,
-               e.status             as e_status,
-               e.if_certificate     as e_if_certificate,
-               e.graduate_time      as e_graduate_time,
-
-               pt.pt_id             as pt_pt_id,
-               pt.category          as pt_category,
-               pt.info              as pt_info,
-               pt.picture           as pt_picture,
-               pt.cert_id           as pt_cert_id,
-               pt.talent_id         as pt_talent_id,
-               pt.status            as pt_status,
-               pt.if_certificate    as pt_if_certificate,
-
-               pq.pq_id             as pq_pq_id,
-               pq.category          as pq_category,
-               pq.info              as pq_info,
-               pq.picture           as pq_picture,
-               pq.cert_id           as pq_cert_id,
-               pq.talent_id         as pq_talent_id,
-               pq.status            as pq_status,
-               pq.if_certificate    as pq_if_certificate,
-
-               th.th_id             as th_th_id,
-               th.honour_id         as th_honour_id,
-               th.honour_picture    as th_honour_picture,
-               th.info              as th_info,
-               th.cert_id           as th_cert_id,
-               th.talent_id         as th_talent_id,
-               th.`status`          as th_status,
-               th.if_certificate    as th_if_certificate
+        select
+        <include refid="Talent_BO_List"/>
         from t_talent t
                  left join t_certification c
                            on t.talent_id = c.talent_id
