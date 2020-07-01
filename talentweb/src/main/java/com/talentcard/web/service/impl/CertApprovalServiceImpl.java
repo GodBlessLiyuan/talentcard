@@ -174,7 +174,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 //更新职业资格表状态失败
                 return new ResultVO(2370);
             }
-            //用消息模板推送微信消息
+            /**
+             * 用消息模板推送微信消息
+             */
             MessageDTO messageDTO = new MessageDTO();
             //openId
             messageDTO.setOpenid(currentTalent.getOpenId());
