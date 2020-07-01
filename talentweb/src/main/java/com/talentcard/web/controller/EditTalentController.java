@@ -2,6 +2,7 @@ package com.talentcard.web.controller;
 
 import com.talentcard.common.dto.*;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.dto.EditTalentPolicyDTO;
 import com.talentcard.web.service.IEditTalentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -81,5 +82,24 @@ public class EditTalentController {
     public ResultVO editTalentCategory(@RequestParam(value = "openId") String openId,
                                      @RequestParam(value = "talentCategory") String talentCategory) {
         return iEditTalentService.editTalentCategory(openId, talentCategory);
+    }
+
+    /**
+     * 根据属性查找政策权益
+     * @param editTalentPolicyDTO
+     * @return
+     */
+    @RequestMapping("findPolicy")
+    public ResultVO findPolicy(@RequestBody EditTalentPolicyDTO editTalentPolicyDTO) {
+        return iEditTalentService.findPolicy(editTalentPolicyDTO);
+    }
+    /**
+     * 认证人才详情查看编辑
+     * @param openId
+     * @return
+     */
+    @RequestMapping("findTalentCertificationDetail")
+    public ResultVO findTalentCertificationDetail(@RequestParam(value = "openId") String openId) {
+        return iEditTalentService.findTalentCertificationDetail(openId);
     }
 }
