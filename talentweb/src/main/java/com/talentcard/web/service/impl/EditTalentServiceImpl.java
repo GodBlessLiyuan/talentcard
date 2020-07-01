@@ -421,12 +421,17 @@ public class EditTalentServiceImpl implements IEditTalentService {
             return new ResultVO(2600);
         }
         List<CardPO> resultCards = new ArrayList<>();
+        Integer flag = 0;
         for (CardPO seniorCard : seniorCards) {
             for (CardPO usedCard : usedCards) {
-                if (usedCard.getCardId().equals(seniorCard.getCardId()){
-//                    resultCards.add()
+                if (usedCard.getCardId().equals(seniorCard.getCardId())) {
+                    flag = 1;
                 }
             }
+            if (flag == 0) {
+                resultCards.add(seniorCard);
+            }
+            flag = 0;
         }
         return new ResultVO(1000, resultCards);
     }

@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.CardMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.CardPO">
-    <id column="card_id" jdbcType="BIGINT" property="cardId" />
-    <result column="wx_card_id" jdbcType="CHAR" property="wxCardId" />
-    <result column="name" jdbcType="CHAR" property="name" />
-    <result column="title" jdbcType="CHAR" property="title" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="member_num" jdbcType="BIGINT" property="memberNum" />
-    <result column="waiting_member_num" jdbcType="BIGINT" property="waitingMemberNum" />
-    <result column="curr_num" jdbcType="BIGINT" property="currNum" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="picture" jdbcType="CHAR" property="picture" />
-    <result column="picture_cdn" jdbcType="VARCHAR" property="pictureCdn" />
-    <result column="logo_url" jdbcType="CHAR" property="logoUrl" />
-    <result column="prerogative" jdbcType="VARCHAR" property="prerogative" />
-    <result column="initial_word" jdbcType="CHAR" property="initialWord" />
-    <result column="initial_num" jdbcType="CHAR" property="initialNum" />
-    <result column="area_num" jdbcType="CHAR" property="areaNum" />
-    <result column="business_description" jdbcType="CHAR" property="businessDescription" />
-    <result column="create_person" jdbcType="CHAR" property="createPerson" />
-    <result column="update_person" jdbcType="CHAR" property="updatePerson" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="dr" jdbcType="TINYINT" property="dr" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.CardPO">
+        <id column="card_id" jdbcType="BIGINT" property="cardId"/>
+        <result column="wx_card_id" jdbcType="CHAR" property="wxCardId"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="title" jdbcType="CHAR" property="title"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="member_num" jdbcType="BIGINT" property="memberNum"/>
+        <result column="waiting_member_num" jdbcType="BIGINT" property="waitingMemberNum"/>
+        <result column="curr_num" jdbcType="BIGINT" property="currNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="picture" jdbcType="CHAR" property="picture"/>
+        <result column="picture_cdn" jdbcType="VARCHAR" property="pictureCdn"/>
+        <result column="logo_url" jdbcType="CHAR" property="logoUrl"/>
+        <result column="prerogative" jdbcType="VARCHAR" property="prerogative"/>
+        <result column="initial_word" jdbcType="CHAR" property="initialWord"/>
+        <result column="initial_num" jdbcType="CHAR" property="initialNum"/>
+        <result column="area_num" jdbcType="CHAR" property="areaNum"/>
+        <result column="business_description" jdbcType="CHAR" property="businessDescription"/>
+        <result column="create_person" jdbcType="CHAR" property="createPerson"/>
+        <result column="update_person" jdbcType="CHAR" property="updatePerson"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="dr" jdbcType="TINYINT" property="dr"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     card_id, wx_card_id, `name`, title, `status`, member_num, waiting_member_num, curr_num, 
     description, picture, picture_cdn, logo_url, prerogative, initial_word, initial_num, 
     area_num, business_description, create_person, update_person, create_time, update_time, 
     dr
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_card
-    where card_id = #{cardId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_card
+        where card_id = #{cardId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_card
     where card_id = #{cardId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.CardPO">
+    <insert id="insert" parameterType="com.talentcard.common.pojo.CardPO">
     insert into t_card (card_id, wx_card_id, `name`, 
       title, `status`, member_num, 
       waiting_member_num, curr_num, description, 
@@ -59,215 +59,215 @@
       #{updatePerson,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{dr,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CardPO">
-    insert into t_card
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="cardId != null">
-        card_id,
-      </if>
-      <if test="wxCardId != null">
-        wx_card_id,
-      </if>
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="title != null">
-        title,
-      </if>
-      <if test="status != null">
-        `status`,
-      </if>
-      <if test="memberNum != null">
-        member_num,
-      </if>
-      <if test="waitingMemberNum != null">
-        waiting_member_num,
-      </if>
-      <if test="currNum != null">
-        curr_num,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="picture != null">
-        picture,
-      </if>
-      <if test="pictureCdn != null">
-        picture_cdn,
-      </if>
-      <if test="logoUrl != null">
-        logo_url,
-      </if>
-      <if test="prerogative != null">
-        prerogative,
-      </if>
-      <if test="initialWord != null">
-        initial_word,
-      </if>
-      <if test="initialNum != null">
-        initial_num,
-      </if>
-      <if test="areaNum != null">
-        area_num,
-      </if>
-      <if test="businessDescription != null">
-        business_description,
-      </if>
-      <if test="createPerson != null">
-        create_person,
-      </if>
-      <if test="updatePerson != null">
-        update_person,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="dr != null">
-        dr,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="cardId != null">
-        #{cardId,jdbcType=BIGINT},
-      </if>
-      <if test="wxCardId != null">
-        #{wxCardId,jdbcType=CHAR},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=CHAR},
-      </if>
-      <if test="title != null">
-        #{title,jdbcType=CHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="memberNum != null">
-        #{memberNum,jdbcType=BIGINT},
-      </if>
-      <if test="waitingMemberNum != null">
-        #{waitingMemberNum,jdbcType=BIGINT},
-      </if>
-      <if test="currNum != null">
-        #{currNum,jdbcType=BIGINT},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="picture != null">
-        #{picture,jdbcType=CHAR},
-      </if>
-      <if test="pictureCdn != null">
-        #{pictureCdn,jdbcType=VARCHAR},
-      </if>
-      <if test="logoUrl != null">
-        #{logoUrl,jdbcType=CHAR},
-      </if>
-      <if test="prerogative != null">
-        #{prerogative,jdbcType=VARCHAR},
-      </if>
-      <if test="initialWord != null">
-        #{initialWord,jdbcType=CHAR},
-      </if>
-      <if test="initialNum != null">
-        #{initialNum,jdbcType=CHAR},
-      </if>
-      <if test="areaNum != null">
-        #{areaNum,jdbcType=CHAR},
-      </if>
-      <if test="businessDescription != null">
-        #{businessDescription,jdbcType=CHAR},
-      </if>
-      <if test="createPerson != null">
-        #{createPerson,jdbcType=CHAR},
-      </if>
-      <if test="updatePerson != null">
-        #{updatePerson,jdbcType=CHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dr != null">
-        #{dr,jdbcType=TINYINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.CardPO">
-    update t_card
-    <set>
-      <if test="wxCardId != null">
-        wx_card_id = #{wxCardId,jdbcType=CHAR},
-      </if>
-      <if test="name != null">
-        `name` = #{name,jdbcType=CHAR},
-      </if>
-      <if test="title != null">
-        title = #{title,jdbcType=CHAR},
-      </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="memberNum != null">
-        member_num = #{memberNum,jdbcType=BIGINT},
-      </if>
-      <if test="waitingMemberNum != null">
-        waiting_member_num = #{waitingMemberNum,jdbcType=BIGINT},
-      </if>
-      <if test="currNum != null">
-        curr_num = #{currNum,jdbcType=BIGINT},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="picture != null">
-        picture = #{picture,jdbcType=CHAR},
-      </if>
-      <if test="pictureCdn != null">
-        picture_cdn = #{pictureCdn,jdbcType=VARCHAR},
-      </if>
-      <if test="logoUrl != null">
-        logo_url = #{logoUrl,jdbcType=CHAR},
-      </if>
-      <if test="prerogative != null">
-        prerogative = #{prerogative,jdbcType=VARCHAR},
-      </if>
-      <if test="initialWord != null">
-        initial_word = #{initialWord,jdbcType=CHAR},
-      </if>
-      <if test="initialNum != null">
-        initial_num = #{initialNum,jdbcType=CHAR},
-      </if>
-      <if test="areaNum != null">
-        area_num = #{areaNum,jdbcType=CHAR},
-      </if>
-      <if test="businessDescription != null">
-        business_description = #{businessDescription,jdbcType=CHAR},
-      </if>
-      <if test="createPerson != null">
-        create_person = #{createPerson,jdbcType=CHAR},
-      </if>
-      <if test="updatePerson != null">
-        update_person = #{updatePerson,jdbcType=CHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dr != null">
-        dr = #{dr,jdbcType=TINYINT},
-      </if>
-    </set>
-    where card_id = #{cardId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.CardPO">
+    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CardPO">
+        insert into t_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cardId != null">
+                card_id,
+            </if>
+            <if test="wxCardId != null">
+                wx_card_id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="memberNum != null">
+                member_num,
+            </if>
+            <if test="waitingMemberNum != null">
+                waiting_member_num,
+            </if>
+            <if test="currNum != null">
+                curr_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="picture != null">
+                picture,
+            </if>
+            <if test="pictureCdn != null">
+                picture_cdn,
+            </if>
+            <if test="logoUrl != null">
+                logo_url,
+            </if>
+            <if test="prerogative != null">
+                prerogative,
+            </if>
+            <if test="initialWord != null">
+                initial_word,
+            </if>
+            <if test="initialNum != null">
+                initial_num,
+            </if>
+            <if test="areaNum != null">
+                area_num,
+            </if>
+            <if test="businessDescription != null">
+                business_description,
+            </if>
+            <if test="createPerson != null">
+                create_person,
+            </if>
+            <if test="updatePerson != null">
+                update_person,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="dr != null">
+                dr,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cardId != null">
+                #{cardId,jdbcType=BIGINT},
+            </if>
+            <if test="wxCardId != null">
+                #{wxCardId,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=CHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=CHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="memberNum != null">
+                #{memberNum,jdbcType=BIGINT},
+            </if>
+            <if test="waitingMemberNum != null">
+                #{waitingMemberNum,jdbcType=BIGINT},
+            </if>
+            <if test="currNum != null">
+                #{currNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="picture != null">
+                #{picture,jdbcType=CHAR},
+            </if>
+            <if test="pictureCdn != null">
+                #{pictureCdn,jdbcType=VARCHAR},
+            </if>
+            <if test="logoUrl != null">
+                #{logoUrl,jdbcType=CHAR},
+            </if>
+            <if test="prerogative != null">
+                #{prerogative,jdbcType=VARCHAR},
+            </if>
+            <if test="initialWord != null">
+                #{initialWord,jdbcType=CHAR},
+            </if>
+            <if test="initialNum != null">
+                #{initialNum,jdbcType=CHAR},
+            </if>
+            <if test="areaNum != null">
+                #{areaNum,jdbcType=CHAR},
+            </if>
+            <if test="businessDescription != null">
+                #{businessDescription,jdbcType=CHAR},
+            </if>
+            <if test="createPerson != null">
+                #{createPerson,jdbcType=CHAR},
+            </if>
+            <if test="updatePerson != null">
+                #{updatePerson,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dr != null">
+                #{dr,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.CardPO">
+        update t_card
+        <set>
+            <if test="wxCardId != null">
+                wx_card_id = #{wxCardId,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=CHAR},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=CHAR},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="memberNum != null">
+                member_num = #{memberNum,jdbcType=BIGINT},
+            </if>
+            <if test="waitingMemberNum != null">
+                waiting_member_num = #{waitingMemberNum,jdbcType=BIGINT},
+            </if>
+            <if test="currNum != null">
+                curr_num = #{currNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="picture != null">
+                picture = #{picture,jdbcType=CHAR},
+            </if>
+            <if test="pictureCdn != null">
+                picture_cdn = #{pictureCdn,jdbcType=VARCHAR},
+            </if>
+            <if test="logoUrl != null">
+                logo_url = #{logoUrl,jdbcType=CHAR},
+            </if>
+            <if test="prerogative != null">
+                prerogative = #{prerogative,jdbcType=VARCHAR},
+            </if>
+            <if test="initialWord != null">
+                initial_word = #{initialWord,jdbcType=CHAR},
+            </if>
+            <if test="initialNum != null">
+                initial_num = #{initialNum,jdbcType=CHAR},
+            </if>
+            <if test="areaNum != null">
+                area_num = #{areaNum,jdbcType=CHAR},
+            </if>
+            <if test="businessDescription != null">
+                business_description = #{businessDescription,jdbcType=CHAR},
+            </if>
+            <if test="createPerson != null">
+                create_person = #{createPerson,jdbcType=CHAR},
+            </if>
+            <if test="updatePerson != null">
+                update_person = #{updatePerson,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="dr != null">
+                dr = #{dr,jdbcType=TINYINT},
+            </if>
+        </set>
+        where card_id = #{cardId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.CardPO">
     update t_card
     set wx_card_id = #{wxCardId,jdbcType=CHAR},
       `name` = #{name,jdbcType=CHAR},
@@ -354,23 +354,27 @@
         </if>
     </select>
 
-    <select id="queryCardIdName"  resultMap="BaseResultMap">
+    <select id="queryCardIdName" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_card
         where dr = 1 and status = 2
     </select>
 
-    <select id="ifExistInitialWord"  resultType="java.lang.Integer">
+    <select id="ifExistInitialWord" resultType="java.lang.Integer">
         select
         count(card_id)
         from t_card c
         where dr = 1 and c.initial_word = #{initialWord,jdbcType=CHAR}
     </select>
 
-  <select id="findUsedCard"  resultMap="BaseResultMap">
+    <select id="findUsedCard" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        c.card_id as card_id, wx_card_id, c.name as name, title, c.status as status, member_num, waiting_member_num, curr_num,
+        description, picture, picture_cdn, logo_url, prerogative, initial_word, initial_num,
+        area_num, business_description, create_person, update_person,
+        c.create_time as create_time, update_time,
+        c.dr as dr
         from t_card c
         left join t_user_card uc
         on c.card_id = uc.card_id
