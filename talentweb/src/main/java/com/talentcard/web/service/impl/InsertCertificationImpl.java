@@ -232,20 +232,20 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 发送推送消息
          */
-        //用消息模板推送微信消息
-        MessageDTO messageDTO = new MessageDTO();
-        //openId
-        messageDTO.setOpenid(talentPO.getOpenId());
-        //姓名
-        messageDTO.setKeyword1(talentPO.getName());
-        //证件号码
-        String identificationCardNum = identificationCardEncryption(talentPO);
-        messageDTO.setKeyword2(identificationCardNum);
-        //通知时间
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
-        String currentTime = formatter.format(new Date());
-        messageDTO.setKeyword4(currentTime);
         if (result == 1) {
+            //用消息模板推送微信消息
+            MessageDTO messageDTO = new MessageDTO();
+            //openId
+            messageDTO.setOpenid(talentPO.getOpenId());
+            //姓名
+            messageDTO.setKeyword1(talentPO.getName());
+            //证件号码
+            String identificationCardNum = identificationCardEncryption(talentPO);
+            messageDTO.setKeyword2(identificationCardNum);
+            //通知时间
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+            String currentTime = formatter.format(new Date());
+            messageDTO.setKeyword4(currentTime);
             //通过
             //推送审批通过微信消息
             messageDTO.setKeyword3("个人");
@@ -258,6 +258,19 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             MessageUtil.sendTemplateMessage(messageDTO);
         } else {
             //驳回
+            //用消息模板推送微信消息
+            MessageDTO messageDTO = new MessageDTO();
+            //openId
+            messageDTO.setOpenid(talentPO.getOpenId());
+            //姓名
+            messageDTO.setKeyword1(talentPO.getName());
+            //证件号码
+            String identificationCardNum = identificationCardEncryption(talentPO);
+            messageDTO.setKeyword2(identificationCardNum);
+            //通知时间
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+            String currentTime = formatter.format(new Date());
+            messageDTO.setKeyword4(currentTime);
             //模版编号
             messageDTO.setTemplateId(2);
             //推送驳回微信消息

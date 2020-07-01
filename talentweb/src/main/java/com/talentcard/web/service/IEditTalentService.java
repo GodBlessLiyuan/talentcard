@@ -72,4 +72,11 @@ public interface IEditTalentService {
      * @return
      */
     ResultVO changeCard(Long talentId, Long cardId);
+
+    /**
+     * 可以更换的卡查询
+     * @param talentId
+     * @return
+     */
+    ResultVO findEnableChangeCard(Long talentId);
 }

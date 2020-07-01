@@ -367,4 +367,13 @@
         from t_card c
         where dr = 1 and c.initial_word = #{initialWord,jdbcType=CHAR}
     </select>
+
+  <select id="findUsedCard"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_card c
+        left join t_user_card uc
+        on c.card_id = uc.card_id
+        where uc.talent_id = #{talentId,jdbcType=BIGINT}
+    </select>
 </mapper>

@@ -129,7 +129,7 @@
 
     <select id="queryAllCert" parameterType="java.util.Map" resultType="com.talentcard.common.bo.TalentCertStatusBO">
         select t.talent_id as talentId, t.name, t.sex, e.education, pt.category as ptCategory,
-        pq.category as pqCategory, ca.result, ce.create_time as createTime, ce.cert_id as certId,
+        pq.category as pqCategory, IFNULL(ca.result,3), ce.create_time as createTime, ce.cert_id as certId,
         th.honour_id as honour
         from t_talent t
         left join t_certification ce on t.talent_id = ce.talent_id
@@ -183,7 +183,7 @@
         </if>
         order by
         <!--  将待审批的记录置顶，按时间排序-->
-        IFNULL(ca.result,0) = 0 desc, ce.create_time desc
+        IFNULL(ca.result,0) desc, ce.create_time desc
     </select>
 
     <!--  待审批的查看和审批接口（两个是一个接口），status=3  人才卡status=2使用中状态-->
@@ -268,18 +268,18 @@
   </update>
 
     <select id="checkIfDirty" resultType="java.lang.Integer">
-    SELECT COUNT(c.cert_id)
-    FROM t_certification c
-    left join t_talent t
-    on t.talent_id = c.talent_id
-    left join t_user_card uc
-    on t.talent_id = uc.talent_id
-    where
-    t.dr = 1
-    and t.talent_id = #{talentId,jdbcType=BIGINT}
-    and c.status =  #{cStatus,jdbcType=TINYINT}
-    <if test="ucStatus != null">
-    and uc.status = #{ucStatus,jdbcType=TINYINT}
-    </if>
-  </select>
+        SELECT COUNT(c.cert_id)
+        FROM t_certification c
+        left join t_talent t
+        on t.talent_id = c.talent_id
+        left join t_user_card uc
+        on t.talent_id = uc.talent_id
+        where
+        t.dr = 1
+        and t.talent_id = #{talentId,jdbcType=BIGINT}
+        and c.status = #{cStatus,jdbcType=TINYINT}
+        <if test="ucStatus != null">
+            and uc.status = #{ucStatus,jdbcType=TINYINT}
+        </if>
+    </select>
 </mapper>

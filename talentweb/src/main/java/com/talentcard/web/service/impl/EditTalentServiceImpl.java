@@ -269,11 +269,18 @@ public class EditTalentServiceImpl implements IEditTalentService {
         HashMap<String, Object> hashMap = new HashMap(3);
         hashMap.put("openId", openId);
         hashMap.put("status", (byte) 1);
+        //人才信息
         TalentBO talentBO = talentMapper.findOne(hashMap);
         if (talentBO == null) {
             return new ResultVO(2500);
         }
+        //卡片信息
         CardPO cardPO = cardMapper.selectByPrimaryKey(talentBO.getCardId());
+        HashMap<String, Object> talentCard = userCardMapper.findCurrentCard(openId, (byte) 2);
+        if (talentCard == null) {
+            return new ResultVO(2500);
+        }
+        talentBO.setCardNum((String) talentCard.get("code"));
         /**
          * 政策查询
          */
@@ -346,7 +353,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         userCardMapper.insertSelective(newUserCardPO);
 
         //更新老uc表
-        oldUserCardPO.setStatus((byte)3);
+        oldUserCardPO.setStatus((byte) 3);
         userCardMapper.updateByPrimaryKeySelective(oldUserCardPO);
 
         //更新认证表状态
@@ -404,6 +411,24 @@ public class EditTalentServiceImpl implements IEditTalentService {
          */
         iTalentService.clearRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO findEnableChangeCard(Long talentId) {
+        List<CardPO> usedCards = cardMapper.findUsedCard(talentId);
+        List<CardPO> seniorCards = cardMapper.findSeniorCard(null);
+        if (usedCards == null || seniorCards == null || usedCards.size() == 0 || seniorCards.size() == 0) {
+            return new ResultVO(2600);
+        }
+        List<CardPO> resultCards = new ArrayList<>();
+        for (CardPO seniorCard : seniorCards) {
+            for (CardPO usedCard : usedCards) {
+                if (usedCard.getCardId().equals(seniorCard.getCardId()){
+//                    resultCards.add()
+                }
+            }
+        }
+        return new ResultVO(1000, resultCards);
     }
 
     /**
