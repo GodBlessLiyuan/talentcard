@@ -127,21 +127,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             return new ResultVO(2500);
         }
         String openId = currentTalent.getOpenId();
-        //用消息模板推送微信消息
-        MessageDTO messageDTO = new MessageDTO();
-        //openId
-        messageDTO.setOpenid(currentTalent.getOpenId());
-        //姓名
-        messageDTO.setKeyword1(currentTalent.getName());
-        //证件号码
-        String identificationCardNum = identificationCardEncryption(currentTalent);
-        messageDTO.setKeyword2(identificationCardNum);
 
-        //领卡机构
-        //通知时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         String currentTime = formatter.format(new Date());
-        messageDTO.setKeyword4(currentTime);
 
         //(1) 新增认证审批表
         CertApprovalPO certApprovalPo = new CertApprovalPO();
@@ -196,12 +184,25 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 //更新职业资格表状态失败
                 return new ResultVO(2370);
             }
+            /**
+             * 用消息模板推送微信消息
+             */
+            MessageDTO messageDTO = new MessageDTO();
+            //openId
+            messageDTO.setOpenid(currentTalent.getOpenId());
+            //first内容
+            messageDTO.setFirst("您好，您的认证信息审批被驳回，请按照驳回意见修改后重新提交");
+            //申请姓名
+            messageDTO.setKeyword1(currentTalent.getName());
+            //申请时间
+            messageDTO.setKeyword2(currentTime);
+            //审核状态
+            messageDTO.setKeyword3("驳回");
+            //原因说明
+            messageDTO.setKeyword4((String) reqData.get("opinion"));
             //模版编号
             messageDTO.setTemplateId(2);
             //推送驳回微信消息
-            logger.info("发通知之前");
-            messageDTO.setKeyword3("未通过");
-            messageDTO.setFirst("您提交的认证信息与本人真实情况存在不符，请修改后重新提交。");
             MessageUtil.sendTemplateMessage(messageDTO);
 
             /**
@@ -354,13 +355,27 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 logger.error("update cardMapper error");
             }
 
-            //推送审批通过微信消息
-            messageDTO.setKeyword3("个人");
-            messageDTO.setRemark("领取后可享受多项人才权益哦");
-            logger.info("getIndexUrl之前");
-            messageDTO.setUrl(WebParameterUtil.getIndexUrl());
-            logger.info("getIndexUrl之前");
+            /**
+             * 用消息模板推送微信消息
+             */
+            MessageDTO messageDTO = new MessageDTO();
+            //openId
+            messageDTO.setOpenid(currentTalent.getOpenId());
+            //first
             messageDTO.setFirst("您好，您的认证申请已通过，请您点击领取衢江人才卡");
+            //申请人姓名
+            messageDTO.setKeyword1(currentTalent.getName());
+            //身份证号
+            String identificationCardNum = identificationCardEncryption(currentTalent);
+            messageDTO.setKeyword2(identificationCardNum);
+            //领卡机构
+            messageDTO.setKeyword3("个人");
+            //通知时间
+            messageDTO.setKeyword4(currentTime);
+            //remark
+            messageDTO.setRemark("领取后可享受多项人才权益哦");
+            //url
+            messageDTO.setUrl(WebParameterUtil.getIndexUrl());
             //模版编号
             messageDTO.setTemplateId(1);
             /**

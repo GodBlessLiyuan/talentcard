@@ -245,6 +245,46 @@ public class EditTalentServiceImpl implements IEditTalentService {
 
     @Override
     public ResultVO findPolicy(EditTalentPolicyDTO editTalentPolicyDTO) {
+        return new ResultVO(1000, policyUtil(editTalentPolicyDTO));
+    }
+
+    @Override
+    public ResultVO findTalentCertificationDetail(String openId) {
+        HashMap<String, Object> hashMap = new HashMap(2);
+        hashMap.put("openId", openId);
+        hashMap.put("status", (byte) 1);
+        TalentBO talentBO = talentMapper.findOne(hashMap);
+        if (talentBO == null) {
+            return new ResultVO(2500);
+        }
+        /**
+         * 政策查询
+         */
+        Long talentId = talentBO.getTalentId();
+        List<Integer> educationList = educationMapper.queryNameByTalentId(talentId);
+        List<Integer> titleList = profTitleMapper.queryNameByTalentId(talentId);
+        List<Integer> qualityList = profQualityMapper.queryNameByTalentId(talentId);
+        List<Long> honourList = talentHonourMapper.queryNameByTalentId(talentId);
+        EditTalentPolicyDTO editTalentPolicyDTO = new EditTalentPolicyDTO();
+        editTalentPolicyDTO.setCardId(talentBO.getCardId());
+        editTalentPolicyDTO.setCategory(talentBO.getCategory());
+        editTalentPolicyDTO.setEducationList(educationList);
+        editTalentPolicyDTO.setTitleList(titleList);
+        editTalentPolicyDTO.setQualityList(qualityList);
+        editTalentPolicyDTO.setHonourList(honourList);
+        List<PolicyPO> policyPOList = policyUtil(editTalentPolicyDTO);
+        HashMap<String, Object> result = new HashMap<>(2);
+        result.put("talentInfo", talentBO);
+        result.put("policyPOList", policyPOList);
+        return new ResultVO(1000, result);
+    }
+
+    /**
+     * 政策查询工具类
+     * @param editTalentPolicyDTO
+     * @return
+     */
+    private List<PolicyPO> policyUtil(EditTalentPolicyDTO editTalentPolicyDTO) {
         List<Integer> existEducations = editTalentPolicyDTO.getEducationList();
         List<Integer> existTitles = editTalentPolicyDTO.getTitleList();
         List<Integer> existQualities = editTalentPolicyDTO.getQualityList();
@@ -343,18 +383,6 @@ public class EditTalentServiceImpl implements IEditTalentService {
                 showPOs.add(po);
             }
         }
-        return new ResultVO(1000, showPOs);
-    }
-
-    @Override
-    public ResultVO findTalentCertificationDetail(String openId) {
-        HashMap<String, Object> hashMap = new HashMap(2);
-        hashMap.put("openId", openId);
-        hashMap.put("status", (byte) 1);
-        TalentBO talentBO = talentMapper.findOne(hashMap);
-        if (talentBO == null) {
-            return new ResultVO(2500);
-        }
-        return new ResultVO(1000);
+        return showPOs;
     }
 }
