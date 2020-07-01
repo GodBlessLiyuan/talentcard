@@ -3,6 +3,7 @@ package com.talentcard.common.bo;
 import com.talentcard.common.pojo.*;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -97,6 +98,7 @@ public class TalentBO extends TalentPO {
     private Long certId;
     private Byte certificationStatus;
     private Byte currentType;
+    private Date firstCertificationTime;
     private List<EducationPO> educationPOList;
     private List<ProfTitlePO> profTitlePOList;
     private List<ProfQualityPO> profQualityPOList;
