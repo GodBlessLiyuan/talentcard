@@ -1,16 +1,23 @@
 package com.talentcard.web.service.impl;
 
 import com.talentcard.common.bo.ActivcateBO;
+import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.dto.*;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.dto.EditTalentPolicyDTO;
 import com.talentcard.web.service.IEditTalentService;
 import com.talentcard.web.service.ITalentInfoCertificationService;
 import com.talentcard.web.service.ITalentService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author ChenXU
@@ -52,7 +59,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
     ITalentInfoCertificationService iTalentInfoCertificationService;
     @Autowired
     TalentCertificationInfoMapper talentCertificationInfoMapper;
-
+    @Autowired
+    PolicyMapper policyMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -233,5 +241,148 @@ public class EditTalentServiceImpl implements IEditTalentService {
          */
         iTalentService.clearRedisCache(openId);
         return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO findPolicy(EditTalentPolicyDTO editTalentPolicyDTO) {
+        return new ResultVO(1000, policyUtil(editTalentPolicyDTO));
+    }
+
+    @Override
+    public ResultVO findTalentCertificationDetail(String openId) {
+        HashMap<String, Object> hashMap = new HashMap(2);
+        hashMap.put("openId", openId);
+        hashMap.put("status", (byte) 1);
+        TalentBO talentBO = talentMapper.findOne(hashMap);
+        if (talentBO == null) {
+            return new ResultVO(2500);
+        }
+        /**
+         * 政策查询
+         */
+        Long talentId = talentBO.getTalentId();
+        List<Integer> educationList = educationMapper.queryNameByTalentId(talentId);
+        List<Integer> titleList = profTitleMapper.queryNameByTalentId(talentId);
+        List<Integer> qualityList = profQualityMapper.queryNameByTalentId(talentId);
+        List<Long> honourList = talentHonourMapper.queryNameByTalentId(talentId);
+        EditTalentPolicyDTO editTalentPolicyDTO = new EditTalentPolicyDTO();
+        editTalentPolicyDTO.setCardId(talentBO.getCardId());
+        editTalentPolicyDTO.setCategory(talentBO.getCategory());
+        editTalentPolicyDTO.setEducationList(educationList);
+        editTalentPolicyDTO.setTitleList(titleList);
+        editTalentPolicyDTO.setQualityList(qualityList);
+        editTalentPolicyDTO.setHonourList(honourList);
+        List<PolicyPO> policyPOList = policyUtil(editTalentPolicyDTO);
+        HashMap<String, Object> result = new HashMap<>(2);
+        result.put("talentInfo", talentBO);
+        result.put("policyPOList", policyPOList);
+        return new ResultVO(1000, result);
+    }
+
+    /**
+     * 政策查询工具类
+     * @param editTalentPolicyDTO
+     * @return
+     */
+    private List<PolicyPO> policyUtil(EditTalentPolicyDTO editTalentPolicyDTO) {
+        List<Integer> existEducations = editTalentPolicyDTO.getEducationList();
+        List<Integer> existTitles = editTalentPolicyDTO.getTitleList();
+        List<Integer> existQualities = editTalentPolicyDTO.getQualityList();
+        List<Long> existHonours = editTalentPolicyDTO.getHonourList();
+        String[] existCategories = null;
+        if (null != editTalentPolicyDTO.getCategory()) {
+            existCategories = editTalentPolicyDTO.getCategory().split(",");
+        }
+
+        Long existCardId = editTalentPolicyDTO.getCardId();
+
+        List<PolicyPO> pos = policyMapper.queryByDr((byte) 1);
+        List<PolicyPO> showPOs = new ArrayList<>();
+        for (PolicyPO po : pos) {
+            String[] cardIds = null;
+            String[] categories = null;
+            String[] educations = null;
+            String[] titles = null;
+            String[] qualities = null;
+            String[] honourIds = null;
+            if (null != po.getCards()) {
+                cardIds = po.getCards().split(",");
+            }
+            if (null != po.getCategories()) {
+                categories = po.getCategories().split(",");
+            }
+            if (null != po.getEducations()) {
+                educations = po.getEducations().split(",");
+            }
+            if (null != po.getTitles()) {
+                titles = po.getTitles().split(",");
+            }
+            if (null != po.getQualities()) {
+                qualities = po.getQualities().split(",");
+            }
+            if (null != po.getHonourIds()) {
+                honourIds = po.getHonourIds().split(",");
+            }
+
+            boolean show = false;
+            if (null != cardIds && null != existCardId) {
+                for (String cardId : cardIds) {
+                    if (!StringUtils.isEmpty(cardId) && existCardId.toString().equals(cardId)) {
+                        show = true;
+                        break;
+                    }
+                }
+            }
+            if (!show && null != categories && null != existCategories) {
+                for (String category : categories) {
+                    if (!show) {
+                        for (String existCategory : existCategories) {
+                            if (!StringUtils.isEmpty(existCategory) && category.equals(existCategory)) {
+                                show = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!show && null != educations && null != existEducations) {
+                for (String educ : educations) {
+                    if (!StringUtils.isEmpty(educ) && existEducations.toString().contains(educ)) {
+                        show = true;
+                        break;
+                    }
+                }
+            }
+            if (!show && null != titles && null != existTitles) {
+                for (String title : titles) {
+                    if (!StringUtils.isEmpty(title) && existTitles.toString().contains(title)) {
+                        show = true;
+                        break;
+                    }
+                }
+            }
+            if (!show && null != qualities && null != existQualities) {
+                for (String quality : qualities) {
+                    if (!StringUtils.isEmpty(quality) && existQualities.toString().contains(quality)) {
+                        show = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!show && null != honourIds && null != existHonours) {
+                for (String honourId : honourIds) {
+                    if (!StringUtils.isEmpty(honourId) && existHonours.toString().contains(honourId)) {
+                        show = true;
+                        break;
+                    }
+                }
+            }
+
+            if (show) {
+                showPOs.add(po);
+            }
+        }
+        return showPOs;
     }
 }

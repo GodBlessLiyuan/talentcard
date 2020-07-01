@@ -2,6 +2,9 @@ package com.talentcard.web.service;
 
 import com.talentcard.common.dto.*;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.dto.EditTalentPolicyDTO;
+
+import java.util.List;
 
 /**
  * @author ChenXU
@@ -12,6 +15,7 @@ import com.talentcard.common.vo.ResultVO;
 public interface IEditTalentService {
     /**
      * 编辑学历
+     *
      * @param basicInfoDTO
      * @return
      */
@@ -46,4 +50,13 @@ public interface IEditTalentService {
      * 新增/编辑人才荣誉
      */
     ResultVO editTalentCategory(String openId, String talentCategory);
+
+    /**
+     * 政策查询
+     * @param editTalentPolicyDTO
+     * @return
+     */
+    ResultVO findPolicy(EditTalentPolicyDTO editTalentPolicyDTO);
+
+    ResultVO findTalentCertificationDetail(String openId);
 }
