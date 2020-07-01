@@ -107,7 +107,6 @@ public class EditTalentController {
     @RequestMapping("changeCard")
     public ResultVO changeCard(@RequestParam(value = "talentId") Long talentId,
                                @RequestParam(value = "cardId") Long cardId) {
-        iEditTalentService.changeCard(talentId, cardId);
-        return new ResultVO(1000);
+        return  iEditTalentService.changeCard(talentId, cardId);
     }
 }
