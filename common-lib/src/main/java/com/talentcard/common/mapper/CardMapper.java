@@ -52,4 +52,9 @@ public interface CardMapper extends BaseMapper<CardPO, Long> {
      * @return
      */
     Integer ifExistInitialWord(@Param("initialWord") String initialWord);
+
+    /**
+     * 查询当前人才已使用过的卡
+     */
+    List<CardPO> findUsedCard(@Param("talentId") Long talentId);
 }

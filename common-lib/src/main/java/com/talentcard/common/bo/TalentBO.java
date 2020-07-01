@@ -95,6 +95,11 @@ public class TalentBO extends TalentPO {
      */
     private String cInitialWord;
 
+    /**
+     * 卡号
+     */
+    private String cardNum;
+
     private Long certId;
     private Byte certificationStatus;
     private Byte currentType;

@@ -104,9 +104,27 @@ public class EditTalentController {
         return iEditTalentService.findTalentCertificationDetail(openId);
     }
 
+    /**
+     * 更换卡
+     *
+     * @param talentId
+     * @param cardId
+     * @return
+     */
     @RequestMapping("changeCard")
     public ResultVO changeCard(@RequestParam(value = "talentId") Long talentId,
                                @RequestParam(value = "cardId") Long cardId) {
-        return  iEditTalentService.changeCard(talentId, cardId);
+        return iEditTalentService.changeCard(talentId, cardId);
+    }
+
+    /**
+     * 能换的卡查询
+     *
+     * @param talentId
+     * @return
+     */
+    @RequestMapping("findEnableChangeCard")
+    public ResultVO findEnableChangeCard(@RequestParam(value = "talentId") Long talentId) {
+        return iEditTalentService.findEnableChangeCard(talentId);
     }
 }
