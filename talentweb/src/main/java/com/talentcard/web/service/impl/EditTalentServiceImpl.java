@@ -266,13 +266,14 @@ public class EditTalentServiceImpl implements IEditTalentService {
 
     @Override
     public ResultVO findTalentCertificationDetail(String openId) {
-        HashMap<String, Object> hashMap = new HashMap(2);
+        HashMap<String, Object> hashMap = new HashMap(3);
         hashMap.put("openId", openId);
         hashMap.put("status", (byte) 1);
         TalentBO talentBO = talentMapper.findOne(hashMap);
         if (talentBO == null) {
             return new ResultVO(2500);
         }
+        CardPO cardPO = cardMapper.selectByPrimaryKey(talentBO.getCardId());
         /**
          * 政策查询
          */
@@ -292,6 +293,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         HashMap<String, Object> result = new HashMap<>(2);
         result.put("talentInfo", talentBO);
         result.put("policyPOList", policyPOList);
+        result.put("cardInfo", cardPO);
         return new ResultVO(1000, result);
     }
 
