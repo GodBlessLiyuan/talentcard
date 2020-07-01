@@ -312,7 +312,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         String openId = talentPO.getOpenId();
 
         //找到uc表status=2，当前正在使用的卡的cardId
-        ActivcateBO talentInfo = talentMapper.activate(openId, (byte) 2, (byte) 1);
+        ActivcateBO talentInfo = talentMapper.activate(openId, (byte) 1, (byte) 2);
         if (talentInfo == null) {
             return new ResultVO(2500);
         }
@@ -343,6 +343,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
         newUserCardPO.setStatus((byte) 1);
         userCardMapper.insertSelective(newUserCardPO);
 
+        //更新老uc表
+        oldUserCardPO.setStatus((byte)3);
+        userCardMapper.updateByPrimaryKeySelective(oldUserCardPO);
+
+        //更新认证表状态
+        certificationMapper.updateStatusByCertId(talentInfo.getCertId(), (byte) 4);
+
         /**
          * 更新card表新旧卡
          */
@@ -362,6 +369,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
             jsonObject.put("card_id", talentInfo.getWxCardId());
             String url = "https://api.weixin.qq.com/card/code/unavailable?access_token="
                     + AccessTokenUtil.getAccessToken();
+            WechatApiUtil.postRequest(url, jsonObject);
         }
 
         /**
