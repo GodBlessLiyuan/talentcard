@@ -136,13 +136,6 @@ public class TalentController {
         return iTalentService.queryCert(pageNum, pageSize, reqMap);
     }
 
-    @RequestMapping("edit")
-    public ResultVO edit(@RequestParam(value = "talentId") Long talentId,
-                         @RequestParam(value = "cardId") Long cardId) {
-        iTalentService.edit(talentId, cardId);
-        return new ResultVO(1000);
-    }
-
     /**
      * 批量认证
      *

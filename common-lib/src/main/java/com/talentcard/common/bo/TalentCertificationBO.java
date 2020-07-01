@@ -16,6 +16,7 @@ public class TalentCertificationBO {
      * 人才id
      */
     private Long tId;
+    private String openId;
     /**
      * 创建时间
      */

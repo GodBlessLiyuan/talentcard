@@ -46,8 +46,6 @@ public interface ITalentService {
      */
     ResultVO queryCert(int pageNum, int pageSize, Map<String, Object> reqMap);
 
-    ResultVO edit(Long talentId, Long cardId);
-
     /**
      * 批量认证
      *
