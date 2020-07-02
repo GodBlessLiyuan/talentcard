@@ -566,7 +566,7 @@ public class TalentServiceImpl implements ITalentService {
         profTitlePO.setCertId(certificationId);
         profTitlePO.setTalentId(talentId);
         profTitlePO.setStatus(status);
-        if (profTitleCategory == null) {
+        if (profTitleCategory == 0) {
             //10代表本次不认证
             profTitlePO.setIfCertificate((byte) 10);
         } else {
