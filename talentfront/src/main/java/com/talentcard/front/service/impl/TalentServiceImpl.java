@@ -450,10 +450,12 @@ public class TalentServiceImpl implements ITalentService {
         if (ifWaitingApproval != null && ifWaitingApproval != 0) {
             return new ResultVO(2308, "该用户已有待审批数据");
         }
+        //校验数据库是否存在C表状态4的数据
         Integer checkIfCompleteCertificate = certificationMapper.checkIfDirty(talentId, (byte) 4, null);
         if (checkIfCompleteCertificate != 0) {
             return new ResultVO(2311, "当前有脏数据，无法发起认证");
         }
+        //检验C表状态5，UC表状态2的数据是否为1条（正常情况）
         Integer checkIfDirty = certificationMapper.checkIfDirty(talentId, (byte) 5, (byte) 2);
         if (checkIfDirty != 1) {
             /**
