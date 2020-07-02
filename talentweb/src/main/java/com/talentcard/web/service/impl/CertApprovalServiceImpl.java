@@ -302,22 +302,30 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 userCurrentInfoPO.setMajor(educationPO.getMajor());
                 userCurrentInfoPO.setGraduateTime(educationPO.getGraduateTime());
                 talentCertificationInfoPO.setEducation(educationPO.getEducation().toString());
+            } else {
+                talentCertificationInfoPO.setEducation("0");
             }
             if (profTitlePO != null) {
                 userCurrentInfoPO.setPtCategory(profTitlePO.getCategory());
                 userCurrentInfoPO.setPtInfo(profTitlePO.getInfo());
                 talentCertificationInfoPO.setPtCategory(profTitlePO.getCategory().toString());
+            } else {
+                talentCertificationInfoPO.setPtCategory("0");
             }
             if (profQualityPO != null) {
                 userCurrentInfoPO.setPqCategory(profQualityPO.getCategory());
                 userCurrentInfoPO.setPqInfo(profQualityPO.getInfo());
                 talentCertificationInfoPO.setPqCategory(profQualityPO.getCategory().toString());
+            } else {
+                talentCertificationInfoPO.setPqCategory("0");
             }
             userCurrentInfoPO.setTalentCategory(category);
             if (talentHonourPO != null) {
                 userCurrentInfoPO.setHonourId(talentHonourPO.getHonourId());
                 userCurrentInfoPO.setThInfo(talentHonourPO.getInfo());
                 talentCertificationInfoPO.setHonourId(talentHonourPO.getHonourId().toString());
+            } else {
+                talentCertificationInfoPO.setHonourId("0");
             }
             //新增tci表
             talentCertificationInfoMapper.insertSelective(talentCertificationInfoPO);

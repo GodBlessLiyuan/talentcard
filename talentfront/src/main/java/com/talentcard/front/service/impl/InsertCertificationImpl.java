@@ -61,8 +61,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (talentCertificationInfoPO == null) {
             return new ResultVO(2500);
         }
-        if (talentCertificationInfoPO.getEducation().contains(educationDTO.getEducation().toString())) {
-            return new ResultVO(2558);
+        if (talentCertificationInfoPO.getEducation() != null) {
+            if (talentCertificationInfoPO.getEducation().contains(educationDTO.getEducation().toString())) {
+                return new ResultVO(2558);
+            }
         }
         Integer ifExistInsertCertification = insertCertificationMapper.
                 checkIfExistInsertCertification(talentId, educationDTO.getEducation().longValue(), (byte) 1);
@@ -157,8 +159,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (talentCertificationInfoPO == null) {
             return new ResultVO(2500);
         }
-        if (talentCertificationInfoPO.getPqCategory().contains(profQualityDTO.getCategory().toString())) {
-            return new ResultVO(2558);
+        if (talentCertificationInfoPO.getPqCategory() != null) {
+            if (talentCertificationInfoPO.getPqCategory().contains(profQualityDTO.getCategory().toString())) {
+                return new ResultVO(2558);
+            }
         }
         Integer ifExistInsertCertification = insertCertificationMapper.
                 checkIfExistInsertCertification(talentId, profQualityDTO.getCategory().longValue(), (byte) 3);
@@ -254,8 +258,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (talentCertificationInfoPO == null) {
             return new ResultVO(2500);
         }
-        if (talentCertificationInfoPO.getPtCategory().contains(profTitleDTO.getCategory().toString())) {
-            return new ResultVO(2558);
+        if (talentCertificationInfoPO.getPtCategory() != null) {
+            if (talentCertificationInfoPO.getPtCategory().contains(profTitleDTO.getCategory().toString())) {
+                return new ResultVO(2558);
+            }
         }
         Integer ifExistInsertCertification = insertCertificationMapper.
                 checkIfExistInsertCertification(talentId, profTitleDTO.getCategory().longValue(), (byte) 2);
@@ -347,8 +353,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (talentCertificationInfoPO == null) {
             return new ResultVO(2500);
         }
-        if (talentCertificationInfoPO.getHonourId().contains(talentHonourDTO.getHonourId().toString())) {
-            return new ResultVO(2558);
+        if (talentCertificationInfoPO.getHonourId() != null) {
+            if (talentCertificationInfoPO.getHonourId().contains(talentHonourDTO.getHonourId().toString())) {
+                return new ResultVO(2558);
+            }
         }
         Integer ifExistInsertCertification = insertCertificationMapper.
                 checkIfExistInsertCertification(talentId, talentHonourDTO.getHonourId().longValue(), (byte) 4);
