@@ -2,6 +2,7 @@ package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.InsertCertificationBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.config.FilePathConfig;
@@ -449,10 +450,26 @@ public class TalentServiceImpl implements ITalentService {
         if (ifWaitingApproval != null && ifWaitingApproval != 0) {
             return new ResultVO(2308, "该用户已有待审批数据");
         }
-        Integer checkIfDirty = certificationMapper.checkIfDirty(talentId, (byte) 5, (byte) 2);
         Integer checkIfCompleteCertificate = certificationMapper.checkIfDirty(talentId, (byte) 4, null);
-        if (checkIfDirty != 1 || checkIfCompleteCertificate != 0) {
+        if (checkIfCompleteCertificate != 0) {
             return new ResultVO(2311, "当前有脏数据，无法发起认证");
+        }
+        Integer checkIfDirty = certificationMapper.checkIfDirty(talentId, (byte) 5, (byte) 2);
+        if (checkIfDirty != 1) {
+            /**
+             * 脏数据矫正为C表状态5，UC表状态2
+             */
+            ActivcateBO oldCard = talentMapper.activate(openId, (byte) 2, (byte) 1);
+            Byte oldCardCertificationStatus = (byte) 5;
+            Long oldCardCertId = oldCard.getCertId();
+            certificationMapper.updateStatusByCertId(oldCardCertId, oldCardCertificationStatus);
+            educationMapper.updateStatusByCertId(oldCardCertId, oldCardCertificationStatus);
+            profTitleMapper.updateStatusByCertId(oldCardCertId, oldCardCertificationStatus);
+            profQualityMapper.updateStatusByCertId(oldCardCertId, oldCardCertificationStatus);
+            talentHonourMapper.updateStatusByCertId(oldCard.getCertId(), oldCardCertificationStatus);
+            UserCardPO oldUserCardPO = userCardMapper.selectByPrimaryKey(oldCard.getUcId());
+            oldUserCardPO.setStatus((byte) 2);
+            userCardMapper.updateByPrimaryKeySelective(oldUserCardPO);
         }
         /**
          * 校验数据库是否存在状态9的数据
