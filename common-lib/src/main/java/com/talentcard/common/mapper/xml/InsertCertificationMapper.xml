@@ -271,6 +271,6 @@
         where talent_id = #{talentId,jdbcType=BIGINT}
         and cert_info = #{certInfo,jdbcType=BIGINT}
         and type = #{type,jdbcType=TINYINT}
-        and status = 3
+        and status = 2
     </select>
 </mapper>
