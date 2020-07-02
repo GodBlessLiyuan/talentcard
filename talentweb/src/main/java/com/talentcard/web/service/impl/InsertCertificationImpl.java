@@ -52,8 +52,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Autowired
     InsertCertApprovalMapper insertCertApprovalMapper;
     @Autowired
-    private CertificationMapper certificationMapper;
-    @Autowired
     private EducationMapper educationMapper;
     @Autowired
     private ProfTitleMapper profTitleMapper;
@@ -61,10 +59,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     private ProfQualityMapper profQualityMapper;
     @Autowired
     private TalentHonourMapper talentHonourMapper;
-    @Autowired
-    private CardMapper cardMapper;
-    @Autowired
-    private UserCurrentInfoMapper userCurrentInfoMapper;
     @Autowired
     ITalentService iTalentService;
     @Autowired
