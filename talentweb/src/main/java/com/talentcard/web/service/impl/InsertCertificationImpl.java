@@ -84,6 +84,20 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (insertCertificationPO == null) {
             return new ResultVO(2551);
         }
+        /**
+         * 状态校验
+         */
+        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
+        if (activcateBO == null) {
+            return new ResultVO(2900, "新增审批时，人才状态不对！");
+        }
+        InsertCertificationBO insertCertificationBO = insertCertificationMapper.findOne(openId, insertCertId);
+        if (insertCertificationBO == null) {
+            return new ResultVO(2551, "查无此新增认证！");
+        }
+        if (insertCertificationBO.getStatus() != 3) {
+            return new ResultVO(2900, "新增审批时，人才状态不对！");
+        }
         Byte status;
         if (result == 1) {
             //通过
@@ -110,17 +124,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 链接学历职称职业资格人才荣誉
          */
-        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
-        if (activcateBO == null) {
-            return new ResultVO(2900, "新增审批时，人才状态不对！");
-        }
-        InsertCertificationBO insertCertificationBO = insertCertificationMapper.findOne(openId, insertCertId);
-        if (insertCertificationBO == null) {
-            return new ResultVO(2551, "查无此新增认证！");
-        }
-        if (insertCertificationBO.getStatus() != 3) {
-            return new ResultVO(2900, "新增审批时，人才状态不对！");
-        }
         Long certId = activcateBO.getCertId();
         Byte type = insertCertificationBO.getType();
         if (type == 1) {
