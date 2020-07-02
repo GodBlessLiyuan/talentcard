@@ -47,7 +47,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             return -1;
         }
         //学历
-        if (talentBO.getEducationPOList() != null) {
+        if (talentBO.getEducationPOList() != null && talentBO.getEducationPOList().size() != 0) {
             String educationString = "";
             List<EducationPO> educationPOList = talentBO.getEducationPOList();
             for (int i = 0; i < educationPOList.size() - 1; i++) {
@@ -57,7 +57,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             talentCertificationInfoPO.setEducation(educationString);
         }
         //职称
-        if (talentBO.getProfTitlePOList() != null) {
+        if (talentBO.getProfTitlePOList() != null && talentBO.getProfTitlePOList().size() != 0) {
             String titleString = "";
             List<ProfTitlePO> profTitlePOList = talentBO.getProfTitlePOList();
             for (int i = 0; i < profTitlePOList.size() - 1; i++) {
@@ -67,7 +67,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             talentCertificationInfoPO.setPtCategory(titleString);
         }
         //职业资格
-        if (talentBO.getProfQualityPOList() != null) {
+        if (talentBO.getProfQualityPOList() != null && talentBO.getProfQualityPOList().size() != 0) {
             String qualityString = "";
             List<ProfQualityPO> profQualityPOList = talentBO.getProfQualityPOList();
             for (int i = 0; i < profQualityPOList.size() - 1; i++) {
@@ -77,7 +77,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             talentCertificationInfoPO.setPqCategory(qualityString);
         }
         //人才荣誉
-        if (talentBO.getTalentHonourPOList() != null) {
+        if (talentBO.getTalentHonourPOList() != null && talentBO.getTalentHonourPOList().size() != 0) {
             String honourString = "";
             List<TalentHonourPO> talentHonourPOList = talentBO.getTalentHonourPOList();
             for (int i = 0; i < talentHonourPOList.size() - 1; i++) {

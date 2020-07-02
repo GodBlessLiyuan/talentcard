@@ -95,7 +95,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (insertCertificationBO == null) {
             return new ResultVO(2551, "查无此新增认证！");
         }
-        if (insertCertificationBO.getStatus() != 3) {
+        if (insertCertificationBO.getStatus() != 2) {
             return new ResultVO(2900, "新增审批时，人才状态不对！");
         }
         Byte status;
