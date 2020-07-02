@@ -61,10 +61,7 @@ public class TalentBO extends TalentPO {
      * 人才荣誉
      */
     private Long honour;
-    /**
-     * 政治面貌
-     */
-    private Byte political;
+
     /**
      * 证件类型
      */

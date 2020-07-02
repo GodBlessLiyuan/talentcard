@@ -49,7 +49,6 @@
         <result column="t_talent_source" jdbcType="INTEGER" property="talentSource"/>
 
         <result column="c_cert_id" jdbcType="BIGINT" property="certId"/>
-        <result column="c_political" jdbcType="CHAR" property="political"/>
         <result column="c_status" jdbcType="TINYINT" property="certificationStatus"/>
         <result column="c_current_type" jdbcType="TINYINT" property="currentType"/>
         <result column="c_create_time" jdbcType="TINYINT" property="firstCertificationTime"/>
@@ -127,7 +126,6 @@
                t.talent_source      as t_talent_source,
 
                c.cert_id            as c_cert_id,
-               c.political          as c_political,
                c.status             as c_status,
                c.current_type       as c_current_type,
                c.create_time        as c_create_time,
