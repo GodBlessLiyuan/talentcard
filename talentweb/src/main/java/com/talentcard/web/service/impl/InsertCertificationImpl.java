@@ -1,5 +1,6 @@
 package com.talentcard.web.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.InsertCertApprovalBO;
@@ -17,6 +18,9 @@ import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.InsertCertificationVO;
+import com.talentcard.web.vo.TalentCertificationRecordVO;
+import com.talentcard.web.vo.TalentInsertCertificationRecordVO;
+import com.talentcard.web.vo.TalentJsonRecordVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
@@ -63,6 +67,9 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     ITalentService iTalentService;
     @Autowired
     ITalentInfoCertificationService iTalentInfoCertificationService;
+    @Autowired
+    TalentJsonRecordMapper talentJsonRecordMapper;
+
 
 
     @Override
@@ -227,10 +234,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
                 return new ResultVO(2663, "更新tci表失败！");
             }
         }
-        /**
-         * 清除redis缓存
-         */
-        iTalentService.clearRedisCache(talentPO.getOpenId());
 
         /**
          * 发送推送消息
@@ -275,6 +278,33 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             //推送驳回微信消息
             MessageUtil.sendTemplateMessage(messageDTO);
         }
+
+        /**
+         * 增加record日志
+         */
+        TalentJsonRecordVO talentJsonRecordVO = new TalentJsonRecordVO();
+        //新增认证VO
+        TalentInsertCertificationRecordVO talentInsertCertificationRecordVO = new TalentInsertCertificationRecordVO();
+        talentInsertCertificationRecordVO.setInsertEducationPO(insertCertificationBO.getInsertEducationPO());
+        talentInsertCertificationRecordVO.setInsertQualityPO(insertCertificationBO.getInsertQualityPO());
+        talentInsertCertificationRecordVO.setInsertTitlePO(insertCertificationBO.getInsertTitlePO());
+        talentInsertCertificationRecordVO.setInsertHonourPO(insertCertificationBO.getInsertHonourPO());
+        talentInsertCertificationRecordVO.setInsertCertApprovalPO(insertCertApprovalPO);
+        talentInsertCertificationRecordVO.setInsertCertId(insertCertId);
+        //recordVO
+        talentJsonRecordVO.setType((byte) 2);
+        talentJsonRecordVO.setTalentInsertCertificationRecordVO(talentInsertCertificationRecordVO);
+        //recordPO，新增record表
+        TalentJsonRecordPO talentJsonRecordPO = new TalentJsonRecordPO();
+        talentJsonRecordPO.setInfo(JSONObject.toJSONString(talentJsonRecordVO));
+        talentJsonRecordPO.setCreateTime(new Date());
+        talentJsonRecordPO.setOpenId(openId);
+        talentJsonRecordMapper.insertSelective(talentJsonRecordPO);
+
+        /**
+         * 清除redis缓存
+         */
+        iTalentService.clearRedisCache(talentPO.getOpenId());
         return new ResultVO(1000);
     }
 
