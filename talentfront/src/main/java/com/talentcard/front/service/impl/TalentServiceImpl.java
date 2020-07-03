@@ -786,8 +786,8 @@ public class TalentServiceImpl implements ITalentService {
 
         //学历；职称；职业资格；人才荣誉
         vo.setEducationList(educationList);
-        vo.setQualityList(titleList);
-        vo.setTitleList(qualityList);
+        vo.setQualityList(qualityList);
+        vo.setTitleList(titleList);
         vo.setHonourList(honourList);
         vo.setEducationString(educationString);
         vo.setTitleString(titleString);
