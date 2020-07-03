@@ -70,4 +70,11 @@ public interface ITalentService {
     void clearRedisCache(String openId);
 
     ResultVO findBatchCertificate(int pageNum, int pageSize, HashMap<String, Object> hashMap);
+
+    /**
+     *
+     * @param openId
+     * @return
+     */
+    ResultVO sendMessage(String openId);
 }
