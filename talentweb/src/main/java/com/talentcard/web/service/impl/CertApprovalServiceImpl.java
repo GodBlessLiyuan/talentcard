@@ -17,6 +17,8 @@ import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.ApprovalItemsVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.vo.ApprovalTalentVO;
+import com.talentcard.web.vo.TalentCertificationRecordVO;
+import com.talentcard.web.vo.TalentJsonRecordVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +70,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     CertExamineRecordMapper certExamineRecordMapper;
     @Autowired
     TalentCertificationInfoMapper talentCertificationInfoMapper;
+    @Autowired
+    TalentJsonRecordMapper talentJsonRecordMapper;
 
     /**
      * 审批result的值含义
@@ -429,12 +433,10 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
              * 清除redis缓存
              */
             talentService.clearRedisCache(openId);
-
-            return new ResultVO(1000);
         }
 
         /**
-         * 更新认证审批表，发起认证（提交）的updateTime
+         * 更新认证审批表，发起认证（提交时那一条）的updateTime
          */
         CertApprovalPO oldCertApprovalPO = certApprovalMapper.findByCertId(certId, (byte) 1, null);
         oldCertApprovalPO.setUpdateTime(new Date());
@@ -443,6 +445,27 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             logger.error("update certApprovalMapper error");
         }
 
+        /**
+         * 增加record日志
+         */
+        TalentJsonRecordVO talentJsonRecordVO = new TalentJsonRecordVO();
+        //一般认证VO
+        TalentCertificationRecordVO talentCertificationRecordVO = new TalentCertificationRecordVO();
+        talentCertificationRecordVO.setEducationPO(educationMapper.selectByCertId(certId));
+        talentCertificationRecordVO.setProfQualityPO(profQualityMapper.selectByCertId(certId));
+        talentCertificationRecordVO.setProfTitlePO(profTitleMapper.selectByCertId(certId));
+        talentCertificationRecordVO.setTalentHonourPO(talentHonourMapper.selectByCertId(certId));
+        talentCertificationRecordVO.setCertApprovalPO(certApprovalPo);
+        talentCertificationRecordVO.setCertId(certId);
+        //recordVO
+        talentJsonRecordVO.setType((byte) 1);
+        talentJsonRecordVO.setTalentCertificationRecordVO(talentCertificationRecordVO);
+        //recordPO，新增record表
+        TalentJsonRecordPO talentJsonRecordPO = new TalentJsonRecordPO();
+        talentJsonRecordPO.setInfo(JSONObject.toJSONString(talentJsonRecordVO));
+        talentJsonRecordPO.setCreateTime(new Date());
+        talentJsonRecordPO.setOpenId(openId);
+        talentJsonRecordMapper.insertSelective(talentJsonRecordPO);
         /**
          * 清除redis缓存
          */
