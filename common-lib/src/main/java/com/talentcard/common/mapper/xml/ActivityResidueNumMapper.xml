@@ -71,5 +71,6 @@
         <include refid="Base_Column_List"/>
         from t_activity_residue_num
         where `time` = #{time, jdbcType=CHAR}
+        limit 1
     </select>
 </mapper>
