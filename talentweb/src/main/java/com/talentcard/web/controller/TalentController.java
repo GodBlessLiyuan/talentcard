@@ -200,4 +200,11 @@ public class TalentController {
         hashMap.put("status", status);
         return iTalentService.findBatchCertificate(pageNum, pageSize, hashMap);
     }
+
+
+
+    @RequestMapping("sendMessage")
+    public ResultVO sendMessage(@RequestParam(value = "openId", defaultValue = "")  String openId){
+        return this.iTalentService.sendMessage(openId);
+    }
 }
