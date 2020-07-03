@@ -18,6 +18,7 @@ import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
+import com.talentcard.web.vo.CertificationTimesVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -297,10 +298,23 @@ public class EditTalentServiceImpl implements IEditTalentService {
         editTalentPolicyDTO.setQualityList(qualityList);
         editTalentPolicyDTO.setHonourList(honourList);
         List<PolicyPO> policyPOList = policyUtil(editTalentPolicyDTO);
-        HashMap<String, Object> result = new HashMap<>(2);
+        /**
+         * 已认证次数+待审批次数
+         */
+        Integer educationTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 1);
+        Integer titleTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 2);
+        Integer qualityTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 3);
+        Integer honourTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 4);
+        CertificationTimesVO certificationTimesVO = new CertificationTimesVO();
+        certificationTimesVO.setEducationTimes(educationTimes + talentBO.getEducationPOList().size());
+        certificationTimesVO.setTitleTimes(titleTimes + talentBO.getProfTitlePOList().size());
+        certificationTimesVO.setQualityTimes(qualityTimes + talentBO.getProfQualityPOList().size());
+        certificationTimesVO.setHonourTimes(honourTimes + talentBO.getTalentHonourPOList().size());
+        HashMap<String, Object> result = new HashMap<>(4);
         result.put("talentInfo", talentBO);
         result.put("policyPOList", policyPOList);
         result.put("cardInfo", cardPO);
+        result.put("certificationTimes", certificationTimesVO);
         return new ResultVO(1000, result);
     }
 

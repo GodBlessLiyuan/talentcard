@@ -445,7 +445,7 @@ public class TalentServiceImpl implements ITalentService {
         //certApproval表
         CertApprovalPO certApprovalPO = new CertApprovalPO();
         certApprovalPO.setType((byte) 2);
-        certApprovalPO.setCertId(cardId);
+        certApprovalPO.setCertId(certificationId);
         certApprovalPO.setCreateTime(new Date());
         certApprovalPO.setCardId(cardId);
         certApprovalPO.setUpdateTime(new Date());
