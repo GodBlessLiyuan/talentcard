@@ -35,5 +35,11 @@ public interface TalentHonourMapper extends BaseMapper<TalentHonourPO, Long> {
      */
     List<Long> queryNameByTalentId(Long talentId);
 
+    /**
+     * 根据certId查找对应th表信息
+     * @param certId
+     * @return
+     */
+    List<TalentHonourPO> findAllByCertId(@Param("certId") Long certId);
 
 }

@@ -536,4 +536,11 @@ public class TalentServiceImpl implements ITalentService {
         List<BatchCertificatePO> batchCertificatePOList = batchCertificateMapper.findBatchCertificate(hashMap);
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), batchCertificatePOList));
     }
+
+    @Override
+    public ResultVO sendMessage(String openId){
+        TalentPO talentPO = this.talentMapper.selectByOpenId(openId);
+        this.sendMessage(talentPO);
+        return new ResultVO(1000);
+    }
 }

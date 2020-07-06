@@ -33,4 +33,11 @@ public interface EducationMapper extends BaseMapper<EducationPO, Long> {
      * @return
      */
     EducationPO selectByCertId(@Param("certId") Long certId);
+
+    /**
+     * 根据certId查找所有对应教育表信息
+     * @param certId
+     * @return
+     */
+    List<EducationPO> findAllByCertId(@Param("certId") Long certId);
 }

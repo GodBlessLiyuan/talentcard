@@ -34,4 +34,11 @@ public interface ProfQualityMapper extends BaseMapper<ProfQualityPO, Long> {
      * @return
      */
     ProfQualityPO selectByCertId(@Param("certId") Long certId);
+
+    /**
+     * 根据certId查找对应pq表信息
+     * @param certId
+     * @return
+     */
+    List<ProfQualityPO> findAllByCertId(@Param("certId") Long certId);
 }

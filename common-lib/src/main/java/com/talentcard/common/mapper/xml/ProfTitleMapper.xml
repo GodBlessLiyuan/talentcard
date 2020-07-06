@@ -144,4 +144,11 @@
     from t_prof_title
     where cert_id = #{certId,jdbcType=BIGINT}
   </select>
+
+  <select id="findAllByCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_prof_title
+    where cert_id = #{certId,jdbcType=BIGINT}
+  </select>
 </mapper>

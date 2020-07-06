@@ -56,15 +56,24 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     @Override
     public ResultVO addEducation(EducationDTO educationDTO) {
         String openId = educationDTO.getOpenId();
-        /**
-         * 链接学历职称职业资格人才荣誉
-         */
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         if (activcateBO == null) {
             return new ResultVO(2900, "新增审批时，人才状态不对！");
         }
         Long certId = activcateBO.getCertId();
         Long talentId = activcateBO.getTalentId();
+        /**
+         * 判断次数是否到3
+         */
+        Integer educationInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 1);
+        Integer educationCertTimes = educationMapper.findAllByCertId(certId).size();
+        if ((educationCertTimes + educationInsertCertTimes) >= 3) {
+            return new ResultVO(2670, "该用户待审批和已认证次数已到3！");
+        }
+
+        /**
+         * 链接学历职称职业资格人才荣誉
+         */
         EducationPO educationPO = new EducationPO();
         //学历
         educationPO.setGraduateTime(educationDTO.getGraduateTime());
@@ -100,15 +109,23 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     @Override
     public ResultVO addProfQuality(ProfQualityDTO profQualityDTO) {
         String openId = profQualityDTO.getOpenId();
-        /**
-         * 链接学历职称职业资格人才荣誉
-         */
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         if (activcateBO == null) {
             return new ResultVO(2900, "新增审批时，人才状态不对！");
         }
         Long certId = activcateBO.getCertId();
         Long talentId = activcateBO.getTalentId();
+        /**
+         * 判断次数是否到3
+         */
+        Integer qualityInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 3);
+        Integer qualityCertTimes = profQualityMapper.findAllByCertId(certId).size();
+        if ((qualityCertTimes + qualityInsertCertTimes) >= 3) {
+            return new ResultVO(2670, "该用户待审批和已认证次数已到3！");
+        }
+        /**
+         * 链接学历职称职业资格人才荣誉
+         */
         ProfQualityPO profQualityPO = new ProfQualityPO();
         profQualityPO.setPicture(profQualityDTO.getPicture());
         profQualityPO.setStatus((byte) 1);
@@ -139,15 +156,23 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     @Override
     public ResultVO addProfTitle(ProfTitleDTO profTitleDTO) {
         String openId = profTitleDTO.getOpenId();
-        /**
-         * 链接学历职称职业资格人才荣誉
-         */
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         if (activcateBO == null) {
             return new ResultVO(2900, "新增审批时，人才状态不对！");
         }
         Long certId = activcateBO.getCertId();
         Long talentId = activcateBO.getTalentId();
+        /**
+         * 判断次数是否到3
+         */
+        Integer titleInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 2);
+        Integer titleCertTimes = profTitleMapper.findAllByCertId(certId).size();
+        if ((titleCertTimes + titleInsertCertTimes) >= 3) {
+            return new ResultVO(2670, "该用户待审批和已认证次数已到3！");
+        }
+        /**
+         * 链接学历职称职业资格人才荣誉
+         */
         ProfTitlePO profTitlePO = new ProfTitlePO();
         profTitlePO.setPicture(profTitleDTO.getPicture());
         profTitlePO.setInfo(profTitleDTO.getInfo());
@@ -178,15 +203,23 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     @Override
     public ResultVO addTalentHonour(TalentHonourDTO talentHonourDTO) {
         String openId = talentHonourDTO.getOpenId();
-        /**
-         * 链接学历职称职业资格人才荣誉
-         */
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         if (activcateBO == null) {
             return new ResultVO(2900, "新增审批时，人才状态不对！");
         }
         Long certId = activcateBO.getCertId();
         Long talentId = activcateBO.getTalentId();
+        /**
+         * 判断次数是否到3
+         */
+        Integer honourInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 4);
+        Integer honourCertTimes = talentHonourMapper.findAllByCertId(certId).size();
+        if ((honourCertTimes + honourInsertCertTimes) >= 3) {
+            return new ResultVO(2670, "该用户待审批和已认证次数已到3！");
+        }
+        /**
+         * 链接学历职称职业资格人才荣誉
+         */
         TalentHonourPO talentHonourPO = new TalentHonourPO();
         talentHonourPO.setInfo(talentHonourDTO.getInfo());
         talentHonourPO.setHonourPicture(talentHonourDTO.getHonourPicture());
