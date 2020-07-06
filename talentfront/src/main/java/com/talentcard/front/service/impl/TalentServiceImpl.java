@@ -78,7 +78,6 @@ public class TalentServiceImpl implements ITalentService {
     TalentCertificationInfoMapper talentCertificationInfoMapper;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public ResultVO<TalentPO> findStatus(String openId) {
 
         /**
