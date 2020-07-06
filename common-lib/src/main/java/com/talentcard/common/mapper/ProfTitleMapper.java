@@ -35,4 +35,11 @@ public interface ProfTitleMapper extends BaseMapper<ProfTitlePO, Long> {
      * @return
      */
     ProfTitlePO selectByCertId(@Param("certId") Long certId);
+
+    /**
+     * 根据certId查找对应pt表信息
+     * @param certId
+     * @return
+     */
+    List<ProfTitlePO> findAllByCertId(@Param("certId") Long certId);
 }

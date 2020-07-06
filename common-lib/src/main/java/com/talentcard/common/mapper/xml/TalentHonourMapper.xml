@@ -136,9 +136,16 @@
     from t_talent_honour
     where cert_id = #{certId,jdbcType=BIGINT}
   </select>
-  <select id="queryNameByTalentId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+  <select id="queryNameByTalentId" parameterType="java.lang.Long" resultType="java.lang.Long">
     select honour_id
     from t_talent_honour
     where talent_id = #{talentId,jdbcType=BIGINT} and `status` = 1
+  </select>
+
+  <select id="findAllByCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_talent_honour
+    where cert_id = #{certId,jdbcType=BIGINT}
   </select>
 </mapper>

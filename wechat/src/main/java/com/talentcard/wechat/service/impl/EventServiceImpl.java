@@ -96,32 +96,32 @@ public class EventServiceImpl implements IEventService {
             }
             Long newCardTalentId = newCard.getTalentId();
             //更新user_current_info表
-            UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByPrimaryKey(newCard.getUciId());
-            Long newCardCertId = newCard.getCertId();
-            CertificationPO newCardCertificationPO = certificationMapper.selectByPrimaryKey(newCardCertId);
-            EducationPO newCardEducationPO = educationMapper.selectByCertId(newCardCertId);
-            ProfTitlePO newCardProfTitlePO = profTitleMapper.selectByCertId(newCardCertId);
-            ProfQualityPO newCardProfQualityPO = profQualityMapper.selectByCertId(newCardCertId);
-            if (newCardEducationPO != null) {
-                userCurrentInfoPO.setEducation(newCardEducationPO.getEducation());
-                userCurrentInfoPO.setSchool(newCardEducationPO.getSchool());
-                userCurrentInfoPO.setFirstClass(newCardEducationPO.getFirstClass());
-                userCurrentInfoPO.setMajor(newCardEducationPO.getMajor());
-            }
-            if (newCardProfTitlePO != null) {
-                userCurrentInfoPO.setPtCategory(newCardProfTitlePO.getCategory());
-                userCurrentInfoPO.setPtInfo(newCardProfTitlePO.getInfo());
-            }
-            if (newCardProfQualityPO != null) {
-                userCurrentInfoPO.setPqCategory(newCardProfQualityPO.getCategory());
-                userCurrentInfoPO.setPqInfo(newCardProfQualityPO.getInfo());
-            }
-            if (newCardCertificationPO != null) {
-                userCurrentInfoPO.setPolitical(newCardCertificationPO.getPolitical());
-            }
-            userCurrentInfoMapper.updateByPrimaryKeySelective(userCurrentInfoPO);
+//            UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByPrimaryKey(newCard.getUciId());
+//            CertificationPO newCardCertificationPO = certificationMapper.selectByPrimaryKey(newCardCertId);
+//            EducationPO newCardEducationPO = educationMapper.selectByCertId(newCardCertId);
+//            ProfTitlePO newCardProfTitlePO = profTitleMapper.selectByCertId(newCardCertId);
+//            ProfQualityPO newCardProfQualityPO = profQualityMapper.selectByCertId(newCardCertId);
+//            if (newCardEducationPO != null) {
+//                userCurrentInfoPO.setEducation(newCardEducationPO.getEducation());
+//                userCurrentInfoPO.setSchool(newCardEducationPO.getSchool());
+//                userCurrentInfoPO.setFirstClass(newCardEducationPO.getFirstClass());
+//                userCurrentInfoPO.setMajor(newCardEducationPO.getMajor());
+//            }
+//            if (newCardProfTitlePO != null) {
+//                userCurrentInfoPO.setPtCategory(newCardProfTitlePO.getCategory());
+//                userCurrentInfoPO.setPtInfo(newCardProfTitlePO.getInfo());
+//            }
+//            if (newCardProfQualityPO != null) {
+//                userCurrentInfoPO.setPqCategory(newCardProfQualityPO.getCategory());
+//                userCurrentInfoPO.setPqInfo(newCardProfQualityPO.getInfo());
+//            }
+//            if (newCardCertificationPO != null) {
+//                userCurrentInfoPO.setPolitical(newCardCertificationPO.getPolitical());
+//            }
+//            userCurrentInfoMapper.updateByPrimaryKeySelective(userCurrentInfoPO);
 
             //新卡card会员数量+1，待领卡数量-1
+            Long newCardCertId = newCard.getCertId();
             CardPO newCardPO = cardMapper.selectByPrimaryKey(newCard.getCardId());
             newCardPO.setMemberNum(newCardPO.getMemberNum() + 1);
             //判断当前数量是否是0，是0不能再减少了
