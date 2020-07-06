@@ -1,5 +1,6 @@
 package com.talentcard.front.service.impl;
 
+import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.InsertCertificationBO;
 import com.talentcard.common.dto.*;
 import com.talentcard.common.mapper.*;
@@ -41,6 +42,14 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     TalentCertificationInfoMapper talentCertificationInfoMapper;
     @Autowired
     ITalentService iTalentService;
+    @Autowired
+    private EducationMapper educationMapper;
+    @Autowired
+    private ProfTitleMapper profTitleMapper;
+    @Autowired
+    private ProfQualityMapper profQualityMapper;
+    @Autowired
+    private TalentHonourMapper talentHonourMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -98,6 +107,21 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             }
             oldInsertCertificationPO.setStatus((byte) 10);
             insertCertificationMapper.updateByPrimaryKeySelective(oldInsertCertificationPO);
+        } else {
+            /**
+             * 新增：判断次数是否到3
+             */
+            ActivcateBO activcateBO = talentMapper.activate(talentPO.getOpenId(), (byte) 1, (byte) 2);
+            if (activcateBO == null) {
+                return new ResultVO(2900, "新增审批时，人才状态不对！");
+            }
+            Long certId = activcateBO.getCertId();
+            Integer educationInsertCertTimes = insertCertificationMapper.
+                    findCurrentCertificationTimes(talentPO.getOpenId(), (byte) 1);
+            Integer educationCertTimes = educationMapper.findAllByCertId(certId).size();
+            if ((educationCertTimes + educationInsertCertTimes) >= 3) {
+                return new ResultVO(2670, "该用户待审批和已认证次数已到3！");
+            }
         }
 
         /**
@@ -201,6 +225,21 @@ public class InsertCertificationImpl implements IInsertCertificationService {
              * 清除redis缓存
              */
             iTalentService.clearRedisCache(talentPO.getOpenId());
+        } else {
+            /**
+             * 新增：判断次数是否到3
+             */
+            ActivcateBO activcateBO = talentMapper.activate(talentPO.getOpenId(), (byte) 1, (byte) 2);
+            if (activcateBO == null) {
+                return new ResultVO(2900, "新增审批时，人才状态不对！");
+            }
+            Long certId = activcateBO.getCertId();
+            Integer qualityInsertCertTimes = insertCertificationMapper.
+                    findCurrentCertificationTimes(talentPO.getOpenId(), (byte) 3);
+            Integer qualityCertTimes = profQualityMapper.findAllByCertId(certId).size();
+            if ((qualityCertTimes + qualityInsertCertTimes) >= 3) {
+                return new ResultVO(2670, "该用户待审批和已认证次数已到3！");
+            }
         }
         /**
          * 新增
@@ -295,6 +334,21 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             }
             oldInsertCertificationPO.setStatus((byte) 10);
             insertCertificationMapper.updateByPrimaryKeySelective(oldInsertCertificationPO);
+        } else {
+            /**
+             * 新增：判断次数是否到3
+             */
+            ActivcateBO activcateBO = talentMapper.activate(talentPO.getOpenId(), (byte) 1, (byte) 2);
+            if (activcateBO == null) {
+                return new ResultVO(2900, "新增审批时，人才状态不对！");
+            }
+            Long certId = activcateBO.getCertId();
+            Integer titleInsertCertTimes = insertCertificationMapper.
+                    findCurrentCertificationTimes(talentPO.getOpenId(), (byte) 2);
+            Integer titleCertTimes = profTitleMapper.findAllByCertId(certId).size();
+            if ((titleCertTimes + titleInsertCertTimes) >= 3) {
+                return new ResultVO(2670, "该用户待审批和已认证次数已到3！");
+            }
         }
         /**
          * 新增
@@ -390,6 +444,21 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             }
             oldInsertCertificationPO.setStatus((byte) 10);
             insertCertificationMapper.updateByPrimaryKeySelective(oldInsertCertificationPO);
+        } else {
+            /**
+             * 新增：判断次数是否到3
+             */
+            ActivcateBO activcateBO = talentMapper.activate(talentPO.getOpenId(), (byte) 1, (byte) 2);
+            if (activcateBO == null) {
+                return new ResultVO(2900, "新增审批时，人才状态不对！");
+            }
+            Long certId = activcateBO.getCertId();
+            Integer honourInsertCertTimes = insertCertificationMapper.
+                    findCurrentCertificationTimes(talentPO.getOpenId(), (byte) 4);
+            Integer honourCertTimes = talentHonourMapper.findAllByCertId(certId).size();
+            if ((honourCertTimes + honourInsertCertTimes) >= 3) {
+                return new ResultVO(2670, "该用户待审批和已认证次数已到3！");
+            }
         }
 
         /**

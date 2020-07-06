@@ -37,8 +37,6 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     @Autowired
     InsertCertApprovalMapper insertCertApprovalMapper;
     @Autowired
-    private CertificationMapper certificationMapper;
-    @Autowired
     private EducationMapper educationMapper;
     @Autowired
     private ProfTitleMapper profTitleMapper;
@@ -46,8 +44,6 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     private ProfQualityMapper profQualityMapper;
     @Autowired
     private TalentHonourMapper talentHonourMapper;
-    @Autowired
-    private UserCurrentInfoMapper userCurrentInfoMapper;
     @Autowired
     private ITalentService iTalentService;
     @Autowired
