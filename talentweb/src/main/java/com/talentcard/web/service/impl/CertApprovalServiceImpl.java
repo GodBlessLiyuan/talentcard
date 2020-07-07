@@ -170,24 +170,14 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 //更新认证表失败
                 return new ResultVO(2114);
             }
-            //(4) 更新学历表的认证状态
-            int resultEducation = educationMapper.updateStatusByCertId(certId, (byte) 10);
-            if (resultEducation == 0) {
-                //更新学历表状态失败
-                return new ResultVO(2368);
-            }
-            //(5) 更新职称表的认证状态
-            int resultProfTitle = profTitleMapper.updateStatusByCertId(certId, (byte) 10);
-            if (resultProfTitle == 0) {
-                //更新职称表状态失败
-                return new ResultVO(2369);
-            }
-            //(6) 更新职业资格表的认证状态
-            int resultProfQuality = profQualityMapper.updateStatusByCertId(certId, (byte) 10);
-            if (resultProfQuality == 0) {
-                //更新职业资格表状态失败
-                return new ResultVO(2370);
-            }
+            //更新学历表的认证状态
+            educationMapper.updateStatusByCertId(certId, (byte) 10);
+            //更新职称表的认证状态
+            profTitleMapper.updateStatusByCertId(certId, (byte) 10);
+            //更新职业资格表的认证状态
+            profQualityMapper.updateStatusByCertId(certId, (byte) 10);
+            //更新人才荣誉表的认证状态
+            talentHonourMapper.updateStatusByCertId(certId, (byte) 10);
             /**
              * 用消息模板推送微信消息
              */
