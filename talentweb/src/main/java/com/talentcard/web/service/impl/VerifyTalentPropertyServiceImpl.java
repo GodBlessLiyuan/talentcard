@@ -49,8 +49,12 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
     @Autowired
     TalentCertificationInfoMapper talentCertificationInfoMapper;
 
+    private static final byte addType = 1;
+
+    private static final byte editType = 2;
+
     @Override
-    public Integer verifyEducation(ActivcateBO activcateBO, EducationDTO educationDTO) {
+    public Integer verifyEducation(ActivcateBO activcateBO, EducationDTO educationDTO, Byte type) {
         Long certId = activcateBO.getCertId();
         Long talentId = activcateBO.getTalentId();
         String openId = educationDTO.getOpenId();
@@ -66,16 +70,20 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
         /**
          *判断该认证是否重复
          */
-        TalentCertificationInfoPO talentCertificationInfoPO =
-                talentCertificationInfoMapper.selectByTalentId(talentId);
-        if (talentCertificationInfoPO == null) {
-            return 2500;
-        }
-        if (talentCertificationInfoPO.getEducation() != null) {
-            if (talentCertificationInfoPO.getEducation().contains(educationDTO.getEducation().toString())) {
-                return 2558;
+        //认证后的属性
+        if (type == addType) {
+            TalentCertificationInfoPO talentCertificationInfoPO =
+                    talentCertificationInfoMapper.selectByTalentId(talentId);
+            if (talentCertificationInfoPO == null) {
+                return 2500;
+            }
+            if (talentCertificationInfoPO.getEducation() != null) {
+                if (talentCertificationInfoPO.getEducation().contains(educationDTO.getEducation().toString())) {
+                    return 2558;
+                }
             }
         }
+        //新增认证待审批是否重复
         Integer ifExistInsertCertification = insertCertificationMapper.
                 checkIfExistInsertCertification(talentId, educationDTO.getEducation().longValue(), (byte) 1);
         if (ifExistInsertCertification != 0) {
@@ -85,7 +93,7 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
     }
 
     @Override
-    public Integer verifyQuality(ActivcateBO activcateBO, ProfQualityDTO profQualityDTO) {
+    public Integer verifyQuality(ActivcateBO activcateBO, ProfQualityDTO profQualityDTO, Byte type) {
         String openId = profQualityDTO.getOpenId();
         Long certId = activcateBO.getCertId();
         Long talentId = activcateBO.getTalentId();
@@ -100,16 +108,20 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
         /**
          *判断该认证是否重复
          */
-        TalentCertificationInfoPO talentCertificationInfoPO =
-                talentCertificationInfoMapper.selectByTalentId(talentId);
-        if (talentCertificationInfoPO == null) {
-            return 2570;
-        }
-        if (talentCertificationInfoPO.getPqCategory() != null) {
-            if (talentCertificationInfoPO.getPqCategory().contains(profQualityDTO.getCategory().toString())) {
-                return 2558;
+        //认证后的属性
+        if (type == addType) {
+            TalentCertificationInfoPO talentCertificationInfoPO =
+                    talentCertificationInfoMapper.selectByTalentId(talentId);
+            if (talentCertificationInfoPO == null) {
+                return 2570;
+            }
+            if (talentCertificationInfoPO.getPqCategory() != null) {
+                if (talentCertificationInfoPO.getPqCategory().contains(profQualityDTO.getCategory().toString())) {
+                    return 2558;
+                }
             }
         }
+        //新增认证待审批是否重复
         Integer ifExistInsertCertification = insertCertificationMapper.
                 checkIfExistInsertCertification(talentId, profQualityDTO.getCategory().longValue(), (byte) 3);
         if (ifExistInsertCertification != 0) {
@@ -119,7 +131,7 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
     }
 
     @Override
-    public Integer verifyTitle(ActivcateBO activcateBO, ProfTitleDTO profTitleDTO) {
+    public Integer verifyTitle(ActivcateBO activcateBO, ProfTitleDTO profTitleDTO, Byte type) {
         String openId = profTitleDTO.getOpenId();
         Long certId = activcateBO.getCertId();
         Long talentId = activcateBO.getTalentId();
@@ -134,16 +146,20 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
         /**
          *判断该认证是否重复
          */
-        TalentCertificationInfoPO talentCertificationInfoPO =
-                talentCertificationInfoMapper.selectByTalentId(talentId);
-        if (talentCertificationInfoPO == null) {
-            return 2500;
-        }
-        if (talentCertificationInfoPO.getPtCategory() != null) {
-            if (talentCertificationInfoPO.getPtCategory().contains(profTitleDTO.getCategory().toString())) {
-                return 2558;
+        //认证后的属性
+        if (type == addType) {
+            TalentCertificationInfoPO talentCertificationInfoPO =
+                    talentCertificationInfoMapper.selectByTalentId(talentId);
+            if (talentCertificationInfoPO == null) {
+                return 2500;
+            }
+            if (talentCertificationInfoPO.getPtCategory() != null) {
+                if (talentCertificationInfoPO.getPtCategory().contains(profTitleDTO.getCategory().toString())) {
+                    return 2558;
+                }
             }
         }
+        //新增认证待审批是否重复
         Integer ifExistInsertCertification = insertCertificationMapper.
                 checkIfExistInsertCertification(talentId, profTitleDTO.getCategory().longValue(), (byte) 2);
         if (ifExistInsertCertification != 0) {
@@ -153,7 +169,7 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
     }
 
     @Override
-    public Integer verifyHonour(ActivcateBO activcateBO, TalentHonourDTO talentHonourDTO) {
+    public Integer verifyHonour(ActivcateBO activcateBO, TalentHonourDTO talentHonourDTO, Byte type) {
         String openId = talentHonourDTO.getOpenId();
         Long certId = activcateBO.getCertId();
         Long talentId = activcateBO.getTalentId();
@@ -168,16 +184,20 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
         /**
          *判断该认证是否重复
          */
-        TalentCertificationInfoPO talentCertificationInfoPO =
-                talentCertificationInfoMapper.selectByTalentId(talentId);
-        if (talentCertificationInfoPO == null) {
-            return 2500;
-        }
-        if (talentCertificationInfoPO.getHonourId() != null) {
-            if (talentCertificationInfoPO.getHonourId().contains(talentHonourDTO.getHonourId().toString())) {
-                return 2558;
+        //认证后的属性
+        if (type == addType) {
+            TalentCertificationInfoPO talentCertificationInfoPO =
+                    talentCertificationInfoMapper.selectByTalentId(talentId);
+            if (talentCertificationInfoPO == null) {
+                return 2500;
+            }
+            if (talentCertificationInfoPO.getHonourId() != null) {
+                if (talentCertificationInfoPO.getHonourId().contains(talentHonourDTO.getHonourId().toString())) {
+                    return 2558;
+                }
             }
         }
+        //新增认证待审批是否重复
         Integer ifExistInsertCertification = insertCertificationMapper.
                 checkIfExistInsertCertification(talentId, talentHonourDTO.getHonourId().longValue(), (byte) 4);
         if (ifExistInsertCertification != 0) {

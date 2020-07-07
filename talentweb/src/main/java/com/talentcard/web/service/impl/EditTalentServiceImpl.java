@@ -79,6 +79,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
     private UserCardMapper userCardMapper;
     @Autowired
     IVerifyTalentPropertyService iVerifyTalentPropertyService;
+    private static final byte editType = 2;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -115,7 +116,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
                 return new ResultVO(2900, "新增审批时，人才状态不对！");
             }
         }
-        Integer verifyResult = iVerifyTalentPropertyService.verifyEducation(activcateBO, educationDTO);
+        Integer verifyResult = iVerifyTalentPropertyService.verifyEducation(activcateBO, educationDTO, editType);
         if (verifyResult != 0) {
             return new ResultVO(verifyResult);
         }
@@ -167,7 +168,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
                 return new ResultVO(2900, "新增审批时，人才状态不对！");
             }
         }
-        Integer verifyResult = iVerifyTalentPropertyService.verifyQuality(activcateBO, profQualityDTO);
+        Integer verifyResult = iVerifyTalentPropertyService.verifyQuality(activcateBO, profQualityDTO, editType);
         if (verifyResult != 0) {
             return new ResultVO(verifyResult);
         }
@@ -215,7 +216,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
                 return new ResultVO(2900, "新增审批时，人才状态不对！");
             }
         }
-        Integer verifyResult = iVerifyTalentPropertyService.verifyTitle(activcateBO, profTitleDTO);
+        Integer verifyResult = iVerifyTalentPropertyService.verifyTitle(activcateBO, profTitleDTO, editType);
         if (verifyResult != 0) {
             return new ResultVO(verifyResult);
         }
@@ -264,7 +265,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
                 return new ResultVO(2900, "新增审批时，人才状态不对！");
             }
         }
-        Integer verifyResult = iVerifyTalentPropertyService.verifyHonour(activcateBO, talentHonourDTO);
+        Integer verifyResult = iVerifyTalentPropertyService.verifyHonour(activcateBO, talentHonourDTO, editType);
         if (verifyResult != 0) {
             return new ResultVO(verifyResult);
         }

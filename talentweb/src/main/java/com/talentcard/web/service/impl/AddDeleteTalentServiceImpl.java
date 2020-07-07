@@ -53,6 +53,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     TalentCertificationInfoMapper talentCertificationInfoMapper;
     @Autowired
     IVerifyTalentPropertyService iVerifyTalentPropertyService;
+    private static final byte addType = 1;
 
     @Override
     public ResultVO addEducation(EducationDTO educationDTO) {
@@ -69,7 +70,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         /**
          * 学历资格校验是否满足小于等于3，且不重复
          */
-        Integer verifyResult = iVerifyTalentPropertyService.verifyEducation(activcateBO, educationDTO);
+        Integer verifyResult = iVerifyTalentPropertyService.verifyEducation(activcateBO, educationDTO, addType);
         if (verifyResult != 0) {
             return new ResultVO(verifyResult);
         }
@@ -126,7 +127,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
          * 判断次数是否到3
          * 判断该认证是否重复
          */
-        Integer verifyResult = iVerifyTalentPropertyService.verifyQuality(activcateBO, profQualityDTO);
+        Integer verifyResult = iVerifyTalentPropertyService.verifyQuality(activcateBO, profQualityDTO, addType);
         if (verifyResult != 0) {
             return new ResultVO(verifyResult);
         }
@@ -176,7 +177,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
          * 判断次数是否到3
          * 判断该认证是否重复
          */
-        Integer verifyResult = iVerifyTalentPropertyService.verifyTitle(activcateBO, profTitleDTO);
+        Integer verifyResult = iVerifyTalentPropertyService.verifyTitle(activcateBO, profTitleDTO, addType);
         if (verifyResult != 0) {
             return new ResultVO(verifyResult);
         }
@@ -227,7 +228,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
          * 判断该认证是否重复
          */
 
-        Integer verifyResult = iVerifyTalentPropertyService.verifyHonour(activcateBO, talentHonourDTO);
+        Integer verifyResult = iVerifyTalentPropertyService.verifyHonour(activcateBO, talentHonourDTO, addType);
         if (verifyResult != 0) {
             return new ResultVO(verifyResult);
         }
