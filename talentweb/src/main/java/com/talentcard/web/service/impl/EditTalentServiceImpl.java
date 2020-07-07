@@ -343,7 +343,11 @@ public class EditTalentServiceImpl implements IEditTalentService {
         //人才信息
         TalentBO talentBO = talentMapper.findOne(hashMap);
         if (talentBO == null) {
-            return new ResultVO(2500);
+            hashMap.put("status", (byte) 4);
+            talentBO = talentMapper.findOne(hashMap);
+            if (talentBO == null) {
+                return new ResultVO(2500);
+            }
         }
         //卡片信息
         CardPO cardPO = cardMapper.selectByPrimaryKey(talentBO.getCardId());

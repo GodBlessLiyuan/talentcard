@@ -201,6 +201,6 @@
             and honour_id = #{honour,jdbcType=BIGINT}
         </if>
         <!--  将待审批的记录置顶，按时间排序-->
-        order by result desc, create_time desc
+        order by result = 3 desc, create_time desc
     </select>
 </mapper>
