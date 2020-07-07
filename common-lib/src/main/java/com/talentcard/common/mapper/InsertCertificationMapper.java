@@ -59,7 +59,7 @@ public interface InsertCertificationMapper extends BaseMapper<InsertCertificatio
     List<InsertCertificationBO> query(HashMap<String, Object> hashMap);
 
     /**
-     *
+     * 检查是否有已经认证的
      * @param talentId
      * @param certInfo
      * @param type
@@ -68,4 +68,13 @@ public interface InsertCertificationMapper extends BaseMapper<InsertCertificatio
     Integer checkIfExistInsertCertification(@Param("talentId") Long talentId,
                                             @Param("certInfo") Long certInfo,
                                             @Param("type") Byte type);
+
+    /**
+     * 新增认证待审批数量
+     * 用于后台审批的红点数量统计
+     *
+     * @return
+     */
+    Integer findWaitApprovalNum();
+
 }
