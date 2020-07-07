@@ -148,4 +148,11 @@
     from t_talent_honour
     where cert_id = #{certId,jdbcType=BIGINT}
   </select>
+
+  <select id="findTimesByCertId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    select
+    count(th_id)
+    from t_talent_honour
+    where cert_id = #{certId,jdbcType=BIGINT}
+  </select>
 </mapper>
