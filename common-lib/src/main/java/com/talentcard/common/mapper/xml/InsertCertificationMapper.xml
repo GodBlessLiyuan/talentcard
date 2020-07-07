@@ -279,7 +279,7 @@
         count(ic.insert_cert_id)
         from t_insert_certification ic
         where
-        and ic.status = 3
+        ic.status = 3
         and ic.dr = 1
     </select>
 </mapper>
