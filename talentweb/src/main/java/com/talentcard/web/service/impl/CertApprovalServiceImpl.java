@@ -72,6 +72,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     TalentCertificationInfoMapper talentCertificationInfoMapper;
     @Autowired
     TalentJsonRecordMapper talentJsonRecordMapper;
+    @Autowired
+    InsertCertificationMapper insertCertificationMapper;
 
     /**
      * 审批result的值含义
@@ -468,8 +470,13 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
 
     @Override
     public ResultVO queryByNumApproval() {
-        int number = certificationMapper.findWaitApprovalNum();
-        return new ResultVO(1000, number);
+        //普通认证待审批
+        Integer certNumber = certificationMapper.findWaitApprovalNum();
+        //新增认证待审批
+        Integer insertCertNumber = insertCertificationMapper.findWaitApprovalNum();
+        //求和，总数
+        Integer allNumber = certNumber + insertCertNumber;
+        return new ResultVO(1000, allNumber);
     }
 
     @Override
