@@ -71,7 +71,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     TalentJsonRecordMapper talentJsonRecordMapper;
 
 
-
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
         Page<TalentBO> page = PageHelper.startPage(pageNum, pageSize);
@@ -96,7 +95,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
          */
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         if (activcateBO == null) {
-            return new ResultVO(2900, "新增审批时，人才状态不对！");
+            activcateBO = talentMapper.activate(openId, (byte) 4, (byte) 1);
+            if (activcateBO == null) {
+                return new ResultVO(2900, "新增审批时，人才状态不对！");
+            }
         }
         InsertCertificationBO insertCertificationBO = insertCertificationMapper.findOne(openId, insertCertId);
         if (insertCertificationBO == null) {
