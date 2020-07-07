@@ -15,11 +15,31 @@ import javax.swing.text.StyledEditorKit;
  * @description
  */
 public interface IVerifyTalentPropertyService {
-    Integer verifyEducation(ActivcateBO activcateBO, EducationDTO educationDTO, Byte type);
+    /**
+     * 新增校验
+     * @param activcateBO
+     * @param educationDTO
+     * @return
+     */
+    Integer verifyEducation(ActivcateBO activcateBO, EducationDTO educationDTO);
 
-    Integer verifyQuality(ActivcateBO activcateBO, ProfQualityDTO profQualityDTO, Byte type);
+    Integer verifyQuality(ActivcateBO activcateBO, ProfQualityDTO profQualityDTO);
 
-    Integer verifyTitle(ActivcateBO activcateBO, ProfTitleDTO profTitleDTO, Byte type);
+    Integer verifyTitle(ActivcateBO activcateBO, ProfTitleDTO profTitleDTO);
 
-    Integer verifyHonour(ActivcateBO activcateBO, TalentHonourDTO talentHonourDTO, Byte type);
+    Integer verifyHonour(ActivcateBO activcateBO, TalentHonourDTO talentHonourDTO);
+
+    /**
+     * 编辑校验
+     * @param activcateBO
+     * @param educationDTO
+     * @return
+     */
+    Integer editVerifyEducation(ActivcateBO activcateBO, EducationDTO educationDTO);
+
+    Integer editVerifyQuality(ActivcateBO activcateBO, ProfQualityDTO profQualityDTO);
+
+    Integer editVerifyTitle(ActivcateBO activcateBO, ProfTitleDTO profTitleDTO);
+
+    Integer editVerifyHonour(ActivcateBO activcateBO, TalentHonourDTO talentHonourDTO);
 }
