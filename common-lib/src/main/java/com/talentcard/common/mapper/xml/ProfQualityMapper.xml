@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.ProfQualityMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ProfQualityPO">
-    <id column="pq_id" jdbcType="BIGINT" property="pqId" />
-    <result column="category" jdbcType="INTEGER" property="category" />
-    <result column="picture" jdbcType="CHAR" property="picture" />
-    <result column="info" jdbcType="CHAR" property="info" />
-    <result column="cert_id" jdbcType="BIGINT" property="certId" />
-    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="if_certificate" jdbcType="TINYINT" property="ifCertificate" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ProfQualityPO">
+        <id column="pq_id" jdbcType="BIGINT" property="pqId"/>
+        <result column="category" jdbcType="INTEGER" property="category"/>
+        <result column="picture" jdbcType="CHAR" property="picture"/>
+        <result column="info" jdbcType="CHAR" property="info"/>
+        <result column="cert_id" jdbcType="BIGINT" property="certId"/>
+        <result column="talent_id" jdbcType="BIGINT" property="talentId"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     pq_id, category, picture, info, cert_id, talent_id, `status`, if_certificate
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_prof_quality
-    where pq_id = #{pqId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_prof_quality
+        where pq_id = #{pqId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_prof_quality
     where pq_id = #{pqId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.ProfQualityPO">
+    <insert id="insert" parameterType="com.talentcard.common.pojo.ProfQualityPO">
     insert into t_prof_quality (pq_id, category, picture, 
       info, cert_id, talent_id, 
       `status`, if_certificate)
@@ -32,89 +32,89 @@
       #{info,jdbcType=CHAR}, #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
       #{status,jdbcType=TINYINT}, #{ifCertificate,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ProfQualityPO">
-    insert into t_prof_quality
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="pqId != null">
-        pq_id,
-      </if>
-      <if test="category != null">
-        category,
-      </if>
-      <if test="picture != null">
-        picture,
-      </if>
-      <if test="info != null">
-        info,
-      </if>
-      <if test="certId != null">
-        cert_id,
-      </if>
-      <if test="talentId != null">
-        talent_id,
-      </if>
-      <if test="status != null">
-        `status`,
-      </if>
-      <if test="ifCertificate != null">
-        if_certificate,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="pqId != null">
-        #{pqId,jdbcType=BIGINT},
-      </if>
-      <if test="category != null">
-        #{category,jdbcType=INTEGER},
-      </if>
-      <if test="picture != null">
-        #{picture,jdbcType=CHAR},
-      </if>
-      <if test="info != null">
-        #{info,jdbcType=CHAR},
-      </if>
-      <if test="certId != null">
-        #{certId,jdbcType=BIGINT},
-      </if>
-      <if test="talentId != null">
-        #{talentId,jdbcType=BIGINT},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="ifCertificate != null">
-        #{ifCertificate,jdbcType=TINYINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.ProfQualityPO">
-    update t_prof_quality
-    <set>
-      <if test="category != null">
-        category = #{category,jdbcType=INTEGER},
-      </if>
-      <if test="picture != null">
-        picture = #{picture,jdbcType=CHAR},
-      </if>
-      <if test="info != null">
-        info = #{info,jdbcType=CHAR},
-      </if>
-      <if test="certId != null">
-        cert_id = #{certId,jdbcType=BIGINT},
-      </if>
-      <if test="talentId != null">
-        talent_id = #{talentId,jdbcType=BIGINT},
-      </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="ifCertificate != null">
-        if_certificate = #{ifCertificate,jdbcType=TINYINT},
-      </if>
-    </set>
-    where pq_id = #{pqId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.ProfQualityPO">
+    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ProfQualityPO">
+        insert into t_prof_quality
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pqId != null">
+                pq_id,
+            </if>
+            <if test="category != null">
+                category,
+            </if>
+            <if test="picture != null">
+                picture,
+            </if>
+            <if test="info != null">
+                info,
+            </if>
+            <if test="certId != null">
+                cert_id,
+            </if>
+            <if test="talentId != null">
+                talent_id,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="ifCertificate != null">
+                if_certificate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pqId != null">
+                #{pqId,jdbcType=BIGINT},
+            </if>
+            <if test="category != null">
+                #{category,jdbcType=INTEGER},
+            </if>
+            <if test="picture != null">
+                #{picture,jdbcType=CHAR},
+            </if>
+            <if test="info != null">
+                #{info,jdbcType=CHAR},
+            </if>
+            <if test="certId != null">
+                #{certId,jdbcType=BIGINT},
+            </if>
+            <if test="talentId != null">
+                #{talentId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="ifCertificate != null">
+                #{ifCertificate,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.ProfQualityPO">
+        update t_prof_quality
+        <set>
+            <if test="category != null">
+                category = #{category,jdbcType=INTEGER},
+            </if>
+            <if test="picture != null">
+                picture = #{picture,jdbcType=CHAR},
+            </if>
+            <if test="info != null">
+                info = #{info,jdbcType=CHAR},
+            </if>
+            <if test="certId != null">
+                cert_id = #{certId,jdbcType=BIGINT},
+            </if>
+            <if test="talentId != null">
+                talent_id = #{talentId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="ifCertificate != null">
+                if_certificate = #{ifCertificate,jdbcType=TINYINT},
+            </if>
+        </set>
+        where pq_id = #{pqId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.ProfQualityPO">
     update t_prof_quality
     set category = #{category,jdbcType=INTEGER},
       picture = #{picture,jdbcType=CHAR},
@@ -126,28 +126,35 @@
     where pq_id = #{pqId,jdbcType=BIGINT}
   </update>
 
-  <select id="queryNameByTalentId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    <select id="queryNameByTalentId" parameterType="java.lang.Long" resultType="java.lang.Integer">
     select category
     from t_prof_quality
     where talent_id = #{talentId,jdbcType=BIGINT} and `status` = 1
   </select>
 
-  <update id="updateStatusByCertId">
+    <update id="updateStatusByCertId">
     update t_prof_quality
     set `status` = #{status,jdbcType=TINYINT}
     where cert_id = #{certId,jdbcType=BIGINT}
   </update>
 
-  <select id="selectByCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_prof_quality
-    where cert_id = #{certId,jdbcType=BIGINT}
-  </select>
+    <select id="selectByCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_prof_quality
+        where cert_id = #{certId,jdbcType=BIGINT}
+    </select>
 
-  <select id="findAllByCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="findAllByCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_prof_quality
+        where cert_id = #{certId,jdbcType=BIGINT}
+    </select>
+
+    <select id="findTimesByCertId" parameterType="java.lang.Long" resultType="java.lang.Integer">
     select
-    <include refid="Base_Column_List" />
+    count(pq_id)
     from t_prof_quality
     where cert_id = #{certId,jdbcType=BIGINT}
   </select>

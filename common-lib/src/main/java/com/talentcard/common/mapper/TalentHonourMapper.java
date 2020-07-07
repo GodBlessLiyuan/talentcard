@@ -42,4 +42,11 @@ public interface TalentHonourMapper extends BaseMapper<TalentHonourPO, Long> {
      */
     List<TalentHonourPO> findAllByCertId(@Param("certId") Long certId);
 
+    /**
+     * 根据certId查找对应th表信息
+     * @param certId
+     * @return
+     */
+    Integer findTimesByCertId(@Param("certId") Long certId);
+
 }

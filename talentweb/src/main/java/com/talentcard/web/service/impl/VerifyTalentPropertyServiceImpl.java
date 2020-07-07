@@ -58,7 +58,7 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
          * 判断次数是否到3
          */
         Integer educationInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 1);
-        Integer educationCertTimes = educationMapper.findAllByCertId(certId).size();
+        Integer educationCertTimes = educationMapper.findTimesByCertId(certId);
         if ((educationCertTimes + educationInsertCertTimes) >= 3) {
             return 2670;
         }
@@ -94,7 +94,7 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
          * 判断次数是否到3
          */
         Integer qualityInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 3);
-        Integer qualityCertTimes = profQualityMapper.findAllByCertId(certId).size();
+        Integer qualityCertTimes = profQualityMapper.findTimesByCertId(certId);
         if ((qualityCertTimes + qualityInsertCertTimes) >= 3) {
             return 2670;
         }
@@ -132,7 +132,7 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
          * 判断次数是否到3
          */
         Integer titleInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 2);
-        Integer titleCertTimes = profTitleMapper.findAllByCertId(certId).size();
+        Integer titleCertTimes = profTitleMapper.findTimesByCertId(certId);
         if ((titleCertTimes + titleInsertCertTimes) >= 3) {
             return 2670;
         }
@@ -169,7 +169,7 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
          * 判断次数是否到3
          */
         Integer honourInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 4);
-        Integer honourCertTimes = talentHonourMapper.findAllByCertId(certId).size();
+        Integer honourCertTimes = talentHonourMapper.findTimesByCertId(certId);
         if ((honourCertTimes + honourInsertCertTimes) >= 3) {
             return 2670;
         }
