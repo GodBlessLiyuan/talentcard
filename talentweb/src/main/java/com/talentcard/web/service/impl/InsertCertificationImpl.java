@@ -6,6 +6,7 @@ import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.InsertCertApprovalBO;
 import com.talentcard.common.bo.InsertCertificationBO;
 import com.talentcard.common.bo.TalentBO;
+import com.talentcard.common.constant.InsertCertificationConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.PageHelper;
@@ -104,16 +105,16 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (insertCertificationBO == null) {
             return new ResultVO(2551, "查无此新增认证！");
         }
-        if (insertCertificationBO.getStatus() != 2) {
+        if (insertCertificationBO.getStatus() != InsertCertificationConstant.waitingApproveStatus) {
             return new ResultVO(2900, "新增审批时，人才状态不对！");
         }
         Byte status;
         if (result == 1) {
             //通过
-            status = 1;
+            status = InsertCertificationConstant.approveStatus;
         } else {
             //驳回
-            status = 3;
+            status = InsertCertificationConstant.rejectStatus;
         }
         insertCertificationPO.setStatus(status);
         insertCertificationMapper.updateByPrimaryKeySelective(insertCertificationPO);
@@ -147,7 +148,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             insertEducationMapper.updateByPrimaryKeySelective(insertEducationPO);
 
             //审批通过，链接认证表
-            if (status == 1) {
+            if (status == InsertCertificationConstant.approveStatus) {
                 educationPO.setGraduateTime(insertEducationPO.getGraduateTime());
                 educationPO.setFirstClass(insertEducationPO.getFirstClass());
                 educationPO.setEducPicture(insertEducationPO.getEducPicture());
@@ -172,7 +173,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             insertTitleMapper.updateByPrimaryKeySelective(insertTitlePO);
 
             //审批通过，链接认证表
-            if (status == 1) {
+            if (status == InsertCertificationConstant.approveStatus) {
                 profTitlePO.setPicture(insertTitlePO.getPicture());
                 profTitlePO.setInfo(insertTitlePO.getInfo());
                 profTitlePO.setCategory(insertTitlePO.getCategory());
@@ -194,7 +195,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             insertQualityMapper.updateByPrimaryKeySelective(insertQualityPO);
 
             //审批通过，链接认证表
-            if (status == 1) {
+            if (status == InsertCertificationConstant.approveStatus) {
                 profQualityPO.setPicture(insertQualityPO.getPicture());
                 profQualityPO.setStatus((byte) 1);
                 profQualityPO.setTalentId(talentId);
@@ -216,7 +217,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             insertHonourMapper.updateByPrimaryKeySelective(insertHonourPO);
 
             //审批通过，链接认证表
-            if (status == 1) {
+            if (status == InsertCertificationConstant.approveStatus) {
                 talentHonourPO.setInfo(insertHonourPO.getInfo());
                 talentHonourPO.setHonourPicture(insertHonourPO.getHonourPicture());
                 talentHonourPO.setHonourId(insertHonourPO.getHonourId());

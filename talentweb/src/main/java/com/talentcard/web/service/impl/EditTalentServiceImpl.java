@@ -15,6 +15,7 @@ import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.IEditTalentService;
 import com.talentcard.web.service.ITalentInfoCertificationService;
 import com.talentcard.web.service.ITalentService;
+import com.talentcard.web.service.IVerifyTalentPropertyService;
 import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
@@ -73,11 +74,11 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Autowired
     PolicyMapper policyMapper;
     @Autowired
-    private CertApprovalMapper certApprovalMapper;
-    @Autowired
     private CardMapper cardMapper;
     @Autowired
     private UserCardMapper userCardMapper;
+    @Autowired
+    IVerifyTalentPropertyService iVerifyTalentPropertyService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -104,6 +105,20 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editEducation(EducationDTO educationDTO) {
         String openId = educationDTO.getOpenId();
+        /**
+         * 学历资格校验是否满足小于等于3，且不重复
+         */
+        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
+        if (activcateBO == null) {
+            activcateBO = talentMapper.activate(openId, (byte) 4, (byte) 1);
+            if (activcateBO == null) {
+                return new ResultVO(2900, "新增审批时，人才状态不对！");
+            }
+        }
+        Integer verifyResult = iVerifyTalentPropertyService.verifyEducation(activcateBO, educationDTO);
+        if (verifyResult != 0) {
+            return new ResultVO(verifyResult);
+        }
         /**
          * 链接学历职称职业资格人才荣誉
          */
@@ -141,6 +156,24 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editProfQuality(ProfQualityDTO profQualityDTO) {
         String openId = profQualityDTO.getOpenId();
+        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
+        /**
+         * 判断次数是否到3
+         * 判断该认证是否重复
+         */
+        if (activcateBO == null) {
+            activcateBO = talentMapper.activate(openId, (byte) 4, (byte) 1);
+            if (activcateBO == null) {
+                return new ResultVO(2900, "新增审批时，人才状态不对！");
+            }
+        }
+        Integer verifyResult = iVerifyTalentPropertyService.verifyQuality(activcateBO, profQualityDTO);
+        if (verifyResult != 0) {
+            return new ResultVO(verifyResult);
+        }
+        /**
+         * 编辑
+         */
         ProfQualityPO profQualityPO = profQualityMapper.selectByPrimaryKey(profQualityDTO.getPqId());
         if (profQualityPO == null) {
             return new ResultVO(2661, "查无此认证！");
@@ -171,6 +204,25 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editProfTitle(ProfTitleDTO profTitleDTO) {
         String openId = profTitleDTO.getOpenId();
+        /**
+         * 判断次数是否到3
+         * 判断该认证是否重复
+         */
+        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
+        if (activcateBO == null) {
+            activcateBO = talentMapper.activate(openId, (byte) 4, (byte) 1);
+            if (activcateBO == null) {
+                return new ResultVO(2900, "新增审批时，人才状态不对！");
+            }
+        }
+        Integer verifyResult = iVerifyTalentPropertyService.verifyTitle(activcateBO, profTitleDTO);
+        if (verifyResult != 0) {
+            return new ResultVO(verifyResult);
+        }
+
+        /**
+         * 编辑
+         */
         ProfTitlePO profTitlePO = profTitleMapper.selectByPrimaryKey(profTitleDTO.getPtId());
         if (profTitlePO == null) {
             return new ResultVO(2661, "查无此认证！");
@@ -201,6 +253,24 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editTalentHonour(TalentHonourDTO talentHonourDTO) {
         String openId = talentHonourDTO.getOpenId();
+        /**
+         * 判断次数是否到3
+         * 判断该认证是否重复
+         */
+        ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
+        if (activcateBO == null) {
+            activcateBO = talentMapper.activate(openId, (byte) 4, (byte) 1);
+            if (activcateBO == null) {
+                return new ResultVO(2900, "新增审批时，人才状态不对！");
+            }
+        }
+        Integer verifyResult = iVerifyTalentPropertyService.verifyHonour(activcateBO, talentHonourDTO);
+        if (verifyResult != 0) {
+            return new ResultVO(verifyResult);
+        }
+        /**
+         * 编辑
+         */
         TalentHonourPO talentHonourPO = talentHonourMapper.selectByPrimaryKey(talentHonourDTO.getThId());
         if (talentHonourPO == null) {
             return new ResultVO(2661, "查无此认证！");

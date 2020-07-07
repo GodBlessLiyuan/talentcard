@@ -2,6 +2,7 @@ package com.talentcard.front.service.impl;
 
 import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.InsertCertificationBO;
+import com.talentcard.common.constant.InsertCertificationConstant;
 import com.talentcard.common.dto.*;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
@@ -94,7 +95,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             if (oldInsertEducationPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
-            if (oldInsertEducationPO.getStatus() != 3) {
+            if (oldInsertEducationPO.getStatus() != InsertCertificationConstant.rejectStatus) {
                 return new ResultVO(2552, "状态不对，此认证无法编辑！");
             }
             oldInsertEducationPO.setStatus((byte) 10);
@@ -131,7 +132,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         //新增认证表
         InsertCertificationPO insertCertificationPO = new InsertCertificationPO();
         insertCertificationPO.setCreateTime(new Date());
-        insertCertificationPO.setStatus((byte) 2);
+        insertCertificationPO.setStatus(InsertCertificationConstant.waitingApproveStatus);
         insertCertificationPO.setType((byte) 1);
         insertCertificationPO.setTalentId(talentPO.getTalentId());
         insertCertificationPO.setCertInfo(educationDTO.getEducation().longValue());
@@ -145,7 +146,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertEducationPO.setGraduateTime(educationDTO.getGraduateTime());
         insertEducationPO.setMajor(educationDTO.getMajor());
         insertEducationPO.setSchool(educationDTO.getSchool());
-        insertEducationPO.setStatus((byte) 2);
+        insertEducationPO.setStatus(InsertCertificationConstant.waitingApproveStatus);
         insertEducationPO.setOpenId(educationDTO.getOpenId());
         insertEducationPO.setDr((byte) 1);
         insertEducationMapper.insertSelective(insertEducationPO);
@@ -207,7 +208,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             if (oldInsertQualityPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
-            if (oldInsertQualityPO.getStatus() != 3) {
+            if (oldInsertQualityPO.getStatus() != InsertCertificationConstant.rejectStatus) {
                 return new ResultVO(2552, "状态不对，此认证无法编辑！");
             }
             oldInsertQualityPO.setStatus((byte) 10);
@@ -248,7 +249,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         //新增认证表
         InsertCertificationPO insertCertificationPO = new InsertCertificationPO();
         insertCertificationPO.setCreateTime(new Date());
-        insertCertificationPO.setStatus((byte) 2);
+        insertCertificationPO.setStatus(InsertCertificationConstant.waitingApproveStatus);
         insertCertificationPO.setType((byte) 3);
         insertCertificationPO.setTalentId(talentPO.getTalentId());
         insertCertificationPO.setCertInfo(profQualityDTO.getCategory().longValue());
@@ -260,7 +261,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertQualityPO.setInfo(profQualityDTO.getInfo());
         insertQualityPO.setOpenId(profQualityDTO.getOpenId());
         insertQualityPO.setPicture(profQualityDTO.getPicture());
-        insertQualityPO.setStatus((byte) 2);
+        insertQualityPO.setStatus(InsertCertificationConstant.waitingApproveStatus);
         insertQualityPO.setDr((byte) 1);
         insertQualityMapper.insertSelective(insertQualityPO);
         //审批表
@@ -320,7 +321,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             if (oldInsertTitlePO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
-            if (oldInsertTitlePO.getStatus() != 3) {
+            if (oldInsertTitlePO.getStatus() != InsertCertificationConstant.rejectStatus) {
                 return new ResultVO(2552, "状态不对，此认证无法编辑！");
             }
             oldInsertTitlePO.setStatus((byte) 10);
@@ -357,7 +358,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         //新增认证表
         InsertCertificationPO insertCertificationPO = new InsertCertificationPO();
         insertCertificationPO.setCreateTime(new Date());
-        insertCertificationPO.setStatus((byte) 2);
+        insertCertificationPO.setStatus(InsertCertificationConstant.waitingApproveStatus);
         insertCertificationPO.setType((byte) 2);
         insertCertificationPO.setTalentId(talentPO.getTalentId());
         insertCertificationPO.setCertInfo(profTitleDTO.getCategory().longValue());
@@ -369,7 +370,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertTitlePO.setInfo(profTitleDTO.getInfo());
         insertTitlePO.setOpenId(profTitleDTO.getOpenId());
         insertTitlePO.setPicture(profTitleDTO.getPicture());
-        insertTitlePO.setStatus((byte) 2);
+        insertTitlePO.setStatus(InsertCertificationConstant.waitingApproveStatus);
         insertTitlePO.setDr((byte) 1);
         insertTitleMapper.insertSelective(insertTitlePO);
 
@@ -430,7 +431,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             if (oldInsertHonourPO == null) {
                 return new ResultVO(2551, "查无此新增认证！");
             }
-            if (oldInsertHonourPO.getStatus() != 3) {
+            if (oldInsertHonourPO.getStatus() != InsertCertificationConstant.rejectStatus) {
                 return new ResultVO(2552, "状态不对，此认证无法编辑！");
             }
             oldInsertHonourPO.setStatus((byte) 10);
@@ -468,7 +469,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         //新增认证表
         InsertCertificationPO insertCertificationPO = new InsertCertificationPO();
         insertCertificationPO.setCreateTime(new Date());
-        insertCertificationPO.setStatus((byte) 2);
+        insertCertificationPO.setStatus(InsertCertificationConstant.waitingApproveStatus);
         insertCertificationPO.setType((byte) 4);
         insertCertificationPO.setTalentId(talentPO.getTalentId());
         insertCertificationPO.setCertInfo(talentHonourDTO.getHonourId());
@@ -480,7 +481,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertHonourPO.setInfo(talentHonourDTO.getInfo());
         insertHonourPO.setOpenId(talentHonourDTO.getOpenId());
         insertHonourPO.setHonourPicture(talentHonourDTO.getHonourPicture());
-        insertHonourPO.setStatus((byte) 2);
+        insertHonourPO.setStatus(InsertCertificationConstant.waitingApproveStatus);
         insertHonourPO.setDr((byte) 1);
         insertHonourMapper.insertSelective(insertHonourPO);
 
@@ -507,7 +508,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             return new ResultVO(2551, "查无此新增认证！");
         }
 
-        if (insertCertificationPO.getStatus() != 3) {
+        if (insertCertificationPO.getStatus() != InsertCertificationConstant.rejectStatus) {
             return new ResultVO(2554, "状态不对，此认证无法删除！");
         }
         insertCertificationPO.setDr((byte) 2);
