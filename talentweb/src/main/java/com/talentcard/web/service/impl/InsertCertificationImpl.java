@@ -326,7 +326,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         }
         InsertCertificationVO insertCertificationVO = InsertCertificationVO.convert(insertCertificationBO);
         //记录信息
-        List<InsertCertApprovalBO> insertCertApprovalBOList = insertCertApprovalMapper.findRecord(talentId);
+        List<InsertCertApprovalBO> insertCertApprovalBOList = insertCertApprovalMapper.findRecord(talentId, insertCertId);
         result.put("basicInfo", talentPO);
         result.put("insertCertInfo", insertCertificationVO);
         result.put("record", insertCertApprovalBOList);

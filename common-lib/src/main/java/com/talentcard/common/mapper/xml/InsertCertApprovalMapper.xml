@@ -163,6 +163,8 @@
     t_card c
     on c.card_id = uc.card_id
     where t.talent_id = #{talentId,jdbcType=BIGINT}
+    and ic.insert_cert_id = #{insertCertId,jdbcType=BIGINT}
+    and uc.status = 2
   </select>
   <select id="findResultByInsertCertId" resultMap="BaseResultMap">
     select
