@@ -157,7 +157,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertApprovalPO.setDr((byte) 1);
         insertCertApprovalPO.setResult((byte) 8);
         insertCertApprovalPO.setType((byte) 1);
-        insertCertApprovalPO.setInsertCertId(insertCertId);
+        insertCertApprovalPO.setInsertCertId(insertCertificationPO.getInsertCertId());
         insertCertApprovalMapper.insertSelective(insertCertApprovalPO);
         /**
          * 清除redis缓存
@@ -272,7 +272,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertApprovalPO.setDr((byte) 1);
         insertCertApprovalPO.setResult((byte) 8);
         insertCertApprovalPO.setType((byte) 1);
-        insertCertApprovalPO.setInsertCertId(insertCertId);
+        insertCertApprovalPO.setInsertCertId(insertCertificationPO.getInsertCertId());
         insertCertApprovalMapper.insertSelective(insertCertApprovalPO);
         /**
          * 清除redis缓存
@@ -383,7 +383,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertApprovalPO.setDr((byte) 1);
         insertCertApprovalPO.setResult((byte) 8);
         insertCertApprovalPO.setType((byte) 1);
-        insertCertApprovalPO.setInsertCertId(insertCertId);
+        insertCertApprovalPO.setInsertCertId(insertCertificationPO.getInsertCertId());
         insertCertApprovalMapper.insertSelective(insertCertApprovalPO);
         /**
          * 清除redis缓存
@@ -495,7 +495,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertCertApprovalPO.setDr((byte) 1);
         insertCertApprovalPO.setResult((byte) 8);
         insertCertApprovalPO.setType((byte) 1);
-        insertCertApprovalPO.setInsertCertId(insertCertId);
+        insertCertApprovalPO.setInsertCertId(insertCertificationPO.getInsertCertId());
         insertCertApprovalMapper.insertSelective(insertCertApprovalPO);
         /**
          * 清除redis缓存
