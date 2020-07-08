@@ -263,7 +263,7 @@
         <if test="endTime != null and endTime != ''">
             and <![CDATA[ ic.create_time <= #{endTime}]]>
         </if>
-        order by ic.insert_cert_id desc
+        order by ic.status = 2 desc, ic.insert_cert_id desc
     </select>
     <select id="checkIfExistInsertCertification" resultType="java.lang.Integer">
         select
