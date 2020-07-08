@@ -55,7 +55,6 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
     private ITalentService iTalentService;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public ResultVO findSecondContent(String openId, String name, Byte area, Byte order) {
 
         if (StringUtils.isEmpty(openId) || StringUtils.equalsIgnoreCase(openId, "null")) {
