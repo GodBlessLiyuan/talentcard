@@ -54,7 +54,6 @@ public class TalentTripServiceImpl implements ITalentTripService {
     private ITalentService iTalentService;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public ResultVO findSecondContent(String openId, String name, Byte starLevel, Byte area, Byte order) {
 
         if (StringUtils.isEmpty(openId)) {

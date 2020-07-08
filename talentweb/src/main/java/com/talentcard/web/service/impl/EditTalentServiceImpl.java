@@ -531,7 +531,10 @@ public class EditTalentServiceImpl implements IEditTalentService {
 
     @Override
     public ResultVO findEnableChangeCard(Long talentId) {
+        TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
+        //使用过的卡
         List<CardPO> usedCards = cardMapper.findUsedCard(talentId);
+        //现在有高级卡
         List<CardPO> seniorCards = cardMapper.findSeniorCard(null);
         if (usedCards == null || seniorCards == null || usedCards.size() == 0 || seniorCards.size() == 0) {
             return new ResultVO(2600);
@@ -547,7 +550,14 @@ public class EditTalentServiceImpl implements IEditTalentService {
             if (flag == 0) {
                 resultCards.add(seniorCard);
             }
+            //加上当前使用的卡
+            if (seniorCard.getCardId().equals(talentPO.getCardId())) {
+                resultCards.add(seniorCard);
+            }
             flag = 0;
+        }
+        if (talentPO == null) {
+            return new ResultVO(2500);
         }
         return new ResultVO(1000, resultCards);
     }
