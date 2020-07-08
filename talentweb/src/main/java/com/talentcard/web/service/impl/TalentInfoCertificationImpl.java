@@ -55,6 +55,8 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             }
             educationString = educationString + educationPOList.get(educationPOList.size() - 1).getEducation();
             talentCertificationInfoPO.setEducation(educationString);
+        } else {
+            talentCertificationInfoPO.setEducation("0");
         }
         //职称
         if (talentBO.getProfTitlePOList() != null && talentBO.getProfTitlePOList().size() != 0) {
@@ -65,6 +67,8 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             }
             titleString = titleString + profTitlePOList.get(profTitlePOList.size() - 1).getCategory();
             talentCertificationInfoPO.setPtCategory(titleString);
+        } else {
+            talentCertificationInfoPO.setPtCategory("0");
         }
         //职业资格
         if (talentBO.getProfQualityPOList() != null && talentBO.getProfQualityPOList().size() != 0) {
@@ -75,6 +79,8 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             }
             qualityString = qualityString + profQualityPOList.get(profQualityPOList.size() - 1).getCategory();
             talentCertificationInfoPO.setPqCategory(qualityString);
+        } else {
+            talentCertificationInfoPO.setPqCategory("0");
         }
         //人才荣誉
         if (talentBO.getTalentHonourPOList() != null && talentBO.getTalentHonourPOList().size() != 0) {
@@ -85,7 +91,11 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             }
             honourString = honourString + talentHonourPOList.get(talentHonourPOList.size() - 1).getHonourId();
             talentCertificationInfoPO.setHonourId(honourString);
+        } else {
+            talentCertificationInfoPO.setHonourId("0");
         }
+        //人才类别
+        talentCertificationInfoPO.setTalentCategory(talentPO.getCategory());
         talentCertificationInfoMapper.updateByPrimaryKeySelective(talentCertificationInfoPO);
         return 0;
     }
