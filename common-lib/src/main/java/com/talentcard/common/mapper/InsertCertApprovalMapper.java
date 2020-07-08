@@ -18,7 +18,8 @@ public interface InsertCertApprovalMapper extends BaseMapper<InsertCertApprovalP
      * @param talentId
      * @return
      */
-    List<InsertCertApprovalBO> findRecord(@Param("talentId") Long talentId);
+    List<InsertCertApprovalBO> findRecord(@Param("talentId") Long talentId,
+                                          @Param("insertCertId") Long insertCertId);
 
     /**
      * 根据insertCertId新增审批查询结果
