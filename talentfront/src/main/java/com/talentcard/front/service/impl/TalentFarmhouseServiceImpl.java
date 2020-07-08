@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -55,7 +54,6 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
     private ITalentService iTalentService;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public ResultVO findSecondContent(String openId, String name, Byte area, Byte order) {
 
         if (StringUtils.isEmpty(openId) || StringUtils.equalsIgnoreCase(openId, "null")) {
