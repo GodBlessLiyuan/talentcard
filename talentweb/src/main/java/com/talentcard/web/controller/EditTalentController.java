@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @author ChenXU
  * @version 1.0
@@ -23,8 +25,8 @@ public class EditTalentController {
     IEditTalentService iEditTalentService;
 
     @RequestMapping("editBasicInfo")
-    public ResultVO editBasicInfo(@RequestBody BasicInfoDTO basicInfoDTO) {
-        return iEditTalentService.editBasicInfo(basicInfoDTO);
+    public ResultVO editBasicInfo(HttpSession httpSession, @RequestBody BasicInfoDTO basicInfoDTO) {
+        return iEditTalentService.editBasicInfo(httpSession, basicInfoDTO);
     }
 
     /**
@@ -34,8 +36,8 @@ public class EditTalentController {
      * @return
      */
     @RequestMapping("editEducation")
-    public ResultVO editEducation(@RequestBody EducationDTO educationDTO) {
-        return iEditTalentService.editEducation(educationDTO);
+    public ResultVO editEducation(HttpSession httpSession, @RequestBody EducationDTO educationDTO) {
+        return iEditTalentService.editEducation(httpSession, educationDTO);
     }
 
     /**
@@ -45,8 +47,8 @@ public class EditTalentController {
      * @return
      */
     @RequestMapping("editProfQuality")
-    public ResultVO editProfQuality(@RequestBody ProfQualityDTO profQualityDTO) {
-        return iEditTalentService.editProfQuality(profQualityDTO);
+    public ResultVO editProfQuality(HttpSession httpSession, @RequestBody ProfQualityDTO profQualityDTO) {
+        return iEditTalentService.editProfQuality(httpSession, profQualityDTO);
     }
 
     /**
@@ -56,8 +58,8 @@ public class EditTalentController {
      * @return
      */
     @RequestMapping("editProfTitle")
-    public ResultVO editProfTitle(@RequestBody ProfTitleDTO profTitleDTO) {
-        return iEditTalentService.editProfTitle(profTitleDTO);
+    public ResultVO editProfTitle(HttpSession httpSession, @RequestBody ProfTitleDTO profTitleDTO) {
+        return iEditTalentService.editProfTitle(httpSession, profTitleDTO);
     }
 
     /**
@@ -67,8 +69,8 @@ public class EditTalentController {
      * @return
      */
     @RequestMapping("editTalentHonour")
-    public ResultVO editTalentHonour(@RequestBody TalentHonourDTO talentHonourDTO) {
-        return iEditTalentService.editTalentHonour(talentHonourDTO);
+    public ResultVO editTalentHonour(HttpSession httpSession, @RequestBody TalentHonourDTO talentHonourDTO) {
+        return iEditTalentService.editTalentHonour(httpSession, talentHonourDTO);
     }
 
     /**
@@ -79,9 +81,10 @@ public class EditTalentController {
      * @return
      */
     @RequestMapping("editTalentCategory")
-    public ResultVO editTalentCategory(@RequestParam(value = "openId") String openId,
+    public ResultVO editTalentCategory(HttpSession httpSession,
+                                       @RequestParam(value = "openId") String openId,
                                        @RequestParam(value = "talentCategory") String talentCategory) {
-        return iEditTalentService.editTalentCategory(openId, talentCategory);
+        return iEditTalentService.editTalentCategory(httpSession, openId, talentCategory);
     }
 
     /**

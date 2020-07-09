@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.constant.EditTalentRecordConstant;
 import com.talentcard.common.dto.*;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
@@ -12,10 +13,7 @@ import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.EditTalentPolicyDTO;
 import com.talentcard.web.dto.MessageDTO;
-import com.talentcard.web.service.IEditTalentService;
-import com.talentcard.web.service.ITalentInfoCertificationService;
-import com.talentcard.web.service.ITalentService;
-import com.talentcard.web.service.IVerifyTalentPropertyService;
+import com.talentcard.web.service.*;
 import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
@@ -25,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -79,14 +78,17 @@ public class EditTalentServiceImpl implements IEditTalentService {
     private UserCardMapper userCardMapper;
     @Autowired
     IVerifyTalentPropertyService iVerifyTalentPropertyService;
+    @Autowired
+    IEditTalentRecordService iEditTalentRecordService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO editBasicInfo(BasicInfoDTO basicInfoDTO) {
+    public ResultVO editBasicInfo(HttpSession httpSession, BasicInfoDTO basicInfoDTO) {
         TalentPO talentPO = talentMapper.selectByOpenId(basicInfoDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO(2500);
         }
+        Long talentId = talentPO.getTalentId();
         talentPO.setPhone(basicInfoDTO.getPhone());
         talentPO.setPolitical(basicInfoDTO.getPolitical());
         talentPO.setIndustry(basicInfoDTO.getIndustry());
@@ -94,6 +96,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
         talentPO.setWorkLocation(basicInfoDTO.getWorkLocation());
         talentPO.setWorkLocationType(basicInfoDTO.getWorkLocationType());
         talentMapper.updateByPrimaryKeySelective(talentPO);
+        //新增EditTalentRecord表 编辑人才记录数据
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.basicInfoContent);
         /**
          * 清除redis缓存
          */
@@ -103,7 +107,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO editEducation(EducationDTO educationDTO) {
+    public ResultVO editEducation(HttpSession httpSession, EducationDTO educationDTO) {
         String openId = educationDTO.getOpenId();
         EducationPO educationPO = educationMapper.selectByPrimaryKey(educationDTO.getEducId());
         if (educationPO == null || educationPO.getEducation() == null) {
@@ -147,10 +151,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
         if (talentPO == null) {
             return new ResultVO(2500);
         }
-        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        Long talentId = talentPO.getTalentId();
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentId);
         if (updateTciResult != 0) {
             return new ResultVO(2663, "更新tci表失败！");
         }
+        //新增EditTalentRecord表 编辑人才记录数据
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.educationContent);
         /**
          * 清除redis缓存
          */
@@ -160,7 +167,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO editProfQuality(ProfQualityDTO profQualityDTO) {
+    public ResultVO editProfQuality(HttpSession httpSession, ProfQualityDTO profQualityDTO) {
         String openId = profQualityDTO.getOpenId();
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         ProfQualityPO profQualityPO = profQualityMapper.selectByPrimaryKey(profQualityDTO.getPqId());
@@ -202,10 +209,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
         if (talentPO == null) {
             return new ResultVO(2500);
         }
-        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        Long talentId = talentPO.getTalentId();
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentId);
         if (updateTciResult != 0) {
             return new ResultVO(2663, "更新tci表失败！");
         }
+        //新增EditTalentRecord表 编辑人才记录数据
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.qualityContent);
         /**
          * 清除redis缓存
          */
@@ -215,7 +225,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO editProfTitle(ProfTitleDTO profTitleDTO) {
+    public ResultVO editProfTitle(HttpSession httpSession, ProfTitleDTO profTitleDTO) {
         String openId = profTitleDTO.getOpenId();
         ProfTitlePO profTitlePO = profTitleMapper.selectByPrimaryKey(profTitleDTO.getPtId());
         if (profTitlePO == null || profTitlePO.getCategory() == null) {
@@ -258,10 +268,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
         if (talentPO == null) {
             return new ResultVO(2500);
         }
-        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        Long talentId = talentPO.getTalentId();
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentId);
         if (updateTciResult != 0) {
             return new ResultVO(2663, "更新tci表失败！");
         }
+        //新增EditTalentRecord表 编辑人才记录数据
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.titleContent);
         /**
          * 清除redis缓存
          */
@@ -271,7 +284,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO editTalentHonour(TalentHonourDTO talentHonourDTO) {
+    public ResultVO editTalentHonour(HttpSession httpSession, TalentHonourDTO talentHonourDTO) {
         String openId = talentHonourDTO.getOpenId();
         TalentHonourPO talentHonourPO = talentHonourMapper.selectByPrimaryKey(talentHonourDTO.getThId());
         if (talentHonourPO == null || talentHonourPO.getHonourId() == null) {
@@ -313,10 +326,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
         if (talentPO == null) {
             return new ResultVO(2500);
         }
-        Integer updateTciResult = iTalentInfoCertificationService.update(talentPO.getTalentId());
+        Long talentId = talentPO.getTalentId();
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentId);
         if (updateTciResult != 0) {
             return new ResultVO(2663, "更新tci表失败！");
         }
+        //新增EditTalentRecord表 编辑人才记录数据
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.honourContent);
         /**
          * 清除redis缓存
          */
@@ -326,15 +342,16 @@ public class EditTalentServiceImpl implements IEditTalentService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO editTalentCategory(String openId, String talentCategory) {
+    public ResultVO editTalentCategory(HttpSession httpSession, String openId, String talentCategory) {
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
         if (talentPO == null) {
             return new ResultVO(2500);
         }
+        Long talentId = talentPO.getTalentId();
         talentPO.setCategory(talentCategory);
         talentMapper.updateByPrimaryKeySelective(talentPO);
         //更新uci表
-        UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentPO.getTalentId());
+        UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentId);
         if (userCurrentInfoPO == null) {
             return new ResultVO(2500);
         }
@@ -344,12 +361,14 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 更新tci表
          */
         TalentCertificationInfoPO talentCertificationInfoPO =
-                talentCertificationInfoMapper.selectByTalentId(talentPO.getTalentId());
+                talentCertificationInfoMapper.selectByTalentId(talentId);
         if (talentCertificationInfoPO == null) {
             return new ResultVO(2500);
         }
         talentCertificationInfoPO.setTalentCategory(talentCategory);
         talentCertificationInfoMapper.updateByPrimaryKeySelective(talentCertificationInfoPO);
+        //新增EditTalentRecord表 编辑人才记录数据
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.talentCategoryContent);
         /**
          * 清除redis缓存
          */
