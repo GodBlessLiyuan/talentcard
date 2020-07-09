@@ -5,15 +5,26 @@ DROP TABLE IF EXISTS t_annex;
 DROP TABLE IF EXISTS t_role_authority;
 DROP TABLE IF EXISTS t_authority;
 DROP TABLE IF EXISTS t_bank;
+DROP TABLE IF EXISTS t_banner;
 DROP TABLE IF EXISTS t_batch_certificate;
 DROP TABLE IF EXISTS t_cert_approval;
+DROP TABLE IF EXISTS t_cert_examine_record;
 DROP TABLE IF EXISTS t_education;
 DROP TABLE IF EXISTS t_prof_quality;
 DROP TABLE IF EXISTS t_prof_title;
 DROP TABLE IF EXISTS t_talent_honour;
 DROP TABLE IF EXISTS t_certification;
+DROP TABLE IF EXISTS t_feedback;
+DROP TABLE IF EXISTS t_insert_cert_approval;
+DROP TABLE IF EXISTS t_insert_education;
+DROP TABLE IF EXISTS t_insert_honour;
+DROP TABLE IF EXISTS t_insert_quality;
+DROP TABLE IF EXISTS t_insert_title;
+DROP TABLE IF EXISTS t_insert_certification;
 DROP TABLE IF EXISTS t_policy_approval;
 DROP TABLE IF EXISTS t_policy_apply;
+DROP TABLE IF EXISTS t_talent_activity_collect;
+DROP TABLE IF EXISTS t_talent_certification_info;
 DROP TABLE IF EXISTS t_user_card;
 DROP TABLE IF EXISTS t_user_current_info;
 DROP TABLE IF EXISTS t_talent;
@@ -34,6 +45,9 @@ DROP TABLE IF EXISTS t_trip_group_authority;
 DROP TABLE IF EXISTS t_scenic;
 DROP TABLE IF EXISTS t_staff;
 DROP TABLE IF EXISTS t_talent_activity_history;
+DROP TABLE IF EXISTS t_talent_card_hold_list;
+DROP TABLE IF EXISTS t_talent_json_record;
+DROP TABLE IF EXISTS t_test_talent_info;
 
 
 
@@ -76,15 +90,33 @@ CREATE TABLE t_bank
 	bank_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	num char(32) NOT NULL,
 	name char(32) NOT NULL,
-	pa_id bigint unsigned NOT NULL,
+	pa_id bigint unsigned,
 	PRIMARY KEY (bank_id),
 	UNIQUE (bank_id)
 );
 
 
+CREATE TABLE t_banner
+(
+	banner_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	name char(255),
+	picture char(255),
+	jump char(255),
+	type tinyint unsigned,
+	extra char(255),
+	create_time datetime,
+	update_time datetime,
+	status tinyint unsigned,
+	-- 1 未删除  2 已删除
+	dr tinyint COMMENT '1 未删除  2 已删除',
+	PRIMARY KEY (banner_id),
+	UNIQUE (banner_id)
+);
+
+
 CREATE TABLE t_batch_certificate
 (
-	bc_id bigint unsigned NOT NULL,
+	bc_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	file_name char(255),
 	-- 1认证中
 	-- 2认证结束
@@ -196,10 +228,30 @@ CREATE TABLE t_cert_approval
 );
 
 
+CREATE TABLE t_cert_examine_record
+(
+	cea_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	talent_id bigint unsigned,
+	cert_id bigint unsigned,
+	name char(16),
+	-- 1：男；2：女
+	sex tinyint COMMENT '1：男；2：女',
+	education int,
+	pt_category int,
+	pq_category int,
+	honour_id bigint unsigned,
+	-- 1通过；2驳回；3待审批
+	result tinyint unsigned COMMENT '1通过；2驳回；3待审批',
+	create_time datetime,
+	PRIMARY KEY (cea_id),
+	UNIQUE (cea_id)
+);
+
+
 CREATE TABLE t_config
 (
 	config_key char(64) NOT NULL,
-	config_value char(255),
+	config_value text,
 	create_time datetime,
 	update_time datetime,
 	PRIMARY KEY (config_key),
@@ -212,8 +264,8 @@ CREATE TABLE t_education
 	educ_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	education int,
 	school char(255),
-	-- 1：是；2：否
-	first_class tinyint COMMENT '1：是；2：否',
+	-- 1双一流；2海外人才；3啥也不是
+	first_class tinyint COMMENT '1双一流；2海外人才；3啥也不是',
 	major char(255),
 	educ_picture char(255),
 	cert_id bigint unsigned NOT NULL,
@@ -238,6 +290,7 @@ CREATE TABLE t_education
 	if_certificate tinyint unsigned COMMENT '1 已认证；
 2 未认证；
 10 本次不认证',
+	graduate_time char(64),
 	PRIMARY KEY (educ_id),
 	UNIQUE (educ_id)
 );
@@ -247,14 +300,21 @@ CREATE TABLE t_farmhouse
 (
 	farmhouse_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	name char(16) NOT NULL,
-	discount decimal (2,1),
+	discount decimal(2,1),
 	avatar char(255),
 	description text,
 	extra text,
 	qr_code char(255),
-	status tinyint,
+	-- 1：上架；2：下架
+	status tinyint COMMENT '1：上架；2：下架',
 	create_time datetime,
-	dr tinyint,
+	update_time datetime,
+	-- 1 未删除  2 已删除
+	dr tinyint COMMENT '1 未删除  2 已删除',
+	subtitle char(64),
+	area int unsigned,
+	location char(128),
+	average_cost decimal,
 	PRIMARY KEY (farmhouse_id),
 	UNIQUE (farmhouse_id),
 	UNIQUE (name)
@@ -298,6 +358,157 @@ CREATE TABLE t_farmhouse_picture
 );
 
 
+CREATE TABLE t_feedback
+(
+	feedback_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	talent_id bigint unsigned,
+	contact char(255),
+	create_time datetime,
+	content varchar(1024),
+	picture char(255),
+	PRIMARY KEY (feedback_id),
+	UNIQUE (feedback_id)
+);
+
+
+CREATE TABLE t_insert_certification
+(
+	insert_cert_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	talent_id bigint unsigned,
+	-- 1认证通过
+	-- 2待审批
+	-- 3驳回
+	-- 10弃用（编辑后）
+	status tinyint unsigned COMMENT '1认证通过
+2待审批
+3驳回
+10弃用（编辑后）',
+	-- 1 学历
+	-- 2 职称
+	-- 3 职业资格
+	-- 4 人才荣誉
+	type tinyint DEFAULT 1 COMMENT '1 学历
+2 职称
+3 职业资格
+4 人才荣誉',
+	cert_info bigint unsigned,
+	create_time datetime,
+	-- 1 未删除  2 已删除
+	dr tinyint COMMENT '1 未删除  2 已删除',
+	PRIMARY KEY (insert_cert_id),
+	UNIQUE (insert_cert_id)
+);
+
+
+CREATE TABLE t_insert_cert_approval
+(
+	ica_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	create_time datetime,
+	-- 1：提交；2：审批
+	type tinyint COMMENT '1：提交；2：审批',
+	user_id bigint unsigned,
+	update_time datetime,
+	-- 1：同意；2：拒绝
+	result tinyint COMMENT '1：同意；2：拒绝',
+	opinion char(255),
+	insert_cert_id bigint unsigned,
+	-- 1 未删除  2 已删除
+	dr tinyint COMMENT '1 未删除  2 已删除',
+	PRIMARY KEY (ica_id),
+	UNIQUE (ica_id)
+);
+
+
+CREATE TABLE t_insert_education
+(
+	insert_educ_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	education int,
+	school char(255),
+	-- 1双一流；2海外人才；3啥也不是
+	first_class tinyint COMMENT '1双一流；2海外人才；3啥也不是',
+	major char(255),
+	educ_picture char(255),
+	open_id char(128) NOT NULL,
+	-- 1认证通过
+	-- 2待审批
+	-- 3驳回
+	status tinyint COMMENT '1认证通过
+2待审批
+3驳回',
+	graduate_time char(64),
+	insert_cert_id bigint unsigned,
+	-- 1 未删除  2 已删除
+	dr tinyint COMMENT '1 未删除  2 已删除',
+	PRIMARY KEY (insert_educ_id),
+	UNIQUE (insert_educ_id)
+);
+
+
+CREATE TABLE t_insert_honour
+(
+	insert_th_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	honour_id bigint unsigned,
+	honour_picture char(255),
+	info char(255),
+	-- 1 认证通过
+	-- 2 待审批
+	-- 3 驳回
+	-- 4 已废弃
+	status tinyint COMMENT '1 认证通过
+2 待审批
+3 驳回
+4 已废弃',
+	insert_cert_id bigint unsigned,
+	open_id char(128),
+	-- 1 未删除  2 已删除
+	dr tinyint COMMENT '1 未删除  2 已删除',
+	PRIMARY KEY (insert_th_id),
+	UNIQUE (insert_th_id)
+);
+
+
+CREATE TABLE t_insert_quality
+(
+	insert_pq_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	category int,
+	picture char(255),
+	info char(255),
+	-- 1认证通过
+	-- 2待审批
+	-- 3驳回
+	status tinyint COMMENT '1认证通过
+2待审批
+3驳回',
+	insert_cert_id bigint unsigned,
+	open_id char(128),
+	-- 1 未删除  2 已删除
+	dr tinyint COMMENT '1 未删除  2 已删除',
+	PRIMARY KEY (insert_pq_id),
+	UNIQUE (insert_pq_id)
+);
+
+
+CREATE TABLE t_insert_title
+(
+	insert_pt_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	category int,
+	info char(255),
+	picture char(255),
+	-- 1认证通过
+	-- 2待审批
+	-- 3驳回
+	status tinyint COMMENT '1认证通过
+2待审批
+3驳回',
+	insert_cert_id bigint unsigned,
+	open_id char(128),
+	-- 1 未删除  2 已删除
+	dr tinyint COMMENT '1 未删除  2 已删除',
+	PRIMARY KEY (insert_pt_id),
+	UNIQUE (insert_pt_id)
+);
+
+
 CREATE TABLE t_policy
 (
 	policy_id bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -309,7 +520,7 @@ CREATE TABLE t_policy
 	educations char(255),
 	titles char(255),
 	qualities char(255),
-	honour_ids varchar(2048),
+	honour_ids char(255),
 	-- 1：需要；2：不需要
 	apply tinyint DEFAULT 2 COMMENT '1：需要；2：不需要',
 	color char(64),
@@ -318,8 +529,11 @@ CREATE TABLE t_policy
 	times int,
 	-- 1：需要；2：不需要；
 	bank tinyint COMMENT '1：需要；2：不需要；',
-	-- 1：需要；2：不需要；
-	annex tinyint COMMENT '1：需要；2：不需要；',
+	-- 1：必填；2：不填；3：选填
+	annex tinyint COMMENT '1：必填；2：不填；3：选填',
+	annex_info char(255),
+	apply_form char(255),
+	funds int,
 	user_id bigint unsigned,
 	create_time datetime,
 	-- 1 未删除  2 已删除
@@ -455,7 +669,7 @@ CREATE TABLE t_role_authority
 CREATE TABLE t_scenic
 (
 	scenic_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	name char(16) NOT NULL,
+	name char(16),
 	rate int,
 	-- 1：年；2：季；3：月
 	unit tinyint COMMENT '1：年；2：季；3：月',
@@ -467,11 +681,15 @@ CREATE TABLE t_scenic
 	-- 1：上架；2：下架
 	status tinyint COMMENT '1：上架；2：下架',
 	create_time datetime,
+	update_time datetime,
 	-- 1 未删除  2 已删除
 	dr tinyint COMMENT '1 未删除  2 已删除',
+	subtitle char(64),
+	starlevel tinyint unsigned,
+	area int unsigned,
+	location char(128),
 	PRIMARY KEY (scenic_id),
-	UNIQUE (scenic_id),
-	UNIQUE (name)
+	UNIQUE (scenic_id)
 );
 
 
@@ -531,6 +749,7 @@ CREATE TABLE t_talent
 (
 	talent_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	open_id char(128) NOT NULL,
+	union_id char(32),
 	name char(64),
 	-- 1：男；2：女
 	sex tinyint COMMENT '1：男；2：女',
@@ -560,9 +779,27 @@ CREATE TABLE t_talent
 	-- 2删除
 	dr tinyint unsigned COMMENT '1正在使用
 2删除',
+	talent_source int unsigned,
 	PRIMARY KEY (talent_id),
 	UNIQUE (talent_id),
 	UNIQUE (open_id)
+);
+
+
+CREATE TABLE t_talent_activity_collect
+(
+	tac_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	talent_id bigint unsigned,
+	-- 1 旅游
+	-- 2 农家乐
+	activity_first_content_id bigint unsigned COMMENT '1 旅游
+2 农家乐',
+	activity_second_content_id bigint unsigned,
+	create_time datetime,
+	-- 1收藏；2未收藏
+	status tinyint unsigned COMMENT '1收藏；2未收藏',
+	PRIMARY KEY (tac_id),
+	UNIQUE (tac_id)
 );
 
 
@@ -579,11 +816,38 @@ CREATE TABLE t_talent_activity_history
 	activity_second_content_name char(32),
 	ip_address char(255),
 	create_time datetime,
-	status tinyint unsigned,
+	-- 1待使用
+	-- 2已使用
+	status tinyint unsigned COMMENT '1待使用
+2已使用',
 	-- 1 未删除  2 已删除
 	dr tinyint COMMENT '1 未删除  2 已删除',
 	PRIMARY KEY (tah_id),
 	UNIQUE (tah_id)
+);
+
+
+CREATE TABLE t_talent_card_hold_list
+(
+	tchl_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	id_card char(128),
+	num bigint unsigned,
+	PRIMARY KEY (tchl_id),
+	UNIQUE (tchl_id)
+);
+
+
+CREATE TABLE t_talent_certification_info
+(
+	tci_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	talent_id bigint unsigned,
+	education varchar(1024),
+	pt_category varchar(1024),
+	pq_category varchar(1024),
+	talent_category char(255),
+	honour_id varchar(1024),
+	PRIMARY KEY (tci_id),
+	UNIQUE (tci_id)
 );
 
 
@@ -593,10 +857,13 @@ CREATE TABLE t_talent_farmhouse
 	open_id char(128) NOT NULL,
 	farmhouse_id bigint unsigned NOT NULL,
 	staff_id bigint unsigned,
-	discount decimal (2,1),
+	discount decimal(2,1),
 	effective_time datetime,
 	update_time datetime,
-	status tinyint unsigned,
+	-- 1待使用
+	-- 2已使用
+	status tinyint unsigned COMMENT '1待使用
+2已使用',
 	-- 1 未删除  2 已删除
 	dr tinyint COMMENT '1 未删除  2 已删除',
 	PRIMARY KEY (tt_id),
@@ -637,6 +904,17 @@ CREATE TABLE t_talent_honour
 );
 
 
+CREATE TABLE t_talent_json_record
+(
+	tti_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	info varchar(10000),
+	open_id char(128),
+	create_time datetime,
+	PRIMARY KEY (tti_id),
+	UNIQUE (tti_id)
+);
+
+
 CREATE TABLE t_talent_trip
 (
 	tt_id bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -646,11 +924,27 @@ CREATE TABLE t_talent_trip
 	create_time datetime,
 	effective_time datetime NOT NULL,
 	update_time datetime,
-	status tinyint unsigned,
+	-- 1待使用
+	-- 2已使用
+	status tinyint unsigned COMMENT '1待使用
+2已使用',
 	-- 1 未删除  2 已删除
 	dr tinyint COMMENT '1 未删除  2 已删除',
+	usage_period char(128),
+	effective_time_start datetime,
 	PRIMARY KEY (tt_id),
 	UNIQUE (tt_id)
+);
+
+
+CREATE TABLE t_test_talent_info
+(
+	tti_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	open_id char(255),
+	primary_card_num char(64),
+	senior_card_num char(64),
+	PRIMARY KEY (tti_id),
+	UNIQUE (tti_id)
 );
 
 
@@ -710,8 +1004,8 @@ CREATE TABLE t_user_current_info
 	political tinyint,
 	education int,
 	school char(255),
-	-- 1：是；2：否
-	first_class tinyint COMMENT '1：是；2：否',
+	-- 1双一流；2海外人才；3啥也不是
+	first_class tinyint COMMENT '1双一流；2海外人才；3啥也不是',
 	major char(255),
 	pt_category int,
 	pt_info char(255),
@@ -720,6 +1014,7 @@ CREATE TABLE t_user_current_info
 	talent_category char(255),
 	honour_id bigint unsigned,
 	th_info char(255),
+	graduate_time char(64),
 	PRIMARY KEY (uci_id),
 	UNIQUE (uci_id)
 );
@@ -761,6 +1056,14 @@ ALTER TABLE t_user_card
 
 
 ALTER TABLE t_cert_approval
+	ADD FOREIGN KEY (cert_id)
+	REFERENCES t_certification (cert_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_cert_examine_record
 	ADD FOREIGN KEY (cert_id)
 	REFERENCES t_certification (cert_id)
 	ON UPDATE RESTRICT
@@ -827,6 +1130,46 @@ ALTER TABLE t_farmhouse_picture
 ALTER TABLE t_talent_farmhouse
 	ADD FOREIGN KEY (farmhouse_id)
 	REFERENCES t_farmhouse (farmhouse_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_insert_cert_approval
+	ADD FOREIGN KEY (insert_cert_id)
+	REFERENCES t_insert_certification (insert_cert_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_insert_education
+	ADD FOREIGN KEY (insert_cert_id)
+	REFERENCES t_insert_certification (insert_cert_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_insert_honour
+	ADD FOREIGN KEY (insert_cert_id)
+	REFERENCES t_insert_certification (insert_cert_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_insert_quality
+	ADD FOREIGN KEY (insert_cert_id)
+	REFERENCES t_insert_certification (insert_cert_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_insert_title
+	ADD FOREIGN KEY (insert_cert_id)
+	REFERENCES t_insert_certification (insert_cert_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
@@ -936,7 +1279,31 @@ ALTER TABLE t_certification
 ;
 
 
+ALTER TABLE t_cert_examine_record
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE t_education
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_feedback
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_insert_certification
 	ADD FOREIGN KEY (talent_id)
 	REFERENCES t_talent (talent_id)
 	ON UPDATE RESTRICT
@@ -961,6 +1328,22 @@ ALTER TABLE t_prof_quality
 
 
 ALTER TABLE t_prof_title
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_talent_activity_collect
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_talent_certification_info
 	ADD FOREIGN KEY (talent_id)
 	REFERENCES t_talent (talent_id)
 	ON UPDATE RESTRICT
