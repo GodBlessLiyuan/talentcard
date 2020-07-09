@@ -22,4 +22,5 @@ public class InsertCertApprovalBO {
     private String cTitle;
     private String cInitialWord;
     private String category;
+    private String name;
 }
