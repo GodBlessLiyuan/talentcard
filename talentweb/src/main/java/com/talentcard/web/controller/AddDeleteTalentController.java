@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @author ChenXU
  * @version 1.0
@@ -29,8 +31,8 @@ public class AddDeleteTalentController {
      * @return
      */
     @RequestMapping("addEducation")
-    public ResultVO addEducation(@RequestBody EducationDTO educationDTO) {
-        return iAddDeleteTalentService.addEducation(educationDTO);
+    public ResultVO addEducation(HttpSession httpSession, @RequestBody EducationDTO educationDTO) {
+        return iAddDeleteTalentService.addEducation(httpSession, educationDTO);
     }
 
     /**
@@ -40,8 +42,8 @@ public class AddDeleteTalentController {
      * @return
      */
     @RequestMapping("addProfQuality")
-    public ResultVO addProfQuality(@RequestBody ProfQualityDTO profQualityDTO) {
-        return iAddDeleteTalentService.addProfQuality(profQualityDTO);
+    public ResultVO addProfQuality(HttpSession httpSession, @RequestBody ProfQualityDTO profQualityDTO) {
+        return iAddDeleteTalentService.addProfQuality(httpSession, profQualityDTO);
     }
 
     /**
@@ -51,8 +53,8 @@ public class AddDeleteTalentController {
      * @return
      */
     @RequestMapping("addProfTitle")
-    public ResultVO addProfTitle(@RequestBody ProfTitleDTO profTitleDTO) {
-        return iAddDeleteTalentService.addProfTitle(profTitleDTO);
+    public ResultVO addProfTitle(HttpSession httpSession, @RequestBody ProfTitleDTO profTitleDTO) {
+        return iAddDeleteTalentService.addProfTitle(httpSession, profTitleDTO);
     }
 
     /**
@@ -62,55 +64,63 @@ public class AddDeleteTalentController {
      * @return
      */
     @RequestMapping("addTalentHonour")
-    public ResultVO addTalentHonour(@RequestBody TalentHonourDTO talentHonourDTO) {
-        return iAddDeleteTalentService.addTalentHonour(talentHonourDTO);
+    public ResultVO addTalentHonour(HttpSession httpSession, @RequestBody TalentHonourDTO talentHonourDTO) {
+        return iAddDeleteTalentService.addTalentHonour(httpSession, talentHonourDTO);
     }
 
     /**
      * 删除学历
+     *
      * @param openId
      * @param educId
      * @return
      */
     @RequestMapping("deleteEducation")
-    public ResultVO deleteEducation(@RequestParam(value = "openId") String openId,
+    public ResultVO deleteEducation(HttpSession httpSession,
+                                    @RequestParam(value = "openId") String openId,
                                     @RequestParam(value = "educId") Long educId) {
-        return iAddDeleteTalentService.deleteEducation(openId, educId);
+        return iAddDeleteTalentService.deleteEducation(httpSession, openId, educId);
     }
 
     /**
      * 删除职业资格
+     *
      * @param openId
      * @param pqId
      * @return
      */
     @RequestMapping("deleteProfQuality")
-    public ResultVO deleteProfQuality(@RequestParam(value = "openId") String openId,
+    public ResultVO deleteProfQuality(HttpSession httpSession,
+                                      @RequestParam(value = "openId") String openId,
                                       @RequestParam(value = "pqId") Long pqId) {
-        return iAddDeleteTalentService.deleteProfQuality(openId, pqId);
+        return iAddDeleteTalentService.deleteProfQuality(httpSession, openId, pqId);
     }
 
     /**
      * 删除职称
+     *
      * @param openId
      * @param ptId
      * @return
      */
     @RequestMapping("deleteProfTitle")
-    public ResultVO deleteProfTitle(@RequestParam(value = "openId") String openId,
+    public ResultVO deleteProfTitle(HttpSession httpSession,
+                                    @RequestParam(value = "openId") String openId,
                                     @RequestParam(value = "ptId") Long ptId) {
-        return iAddDeleteTalentService.deleteProfTitle(openId, ptId);
+        return iAddDeleteTalentService.deleteProfTitle(httpSession, openId, ptId);
     }
 
     /**
      * 删除人才荣誉
+     *
      * @param openId
      * @param thId
      * @return
      */
     @RequestMapping("deleteTalentHonour")
-    public ResultVO deleteTalentHonour(@RequestParam(value = "openId") String openId,
+    public ResultVO deleteTalentHonour(HttpSession httpSession,
+                                       @RequestParam(value = "openId") String openId,
                                        @RequestParam(value = "thId") Long thId) {
-        return iAddDeleteTalentService.deleteTalentHonour(openId, thId);
+        return iAddDeleteTalentService.deleteTalentHonour(httpSession, openId, thId);
     }
 }

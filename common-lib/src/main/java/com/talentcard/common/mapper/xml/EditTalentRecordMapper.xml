@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.EditTalentRecordMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.EditTalentRecordPO">
+    <id column="etc_id" jdbcType="BIGINT" property="etcId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="operation_type" jdbcType="TINYINT" property="operationType" />
+    <result column="operation_content" jdbcType="TINYINT" property="operationContent" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="comment" jdbcType="CHAR" property="comment" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    etc_id, talent_id, user_id, operation_type, operation_content, create_time, `comment`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_edit_talent_record
+    where etc_id = #{etcId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_edit_talent_record
+    where etc_id = #{etcId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.EditTalentRecordPO">
+    insert into t_edit_talent_record (etc_id, talent_id, user_id, 
+      operation_type, operation_content, create_time, 
+      `comment`)
+    values (#{etcId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{operationType,jdbcType=TINYINT}, #{operationContent,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{comment,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EditTalentRecordPO">
+    insert into t_edit_talent_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="etcId != null">
+        etc_id,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="operationType != null">
+        operation_type,
+      </if>
+      <if test="operationContent != null">
+        operation_content,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="comment != null">
+        `comment`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="etcId != null">
+        #{etcId,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="operationType != null">
+        #{operationType,jdbcType=TINYINT},
+      </if>
+      <if test="operationContent != null">
+        #{operationContent,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.EditTalentRecordPO">
+    update t_edit_talent_record
+    <set>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="operationType != null">
+        operation_type = #{operationType,jdbcType=TINYINT},
+      </if>
+      <if test="operationContent != null">
+        operation_content = #{operationContent,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comment != null">
+        `comment` = #{comment,jdbcType=CHAR},
+      </if>
+    </set>
+    where etc_id = #{etcId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.EditTalentRecordPO">
+    update t_edit_talent_record
+    set talent_id = #{talentId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      operation_type = #{operationType,jdbcType=TINYINT},
+      operation_content = #{operationContent,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `comment` = #{comment,jdbcType=CHAR}
+    where etc_id = #{etcId,jdbcType=BIGINT}
+  </update>
+</mapper>

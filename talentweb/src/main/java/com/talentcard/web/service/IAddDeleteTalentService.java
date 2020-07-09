@@ -3,6 +3,8 @@ package com.talentcard.web.service;
 import com.talentcard.common.dto.*;
 import com.talentcard.common.vo.ResultVO;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @author ChenXU
  * @version 1.0
@@ -16,55 +18,59 @@ public interface IAddDeleteTalentService {
      * @param educationDTO
      * @return
      */
-    ResultVO addEducation(EducationDTO educationDTO);
+    ResultVO addEducation(HttpSession httpSession, EducationDTO educationDTO);
 
 
     /**
      * 新增
      */
-    ResultVO addProfQuality(ProfQualityDTO profQualityDTO);
+    ResultVO addProfQuality(HttpSession httpSession, ProfQualityDTO profQualityDTO);
 
 
     /**
      * 新增
      */
-    ResultVO addProfTitle(ProfTitleDTO profTitleDTO);
+    ResultVO addProfTitle(HttpSession httpSession, ProfTitleDTO profTitleDTO);
 
     /**
      * 新增
      */
-    ResultVO addTalentHonour(TalentHonourDTO talentHonourDTO);
+    ResultVO addTalentHonour(HttpSession httpSession, TalentHonourDTO talentHonourDTO);
 
     /**
      * 删除
+     *
      * @param openId
      * @param educId
      * @return
      */
-    ResultVO deleteEducation(String openId, Long educId);
+    ResultVO deleteEducation(HttpSession httpSession, String openId, Long educId);
 
 
     /**
      * 删除
+     *
      * @param openId
      * @param pqId
      * @return
      */
-    ResultVO deleteProfQuality(String openId, Long pqId);
+    ResultVO deleteProfQuality(HttpSession httpSession, String openId, Long pqId);
 
     /**
      * 删除
+     *
      * @param openId
      * @param ptId
      * @return
      */
-    ResultVO deleteProfTitle(String openId, Long ptId);
+    ResultVO deleteProfTitle(HttpSession httpSession, String openId, Long ptId);
 
     /**
      * 删除
+     *
      * @param openId
      * @param thId
      * @return
      */
-    ResultVO deleteTalentHonour(String openId, Long thId);
+    ResultVO deleteTalentHonour(HttpSession httpSession, String openId, Long thId);
 }
