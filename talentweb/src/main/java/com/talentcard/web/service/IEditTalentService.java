@@ -4,6 +4,7 @@ import com.talentcard.common.dto.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.EditTalentPolicyDTO;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public interface IEditTalentService {
      * @param basicInfoDTO
      * @return
      */
-    ResultVO editBasicInfo(BasicInfoDTO basicInfoDTO);
+    ResultVO editBasicInfo(HttpSession httpSession, BasicInfoDTO basicInfoDTO);
 
     /**
      * 新增/编辑学历
@@ -27,29 +28,29 @@ public interface IEditTalentService {
      * @param educationDTO
      * @return
      */
-    ResultVO editEducation(EducationDTO educationDTO);
+    ResultVO editEducation(HttpSession httpSession, EducationDTO educationDTO);
 
 
     /**
      * 新增/编辑职称
      */
-    ResultVO editProfQuality(ProfQualityDTO profQualityDTO);
+    ResultVO editProfQuality(HttpSession httpSession, ProfQualityDTO profQualityDTO);
 
 
     /**
      * 新增/编辑职业资格
      */
-    ResultVO editProfTitle(ProfTitleDTO profTitleDTO);
+    ResultVO editProfTitle(HttpSession httpSession, ProfTitleDTO profTitleDTO);
 
     /**
      * 新增/编辑人才荣誉
      */
-    ResultVO editTalentHonour(TalentHonourDTO talentHonourDTO);
+    ResultVO editTalentHonour(HttpSession httpSession, TalentHonourDTO talentHonourDTO);
 
     /**
      * 新增/编辑人才荣誉
      */
-    ResultVO editTalentCategory(String openId, String talentCategory);
+    ResultVO editTalentCategory(HttpSession httpSession, String openId, String talentCategory);
 
     /**
      * 政策查询
