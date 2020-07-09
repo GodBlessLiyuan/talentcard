@@ -74,6 +74,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     TalentJsonRecordMapper talentJsonRecordMapper;
     @Autowired
     InsertCertificationMapper insertCertificationMapper;
+    @Autowired
+    CertApprovalPassRecordMapper certApprovalPassRecordMapper;
 
     /**
      * 审批result的值含义
@@ -425,6 +427,21 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
              * 清除redis缓存
              */
             talentService.clearRedisCache(openId);
+
+            /**
+             * 审批通过后，让talentBO存入t_cert_approval_pass_record里
+             */
+            TalentBO talentBO = talentMapper.certApprovalDetail(certId);
+            String talentBoJson = "";
+            if (talentBO != null) {
+                talentBoJson = JSONObject.toJSONString(talentBO);
+            }
+            CertApprovalPassRecordPO certApprovalPassRecordPO = new CertApprovalPassRecordPO();
+            certApprovalPassRecordPO.setCertId(certId);
+            certApprovalPassRecordPO.setCreateTime(new Date());
+            certApprovalPassRecordPO.setTalentId(talentId);
+            certApprovalPassRecordPO.setTalentBoJson(talentBoJson);
+            certApprovalPassRecordMapper.insertSelective(certApprovalPassRecordPO);
         }
 
         /**
@@ -485,6 +502,14 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         TalentBO talentBO = talentMapper.certApprovalDetail(certId);
         if (talentBO == null) {
             return new ResultVO(2500, "查无此人");
+        }
+        //c表状态为1，代表这次为审批通过，则从record表取数据
+        if (talentBO.getCertificationStatus().equals(1)) {
+            CertApprovalPassRecordPO certApprovalPassRecordPO = certApprovalPassRecordMapper.selectByCertId(certId);
+            if (certApprovalPassRecordPO == null) {
+                return new ResultVO(2500, "查无此人");
+            }
+            talentBO = JSONObject.parseObject(certApprovalPassRecordPO.getTalentBoJson(), TalentBO.class);
         }
         List<CertApprovalBO> certApprovalBOList = certApprovalMapper.queryApprovalById(talentId, certId);
         ApprovalTalentVO approvalTalentVO = ApprovalTalentVO.convert(talentBO, certApprovalBOList);

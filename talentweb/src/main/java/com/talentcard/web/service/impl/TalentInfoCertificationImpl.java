@@ -51,7 +51,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             String educationString = "";
             List<EducationPO> educationPOList = talentBO.getEducationPOList();
             for (int i = 0; i < educationPOList.size() - 1; i++) {
-                educationString = educationPOList.get(i).getEducation() + ",";
+                educationString = educationString + educationPOList.get(i).getEducation() + ",";
             }
             educationString = educationString + educationPOList.get(educationPOList.size() - 1).getEducation();
             talentCertificationInfoPO.setEducation(educationString);
@@ -63,7 +63,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             String titleString = "";
             List<ProfTitlePO> profTitlePOList = talentBO.getProfTitlePOList();
             for (int i = 0; i < profTitlePOList.size() - 1; i++) {
-                titleString = profTitlePOList.get(i).getCategory() + ",";
+                titleString = titleString + profTitlePOList.get(i).getCategory() + ",";
             }
             titleString = titleString + profTitlePOList.get(profTitlePOList.size() - 1).getCategory();
             talentCertificationInfoPO.setPtCategory(titleString);
@@ -75,7 +75,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             String qualityString = "";
             List<ProfQualityPO> profQualityPOList = talentBO.getProfQualityPOList();
             for (int i = 0; i < profQualityPOList.size() - 1; i++) {
-                qualityString = profQualityPOList.get(i).getCategory() + ",";
+                qualityString = qualityString + profQualityPOList.get(i).getCategory() + ",";
             }
             qualityString = qualityString + profQualityPOList.get(profQualityPOList.size() - 1).getCategory();
             talentCertificationInfoPO.setPqCategory(qualityString);
@@ -87,7 +87,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             String honourString = "";
             List<TalentHonourPO> talentHonourPOList = talentBO.getTalentHonourPOList();
             for (int i = 0; i < talentHonourPOList.size() - 1; i++) {
-                honourString = talentHonourPOList.get(i).getHonourId() + ",";
+                honourString = honourString + talentHonourPOList.get(i).getHonourId() + ",";
             }
             honourString = honourString + talentHonourPOList.get(talentHonourPOList.size() - 1).getHonourId();
             talentCertificationInfoPO.setHonourId(honourString);

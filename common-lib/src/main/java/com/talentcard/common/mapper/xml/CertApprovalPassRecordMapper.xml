@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.CertApprovalPassRecordMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.CertApprovalPassRecordPO">
+    <id column="capr_id" jdbcType="BIGINT" property="caprId" />
+    <result column="talent_bo_json" jdbcType="VARCHAR" property="talentBoJson" />
+    <result column="cert_id" jdbcType="BIGINT" property="certId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    capr_id, talent_bo_json, cert_id, create_time, talent_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_cert_approval_pass_record
+    where capr_id = #{caprId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_cert_approval_pass_record
+    where capr_id = #{caprId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.CertApprovalPassRecordPO">
+    insert into t_cert_approval_pass_record (capr_id, talent_bo_json, cert_id, 
+      create_time, talent_id)
+    values (#{caprId,jdbcType=BIGINT}, #{talentBoJson,jdbcType=VARCHAR}, #{certId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{talentId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CertApprovalPassRecordPO">
+    insert into t_cert_approval_pass_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="caprId != null">
+        capr_id,
+      </if>
+      <if test="talentBoJson != null">
+        talent_bo_json,
+      </if>
+      <if test="certId != null">
+        cert_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="caprId != null">
+        #{caprId,jdbcType=BIGINT},
+      </if>
+      <if test="talentBoJson != null">
+        #{talentBoJson,jdbcType=VARCHAR},
+      </if>
+      <if test="certId != null">
+        #{certId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.CertApprovalPassRecordPO">
+    update t_cert_approval_pass_record
+    <set>
+      <if test="talentBoJson != null">
+        talent_bo_json = #{talentBoJson,jdbcType=VARCHAR},
+      </if>
+      <if test="certId != null">
+        cert_id = #{certId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where capr_id = #{caprId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.CertApprovalPassRecordPO">
+    update t_cert_approval_pass_record
+    set talent_bo_json = #{talentBoJson,jdbcType=VARCHAR},
+      cert_id = #{certId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      talent_id = #{talentId,jdbcType=BIGINT}
+    where capr_id = #{caprId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_cert_approval_pass_record
+    where cert_id = #{certId,jdbcType=BIGINT}
+  </select>
+</mapper>
