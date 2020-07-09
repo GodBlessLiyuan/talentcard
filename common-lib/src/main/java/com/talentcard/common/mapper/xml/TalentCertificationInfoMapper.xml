@@ -147,12 +147,12 @@
     </if>
     <if test="name != null and name !=''">and t.`name` like '%' #{name} '%'</if>
     <if test="sex != null and sex !=0">and t.sex = #{sex}</if>
-    <if test="educ != null and educ !=0">and tci.education like '%' #{educ} '%'</if>
-    <if test="title != null and title !=0">and tci.pt_category like '%' #{title} '%'</if>
-    <if test="quality != null and quality !=0">and tci.pq_category like '%' #{quality} '%'</if>
+    <if test="educ != null and educ !=''">and tci.education like '%' #{educ} '%'</if>
+    <if test="title != null and title !=''">and tci.pt_category like '%' #{title} '%'</if>
+    <if test="quality != null and quality !=''">and tci.pq_category like '%' #{quality} '%'</if>
     <if test="card != null and card !=''">and (uc.name like '%' #{card} '%' or uc.num like '%' #{card} '%')</if>
-    <if test="category != null and category!=''">and tci.talent_category like '%' #{category} '%'</if>
-    <if test="honour != null and honour != 0">and tci.honour_id like '%' #{honour} '%'</if>
+    <if test="category != null and category !=''">and tci.talent_category like '%' #{category} '%'</if>
+    <if test="honour != null and honour !=''">and tci.honour_id like '%' #{honour} '%'</if>
     order by t.create_time desc
   </select>
 </mapper>
