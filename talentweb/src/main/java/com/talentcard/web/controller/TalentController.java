@@ -109,7 +109,7 @@ public class TalentController {
                               @RequestParam(value = "end", defaultValue = "") String end,
                               @RequestParam(value = "name", defaultValue = "") String name,
                               @RequestParam(value = "sex", defaultValue = "") Byte sex,
-                              @RequestParam(value = "educ", defaultValue = "")  Integer educ,
+                              @RequestParam(value = "educ", defaultValue = "") Integer educ,
                               @RequestParam(value = "title", defaultValue = "") Integer title,
                               @RequestParam(value = "quality", defaultValue = "") Integer quality,
                               @RequestParam(value = "card", defaultValue = "") String card,
@@ -126,12 +126,28 @@ public class TalentController {
         reqMap.put("end", end);
         reqMap.put("name", name.replaceAll("%", "\\\\%"));
         reqMap.put("sex", sex);
-        reqMap.put("educ", educ);
-        reqMap.put("title", title);
-        reqMap.put("quality", quality);
+        if (educ != null) {
+            reqMap.put("educ", educ.toString());
+        } else {
+            reqMap.put("educ", educ);
+        }
+        if (title != null) {
+            reqMap.put("title", title.toString());
+        } else {
+            reqMap.put("title", title);
+        }
+        if (quality != null) {
+            reqMap.put("quality", quality.toString());
+        } else {
+            reqMap.put("quality", quality);
+        }
+        if (honour != null) {
+            reqMap.put("honour", honour.toString());
+        } else {
+            reqMap.put("honour", honour);
+        }
         reqMap.put("card", card);
         reqMap.put("category", category);
-        reqMap.put("honour", honour);
 
         return iTalentService.queryCert(pageNum, pageSize, reqMap);
     }
@@ -199,9 +215,8 @@ public class TalentController {
     }
 
 
-
     @RequestMapping("sendMessage")
-    public ResultVO sendMessage(@RequestParam(value = "openId", defaultValue = "")  String openId){
+    public ResultVO sendMessage(@RequestParam(value = "openId", defaultValue = "") String openId) {
         return this.iTalentService.sendMessage(openId);
     }
 }
