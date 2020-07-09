@@ -29,7 +29,7 @@ public class EditTalentRecordServiceImpl implements IEditTalentRecordService {
         editTalentRecordPO.setCreateTime(new Date());
         editTalentRecordPO.setTalentId(talentId);
         editTalentRecordPO.setUserId((Long) httpSession.getAttribute("userId"));
-        editTalentRecordPO.setComment("暂时没有信息，以后会有的！");
+        editTalentRecordPO.setComment("");
         Integer insertResult = editTalentRecordMapper.insertSelective(editTalentRecordPO);
         return insertResult;
     }
