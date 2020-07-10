@@ -43,20 +43,55 @@ public class TalentControllerTest extends BaseTest{
 
     @Test
     public void findStatus() throws Exception {
-        //验证游客身份
-        String openId = "fasdjflsdjf";
-        MvcResult actions = mockMvc.perform(MockMvcRequestBuilders.post("/talent/findStatus").param("openId",openId)).
-                andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
-        ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(),ResultVO.class);
-        assertNotNull(resultVO);
-        assertEquals(Integer.valueOf(1000),resultVO.getStatus());
-        assertNotNull(resultVO.getData());
-        assertEquals("000000000",resultVO.getData().getString("code"));
+        {
+            //验证游客身份
+            String openId = "fasdjflsdjf";
+            MvcResult actions = mockMvc.perform(MockMvcRequestBuilders.post("/talent/findStatus").param("openId",openId)).
+                    andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
+            ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(),ResultVO.class);
+            assertNotNull(resultVO);
+            assertEquals(Integer.valueOf(1000),resultVO.getStatus());
+            assertNotNull(resultVO.getData());
+            assertEquals("000000000",resultVO.getData().getString("code"));
+        }
 
+        {
+            //领取高级卡
+            String openId = "oQetQ1ULYaj1Cg5UwNGbQ2hEGIQQ";
+            MvcResult actions = mockMvc.perform(MockMvcRequestBuilders.post("/talent/findStatus").param("openId",openId)).
+                    andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
+            ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(),ResultVO.class);
+            assertNotNull(resultVO);
+            assertEquals(Integer.valueOf(1000),resultVO.getStatus());
+            assertNotNull(resultVO.getData());
+            assertEquals("C010000001",resultVO.getData().getString("code"));
+            //注册过
+            assertEquals(Integer.valueOf(1),resultVO.getData().getInteger("status"));
+            //不用换卡
+            assertEquals(Integer.valueOf(2),resultVO.getData().getInteger("ifChangeCard"));
+            //未认证
+            assertEquals(Integer.valueOf(1),resultVO.getData().getInteger("ifCertificate"));
+        }
+        {
+            //验证注册未注册未领取卡的用户
+            String openId = "oQetQ1SMJgI2-lfQ7Yvm6r2KjOqY";
+            MvcResult actions = mockMvc.perform(MockMvcRequestBuilders.post("/talent/findStatus").param("openId",openId)).
+                    andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
+            ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(),ResultVO.class);
+            assertNotNull(resultVO);
+            assertEquals(Integer.valueOf(1000),resultVO.getStatus());
+            assertNotNull(resultVO.getData());
+            assertEquals("010000002",resultVO.getData().getString("code"));
+            //注册过
+            assertEquals(Integer.valueOf(1),resultVO.getData().getInteger("status"));
+            //不用换卡
+            assertEquals(Integer.valueOf(2),resultVO.getData().getInteger("ifChangeCard"));
+            //未认证
+            assertEquals(Integer.valueOf(2),resultVO.getData().getInteger("ifCertificate"));
+            //未认证中
+            assertEquals(Integer.valueOf(2),resultVO.getData().getInteger("ifInAudit"));
+        }
 
-        //验证注册未注册未领取卡的用户
-
-        //验证注册领取基础卡用户
 
     }
 
