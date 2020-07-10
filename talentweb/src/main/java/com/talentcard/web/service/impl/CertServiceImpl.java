@@ -31,9 +31,11 @@ public class CertServiceImpl implements ICertService {
         Page<UserRoleBO> page = PageHelper.startPage(pageNum, pageSize);
         // 根据开始结束时间，姓名，性别，学历，职称，职业资格，状态 检索
         List<TalentCertStatusBO> bos = certificationMapper.queryAllCert(map);
-        for (TalentCertStatusBO talentCertStatusBO : bos) {
-            if (talentCertStatusBO.getResult() == null) {
-                talentCertStatusBO.setResult((byte) 3);
+        if (bos != null) {
+            for (TalentCertStatusBO talentCertStatusBO : bos) {
+                if (talentCertStatusBO.getResult() == null) {
+                    talentCertStatusBO.setResult((byte) 3);
+                }
             }
         }
         return new ResultVO(1000, new PageInfoVO<>(page.getTotal(), bos));

@@ -70,7 +70,6 @@ public class TalentServiceImpl implements ITalentService {
     private TalentCardHoldListMapper talentCardHoldListMapper;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public ResultVO<TalentPO> findStatus(String openId) {
 
         /**

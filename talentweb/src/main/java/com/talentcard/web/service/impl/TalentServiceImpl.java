@@ -467,7 +467,7 @@ public class TalentServiceImpl implements ITalentService {
         //certApproval表
         CertApprovalPO certApprovalPO = new CertApprovalPO();
         certApprovalPO.setType((byte) 2);
-        certApprovalPO.setCertId(cardId);
+        certApprovalPO.setCertId(certificationId);
         certApprovalPO.setCreateTime(new Date());
         certApprovalPO.setCardId(cardId);
         certApprovalPO.setUpdateTime(new Date());
@@ -659,5 +659,12 @@ public class TalentServiceImpl implements ITalentService {
         Page<TalentBO> page = PageHelper.startPage(pageNum, pageSize);
         List<BatchCertificatePO> batchCertificatePOList = batchCertificateMapper.findBatchCertificate(hashMap);
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), batchCertificatePOList));
+    }
+
+    @Override
+    public ResultVO sendMessage(String openId){
+        TalentPO talentPO = this.talentMapper.selectByOpenId(openId);
+        this.sendMessage(talentPO);
+        return new ResultVO(1000);
     }
 }
