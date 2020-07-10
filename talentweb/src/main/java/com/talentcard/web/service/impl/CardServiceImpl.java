@@ -139,6 +139,7 @@ public class CardServiceImpl implements ICardService {
         cardPO.setCreatePerson(createPerson);
         cardPO.setUpdatePerson(createPerson);
         cardPO.setUpdateTime(new Date());
+        cardPO.setTriptimes(tripTimes);
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
     }

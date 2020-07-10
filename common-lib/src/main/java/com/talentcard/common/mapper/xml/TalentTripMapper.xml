@@ -178,7 +178,10 @@
     select
     count(tt_id)
     from t_talent_trip t
-    where scenic_id = #{activitySecondContentId,jdbcType=BIGINT}
+    where
+    <if test="activitySecondContentId != null and activitySecondContentId != ''">
+    scenic_id = #{activitySecondContentId,jdbcType=BIGINT}
+    </if>
     and open_id = #{openId,jdbcType=CHAR}
     and `status` = #{status,jdbcType=TINYINT}
     and <![CDATA[ create_time >= #{startTime}]]>

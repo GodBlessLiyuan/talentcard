@@ -3,10 +3,7 @@ package com.talentcard.front.service.impl;
 import com.talentcard.common.bo.ScenicBO;
 import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.*;
-import com.talentcard.common.pojo.ScenicPO;
-import com.talentcard.common.pojo.TalentPO;
-import com.talentcard.common.pojo.TalentTripPO;
-import com.talentcard.common.pojo.TripGroupAuthorityPO;
+import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.StringToObjUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
@@ -54,6 +51,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
     private TalentActivityCollectMapper talentActivityCollectMapper;
     @Autowired
     private ITalentService iTalentService;
+    @Autowired
+    private CardMapper cardMapper;
 
     @Override
     public ResultVO findSecondContent(String openId, String name, Byte starLevel, Byte area, Byte order) {
@@ -122,6 +121,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
         scenicVOList = setGetTimes(openId, scenicVOList);
         //拼结果
         HashMap<String, Object> hashMap = new HashMap<>(2);
+//        Long benefitNum = ActivityResidueNumUtil.getResidueNum();
         Long benefitNum = ActivityResidueNumUtil.getResidueNum();
         hashMap.put("scenicList", scenicVOList);
         hashMap.put("benefitNum", benefitNum);
@@ -226,16 +226,28 @@ public class TalentTripServiceImpl implements ITalentTripService {
         if (scenicPO.getStatus() == 2) {
             return new ResultVO(2511, "该景区已经下架");
         }
-        Byte unit = scenicPO.getUnit();
-        Integer times = scenicPO.getTimes();
-        List<String> timeList = getTime(unit);
-        String startTime = timeList.get(0);
-        String endTime = timeList.get(1);
-        //指定时间内已领取福利次数
-        Integer getBenefitTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
-        //指定时间内福利核销次数
-        Integer vertifyTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 2);
-        Integer getTimes = getBenefitTimes + vertifyTimes;
+//        Byte unit = scenicPO.getUnit();
+//        Integer times = scenicPO.getTimes();
+//        List<String> timeList = getTime(unit);
+//        String startTime = timeList.get(0);
+//        String endTime = timeList.get(1);
+
+//        //指定时间内已领取福利次数
+//        Integer getBenefitTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
+//        //指定时间内福利核销次数
+//        Integer vertifyTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 2);
+//        Integer getTimes = getBenefitTimes + vertifyTimes;
+
+        List<String> timeList = getTime((byte) 1);
+        /**
+         * 第六期新需求，用卡的次数来判断
+         */
+        Integer getTimes = getTalentTripTimes(openId);
+        CardPO cardPO = cardMapper.selectByPrimaryKey(talentPO.getCardId());
+        if (cardPO == null) {
+            return new ResultVO(2600);
+        }
+        Integer times = cardPO.getTriptimes();
         if (getTimes >= times) {
             return new ResultVO(1003, "当前用户已经把当月/年次数用尽");
         }
@@ -261,6 +273,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
 
     /**
      * 获得可用次数的起始时间和结束时间，以及有效时间
+     * unit=1是年；unit=2是月
      *
      * @param unit
      * @return
@@ -327,5 +340,23 @@ public class TalentTripServiceImpl implements ITalentTripService {
             scenicVO.setGetTimes(getTimes);
         }
         return scenicVOList;
+    }
+
+    /**
+     * 得到人才当年已领取的卡券数+已成功核销的旅游次数
+     *
+     * @return
+     */
+    public Integer getTalentTripTimes(String openId) {
+        //按年的频次，来得到需要的时间
+        List<String> timeList = getTime((byte) 1);
+        String startTime = timeList.get(0);
+        String endTime = timeList.get(1);
+        //指定时间内已领取福利次数
+        Integer getBenefitTimes = talentTripMapper.talentGetTimes(openId, null, startTime, endTime, (byte) 1);
+        //指定时间内福利核销次数
+        Integer vertifyTimes = talentTripMapper.talentGetTimes(openId, null, startTime, endTime, (byte) 2);
+        Integer getTimes = getBenefitTimes + vertifyTimes;
+        return getTimes;
     }
 }
