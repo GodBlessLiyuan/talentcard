@@ -10,6 +10,10 @@ import lombok.Data;
  */
 @Data
 public class TalentJsonRecordVO {
+    /**
+     * type 1：普通认证
+     * type 2：新增认证
+     */
     private Byte type;
     private TalentCertificationRecordVO talentCertificationRecordVO;
     private TalentInsertCertificationRecordVO talentInsertCertificationRecordVO;
