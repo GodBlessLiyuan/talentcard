@@ -29,5 +29,9 @@ public class EditTalentRecordPO implements Serializable {
 
     private String comment;
 
+    private String beforeJsonRecord;
+
+    private String afterJsonRecord;
+
     private static final long serialVersionUID = 1L;
 }

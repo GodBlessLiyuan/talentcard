@@ -9,9 +9,12 @@
     <result column="operation_content" jdbcType="TINYINT" property="operationContent" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="comment" jdbcType="CHAR" property="comment" />
+    <result column="before_json_record" jdbcType="VARCHAR" property="beforeJsonRecord" />
+    <result column="after_json_record" jdbcType="VARCHAR" property="afterJsonRecord" />
   </resultMap>
   <sql id="Base_Column_List">
-    etc_id, talent_id, user_id, operation_type, operation_content, create_time, `comment`
+    etc_id, talent_id, user_id, operation_type, operation_content, create_time, `comment`, 
+    before_json_record, after_json_record
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -26,10 +29,12 @@
   <insert id="insert" parameterType="com.talentcard.common.pojo.EditTalentRecordPO">
     insert into t_edit_talent_record (etc_id, talent_id, user_id, 
       operation_type, operation_content, create_time, 
-      `comment`)
+      `comment`, before_json_record, after_json_record
+      )
     values (#{etcId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
       #{operationType,jdbcType=TINYINT}, #{operationContent,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{comment,jdbcType=CHAR})
+      #{comment,jdbcType=CHAR}, #{beforeJsonRecord,jdbcType=VARCHAR}, #{afterJsonRecord,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EditTalentRecordPO">
     insert into t_edit_talent_record
@@ -55,6 +60,12 @@
       <if test="comment != null">
         `comment`,
       </if>
+      <if test="beforeJsonRecord != null">
+        before_json_record,
+      </if>
+      <if test="afterJsonRecord != null">
+        after_json_record,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="etcId != null">
@@ -77,6 +88,12 @@
       </if>
       <if test="comment != null">
         #{comment,jdbcType=CHAR},
+      </if>
+      <if test="beforeJsonRecord != null">
+        #{beforeJsonRecord,jdbcType=VARCHAR},
+      </if>
+      <if test="afterJsonRecord != null">
+        #{afterJsonRecord,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -101,6 +118,12 @@
       <if test="comment != null">
         `comment` = #{comment,jdbcType=CHAR},
       </if>
+      <if test="beforeJsonRecord != null">
+        before_json_record = #{beforeJsonRecord,jdbcType=VARCHAR},
+      </if>
+      <if test="afterJsonRecord != null">
+        after_json_record = #{afterJsonRecord,jdbcType=VARCHAR},
+      </if>
     </set>
     where etc_id = #{etcId,jdbcType=BIGINT}
   </update>
@@ -111,7 +134,9 @@
       operation_type = #{operationType,jdbcType=TINYINT},
       operation_content = #{operationContent,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      `comment` = #{comment,jdbcType=CHAR}
+      `comment` = #{comment,jdbcType=CHAR},
+      before_json_record = #{beforeJsonRecord,jdbcType=VARCHAR},
+      after_json_record = #{afterJsonRecord,jdbcType=VARCHAR}
     where etc_id = #{etcId,jdbcType=BIGINT}
   </update>
 </mapper>
