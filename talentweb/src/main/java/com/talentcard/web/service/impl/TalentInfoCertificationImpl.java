@@ -39,7 +39,11 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
         hashMap.put("status", (byte) 1);
         TalentBO talentBO = talentMapper.findOne(hashMap);
         if (talentBO == null) {
-            return -1;
+            hashMap.put("status", (byte) 4);
+            talentBO = talentMapper.findOne(hashMap);
+            if (talentBO == null) {
+                return -1;
+            }
         }
         TalentCertificationInfoPO talentCertificationInfoPO =
                 talentCertificationInfoMapper.selectByTalentId(talentId);
