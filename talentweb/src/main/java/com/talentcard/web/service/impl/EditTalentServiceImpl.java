@@ -505,6 +505,11 @@ public class EditTalentServiceImpl implements IEditTalentService {
         cardMapper.updateByPrimaryKeySelective(oldCardPO);
 
         /**
+         * 更新talent表
+         */
+        talentPO.setCardId(newCardId);
+        talentMapper.updateByPrimaryKeySelective(talentPO);
+        /**
          * 设置旧卡券失效
          */
         if (oldCardId != null) {
