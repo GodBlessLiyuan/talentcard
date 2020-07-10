@@ -11,7 +11,7 @@
 	</page_setting>
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
-	<x>-176</x>
+	<x>-345</x>
 	<y>-516</y>
 	<default_color>
 		<r>128</r>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2020-04-08 11:16:39</creation_date>
-			<updated_date>2020-07-10 11:15:50</updated_date>
+			<updated_date>2020-07-10 11:20:10</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -254,7 +254,7 @@
 		</word>
 		<word>
 			<id>5</id>
-			<length>null</length>
+			<length>1000</length>
 			<decimal>null</decimal>
 			<array>false</array>
 			<array_dimension>null</array_dimension>
@@ -266,7 +266,7 @@
 			<description></description>
 			<logical_name>修改之后的json格式的记录</logical_name>
 			<physical_name>after_json_record</physical_name>
-			<type>text</type>
+			<type>varchar(n)</type>
 		</word>
 		<word>
 			<id>6</id>
@@ -574,7 +574,7 @@
 		</word>
 		<word>
 			<id>25</id>
-			<length>null</length>
+			<length>1000</length>
 			<decimal>null</decimal>
 			<array>false</array>
 			<array_dimension>null</array_dimension>
@@ -586,7 +586,7 @@
 			<description></description>
 			<logical_name>修改之前的json格式的记录</logical_name>
 			<physical_name>before_json_record</physical_name>
-			<type>text</type>
+			<type>varchar(n)</type>
 		</word>
 		<word>
 			<id>26</id>
@@ -21560,7 +21560,7 @@
 					<unique_key_name></unique_key_name>
 					<logical_name></logical_name>
 					<physical_name></physical_name>
-					<type>text</type>
+					<type>varchar(n)</type>
 					<constraint></constraint>
 					<default_value></default_value>
 					<auto_increment>false</auto_increment>
@@ -21593,7 +21593,7 @@
 					<unique_key_name></unique_key_name>
 					<logical_name></logical_name>
 					<physical_name></physical_name>
-					<type>text</type>
+					<type>varchar(n)</type>
 					<constraint></constraint>
 					<default_value></default_value>
 					<auto_increment>false</auto_increment>
