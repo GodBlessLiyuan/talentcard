@@ -2,39 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.CardMapper">
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.CardPO">
-    <id column="card_id" jdbcType="BIGINT" property="cardId"/>
-    <result column="wx_card_id" jdbcType="CHAR" property="wxCardId"/>
-    <result column="name" jdbcType="CHAR" property="name"/>
-    <result column="title" jdbcType="CHAR" property="title"/>
-    <result column="status" jdbcType="TINYINT" property="status"/>
-    <result column="member_num" jdbcType="BIGINT" property="memberNum"/>
-    <result column="waiting_member_num" jdbcType="BIGINT" property="waitingMemberNum"/>
-    <result column="curr_num" jdbcType="BIGINT" property="currNum"/>
-    <result column="description" jdbcType="VARCHAR" property="description"/>
-    <result column="picture" jdbcType="CHAR" property="picture"/>
-    <result column="picture_cdn" jdbcType="VARCHAR" property="pictureCdn"/>
-    <result column="logo_url" jdbcType="CHAR" property="logoUrl"/>
-    <result column="prerogative" jdbcType="VARCHAR" property="prerogative"/>
-    <result column="initial_word" jdbcType="CHAR" property="initialWord"/>
-    <result column="initial_num" jdbcType="CHAR" property="initialNum"/>
-    <result column="area_num" jdbcType="CHAR" property="areaNum"/>
-    <result column="business_description" jdbcType="CHAR" property="businessDescription"/>
-    <result column="create_person" jdbcType="CHAR" property="createPerson"/>
-    <result column="update_person" jdbcType="CHAR" property="updatePerson"/>
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-    <result column="dr" jdbcType="TINYINT" property="dr"/>
-    <result column="tripTimes" jdbcType="INTEGER" property="tripTimes"/>
+    <id column="card_id" jdbcType="BIGINT" property="cardId" />
+    <result column="wx_card_id" jdbcType="CHAR" property="wxCardId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="title" jdbcType="CHAR" property="title" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="member_num" jdbcType="BIGINT" property="memberNum" />
+    <result column="waiting_member_num" jdbcType="BIGINT" property="waitingMemberNum" />
+    <result column="curr_num" jdbcType="BIGINT" property="currNum" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="picture" jdbcType="CHAR" property="picture" />
+    <result column="picture_cdn" jdbcType="VARCHAR" property="pictureCdn" />
+    <result column="logo_url" jdbcType="CHAR" property="logoUrl" />
+    <result column="prerogative" jdbcType="VARCHAR" property="prerogative" />
+    <result column="initial_word" jdbcType="CHAR" property="initialWord" />
+    <result column="initial_num" jdbcType="CHAR" property="initialNum" />
+    <result column="area_num" jdbcType="CHAR" property="areaNum" />
+    <result column="business_description" jdbcType="CHAR" property="businessDescription" />
+    <result column="create_person" jdbcType="CHAR" property="createPerson" />
+    <result column="update_person" jdbcType="CHAR" property="updatePerson" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+    <result column="trip_times" jdbcType="INTEGER" property="tripTimes" />
   </resultMap>
   <sql id="Base_Column_List">
-    card_id, wx_card_id, `name`, title, `status`, member_num, waiting_member_num, curr_num,
-    description, picture, picture_cdn, logo_url, prerogative, initial_word, initial_num,
-    area_num, business_description, create_person, update_person, create_time, update_time,
-    dr, tripTimes
+    card_id, wx_card_id, `name`, title, `status`, member_num, waiting_member_num, curr_num, 
+    description, picture, picture_cdn, logo_url, prerogative, initial_word, initial_num, 
+    area_num, business_description, create_person, update_person, create_time, update_time, 
+    dr, trip_times
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
+    select 
+    <include refid="Base_Column_List" />
     from t_card
     where card_id = #{cardId,jdbcType=BIGINT}
   </select>
@@ -43,22 +43,22 @@
     where card_id = #{cardId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.CardPO">
-    insert into t_card (card_id, wx_card_id, `name`,
-      title, `status`, member_num,
-      waiting_member_num, curr_num, description,
-      picture, picture_cdn, logo_url,
-      prerogative, initial_word, initial_num,
-      area_num, business_description, create_person,
-      update_person, create_time, update_time,
-      dr, tripTimes)
-    values (#{cardId,jdbcType=BIGINT}, #{wxCardId,jdbcType=CHAR}, #{name,jdbcType=CHAR},
-      #{title,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{memberNum,jdbcType=BIGINT},
-      #{waitingMemberNum,jdbcType=BIGINT}, #{currNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR},
-      #{picture,jdbcType=CHAR}, #{pictureCdn,jdbcType=VARCHAR}, #{logoUrl,jdbcType=CHAR},
-      #{prerogative,jdbcType=VARCHAR}, #{initialWord,jdbcType=CHAR}, #{initialNum,jdbcType=CHAR},
-      #{areaNum,jdbcType=CHAR}, #{businessDescription,jdbcType=CHAR}, #{createPerson,jdbcType=CHAR},
-      #{updatePerson,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
-      #{dr,jdbcType=TINYINT}, #{tripTimes, jdbcType=INTEGER})
+    insert into t_card (card_id, wx_card_id, `name`, 
+      title, `status`, member_num, 
+      waiting_member_num, curr_num, description, 
+      picture, picture_cdn, logo_url, 
+      prerogative, initial_word, initial_num, 
+      area_num, business_description, create_person, 
+      update_person, create_time, update_time, 
+      dr, trip_times)
+    values (#{cardId,jdbcType=BIGINT}, #{wxCardId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
+      #{title,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{memberNum,jdbcType=BIGINT}, 
+      #{waitingMemberNum,jdbcType=BIGINT}, #{currNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, 
+      #{picture,jdbcType=CHAR}, #{pictureCdn,jdbcType=VARCHAR}, #{logoUrl,jdbcType=CHAR}, 
+      #{prerogative,jdbcType=VARCHAR}, #{initialWord,jdbcType=CHAR}, #{initialNum,jdbcType=CHAR}, 
+      #{areaNum,jdbcType=CHAR}, #{businessDescription,jdbcType=CHAR}, #{createPerson,jdbcType=CHAR}, 
+      #{updatePerson,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{dr,jdbcType=TINYINT}, #{tripTimes,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CardPO">
     insert into t_card
@@ -130,7 +130,7 @@
         dr,
       </if>
       <if test="tripTimes != null">
-        tripTimes,
+        trip_times,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -201,7 +201,7 @@
         #{dr,jdbcType=TINYINT},
       </if>
       <if test="tripTimes != null">
-        #{tripTimes, jdbcType=INTEGER},
+        #{tripTimes,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -272,7 +272,7 @@
         dr = #{dr,jdbcType=TINYINT},
       </if>
       <if test="tripTimes != null">
-        #{tripTimes, jdbcType=INTEGER},
+        trip_times = #{tripTimes,jdbcType=INTEGER},
       </if>
     </set>
     where card_id = #{cardId,jdbcType=BIGINT}
@@ -300,21 +300,21 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       dr = #{dr,jdbcType=TINYINT},
-      tripTimes = #{tripTimes, jdbcType=INTEGER},
+      trip_times = #{tripTimes,jdbcType=INTEGER}
     where card_id = #{cardId,jdbcType=BIGINT}
   </update>
 
-  <select id="findDefaultCard" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_card
-    where
-    status = 1
-    and
-    dr = 1
-    limit 1
-  </select>
-  <select id="findIfExistMember" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    <select id="findDefaultCard" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_card
+        where
+        status = 1
+        and
+        dr = 1
+        limit 1
+    </select>
+    <select id="findIfExistMember" parameterType="java.lang.Long" resultType="java.lang.Integer">
     select
     count(uc.talent_id)
     from t_card c
@@ -324,55 +324,55 @@
     where c.card_id = #{cardId,jdbcType=BIGINT}
     and (uc.status != 3)
   </select>
-  <select id="findByFactor" parameterType="java.util.HashMap" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_card c
-    where c.dr=1
-    <if test="title != null and title != ''">
-      and trim(replace(c.title,' ',''))
-      like trim(replace ('%' #{title,jdbcType=CHAR} '%' ,' ',''))
-    </if>
-    <if test="startTime != null and startTime != ''">
-      and <![CDATA[ c.create_time >= #{startTime}]]>
-    </if>
-    <if test="endTime != null and endTime != ''">
-      and <![CDATA[ c.create_time <= #{endTime}]]>
-    </if>
-    <if test="cardNum != null and cardNum != ''">
-      and trim(replace(initial_word,' ',''))
-      like trim(replace ('%' #{cardNum,jdbcType=CHAR} '%' ,' ',''))
-    </if>
-  </select>
+    <select id="findByFactor" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_card c
+        where c.dr=1
+        <if test="title != null and title != ''">
+            and trim(replace(c.title,' ',''))
+            like trim(replace ('%' #{title,jdbcType=CHAR} '%' ,' ',''))
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and <![CDATA[ c.create_time >= #{startTime}]]>
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and <![CDATA[ c.create_time <= #{endTime}]]>
+        </if>
+        <if test="cardNum != null and cardNum != ''">
+            and trim(replace(initial_word,' ',''))
+            like trim(replace ('%' #{cardNum,jdbcType=CHAR} '%' ,' ',''))
+        </if>
+    </select>
 
-  <select id="findSeniorCard" parameterType="java.util.HashMap" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_card c
-    where c.dr = 1
-    and c.status = 2
-    <if test="title != null and title != ''">
-      and trim(replace(c.title,' ','')) like trim(replace ('%' #{title,jdbcType=CHAR} '%' ,' ',''))
-    </if>
-    <if test="startTime != null and startTime != ''">
-      and <![CDATA[ c.create_time >= #{startTime}]]>
-    </if>
-    <if test="endTime != null and endTime != ''">
-      and <![CDATA[ c.create_time <= #{endTime}]]>
-    </if>
-    <if test="cardNum != null and cardNum != ''">
-      and trim(replace(c.initial_num,' ','')) like trim(replace ('%' #{cardNum,jdbcType=CHAR} '%' ,' ',''))
-    </if>
-  </select>
+    <select id="findSeniorCard" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_card c
+        where c.dr = 1
+        and c.status = 2
+        <if test="title != null and title != ''">
+            and trim(replace(c.title,' ','')) like trim(replace ('%' #{title,jdbcType=CHAR} '%' ,' ',''))
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and <![CDATA[ c.create_time >= #{startTime}]]>
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and <![CDATA[ c.create_time <= #{endTime}]]>
+        </if>
+        <if test="cardNum != null and cardNum != ''">
+            and trim(replace(c.initial_num,' ','')) like trim(replace ('%' #{cardNum,jdbcType=CHAR} '%' ,' ',''))
+        </if>
+    </select>
 
-  <select id="queryCardIdName"  resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from t_card
-    where dr = 1 and status = 2
-  </select>
+    <select id="queryCardIdName"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_card
+        where dr = 1 and status = 2
+    </select>
 
-  <select id="ifExistInitialWord"  resultType="java.lang.Integer">
+    <select id="ifExistInitialWord"  resultType="java.lang.Integer">
         select
         count(card_id)
         from t_card c
