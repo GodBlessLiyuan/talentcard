@@ -24,12 +24,13 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="dr" jdbcType="TINYINT" property="dr"/>
+        <result column="tripTimes" jdbcType="INTEGER" property="tripTimes"/>
     </resultMap>
     <sql id="Base_Column_List">
     card_id, wx_card_id, `name`, title, `status`, member_num, waiting_member_num, curr_num, 
     description, picture, picture_cdn, logo_url, prerogative, initial_word, initial_num, 
     area_num, business_description, create_person, update_person, create_time, update_time, 
-    dr
+    dr, tripTimes
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -49,7 +50,7 @@
       prerogative, initial_word, initial_num, 
       area_num, business_description, create_person, 
       update_person, create_time, update_time, 
-      dr)
+      dr, tripTimes)
     values (#{cardId,jdbcType=BIGINT}, #{wxCardId,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
       #{title,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{memberNum,jdbcType=BIGINT}, 
       #{waitingMemberNum,jdbcType=BIGINT}, #{currNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, 
@@ -57,7 +58,7 @@
       #{prerogative,jdbcType=VARCHAR}, #{initialWord,jdbcType=CHAR}, #{initialNum,jdbcType=CHAR}, 
       #{areaNum,jdbcType=CHAR}, #{businessDescription,jdbcType=CHAR}, #{createPerson,jdbcType=CHAR}, 
       #{updatePerson,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{dr,jdbcType=TINYINT})
+      #{dr,jdbcType=TINYINT}, #{tripTimes, jdbcType=INTEGER})
   </insert>
     <insert id="insertSelective" parameterType="com.talentcard.common.pojo.CardPO">
         insert into t_card
@@ -128,6 +129,9 @@
             <if test="dr != null">
                 dr,
             </if>
+            <if test="tripTimes != null">
+                tripTimes,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="cardId != null">
@@ -195,6 +199,9 @@
             </if>
             <if test="dr != null">
                 #{dr,jdbcType=TINYINT},
+            </if>
+            <if test="tripTimes != null">
+                #{tripTimes, jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -264,6 +271,9 @@
             <if test="dr != null">
                 dr = #{dr,jdbcType=TINYINT},
             </if>
+            <if test="tripTimes != null">
+                #{tripTimes, jdbcType=INTEGER},
+            </if>
         </set>
         where card_id = #{cardId,jdbcType=BIGINT}
     </update>
@@ -289,7 +299,8 @@
       update_person = #{updatePerson,jdbcType=CHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      dr = #{dr,jdbcType=TINYINT}
+      dr = #{dr,jdbcType=TINYINT},
+      tripTimes = #{tripTimes, jdbcType=INTEGER},
     where card_id = #{cardId,jdbcType=BIGINT}
   </update>
 

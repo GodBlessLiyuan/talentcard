@@ -316,6 +316,7 @@ public class StaffServiceImpl implements IStaffService {
         sendMessage(talentOpenId, staffOpenId, (long) 2, activitySecondContentId);
 
         this.redisMapUtil.hdel(talentOpenId, TalentConstant.TALENT_FOOTPIRNT);
+        this.redisMapUtil.hdel(talentOpenId, TalentConstant.TALENT_AVAILABLE);
 
         return new ResultVO(1000, result);
     }
