@@ -238,11 +238,11 @@ public class ScenicServiceImpl implements IScenicService {
 
     @Override
     public ResultVO setTripTimes(List<CardPO> cardPOList) {
-        for (CardPO cardPO : cardPOList) {
-            if (cardPO == null) {
+        for (int i = 0; i < cardPOList.size(); i++) {
+            if (cardPOList.get(i) == null) {
                 continue;
             }
-            cardMapper.updateByPrimaryKeySelective(cardPO);
+            cardMapper.updateByPrimaryKeySelective(cardPOList.get(i));
         }
         return new ResultVO(1000);
     }
