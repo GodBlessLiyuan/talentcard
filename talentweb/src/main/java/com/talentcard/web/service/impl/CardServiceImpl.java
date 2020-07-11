@@ -50,8 +50,8 @@ public class CardServiceImpl implements ICardService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO add(String name, String title, String notice,
                         String description, String prerogative, MultipartFile background,
-                        String initialWord, String areaNum, String businessDescription, Byte status, String color,
-                        HttpSession httpSession) {
+                        String initialWord, String areaNum, String businessDescription,
+                        Byte status, String color, Integer tripTimes, HttpSession httpSession) {
         //判断是否已经存在该初始字段
         Integer ifExistInitialWord = cardMapper.ifExistInitialWord(initialWord);
         if (ifExistInitialWord != null && ifExistInitialWord != 0) {
@@ -139,6 +139,7 @@ public class CardServiceImpl implements ICardService {
         cardPO.setCreatePerson(createPerson);
         cardPO.setUpdatePerson(createPerson);
         cardPO.setUpdateTime(new Date());
+        cardPO.setTripTimes(tripTimes);
         cardMapper.insertSelective(cardPO);
         return new ResultVO(1000, wechatResult);
     }
