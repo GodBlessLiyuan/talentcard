@@ -21,12 +21,6 @@ public class ScenicVO {
     private String name;
     private Integer rate;
     private Byte unit;
-    /**
-     * 总次数；
-     * 原本是scienicPO里的字段，
-     * 后因第六期取消了频次，全部由card决定，
-     * 所以之后全部为卡决定的总次数。
-     */
     private Integer times;
     private String description;
     private String extra;
@@ -42,7 +36,7 @@ public class ScenicVO {
 
     //是否收藏
     private Byte ifCollect;
-    //剩余次数
+    //已使用次数
     private Integer getTimes;
     //使用期限
     private String usagePeriod;

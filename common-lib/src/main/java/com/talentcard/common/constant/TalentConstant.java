@@ -20,6 +20,10 @@ public class TalentConstant {
 
     public static final String DEFAULT_TALENT_OPENID = "000000000000000";
 
+    /**
+     * 用户有效的旅游次数
+     */
+    public static final String TALENT_AVAILABLE = "trip_available";
 
     /**
      * 判断是否为默认游客账号

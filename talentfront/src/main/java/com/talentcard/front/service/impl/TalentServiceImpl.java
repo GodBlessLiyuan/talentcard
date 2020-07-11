@@ -130,8 +130,10 @@ public class TalentServiceImpl implements ITalentService {
 
             if (StringUtils.isEmpty(talentPO.getUnionId())) {
                 String unionId = getUnionIdByOpenId(openId);
-                talentPO.setUnionId(unionId);
-                talentMapper.updateByPrimaryKey(talentPO);
+                if (!StringUtils.isEmpty(unionId)) {
+                    talentPO.setUnionId(unionId);
+                    talentMapper.updateByPrimaryKey(talentPO);
+                }
             }
 
             if (talentPO.getStatus() == 1) {
@@ -188,8 +190,7 @@ public class TalentServiceImpl implements ITalentService {
         } else if (cardType == 3) {
             identificationCardNum = driverCard;
         }
-        if (identificationCardNum.equals("") || identificationCardNum == null
-                || identificationCardNum.length() <= 4) {
+        if (StringUtils.isEmpty(identificationCardNum) || identificationCardNum.length() <= 4) {
             return new ResultVO(2310, "证件号码长度过短，不符合规范");
         }
         //设置状态值 状态3为注册中

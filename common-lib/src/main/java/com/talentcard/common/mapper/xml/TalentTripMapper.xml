@@ -19,7 +19,7 @@
     dr, usage_period, effective_time_start
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_talent_trip
     where tt_id = #{ttId,jdbcType=BIGINT}
@@ -178,16 +178,25 @@
     select
     count(tt_id)
     from t_talent_trip t
-    where
-    <if test="activitySecondContentId != null and activitySecondContentId != ''">
-    scenic_id = #{activitySecondContentId,jdbcType=BIGINT}
-    </if>
+    where scenic_id = #{activitySecondContentId,jdbcType=BIGINT}
     and open_id = #{openId,jdbcType=CHAR}
     and `status` = #{status,jdbcType=TINYINT}
     and <![CDATA[ create_time >= #{startTime}]]>
     and <![CDATA[ create_time <= #{endTime}]]>
     and dr =1
   </select>
+
+  <select id="talentGetTimesByAll" resultType="java.lang.Integer">
+    select
+    count(tt_id)
+    from t_talent_trip
+    where open_id = #{openId,jdbcType=CHAR}
+    and `status` = #{status,jdbcType=TINYINT}
+    and <![CDATA[ create_time >= #{startTime}]]>
+    and <![CDATA[ create_time <= #{endTime}]]>
+    and dr = 1
+  </select>
+
   <select id="getCostTimes" resultType="java.lang.Long">
     select
     count(tt_id)
