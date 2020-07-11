@@ -1,6 +1,7 @@
 package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.ScenicBO;
 import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.*;
@@ -267,7 +268,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         redisMapUtil.hdel("talentfarmhouse", "benefitNum" + date.format(formatter));
 
-        redisMapUtil.hdel(openId, TalentConstant.TALENT_AVAILABLE);
+        redisMapUtil.del(openId);
 
         return new ResultVO(1000, "领取成功");
     }
@@ -379,6 +380,15 @@ public class TalentTripServiceImpl implements ITalentTripService {
      * @return
      */
     public List<ScenicVO> setGetTimes(String openId, List<ScenicVO> scenicVOList) {
+        String key = "trip_gettime_"+JSONObject.toJSONString(scenicVOList);
+        String s_scenicVO = this.redisMapUtil.hget(openId, key);
+        if(!StringUtils.isEmpty(s_scenicVO)){
+            List<ScenicVO> list = StringToObjUtil.strToObj(s_scenicVO,List.class);
+            if(list != null){
+                return list;
+            }
+        }
+
         Long activitySecondContentId;
         Byte unit;
         List<String> timeList;
@@ -397,6 +407,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
             Integer getTimes = scenicVO.getTimes() - getBenefitTimes - vertifyTimes;
             scenicVO.setGetTimes(getTimes);
         }
+
+        this.redisMapUtil.hset(openId, key, JSON.toJSONString(scenicVOList));
         return scenicVOList;
     }
 }
