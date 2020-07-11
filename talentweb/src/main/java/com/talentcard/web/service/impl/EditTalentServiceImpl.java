@@ -418,7 +418,11 @@ public class EditTalentServiceImpl implements IEditTalentService {
         CardPO cardPO = cardMapper.selectByPrimaryKey(talentBO.getCardId());
         HashMap<String, Object> talentCard = userCardMapper.findCurrentCard(openId, (byte) 2);
         if (talentCard == null) {
-            return new ResultVO(2500);
+            //找不到正常使用的卡就去找待领取的卡
+            talentCard = userCardMapper.findCurrentCard(openId, (byte) 1);
+            if (talentCard == null) {
+                return new ResultVO(2500);
+            }
         }
         talentBO.setCardNum((String) talentCard.get("code"));
         /**
@@ -493,7 +497,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         //当前编号
         String currentNum = oldUserCardPO.getCurrentNum();
         //人才卡编号
-        String membershipNumber = oldCardPO.getInitialWord() + oldCardPO.getAreaNum() + currentNum;
+        String membershipNumber = newCardPO.getInitialWord() + oldCardPO.getAreaNum() + currentNum;
         //新增uc表状态1；更新card表
         UserCardPO newUserCardPO = new UserCardPO();
         newUserCardPO.setCardId(newCardId);
