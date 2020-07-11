@@ -1,5 +1,6 @@
 package com.talentcard.front.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.talentcard.common.bo.ScenicBO;
 import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.*;
@@ -104,6 +105,9 @@ public class TalentTripServiceImpl implements ITalentTripService {
                 //去重
                 scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
             }
+
+
+            redisMapUtil.hset("talentTrip", code, JSON.toJSONString(scenicIdList));
         }
 
         //景区表，查询符合条件的景区
