@@ -49,9 +49,10 @@ public class CardController {
                         @RequestParam(value = "businessDescription", required = false, defaultValue = "") String businessDescription,
                         @RequestParam(value = "status") Byte status,
                         @RequestParam(value = "color", required = false, defaultValue = "Color030") String color,
+                        @RequestParam(value = "tripTimes", required = false, defaultValue = "0") Integer tripTimes,
                         HttpSession httpSession) {
         return iCardService.add(name, title, notice, description, prerogative,
-                background, initialWord, areaNum, businessDescription, status, color, httpSession);
+                background, initialWord, areaNum, businessDescription, status, color, tripTimes, httpSession);
     }
 
 

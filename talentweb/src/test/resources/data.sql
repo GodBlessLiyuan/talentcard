@@ -78,6 +78,10 @@ INSERT INTO `t_user`(`user_id`, `username`, `name`, `password`, `create_time`, `
 
 -- 人才学历 中专/高中及以下 1
 
-INSERT INTO `t_policy` VALUES ('1', '政策1', 'D000001', '水电站官方阿萨德', '', '', '', '', '', '1', '1', '#1677FF', '1', '1', '1', '1', '2', null, '2020-05-28 10:58:29', '1');
-INSERT INTO `t_policy` VALUES ('2', '政策1', 'E00000006', '新增反反复复付测试', '', '', '', '', '', '1', '1', '#FF8F1F', '1', '1', '1', '1', '1', null, '2020-05-28 11:02:57', '1');
+
+
+/*游客*/
+INSERT INTO `t_talent`(`talent_id`, `open_id`, `union_id`, `name`, `sex`, `id_card`, `passport`, `driver_card`, `card_type`, `work_unit`, `industry`, `industry_second`, `phone`, `political`, `category`, `work_location`, `work_location_type`, `card_id`, `status`, `create_time`, `dr`, `talent_source`) VALUES (1, '000000000000000', '000000000000000', '游客', 1, '000000000000000', NULL, NULL, NULL, NULL, NULL, NULL, '00000000000', NULL, '100', NULL, NULL, NULL, 2, NULL, 1, NULL);
+
+INSERT INTO `t_user_current_info`(`uci_id`, `talent_id`, `political`, `education`, `school`, `first_class`, `major`, `pt_category`, `pt_info`, `pq_category`, `pq_info`, `talent_category`, `honour_id`, `th_info`, `graduate_time`) VALUES (1, 1, 100, 100, '100', 100, '100', 100, '100', 100, '100', '100', NULL, NULL, NULL);
 
