@@ -127,6 +127,9 @@ public class TalentServiceImpl implements ITalentService {
             talentCertificationBO.setCInitialWord(cardPO.getInitialWord());
             talentCertificationBO.setCTitle(cardPO.getTitle());
         }
+        /**
+         * 判断人才类别
+         */
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), talentCertificationBOList));
     }
 
