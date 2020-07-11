@@ -1,5 +1,6 @@
 package com.talentcard.front.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.talentcard.common.bo.ScenicBO;
 import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.*;
@@ -104,6 +105,9 @@ public class TalentTripServiceImpl implements ITalentTripService {
                 //去重
                 scenicIdList = scenicIdList.stream().distinct().collect(Collectors.toList());
             }
+
+
+            redisMapUtil.hset("talentTrip", code, JSON.toJSONString(s_scenicIdList));
         }
 
         //景区表，查询符合条件的景区
@@ -273,7 +277,10 @@ public class TalentTripServiceImpl implements ITalentTripService {
      * @param openId
      * @return
      */
-    private TripAvailableVO getTalentTripAllNum(String openId){
+    private TripAvailableVO
+
+
+    getTalentTripAllNum(String openId){
 
         String s_available = redisMapUtil.hget(openId, TalentConstant.TALENT_AVAILABLE);
         if(!StringUtils.isEmpty(s_available)){
@@ -319,7 +326,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
             tripAvailableVO.setAvailable(getTimes);
             tripAvailableVO.setTotal(cardPO.getTripTimes());
 
-            redisMapUtil.hset(openId, TalentConstant.TALENT_AVAILABLE, String.valueOf(getTimes));
+            redisMapUtil.hset(openId, TalentConstant.TALENT_AVAILABLE, JSON.toJSONString(tripAvailableVO));
 
             return tripAvailableVO;
         }
