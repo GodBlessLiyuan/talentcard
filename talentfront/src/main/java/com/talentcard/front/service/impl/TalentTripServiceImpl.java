@@ -324,7 +324,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
             tripAvailableVO.setAvailable(getTimes);
             tripAvailableVO.setTotal(cardPO.getTripTimes());
 
-            redisMapUtil.hset(openId, TalentConstant.TALENT_AVAILABLE, String.valueOf(getTimes));
+            redisMapUtil.hset(openId, TalentConstant.TALENT_AVAILABLE, JSON.toJSONString(tripAvailableVO));
 
             return tripAvailableVO;
         }
