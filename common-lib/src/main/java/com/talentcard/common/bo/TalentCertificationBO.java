@@ -30,4 +30,5 @@ public class TalentCertificationBO {
     private String cInitialWord;
     private String category;
     private String honour;
+    private Long cardId;
 }
