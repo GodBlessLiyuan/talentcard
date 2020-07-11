@@ -114,6 +114,19 @@ public class TalentServiceImpl implements ITalentService {
 //        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), TalentVO.convert(bos)));
         Page<TalentCertificationBO> page = PageHelper.startPage(pageNum, pageSize);
         List<TalentCertificationBO> talentCertificationBOList = talentCertificationInfoMapper.queryCertTalent(reqMap);
+        /**
+         * 设置卡的信息
+         */
+        CardPO cardPO;
+        for (TalentCertificationBO talentCertificationBO : talentCertificationBOList) {
+            cardPO = null;
+            cardPO = cardMapper.selectByPrimaryKey(talentCertificationBO.getCardId());
+            if(cardPO==null){
+                continue;
+            }
+            talentCertificationBO.setCInitialWord(cardPO.getInitialWord());
+            talentCertificationBO.setCTitle(cardPO.getTitle());
+        }
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), talentCertificationBOList));
     }
 
@@ -538,7 +551,7 @@ public class TalentServiceImpl implements ITalentService {
     }
 
     @Override
-    public ResultVO sendMessage(String openId){
+    public ResultVO sendMessage(String openId) {
         TalentPO talentPO = this.talentMapper.selectByOpenId(openId);
         this.sendMessage(talentPO);
         return new ResultVO(1000);
