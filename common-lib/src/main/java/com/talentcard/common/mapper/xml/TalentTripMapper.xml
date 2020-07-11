@@ -185,6 +185,18 @@
     and <![CDATA[ create_time <= #{endTime}]]>
     and dr =1
   </select>
+
+  <select id="talentGetTimesByAll" resultType="java.lang.Integer">
+    select
+    count(tt_id)
+    from t_talent_trip
+    where open_id = #{openId,jdbcType=CHAR}
+    and `status` = #{status,jdbcType=TINYINT}
+    and <![CDATA[ create_time >= #{startTime}]]>
+    and <![CDATA[ create_time <= #{endTime}]]>
+    and dr = 1
+  </select>
+
   <select id="getCostTimes" resultType="java.lang.Long">
     select
     count(tt_id)

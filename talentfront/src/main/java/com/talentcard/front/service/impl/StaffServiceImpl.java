@@ -9,7 +9,11 @@ import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.IStaffService;
-import com.talentcard.front.utils.*;
+import com.talentcard.front.service.ITalentService;
+import com.talentcard.front.utils.HttpServletRequestUtil;
+import com.talentcard.front.utils.MessageUtil;
+import com.talentcard.front.utils.StaffActivityUtil;
+import com.talentcard.front.utils.TalentActivityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -306,6 +310,7 @@ public class StaffServiceImpl implements IStaffService {
         sendMessage(talentOpenId, staffOpenId, (long) 2, activitySecondContentId);
 
         this.redisMapUtil.hdel(talentOpenId, TalentConstant.TALENT_FOOTPIRNT);
+        this.redisMapUtil.hdel(talentOpenId, TalentConstant.TALENT_AVAILABLE);
 
         return new ResultVO(1000, result);
     }

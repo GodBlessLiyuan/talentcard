@@ -61,5 +61,6 @@ public class CardPO implements Serializable {
      */
     private Byte dr;
 
+    private Integer tripTimes;
     private static final long serialVersionUID = 1L;
 }
