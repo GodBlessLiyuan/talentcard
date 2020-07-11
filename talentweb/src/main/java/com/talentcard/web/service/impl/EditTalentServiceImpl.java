@@ -479,7 +479,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         //当前编号
         String currentNum = oldUserCardPO.getCurrentNum();
         //人才卡编号
-        String membershipNumber = oldCardPO.getInitialWord() + oldCardPO.getAreaNum() + currentNum;
+        String membershipNumber = newCardPO.getInitialWord() + oldCardPO.getAreaNum() + currentNum;
         //新增uc表状态1；更新card表
         UserCardPO newUserCardPO = new UserCardPO();
         newUserCardPO.setCardId(newCardId);
