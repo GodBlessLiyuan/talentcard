@@ -2,10 +2,8 @@ package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.talentcard.common.mapper.ScenicEnjoyMapper;
-import com.talentcard.common.mapper.ScenicMapper;
-import com.talentcard.common.mapper.ScenicPictureMapper;
-import com.talentcard.common.mapper.TripGroupAuthorityMapper;
+import com.talentcard.common.mapper.*;
+import com.talentcard.common.pojo.CardPO;
 import com.talentcard.common.pojo.ScenicEnjoyPO;
 import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.ScenicPicturePO;
@@ -27,6 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.smartcardio.Card;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,6 +53,8 @@ public class ScenicServiceImpl implements IScenicService {
     private FilePathConfig filePathConfig;
     @Autowired
     private RedisMapUtil redisMapUtil;
+    @Autowired
+    private CardMapper cardMapper;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -233,5 +234,16 @@ public class ScenicServiceImpl implements IScenicService {
     public ResultVO upload(MultipartFile file) {
         String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getScenicDir(), "scenic");
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
+    }
+
+    @Override
+    public ResultVO setTripTimes(List<CardPO> cardPOList) {
+        for (CardPO cardPO : cardPOList) {
+            if (cardPO == null) {
+                continue;
+            }
+            cardMapper.updateByPrimaryKeySelective(cardPO);
+        }
+        return new ResultVO(1000);
     }
 }
