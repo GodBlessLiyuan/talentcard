@@ -1,9 +1,11 @@
 package com.talentcard.web.service;
 
+import com.talentcard.common.pojo.CardPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.ScenicDTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,4 +24,6 @@ public interface IScenicService {
     ResultVO detail(Long scenicId);
 
     ResultVO upload(MultipartFile file);
+
+    ResultVO setTripTimes(List<CardPO> cardPOList);
 }

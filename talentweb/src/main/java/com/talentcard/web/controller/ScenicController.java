@@ -1,5 +1,8 @@
 package com.talentcard.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.pojo.CardPO;
+import com.talentcard.common.utils.StringToObjUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.ScenicDTO;
 import com.talentcard.web.service.IScenicService;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -100,5 +105,18 @@ public class ScenicController {
     @RequestMapping("upload")
     public ResultVO upload(@Param("file") MultipartFile file) {
         return scenicService.upload(file);
+    }
+
+    /**
+     * 设置旅游次数
+     *
+     * @param cardPOJSONObject
+     * @return
+     */
+    @RequestMapping("setTripTimes")
+    public ResultVO setTripTimes(@RequestBody JSONObject cardPOJSONObject) {
+        List<CardPO> cardPOList = StringToObjUtil.
+                strToObj(cardPOJSONObject.getJSONArray("cardPOList").toJSONString(), List.class);
+        return scenicService.setTripTimes(cardPOList);
     }
 }
