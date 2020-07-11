@@ -122,7 +122,19 @@ public class TalentTripServiceImpl implements ITalentTripService {
         //拼结果
         HashMap<String, Object> hashMap = new HashMap<>(2);
 //        Long benefitNum = ActivityResidueNumUtil.getResidueNum();
-        Long benefitNum = ActivityResidueNumUtil.getResidueNum();
+        /**
+         * 第六期新需求，用卡的次数来判断
+         */
+        Integer getTimes = getTalentTripTimes(openId);
+        CardPO cardPO = cardMapper.selectByPrimaryKey(talentPO.getCardId());
+        if (cardPO == null) {
+            return new ResultVO(2600);
+        }
+        Integer times = cardPO.getTriptimes();
+        if (times == null) {
+            times = 0;
+        }
+        Integer benefitNum = times - getTimes;
         hashMap.put("scenicList", scenicVOList);
         hashMap.put("benefitNum", benefitNum);
         return new ResultVO(1000, hashMap);
@@ -140,16 +152,35 @@ public class TalentTripServiceImpl implements ITalentTripService {
          */
         //算次数
         if (openId != null) {
-            Byte unit = scenicBO.getUnit();
-            List<String> timeList = getTime(unit);
-            String startTime = timeList.get(0);
-            String endTime = timeList.get(1);
-            //指定时间内已领取但没用福利次数
-            Integer getBenefitTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
-            //指定时间内福利核销次数
-            Integer vertifyTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 2);
-            Integer getTimes = scenicVO.getTimes() - getBenefitTimes - vertifyTimes;
+//            Byte unit = scenicBO.getUnit();
+//            List<String> timeList = getTime(unit);
+//            String startTime = timeList.get(0);
+//            String endTime = timeList.get(1);
+//            //指定时间内已领取但没用福利次数
+//            Integer getBenefitTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
+//            //指定时间内福利核销次数
+//            Integer vertifyTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 2);
+//            Integer getTimes = scenicVO.getTimes() - getBenefitTimes - vertifyTimes;
+            /**
+             * 第六期需求，用卡的次数得到剩余次数和总次数
+             */
+            TalentPO talentPO = talentMapper.selectByOpenId(openId);
+            if (talentPO == null) {
+                return new ResultVO(2500);
+            }
+            CardPO cardPO = cardMapper.selectByPrimaryKey(talentPO.getCardId());
+            if (cardPO == null) {
+                return new ResultVO(2600);
+            }
+            //去的次数
+            Integer times = cardPO.getTriptimes();
+            //去的次数
+            Integer talentTripTimes = getTalentTripTimes(openId);
+            Integer getTimes = times - talentTripTimes;
+            //剩余次数
+            scenicVO.setTimes(times);
             scenicVO.setGetTimes(getTimes);
+
             //我的收藏
             List<Long> activitySecondContentIdList = talentActivityCollectMapper.findSecondContentIdByCollect(openId, (long) 1);
             scenicVO = ScenicVO.assignIfCollect(scenicVO, activitySecondContentIdList);
@@ -349,9 +380,10 @@ public class TalentTripServiceImpl implements ITalentTripService {
      */
     public Integer getTalentTripTimes(String openId) {
         //按年的频次，来得到需要的时间
-        List<String> timeList = getTime((byte) 1);
-        String startTime = timeList.get(0);
-        String endTime = timeList.get(1);
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        String startTime = year + "-01-01 00:00:00";
+        String endTime = year + "-12-31 23:59:59";
         //指定时间内已领取福利次数
         Integer getBenefitTimes = talentTripMapper.talentGetTimes(openId, null, startTime, endTime, (byte) 1);
         //指定时间内福利核销次数
