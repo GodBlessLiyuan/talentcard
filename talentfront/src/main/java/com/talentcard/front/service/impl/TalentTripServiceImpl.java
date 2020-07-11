@@ -107,7 +107,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
             }
 
 
-            redisMapUtil.hset("talentTrip", code, JSON.toJSONString(s_scenicIdList));
+            redisMapUtil.hset("talentTrip", code, JSON.toJSONString(scenicIdList));
         }
 
         //景区表，查询符合条件的景区
@@ -277,10 +277,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
      * @param openId
      * @return
      */
-    private TripAvailableVO
-
-
-    getTalentTripAllNum(String openId){
+    private TripAvailableVO getTalentTripAllNum(String openId){
 
         String s_available = redisMapUtil.hget(openId, TalentConstant.TALENT_AVAILABLE);
         if(!StringUtils.isEmpty(s_available)){
