@@ -126,19 +126,15 @@
     t.create_time as cTime,
     t.`name` as name,
     t.sex as sex,
+    t.card_id as cardId,
     tci.education as educ,
     tci.pt_category as title,
     tci.pq_category as quality,
     tci.talent_category as category,
-    tci.honour_id as honour,
-    c.title as cTitle,
-    c.initial_word as cInitialWord
+    tci.honour_id as honour
     from t_talent t
     left join t_talent_certification_info tci on t.talent_id = tci.talent_id
-    left join t_user_card uc on t.talent_id = uc.talent_id
-    left join t_card c on c.card_id = uc.card_id
-    where t.status = 1 and uc.status = 2
-    and t.dr=1
+    where t.status = 1 and t.dr=1
     <if test="start != null and start !=''">
       and <![CDATA[ t.create_time >= #{start}]]>
     </if>
@@ -151,7 +147,7 @@
     <if test="title != null and title !=''">and tci.pt_category like '%' #{title} '%'</if>
     <if test="quality != null and quality !=''">and tci.pq_category like '%' #{quality} '%'</if>
     <if test="card != null and card !=''">and (c.title like '%' #{card} '%' or c.initial_word like '%' #{card} '%')</if>
-    <if test="category != null and category !=''">and tci.talent_category like '%' #{category} '%'</if>
+    <if test="category != null and category !=''">and tci.talent_category in (#{category}) </if>
     <if test="honour != null and honour !=''">and tci.honour_id like '%' #{honour} '%'</if>
     order by t.create_time desc
   </select>
