@@ -190,7 +190,7 @@ public class StaffServiceImpl implements IStaffService {
         result.put("vertifyNum", vertifyNum);
         sendMessage(talentOpenId, staffOpenId, (long) 1, activitySecondContentId);
 
-        this.redisMapUtil.hdel(talentOpenId, TalentConstant.TALENT_FOOTPIRNT);
+        this.redisMapUtil.del(talentOpenId);
         return new ResultVO(1000, result);
     }
 
