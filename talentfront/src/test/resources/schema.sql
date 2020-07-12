@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS t_bank;
 DROP TABLE IF EXISTS t_banner;
 DROP TABLE IF EXISTS t_batch_certificate;
 DROP TABLE IF EXISTS t_cert_approval;
+DROP TABLE IF EXISTS t_edit_talent_record;
 DROP TABLE IF EXISTS t_cert_examine_record;
 DROP TABLE IF EXISTS t_education;
 DROP TABLE IF EXISTS t_prof_quality;
@@ -163,6 +164,7 @@ CREATE TABLE t_card
 	-- 2删除
 	dr tinyint unsigned COMMENT '1正在使用
 2删除',
+	trip_times int unsigned,
 	PRIMARY KEY (card_id),
 	UNIQUE (card_id)
 );
@@ -258,6 +260,26 @@ CREATE TABLE t_config
 	UNIQUE (config_key)
 );
 
+
+CREATE TABLE t_edit_talent_record
+(
+	etc_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	talent_id bigint unsigned,
+	user_id bigint unsigned,
+	-- 1 增
+	-- 2 删
+	-- 3 改
+	operation_type tinyint unsigned COMMENT '1 增
+2 删
+3 改',
+	operation_content tinyint unsigned,
+	create_time datetime,
+	comment char(254),
+	before_json_record varchar(1000),
+	after_json_record varchar(1000),
+	PRIMARY KEY (etc_id),
+	UNIQUE (etc_id)
+);
 
 CREATE TABLE t_education
 (
@@ -1066,6 +1088,14 @@ ALTER TABLE t_cert_approval
 ALTER TABLE t_cert_examine_record
 	ADD FOREIGN KEY (cert_id)
 	REFERENCES t_certification (cert_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE t_edit_talent_record
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
