@@ -129,7 +129,7 @@
 
     <select id="queryAllCert" parameterType="java.util.Map" resultType="com.talentcard.common.bo.TalentCertStatusBO">
         select t.talent_id as talentId, t.name, t.sex, e.education, pt.category as ptCategory,
-        pq.category as pqCategory, IFNULL(ca.result,3), ce.create_time as createTime, ce.cert_id as certId,
+        pq.category as pqCategory, IFNULL(ca.result,3) as result, ce.create_time as createTime, ce.cert_id as certId,
         th.honour_id as honour
         from t_talent t
         left join t_certification ce on t.talent_id = ce.talent_id
@@ -181,9 +181,9 @@
         <if test="honour != null and honour != ''">
             and th.honour_id = #{honour}
         </if>
-        order by
-        <!--  将待审批的记录置顶，按时间排序-->
-        IFNULL(ca.result,0) desc, ce.create_time desc
+<!--        order by-->
+<!--        &lt;!&ndash;  将待审批的记录置顶，按时间排序&ndash;&gt;-->
+<!--        IFNULL(ca.result,0) desc, ce.create_time desc-->
     </select>
 
     <!--  待审批的查看和审批接口（两个是一个接口），status=3  人才卡status=2使用中状态-->
