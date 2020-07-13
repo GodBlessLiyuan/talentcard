@@ -74,7 +74,11 @@ public class DataMigrationServiceImpl implements IDataMigrationService {
                 continue;
             }
             certExamineRecordPO = new CertExamineRecordPO();
-            certExamineRecordPO.setResult(talentCertStatusBO.getResult());
+            if (talentCertStatusBO.getResult() == null) {
+                certExamineRecordPO.setResult((byte) 3);
+            } else {
+                certExamineRecordPO.setResult(talentCertStatusBO.getResult());
+            }
             certExamineRecordPO.setTalentId(talentCertStatusBO.getTalentId());
             certExamineRecordPO.setSex(talentCertStatusBO.getSex());
             certExamineRecordPO.setName(talentCertStatusBO.getName());
@@ -162,6 +166,8 @@ public class DataMigrationServiceImpl implements IDataMigrationService {
             }
             //人才类别
             talentCertificationInfoPO.setTalentCategory(talentBO.getCategory());
+            //人才id
+            talentCertificationInfoPO.setTalentId(talentBO.getTalentId());
             insertResult = talentCertificationInfoMapper.insertSelective(talentCertificationInfoPO);
             insertResult = 0;
             if (insertResult == 0) {
