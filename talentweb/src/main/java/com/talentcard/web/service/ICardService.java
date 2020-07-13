@@ -18,7 +18,8 @@ public interface ICardService {
                  String initialWord, String areaNum, String businessDescription,
                  Byte status, String color, Integer tripTimes, HttpSession httpSession);
 
-    ResultVO edit(Long cardId, String title, String businessDescription, MultipartFile background, HttpSession httpSession);
+    ResultVO edit(Long cardId, String title, String businessDescription,
+                  MultipartFile background, Integer tripTimes, HttpSession httpSession);
 
     ResultVO query(HashMap<String, Object> hashMap);
 
