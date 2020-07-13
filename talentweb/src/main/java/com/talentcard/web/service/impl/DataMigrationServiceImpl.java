@@ -1,12 +1,11 @@
 package com.talentcard.web.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.bo.TalentCertStatusBO;
-import com.talentcard.common.mapper.CertExamineRecordMapper;
-import com.talentcard.common.mapper.CertificationMapper;
-import com.talentcard.common.mapper.TalentCertificationInfoMapper;
-import com.talentcard.common.mapper.TalentMapper;
+import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.CertApprovalPO;
+import com.talentcard.common.pojo.CertApprovalPassRecordPO;
 import com.talentcard.common.pojo.CertExamineRecordPO;
 import com.talentcard.common.pojo.TalentCertificationInfoPO;
 import com.talentcard.common.vo.PageInfoVO;
@@ -18,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ChenXU
@@ -39,6 +35,8 @@ public class DataMigrationServiceImpl implements IDataMigrationService {
     private TalentMapper talentMapper;
     @Autowired
     private TalentCertificationInfoMapper talentCertificationInfoMapper;
+    @Autowired
+    private CertApprovalPassRecordMapper certApprovalPassRecordMapper;
 
 
     @Override
@@ -172,6 +170,69 @@ public class DataMigrationServiceImpl implements IDataMigrationService {
             insertResult = talentCertificationInfoMapper.insertSelective(talentCertificationInfoPO);
             if (insertResult == 0) {
                 failureList.add(talentCertificationInfoPO);
+            } else {
+                successNum++;
+            }
+        }
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("successNum", successNum);
+        result.put("failureList", failureList);
+        result.put("duplicateList", duplicateList);
+        return new ResultVO(1000, result);
+    }
+
+    @Override
+    public ResultVO certApprovalDetail() {
+        HashMap<String, Object> hashMap = new HashMap<>(9);
+        hashMap.put("name", null);
+        hashMap.put("sex", null);
+        hashMap.put("pqCategory", null);
+        hashMap.put("ptCategory", null);
+        hashMap.put("education", null);
+        hashMap.put("result", null);
+        hashMap.put("startTime", null);
+        hashMap.put("endTime", null);
+        hashMap.put("honour", null);
+        List<TalentCertStatusBO> bos = certificationMapper.queryAllCert(hashMap);
+        TalentBO talentBO;
+        CertApprovalPassRecordPO certApprovalPassRecordPO;
+        //成功数量
+        Integer successNum = 0;
+        //失败结果
+        ArrayList<TalentCertStatusBO> failureList = new ArrayList();
+        //重复结果
+        ArrayList<CertApprovalPassRecordPO> duplicateList = new ArrayList();
+        Integer insertResult;
+        for (TalentCertStatusBO talentCertStatusBO : bos) {
+            if (talentCertStatusBO == null) {
+                continue;
+            }
+            //不是审批通过，跳过，驳回和待审批无问题
+            if (talentCertStatusBO.getResult() != 1) {
+                continue;
+            }
+            certApprovalPassRecordPO = null;
+            talentBO = null;
+            certApprovalPassRecordPO = certApprovalPassRecordMapper.selectByCertId(talentCertStatusBO.getCertId());
+            if (certApprovalPassRecordPO != null) {
+                //如果存在记录，则跳过，说明该条certId的记录已在新表之中。
+                duplicateList.add(certApprovalPassRecordPO);
+                continue;
+            }
+            certApprovalPassRecordPO = new CertApprovalPassRecordPO();
+            talentBO = talentMapper.certApprovalDetail(talentCertStatusBO.getCertId());
+            if (talentBO == null) {
+                failureList.add(talentCertStatusBO);
+                continue;
+            }
+            certApprovalPassRecordPO.setTalentId(talentBO.getTalentId());
+            certApprovalPassRecordPO.setTalentBoJson(JSONObject.toJSONString(talentBO));
+            certApprovalPassRecordPO.setCertId(talentCertStatusBO.getCertId());
+            certApprovalPassRecordPO.setCreateTime(talentCertStatusBO.getCreateTime());
+            insertResult = 0;
+            insertResult = certApprovalPassRecordMapper.insertSelective(certApprovalPassRecordPO);
+            if (insertResult == 0) {
+                failureList.add(talentCertStatusBO);
             } else {
                 successNum++;
             }
