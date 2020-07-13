@@ -135,7 +135,7 @@ public class TalentServiceImpl implements ITalentService {
             /**
              * 判断人才类别
              */
-            int flag;
+            int flag = 1;
             String categoryFactor = (String) reqMap.get("category");
             if (!StringUtils.isEmpty(categoryFactor)) {
                 String[] categoryArray = talentCertificationBO.getCategory().split(",");
@@ -145,9 +145,9 @@ public class TalentServiceImpl implements ITalentService {
                         flag = 1;
                     }
                 }
-                if (flag == 1) {
-                    resultList.add(talentCertificationBO);
-                }
+            }
+            if (flag == 1) {
+                resultList.add(talentCertificationBO);
             }
         }
 
