@@ -153,6 +153,9 @@ public class CardServiceImpl implements ICardService {
             return new ResultVO(2324, "会员卡编辑失败，啥参数都没给啊");
         }
         CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
+        if (cardPO == null) {
+            return new ResultVO(2600);
+        }
         //上传背景图片
         String picture = "";
         String pictureCDN = "";
