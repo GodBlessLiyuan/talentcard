@@ -38,6 +38,7 @@ public class CardVO {
     private Date createTime;
     private Date updateTime;
     private String areaNum;
+    private Integer tripTimes;
 
     /**
      * PO转VO
@@ -66,6 +67,7 @@ public class CardVO {
         cardVO.setCreateTime(cardPO.getCreateTime());
         cardVO.setUpdateTime(cardPO.getUpdateTime());
         cardVO.setAreaNum(cardPO.getAreaNum());
+        cardVO.setTripTimes(cardPO.getTripTimes());
 
         //背景图
         if (cardVO.getPicture() != null && cardVO.getPicture() != "") {
