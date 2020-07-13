@@ -2,6 +2,7 @@ package com.talentcard.web.service;
 
 import com.talentcard.common.pojo.CardPO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.dto.EditTripTimesDTO;
 import com.talentcard.web.dto.ScenicDTO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,5 +26,5 @@ public interface IScenicService {
 
     ResultVO upload(MultipartFile file);
 
-    ResultVO setTripTimes(List<CardPO> cardPOList);
+    ResultVO setTripTimes(EditTripTimesDTO editTripTimesDTO);
 }
