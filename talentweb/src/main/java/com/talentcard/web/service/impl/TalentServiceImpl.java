@@ -120,11 +120,11 @@ public class TalentServiceImpl implements ITalentService {
          */
         CardPO cardPO;
         TalentCertificationBO talentCertificationBO;
-        int n = 0;
+        List<TalentCertificationBO> resultList = new ArrayList<>();
         for (int i = 0; i < talentCertificationBOList.size(); i++) {
             cardPO = null;
             talentCertificationBO = null;
-            talentCertificationBO = talentCertificationBOList.get(n);
+            talentCertificationBO = talentCertificationBOList.get(i);
             cardPO = cardMapper.selectByPrimaryKey(talentCertificationBO.getCardId());
             if (cardPO == null) {
                 continue;
@@ -145,15 +145,13 @@ public class TalentServiceImpl implements ITalentService {
                         flag = 1;
                     }
                 }
-                if (flag == 0) {
-                    talentCertificationBOList.remove(0);
-                    n--;
+                if (flag == 1) {
+                    resultList.add(talentCertificationBO);
                 }
             }
-            n++;
         }
 
-        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), talentCertificationBOList));
+        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), resultList));
     }
 
     @Override
