@@ -145,7 +145,8 @@ public class CardServiceImpl implements ICardService {
     }
 
     @Override
-    public ResultVO edit(Long cardId, String title, String businessDescription, MultipartFile background, HttpSession httpSession) {
+    public ResultVO edit(Long cardId, String title, String businessDescription,
+                         MultipartFile background, Integer tripTimes, HttpSession httpSession) {
         if (StringUtils.isEmpty(title)
                 && StringUtils.isEmpty(businessDescription)
                 && background == null) {
@@ -203,6 +204,10 @@ public class CardServiceImpl implements ICardService {
         cardPO.setUpdatePerson(updatePerson);
         cardPO.setUpdateTime(new Date());
         cardPO.setBusinessDescription(businessDescription);
+        //旅游次数
+        if (tripTimes != null && tripTimes != 0) {
+            cardPO.setTripTimes(tripTimes);
+        }
         int updateResult = cardMapper.updateByPrimaryKeySelective(cardPO);
         if (updateResult == 0) {
             logger.error("update cardMapper error");

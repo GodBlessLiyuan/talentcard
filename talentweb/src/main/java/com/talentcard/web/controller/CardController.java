@@ -61,8 +61,9 @@ public class CardController {
                          @RequestParam(value = "title", required = false, defaultValue = "") String title,
                          @RequestParam(value = "businessDescription", required = false, defaultValue = "") String businessDescription,
                          @RequestParam(value = "background", required = false) MultipartFile background,
+                         @RequestParam(value = "tripTimes", required = false, defaultValue = "0") Integer tripTimes,
                          HttpSession httpSession) {
-        return iCardService.edit(cardId, title, businessDescription, background, httpSession);
+        return iCardService.edit(cardId, title, businessDescription, background, tripTimes, httpSession);
     }
 
     @PostMapping("query")
