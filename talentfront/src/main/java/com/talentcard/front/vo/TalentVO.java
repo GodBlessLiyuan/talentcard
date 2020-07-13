@@ -80,11 +80,19 @@ public class TalentVO {
         talentVO.setWorkLocationType(talentBO.getWorkLocationType());
         talentVO.setDriverCard(talentBO.getDriverCard());
         talentVO.setTalentSource(talentBO.getTalentSource());
+        List<EducationPO> resultEducationList = new ArrayList<>();
+        List<ProfTitlePO> resultTitleList = new ArrayList<>();
+        List<ProfQualityPO> resultQualityList = new ArrayList<>();
+        List<TalentHonourPO> resultHonourList = new ArrayList<>();
         //学历文件
         if (talentBO.getEducationPOList() != null) {
             for (EducationPO educationPO : talentBO.getEducationPOList()) {
                 if (educationPO.getEducPicture() != null && !educationPO.getEducPicture().equals("")) {
                     educationPO.setEducPicture(FilePathConfig.getStaticPublicBasePath() + educationPO.getEducPicture());
+                }
+                //不为0，才返回结果
+                if (educationPO.getEducation() != null && educationPO.getEducation() != 0) {
+                    resultEducationList.add(educationPO);
                 }
             }
         }
@@ -95,6 +103,10 @@ public class TalentVO {
                 if (profTitlePO.getPicture() != null && !profTitlePO.getPicture().equals("")) {
                     profTitlePO.setPicture(FilePathConfig.getStaticPublicBasePath() + profTitlePO.getPicture());
                 }
+                //不为0，才返回结果
+                if (profTitlePO.getCategory() != null && profTitlePO.getCategory() != 0) {
+                    resultTitleList.add(profTitlePO);
+                }
             }
         }
 
@@ -104,6 +116,10 @@ public class TalentVO {
                 if (profQualityPO.getPicture() != null && !profQualityPO.getPicture().equals("")) {
                     profQualityPO.setPicture(FilePathConfig.getStaticPublicBasePath() + profQualityPO.getPicture());
                 }
+                //不为0，才返回结果
+                if (profQualityPO.getCategory() != null && profQualityPO.getCategory() != 0) {
+                    resultQualityList.add(profQualityPO);
+                }
             }
         }
         //人才荣誉
@@ -112,12 +128,16 @@ public class TalentVO {
                 if (talentHonourPO.getHonourPicture() != null && !talentHonourPO.getHonourPicture().equals("")) {
                     talentHonourPO.setHonourPicture(FilePathConfig.getStaticPublicBasePath() + talentHonourPO.getHonourPicture());
                 }
+                //不为0，才返回结果
+                if (talentHonourPO.getHonourId() != null && talentHonourPO.getHonourId() != 0) {
+                    resultHonourList.add(talentHonourPO);
+                }
             }
         }
-        talentVO.setEducationPOList(talentBO.getEducationPOList());
-        talentVO.setProfTitlePOList(talentBO.getProfTitlePOList());
-        talentVO.setProfQualityPOList(talentBO.getProfQualityPOList());
-        talentVO.setTalentHonourPOList(talentBO.getTalentHonourPOList());
+        talentVO.setEducationPOList(resultEducationList);
+        talentVO.setProfTitlePOList(resultTitleList);
+        talentVO.setProfQualityPOList(resultQualityList);
+        talentVO.setTalentHonourPOList(resultHonourList);
         return talentVO;
     }
 
