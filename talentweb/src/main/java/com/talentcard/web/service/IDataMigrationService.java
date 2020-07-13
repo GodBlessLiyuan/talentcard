@@ -20,4 +20,11 @@ public interface IDataMigrationService {
      * @return
      */
     ResultVO certTalent();
+
+
+    /**
+     * 认证审批表详情 数据迁移
+     * @return
+     */
+    ResultVO certApprovalDetail();
 }
