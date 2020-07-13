@@ -13,6 +13,7 @@ import com.talentcard.common.utils.QrCodeUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.dto.EditTripTimesDTO;
 import com.talentcard.web.dto.ScenicDTO;
 import com.talentcard.web.service.IScenicService;
 import com.talentcard.web.vo.ScenicDetailVO;
@@ -237,19 +238,24 @@ public class ScenicServiceImpl implements IScenicService {
     }
 
     @Override
-    public ResultVO setTripTimes(List<CardPO> cardPOList) {
+    public ResultVO setTripTimes(EditTripTimesDTO editTripTimesDTO) {
+        Long[] cardIdArray = editTripTimesDTO.getCardId();
+        Integer[] tripTimes = editTripTimesDTO.getTripTimes();
         CardPO cardPO;
-        for (int i = 0; i < cardPOList.size(); i++) {
-            if (cardPOList.get(i) == null) {
-                continue;
-            }
+        if (cardIdArray == null || tripTimes == null) {
+            return new ResultVO(2680);
+        }
+        if (cardIdArray.length != tripTimes.length) {
+            return new ResultVO(2680);
+        }
+        for (int i = 0; i < cardIdArray.length; i++) {
             cardPO = null;
-            cardPO = cardMapper.selectByPrimaryKey(cardPOList.get(i).getCardId());
+            cardPO = cardMapper.selectByPrimaryKey(cardIdArray[i]);
             if (cardPO == null) {
                 continue;
             }
-            cardPO.setTripTimes(cardPOList.get(i).getTripTimes());
-            cardMapper.updateByPrimaryKeySelective(cardPOList.get(i));
+            cardPO.setTripTimes(tripTimes[i]);
+            cardMapper.updateByPrimaryKeySelective(cardPO);
         }
         return new ResultVO(1000);
     }
