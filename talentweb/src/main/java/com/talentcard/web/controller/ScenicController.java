@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.pojo.CardPO;
 import com.talentcard.common.utils.StringToObjUtil;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.dto.EditTripTimesDTO;
 import com.talentcard.web.dto.ScenicDTO;
 import com.talentcard.web.service.IScenicService;
 import org.apache.ibatis.annotations.Param;
@@ -110,13 +111,11 @@ public class ScenicController {
     /**
      * 设置旅游次数
      *
-     * @param cardPOJSONObject
+     * @param editTripTimesDTO
      * @return
      */
     @RequestMapping("setTripTimes")
-    public ResultVO setTripTimes(@RequestBody JSONObject cardPOJSONObject) {
-        List<CardPO> cardPOList = StringToObjUtil.
-                strToObj(cardPOJSONObject.getJSONArray("cardPOList").toJSONString(), List.class);
-        return scenicService.setTripTimes(cardPOList);
+    public ResultVO setTripTimes(@RequestBody EditTripTimesDTO editTripTimesDTO) {
+        return scenicService.setTripTimes(editTripTimesDTO);
     }
 }
