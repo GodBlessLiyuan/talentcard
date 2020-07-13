@@ -41,4 +41,15 @@ public class DataMigrationController {
     public ResultVO certTalent() {
         return iDataMigrationService.certTalent();
     }
+
+    /**
+     * 认证审批表详情 数据迁移
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("certApprovalDetail")
+    public ResultVO certApprovalDetail() {
+        return iDataMigrationService.certApprovalDetail();
+    }
 }
