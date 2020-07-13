@@ -3,6 +3,7 @@ package com.talentcard.web.vo;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.pojo.CardPO;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -70,12 +71,12 @@ public class CardVO {
         cardVO.setTripTimes(cardPO.getTripTimes());
 
         //背景图
-        if (cardVO.getPicture() != null && cardVO.getPicture() != "") {
+        if (!StringUtils.isEmpty(cardVO.getPicture())) {
             cardVO.setPicture(FilePathConfig.getStaticPublicBasePath() + cardVO.getPicture());
         }
         //logo图
         //背景图
-        if (cardVO.getLogoUrl() != null && cardVO.getLogoUrl() != "") {
+        if (!StringUtils.isEmpty(cardVO.getLogoUrl())) {
             cardVO.setLogoUrl(FilePathConfig.getStaticPublicBasePath() + cardVO.getLogoUrl());
         }
         return cardVO;
