@@ -80,6 +80,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
     IVerifyTalentPropertyService iVerifyTalentPropertyService;
     @Autowired
     IEditTalentRecordService iEditTalentRecordService;
+    @Autowired
+    ICertApprovalService iCertApprovalService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -88,6 +90,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         if (talentPO == null) {
             return new ResultVO(2500);
         }
+        String beforeJSON=JSONObject.toJSONString(talentPO);
         Long talentId = talentPO.getTalentId();
         talentPO.setPhone(basicInfoDTO.getPhone());
         talentPO.setPolitical(basicInfoDTO.getPolitical());
@@ -97,7 +100,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         talentPO.setWorkLocationType(basicInfoDTO.getWorkLocationType());
         talentMapper.updateByPrimaryKeySelective(talentPO);
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.basicInfoContent);
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.basicInfoContent,beforeJSON,JSONObject.toJSONString(talentPO));
         /**
          * 清除redis缓存
          */
@@ -113,6 +116,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
         if (educationPO == null || educationPO.getEducation() == null) {
             return new ResultVO(2661, "查无此认证！");
         }
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        if(!talentPO.getTalentId().equals(educationPO.getTalentId())){
+            return new ResultVO(2500);//不匹配查无此人
+        }
         /**
          * 学历资格校验是否满足小于等于3，且不重复
          */
@@ -123,6 +133,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
                 return new ResultVO(2900, "新增审批时，人才状态不对！");
             }
         }
+        String beforeJSON=JSONObject.toJSONString(educationPO);
         Integer verifyResult;
         if (educationPO.getEducation().equals(educationDTO.getEducation())) {
             //相等意味着 编辑校验
@@ -147,17 +158,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
         /**
          * 同步更新tci表
          */
-        TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        if (talentPO == null) {
-            return new ResultVO(2500);
-        }
         Long talentId = talentPO.getTalentId();
         Integer updateTciResult = iTalentInfoCertificationService.update(talentId);
         if (updateTciResult != 0) {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.educationContent);
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.educationContent,beforeJSON,JSONObject.toJSONString(educationPO));
         /**
          * 清除redis缓存
          */
@@ -174,6 +181,14 @@ public class EditTalentServiceImpl implements IEditTalentService {
         if (profQualityPO == null || profQualityPO.getCategory() == null) {
             return new ResultVO(2661, "查无此认证！");
         }
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        if(!talentPO.getTalentId().equals(profQualityPO.getTalentId())){
+            return new ResultVO(2500);//检测是否匹配
+        }
+        String beforeJSON=JSONObject.toJSONString(profQualityPO);
         /**
          * 判断次数是否到3
          * 判断该认证是否重复
@@ -205,17 +220,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
         /**
          * 同步更新tci表
          */
-        TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        if (talentPO == null) {
-            return new ResultVO(2500);
-        }
         Long talentId = talentPO.getTalentId();
         Integer updateTciResult = iTalentInfoCertificationService.update(talentId);
         if (updateTciResult != 0) {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.qualityContent);
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.qualityContent,beforeJSON,JSONObject.toJSONString(profQualityPO));
         /**
          * 清除redis缓存
          */
@@ -231,6 +242,14 @@ public class EditTalentServiceImpl implements IEditTalentService {
         if (profTitlePO == null || profTitlePO.getCategory() == null) {
             return new ResultVO(2661, "查无此认证！");
         }
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        if(!talentPO.getTalentId().equals(profTitlePO.getTalentId())){
+            return new ResultVO(2500);
+        }
+        String beforeJSON=JSONObject.toJSONString(profTitlePO);
         /**
          * 判断次数是否到3
          * 判断该认证是否重复
@@ -264,17 +283,14 @@ public class EditTalentServiceImpl implements IEditTalentService {
         /**
          * 同步更新tci表
          */
-        TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        if (talentPO == null) {
-            return new ResultVO(2500);
-        }
+
         Long talentId = talentPO.getTalentId();
         Integer updateTciResult = iTalentInfoCertificationService.update(talentId);
         if (updateTciResult != 0) {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.titleContent);
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.titleContent,beforeJSON,JSONObject.toJSONString(profTitlePO));
         /**
          * 清除redis缓存
          */
@@ -290,6 +306,14 @@ public class EditTalentServiceImpl implements IEditTalentService {
         if (talentHonourPO == null || talentHonourPO.getHonourId() == null) {
             return new ResultVO(2661, "查无此认证！");
         }
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        if(!talentPO.getTalentId().equals(talentHonourPO.getTalentId())){
+            return new ResultVO(2500);
+        }
+        String beforeJSON=JSONObject.toJSONString(talentHonourPO);
         /**
          * 判断次数是否到3
          * 判断该认证是否重复
@@ -322,17 +346,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
         /**
          * 同步更新tci表
          */
-        TalentPO talentPO = talentMapper.selectByOpenId(openId);
-        if (talentPO == null) {
-            return new ResultVO(2500);
-        }
         Long talentId = talentPO.getTalentId();
         Integer updateTciResult = iTalentInfoCertificationService.update(talentId);
         if (updateTciResult != 0) {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.honourContent);
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.honourContent,beforeJSON,JSONObject.toJSONString(talentHonourPO));
         /**
          * 清除redis缓存
          */
@@ -347,11 +367,12 @@ public class EditTalentServiceImpl implements IEditTalentService {
         if (talentPO == null) {
             return new ResultVO(2500);
         }
+        String beforeJSON=JSONObject.toJSONString(talentPO);
         Long talentId = talentPO.getTalentId();
         talentPO.setCategory(talentCategory);
-        talentMapper.updateByPrimaryKeySelective(talentPO);
         //更新uci表
-        UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentId);
+        talentMapper.updateByPrimaryKeySelective(talentPO);
+        UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentId);//用户的当前信息
         if (userCurrentInfoPO == null) {
             return new ResultVO(2500);
         }
@@ -361,14 +382,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 更新tci表
          */
         TalentCertificationInfoPO talentCertificationInfoPO =
-                talentCertificationInfoMapper.selectByTalentId(talentId);
+                talentCertificationInfoMapper.selectByTalentId(talentId);//用户认证完毕后的信息
         if (talentCertificationInfoPO == null) {
             return new ResultVO(2500);
         }
         talentCertificationInfoPO.setTalentCategory(talentCategory);
         talentCertificationInfoMapper.updateByPrimaryKeySelective(talentCertificationInfoPO);
-        //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.talentCategoryContent);
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.talentCategoryContent,beforeJSON,JSONObject.toJSONString(talentPO));
         /**
          * 清除redis缓存
          */
@@ -536,8 +556,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
         //姓名
         messageDTO.setKeyword1(talentPO.getName());
         //身份证号，屏蔽八位
-        String encryptionIdCard = talentPO.getIdCard().substring(0, 9) + "********";
-        messageDTO.setKeyword2(encryptionIdCard);
+        String identificationCardNum = identificationCardEncryption(talentPO);
+        messageDTO.setKeyword2(identificationCardNum);
         //领卡机构
         messageDTO.setKeyword3("个人");
         //通知时间
@@ -696,6 +716,34 @@ public class EditTalentServiceImpl implements IEditTalentService {
             }
         }
         return showPOs;
+    }
+
+    /**
+     * 证件号码，后四位加密,打星星
+     *
+     * @return
+     */
+    public String identificationCardEncryption(TalentPO talentPO) {
+
+        Byte cardType = talentPO.getCardType();
+        String identificationCardNum = "";
+        if (cardType == 1) {
+            //身份证
+            identificationCardNum = talentPO.getIdCard();
+        } else if (cardType == 2) {
+            //护照
+            identificationCardNum = talentPO.getPassport();
+        } else if (cardType == 3) {
+            //驾照
+            identificationCardNum = talentPO.getDriverCard();
+        }
+        if (identificationCardNum.equals("") || identificationCardNum == null
+                || identificationCardNum.length() <= 4) {
+            return "当前号码出现异常！";
+        }
+        Integer end = identificationCardNum.length() - 4;
+        String encryptionIdCardNum = identificationCardNum.substring(0, end) + "****";
+        return encryptionIdCardNum;
     }
 
 }

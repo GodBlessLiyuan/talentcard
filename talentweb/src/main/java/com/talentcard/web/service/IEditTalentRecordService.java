@@ -9,5 +9,5 @@ import javax.servlet.http.HttpSession;
  * @description
  */
 public interface IEditTalentRecordService {
-    Integer addRecord(HttpSession httpSession, Long talentId, Byte operationType, Byte operationContent);
+    Integer addRecord(HttpSession httpSession, Long talentId, Byte operationType, Byte operationContent, String beforeJson, String afterJson);
 }

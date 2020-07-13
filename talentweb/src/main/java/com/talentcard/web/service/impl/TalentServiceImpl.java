@@ -24,6 +24,7 @@ import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.TalentDetailVO;
 import com.talentcard.web.vo.TalentVO;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -118,19 +119,39 @@ public class TalentServiceImpl implements ITalentService {
          * 设置卡的信息
          */
         CardPO cardPO;
-        for (TalentCertificationBO talentCertificationBO : talentCertificationBOList) {
+        TalentCertificationBO talentCertificationBO;
+        List<TalentCertificationBO> resultList = new ArrayList<>();
+        for (int i = 0; i < talentCertificationBOList.size(); i++) {
             cardPO = null;
+            talentCertificationBO = null;
+            talentCertificationBO = talentCertificationBOList.get(i);
             cardPO = cardMapper.selectByPrimaryKey(talentCertificationBO.getCardId());
-            if(cardPO==null){
+            if (cardPO == null) {
                 continue;
             }
             talentCertificationBO.setCInitialWord(cardPO.getInitialWord());
             talentCertificationBO.setCTitle(cardPO.getTitle());
+
+            /**
+             * 判断人才类别
+             */
+            int flag;
+            String categoryFactor = (String) reqMap.get("category");
+            if (!StringUtils.isEmpty(categoryFactor)) {
+                String[] categoryArray = talentCertificationBO.getCategory().split(",");
+                flag = 0;
+                for (String category : categoryArray) {
+                    if (category.equals(categoryFactor)) {
+                        flag = 1;
+                    }
+                }
+                if (flag == 1) {
+                    resultList.add(talentCertificationBO);
+                }
+            }
         }
-        /**
-         * 判断人才类别
-         */
-        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), talentCertificationBOList));
+
+        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), resultList));
     }
 
     @Override
