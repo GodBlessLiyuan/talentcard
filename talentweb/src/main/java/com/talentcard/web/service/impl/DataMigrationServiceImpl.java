@@ -168,8 +168,8 @@ public class DataMigrationServiceImpl implements IDataMigrationService {
             talentCertificationInfoPO.setTalentCategory(talentBO.getCategory());
             //人才id
             talentCertificationInfoPO.setTalentId(talentBO.getTalentId());
-            insertResult = talentCertificationInfoMapper.insertSelective(talentCertificationInfoPO);
             insertResult = 0;
+            insertResult = talentCertificationInfoMapper.insertSelective(talentCertificationInfoPO);
             if (insertResult == 0) {
                 failureList.add(talentCertificationInfoPO);
             } else {
