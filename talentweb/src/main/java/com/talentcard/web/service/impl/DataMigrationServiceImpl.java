@@ -55,6 +55,8 @@ public class DataMigrationServiceImpl implements IDataMigrationService {
         hashMap.put("honour", null);
         List<TalentCertStatusBO> bos = certificationMapper.queryAllCert(hashMap);
         CertExamineRecordPO certExamineRecordPO;
+        //成功数量
+        Integer successNum = 0;
         //失败结果
         ArrayList<CertExamineRecordPO> failureList = new ArrayList();
         //重复结果
@@ -86,9 +88,12 @@ public class DataMigrationServiceImpl implements IDataMigrationService {
             insertResult = certExamineRecordMapper.insertSelective(certExamineRecordPO);
             if (insertResult == 0) {
                 failureList.add(certExamineRecordPO);
+            } else {
+                successNum++;
             }
         }
         HashMap<String, Object> result = new HashMap<>();
+        result.put("successNum", successNum);
         result.put("failureList", failureList);
         result.put("duplicateList", duplicateList);
         return new ResultVO(1000, result);
@@ -111,6 +116,8 @@ public class DataMigrationServiceImpl implements IDataMigrationService {
         List<TalentBO> bos = talentMapper.queryCert(reqMap);
 
         TalentCertificationInfoPO talentCertificationInfoPO;
+        //成功数量
+        Integer successNum = 0;
         //失败结果
         ArrayList<TalentCertificationInfoPO> failureList = new ArrayList();
         //重复结果
@@ -157,11 +164,14 @@ public class DataMigrationServiceImpl implements IDataMigrationService {
             talentCertificationInfoPO.setTalentCategory(talentBO.getCategory());
             insertResult = talentCertificationInfoMapper.insertSelective(talentCertificationInfoPO);
             insertResult = 0;
-            if (insertResult != 0) {
+            if (insertResult == 0) {
                 failureList.add(talentCertificationInfoPO);
+            } else {
+                successNum++;
             }
         }
         HashMap<String, Object> result = new HashMap<>();
+        result.put("successNum", successNum);
         result.put("failureList", failureList);
         result.put("duplicateList", duplicateList);
         return new ResultVO(1000, result);
