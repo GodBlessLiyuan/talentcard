@@ -48,19 +48,23 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
     ITalentInfoCertificationService iTalentInfoCertificationService;
     @Autowired
     TalentCertificationInfoMapper talentCertificationInfoMapper;
+    private byte ADD_VERIFY = 1;
+    private byte EDIT_VERIFY = 2;
 
     @Override
-    public Integer verifyEducation(ActivcateBO activcateBO, EducationDTO educationDTO) {
+    public Integer verifyEducation(ActivcateBO activcateBO, EducationDTO educationDTO, Byte type) {
         Long certId = activcateBO.getCertId();
         Long talentId = activcateBO.getTalentId();
         String openId = educationDTO.getOpenId();
         /**
          * 判断次数是否到3
          */
-        Integer educationInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 1);
-        Integer educationCertTimes = educationMapper.findTimesByCertId(certId);
-        if ((educationCertTimes + educationInsertCertTimes) >= 3) {
-            return 2670;
+        if (type == ADD_VERIFY) {
+            Integer educationInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 1);
+            Integer educationCertTimes = educationMapper.findTimesByCertId(certId);
+            if ((educationCertTimes + educationInsertCertTimes) >= 3) {
+                return 2670;
+            }
         }
 
         /**
@@ -86,17 +90,19 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
     }
 
     @Override
-    public Integer verifyQuality(ActivcateBO activcateBO, ProfQualityDTO profQualityDTO) {
+    public Integer verifyQuality(ActivcateBO activcateBO, ProfQualityDTO profQualityDTO, Byte type) {
         String openId = profQualityDTO.getOpenId();
         Long certId = activcateBO.getCertId();
         Long talentId = activcateBO.getTalentId();
         /**
          * 判断次数是否到3
          */
-        Integer qualityInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 3);
-        Integer qualityCertTimes = profQualityMapper.findTimesByCertId(certId);
-        if ((qualityCertTimes + qualityInsertCertTimes) >= 3) {
-            return 2670;
+        if (type == ADD_VERIFY) {
+            Integer qualityInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 3);
+            Integer qualityCertTimes = profQualityMapper.findTimesByCertId(certId);
+            if ((qualityCertTimes + qualityInsertCertTimes) >= 3) {
+                return 2670;
+            }
         }
         /**
          *判断该认证是否重复
@@ -124,17 +130,19 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
     }
 
     @Override
-    public Integer verifyTitle(ActivcateBO activcateBO, ProfTitleDTO profTitleDTO) {
+    public Integer verifyTitle(ActivcateBO activcateBO, ProfTitleDTO profTitleDTO, Byte type) {
         String openId = profTitleDTO.getOpenId();
         Long certId = activcateBO.getCertId();
         Long talentId = activcateBO.getTalentId();
         /**
          * 判断次数是否到3
          */
-        Integer titleInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 2);
-        Integer titleCertTimes = profTitleMapper.findTimesByCertId(certId);
-        if ((titleCertTimes + titleInsertCertTimes) >= 3) {
-            return 2670;
+        if (type == ADD_VERIFY) {
+            Integer titleInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 2);
+            Integer titleCertTimes = profTitleMapper.findTimesByCertId(certId);
+            if ((titleCertTimes + titleInsertCertTimes) >= 3) {
+                return 2670;
+            }
         }
         /**
          *判断该认证是否重复
@@ -161,17 +169,19 @@ public class VerifyTalentPropertyServiceImpl implements IVerifyTalentPropertySer
     }
 
     @Override
-    public Integer verifyHonour(ActivcateBO activcateBO, TalentHonourDTO talentHonourDTO) {
+    public Integer verifyHonour(ActivcateBO activcateBO, TalentHonourDTO talentHonourDTO, Byte type) {
         String openId = talentHonourDTO.getOpenId();
         Long certId = activcateBO.getCertId();
         Long talentId = activcateBO.getTalentId();
         /**
          * 判断次数是否到3
          */
-        Integer honourInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 4);
-        Integer honourCertTimes = talentHonourMapper.findTimesByCertId(certId);
-        if ((honourCertTimes + honourInsertCertTimes) >= 3) {
-            return 2670;
+        if (type == ADD_VERIFY) {
+            Integer honourInsertCertTimes = insertCertificationMapper.findCurrentCertificationTimes(openId, (byte) 4);
+            Integer honourCertTimes = talentHonourMapper.findTimesByCertId(certId);
+            if ((honourCertTimes + honourInsertCertTimes) >= 3) {
+                return 2670;
+            }
         }
         /**
          *判断该认证是否重复
