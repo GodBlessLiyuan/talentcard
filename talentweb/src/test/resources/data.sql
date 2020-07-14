@@ -164,7 +164,7 @@ INSERT INTO `t_cert_examine_record` VALUES (2, 2, 3, '原味鸡', 1, 1, 1, 1, 1,
 
 
 INSERT INTO t_talent_certification_info (`tci_id`, `talent_id`, `education`, `pt_category`, `pq_category`, `talent_category`, `honour_id`) VALUES ('1', '13', '', '0', '0', '1', '0');
-
+INSERT INTO `t_policy` (`policy_id`, `name`, `num`, `description`, `cards`, `categories`, `educations`, `titles`, `qualities`, `honour_ids`, `apply`, `color`, `rate`, `unit`, `times`, `bank`, `annex`, `annex_info`, `apply_form`, `funds`, `user_id`, `create_time`, `dr`) VALUES ('1', '技师全', 'E001', '测', '', '', '', '', '2', NULL, '1', '#FF8F1F', '1', '3', '1', '1', '1', '请输入附件信息', NULL, NULL, NULL, '2020-07-13 10:41:20', '1');
 -- INSERT INTO `t_edit_talent_record` VALUES (1, 2, NULL, 2, 1, '2020-7-10 09:03:31', '');
 -- INSERT INTO `t_edit_talent_record` VALUES (2, 2, NULL, 2, 2, '2020-7-10 09:03:33', '');
 -- INSERT INTO `t_edit_talent_record` VALUES (3, 2, NULL, 2, 3, '2020-7-10 09:03:35', '');

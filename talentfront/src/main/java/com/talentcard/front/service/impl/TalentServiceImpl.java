@@ -839,7 +839,7 @@ public class TalentServiceImpl implements ITalentService {
                 String unionId = getUserInfoUnionId(token, openId);
                 if (!StringUtils.isEmpty(unionId)) {
                     talentPO.setUnionId(unionId);
-                    talentMapper.add(talentPO);
+                    talentMapper.updateByPrimaryKeySelective(talentPO);
                 }
             }
         }
