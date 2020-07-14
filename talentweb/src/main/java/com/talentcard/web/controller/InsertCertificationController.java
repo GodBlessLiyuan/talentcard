@@ -49,8 +49,9 @@ public class InsertCertificationController {
                                @RequestParam(value = "talentId") Long talentId,
                                @RequestParam(value = "insertCertId") Long insertCertId,
                                @RequestParam(value = "result") Byte result,
-                               @RequestParam(value = "opinion", required = false, defaultValue = "") String opinion) {
-        return iInsertCertificationService.certResult(httpSession, talentId, insertCertId, result, opinion);
+                               @RequestParam(value = "opinion", required = false, defaultValue = "") String opinion,
+                               @RequestParam(value = "talentCategory", required = false, defaultValue = "") String talentCategory) {
+        return iInsertCertificationService.certResult(httpSession, talentId, insertCertId, result, opinion, talentCategory);
     }
 
     @RequestMapping("findOne")

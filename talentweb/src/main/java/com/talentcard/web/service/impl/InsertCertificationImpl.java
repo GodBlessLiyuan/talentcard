@@ -81,7 +81,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO certResult(HttpSession httpSession, Long talentId, Long insertCertId, Byte result, String opinion) {
+    public ResultVO certResult(HttpSession httpSession, Long talentId,
+                               Long insertCertId, Byte result, String opinion, String talentCategory) {
         TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
         if (talentPO == null || talentPO.getDr() == 2) {
             return new ResultVO(2500);
@@ -231,7 +232,11 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         /**
          * 新增认证审批通过同步更新tci表
          */
-        if (result == 1) {
+        if (result == InsertCertificationConstant.approveStatus) {
+            //更新talent表人才类别
+            talentPO.setCategory(talentCategory);
+            talentMapper.updateByPrimaryKeySelective(talentPO);
+            //更新tci表
             Integer updateTciResult = iTalentInfoCertificationService.update(talentId);
             if (updateTciResult != 0) {
                 return new ResultVO(2663, "更新tci表失败！");
