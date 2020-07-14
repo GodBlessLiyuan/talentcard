@@ -21,13 +21,13 @@ public interface IVerifyTalentPropertyService {
      * @param educationDTO
      * @return
      */
-    Integer verifyEducation(ActivcateBO activcateBO, EducationDTO educationDTO);
+    Integer verifyEducation(ActivcateBO activcateBO, EducationDTO educationDTO, Byte type);
 
-    Integer verifyQuality(ActivcateBO activcateBO, ProfQualityDTO profQualityDTO);
+    Integer verifyQuality(ActivcateBO activcateBO, ProfQualityDTO profQualityDTO, Byte type);
 
-    Integer verifyTitle(ActivcateBO activcateBO, ProfTitleDTO profTitleDTO);
+    Integer verifyTitle(ActivcateBO activcateBO, ProfTitleDTO profTitleDTO, Byte type);
 
-    Integer verifyHonour(ActivcateBO activcateBO, TalentHonourDTO talentHonourDTO);
+    Integer verifyHonour(ActivcateBO activcateBO, TalentHonourDTO talentHonourDTO, Byte type);
 
     /**
      * 编辑校验

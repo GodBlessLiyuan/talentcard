@@ -82,6 +82,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
     IEditTalentRecordService iEditTalentRecordService;
     @Autowired
     ICertApprovalService iCertApprovalService;
+    private byte EDIT_VERIFY = 2;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -140,7 +141,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
             verifyResult = iVerifyTalentPropertyService.editVerifyEducation(activcateBO, educationDTO);
         } else {
             //不相等等同于 新增校验
-            verifyResult = iVerifyTalentPropertyService.verifyEducation(activcateBO, educationDTO);
+            verifyResult = iVerifyTalentPropertyService.verifyEducation(activcateBO, educationDTO, EDIT_VERIFY);
         }
         if (verifyResult != 0) {
             return new ResultVO(verifyResult);
@@ -205,7 +206,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
             verifyResult = iVerifyTalentPropertyService.editVerifyQuality(activcateBO, profQualityDTO);
         } else {
             //不相等等同于 职业资格新增校验
-            verifyResult = iVerifyTalentPropertyService.verifyQuality(activcateBO, profQualityDTO);
+            verifyResult = iVerifyTalentPropertyService.verifyQuality(activcateBO, profQualityDTO, EDIT_VERIFY);
         }
         if (verifyResult != 0) {
             return new ResultVO(verifyResult);
@@ -267,7 +268,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
             verifyResult = iVerifyTalentPropertyService.editVerifyTitle(activcateBO, profTitleDTO);
         } else {
             //不相等等同于 职业资格新增校验
-            verifyResult = iVerifyTalentPropertyService.verifyTitle(activcateBO, profTitleDTO);
+            verifyResult = iVerifyTalentPropertyService.verifyTitle(activcateBO, profTitleDTO, EDIT_VERIFY);
         }
         if (verifyResult != 0) {
             return new ResultVO(verifyResult);
@@ -331,7 +332,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
             verifyResult = iVerifyTalentPropertyService.editVerifyHonour(activcateBO, talentHonourDTO);
         } else {
             //不相等等同于 职业资格新增校验
-            verifyResult = iVerifyTalentPropertyService.verifyHonour(activcateBO, talentHonourDTO);
+            verifyResult = iVerifyTalentPropertyService.verifyHonour(activcateBO, talentHonourDTO, EDIT_VERIFY);
         }
         if (verifyResult != 0) {
             return new ResultVO(verifyResult);
