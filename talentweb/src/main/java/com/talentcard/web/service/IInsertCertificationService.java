@@ -14,6 +14,7 @@ import java.util.HashMap;
 public interface IInsertCertificationService {
     /**
      * 查询
+     *
      * @param pageNum
      * @param pageSize
      * @param hashMap
@@ -23,16 +24,18 @@ public interface IInsertCertificationService {
 
     /**
      * 审批通过
+     *
      * @param talentId
      * @param insertCertId
      * @param result
      * @param opinion
      * @return
      */
-    ResultVO certResult(HttpSession httpSession,  Long talentId, Long insertCertId, Byte result, String opinion);
+    ResultVO certResult(HttpSession httpSession, Long talentId, Long insertCertId, Byte result, String opinion, String talentCategory);
 
     /**
      * 认证信息详情
+     *
      * @param talentId
      * @param insertCertId
      * @return
