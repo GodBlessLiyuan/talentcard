@@ -194,7 +194,7 @@
         <if test="startTime != null and startTime != ''">
             and create_time &gt;= #{startTime, jdbcType=CHAR}
         </if>
-        <if test="end != null || end != ''">
+        <if test="endTime != null and endTime!= ''">
             and create_time &lt;= #{endTime, jdbcType=CHAR}
         </if>
         <if test="honour != null and honour != ''">
