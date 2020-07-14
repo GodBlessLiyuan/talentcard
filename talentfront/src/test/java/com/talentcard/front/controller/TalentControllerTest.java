@@ -213,7 +213,7 @@ public class TalentControllerTest extends BaseTest{
 
         {
             //	application/x-png或者image/png都可以
-            MockMultipartFile mockMultipartFile = new MockMultipartFile("educPicture", "图标.png","image/png",new FileInputStream("C:\\Users\\DNY-026\\Desktop\\vssq\\mock\\share1.png"));
+            MockMultipartFile mockMultipartFile = new MockMultipartFile("educPicture", "图标.png","image/png",new FileInputStream("src\\test\\images\\share1.png"));
             MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/talent/identification").
                     file(mockMultipartFile).
                     param("openId", "oQetQ1Qe4bIp5h7mmsmNOwVXAn3U").
