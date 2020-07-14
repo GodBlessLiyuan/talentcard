@@ -80,6 +80,8 @@ public class TalentServiceImpl implements ITalentService {
     private BatchCertificateMapper batchCertificateMapper;
     @Autowired
     private TalentCertificationInfoMapper talentCertificationInfoMapper;
+    @Autowired
+    CertApprovalPassRecordMapper certApprovalPassRecordMapper;
 
     private static final String[] EXCEL_TITLE = {"姓名", "证件号码"};
     private static final String[] EXCEL_TITLE_RES = {"姓名", "证件号码", "人才卡", "人才类别", "人才荣誉", "认证结果", "说明"};
@@ -365,6 +367,7 @@ public class TalentServiceImpl implements ITalentService {
         certificationMapper.add(certificationPO);
         Long certificationId = certificationPO.getCertId();
 
+        TalentCertificationInfoPO talentCertificationInfoPO = new TalentCertificationInfoPO();
         //学历表
         EducationPO educationPO = new EducationPO();
         educationPO.setCertId(certificationId);
@@ -383,7 +386,12 @@ public class TalentServiceImpl implements ITalentService {
                 educationPO.setGraduateTime(oldEducationPO.getGraduateTime());
             }
         }
-        educationMapper.insertSelective(educationPO);
+        if (educationPO != null && educationPO.getEducation() != null && educationPO.getEducation() != 0) {
+            talentCertificationInfoPO.setEducation(educationPO.getEducation().toString());
+            educationMapper.insertSelective(educationPO);
+        } else {
+            talentCertificationInfoPO.setEducation("0");
+        }
 
         //职称表
         ProfTitlePO profTitlePO = new ProfTitlePO();
@@ -400,7 +408,12 @@ public class TalentServiceImpl implements ITalentService {
                 profTitlePO.setPicture(oldProfTitlePO.getPicture());
             }
         }
-        profTitleMapper.insertSelective(profTitlePO);
+        if (profTitlePO != null && profTitlePO.getCategory() != null && profTitlePO.getCategory() != 0) {
+            profTitleMapper.insertSelective(profTitlePO);
+            talentCertificationInfoPO.setPtCategory(profTitlePO.getCategory().toString());
+        } else {
+            talentCertificationInfoPO.setPtCategory("0");
+        }
 
 
         //职业资格表
@@ -418,7 +431,12 @@ public class TalentServiceImpl implements ITalentService {
                 profQualityPO.setPicture(oldProfQualityPO.getPicture());
             }
         }
-        profQualityMapper.insertSelective(profQualityPO);
+        if (profQualityPO != null && profQualityPO.getCategory() != null && profQualityPO.getCategory() != 0) {
+            profQualityMapper.insertSelective(profQualityPO);
+            talentCertificationInfoPO.setPqCategory(profQualityPO.getCategory().toString());
+        } else {
+            talentCertificationInfoPO.setPqCategory("0");
+        }
 
         //荣誉表
         TalentHonourPO talentHonourPO = new TalentHonourPO();
@@ -435,7 +453,12 @@ public class TalentServiceImpl implements ITalentService {
                 talentHonourPO.setInfo(oldTalentHonourPO.getInfo());
             }
         }
-        talentHonourMapper.insertSelective(talentHonourPO);
+        if (talentHonourPO != null && talentHonourPO.getHonourId() != null && talentHonourPO.getHonourId() != 0) {
+            talentHonourMapper.insertSelective(talentHonourPO);
+            talentCertificationInfoPO.setHonourId(talentHonourPO.getHonourId().toString());
+        } else {
+            talentCertificationInfoPO.setHonourId("0");
+        }
 
         ActivcateBO oldCard = talentMapper.activate(talentPO.getOpenId(), (byte) 5, (byte) 2);
         //修改基本信息表
@@ -489,6 +512,12 @@ public class TalentServiceImpl implements ITalentService {
         certApprovalPO.setResult((byte) 1);
         certApprovalMapper.insertSelective(certApprovalPO);
 
+        /**
+         * 新增tci表
+         */
+        talentCertificationInfoPO.setTalentId((talentId));
+        talentCertificationInfoPO.setTalentCategory(talentPO.getCategory());
+        talentCertificationInfoMapper.insertSelective(talentCertificationInfoPO);
         sendMessage(talentPO);
         return SUCCESS;
     }
