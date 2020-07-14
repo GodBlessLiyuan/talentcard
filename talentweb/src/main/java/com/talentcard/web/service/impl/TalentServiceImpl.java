@@ -513,6 +513,11 @@ public class TalentServiceImpl implements ITalentService {
         certApprovalMapper.insertSelective(certApprovalPO);
 
         /**
+         * 更新talent表
+         */
+        talentPO.setCardId(cardId);
+        talentMapper.updateByPrimaryKeySelective(talentPO);
+        /**
          * 新增tci表
          */
         talentCertificationInfoPO.setTalentId((talentId));
