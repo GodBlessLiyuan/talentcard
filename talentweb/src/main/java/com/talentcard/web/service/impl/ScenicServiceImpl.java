@@ -67,6 +67,7 @@ public class ScenicServiceImpl implements IScenicService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVO edit(ScenicDTO dto) {
+        dto.setCategoryIds(new Long[]{100L});
         ScenicPO existPO = scenicMapper.queryByName(dto.getName());
         if (null == dto.getScenicId()) {
             // 新建

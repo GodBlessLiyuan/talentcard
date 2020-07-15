@@ -503,7 +503,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         if (talentBO == null) {
             return new ResultVO(2500, "查无此人");
         }
-        //c表状态为1，代表这次为审批通过，则从record表取数据
+        //c表状态为1或者4，代表这次为审批通过，则从record表取数据
         //因为审批通过的数据，有可能会更改
         //驳回的审批数据则永远不会变，不需要从record表获取
         if (talentBO.getCertificationStatus() == 1 || talentBO.getCertificationStatus() == 4) {
