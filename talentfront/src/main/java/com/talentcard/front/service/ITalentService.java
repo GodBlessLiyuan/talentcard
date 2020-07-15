@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.common.vo.TalentTypeVO;
+import com.talentcard.front.dto.IdentificationDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -38,35 +39,11 @@ public interface ITalentService {
     ResultVO findInfo(String openId);
 
     /**
-     * @param openId
-     * @param education
-     * @param school
-     * @param firstClass
-     * @param major
-     * @param profQualityCategory
-     * @param profQualityInfo
-     * @param profTitleCategory
-     * @param profTitleInfo
-     * @param educPicture
-     * @param profTitlePicture
-     * @param profQualityPicture
+     * 认证
+     * @param identificationDTO
      * @return
      */
-    ResultVO identification(String openId,
-                            Integer education,
-                            String school,
-                            Byte firstClass,
-                            String major,
-                            Integer profQualityCategory,
-                            String profQualityInfo,
-                            Integer profTitleCategory,
-                            String profTitleInfo,
-                            Long honourId,
-                            String graduateTime,
-                            MultipartFile educPicture,
-                            MultipartFile profTitlePicture,
-                            MultipartFile profQualityPicture,
-                            MultipartFile talentHonourPicture);
+    ResultVO identification(IdentificationDTO identificationDTO);
 
 
     /**

@@ -3,6 +3,7 @@ package com.talentcard.front.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.front.dto.IdentificationDTO;
 import com.talentcard.front.service.ISmsService;
 import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.VerificationCodeUtil;
@@ -102,24 +103,8 @@ public class TalentController {
      * @return
      */
     @PostMapping("identification")
-    public ResultVO identification(@RequestParam(value = "openId") String openId,
-                                   @RequestParam(value = "education", required = false) Integer education,
-                                   @RequestParam(value = "school", required = false) String school,
-                                   @RequestParam(value = "firstClass", required = false) Byte firstClass,
-                                   @RequestParam(value = "major", required = false) String major,
-                                   @RequestParam(value = "profQualityCategory", required = false) Integer profQualityCategory,
-                                   @RequestParam(value = "profQualityInfo", required = false) String profQualityInfo,
-                                   @RequestParam(value = "profTitleCategory", required = false) Integer profTitleCategory,
-                                   @RequestParam(value = "profTitleInfo", required = false) String profTitleInfo,
-                                   @RequestParam(value = "honourId", required = false) Long honourId,
-                                   @RequestParam(value = "graduateTime", required = false) String graduateTime,
-                                   @RequestParam(value = "educPicture", required = false) MultipartFile educPicture,
-                                   @RequestParam(value = "profTitlePicture", required = false) MultipartFile profTitlePicture,
-                                   @RequestParam(value = "profQualityPicture", required = false) MultipartFile profQualityPicture,
-                                   @RequestParam(value = "talentHonourPicture", required = false) MultipartFile talentHonourPicture) {
-        return iTalentService.identification(openId, education, school, firstClass,
-                major, profQualityCategory, profQualityInfo, profTitleCategory, profTitleInfo,
-                honourId, graduateTime, educPicture, profTitlePicture, profQualityPicture, talentHonourPicture);
+    public ResultVO identification(@RequestBody IdentificationDTO identificationDTO) {
+        return iTalentService.identification(identificationDTO);
     }
 
     /**
@@ -144,7 +129,7 @@ public class TalentController {
 
 
     @PostMapping("updateUnionId")
-    public ResultVO updateUnionId(@RequestParam(value = "token")String token, @RequestParam(value = "openId")String openId){
+    public ResultVO updateUnionId(@RequestParam(value = "token") String token, @RequestParam(value = "openId") String openId) {
         return iTalentService.updateUnionId(token, openId);
     }
 }
