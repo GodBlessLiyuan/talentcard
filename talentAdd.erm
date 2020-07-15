@@ -41,7 +41,7 @@
 		<suspend_validator>false</suspend_validator>
 		<export_setting>
 			<export_ddl_setting>
-				<output_path>src\com\card\taelntAdd.sql</output_path>
+				<output_path>src\com\card\talentAdd.sql</output_path>
 				<encoding>GBK</encoding>
 				<line_feed>CR+LF</line_feed>
 				<is_open_after_saved>true</is_open_after_saved>
