@@ -27,7 +27,6 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
     public ResultVO query(Integer pageNum,Integer pageSize,Map<String, Object> map) {
         Page<UserFeedbackPO> page = PageHelper.startPage(pageNum, pageSize);
         List<UserFeedbackPO> pos = userFeedbackMapper.query(map);
-        System.out.println(map.toString());
         return new ResultVO(1000,new PageInfoVO<>(page.getTotal(), UserFeedbackVO.convert(pos)));
     }
 }
