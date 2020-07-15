@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.UserFeedbackMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.UserFeedbackPO">
+    <id column="uf_id" jdbcType="BIGINT" property="ufId" />
+    <result column="open_id" jdbcType="CHAR" property="openId" />
+    <result column="page_type" jdbcType="TINYINT" property="pageType" />
+    <result column="relate_item" jdbcType="TINYINT" property="relateItem" />
+    <result column="pro_describe" jdbcType="CHAR" property="proDescribe" />
+    <result column="submit_date" jdbcType="TIMESTAMP" property="submitDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uf_id, open_id, page_type, relate_item, pro_describe, submit_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_feedback
+    where uf_id = #{ufId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_user_feedback
+    where uf_id = #{ufId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.UserFeedbackPO">
+    insert into t_user_feedback (uf_id, open_id, page_type, 
+      relate_item, pro_describe, submit_date
+      )
+    values (#{ufId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{pageType,jdbcType=TINYINT}, 
+      #{relateItem,jdbcType=TINYINT}, #{proDescribe,jdbcType=CHAR}, #{submitDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.UserFeedbackPO">
+    insert into t_user_feedback
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ufId != null">
+        uf_id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="pageType != null">
+        page_type,
+      </if>
+      <if test="relateItem != null">
+        relate_item,
+      </if>
+      <if test="proDescribe != null">
+        pro_describe,
+      </if>
+      <if test="submitDate != null">
+        submit_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ufId != null">
+        #{ufId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=CHAR},
+      </if>
+      <if test="pageType != null">
+        #{pageType,jdbcType=TINYINT},
+      </if>
+      <if test="relateItem != null">
+        #{relateItem,jdbcType=TINYINT},
+      </if>
+      <if test="proDescribe != null">
+        #{proDescribe,jdbcType=CHAR},
+      </if>
+      <if test="submitDate != null">
+        #{submitDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.UserFeedbackPO">
+    update t_user_feedback
+    <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=CHAR},
+      </if>
+      <if test="pageType != null">
+        page_type = #{pageType,jdbcType=TINYINT},
+      </if>
+      <if test="relateItem != null">
+        relate_item = #{relateItem,jdbcType=TINYINT},
+      </if>
+      <if test="proDescribe != null">
+        pro_describe = #{proDescribe,jdbcType=CHAR},
+      </if>
+      <if test="submitDate != null">
+        submit_date = #{submitDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where uf_id = #{ufId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.UserFeedbackPO">
+    update t_user_feedback
+    set open_id = #{openId,jdbcType=CHAR},
+      page_type = #{pageType,jdbcType=TINYINT},
+      relate_item = #{relateItem,jdbcType=TINYINT},
+      pro_describe = #{proDescribe,jdbcType=CHAR},
+      submit_date = #{submitDate,jdbcType=TIMESTAMP}
+    where uf_id = #{ufId,jdbcType=BIGINT}
+  </update>
+<!--  and 会自动去掉-->
+  <select id="query" resultMap="BaseResultMap">
+    select  <include refid="Base_Column_List" />
+    from t_user_feedback
+    <where>
+      <if test="pageType!=null">
+        page_type=#{pageType,jdbcType=TINYINT}
+      </if>
+      <if test="relateItem!=null">
+        and relate_item=#{relateItem,jdbcType=TINYINT}
+      </if>
+    </where>
+
+  </select>
+</mapper>
