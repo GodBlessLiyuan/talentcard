@@ -191,10 +191,10 @@
         <if test="result != null and result != ''">
             and result = #{result, jdbcType=TINYINT}
         </if>
-        <if test="(startTime != null and startTime != '') and (endTime == null || endTime == '')">
+        <if test="startTime != null and startTime != ''">
             and create_time &gt;= #{startTime, jdbcType=CHAR}
         </if>
-        <if test="(startTime != null || startTime != '') and (endTime != null and endTime != '')">
+        <if test="endTime != null and endTime!= ''">
             and create_time &lt;= #{endTime, jdbcType=CHAR}
         </if>
         <if test="honour != null and honour != ''">
