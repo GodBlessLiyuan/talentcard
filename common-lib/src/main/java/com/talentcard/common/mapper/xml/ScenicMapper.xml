@@ -1,51 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.ScenicMapper">
-    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ScenicPO">
-        <id column="scenic_id" jdbcType="BIGINT" property="scenicId"/>
-        <result column="name" jdbcType="CHAR" property="name"/>
-        <result column="rate" jdbcType="INTEGER" property="rate"/>
-        <result column="unit" jdbcType="TINYINT" property="unit"/>
-        <result column="times" jdbcType="INTEGER" property="times"/>
-        <result column="avatar" jdbcType="CHAR" property="avatar"/>
-        <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="extra" jdbcType="VARCHAR" property="extra"/>
-        <result column="qr_code" jdbcType="CHAR" property="qrCode"/>
-        <result column="status" jdbcType="TINYINT" property="status"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="dr" jdbcType="TINYINT" property="dr"/>
-        <result column="subtitle" jdbcType="CHAR" property="subtitle"/>
-        <result column="starLevel" jdbcType="TINYINT" property="starlevel"/>
-        <result column="area" jdbcType="INTEGER" property="area"/>
-        <result column="location" jdbcType="CHAR" property="location"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    </resultMap>
-    <resultMap id="ScenicDetailResultMap" type="com.talentcard.common.bo.ScenicBO">
-        <id column="s_scenic_id" jdbcType="BIGINT" property="scenicId"/>
-        <result column="name" jdbcType="CHAR" property="name"/>
-        <result column="rate" jdbcType="INTEGER" property="rate"/>
-        <result column="unit" jdbcType="TINYINT" property="unit"/>
-        <result column="times" jdbcType="INTEGER" property="times"/>
-        <result column="avatar" jdbcType="CHAR" property="avatar"/>
-        <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="extra" jdbcType="VARCHAR" property="extra"/>
-        <result column="qr_code" jdbcType="CHAR" property="qrCode"/>
-        <result column="status" jdbcType="TINYINT" property="status"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="dr" jdbcType="TINYINT" property="dr"/>
-        <result column="subtitle" jdbcType="CHAR" property="subtitle"/>
-        <result column="starLevel" jdbcType="TINYINT" property="starlevel"/>
-        <result column="area" jdbcType="INTEGER" property="area"/>
-        <result column="location" jdbcType="CHAR" property="location"/>
-        <collection property="scenicPicturePOList" ofType="com.talentcard.common.pojo.ScenicPicturePO">
-            <id column="sp_id" jdbcType="BIGINT" property="spId"/>
-            <result column="sp_scenic_id" jdbcType="BIGINT" property="scenicId"/>
-            <result column="picture" jdbcType="CHAR" property="picture"/>
-        </collection>
-    </resultMap>
-    <sql id="Base_Column_List">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.ScenicPO">
+    <id column="scenic_id" jdbcType="BIGINT" property="scenicId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="rate" jdbcType="INTEGER" property="rate" />
+    <result column="unit" jdbcType="TINYINT" property="unit" />
+    <result column="times" jdbcType="INTEGER" property="times" />
+    <result column="avatar" jdbcType="CHAR" property="avatar" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="extra" jdbcType="VARCHAR" property="extra" />
+    <result column="qr_code" jdbcType="CHAR" property="qrCode" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+    <result column="subtitle" jdbcType="CHAR" property="subtitle" />
+    <result column="starlevel" jdbcType="TINYINT" property="starlevel" />
+    <result column="area" jdbcType="INTEGER" property="area" />
+    <result column="location" jdbcType="CHAR" property="location" />
+    <result column="discount" jdbcType="DOUBLE" property="discount" />
+  </resultMap>
+  <resultMap id="ScenicDetailResultMap" type="com.talentcard.common.bo.ScenicBO">
+    <id column="s_scenic_id" jdbcType="BIGINT" property="scenicId"/>
+    <result column="name" jdbcType="CHAR" property="name"/>
+    <result column="rate" jdbcType="INTEGER" property="rate"/>
+    <result column="unit" jdbcType="TINYINT" property="unit"/>
+    <result column="times" jdbcType="INTEGER" property="times"/>
+    <result column="avatar" jdbcType="CHAR" property="avatar"/>
+    <result column="description" jdbcType="VARCHAR" property="description"/>
+    <result column="extra" jdbcType="VARCHAR" property="extra"/>
+    <result column="qr_code" jdbcType="CHAR" property="qrCode"/>
+    <result column="status" jdbcType="TINYINT" property="status"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="dr" jdbcType="TINYINT" property="dr"/>
+    <result column="subtitle" jdbcType="CHAR" property="subtitle"/>
+    <result column="starlevel" jdbcType="TINYINT" property="starlevel"/>
+    <result column="area" jdbcType="INTEGER" property="area"/>
+    <result column="location" jdbcType="CHAR" property="location"/>
+    <collection property="scenicPicturePOList" ofType="com.talentcard.common.pojo.ScenicPicturePO">
+      <id column="sp_id" jdbcType="BIGINT" property="spId"/>
+      <result column="sp_scenic_id" jdbcType="BIGINT" property="scenicId"/>
+      <result column="picture" jdbcType="CHAR" property="picture"/>
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
     scenic_id, `name`, rate, unit, times, avatar, description, extra, qr_code, `status`, 
-    create_time, dr, subtitle, starlevel, area, `location`, update_time
+    create_time, update_time, dr, subtitle, starlevel, area, `location`, discount
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -57,19 +58,19 @@
     delete from t_scenic
     where scenic_id = #{scenicId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.ScenicPO" useGeneratedKeys="true" keyProperty="scenicId">
+  <insert id="insert" parameterType="com.talentcard.common.pojo.ScenicPO">
     insert into t_scenic (scenic_id, `name`, rate, 
       unit, times, avatar, description, 
       extra, qr_code, `status`, 
-      create_time, dr, subtitle, 
-      starlevel, area, `location`, 
-      update_time)
+      create_time, update_time, dr, 
+      subtitle, starlevel, area, 
+      `location`, discount)
     values (#{scenicId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{rate,jdbcType=INTEGER}, 
       #{unit,jdbcType=TINYINT}, #{times,jdbcType=INTEGER}, #{avatar,jdbcType=CHAR}, #{description,jdbcType=VARCHAR}, 
       #{extra,jdbcType=VARCHAR}, #{qrCode,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, #{subtitle,jdbcType=CHAR}, 
-      #{starlevel,jdbcType=TINYINT}, #{area,jdbcType=INTEGER}, #{location,jdbcType=CHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, 
+      #{subtitle,jdbcType=CHAR}, #{starlevel,jdbcType=TINYINT}, #{area,jdbcType=INTEGER}, 
+      #{location,jdbcType=CHAR}, #{discount,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.ScenicPO">
     insert into t_scenic
@@ -107,6 +108,9 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
       <if test="dr != null">
         dr,
       </if>
@@ -122,8 +126,8 @@
       <if test="location != null">
         `location`,
       </if>
-      <if test="updateTime != null">
-        update_time,
+      <if test="discount != null">
+        discount,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -160,6 +164,9 @@
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="dr != null">
         #{dr,jdbcType=TINYINT},
       </if>
@@ -175,8 +182,8 @@
       <if test="location != null">
         #{location,jdbcType=CHAR},
       </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
+      <if test="discount != null">
+        #{discount,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -213,6 +220,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="dr != null">
         dr = #{dr,jdbcType=TINYINT},
       </if>
@@ -228,8 +238,8 @@
       <if test="location != null">
         `location` = #{location,jdbcType=CHAR},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      <if test="discount != null">
+        discount = #{discount,jdbcType=DOUBLE},
       </if>
     </set>
     where scenic_id = #{scenicId,jdbcType=BIGINT}
@@ -246,12 +256,13 @@
       qr_code = #{qrCode,jdbcType=CHAR},
       `status` = #{status,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
       dr = #{dr,jdbcType=TINYINT},
       subtitle = #{subtitle,jdbcType=CHAR},
       starlevel = #{starlevel,jdbcType=TINYINT},
       area = #{area,jdbcType=INTEGER},
       `location` = #{location,jdbcType=CHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      discount = #{discount,jdbcType=DOUBLE}
     where scenic_id = #{scenicId,jdbcType=BIGINT}
   </update>
 

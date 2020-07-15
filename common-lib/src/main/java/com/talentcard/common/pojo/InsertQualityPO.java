@@ -33,5 +33,9 @@ public class InsertQualityPO implements Serializable {
      */
     private Byte dr;
 
+    private String picture2;
+
+    private String picture3;
+
     private static final long serialVersionUID = 1L;
 }

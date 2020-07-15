@@ -13,10 +13,12 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="if_certificate" jdbcType="TINYINT" property="ifCertificate" />
     <result column="graduate_time" jdbcType="CHAR" property="graduateTime" />
+    <result column="educ_picture2" jdbcType="CHAR" property="educPicture2" />
+    <result column="educ_picture3" jdbcType="CHAR" property="educPicture3" />
   </resultMap>
   <sql id="Base_Column_List">
     educ_id, education, school, first_class, major, educ_picture, cert_id, talent_id, 
-    `status`, if_certificate, graduate_time
+    `status`, if_certificate, graduate_time, educ_picture2, educ_picture3
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -32,11 +34,13 @@
     insert into t_education (educ_id, education, school, 
       first_class, major, educ_picture, 
       cert_id, talent_id, `status`, 
-      if_certificate, graduate_time)
+      if_certificate, graduate_time, educ_picture2, 
+      educ_picture3)
     values (#{educId,jdbcType=BIGINT}, #{education,jdbcType=INTEGER}, #{school,jdbcType=CHAR}, 
       #{firstClass,jdbcType=TINYINT}, #{major,jdbcType=CHAR}, #{educPicture,jdbcType=CHAR}, 
       #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
-      #{ifCertificate,jdbcType=TINYINT}, #{graduateTime,jdbcType=CHAR})
+      #{ifCertificate,jdbcType=TINYINT}, #{graduateTime,jdbcType=CHAR}, #{educPicture2,jdbcType=CHAR}, 
+      #{educPicture3,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EducationPO">
     insert into t_education
@@ -74,6 +78,12 @@
       <if test="graduateTime != null">
         graduate_time,
       </if>
+      <if test="educPicture2 != null">
+        educ_picture2,
+      </if>
+      <if test="educPicture3 != null">
+        educ_picture3,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="educId != null">
@@ -108,6 +118,12 @@
       </if>
       <if test="graduateTime != null">
         #{graduateTime,jdbcType=CHAR},
+      </if>
+      <if test="educPicture2 != null">
+        #{educPicture2,jdbcType=CHAR},
+      </if>
+      <if test="educPicture3 != null">
+        #{educPicture3,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
@@ -144,6 +160,12 @@
       <if test="graduateTime != null">
         graduate_time = #{graduateTime,jdbcType=CHAR},
       </if>
+      <if test="educPicture2 != null">
+        educ_picture2 = #{educPicture2,jdbcType=CHAR},
+      </if>
+      <if test="educPicture3 != null">
+        educ_picture3 = #{educPicture3,jdbcType=CHAR},
+      </if>
     </set>
     where educ_id = #{educId,jdbcType=BIGINT}
   </update>
@@ -158,7 +180,9 @@
       talent_id = #{talentId,jdbcType=BIGINT},
       `status` = #{status,jdbcType=TINYINT},
       if_certificate = #{ifCertificate,jdbcType=TINYINT},
-      graduate_time = #{graduateTime,jdbcType=CHAR}
+      graduate_time = #{graduateTime,jdbcType=CHAR},
+      educ_picture2 = #{educPicture2,jdbcType=CHAR},
+      educ_picture3 = #{educPicture3,jdbcType=CHAR}
     where educ_id = #{educId,jdbcType=BIGINT}
   </update>
 
