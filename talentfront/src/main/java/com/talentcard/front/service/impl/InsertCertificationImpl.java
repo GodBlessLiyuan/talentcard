@@ -142,6 +142,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertEducationPO.setInsertCertId(insertCertificationPO.getInsertCertId());
         insertEducationPO.setEducation(educationDTO.getEducation());
         insertEducationPO.setEducPicture(educationDTO.getEducPicture());
+        insertEducationPO.setEducPicture2(educationDTO.getEducPicture2());
+        insertEducationPO.setEducPicture3(educationDTO.getEducPicture3());
         insertEducationPO.setFirstClass(educationDTO.getFirstClass());
         insertEducationPO.setGraduateTime(educationDTO.getGraduateTime());
         insertEducationPO.setMajor(educationDTO.getMajor());
@@ -262,6 +264,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertQualityPO.setInfo(profQualityDTO.getInfo());
         insertQualityPO.setOpenId(profQualityDTO.getOpenId());
         insertQualityPO.setPicture(profQualityDTO.getPicture());
+        insertQualityPO.setPicture2(profQualityDTO.getPicture2());
+        insertQualityPO.setPicture3(profQualityDTO.getPicture3());
         insertQualityPO.setStatus(InsertCertificationConstant.waitingApproveStatus);
         insertQualityPO.setDr((byte) 1);
         insertQualityMapper.insertSelective(insertQualityPO);
@@ -372,6 +376,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertTitlePO.setInfo(profTitleDTO.getInfo());
         insertTitlePO.setOpenId(profTitleDTO.getOpenId());
         insertTitlePO.setPicture(profTitleDTO.getPicture());
+        insertTitlePO.setPicture2(profTitleDTO.getPicture2());
+        insertTitlePO.setPicture3(profTitleDTO.getPicture3());
         insertTitlePO.setStatus(InsertCertificationConstant.waitingApproveStatus);
         insertTitlePO.setDr((byte) 1);
         insertTitleMapper.insertSelective(insertTitlePO);
@@ -484,6 +490,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertHonourPO.setInfo(talentHonourDTO.getInfo());
         insertHonourPO.setOpenId(talentHonourDTO.getOpenId());
         insertHonourPO.setHonourPicture(talentHonourDTO.getHonourPicture());
+        insertHonourPO.setHonourPicture2(talentHonourDTO.getHonourPicture2());
+        insertHonourPO.setHonourPicture3(talentHonourDTO.getHonourPicture3());
         insertHonourPO.setStatus(InsertCertificationConstant.waitingApproveStatus);
         insertHonourPO.setDr((byte) 1);
         insertHonourMapper.insertSelective(insertHonourPO);
