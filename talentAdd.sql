@@ -16,13 +16,11 @@ CREATE TABLE m_farmhouse_daily
 	fh_d bigint NOT NULL AUTO_INCREMENT,
 	farmhouse_id bigint NOT NULL,
 	name char(16) NOT NULL,
-	daily_time date,
+	daily_time date NOT NULL,
 	number bigint,
 	times bigint,
 	PRIMARY KEY (fh_d),
-	UNIQUE (fh_d),
-	UNIQUE (farmhouse_id),
-	UNIQUE (name)
+	UNIQUE (fh_d)
 );
 
 
@@ -31,13 +29,11 @@ CREATE TABLE m_farmhouse_mouth
 	fh_m bigint NOT NULL AUTO_INCREMENT,
 	farmhouse_id bigint NOT NULL,
 	name char(16) NOT NULL,
-	mouth char(7),
+	month date NOT NULL,
 	number bigint,
 	times bigint,
 	PRIMARY KEY (fh_m),
-	UNIQUE (fh_m),
-	UNIQUE (farmhouse_id),
-	UNIQUE (name)
+	UNIQUE (fh_m)
 );
 
 

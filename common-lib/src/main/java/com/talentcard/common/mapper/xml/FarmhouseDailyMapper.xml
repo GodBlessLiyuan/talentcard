@@ -103,4 +103,12 @@
       times = #{times,jdbcType=BIGINT}
     where fh_d = #{fhD,jdbcType=BIGINT}
   </update>
+  <insert id="batchInsert" parameterType="java.util.List">
+    insert into m_farmhouse_daily (fh_d, farmhouse_id, `name`,
+      daily_time, `number`, times)
+    values <foreach collection="list" item="po" separator=",">
+    (null, #{po.farmhouseId,jdbcType=BIGINT}, #{po.name,jdbcType=CHAR},
+    #{po.dailyTime,jdbcType=DATE}, #{po.number,jdbcType=BIGINT}, #{po.times,jdbcType=BIGINT})
+  </foreach>
+  </insert>
 </mapper>

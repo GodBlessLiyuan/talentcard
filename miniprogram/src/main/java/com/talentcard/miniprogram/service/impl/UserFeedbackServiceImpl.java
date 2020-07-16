@@ -26,7 +26,7 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
         if (userFeedBackDTO == null || StringUtils.isEmpty(userFeedBackDTO.getOpenId())) {
             return new ResultVO(2000);
         }
-        //""在这里赋值不是，为null
+        //""在这里赋值为null
         if (userFeedBackDTO.getPageType() == null || userFeedBackDTO.getRelateItem() == null) {
             return new ResultVO(2000);
         }
@@ -35,6 +35,7 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
         userFeedbackPO.setOpenId(userFeedBackDTO.getOpenId());
         userFeedbackPO.setPageType(userFeedBackDTO.getPageType());
         userFeedbackPO.setRelateItem(userFeedBackDTO.getRelateItem());
+        userFeedbackPO.setChooseItem(userFeedBackDTO.getChooseItem());
         userFeedbackPO.setProDescribe(userFeedBackDTO.getProDescribe());
         userFeedbackPO.setSubmitDate(new Date());
         int flag = userFeedbackMapper.insert(userFeedbackPO);
