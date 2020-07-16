@@ -11,6 +11,7 @@ import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.IStaffService;
 import com.talentcard.front.service.ITalentService;
+import com.talentcard.front.service.ITalentTripService;
 import com.talentcard.front.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +57,8 @@ public class StaffServiceImpl implements IStaffService {
     private RedisMapUtil redisMapUtil;
     @Autowired
     private ITalentService iTalentService;
+    @Autowired
+    private ITalentTripService iTalentTripService;
 
     @Override
     public ResultVO ifEnableRegister(String openId, Long activityFirstContentId, Long activitySecondContentId) {

@@ -41,6 +41,7 @@ public class ScenicVO {
     //使用期限
     private String usagePeriod;
     private List<ScenicPicturePO> scenicPicturePOList;
+    private Double discount;
 
     /**
      * PO转VO
@@ -62,6 +63,7 @@ public class ScenicVO {
         scenicVO.setStarlevel(scenicPO.getStarlevel());
         scenicVO.setArea(scenicPO.getArea());
         scenicVO.setLocation(scenicPO.getLocation());
+        scenicVO.setDiscount(scenicPO.getDiscount());
 
         //avatar
         if (scenicPO.getAvatar() != null && !scenicPO.getAvatar().equals("")) {
