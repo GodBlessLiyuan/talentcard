@@ -28,7 +28,7 @@
         page_type=#{pageType}
       </if>
       <if test="chooseItem!=null">
-        and choose_item like trim(replace ('%' #{chooseItem,jdbcType=CHAR} '%' ,' ',''))
+        and choose_item like trim(replace (#{chooseItem,jdbcType=CHAR} '%' ,' ',''))
       </if>
     </where>
   </select>

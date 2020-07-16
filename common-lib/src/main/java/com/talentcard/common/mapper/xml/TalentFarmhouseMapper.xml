@@ -146,7 +146,7 @@
     left join t_talent tt on ttf.open_id=tt.open_id
     where ttf.dr=1
     <if test="name!=null">
-      and tf.name like trim(replace ('%' #{name,jdbcType=CHAR} '%' ,' ',''))
+      and tf.name like trim(replace (#{name,jdbcType=CHAR} '%' ,' ',''))
     </if>
     <if test="cardID!=null">
      and tt.card_id=#{cardID,jdbcType=BIGINT}
