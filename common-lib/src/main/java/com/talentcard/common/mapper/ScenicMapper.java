@@ -31,6 +31,7 @@ public interface ScenicMapper extends BaseMapper<ScenicPO, Long> {
 
     /**
      * 查询符合条件的景区
+     *
      * @param scenicIdList
      */
     List<ScenicPO> findEnjoyScenic(@Param("scenicIdList") List<Long> scenicIdList,
@@ -41,8 +42,18 @@ public interface ScenicMapper extends BaseMapper<ScenicPO, Long> {
 
     /**
      * 根据目录id得到一个具体信息
+     *
      * @param activitySecondContentId
      * @return
      */
     ScenicBO findOne(@Param("activitySecondContentId") Long activitySecondContentId);
+
+    /**
+     * 根据景区id和openId判断是否有享受该景区的权利
+     * @param cardId
+     * @param activitySecondContentId
+     * @return
+     */
+    Integer ifEnjoyScenic(@Param("cardId") Long cardId,
+                          @Param("activitySecondContentId") Long activitySecondContentId);
 }

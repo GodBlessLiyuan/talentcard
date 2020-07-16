@@ -279,7 +279,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
      * @param openId
      * @return
      */
-    private TripAvailableVO getTalentTripAllNum(String openId) {
+    @Override
+    public TripAvailableVO getTalentTripAllNum(String openId) {
 
         String s_available = redisMapUtil.hget(openId, TalentConstant.TALENT_AVAILABLE);
         if (!StringUtils.isEmpty(s_available)) {
