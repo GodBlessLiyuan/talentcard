@@ -89,6 +89,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         educationPO.setGraduateTime(educationDTO.getGraduateTime());
         educationPO.setFirstClass(educationDTO.getFirstClass());
         educationPO.setEducPicture(educationDTO.getEducPicture());
+        educationPO.setEducPicture2(educationDTO.getEducPicture2());
+        educationPO.setEducPicture3(educationDTO.getEducPicture3());
         educationPO.setSchool(educationDTO.getSchool());
         educationPO.setMajor(educationDTO.getMajor());
         educationPO.setEducation(educationDTO.getEducation());
@@ -143,6 +145,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
          */
         ProfQualityPO profQualityPO = new ProfQualityPO();
         profQualityPO.setPicture(profQualityDTO.getPicture());
+        profQualityPO.setPicture2(profQualityDTO.getPicture2());
+        profQualityPO.setPicture3(profQualityDTO.getPicture3());
         profQualityPO.setStatus((byte) 1);
         profQualityPO.setTalentId(talentId);
         profQualityPO.setCertId(certId);
@@ -195,6 +199,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
          */
         ProfTitlePO profTitlePO = new ProfTitlePO();
         profTitlePO.setPicture(profTitleDTO.getPicture());
+        profTitlePO.setPicture2(profTitleDTO.getPicture2());
+        profTitlePO.setPicture3(profTitleDTO.getPicture3());
         profTitlePO.setInfo(profTitleDTO.getInfo());
         profTitlePO.setCategory(profTitleDTO.getCategory());
         profTitlePO.setCertId(certId);
@@ -249,6 +255,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         TalentHonourPO talentHonourPO = new TalentHonourPO();
         talentHonourPO.setInfo(talentHonourDTO.getInfo());
         talentHonourPO.setHonourPicture(talentHonourDTO.getHonourPicture());
+        talentHonourPO.setHonourPicture2(talentHonourDTO.getHonourPicture2());
+        talentHonourPO.setHonourPicture3(talentHonourDTO.getHonourPicture3());
         talentHonourPO.setHonourId(talentHonourDTO.getHonourId());
         talentHonourPO.setCertId(certId);
         talentHonourPO.setIfCertificate((byte) 1);

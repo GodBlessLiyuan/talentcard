@@ -14,6 +14,7 @@ import com.talentcard.common.utils.StringToObjUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.common.vo.TalentTypeVO;
+import com.talentcard.front.dto.IdentificationDTO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.AccessTokenUtil;
@@ -419,21 +420,33 @@ public class TalentServiceImpl implements ITalentService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO identification(String openId,
-                                   Integer education,
-                                   String school,
-                                   Byte firstClass,
-                                   String major,
-                                   Integer profQualityCategory,
-                                   String profQualityInfo,
-                                   Integer profTitleCategory,
-                                   String profTitleInfo,
-                                   Long honourId,
-                                   String graduateTime,
-                                   MultipartFile educPicture,
-                                   MultipartFile profTitlePicture,
-                                   MultipartFile profQualityPicture,
-                                   MultipartFile talentHonourPicture) {
+    public ResultVO identification(IdentificationDTO identificationDTO) {
+        /**
+         * 参数列举
+         */
+        String openId = identificationDTO.getOpenId();
+        Integer education = identificationDTO.getEducation();
+        String school = identificationDTO.getSchool();
+        Byte firstClass = identificationDTO.getFirstClass();
+        String major = identificationDTO.getMajor();
+        Integer profQualityCategory = identificationDTO.getProfQualityCategory();
+        String profQualityInfo = identificationDTO.getProfQualityInfo();
+        Integer profTitleCategory = identificationDTO.getProfTitleCategory();
+        String profTitleInfo = identificationDTO.getProfTitleInfo();
+        Long honourId = identificationDTO.getHonourId();
+        String graduateTime = identificationDTO.getGraduateTime();
+        String educPicture = identificationDTO.getEducPicture();
+        String educPicture2 = identificationDTO.getEducPicture2();
+        String educPicture3 = identificationDTO.getEducPicture3();
+        String profTitlePicture = identificationDTO.getProfTitlePicture();
+        String profTitlePicture2 = identificationDTO.getProfTitlePicture2();
+        String profTitlePicture3 = identificationDTO.getProfTitlePicture3();
+        String profQualityPicture = identificationDTO.getProfQualityPicture();
+        String profQualityPicture2 = identificationDTO.getProfQualityPicture2();
+        String profQualityPicture3 = identificationDTO.getProfQualityPicture3();
+        String talentHonourPicture = identificationDTO.getTalentHonourPicture();
+        String talentHonourPicture2 = identificationDTO.getTalentHonourPicture2();
+        String talentHonourPicture3 = identificationDTO.getTalentHonourPicture3();
         //人才表；通过openId获取talent表里唯一的信息
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
         if (talentPO == null) {
@@ -481,30 +494,6 @@ public class TalentServiceImpl implements ITalentService {
         }
         //设置状态值 状态3为认证未审批
         Byte status = (byte) 3;
-        //上传文件
-        String educUrl = "";
-        String profTitleUrl = "";
-        String profQualityUrl = "";
-        String talentHonourUrl = "";
-        if (educPicture != null) {
-            educUrl = FileUtil.uploadFile
-                    (educPicture, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getEducationDir(), "education");
-        }
-        if (profTitlePicture != null) {
-            profTitleUrl = FileUtil.uploadFile
-                    (profTitlePicture, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getProfTitleDir(), "profTitle");
-        }
-        if (profQualityPicture != null) {
-            profQualityUrl = FileUtil.uploadFile
-                    (profQualityPicture, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getProfQualityDir(), "profQuality");
-        }
-        if (talentHonourPicture != null) {
-            talentHonourUrl = FileUtil.uploadFile
-                    (talentHonourPicture, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getTalentHonourDir(), "talentHonour");
-        }
-        if (educUrl.equals("") && profTitleUrl.equals("") && profQualityUrl.equals("") && talentHonourUrl.equals("")) {
-            return new ResultVO(2304, "上传文件失败");
-        }
 
         //认证表
         CertificationPO certificationPO = new CertificationPO();
@@ -543,7 +532,9 @@ public class TalentServiceImpl implements ITalentService {
         educationPO.setSchool(school);
         educationPO.setFirstClass(firstClass);
         educationPO.setMajor(major);
-        educationPO.setEducPicture(educUrl);
+        educationPO.setEducPicture(educPicture);
+        educationPO.setEducPicture2(educPicture2);
+        educationPO.setEducPicture3(educPicture3);
         educationPO.setCertId(certificationId);
         educationPO.setTalentId(talentId);
         educationPO.setStatus(status);
@@ -560,7 +551,9 @@ public class TalentServiceImpl implements ITalentService {
         ProfTitlePO profTitlePO = new ProfTitlePO();
         profTitlePO.setCategory(profTitleCategory);
         profTitlePO.setInfo(profTitleInfo);
-        profTitlePO.setPicture(profTitleUrl);
+        profTitlePO.setPicture(profTitlePicture);
+        profTitlePO.setPicture2(profTitlePicture2);
+        profTitlePO.setPicture3(profTitlePicture3);
         profTitlePO.setCertId(certificationId);
         profTitlePO.setTalentId(talentId);
         profTitlePO.setStatus(status);
@@ -576,7 +569,9 @@ public class TalentServiceImpl implements ITalentService {
         ProfQualityPO profQualityPO = new ProfQualityPO();
         profQualityPO.setCategory(profQualityCategory);
         profQualityPO.setInfo(profQualityInfo);
-        profQualityPO.setPicture(profQualityUrl);
+        profQualityPO.setPicture(profQualityPicture);
+        profQualityPO.setPicture2(profQualityPicture2);
+        profQualityPO.setPicture3(profQualityPicture3);
         profQualityPO.setCertId(certificationId);
         profQualityPO.setTalentId(talentId);
         profQualityPO.setStatus(status);
@@ -591,7 +586,9 @@ public class TalentServiceImpl implements ITalentService {
         //人才荣誉表
         TalentHonourPO talentHonourPO = new TalentHonourPO();
         talentHonourPO.setHonourId(honourId);
-        talentHonourPO.setHonourPicture(talentHonourUrl);
+        talentHonourPO.setHonourPicture(talentHonourPicture);
+        talentHonourPO.setHonourPicture2(talentHonourPicture2);
+        talentHonourPO.setHonourPicture3(talentHonourPicture3);
         talentHonourPO.setCertId(certificationId);
         talentHonourPO.setTalentId(talentId);
         talentHonourPO.setStatus(status);

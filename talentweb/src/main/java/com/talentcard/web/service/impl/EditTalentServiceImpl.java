@@ -152,6 +152,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
         educationPO.setGraduateTime(educationDTO.getGraduateTime());
         educationPO.setFirstClass(educationDTO.getFirstClass());
         educationPO.setEducPicture(educationDTO.getEducPicture());
+        educationPO.setEducPicture2(educationDTO.getEducPicture2());
+        educationPO.setEducPicture3(educationDTO.getEducPicture3());
         educationPO.setSchool(educationDTO.getSchool());
         educationPO.setMajor(educationDTO.getMajor());
         educationPO.setEducation(educationDTO.getEducation());
@@ -215,6 +217,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 编辑
          */
         profQualityPO.setPicture(profQualityDTO.getPicture());
+        profQualityPO.setPicture2(profQualityDTO.getPicture2());
+        profQualityPO.setPicture3(profQualityDTO.getPicture3());
         profQualityPO.setInfo(profQualityDTO.getInfo());
         profQualityPO.setCategory(profQualityDTO.getCategory());
         profQualityMapper.updateByPrimaryKeySelective(profQualityPO);
@@ -278,6 +282,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 编辑
          */
         profTitlePO.setPicture(profTitleDTO.getPicture());
+        profTitlePO.setPicture2(profTitleDTO.getPicture2());
+        profTitlePO.setPicture3(profTitleDTO.getPicture3());
         profTitlePO.setInfo(profTitleDTO.getInfo());
         profTitlePO.setCategory(profTitleDTO.getCategory());
         profTitleMapper.updateByPrimaryKeySelective(profTitlePO);
@@ -342,6 +348,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
          */
         talentHonourPO.setInfo(talentHonourDTO.getInfo());
         talentHonourPO.setHonourPicture(talentHonourDTO.getHonourPicture());
+        talentHonourPO.setHonourPicture2(talentHonourDTO.getHonourPicture2());
+        talentHonourPO.setHonourPicture3(talentHonourDTO.getHonourPicture3());
         talentHonourPO.setHonourId(talentHonourDTO.getHonourId());
         talentHonourMapper.updateByPrimaryKeySelective(talentHonourPO);
         /**
