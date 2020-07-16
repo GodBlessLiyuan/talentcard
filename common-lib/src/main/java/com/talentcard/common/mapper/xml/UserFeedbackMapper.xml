@@ -5,12 +5,13 @@
     <id column="uf_id" jdbcType="BIGINT" property="ufId" />
     <result column="open_id" jdbcType="CHAR" property="openId" />
     <result column="page_type" jdbcType="TINYINT" property="pageType" />
-    <result column="relate_item" jdbcType="TINYINT" property="relateItem" />
+    <result column="relate_item" jdbcType="CHAR" property="relateItem" />
+    <result column="choose_item" jdbcType="CHAR" property="chooseItem" />
     <result column="pro_describe" jdbcType="CHAR" property="proDescribe" />
     <result column="submit_date" jdbcType="TIMESTAMP" property="submitDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    uf_id, open_id, page_type, relate_item, pro_describe, submit_date
+    uf_id, open_id, page_type, relate_item, choose_item, pro_describe, submit_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -18,17 +19,30 @@
     from t_user_feedback
     where uf_id = #{ufId,jdbcType=BIGINT}
   </select>
+  <select id="query" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_feedback
+    <where>
+      <if test="pageType!=null">
+        page_type=#{pageType}
+      </if>
+      <if test="chooseItem!=null">
+        and trim(replace(choose_item,' ','')) like trim(replace ('%' #{chooseItem,jdbcType=CHAR} '%' ,' ',''))
+      </if>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_user_feedback
     where uf_id = #{ufId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.UserFeedbackPO">
     insert into t_user_feedback (uf_id, open_id, page_type, 
-      relate_item, pro_describe, submit_date
-      )
+      relate_item, choose_item, pro_describe, 
+      submit_date)
     values (#{ufId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{pageType,jdbcType=TINYINT}, 
-      #{relateItem,jdbcType=TINYINT}, #{proDescribe,jdbcType=CHAR}, #{submitDate,jdbcType=TIMESTAMP}
-      )
+      #{relateItem,jdbcType=CHAR}, #{chooseItem,jdbcType=CHAR}, #{proDescribe,jdbcType=CHAR}, 
+      #{submitDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.UserFeedbackPO">
     insert into t_user_feedback
@@ -44,6 +58,9 @@
       </if>
       <if test="relateItem != null">
         relate_item,
+      </if>
+      <if test="chooseItem != null">
+        choose_item,
       </if>
       <if test="proDescribe != null">
         pro_describe,
@@ -63,7 +80,10 @@
         #{pageType,jdbcType=TINYINT},
       </if>
       <if test="relateItem != null">
-        #{relateItem,jdbcType=TINYINT},
+        #{relateItem,jdbcType=CHAR},
+      </if>
+      <if test="chooseItem != null">
+        #{chooseItem,jdbcType=CHAR},
       </if>
       <if test="proDescribe != null">
         #{proDescribe,jdbcType=CHAR},
@@ -83,7 +103,10 @@
         page_type = #{pageType,jdbcType=TINYINT},
       </if>
       <if test="relateItem != null">
-        relate_item = #{relateItem,jdbcType=TINYINT},
+        relate_item = #{relateItem,jdbcType=CHAR},
+      </if>
+      <if test="chooseItem != null">
+        choose_item = #{chooseItem,jdbcType=CHAR},
       </if>
       <if test="proDescribe != null">
         pro_describe = #{proDescribe,jdbcType=CHAR},
@@ -98,23 +121,11 @@
     update t_user_feedback
     set open_id = #{openId,jdbcType=CHAR},
       page_type = #{pageType,jdbcType=TINYINT},
-      relate_item = #{relateItem,jdbcType=TINYINT},
+      relate_item = #{relateItem,jdbcType=CHAR},
+      choose_item = #{chooseItem,jdbcType=CHAR},
       pro_describe = #{proDescribe,jdbcType=CHAR},
       submit_date = #{submitDate,jdbcType=TIMESTAMP}
     where uf_id = #{ufId,jdbcType=BIGINT}
   </update>
-<!--  and 会自动去掉-->
-  <select id="query" resultMap="BaseResultMap">
-    select  <include refid="Base_Column_List" />
-    from t_user_feedback
-    <where>
-      <if test="pageType!=null">
-        page_type=#{pageType,jdbcType=TINYINT}
-      </if>
-      <if test="relateItem!=null">
-        and relate_item=#{relateItem,jdbcType=TINYINT}
-      </if>
-    </where>
 
-  </select>
 </mapper>

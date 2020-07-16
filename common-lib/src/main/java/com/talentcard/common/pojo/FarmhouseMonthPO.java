@@ -4,17 +4,17 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * m_farmhouse_mouth
+ * m_farmhouse_month
  * @author 
  */
-public class FarmhouseMouthPO implements Serializable {
+public class FarmhouseMonthPO implements Serializable {
     private Long fhM;
 
     private Long farmhouseId;
 
     private String name;
 
-    private Date mouth;
+    private Date month;
 
     private Long number;
 
@@ -46,12 +46,12 @@ public class FarmhouseMouthPO implements Serializable {
         this.name = name;
     }
 
-    public Date getMouth() {
-        return mouth;
+    public Date getMonth() {
+        return month;
     }
 
-    public void setMouth(Date mouth) {
-        this.mouth = mouth;
+    public void setMonth(Date month) {
+        this.month = month;
     }
 
     public Long getNumber() {
@@ -81,11 +81,11 @@ public class FarmhouseMouthPO implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        FarmhouseMouthPO other = (FarmhouseMouthPO) that;
+        FarmhouseMonthPO other = (FarmhouseMonthPO) that;
         return (this.getFhM() == null ? other.getFhM() == null : this.getFhM().equals(other.getFhM()))
             && (this.getFarmhouseId() == null ? other.getFarmhouseId() == null : this.getFarmhouseId().equals(other.getFarmhouseId()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getMouth() == null ? other.getMouth() == null : this.getMouth().equals(other.getMouth()))
+            && (this.getMonth() == null ? other.getMonth() == null : this.getMonth().equals(other.getMonth()))
             && (this.getNumber() == null ? other.getNumber() == null : this.getNumber().equals(other.getNumber()))
             && (this.getTimes() == null ? other.getTimes() == null : this.getTimes().equals(other.getTimes()));
     }
@@ -97,7 +97,7 @@ public class FarmhouseMouthPO implements Serializable {
         result = prime * result + ((getFhM() == null) ? 0 : getFhM().hashCode());
         result = prime * result + ((getFarmhouseId() == null) ? 0 : getFarmhouseId().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result + ((getMouth() == null) ? 0 : getMouth().hashCode());
+        result = prime * result + ((getMonth() == null) ? 0 : getMonth().hashCode());
         result = prime * result + ((getNumber() == null) ? 0 : getNumber().hashCode());
         result = prime * result + ((getTimes() == null) ? 0 : getTimes().hashCode());
         return result;
@@ -112,7 +112,7 @@ public class FarmhouseMouthPO implements Serializable {
         sb.append(", fhM=").append(fhM);
         sb.append(", farmhouseId=").append(farmhouseId);
         sb.append(", name=").append(name);
-        sb.append(", mouth=").append(mouth);
+        sb.append(", month=").append(month);
         sb.append(", number=").append(number);
         sb.append(", times=").append(times);
         sb.append(", serialVersionUID=").append(serialVersionUID);

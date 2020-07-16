@@ -14,7 +14,9 @@ public class UserFeedbackPO implements Serializable {
 
     private Byte pageType;
 
-    private Byte relateItem;
+    private String relateItem;
+
+    private String chooseItem;
 
     private String proDescribe;
 
@@ -46,12 +48,20 @@ public class UserFeedbackPO implements Serializable {
         this.pageType = pageType;
     }
 
-    public Byte getRelateItem() {
+    public String getRelateItem() {
         return relateItem;
     }
 
-    public void setRelateItem(Byte relateItem) {
+    public void setRelateItem(String relateItem) {
         this.relateItem = relateItem;
+    }
+
+    public String getChooseItem() {
+        return chooseItem;
+    }
+
+    public void setChooseItem(String chooseItem) {
+        this.chooseItem = chooseItem;
     }
 
     public String getProDescribe() {
@@ -86,6 +96,7 @@ public class UserFeedbackPO implements Serializable {
             && (this.getOpenId() == null ? other.getOpenId() == null : this.getOpenId().equals(other.getOpenId()))
             && (this.getPageType() == null ? other.getPageType() == null : this.getPageType().equals(other.getPageType()))
             && (this.getRelateItem() == null ? other.getRelateItem() == null : this.getRelateItem().equals(other.getRelateItem()))
+            && (this.getChooseItem() == null ? other.getChooseItem() == null : this.getChooseItem().equals(other.getChooseItem()))
             && (this.getProDescribe() == null ? other.getProDescribe() == null : this.getProDescribe().equals(other.getProDescribe()))
             && (this.getSubmitDate() == null ? other.getSubmitDate() == null : this.getSubmitDate().equals(other.getSubmitDate()));
     }
@@ -98,6 +109,7 @@ public class UserFeedbackPO implements Serializable {
         result = prime * result + ((getOpenId() == null) ? 0 : getOpenId().hashCode());
         result = prime * result + ((getPageType() == null) ? 0 : getPageType().hashCode());
         result = prime * result + ((getRelateItem() == null) ? 0 : getRelateItem().hashCode());
+        result = prime * result + ((getChooseItem() == null) ? 0 : getChooseItem().hashCode());
         result = prime * result + ((getProDescribe() == null) ? 0 : getProDescribe().hashCode());
         result = prime * result + ((getSubmitDate() == null) ? 0 : getSubmitDate().hashCode());
         return result;
@@ -113,6 +125,7 @@ public class UserFeedbackPO implements Serializable {
         sb.append(", openId=").append(openId);
         sb.append(", pageType=").append(pageType);
         sb.append(", relateItem=").append(relateItem);
+        sb.append(", chooseItem=").append(chooseItem);
         sb.append(", proDescribe=").append(proDescribe);
         sb.append(", submitDate=").append(submitDate);
         sb.append(", serialVersionUID=").append(serialVersionUID);
