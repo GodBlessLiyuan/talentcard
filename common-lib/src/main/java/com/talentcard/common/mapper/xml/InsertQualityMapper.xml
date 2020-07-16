@@ -10,9 +10,12 @@
     <result column="insert_cert_id" jdbcType="BIGINT" property="insertCertId" />
     <result column="open_id" jdbcType="CHAR" property="openId" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
+    <result column="picture2" jdbcType="CHAR" property="picture2" />
+    <result column="picture3" jdbcType="CHAR" property="picture3" />
   </resultMap>
   <sql id="Base_Column_List">
-    insert_pq_id, category, picture, info, `status`, insert_cert_id, open_id, dr
+    insert_pq_id, category, picture, info, `status`, insert_cert_id, open_id, dr, picture2, 
+    picture3
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -27,10 +30,12 @@
   <insert id="insert" parameterType="com.talentcard.common.pojo.InsertQualityPO">
     insert into t_insert_quality (insert_pq_id, category, picture, 
       info, `status`, insert_cert_id, 
-      open_id, dr)
+      open_id, dr, picture2, picture3
+      )
     values (#{insertPqId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{picture,jdbcType=CHAR}, 
       #{info,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{insertCertId,jdbcType=BIGINT}, 
-      #{openId,jdbcType=CHAR}, #{dr,jdbcType=TINYINT})
+      #{openId,jdbcType=CHAR}, #{dr,jdbcType=TINYINT}, #{picture2,jdbcType=CHAR}, #{picture3,jdbcType=CHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.InsertQualityPO">
     insert into t_insert_quality
@@ -59,6 +64,12 @@
       <if test="dr != null">
         dr,
       </if>
+      <if test="picture2 != null">
+        picture2,
+      </if>
+      <if test="picture3 != null">
+        picture3,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="insertPqId != null">
@@ -84,6 +95,12 @@
       </if>
       <if test="dr != null">
         #{dr,jdbcType=TINYINT},
+      </if>
+      <if test="picture2 != null">
+        #{picture2,jdbcType=CHAR},
+      </if>
+      <if test="picture3 != null">
+        #{picture3,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
@@ -111,6 +128,12 @@
       <if test="dr != null">
         dr = #{dr,jdbcType=TINYINT},
       </if>
+      <if test="picture2 != null">
+        picture2 = #{picture2,jdbcType=CHAR},
+      </if>
+      <if test="picture3 != null">
+        picture3 = #{picture3,jdbcType=CHAR},
+      </if>
     </set>
     where insert_pq_id = #{insertPqId,jdbcType=BIGINT}
   </update>
@@ -122,7 +145,9 @@
       `status` = #{status,jdbcType=TINYINT},
       insert_cert_id = #{insertCertId,jdbcType=BIGINT},
       open_id = #{openId,jdbcType=CHAR},
-      dr = #{dr,jdbcType=TINYINT}
+      dr = #{dr,jdbcType=TINYINT},
+      picture2 = #{picture2,jdbcType=CHAR},
+      picture3 = #{picture3,jdbcType=CHAR}
     where insert_pq_id = #{insertPqId,jdbcType=BIGINT}
   </update>
   <select id="selectByInsertCertId" parameterType="java.lang.Long" resultMap="BaseResultMap">

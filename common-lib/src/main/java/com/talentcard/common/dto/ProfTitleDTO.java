@@ -15,6 +15,8 @@ public class ProfTitleDTO {
     private Integer category;
     private String info;
     private String picture;
+    private String picture2;
+    private String picture3;
     private String openId;
     private Byte status;
     private Long ptId;

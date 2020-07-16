@@ -38,6 +38,8 @@ public class ScenicPO implements Serializable {
 
     private Date createTime;
 
+    private Date updateTime;
+
     /**
      * 1 未删除  2 已删除
      */
@@ -51,7 +53,7 @@ public class ScenicPO implements Serializable {
 
     private String location;
 
-    private Date updateTime;
+    private Double discount;
 
     private static final long serialVersionUID = 1L;
 }

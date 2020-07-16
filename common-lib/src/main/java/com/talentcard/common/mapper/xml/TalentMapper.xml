@@ -60,6 +60,8 @@
             <result column="e_first_class" jdbcType="TINYINT" property="firstClass"/>
             <result column="e_major" jdbcType="CHAR" property="major"/>
             <result column="e_educ_picture" jdbcType="CHAR" property="educPicture"/>
+            <result column="e_educ_picture2" jdbcType="CHAR" property="educPicture2"/>
+            <result column="e_educ_picture3" jdbcType="CHAR" property="educPicture3"/>
             <result column="e_cert_id" jdbcType="BIGINT" property="certId"/>
             <result column="e_talent_id" jdbcType="BIGINT" property="talentId"/>
             <result column="e_status" jdbcType="TINYINT" property="status"/>
@@ -71,6 +73,8 @@
             <result column="pt_category" jdbcType="INTEGER" property="category"/>
             <result column="pt_info" jdbcType="CHAR" property="info"/>
             <result column="pt_picture" jdbcType="CHAR" property="picture"/>
+            <result column="pt_picture2" jdbcType="CHAR" property="picture2"/>
+            <result column="pt_picture3" jdbcType="CHAR" property="picture3"/>
             <result column="pt_cert_id" jdbcType="BIGINT" property="certId"/>
             <result column="pt_talent_id" jdbcType="BIGINT" property="talentId"/>
             <result column="pt_status" jdbcType="TINYINT" property="status"/>
@@ -81,6 +85,8 @@
             <result column="pq_category" jdbcType="INTEGER" property="category"/>
             <result column="pq_info" jdbcType="CHAR" property="info"/>
             <result column="pq_picture" jdbcType="CHAR" property="picture"/>
+            <result column="pq_picture2" jdbcType="CHAR" property="picture2"/>
+            <result column="pq_picture3" jdbcType="CHAR" property="picture3"/>
             <result column="pq_cert_id" jdbcType="BIGINT" property="certId"/>
             <result column="pq_talent_id" jdbcType="BIGINT" property="talentId"/>
             <result column="pq_status" jdbcType="TINYINT" property="status"/>
@@ -90,6 +96,8 @@
             <id column="th_th_id" jdbcType="BIGINT" property="thId"/>
             <result column="th_honour_id" jdbcType="BIGINT" property="honourId"/>
             <result column="th_honour_picture" jdbcType="CHAR" property="honourPicture"/>
+            <result column="th_honour_picture2" jdbcType="CHAR" property="honourPicture2"/>
+            <result column="th_honour_picture3" jdbcType="CHAR" property="honourPicture3"/>
             <result column="th_info" jdbcType="CHAR" property="info"/>
             <result column="th_cert_id" jdbcType="BIGINT" property="certId"/>
             <result column="th_talent_id" jdbcType="BIGINT" property="talentId"/>
@@ -136,6 +144,8 @@
                e.first_class        as e_first_class,
                e.major              as e_major,
                e.educ_picture       as e_educ_picture,
+               e.educ_picture2      as e_educ_picture2,
+               e.educ_picture3      as e_educ_picture3,
                e.cert_id            as e_cert_id,
                e.talent_id          as e_talent_id,
                e.status             as e_status,
@@ -146,6 +156,8 @@
                pt.category          as pt_category,
                pt.info              as pt_info,
                pt.picture           as pt_picture,
+               pt.picture2          as pt_picture3,
+               pt.picture2          as pt_picture3,
                pt.cert_id           as pt_cert_id,
                pt.talent_id         as pt_talent_id,
                pt.status            as pt_status,
@@ -155,6 +167,8 @@
                pq.category          as pq_category,
                pq.info              as pq_info,
                pq.picture           as pq_picture,
+               pq.picture2          as pq_picture2,
+               pq.picture3          as pq_picture3,
                pq.cert_id           as pq_cert_id,
                pq.talent_id         as pq_talent_id,
                pq.status            as pq_status,
@@ -163,6 +177,8 @@
                th.th_id             as th_th_id,
                th.honour_id         as th_honour_id,
                th.honour_picture    as th_honour_picture,
+               th.honour_picture2    as th_honour_picture2,
+               th.honour_picture3    as th_honour_picture3,
                th.info              as th_info,
                th.cert_id           as th_cert_id,
                th.talent_id         as th_talent_id,
