@@ -10,9 +10,12 @@
     <result column="talent_id" jdbcType="BIGINT" property="talentId" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="if_certificate" jdbcType="TINYINT" property="ifCertificate" />
+    <result column="honour_picture2" jdbcType="CHAR" property="honourPicture2" />
+    <result column="honour_picture3" jdbcType="CHAR" property="honourPicture3" />
   </resultMap>
   <sql id="Base_Column_List">
-    th_id, honour_id, honour_picture, info, cert_id, talent_id, `status`, if_certificate
+    th_id, honour_id, honour_picture, info, cert_id, talent_id, `status`, if_certificate, 
+    honour_picture2, honour_picture3
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -27,10 +30,12 @@
   <insert id="insert" parameterType="com.talentcard.common.pojo.TalentHonourPO">
     insert into t_talent_honour (th_id, honour_id, honour_picture, 
       info, cert_id, talent_id, 
-      `status`, if_certificate)
+      `status`, if_certificate, honour_picture2, 
+      honour_picture3)
     values (#{thId,jdbcType=BIGINT}, #{honourId,jdbcType=BIGINT}, #{honourPicture,jdbcType=CHAR}, 
       #{info,jdbcType=CHAR}, #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
-      #{status,jdbcType=TINYINT}, #{ifCertificate,jdbcType=TINYINT})
+      #{status,jdbcType=TINYINT}, #{ifCertificate,jdbcType=TINYINT}, #{honourPicture2,jdbcType=CHAR}, 
+      #{honourPicture3,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentHonourPO">
     insert into t_talent_honour
@@ -59,6 +64,12 @@
       <if test="ifCertificate != null">
         if_certificate,
       </if>
+      <if test="honourPicture2 != null">
+        honour_picture2,
+      </if>
+      <if test="honourPicture3 != null">
+        honour_picture3,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="thId != null">
@@ -84,6 +95,12 @@
       </if>
       <if test="ifCertificate != null">
         #{ifCertificate,jdbcType=TINYINT},
+      </if>
+      <if test="honourPicture2 != null">
+        #{honourPicture2,jdbcType=CHAR},
+      </if>
+      <if test="honourPicture3 != null">
+        #{honourPicture3,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
@@ -111,6 +128,12 @@
       <if test="ifCertificate != null">
         if_certificate = #{ifCertificate,jdbcType=TINYINT},
       </if>
+      <if test="honourPicture2 != null">
+        honour_picture2 = #{honourPicture2,jdbcType=CHAR},
+      </if>
+      <if test="honourPicture3 != null">
+        honour_picture3 = #{honourPicture3,jdbcType=CHAR},
+      </if>
     </set>
     where th_id = #{thId,jdbcType=BIGINT}
   </update>
@@ -122,7 +145,9 @@
       cert_id = #{certId,jdbcType=BIGINT},
       talent_id = #{talentId,jdbcType=BIGINT},
       `status` = #{status,jdbcType=TINYINT},
-      if_certificate = #{ifCertificate,jdbcType=TINYINT}
+      if_certificate = #{ifCertificate,jdbcType=TINYINT},
+      honour_picture2 = #{honourPicture2,jdbcType=CHAR},
+      honour_picture3 = #{honourPicture3,jdbcType=CHAR}
     where th_id = #{thId,jdbcType=BIGINT}
   </update>
   <update id="updateStatusByCertId">

@@ -153,6 +153,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
                 educationPO.setGraduateTime(insertEducationPO.getGraduateTime());
                 educationPO.setFirstClass(insertEducationPO.getFirstClass());
                 educationPO.setEducPicture(insertEducationPO.getEducPicture());
+                educationPO.setEducPicture2(insertEducationPO.getEducPicture2());
+                educationPO.setEducPicture3(insertEducationPO.getEducPicture3());
                 educationPO.setSchool(insertEducationPO.getSchool());
                 educationPO.setMajor(insertEducationPO.getMajor());
                 educationPO.setEducation(insertEducationPO.getEducation());
@@ -176,6 +178,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             //审批通过，链接认证表
             if (status == InsertCertificationConstant.approveStatus) {
                 profTitlePO.setPicture(insertTitlePO.getPicture());
+                profTitlePO.setPicture2(insertTitlePO.getPicture3());
+                profTitlePO.setPicture2(insertTitlePO.getPicture3());
                 profTitlePO.setInfo(insertTitlePO.getInfo());
                 profTitlePO.setCategory(insertTitlePO.getCategory());
                 profTitlePO.setCertId(certId);
@@ -198,6 +202,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             //审批通过，链接认证表
             if (status == InsertCertificationConstant.approveStatus) {
                 profQualityPO.setPicture(insertQualityPO.getPicture());
+                profQualityPO.setPicture2(insertQualityPO.getPicture2());
+                profQualityPO.setPicture3(insertQualityPO.getPicture3());
                 profQualityPO.setStatus((byte) 1);
                 profQualityPO.setTalentId(talentId);
                 profQualityPO.setCertId(certId);
@@ -221,6 +227,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             if (status == InsertCertificationConstant.approveStatus) {
                 talentHonourPO.setInfo(insertHonourPO.getInfo());
                 talentHonourPO.setHonourPicture(insertHonourPO.getHonourPicture());
+                talentHonourPO.setHonourPicture2(insertHonourPO.getHonourPicture2());
+                talentHonourPO.setHonourPicture3(insertHonourPO.getHonourPicture3());
                 talentHonourPO.setHonourId(insertHonourPO.getHonourId());
                 talentHonourPO.setCertId(certId);
                 talentHonourPO.setIfCertificate((byte) 1);
@@ -357,8 +365,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             //驾照
             identificationCardNum = talentPO.getDriverCard();
         }
-        if (identificationCardNum.equals("") || identificationCardNum == null
-                || identificationCardNum.length() <= 4) {
+        if (StringUtils.isEmpty(identificationCardNum) || identificationCardNum.length() <= 4) {
             return "当前号码出现异常！";
         }
         Integer end = identificationCardNum.length() - 4;

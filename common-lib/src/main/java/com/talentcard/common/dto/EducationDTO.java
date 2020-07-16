@@ -16,6 +16,8 @@ public class EducationDTO {
     private Byte firstClass;
     private String major;
     private String educPicture;
+    private String educPicture2;
+    private String educPicture3;
     private String openId;
     private String graduateTime;
     private Long insertCertId;

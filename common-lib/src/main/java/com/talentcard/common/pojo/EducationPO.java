@@ -16,7 +16,7 @@ public class EducationPO implements Serializable {
     private String school;
 
     /**
-     * 1：是；2：否
+     * 1双一流；2海外人才；3啥也不是
      */
     private Byte firstClass = 0;
 
@@ -42,11 +42,16 @@ public class EducationPO implements Serializable {
     /**
      * 1 已认证；
 2 未认证；
+8 已认证，且是后来新加入的（编辑或者新增认证）
 10 本次不认证
      */
     private Byte ifCertificate;
 
     private String graduateTime;
+
+    private String educPicture2;
+
+    private String educPicture3;
 
     private static final long serialVersionUID = 1L;
 }

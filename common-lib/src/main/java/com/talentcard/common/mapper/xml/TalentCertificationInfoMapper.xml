@@ -134,6 +134,7 @@
     tci.honour_id as honour
     from t_talent t
     left join t_talent_certification_info tci on t.talent_id = tci.talent_id
+    left join t_card c on t.card_id = c.card_id
     where t.status = 1 and t.dr=1
     <if test="start != null and start !=''">
       and <![CDATA[ t.create_time >= #{start}]]>

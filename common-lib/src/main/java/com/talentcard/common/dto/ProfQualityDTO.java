@@ -14,6 +14,8 @@ public class ProfQualityDTO {
     private Long insertCertId;
     private Integer category;
     private String picture;
+    private String picture2;
+    private String picture3;
     private String info;
     private String openId;
     private Long pqId;

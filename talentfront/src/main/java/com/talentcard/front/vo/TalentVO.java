@@ -87,8 +87,14 @@ public class TalentVO {
         //学历文件
         if (talentBO.getEducationPOList() != null) {
             for (EducationPO educationPO : talentBO.getEducationPOList()) {
-                if (educationPO.getEducPicture() != null && !educationPO.getEducPicture().equals("")) {
+                if (!StringUtils.isEmpty(educationPO.getEducPicture())) {
                     educationPO.setEducPicture(FilePathConfig.getStaticPublicBasePath() + educationPO.getEducPicture());
+                }
+                if (!StringUtils.isEmpty(educationPO.getEducPicture2())) {
+                    educationPO.setEducPicture2(FilePathConfig.getStaticPublicBasePath() + educationPO.getEducPicture2());
+                }
+                if (!StringUtils.isEmpty(educationPO.getEducPicture3())) {
+                    educationPO.setEducPicture3(FilePathConfig.getStaticPublicBasePath() + educationPO.getEducPicture3());
                 }
                 //不为0，才返回结果
                 if (educationPO.getEducation() != null && educationPO.getEducation() != 0) {
@@ -100,8 +106,14 @@ public class TalentVO {
         //职称文件
         if (talentBO.getProfTitlePOList() != null) {
             for (ProfTitlePO profTitlePO : talentBO.getProfTitlePOList()) {
-                if (profTitlePO.getPicture() != null && !profTitlePO.getPicture().equals("")) {
+                if (!StringUtils.isEmpty(profTitlePO.getPicture())) {
                     profTitlePO.setPicture(FilePathConfig.getStaticPublicBasePath() + profTitlePO.getPicture());
+                }
+                if (!StringUtils.isEmpty(profTitlePO.getPicture2())) {
+                    profTitlePO.setPicture2(FilePathConfig.getStaticPublicBasePath() + profTitlePO.getPicture2());
+                }
+                if (!StringUtils.isEmpty(profTitlePO.getPicture3())) {
+                    profTitlePO.setPicture3(FilePathConfig.getStaticPublicBasePath() + profTitlePO.getPicture3());
                 }
                 //不为0，才返回结果
                 if (profTitlePO.getCategory() != null && profTitlePO.getCategory() != 0) {
@@ -113,8 +125,14 @@ public class TalentVO {
         //职业资格文件
         if (talentBO.getProfQualityPOList() != null) {
             for (ProfQualityPO profQualityPO : talentBO.getProfQualityPOList()) {
-                if (profQualityPO.getPicture() != null && !profQualityPO.getPicture().equals("")) {
+                if (!StringUtils.isEmpty(profQualityPO.getPicture())) {
                     profQualityPO.setPicture(FilePathConfig.getStaticPublicBasePath() + profQualityPO.getPicture());
+                }
+                if (!StringUtils.isEmpty(profQualityPO.getPicture2())) {
+                    profQualityPO.setPicture2(FilePathConfig.getStaticPublicBasePath() + profQualityPO.getPicture2());
+                }
+                if (!StringUtils.isEmpty(profQualityPO.getPicture3())) {
+                    profQualityPO.setPicture3(FilePathConfig.getStaticPublicBasePath() + profQualityPO.getPicture3());
                 }
                 //不为0，才返回结果
                 if (profQualityPO.getCategory() != null && profQualityPO.getCategory() != 0) {
@@ -125,8 +143,14 @@ public class TalentVO {
         //人才荣誉
         if (talentBO.getTalentHonourPOList() != null) {
             for (TalentHonourPO talentHonourPO : talentBO.getTalentHonourPOList()) {
-                if (talentHonourPO.getHonourPicture() != null && !talentHonourPO.getHonourPicture().equals("")) {
+                if (!StringUtils.isEmpty(talentHonourPO.getHonourPicture())) {
                     talentHonourPO.setHonourPicture(FilePathConfig.getStaticPublicBasePath() + talentHonourPO.getHonourPicture());
+                }
+                if (!StringUtils.isEmpty(talentHonourPO.getHonourPicture2())) {
+                    talentHonourPO.setHonourPicture2(FilePathConfig.getStaticPublicBasePath() + talentHonourPO.getHonourPicture2());
+                }
+                if (!StringUtils.isEmpty(talentHonourPO.getHonourPicture3())) {
+                    talentHonourPO.setHonourPicture3(FilePathConfig.getStaticPublicBasePath() + talentHonourPO.getHonourPicture3());
                 }
                 //不为0，才返回结果
                 if (talentHonourPO.getHonourId() != null && talentHonourPO.getHonourId() != 0) {
@@ -170,6 +194,16 @@ public class TalentVO {
                             insertCertificationBO.getInsertEducationPO().
                                     setEducPicture(FilePathConfig.getStaticPublicBasePath() + picture);
                         }
+                        String picture2 = insertCertificationBO.getInsertEducationPO().getEducPicture2();
+                        if (!StringUtils.isEmpty(picture2)) {
+                            insertCertificationBO.getInsertEducationPO().
+                                    setEducPicture2(FilePathConfig.getStaticPublicBasePath() + picture2);
+                        }
+                        String picture3 = insertCertificationBO.getInsertEducationPO().getEducPicture3();
+                        if (!StringUtils.isEmpty(picture3)) {
+                            insertCertificationBO.getInsertEducationPO().
+                                    setEducPicture3(FilePathConfig.getStaticPublicBasePath() + picture3);
+                        }
                     }
                 } else if (insertCertificationBO.getType() == 2) {
                     //职称
@@ -178,6 +212,16 @@ public class TalentVO {
                         if (!StringUtils.isEmpty(picture)) {
                             insertCertificationBO.getInsertTitlePO().
                                     setPicture(FilePathConfig.getStaticPublicBasePath() + picture);
+                        }
+                        String picture2 = insertCertificationBO.getInsertTitlePO().getPicture2();
+                        if (!StringUtils.isEmpty(picture2)) {
+                            insertCertificationBO.getInsertTitlePO().
+                                    setPicture2(FilePathConfig.getStaticPublicBasePath() + picture2);
+                        }
+                        String picture3 = insertCertificationBO.getInsertTitlePO().getPicture3();
+                        if (!StringUtils.isEmpty(picture3)) {
+                            insertCertificationBO.getInsertTitlePO().
+                                    setPicture3(FilePathConfig.getStaticPublicBasePath() + picture3);
                         }
                     }
                 } else if (insertCertificationBO.getType() == 3) {
@@ -188,6 +232,16 @@ public class TalentVO {
                             insertCertificationBO.getInsertQualityPO().
                                     setPicture(FilePathConfig.getStaticPublicBasePath() + picture);
                         }
+                        String picture2 = insertCertificationBO.getInsertQualityPO().getPicture2();
+                        if (!StringUtils.isEmpty(picture2)) {
+                            insertCertificationBO.getInsertQualityPO().
+                                    setPicture2(FilePathConfig.getStaticPublicBasePath() + picture2);
+                        }
+                        String picture3 = insertCertificationBO.getInsertQualityPO().getPicture3();
+                        if (!StringUtils.isEmpty(picture3)) {
+                            insertCertificationBO.getInsertQualityPO().
+                                    setPicture3(FilePathConfig.getStaticPublicBasePath() + picture3);
+                        }
                     }
                 } else {
                     if (insertCertificationBO.getInsertHonourPO() != null) {
@@ -196,6 +250,16 @@ public class TalentVO {
                         if (!StringUtils.isEmpty(picture)) {
                             insertCertificationBO.getInsertHonourPO().
                                     setHonourPicture(FilePathConfig.getStaticPublicBasePath() + picture);
+                        }
+                        String picture2 = insertCertificationBO.getInsertHonourPO().getHonourPicture2();
+                        if (!StringUtils.isEmpty(picture2)) {
+                            insertCertificationBO.getInsertHonourPO().
+                                    setHonourPicture2(FilePathConfig.getStaticPublicBasePath() + picture2);
+                        }
+                        String picture3 = insertCertificationBO.getInsertHonourPO().getHonourPicture3();
+                        if (!StringUtils.isEmpty(picture3)) {
+                            insertCertificationBO.getInsertHonourPO().
+                                    setHonourPicture3(FilePathConfig.getStaticPublicBasePath() + picture3);
                         }
                     }
 

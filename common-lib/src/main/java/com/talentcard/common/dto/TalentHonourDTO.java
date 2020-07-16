@@ -14,6 +14,8 @@ public class TalentHonourDTO {
     private Long insertCertId;
     private Long honourId;
     private String honourPicture;
+    private String honourPicture2;
+    private String honourPicture3;
     private String info;
     private String openId;
     private Long thId;
