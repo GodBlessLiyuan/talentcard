@@ -53,5 +53,7 @@ public class EducationPO implements Serializable {
 
     private String educPicture3;
 
+    private Byte fullTime;
+
     private static final long serialVersionUID = 1L;
 }
