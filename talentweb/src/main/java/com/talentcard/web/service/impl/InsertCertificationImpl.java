@@ -365,8 +365,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             //驾照
             identificationCardNum = talentPO.getDriverCard();
         }
-        if (identificationCardNum.equals("") || identificationCardNum == null
-                || identificationCardNum.length() <= 4) {
+        if (StringUtils.isEmpty(identificationCardNum) || identificationCardNum.length() <= 4) {
             return "当前号码出现异常！";
         }
         Integer end = identificationCardNum.length() - 4;

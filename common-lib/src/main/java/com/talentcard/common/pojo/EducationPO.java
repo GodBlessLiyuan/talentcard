@@ -11,14 +11,14 @@ import lombok.Data;
 public class EducationPO implements Serializable {
     private Long educId;
 
-    private Integer education;
+    private Integer education = 0;
 
     private String school;
 
     /**
      * 1双一流；2海外人才；3啥也不是
      */
-    private Byte firstClass;
+    private Byte firstClass = 0;
 
     private String major;
 
