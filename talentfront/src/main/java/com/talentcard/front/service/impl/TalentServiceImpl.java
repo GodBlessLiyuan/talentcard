@@ -266,6 +266,7 @@ public class TalentServiceImpl implements ITalentService {
         educationPO.setStatus(status);
         educationPO.setIfCertificate((byte) 10);
         educationPO.setGraduateTime(jsonObject.getString("graduateTime"));
+        educationPO.setFullTime(jsonObject.getByte("fullTime"));
         if (educationPO.getEducation() != null) {
             educationMapper.insertSelective(educationPO);
         }
