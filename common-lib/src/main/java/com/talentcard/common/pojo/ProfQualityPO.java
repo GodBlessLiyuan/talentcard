@@ -11,7 +11,7 @@ import lombok.Data;
 public class ProfQualityPO implements Serializable {
     private Long pqId;
 
-    private Integer category;
+    private Integer category = 0;
 
     private String picture;
 
