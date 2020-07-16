@@ -156,7 +156,7 @@
         from t_talent_activity_history
         where open_id = #{openId,jdbcType=CHAR}
         and dr = 1
-        order by create_time desc
+        order by tah_id desc
     </select>
 
     <select id="getVertifyNum" resultType="java.lang.Long">
@@ -205,10 +205,11 @@
          count(open_id) as useTimes
         from t_talent_activity_history
         where
+        open_id = #{openId,jdbcType=CHAR}
+        and
         dr = 1
         and
         status = 2
-        and open_id = #{openId,jdbcType=CHAR}
         group by
         open_id,
         activity_first_content_id,

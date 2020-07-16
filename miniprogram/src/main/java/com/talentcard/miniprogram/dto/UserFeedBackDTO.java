@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class UserFeedBackDTO implements Serializable {
     private String openId;
     private Byte pageType;
-    private Byte relateItem;
+    private String relateItem;
+    private String chooseItem;
     private String proDescribe;
 }

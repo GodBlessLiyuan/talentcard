@@ -331,6 +331,6 @@
         LEFT JOIN t_policy_apply pa ON tb.pa_id = pa.pa_id
         LEFT JOIN t_talent t ON pa.talent_id = t.talent_id
         WHERE open_id = #{openId,jdbcType=CHAR}
-        ORDER BY pa.create_time DESC
+        ORDER BY tb.bank_id DESC
   </select>
 </mapper>

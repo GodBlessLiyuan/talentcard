@@ -150,6 +150,6 @@
     <if test="card != null and card !=''">and (c.title like '%' #{card} '%' or c.initial_word like '%' #{card} '%')</if>
     <if test="category != null and category !=''"> and tci.talent_category like '%' #{category} '%' </if>
     <if test="honour != null and honour !=''">and tci.honour_id like '%' #{honour} '%'</if>
-    order by t.create_time desc
+    order by t.talent_id desc
   </select>
 </mapper>
