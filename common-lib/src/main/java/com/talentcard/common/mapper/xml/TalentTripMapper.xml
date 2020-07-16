@@ -224,7 +224,7 @@
     <if test="type==1">
       and <![CDATA[ tt.effective_time >= #{currentTime}]]>
       and tt.status = 1
-      order by tt.create_time desc
+      order by tt.tt_id desc
     </if>
     /*已使用*/
     <if test="type==2">
@@ -235,7 +235,7 @@
     <if test="type==3">
       and <![CDATA[ tt.effective_time <= #{currentTime}]]>
       and tt.status = 1
-      order by tt.create_time desc
+      order by tt.tt_id desc
     </if>
   </select>
 </mapper>

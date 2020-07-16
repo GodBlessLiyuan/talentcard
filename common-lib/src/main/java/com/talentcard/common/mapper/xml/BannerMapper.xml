@@ -157,7 +157,7 @@
         from t_banner
         where dr = 1
         and status = 1
-        order by create_time desc
+        order by banner_id desc
     </select>
     <select id="query" resultMap="BaseResultMap">
         select
@@ -168,7 +168,7 @@
         <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
         <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
         <if test="status != null and status !=0">and `status` = #{status}</if>
-        order by create_time desc
+        order by banner_id desc
     </select>
     <select id="queryByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
