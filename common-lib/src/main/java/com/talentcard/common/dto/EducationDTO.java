@@ -22,6 +22,6 @@ public class EducationDTO {
     private String graduateTime;
     private Long insertCertId;
     private Long educId;
-    private String opinion;
+    private String opinion= "";
     private Byte fullTime;
 }
