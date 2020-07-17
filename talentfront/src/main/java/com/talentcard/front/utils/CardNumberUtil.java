@@ -59,7 +59,7 @@ public class CardNumberUtil {
         }
         currNum++;
         myRedis.opsForValue().set("currNum", currNum.toString(), 30L, TimeUnit.DAYS);
-        return currNum;
+        return currNum - 1;
     }
 }
 
