@@ -49,17 +49,23 @@ public class CardNumberUtil {
     }
 
     public static Long getCurrNum() throws WechatException {
-        String currNumString = myRedis.opsForValue().get("currNum");
-        CardPO cardPO = cardMapper.findDefaultCard();
-        Long currNum;
-        if (StringUtils.isEmpty(currNumString)) {
-            currNum = cardPO.getCurrNum();
-        } else {
-            currNum = Long.parseLong(currNumString);
+        try {
+            String currNumString = myRedis.opsForValue().get("currNum");
+            CardPO cardPO = cardMapper.findDefaultCard();
+            Long currNum;
+            if (StringUtils.isEmpty(currNumString)) {
+                currNum = cardPO.getCurrNum();
+            } else {
+                currNum = Long.parseLong(currNumString);
+            }
+            currNum++;
+            myRedis.opsForValue().set("currNum", currNum.toString(), 30L, TimeUnit.DAYS);
+            return currNum - 1;
+        }catch (Exception e){
+            e.printStackTrace();
+            CardPO cardPO = cardMapper.findDefaultCard();
+            return cardPO.getCurrNum();
         }
-        currNum++;
-        myRedis.opsForValue().set("currNum", currNum.toString(), 30L, TimeUnit.DAYS);
-        return currNum - 1;
     }
 }
 
