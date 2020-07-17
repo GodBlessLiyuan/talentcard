@@ -2,10 +2,13 @@ package com.talentcard.web.controller;
 
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IFarmhouseUseDailyService;
+import com.talentcard.web.utils.DateInitUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Description:农家乐数据的日统计
@@ -24,5 +27,31 @@ public class FarmhouseUseDailyController {
     @PostMapping("init_daily")
     public ResultVO init_daily(){
         return farmhouseUseDailyService.init_daily();
+    }
+    @PostMapping("query")
+    public ResultVO query(
+            @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
+            @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
+            @RequestParam(value = "name",required = false)String name,
+            @RequestParam(value = "start",required = false)String start,
+            @RequestParam(value = "end",required = false)String end
+    ){
+        Map<String,Object> map=new HashMap<>(3);
+        map.put("name",name);
+        map.put("start",start);
+        map.put("end",end);
+        return farmhouseUseDailyService.query(pageNum,pageSize,map);
+    }
+    //日统计和月统计：全部的
+    @GetMapping("export")
+    public ResultVO export(
+            @RequestParam(value = "name",required = false)String name,
+            @RequestParam(value = "start",required = false)String start,
+            @RequestParam(value = "end",required = false)String end,
+            HttpServletResponse response
+    )
+    {
+        Map<String,Object> map=new HashMap<>(1);
+        return farmhouseUseDailyService.export(map,response);
     }
 }

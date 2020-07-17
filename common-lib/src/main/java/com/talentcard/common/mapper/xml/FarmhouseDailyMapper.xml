@@ -18,6 +18,27 @@
     from m_farmhouse_daily
     where fh_d = #{fhD,jdbcType=BIGINT}
   </select>
+  <select id="queryByDailyTime" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from m_farmhouse_daily
+    where daily_time=#{updateTime}
+  </select>
+  <select id="query" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from m_farmhouse_daily
+    <where>
+      <if test="name!=null">
+        `name` like trim(replace (#{name,jdbcType=CHAR} '%' ,' ',''))
+      </if>
+      <if test="start!=null">
+        and daily_time>=#{start}
+      </if>
+      <if test="end!=null">
+        and #{end}>=daily_time
+      </if>
+    </where>
+    order by daily_time desc ,`name` asc
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from m_farmhouse_daily
     where fh_d = #{fhD,jdbcType=BIGINT}
@@ -111,4 +132,12 @@
     #{po.dailyTime,jdbcType=DATE}, #{po.number,jdbcType=BIGINT}, #{po.times,jdbcType=BIGINT})
   </foreach>
   </insert>
+  <update id="batchUpdate" parameterType="java.util.List">
+    <foreach collection="list" item="po" separator=";">
+      update m_farmhouse_daily
+      set `number` = #{po.number,jdbcType=BIGINT},
+      times = #{po.times,jdbcType=BIGINT}
+      where fh_d = #{po.fhD,jdbcType=BIGINT}
+    </foreach>
+  </update>
 </mapper>

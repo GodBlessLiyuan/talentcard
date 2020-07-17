@@ -1,4 +1,4 @@
-package com.talentcard.web.common;
+package com.talentcard.web.common.api;
 
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.dto.TalentHonourDTO;
