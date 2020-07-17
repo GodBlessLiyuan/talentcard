@@ -55,8 +55,8 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
         }
         UserFeedbackVO userFeedbackVO=new UserFeedbackVO();
         userFeedbackVO.setPageType(po.getPageType());
-        userFeedbackVO.setPageItem(po.getPageType());
         userFeedbackVO.setRelateItem(po.getRelateItem());
+        userFeedbackVO.setChooseItem(po.getChooseItem());
         userFeedbackVO.setProDescribe(po.getProDescribe());
         userFeedbackVO.setSubmitDate(po.getSubmitDate());
         TalentPO talentPO = talentMapper.selectByOpenId(po.getOpenId());

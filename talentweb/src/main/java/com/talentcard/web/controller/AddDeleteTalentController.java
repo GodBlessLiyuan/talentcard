@@ -78,8 +78,9 @@ public class AddDeleteTalentController {
     @RequestMapping("deleteEducation")
     public ResultVO deleteEducation(HttpSession httpSession,
                                     @RequestParam(value = "openId") String openId,
-                                    @RequestParam(value = "educId") Long educId) {
-        return iAddDeleteTalentService.deleteEducation(httpSession, openId, educId);
+                                    @RequestParam(value = "educId") Long educId,
+                                    @RequestParam(value = "opinion", required = false, defaultValue = "") String opinion) {
+        return iAddDeleteTalentService.deleteEducation(httpSession, openId, educId, opinion);
     }
 
     /**
@@ -92,8 +93,9 @@ public class AddDeleteTalentController {
     @RequestMapping("deleteProfQuality")
     public ResultVO deleteProfQuality(HttpSession httpSession,
                                       @RequestParam(value = "openId") String openId,
-                                      @RequestParam(value = "pqId") Long pqId) {
-        return iAddDeleteTalentService.deleteProfQuality(httpSession, openId, pqId);
+                                      @RequestParam(value = "pqId") Long pqId,
+                                      @RequestParam(value = "opinion", required = false, defaultValue = "") String opinion) {
+        return iAddDeleteTalentService.deleteProfQuality(httpSession, openId, pqId, opinion);
     }
 
     /**
@@ -106,8 +108,9 @@ public class AddDeleteTalentController {
     @RequestMapping("deleteProfTitle")
     public ResultVO deleteProfTitle(HttpSession httpSession,
                                     @RequestParam(value = "openId") String openId,
-                                    @RequestParam(value = "ptId") Long ptId) {
-        return iAddDeleteTalentService.deleteProfTitle(httpSession, openId, ptId);
+                                    @RequestParam(value = "ptId") Long ptId,
+                                    @RequestParam(value = "opinion", required = false, defaultValue = "") String opinion) {
+        return iAddDeleteTalentService.deleteProfTitle(httpSession, openId, ptId, opinion);
     }
 
     /**
@@ -120,7 +123,8 @@ public class AddDeleteTalentController {
     @RequestMapping("deleteTalentHonour")
     public ResultVO deleteTalentHonour(HttpSession httpSession,
                                        @RequestParam(value = "openId") String openId,
-                                       @RequestParam(value = "thId") Long thId) {
-        return iAddDeleteTalentService.deleteTalentHonour(httpSession, openId, thId);
+                                       @RequestParam(value = "thId") Long thId,
+                                       @RequestParam(value = "opinion", required = false, defaultValue = "") String opinion) {
+        return iAddDeleteTalentService.deleteTalentHonour(httpSession, openId, thId, opinion);
     }
 }

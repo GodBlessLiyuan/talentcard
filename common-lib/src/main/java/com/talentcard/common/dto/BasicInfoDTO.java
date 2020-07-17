@@ -18,4 +18,5 @@ public class BasicInfoDTO {
     private Byte political;
     private String workLocation;
     private Byte workLocationType;
+    private String opinion;
 }

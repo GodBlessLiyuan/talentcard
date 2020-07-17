@@ -115,6 +115,8 @@ public class ScenicDTO implements Serializable {
      */
     private Long[] talentHonourIds;
 
+    private Double discount;
+
     /**
      * 根据 dto 设置 po
      *
@@ -135,7 +137,7 @@ public class ScenicDTO implements Serializable {
         }
         po.setDescription(dto.getDesc());
         po.setExtra(dto.getExtra());
-
+        po.setDiscount(dto.getDiscount());
         return po;
     }
 

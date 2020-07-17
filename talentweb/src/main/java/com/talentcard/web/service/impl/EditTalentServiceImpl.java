@@ -106,6 +106,28 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(talentPO.getOpenId());
+        /**
+         * 用模版推送消息
+         */
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(talentPO.getOpenId());
+        //开头
+        messageDTO.setFirst("您好，您的信息已经更新");
+        //信息类型
+        messageDTO.setKeyword1("基础信息");
+        //变更时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        String currentTime = formatter.format(new Date());
+        messageDTO.setKeyword2(currentTime);
+        //模版编号
+        messageDTO.setTemplateId(4);
+        //结束
+        String remark = "变更原因：" + basicInfoDTO.getOpinion();
+        messageDTO.setRemark(remark);
+        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
 
@@ -157,6 +179,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         educationPO.setSchool(educationDTO.getSchool());
         educationPO.setMajor(educationDTO.getMajor());
         educationPO.setEducation(educationDTO.getEducation());
+        educationPO.setFullTime(educationDTO.getFullTime());
         educationMapper.updateByPrimaryKeySelective(educationPO);
         /**
          * 同步更新tci表
@@ -172,6 +195,29 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
+        /**
+         * 用模版推送消息
+         */
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(talentPO.getOpenId());
+        //开头
+        String first = "您好，您的信息已更新。";
+        messageDTO.setFirst(first);
+        //信息类型
+        messageDTO.setKeyword1("学历");
+        //变更时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        String currentTime = formatter.format(new Date());
+        messageDTO.setKeyword2(currentTime);
+        //模版编号
+        messageDTO.setTemplateId(4);
+        //结束
+        String remark = "变更原因：" + educationDTO.getOpinion();
+        messageDTO.setRemark(remark);
+        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
 
@@ -236,6 +282,29 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
+        /**
+         * 用模版推送消息
+         */
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(talentPO.getOpenId());
+        //开头
+        String first = "您好，您的信息已更新。";
+        messageDTO.setFirst(first);
+        //信息类型
+        messageDTO.setKeyword1("职业资格");
+        //变更时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        String currentTime = formatter.format(new Date());
+        messageDTO.setKeyword2(currentTime);
+        //模版编号
+        messageDTO.setTemplateId(4);
+        //结束
+        String remark = "变更原因：" + profQualityDTO.getOpinion();
+        messageDTO.setRemark(remark);
+        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
 
@@ -302,6 +371,29 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
+        /**
+         * 用模版推送消息
+         */
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(talentPO.getOpenId());
+        //开头
+        String first = "您好，您的信息已更新。";
+        messageDTO.setFirst(first);
+        //信息类型
+        messageDTO.setKeyword1("职称");
+        //变更时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        String currentTime = formatter.format(new Date());
+        messageDTO.setKeyword2(currentTime);
+        //模版编号
+        messageDTO.setTemplateId(4);
+        //结束
+        String remark = "变更原因：" + profTitleDTO.getOpinion();
+        messageDTO.setRemark(remark);
+        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
 
@@ -366,12 +458,36 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
+        /**
+         * 用模版推送消息
+         */
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(talentPO.getOpenId());
+        //开头
+        String first = "您好，您的信息已更新。";
+        messageDTO.setFirst(first);
+        //信息类型
+        messageDTO.setKeyword1("主要人才荣誉");
+        //变更时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        String currentTime = formatter.format(new Date());
+        messageDTO.setKeyword2(currentTime);
+        //模版编号
+        messageDTO.setTemplateId(4);
+        //结束
+        String remark = "变更原因：" + talentHonourDTO.getOpinion();
+        messageDTO.setRemark(remark);
+        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO editTalentCategory(HttpSession httpSession, String openId, String talentCategory) {
+    public ResultVO editTalentCategory(HttpSession httpSession, String openId,
+                                       String talentCategory, String opinion) {
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
         if (talentPO == null) {
             return new ResultVO(2500);
@@ -402,6 +518,29 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
+        /**
+         * 用模版推送消息
+         */
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(talentPO.getOpenId());
+        //开头
+        String first = "您好，您的信息已更新。";
+        messageDTO.setFirst(first);
+        //信息类型
+        messageDTO.setKeyword1("人才类别");
+        //变更时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        String currentTime = formatter.format(new Date());
+        messageDTO.setKeyword2(currentTime);
+        //模版编号
+        messageDTO.setTemplateId(4);
+        //结束
+        String remark = "变更原因：" + opinion;
+        messageDTO.setRemark(remark);
+        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
 
@@ -481,7 +620,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultVO changeCard(Long talentId, Long newCardId) {
+    public ResultVO changeCard(Long talentId, Long newCardId, String opinion) {
         TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
         if (talentPO == null) {
             return new ResultVO(2500);
@@ -555,29 +694,28 @@ public class EditTalentServiceImpl implements IEditTalentService {
         }
 
         /**
-         * 用消息模板推送微信消息
+         * 用模版推送消息
          */
+        //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        messageDTO.setFirst("您好，请您领取衢江区人才卡");
-        //姓名
-        messageDTO.setKeyword1(talentPO.getName());
-        //身份证号，屏蔽八位
-        String identificationCardNum = identificationCardEncryption(talentPO);
-        messageDTO.setKeyword2(identificationCardNum);
-        //领卡机构
-        messageDTO.setKeyword3("个人");
-        //通知时间
+        String first = "您好，您的信息已更新。原人才卡作废，请及时领取新的人才卡" +
+                newCardPO.getTitle() + newCardPO.getInitialWord();
+        messageDTO.setFirst(first);
+        //信息类型
+        messageDTO.setKeyword1("人才卡");
+        //变更时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         String currentTime = formatter.format(new Date());
-        messageDTO.setKeyword4(currentTime);
+        messageDTO.setKeyword2(currentTime);
         //模版编号
-        messageDTO.setTemplateId(1);
+        messageDTO.setTemplateId(4);
         //结束
-        messageDTO.setRemark("领取后可享受多项人才权益哦");
-        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+        String remark = "变更原因：您已经符合高层次人才的人才要求，故为您升级人才卡，可享受更多人才福利。";
+        messageDTO.setRemark(remark);
+        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
         MessageUtil.sendTemplateMessage(messageDTO);
         /**
          * 清缓存

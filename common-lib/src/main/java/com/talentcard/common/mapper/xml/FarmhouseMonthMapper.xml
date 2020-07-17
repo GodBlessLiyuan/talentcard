@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.talentcard.common.mapper.FarmhouseMouthMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.FarmhouseMouthPO">
+<mapper namespace="com.talentcard.common.mapper.FarmhouseMonthMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.FarmhouseMonthPO">
     <id column="fh_m" jdbcType="BIGINT" property="fhM" />
     <result column="farmhouse_id" jdbcType="BIGINT" property="farmhouseId" />
     <result column="name" jdbcType="CHAR" property="name" />
-    <result column="mouth" jdbcType="DATE" property="mouth" />
+    <result column="month" jdbcType="DATE" property="month" />
     <result column="number" jdbcType="BIGINT" property="number" />
     <result column="times" jdbcType="BIGINT" property="times" />
   </resultMap>
   <sql id="Base_Column_List">
-    fh_m, farmhouse_id, `name`, mouth, `number`, times
+    fh_m, farmhouse_id, `name`, `month`, `number`, times
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from m_farmhouse_mouth
+    from m_farmhouse_month
     where fh_m = #{fhM,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from m_farmhouse_mouth
+    delete from m_farmhouse_month
     where fh_m = #{fhM,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhouseMouthPO">
-    insert into m_farmhouse_mouth (fh_m, farmhouse_id, `name`, 
-      mouth, `number`, times)
+  <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhouseMonthPO">
+    insert into m_farmhouse_month (fh_m, farmhouse_id, `name`, 
+      `month`, `number`, times)
     values (#{fhM,jdbcType=BIGINT}, #{farmhouseId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, 
-      #{mouth,jdbcType=DATE}, #{number,jdbcType=BIGINT}, #{times,jdbcType=BIGINT})
+      #{month,jdbcType=DATE}, #{number,jdbcType=BIGINT}, #{times,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FarmhouseMouthPO">
-    insert into m_farmhouse_mouth
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FarmhouseMonthPO">
+    insert into m_farmhouse_month
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="fhM != null">
         fh_m,
@@ -40,8 +40,8 @@
       <if test="name != null">
         `name`,
       </if>
-      <if test="mouth != null">
-        mouth,
+      <if test="month != null">
+        `month`,
       </if>
       <if test="number != null">
         `number`,
@@ -60,8 +60,8 @@
       <if test="name != null">
         #{name,jdbcType=CHAR},
       </if>
-      <if test="mouth != null">
-        #{mouth,jdbcType=DATE},
+      <if test="month != null">
+        #{month,jdbcType=DATE},
       </if>
       <if test="number != null">
         #{number,jdbcType=BIGINT},
@@ -71,8 +71,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.FarmhouseMouthPO">
-    update m_farmhouse_mouth
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.FarmhouseMonthPO">
+    update m_farmhouse_month
     <set>
       <if test="farmhouseId != null">
         farmhouse_id = #{farmhouseId,jdbcType=BIGINT},
@@ -80,8 +80,8 @@
       <if test="name != null">
         `name` = #{name,jdbcType=CHAR},
       </if>
-      <if test="mouth != null">
-        mouth = #{mouth,jdbcType=DATE},
+      <if test="month != null">
+        `month` = #{month,jdbcType=DATE},
       </if>
       <if test="number != null">
         `number` = #{number,jdbcType=BIGINT},
@@ -92,11 +92,11 @@
     </set>
     where fh_m = #{fhM,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.FarmhouseMouthPO">
-    update m_farmhouse_mouth
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.FarmhouseMonthPO">
+    update m_farmhouse_month
     set farmhouse_id = #{farmhouseId,jdbcType=BIGINT},
       `name` = #{name,jdbcType=CHAR},
-      mouth = #{mouth,jdbcType=DATE},
+      `month` = #{month,jdbcType=DATE},
       `number` = #{number,jdbcType=BIGINT},
       times = #{times,jdbcType=BIGINT}
     where fh_m = #{fhM,jdbcType=BIGINT}

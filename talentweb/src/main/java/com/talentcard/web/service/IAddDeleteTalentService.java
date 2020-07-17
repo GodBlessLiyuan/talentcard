@@ -44,7 +44,7 @@ public interface IAddDeleteTalentService {
      * @param educId
      * @return
      */
-    ResultVO deleteEducation(HttpSession httpSession, String openId, Long educId);
+    ResultVO deleteEducation(HttpSession httpSession, String openId, Long educId, String opinion);
 
 
     /**
@@ -54,7 +54,7 @@ public interface IAddDeleteTalentService {
      * @param pqId
      * @return
      */
-    ResultVO deleteProfQuality(HttpSession httpSession, String openId, Long pqId);
+    ResultVO deleteProfQuality(HttpSession httpSession, String openId, Long pqId, String opinion);
 
     /**
      * 删除
@@ -63,7 +63,7 @@ public interface IAddDeleteTalentService {
      * @param ptId
      * @return
      */
-    ResultVO deleteProfTitle(HttpSession httpSession, String openId, Long ptId);
+    ResultVO deleteProfTitle(HttpSession httpSession, String openId, Long ptId, String opinion);
 
     /**
      * 删除
@@ -72,5 +72,5 @@ public interface IAddDeleteTalentService {
      * @param thId
      * @return
      */
-    ResultVO deleteTalentHonour(HttpSession httpSession, String openId, Long thId);
+    ResultVO deleteTalentHonour(HttpSession httpSession, String openId, Long thId, String opinion);
 }

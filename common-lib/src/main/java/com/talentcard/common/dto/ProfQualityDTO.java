@@ -19,4 +19,5 @@ public class ProfQualityDTO {
     private String info;
     private String openId;
     private Long pqId;
+    private String opinion;
 }

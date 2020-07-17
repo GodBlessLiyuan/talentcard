@@ -247,7 +247,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
             return new ResultVO(1003, "当前用户已经把当月/年次数用尽");
         }*/
         Integer available = getTalentTripAllNum(openId).getAvailable();
-        if(available <= 0){
+        if (available <= 0) {
             return new ResultVO(1003, "当前用户已经把当月/年次数用尽");
         }
 
@@ -275,25 +275,27 @@ public class TalentTripServiceImpl implements ITalentTripService {
 
     /**
      * 获取人才旅游的一年中的总次数
+     *
      * @param openId
      * @return
      */
-    private TripAvailableVO getTalentTripAllNum(String openId){
+    @Override
+    public TripAvailableVO getTalentTripAllNum(String openId) {
 
         String s_available = redisMapUtil.hget(openId, TalentConstant.TALENT_AVAILABLE);
-        if(!StringUtils.isEmpty(s_available)){
+        if (!StringUtils.isEmpty(s_available)) {
             try {
                 TripAvailableVO availableVO = StringToObjUtil.strToObj(s_available, TripAvailableVO.class);
-                if(availableVO != null){
+                if (availableVO != null) {
                     return availableVO;
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         TalentTypeVO talentTypeVO = iTalentService.getTalentInfo(openId);
-        if(talentTypeVO == null){
+        if (talentTypeVO == null) {
             return new TripAvailableVO();
         }
 
@@ -304,7 +306,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
             /**
              * 当月的申请次数
              */
-            List<String> timeList = getTime((byte)3);
+            List<String> timeList = getTime((byte) 3);
             String startTime = timeList.get(0);
             String endTime = timeList.get(1);
             //指定时间内已领取但没用福利次数
@@ -313,13 +315,16 @@ public class TalentTripServiceImpl implements ITalentTripService {
             /**
              * 全年的核销次数
              */
-            timeList = getTime((byte)1);
+            timeList = getTime((byte) 1);
             startTime = timeList.get(0);
             endTime = timeList.get(1);
 
             Integer vertifyTimes = talentTripMapper.talentGetTimesByAll(openId, startTime, endTime, (byte) 2);
             Integer getTimes = cardPO.getTripTimes() - getBenefitTimes - vertifyTimes;
 
+            if (getTimes < 0) {
+                getTimes = 0;
+            }
             TripAvailableVO tripAvailableVO = new TripAvailableVO();
             tripAvailableVO.setAvailable(getTimes);
             tripAvailableVO.setTotal(cardPO.getTripTimes());
@@ -380,11 +385,11 @@ public class TalentTripServiceImpl implements ITalentTripService {
      * @return
      */
     public List<ScenicVO> setGetTimes(String openId, List<ScenicVO> scenicVOList) {
-        String key = "trip_gettime_"+JSONObject.toJSONString(scenicVOList);
+        String key = "trip_gettime_" + JSONObject.toJSONString(scenicVOList);
         String s_scenicVO = this.redisMapUtil.hget(openId, key);
-        if(!StringUtils.isEmpty(s_scenicVO)){
-            List<ScenicVO> list = StringToObjUtil.strToObj(s_scenicVO,List.class);
-            if(list != null){
+        if (!StringUtils.isEmpty(s_scenicVO)) {
+            List<ScenicVO> list = StringToObjUtil.strToObj(s_scenicVO, List.class);
+            if (list != null) {
                 return list;
             }
         }
