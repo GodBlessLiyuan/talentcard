@@ -68,14 +68,9 @@ public class FarmHouseUserScheduleService {
             //目标数据的key
             key=format.format(toPO.getDailyTime())+toPO.getFarmhouseId();
             //目标与源数据的比较
-            boolean upFlag1=originMap.get(key).getNumber()!=toPO.getNumber();
-            boolean upFlag2=originMap.get(key).getTimes()!=toPO.getTimes();
-            //只要有一个不相等则更新
-            if(upFlag1||upFlag2){
-                toPO.setNumber(originMap.get(key).getNumber());//人数
-                toPO.setTimes(originMap.get(key).getTimes());//次数
-                upFarmhouseDailyPOS.add(toPO);
-            }
+            toPO.setNumber(originMap.get(key).getNumber());//人数
+            toPO.setTimes(originMap.get(key).getTimes());//次数
+            upFarmhouseDailyPOS.add(toPO);
             //如果目标的数据多，源数据少，也就是源有新增的农家乐数据，则找出新增的，执行新增操作
             originMap.remove(key);
         }

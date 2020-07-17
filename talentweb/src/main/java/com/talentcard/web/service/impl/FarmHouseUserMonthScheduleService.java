@@ -62,20 +62,16 @@ public class FarmHouseUserMonthScheduleService {
         String key="";
         format=new SimpleDateFormat("yyyy-MM-dd");
         for(FarmhouseMonthPO originPO:originFarmhouseMonthPOS){
-            key=format.format(originPO.getMonth())+originPO.getName();//根据月时间和农家乐名构造key
+            key=format.format(originPO.getMonth())+originPO.getFarmhouseId();//根据月时间和农家乐名构造key
             originMap.put(key,originPO);
         }
         List<FarmhouseMonthPO> updateFarmhouseMonthPOS=new ArrayList<>();
         //遍历目标数据
         for(FarmhouseMonthPO toPO:toFarmhouseMonthPOS){
-            key=format.format(toPO.getMonth())+toPO.getName();
-            boolean b1=toPO.getNumber()!=originMap.get(key).getNumber();
-            boolean b2=toPO.getTimes()!=originMap.get(key).getTimes();
-            if(b1||b2){
-                toPO.setNumber(originMap.get(key).getNumber());
-                toPO.setTimes(originMap.get(key).getTimes());
-                updateFarmhouseMonthPOS.add(toPO);
-            }
+            key=format.format(toPO.getMonth())+toPO.getFarmhouseId();
+            toPO.setNumber(originMap.get(key).getNumber());
+            toPO.setTimes(originMap.get(key).getTimes());
+            updateFarmhouseMonthPOS.add(toPO);
             //移除目标的对象
             originMap.remove(key);
         }
