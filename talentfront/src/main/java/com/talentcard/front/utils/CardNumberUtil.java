@@ -58,7 +58,7 @@ public class CardNumberUtil {
             currNum = Long.parseLong(currNumString);
         }
         currNum++;
-        myRedis.opsForValue().set("currNum", currNum.toString(), 100L, TimeUnit.MINUTES);
+        myRedis.opsForValue().set("currNum", currNum.toString(), 30L, TimeUnit.DAYS);
         return currNum;
     }
 }
