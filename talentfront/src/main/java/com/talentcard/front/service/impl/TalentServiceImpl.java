@@ -17,6 +17,7 @@ import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.utils.AccessTokenUtil;
+import com.talentcard.front.utils.CardNumberUtil;
 import com.talentcard.front.utils.MessageUtil;
 import com.talentcard.front.utils.TalentActivityUtil;
 import com.talentcard.front.vo.TalentVO;
@@ -330,7 +331,7 @@ public class TalentServiceImpl implements ITalentService {
         String membershipNumber = cardPO.getInitialWord() + cardPO.getAreaNum();
         //当前编号，以后换卡需要使用
         String currentNum = "";
-        Long cardPOCurrNum = cardPO.getCurrNum();
+        Long cardPOCurrNum = CardNumberUtil.getCurrNum();
         /**
          * 看是否是尊贵的vip人才，目前保留1-10
          */
@@ -338,7 +339,7 @@ public class TalentServiceImpl implements ITalentService {
             TalentCardHoldListPO talentCardHoldListPO = talentCardHoldListMapper.selectByIdCard(idCard);
             if (talentCardHoldListPO != null) {
                 cardPOCurrNum = talentCardHoldListPO.getNum();
-                cardPO.setCurrNum(cardPO.getCurrNum() - 1);
+                cardPO.setCurrNum(cardPOCurrNum - 1);
             }
         }
 
@@ -356,7 +357,7 @@ public class TalentServiceImpl implements ITalentService {
         membershipNumber = membershipNumber + cardPOCurrNum;
         currentNum = currentNum + cardPOCurrNum;
         userCardPO.setNum(membershipNumber);
-        cardPO.setCurrNum(cardPO.getCurrNum() + 1);
+        cardPO.setCurrNum(cardPOCurrNum + 1);
         cardPO.setWaitingMemberNum(cardPO.getWaitingMemberNum() + 1);
         //人卡表里设置参数；添加数据
         userCardPO.setCreateTime(new Date());
@@ -368,7 +369,7 @@ public class TalentServiceImpl implements ITalentService {
         TestTalentInfoPO testTalentInfoPO = testTalentInfoMapper.selectByOpenId(openId);
         if (testTalentInfoPO != null) {
             userCardPO.setNum(testTalentInfoPO.getPrimaryCardNum());
-            cardPO.setCurrNum(cardPO.getCurrNum() - 1);
+            cardPO.setCurrNum(cardPOCurrNum - 1);
         }
         /**
          * 我是结束标记，测试完毕后删除
