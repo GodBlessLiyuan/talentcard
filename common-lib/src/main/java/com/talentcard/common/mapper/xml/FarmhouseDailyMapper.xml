@@ -132,12 +132,4 @@
     #{po.dailyTime,jdbcType=DATE}, #{po.number,jdbcType=BIGINT}, #{po.times,jdbcType=BIGINT})
   </foreach>
   </insert>
-  <update id="batchUpdate" parameterType="java.util.List">
-    <foreach collection="list" item="po" separator=";">
-      update m_farmhouse_daily
-      set `number` = #{po.number,jdbcType=BIGINT},
-      times = #{po.times,jdbcType=BIGINT}
-      where fh_d = #{po.fhD,jdbcType=BIGINT}
-    </foreach>
-  </update>
 </mapper>

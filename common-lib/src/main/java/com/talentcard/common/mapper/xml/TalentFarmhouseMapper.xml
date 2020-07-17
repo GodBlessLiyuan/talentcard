@@ -166,6 +166,15 @@
   <select id="queryByUpdateTime" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.FarmhouseDailyPO">
     SELECT tf.farmhouse_id as farmhouseId ,#{updateTime} as dailyTime ,tf.name,count(distinct ttf.open_id) as number,count(ttf.tt_id) as times
      from `t_talent_farmhouse` ttf left join t_farmhouse tf on ttf.farmhouse_id=tf.farmhouse_id
-     where ttf.update_time>#{start} and #{end}>ttf.update_time and ttf.dr=1 group by tf.farmhouse_id order by tf.name asc
+     where ttf.update_time>=#{start} and #{end}>=ttf.update_time and ttf.dr=1 group by tf.farmhouse_id order by tf.name asc
+  </select>
+  <select id="groupByMonthUseUpdateTime" resultType="java.util.HashMap">
+    SELECT DATE_FORMAT(ttf.update_time,'%Y-%m') as updateTime FROM t_talent_farmhouse ttf GROUP BY updateTime
+  </select>
+  <!--查询当月的数据-->
+  <select id="getMonthCountByUpdateTime" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.FarmhouseMonthPO">
+    SELECT tf.farmhouse_id as farmhouseId ,#{updateTime} as `month` ,tf.name,count(distinct ttf.open_id) as number,count(ttf.tt_id) as times
+     from `t_talent_farmhouse` ttf left join t_farmhouse tf on ttf.farmhouse_id=tf.farmhouse_id
+     where ttf.update_time>=#{start} and #{end}>=ttf.update_time and ttf.dr=1 group by tf.farmhouse_id order by tf.name asc
   </select>
 </mapper>
