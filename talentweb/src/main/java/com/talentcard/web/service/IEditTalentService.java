@@ -50,7 +50,7 @@ public interface IEditTalentService {
     /**
      * 新增/编辑人才荣誉
      */
-    ResultVO editTalentCategory(HttpSession httpSession, String openId, String talentCategory);
+    ResultVO editTalentCategory(HttpSession httpSession, String openId, String talentCategory, String opinion);
 
     /**
      * 政策查询
@@ -72,7 +72,7 @@ public interface IEditTalentService {
      * @param cardId
      * @return
      */
-    ResultVO changeCard(Long talentId, Long cardId);
+    ResultVO changeCard(Long talentId, Long cardId, String opinion);
 
     /**
      * 可以更换的卡查询

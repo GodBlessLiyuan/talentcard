@@ -83,8 +83,9 @@ public class EditTalentController {
     @RequestMapping("editTalentCategory")
     public ResultVO editTalentCategory(HttpSession httpSession,
                                        @RequestParam(value = "openId") String openId,
-                                       @RequestParam(value = "talentCategory") String talentCategory) {
-        return iEditTalentService.editTalentCategory(httpSession, openId, talentCategory);
+                                       @RequestParam(value = "talentCategory") String talentCategory,
+                                       @RequestParam(value = "opinion") String opinion) {
+        return iEditTalentService.editTalentCategory(httpSession, openId, talentCategory, opinion);
     }
 
     /**
@@ -116,8 +117,9 @@ public class EditTalentController {
      */
     @RequestMapping("changeCard")
     public ResultVO changeCard(@RequestParam(value = "talentId") Long talentId,
-                               @RequestParam(value = "cardId") Long cardId) {
-        return iEditTalentService.changeCard(talentId, cardId);
+                               @RequestParam(value = "cardId") Long cardId,
+                               @RequestParam(value = "opinion") String opinion) {
+        return iEditTalentService.changeCard(talentId, cardId, opinion);
     }
 
     /**

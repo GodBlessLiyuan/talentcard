@@ -62,11 +62,11 @@ public class EditTalentConstant {
         talentCategoryMap.put("10", "高端人才");
     }
 
-    private static HashMap<String, String> educationMap = new HashMap<>();
-    private static HashMap<String, String> titleMap = new HashMap<>();
-    private static HashMap<String, String> qualityMap = new HashMap<>();
-    private static HashMap<String, String> honourMap = new HashMap<>();
-    private static HashMap<String, String> talentCategoryMap = new HashMap<>();
+    public static HashMap<String, String> educationMap = new HashMap<>();
+    public static HashMap<String, String> titleMap = new HashMap<>();
+    public static HashMap<String, String> qualityMap = new HashMap<>();
+    public static HashMap<String, String> honourMap = new HashMap<>();
+    public static HashMap<String, String> talentCategoryMap = new HashMap<>();
 
 
 
