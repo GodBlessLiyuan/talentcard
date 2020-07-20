@@ -3,6 +3,7 @@
 <mapper namespace="com.talentcard.common.mapper.FarmhouseDailyMapper">
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.FarmhouseDailyPO">
     <id column="fh_d" jdbcType="BIGINT" property="fhD" />
+    <result column="dailyFarmHouseID" jdbcType="CHAR" property="dailyFarmHouseID"/>
     <result column="farmhouse_id" jdbcType="BIGINT" property="farmhouseId" />
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="daily_time" jdbcType="DATE" property="dailyTime" />
@@ -10,7 +11,7 @@
     <result column="times" jdbcType="BIGINT" property="times" />
   </resultMap>
   <sql id="Base_Column_List">
-    fh_d, farmhouse_id, `name`, daily_time, `number`, times
+    fh_d,dailyFarmHouseID, farmhouse_id, `name`, daily_time, `number`, times
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -125,10 +126,10 @@
     where fh_d = #{fhD,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
-    insert into m_farmhouse_daily (fh_d, farmhouse_id, `name`,
+    insert into m_farmhouse_daily (dailyFarmHouseID, farmhouse_id, `name`,
       daily_time, `number`, times)
     values <foreach collection="list" item="po" separator=",">
-    (null, #{po.farmhouseId,jdbcType=BIGINT}, #{po.name,jdbcType=CHAR},
+    (#{po.dailyFarmHouseID,jdbcType=CHAR}, #{po.farmhouseId,jdbcType=BIGINT}, #{po.name,jdbcType=CHAR},
     #{po.dailyTime,jdbcType=DATE}, #{po.number,jdbcType=BIGINT}, #{po.times,jdbcType=BIGINT})
   </foreach>
   </insert>

@@ -16,6 +16,7 @@ import java.util.List;
  */
 @Data
 public class FarmhouseDailyVO implements Serializable {
+    private Long ID;
     private String dailyTime;
     private String name;
     private Long number;
@@ -29,6 +30,7 @@ public class FarmhouseDailyVO implements Serializable {
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
         for(FarmhouseDailyPO po:farmhouseDailyPOS){
             FarmhouseDailyVO vo=new FarmhouseDailyVO();
+            vo.setID(po.getFhD());//改行的主键
             vo.setDailyTime(format.format(po.getDailyTime()));
             vo.setName(po.getName());
             vo.setNumber(po.getNumber());
