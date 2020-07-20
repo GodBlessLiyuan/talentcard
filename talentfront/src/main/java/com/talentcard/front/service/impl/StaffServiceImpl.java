@@ -11,6 +11,7 @@ import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.front.dto.MessageDTO;
 import com.talentcard.front.service.IStaffService;
 import com.talentcard.front.service.ITalentService;
+import com.talentcard.front.service.ITalentTripService;
 import com.talentcard.front.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +57,8 @@ public class StaffServiceImpl implements IStaffService {
     private RedisMapUtil redisMapUtil;
     @Autowired
     private ITalentService iTalentService;
+    @Autowired
+    private ITalentTripService iTalentTripService;
 
     @Override
     public ResultVO ifEnableRegister(String openId, Long activityFirstContentId, Long activitySecondContentId) {
@@ -131,12 +134,37 @@ public class StaffServiceImpl implements IStaffService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO tripVertify(HttpServletRequest httpServletRequest, String talentOpenId, String staffOpenId, Long activitySecondContentId) {
+        /**
+         * 判断用户是否已经领取免费券
+         */
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = simpleDateFormat.format(new Date());
         //判断人才旅游表里是否有状态为1的记录
         TalentTripPO talentTripPO = talentTripMapper.findOneNotExpired(talentOpenId, activitySecondContentId, currentTime);
+        //没领取卡券
         if (talentTripPO == null) {
-            return new ResultVO(1001, "该人才没资格");
+            /**
+             * cardId判断用户是否有福利，没福利返回1001
+             */
+            TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
+            if (talentPO == null) {
+                return new ResultVO(2600);
+            }
+            Integer ifEnjoyScenic = scenicMapper.ifEnjoyScenic(talentPO.getCardId(), activitySecondContentId);
+            if (ifEnjoyScenic == 0) {
+                //没有该福利
+                return new ResultVO(2691, "该用户没有此景区福利！");
+            } else {
+                /**
+                 * 判断是否还有免费次数
+                 */
+                Integer available = iTalentTripService.getTalentTripAllNum(talentOpenId).getAvailable();
+                if (available <= 0) {
+                    return new ResultVO(2692, "该用户没有次数啦！");
+                } else {
+                    return new ResultVO(2693, "有次数，但没领！");
+                }
+            }
         }
         if (!talentTripPO.getScenicId().equals(activitySecondContentId)) {
             return new ResultVO(1001, "该人才领的是其他的景区的！");
@@ -149,6 +177,7 @@ public class StaffServiceImpl implements IStaffService {
         if (!staffPO.getActivitySecondContentId().equals(activitySecondContentId)) {
             return new ResultVO(1001, "该人才领的是其他的景区的，和员工不一致！");
         }
+
 
         //找到staffId，更新人才旅游表
         talentTripPO.setStatus((byte) 2);

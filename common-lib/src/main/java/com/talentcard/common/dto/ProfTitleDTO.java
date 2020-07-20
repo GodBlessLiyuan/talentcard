@@ -20,4 +20,5 @@ public class ProfTitleDTO {
     private String openId;
     private Byte status;
     private Long ptId;
+    private String opinion= "";
 }

@@ -35,12 +35,12 @@
     insert into t_education (educ_id, education, school, 
       first_class, major, educ_picture, 
       cert_id, talent_id, `status`, 
-      if_certificate, graduate_time, educ_picture2,
+      if_certificate, graduate_time, educ_picture2, 
       educ_picture3, full_time)
     values (#{educId,jdbcType=BIGINT}, #{education,jdbcType=INTEGER}, #{school,jdbcType=CHAR}, 
       #{firstClass,jdbcType=TINYINT}, #{major,jdbcType=CHAR}, #{educPicture,jdbcType=CHAR}, 
       #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
-      #{ifCertificate,jdbcType=TINYINT}, #{graduateTime,jdbcType=CHAR}, #{educPicture2,jdbcType=CHAR},
+      #{ifCertificate,jdbcType=TINYINT}, #{graduateTime,jdbcType=CHAR}, #{educPicture2,jdbcType=CHAR}, 
       #{educPicture3,jdbcType=CHAR}, #{fullTime,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EducationPO">

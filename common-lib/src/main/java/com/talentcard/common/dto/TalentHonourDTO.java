@@ -19,4 +19,5 @@ public class TalentHonourDTO {
     private String info;
     private String openId;
     private Long thId;
+    private String opinion= "";
 }

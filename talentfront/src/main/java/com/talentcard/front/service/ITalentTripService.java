@@ -1,6 +1,7 @@
 package com.talentcard.front.service;
 
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.front.vo.TripAvailableVO;
 
 import java.text.ParseException;
 
@@ -45,4 +46,6 @@ public interface ITalentTripService {
      * @return
      */
     ResultVO getResidueTimes(String openId, Long activitySecondContentId);
+
+    TripAvailableVO getTalentTripAllNum(String openId);
 }
