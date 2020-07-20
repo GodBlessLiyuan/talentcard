@@ -151,6 +151,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         insertEducationPO.setStatus(InsertCertificationConstant.waitingApproveStatus);
         insertEducationPO.setOpenId(educationDTO.getOpenId());
         insertEducationPO.setDr((byte) 1);
+        insertEducationPO.setFullTime(educationDTO.getFullTime());
         insertEducationMapper.insertSelective(insertEducationPO);
         //审批表
         InsertCertApprovalPO insertCertApprovalPO = new InsertCertApprovalPO();
