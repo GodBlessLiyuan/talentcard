@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.mapper.FarmhouseDailyMapper;
 import com.talentcard.common.mapper.TalentFarmhouseMapper;
 import com.talentcard.common.pojo.FarmhouseDailyPO;
+import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.vo.ResultVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -32,6 +34,7 @@ public class FarmHouseUserScheduleService {
      * 均无误
      * */
     @Scheduled(cron = "${farmhouse_use_daily.count_time}")
+    @Transactional(rollbackFor = Exception.class)
     public void dailyCount(){
         //构造当天的时间
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
@@ -55,39 +58,21 @@ public class FarmHouseUserScheduleService {
             logger.info("批量写入了{}条记录",originFarmhouseDailyPOS.size());
             return;
         }
-        //目标数据不为空，则覆盖目标数据；为了源和目标匹配，构造map结构数据
-        Map<String,FarmhouseDailyPO> originMap=new HashMap<>(originFarmhouseDailyPOS.size());
-        SimpleDateFormat format =new SimpleDateFormat("yyyy-MM-dd");
-        String key="";
-        for(FarmhouseDailyPO originPO:originFarmhouseDailyPOS){
-            key=format.format(originPO.getDailyTime())+originPO.getFarmhouseId();
-            originMap.put(key,originPO);
-        }
-        List<FarmhouseDailyPO> upFarmhouseDailyPOS=new ArrayList<>();
+        //源数据更新或者新增
+        Map<String,FarmhouseDailyPO> toMap=new HashMap<>(toFarmhouseDailyPOS.size());
         for(FarmhouseDailyPO toPO:toFarmhouseDailyPOS){
-            //目标数据的key
-            key=format.format(toPO.getDailyTime())+toPO.getFarmhouseId();
-            //目标与源数据的比较
-            toPO.setNumber(originMap.get(key).getNumber());//人数
-            toPO.setTimes(originMap.get(key).getTimes());//次数
-            upFarmhouseDailyPOS.add(toPO);
-            //如果目标的数据多，源数据少，也就是源有新增的农家乐数据，则找出新增的，执行新增操作
-            originMap.remove(key);
+            toMap.put(toPO.getDailyFarmHouseID(),toPO);
         }
-        if(originMap.size()>0){
-            List<FarmhouseDailyPO> insertFarmhouseDailyPOS=new ArrayList<>(originMap.size());
-            insertFarmhouseDailyPOS.addAll(originMap.values());
-            int flag=farmhouseDailyMapper.batchInsert(insertFarmhouseDailyPOS);
-            if(flag<1){
-                logger.info("批量更新m_farmhouse_daily失败");
+        //遍历源数据，目标无则新增数据，目标有则更新数据
+        for(FarmhouseDailyPO originPO:originFarmhouseDailyPOS){
+            if(toMap.containsKey(originPO.getDailyFarmHouseID())){
+                FarmhouseDailyPO toFarmhouseDailyPO = toMap.get(originPO.getDailyFarmHouseID());
+                toFarmhouseDailyPO.setNumber(originPO.getNumber());
+                toFarmhouseDailyPO.setTimes(originPO.getTimes());
+                farmhouseDailyMapper.updateByPrimaryKeySelective(toFarmhouseDailyPO);
+            }else{
+                farmhouseDailyMapper.insert(originPO);
             }
-        }
-        if(upFarmhouseDailyPOS.size()>0){
-            //批量更新
-            for(FarmhouseDailyPO po:upFarmhouseDailyPOS){
-                farmhouseDailyMapper.updateByPrimaryKey(po);
-            }
-            logger.info("批量更新了{}条记录",upFarmhouseDailyPOS.size());
         }
 
     }

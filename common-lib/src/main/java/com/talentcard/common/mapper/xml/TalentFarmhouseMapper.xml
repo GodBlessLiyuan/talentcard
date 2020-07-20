@@ -164,7 +164,7 @@
   </select>
   <!--思路：查询出表之后，分组之后再排序 ；CAST("${updateTime}" as DATE)替换#{updateTime}也对; -->
   <select id="queryByUpdateTime" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.FarmhouseDailyPO">
-    SELECT tf.farmhouse_id as farmhouseId ,#{updateTime} as dailyTime,concat(dailyTime,farmhouseId) as dailyFarmHouseID,tf.name,count(distinct ttf.open_id) as number,count(ttf.tt_id) as times
+    SELECT tf.farmhouse_id as farmhouseId ,#{updateTime} as dailyTime,concat("",tf.farmhouse_id,"-",#{updateTime}) as dailyFarmHouseID,tf.name,count(distinct ttf.open_id) as number,count(ttf.tt_id) as times
      from `t_talent_farmhouse` ttf left join t_farmhouse tf on ttf.farmhouse_id=tf.farmhouse_id
      where ttf.update_time>=#{start} and #{end}>=ttf.update_time and ttf.dr=1 group by tf.farmhouse_id order by tf.name asc
   </select>
@@ -173,7 +173,7 @@
   </select>
   <!--查询当月的数据-->
   <select id="getMonthCountByUpdateTime" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.FarmhouseMonthPO">
-    SELECT tf.farmhouse_id as farmhouseId ,#{updateTime} as `month` ,tf.name,count(distinct ttf.open_id) as number,count(ttf.tt_id) as times
+    SELECT tf.farmhouse_id as farmhouseId ,#{updateTime} as `month` ,concat("",tf.farmhouse_id,"-",#{updateTime}) as monthFarmhouseID,tf.name,count(distinct ttf.open_id) as number,count(ttf.tt_id) as times
      from `t_talent_farmhouse` ttf left join t_farmhouse tf on ttf.farmhouse_id=tf.farmhouse_id
      where ttf.update_time>=#{start} and #{end}>=ttf.update_time and ttf.dr=1 group by tf.farmhouse_id order by tf.name asc
   </select>

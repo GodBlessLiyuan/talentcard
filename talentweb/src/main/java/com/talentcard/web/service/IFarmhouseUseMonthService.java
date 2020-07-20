@@ -11,4 +11,6 @@ public interface IFarmhouseUseMonthService {
     ResultVO query(Integer pageNum, Integer pageSize, Map<String, Object> map);
 
     ResultVO export(Map<String, Object> map, HttpServletResponse response);
+
+    ResultVO total(Integer pageNum, Integer pageSize, Map<String, Object> map);
 }

@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class FarmhouseMonthPO implements Serializable {
     private Long fhM;
-
+    private String monthFarmhouseID;
     private Long farmhouseId;
 
     private String name;
@@ -21,6 +21,14 @@ public class FarmhouseMonthPO implements Serializable {
     private Long times;
 
     private static final long serialVersionUID = 1L;
+
+    public String getMonthFarmhouseID() {
+        return monthFarmhouseID;
+    }
+
+    public void setMonthFarmhouseID(String monthFarmhouseID) {
+        this.monthFarmhouseID = monthFarmhouseID;
+    }
 
     public Long getFhM() {
         return fhM;

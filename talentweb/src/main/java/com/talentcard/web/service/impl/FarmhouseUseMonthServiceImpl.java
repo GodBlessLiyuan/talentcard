@@ -4,10 +4,12 @@ import com.github.pagehelper.Page;
 import com.talentcard.common.mapper.FarmhouseMonthMapper;
 import com.talentcard.common.mapper.TalentFarmhouseMapper;
 import com.talentcard.common.pojo.FarmhouseMonthPO;
+import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IFarmhouseUseMonthService;
+import com.talentcard.web.utils.DateInitUtil;
 import com.talentcard.web.utils.PageHelper;
 import com.talentcard.web.vo.FarmhouseUseMonthVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,21 +41,15 @@ public class FarmhouseUseMonthServiceImpl implements IFarmhouseUseMonthService {
             return new ResultVO(1000,"t_talent_farmhouse表中没有数据");
         }
         Map<String,String> times=new HashMap<>(3);
-        Calendar calendar=Calendar.getInstance();
         List<FarmhouseMonthPO> farmhouseMonthPOS=new ArrayList<>();
         for(HashMap<String,String> monthMap:monthMaps){
             String updateTime=monthMap.get("updateTime");
             //因为sql是date类型，insert出错，所以加上一个虚的字符串：-01
             times.put("updateTime",updateTime+"-01");
             //构造当月的时间
-            String[] ym = updateTime.split("-");
-            String start=updateTime+"-01 00:00:00";//当月的开始时间
-            times.put("start",start);
-            calendar.set(Calendar.YEAR, Integer.parseInt(ym[0]));
-            calendar.set(Calendar.MONTH, Integer.parseInt(ym[1]));
-            int dayMax = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-            String end=updateTime+"-"+dayMax+" 23:59:59";//当月的结束时间
-            times.put("end",end);
+            String[] monthFristAndLastByCurrenDay= DateInitUtil.getMonthFristAndLastByCurrenDay(updateTime);
+            times.put("start",monthFristAndLastByCurrenDay[0]);
+            times.put("end",monthFristAndLastByCurrenDay[1]);
             farmhouseMonthPOS.addAll(talentFarmhouseMapper.getMonthCountByUpdateTime(times));
         }
         if(farmhouseMonthPOS.size()>0){
@@ -65,12 +61,21 @@ public class FarmhouseUseMonthServiceImpl implements IFarmhouseUseMonthService {
         return new ResultVO(1000,"批量写入了"+farmhouseMonthPOS.size()+"条数据");
     }
 
+
+
     @Override
     public ResultVO query(Integer pageNum, Integer pageSize, Map<String, Object> map) {
         Page<FarmhouseMonthPO> page = PageHelper.startPage(pageNum, pageSize);
         List<FarmhouseMonthPO> farmhouseMonthPOS=farmhouseMonthMapper.query(map);
         return new ResultVO(1000,new PageInfoVO<>(page.getTotal(), FarmhouseUseMonthVO.convert(farmhouseMonthPOS)));
     }
+
+    @Override
+    public ResultVO total(Integer pageNum, Integer pageSize, Map<String, Object> map) {
+        List<FarmhouseMonthPO> farmhouseMonthPOS=farmhouseMonthMapper.query(map);
+        return new ResultVO(1000,FarmhouseUseMonthVO.totalNumber(farmhouseMonthPOS));
+    }
+
 
     @Override
     public ResultVO export(Map<String, Object> map, HttpServletResponse response) {

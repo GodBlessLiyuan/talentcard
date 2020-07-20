@@ -3,6 +3,7 @@
 <mapper namespace="com.talentcard.common.mapper.FarmhouseMonthMapper">
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.FarmhouseMonthPO">
     <id column="fh_m" jdbcType="BIGINT" property="fhM" />
+    <result column="monthFarmhouseID" jdbcType="CHAR" property="monthFarmhouseID"/>
     <result column="farmhouse_id" jdbcType="BIGINT" property="farmhouseId" />
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="month" jdbcType="DATE" property="month" />
@@ -10,13 +11,19 @@
     <result column="times" jdbcType="BIGINT" property="times" />
   </resultMap>
   <sql id="Base_Column_List">
-    fh_m, farmhouse_id, `name`, `month`, `number`, times
+    fh_m, monthFarmhouseID,farmhouse_id, `name`, `month`, `number`, times
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from m_farmhouse_month
     where fh_m = #{fhM,jdbcType=BIGINT}
+  </select>
+  <!--查询当月的数据-->
+  <select id="queryByMonth" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from m_farmhouse_month
+    where `month`=#{month}
   </select>
   <select id="query" parameterType="java.util.Map" resultMap="BaseResultMap">
     select  <include refid="Base_Column_List" />
@@ -118,10 +125,10 @@
     where fh_m = #{fhM,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
-    insert into m_farmhouse_month (farmhouse_id, `name`,
+    insert into m_farmhouse_month (monthFarmhouseID,farmhouse_id, `name`,
     `month`, `number`, times)
     values <foreach collection="list" item="po" separator=",">
-    (#{po.farmhouseId,jdbcType=BIGINT}, #{po.name,jdbcType=CHAR},
+    (#{po.monthFarmhouseID,jdbcType=CHAR},#{po.farmhouseId,jdbcType=BIGINT}, #{po.name,jdbcType=CHAR},
     #{po.month,jdbcType=DATE}, #{po.number,jdbcType=BIGINT}, #{po.times,jdbcType=BIGINT})
   </foreach>
   </insert>

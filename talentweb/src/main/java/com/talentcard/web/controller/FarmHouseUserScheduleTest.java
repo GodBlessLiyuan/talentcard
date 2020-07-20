@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("farmHouseUserScheduleTest")
 public class FarmHouseUserScheduleTest {
-//    @Autowired
-//    private FarmHouseUserScheduleService farmHouseUserScheduleService;
-//    @Autowired
-//    private FarmHouseUserMonthScheduleService farmHouseUserMonthScheduleService;
-//    @PostMapping("testDaily")
-//    public ResultVO testDaily(){
-//        farmHouseUserScheduleService.dailyCount();
-//        return new ResultVO(1000);
-//    }
-//    @PostMapping("testMonth")
-//    public ResultVO testMonth(){
-//        farmHouseUserMonthScheduleService.MonthCount();
-//        return new ResultVO(1000);
-//    }
+    @Autowired
+    private FarmHouseUserScheduleService farmHouseUserScheduleService;
+    @Autowired
+    private FarmHouseUserMonthScheduleService farmHouseUserMonthScheduleService;
+    @PostMapping("testDaily")
+    public ResultVO testDaily(){
+        farmHouseUserScheduleService.dailyCount();
+        return new ResultVO(1000);
+    }
+    @PostMapping("testMonth")
+    public ResultVO testMonth(){
+        farmHouseUserMonthScheduleService.MonthCount();
+        return new ResultVO(1000);
+    }
 }

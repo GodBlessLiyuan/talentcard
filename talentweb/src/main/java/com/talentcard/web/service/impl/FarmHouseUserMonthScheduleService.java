@@ -3,11 +3,14 @@ package com.talentcard.web.service.impl;
 import com.talentcard.common.mapper.FarmhouseMonthMapper;
 import com.talentcard.common.mapper.TalentFarmhouseMapper;
 import com.talentcard.common.pojo.FarmhouseMonthPO;
+import com.talentcard.common.utils.DateUtil;
+import com.talentcard.web.utils.DateInitUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -28,7 +31,9 @@ public class FarmHouseUserMonthScheduleService {
     @Autowired
     private FarmhouseMonthMapper farmhouseMonthMapper;
     private static final Logger logger= LoggerFactory.getLogger(FarmHouseUserMonthScheduleService.class);
+
     @Scheduled(cron = "${farmhouse_use_month.count_time}")
+    @Transactional(rollbackFor = Exception.class)
     public void MonthCount() {
         //判断当前的日，如果是1号，则构造上月的日期，
         Calendar calendar=Calendar.getInstance();
@@ -37,55 +42,37 @@ public class FarmHouseUserMonthScheduleService {
         }
         //构造月的第一天和最后一天
         Map<String,String> times=new HashMap<>(3);
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM");
-        String updateTime=format.format(calendar.getTime());
+        String updateTime= DateUtil.date2Str(calendar.getInstance().getTime(),DateUtil.YHM);
         times.put("updateTime",updateTime+"-01");
-        //构造当月的时间
-        String start=updateTime+"-01 00:00:00";
-        times.put("start",start);
-        int dayMax = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        //当月的结束时间
-        String end=updateTime+"-"+dayMax+" 23:59:59";
-        times.put("end",end);
+        String[] monthFristAndLastByCurrenDay= DateInitUtil.getMonthFristAndLastByCurrenDay(updateTime);
+        times.put("start",monthFristAndLastByCurrenDay[0]);
+        times.put("end",monthFristAndLastByCurrenDay[1]);
         List<FarmhouseMonthPO> originFarmhouseMonthPOS = talentFarmhouseMapper.getMonthCountByUpdateTime(times);
         if(originFarmhouseMonthPOS==null||originFarmhouseMonthPOS.size()==0){
             return;
         }
-        List<FarmhouseMonthPO> toFarmhouseMonthPOS=farmhouseMonthMapper.queryByMonth(updateTime);
+        List<FarmhouseMonthPO> toFarmhouseMonthPOS=farmhouseMonthMapper.queryByMonth(updateTime+"-01");
         if(toFarmhouseMonthPOS==null||toFarmhouseMonthPOS.size()==0){
             farmhouseMonthMapper.batchInsert(originFarmhouseMonthPOS);
             logger.info("m_farmhouse_month批量写入了{}条记录",originFarmhouseMonthPOS.size());
             return;
         }
-        //构造map数据，执行更新操作，
-        Map<String,FarmhouseMonthPO> originMap=new HashMap<>(originFarmhouseMonthPOS.size());
-        String key="";
-        format=new SimpleDateFormat("yyyy-MM-dd");
-        for(FarmhouseMonthPO originPO:originFarmhouseMonthPOS){
-            key=format.format(originPO.getMonth())+originPO.getFarmhouseId();//根据月时间和农家乐名构造key
-            originMap.put(key,originPO);
-        }
-        List<FarmhouseMonthPO> updateFarmhouseMonthPOS=new ArrayList<>();
-        //遍历目标数据
+        //对着目标，源数据被修改或者新增，
+        Map<String,FarmhouseMonthPO> toMap=new HashMap<>(toFarmhouseMonthPOS.size());
         for(FarmhouseMonthPO toPO:toFarmhouseMonthPOS){
-            key=format.format(toPO.getMonth())+toPO.getFarmhouseId();
-            toPO.setNumber(originMap.get(key).getNumber());
-            toPO.setTimes(originMap.get(key).getTimes());
-            updateFarmhouseMonthPOS.add(toPO);
-            //移除目标的对象
-            originMap.remove(key);
+            toMap.put(toPO.getMonthFarmhouseID(),toPO);
         }
-        if(updateFarmhouseMonthPOS.size()>0){
-            for(FarmhouseMonthPO upPO:updateFarmhouseMonthPOS){
-                farmhouseMonthMapper.updateByPrimaryKey(upPO);
+        //遍历源数据
+        for(FarmhouseMonthPO originPO:originFarmhouseMonthPOS){
+            if(toMap.containsKey(originPO.getMonthFarmhouseID())){
+                FarmhouseMonthPO toFarmhouseMonthPO = toMap.get(originPO.getMonthFarmhouseID());
+                toFarmhouseMonthPO.setNumber(originPO.getNumber());
+                toFarmhouseMonthPO.setTimes(originPO.getTimes());
+                farmhouseMonthMapper.updateByPrimaryKeySelective(toFarmhouseMonthPO);
+            }else{
+                farmhouseMonthMapper.insert(originPO);
             }
-            logger.info("批量更新了{}条农家乐月统计数据",updateFarmhouseMonthPOS.size());
         }
-        if(originMap.size()>0){
-            List<FarmhouseMonthPO> insertFarmhouseMonthPOS=new ArrayList<>(originMap.size());
-            insertFarmhouseMonthPOS.addAll(originMap.values());
-            farmhouseMonthMapper.batchInsert(insertFarmhouseMonthPOS);
-            logger.info("批量新增了{}条农家乐月统计数据",insertFarmhouseMonthPOS.size());
-        }
+
     }
 }

@@ -49,7 +49,30 @@ public class FarmhouseUseMonthController {
         }
         return farmhouseUseMonthService.query(pageNum,pageSize,map);
     }
-
+    @PostMapping("total")
+    public ResultVO total(
+            @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
+            @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
+            @RequestParam(value = "name",required = false)String name,
+            @RequestParam(value = "start",required = false)String start,
+            @RequestParam(value = "end",required = false)String end
+    ){
+        Map<String,Object> map=new HashMap<>();
+        if(!StringUtils.isEmpty(name)){
+            map.put("name",name.replace(" ",""));//替换前后和中间的空格
+        }
+        if(!StringUtils.isEmpty(start)){
+            //start为01号，数据库的当月都是01号
+            int len=start.length()- 2;
+            map.put("start",start.substring(0,len)+"01");
+        }
+        //end为28号，
+        if(!StringUtils.isEmpty(end)){
+            int len=start.length()- 2;
+            map.put("end",end.substring(0,len)+"28");
+        }
+        return farmhouseUseMonthService.total(pageNum,pageSize,map);
+    }
     @GetMapping("export")
     public ResultVO export(
             @RequestParam(value = "name",required = false)String name,
