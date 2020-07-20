@@ -33,4 +33,5 @@ public class IdentificationDTO {
     private String talentHonourPicture;
     private String talentHonourPicture2;
     private String talentHonourPicture3;
+    private Byte fullTime;
 }
