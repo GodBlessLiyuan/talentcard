@@ -66,6 +66,7 @@ public class FarmHouseUserScheduleService {
             }else{
                 toFarmhouseDailyPO.setNumber(originPO.getNumber());
                 toFarmhouseDailyPO.setTimes(originPO.getTimes());
+                toFarmhouseDailyPO.setUpdateTime(new Date() );
                 farmhouseDailyMapper.updateByPrimaryKeySelective(toFarmhouseDailyPO);
             }
         }
@@ -106,6 +107,7 @@ public class FarmHouseUserScheduleService {
             }else{
                 toFarmhouseDailyPO.setNumber(originPO.getNumber());
                 toFarmhouseDailyPO.setTimes(originPO.getTimes());
+                toFarmhouseDailyPO.setUpdateTime(new Date());
                 farmhouseDailyMapper.updateByPrimaryKeySelective(toFarmhouseDailyPO);
             }
         }
