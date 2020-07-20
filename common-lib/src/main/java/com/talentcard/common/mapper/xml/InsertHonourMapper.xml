@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.InsertHonourPO">
     <id column="insert_th_id" jdbcType="BIGINT" property="insertThId" />
     <result column="honour_id" jdbcType="BIGINT" property="honourId" />
-    <result column="honour_picture" jdbcType="CHAR" property="honourPicture" />
+    <result column="honour_picture" jdbcType="VARCHAR" property="honourPicture" />
     <result column="info" jdbcType="CHAR" property="info" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="insert_cert_id" jdbcType="BIGINT" property="insertCertId" />
@@ -32,7 +32,7 @@
       info, `status`, insert_cert_id, 
       open_id, dr, honour_picture2, 
       honour_picture3)
-    values (#{insertThId,jdbcType=BIGINT}, #{honourId,jdbcType=BIGINT}, #{honourPicture,jdbcType=CHAR}, 
+    values (#{insertThId,jdbcType=BIGINT}, #{honourId,jdbcType=BIGINT}, #{honourPicture,jdbcType=VARCHAR}, 
       #{info,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{insertCertId,jdbcType=BIGINT}, 
       #{openId,jdbcType=CHAR}, #{dr,jdbcType=TINYINT}, #{honourPicture2,jdbcType=CHAR}, 
       #{honourPicture3,jdbcType=CHAR})
@@ -79,7 +79,7 @@
         #{honourId,jdbcType=BIGINT},
       </if>
       <if test="honourPicture != null">
-        #{honourPicture,jdbcType=CHAR},
+        #{honourPicture,jdbcType=VARCHAR},
       </if>
       <if test="info != null">
         #{info,jdbcType=CHAR},
@@ -111,7 +111,7 @@
         honour_id = #{honourId,jdbcType=BIGINT},
       </if>
       <if test="honourPicture != null">
-        honour_picture = #{honourPicture,jdbcType=CHAR},
+        honour_picture = #{honourPicture,jdbcType=VARCHAR},
       </if>
       <if test="info != null">
         info = #{info,jdbcType=CHAR},
@@ -140,7 +140,7 @@
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.InsertHonourPO">
     update t_insert_honour
     set honour_id = #{honourId,jdbcType=BIGINT},
-      honour_picture = #{honourPicture,jdbcType=CHAR},
+      honour_picture = #{honourPicture,jdbcType=VARCHAR},
       info = #{info,jdbcType=CHAR},
       `status` = #{status,jdbcType=TINYINT},
       insert_cert_id = #{insertCertId,jdbcType=BIGINT},

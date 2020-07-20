@@ -11,7 +11,7 @@ import lombok.Data;
 public class InsertQualityPO implements Serializable {
     private Long insertPqId;
 
-    private Integer category = 0;
+    private Integer category;
 
     private String picture;
 

@@ -11,7 +11,7 @@ import lombok.Data;
 public class InsertTitlePO implements Serializable {
     private Long insertPtId;
 
-    private Integer category = 0;
+    private Integer category;
 
     private String info;
 
