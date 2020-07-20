@@ -11,7 +11,7 @@ import lombok.Data;
 public class TalentHonourPO implements Serializable {
     private Long thId;
 
-    private Long honourId = 0L;
+    private Long honourId;
 
     private String honourPicture;
 

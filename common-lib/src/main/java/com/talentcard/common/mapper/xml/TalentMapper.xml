@@ -67,6 +67,7 @@
             <result column="e_status" jdbcType="TINYINT" property="status"/>
             <result column="e_if_certificate" jdbcType="TINYINT" property="ifCertificate"/>
             <result column="e_graduate_time" jdbcType="CHAR" property="graduateTime"/>
+            <result column="e_full_time" jdbcType="TINYINT" property="fullTime"/>
         </collection>
         <collection property="profTitlePOList" ofType="com.talentcard.common.pojo.ProfTitlePO">
             <id column="pt_pt_id" jdbcType="BIGINT" property="ptId"/>
@@ -151,6 +152,7 @@
                e.status             as e_status,
                e.if_certificate     as e_if_certificate,
                e.graduate_time      as e_graduate_time,
+               e.full_time          as e_full_time,
 
                pt.pt_id             as pt_pt_id,
                pt.category          as pt_category,

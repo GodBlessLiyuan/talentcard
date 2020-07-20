@@ -449,6 +449,7 @@ public class TalentServiceImpl implements ITalentService {
         String talentHonourPicture = identificationDTO.getTalentHonourPicture();
         String talentHonourPicture2 = identificationDTO.getTalentHonourPicture2();
         String talentHonourPicture3 = identificationDTO.getTalentHonourPicture3();
+        Byte fullTime = identificationDTO.getFullTime();
         //人才表；通过openId获取talent表里唯一的信息
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
         if (talentPO == null) {
@@ -541,6 +542,7 @@ public class TalentServiceImpl implements ITalentService {
         educationPO.setTalentId(talentId);
         educationPO.setStatus(status);
         educationPO.setGraduateTime(graduateTime);
+        educationPO.setFullTime(fullTime);
         if (education == 0) {
             //10代表本次不认证
             educationPO.setIfCertificate((byte) 10);

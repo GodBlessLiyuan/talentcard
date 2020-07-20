@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.InsertQualityPO">
     <id column="insert_pq_id" jdbcType="BIGINT" property="insertPqId" />
     <result column="category" jdbcType="INTEGER" property="category" />
-    <result column="picture" jdbcType="CHAR" property="picture" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
     <result column="info" jdbcType="CHAR" property="info" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="insert_cert_id" jdbcType="BIGINT" property="insertCertId" />
@@ -32,7 +32,7 @@
       info, `status`, insert_cert_id, 
       open_id, dr, picture2, picture3
       )
-    values (#{insertPqId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{picture,jdbcType=CHAR}, 
+    values (#{insertPqId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{picture,jdbcType=VARCHAR}, 
       #{info,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{insertCertId,jdbcType=BIGINT}, 
       #{openId,jdbcType=CHAR}, #{dr,jdbcType=TINYINT}, #{picture2,jdbcType=CHAR}, #{picture3,jdbcType=CHAR}
       )
@@ -79,7 +79,7 @@
         #{category,jdbcType=INTEGER},
       </if>
       <if test="picture != null">
-        #{picture,jdbcType=CHAR},
+        #{picture,jdbcType=VARCHAR},
       </if>
       <if test="info != null">
         #{info,jdbcType=CHAR},
@@ -111,7 +111,7 @@
         category = #{category,jdbcType=INTEGER},
       </if>
       <if test="picture != null">
-        picture = #{picture,jdbcType=CHAR},
+        picture = #{picture,jdbcType=VARCHAR},
       </if>
       <if test="info != null">
         info = #{info,jdbcType=CHAR},
@@ -140,7 +140,7 @@
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.InsertQualityPO">
     update t_insert_quality
     set category = #{category,jdbcType=INTEGER},
-      picture = #{picture,jdbcType=CHAR},
+      picture = #{picture,jdbcType=VARCHAR},
       info = #{info,jdbcType=CHAR},
       `status` = #{status,jdbcType=TINYINT},
       insert_cert_id = #{insertCertId,jdbcType=BIGINT},
