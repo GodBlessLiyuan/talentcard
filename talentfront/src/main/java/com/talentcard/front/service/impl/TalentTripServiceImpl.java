@@ -6,6 +6,7 @@ import com.talentcard.common.bo.ScenicBO;
 import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.StringToObjUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
@@ -235,8 +236,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
         Byte unit = scenicPO.getUnit();
         Integer times = scenicPO.getTimes();
         List<String> timeList = getTime(unit);
-        String startTime = timeList.get(0);
-        String endTime = timeList.get(1);
+
         /*
         //指定时间内已领取福利次数
         Integer getBenefitTimes = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 1);
@@ -246,6 +246,19 @@ public class TalentTripServiceImpl implements ITalentTripService {
         if (getTimes >= times) {
             return new ResultVO(1003, "当前用户已经把当月/年次数用尽");
         }*/
+        Calendar c = Calendar.getInstance();
+        String endTime = DateUtil.date2Str(c.getTime(),DateUtil.YMD_HMS);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        String startTime = DateUtil.date2Str(c.getTime(),DateUtil.YMD_HMS);
+
+        //限制当天只能核销一次
+        Integer dailyTotal = talentTripMapper.talentGetTimes(openId,activitySecondContentId, startTime, endTime,(byte)2 );
+        if(dailyTotal > 0){
+            return new ResultVO(1001, "当前福利已被领取完");
+        }
+
         Integer available = getTalentTripAllNum(openId).getAvailable();
         if (available <= 0) {
             return new ResultVO(1003, "当前用户已经把当月/年次数用尽");
