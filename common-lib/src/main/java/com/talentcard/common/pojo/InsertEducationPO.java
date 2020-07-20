@@ -11,14 +11,14 @@ import lombok.Data;
 public class InsertEducationPO implements Serializable {
     private Long insertEducId;
 
-    private Integer education = 0;
+    private Integer education;
 
     private String school;
 
     /**
      * 1双一流；2海外人才；3啥也不是
      */
-    private Byte firstClass = 0;
+    private Byte firstClass;
 
     private String major;
 
@@ -45,6 +45,8 @@ public class InsertEducationPO implements Serializable {
     private String educPicture2;
 
     private String educPicture3;
+
+    private Byte fullTime;
 
     private static final long serialVersionUID = 1L;
 }
