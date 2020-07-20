@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentHonourPO">
     <id column="th_id" jdbcType="BIGINT" property="thId" />
     <result column="honour_id" jdbcType="BIGINT" property="honourId" />
-    <result column="honour_picture" jdbcType="VARCHAR" property="honourPicture" />
+    <result column="honour_picture" jdbcType="CHAR" property="honourPicture" />
     <result column="info" jdbcType="CHAR" property="info" />
     <result column="cert_id" jdbcType="BIGINT" property="certId" />
     <result column="talent_id" jdbcType="BIGINT" property="talentId" />
@@ -32,7 +32,7 @@
       info, cert_id, talent_id, 
       `status`, if_certificate, honour_picture2, 
       honour_picture3)
-    values (#{thId,jdbcType=BIGINT}, #{honourId,jdbcType=BIGINT}, #{honourPicture,jdbcType=VARCHAR}, 
+    values (#{thId,jdbcType=BIGINT}, #{honourId,jdbcType=BIGINT}, #{honourPicture,jdbcType=CHAR}, 
       #{info,jdbcType=CHAR}, #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
       #{status,jdbcType=TINYINT}, #{ifCertificate,jdbcType=TINYINT}, #{honourPicture2,jdbcType=CHAR}, 
       #{honourPicture3,jdbcType=CHAR})
@@ -79,7 +79,7 @@
         #{honourId,jdbcType=BIGINT},
       </if>
       <if test="honourPicture != null">
-        #{honourPicture,jdbcType=VARCHAR},
+        #{honourPicture,jdbcType=CHAR},
       </if>
       <if test="info != null">
         #{info,jdbcType=CHAR},
@@ -111,7 +111,7 @@
         honour_id = #{honourId,jdbcType=BIGINT},
       </if>
       <if test="honourPicture != null">
-        honour_picture = #{honourPicture,jdbcType=VARCHAR},
+        honour_picture = #{honourPicture,jdbcType=CHAR},
       </if>
       <if test="info != null">
         info = #{info,jdbcType=CHAR},
@@ -140,7 +140,7 @@
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentHonourPO">
     update t_talent_honour
     set honour_id = #{honourId,jdbcType=BIGINT},
-      honour_picture = #{honourPicture,jdbcType=VARCHAR},
+      honour_picture = #{honourPicture,jdbcType=CHAR},
       info = #{info,jdbcType=CHAR},
       cert_id = #{certId,jdbcType=BIGINT},
       talent_id = #{talentId,jdbcType=BIGINT},

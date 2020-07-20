@@ -7,7 +7,7 @@
     <result column="school" jdbcType="CHAR" property="school" />
     <result column="first_class" jdbcType="TINYINT" property="firstClass" />
     <result column="major" jdbcType="CHAR" property="major" />
-    <result column="educ_picture" jdbcType="VARCHAR" property="educPicture" />
+    <result column="educ_picture" jdbcType="CHAR" property="educPicture" />
     <result column="open_id" jdbcType="CHAR" property="openId" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="graduate_time" jdbcType="CHAR" property="graduateTime" />
@@ -38,7 +38,7 @@
       insert_cert_id, dr, educ_picture2, 
       educ_picture3, full_time)
     values (#{insertEducId,jdbcType=BIGINT}, #{education,jdbcType=INTEGER}, #{school,jdbcType=CHAR}, 
-      #{firstClass,jdbcType=TINYINT}, #{major,jdbcType=CHAR}, #{educPicture,jdbcType=VARCHAR}, 
+      #{firstClass,jdbcType=TINYINT}, #{major,jdbcType=CHAR}, #{educPicture,jdbcType=CHAR}, 
       #{openId,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{graduateTime,jdbcType=CHAR}, 
       #{insertCertId,jdbcType=BIGINT}, #{dr,jdbcType=TINYINT}, #{educPicture2,jdbcType=CHAR}, 
       #{educPicture3,jdbcType=CHAR}, #{fullTime,jdbcType=TINYINT})
@@ -106,7 +106,7 @@
         #{major,jdbcType=CHAR},
       </if>
       <if test="educPicture != null">
-        #{educPicture,jdbcType=VARCHAR},
+        #{educPicture,jdbcType=CHAR},
       </if>
       <if test="openId != null">
         #{openId,jdbcType=CHAR},
@@ -150,7 +150,7 @@
         major = #{major,jdbcType=CHAR},
       </if>
       <if test="educPicture != null">
-        educ_picture = #{educPicture,jdbcType=VARCHAR},
+        educ_picture = #{educPicture,jdbcType=CHAR},
       </if>
       <if test="openId != null">
         open_id = #{openId,jdbcType=CHAR},
@@ -185,7 +185,7 @@
       school = #{school,jdbcType=CHAR},
       first_class = #{firstClass,jdbcType=TINYINT},
       major = #{major,jdbcType=CHAR},
-      educ_picture = #{educPicture,jdbcType=VARCHAR},
+      educ_picture = #{educPicture,jdbcType=CHAR},
       open_id = #{openId,jdbcType=CHAR},
       `status` = #{status,jdbcType=TINYINT},
       graduate_time = #{graduateTime,jdbcType=CHAR},
