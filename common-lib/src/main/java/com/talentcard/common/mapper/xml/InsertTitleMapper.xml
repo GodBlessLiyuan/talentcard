@@ -5,7 +5,7 @@
     <id column="insert_pt_id" jdbcType="BIGINT" property="insertPtId" />
     <result column="category" jdbcType="INTEGER" property="category" />
     <result column="info" jdbcType="CHAR" property="info" />
-    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="picture" jdbcType="CHAR" property="picture" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="insert_cert_id" jdbcType="BIGINT" property="insertCertId" />
     <result column="open_id" jdbcType="CHAR" property="openId" />
@@ -33,7 +33,7 @@
       open_id, dr, picture2, picture3
       )
     values (#{insertPtId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{info,jdbcType=CHAR}, 
-      #{picture,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{insertCertId,jdbcType=BIGINT}, 
+      #{picture,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, #{insertCertId,jdbcType=BIGINT}, 
       #{openId,jdbcType=CHAR}, #{dr,jdbcType=TINYINT}, #{picture2,jdbcType=CHAR}, #{picture3,jdbcType=CHAR}
       )
   </insert>
@@ -82,7 +82,7 @@
         #{info,jdbcType=CHAR},
       </if>
       <if test="picture != null">
-        #{picture,jdbcType=VARCHAR},
+        #{picture,jdbcType=CHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
@@ -114,7 +114,7 @@
         info = #{info,jdbcType=CHAR},
       </if>
       <if test="picture != null">
-        picture = #{picture,jdbcType=VARCHAR},
+        picture = #{picture,jdbcType=CHAR},
       </if>
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
@@ -141,7 +141,7 @@
     update t_insert_title
     set category = #{category,jdbcType=INTEGER},
       info = #{info,jdbcType=CHAR},
-      picture = #{picture,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=CHAR},
       `status` = #{status,jdbcType=TINYINT},
       insert_cert_id = #{insertCertId,jdbcType=BIGINT},
       open_id = #{openId,jdbcType=CHAR},

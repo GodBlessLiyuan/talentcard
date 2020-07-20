@@ -11,7 +11,7 @@ import lombok.Data;
 public class ProfTitlePO implements Serializable {
     private Long ptId;
 
-    private Integer category;
+    private Integer category = 0;
 
     private String info;
 

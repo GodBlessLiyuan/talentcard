@@ -5,7 +5,7 @@
     <id column="pt_id" jdbcType="BIGINT" property="ptId" />
     <result column="category" jdbcType="INTEGER" property="category" />
     <result column="info" jdbcType="CHAR" property="info" />
-    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="picture" jdbcType="CHAR" property="picture" />
     <result column="cert_id" jdbcType="BIGINT" property="certId" />
     <result column="talent_id" jdbcType="BIGINT" property="talentId" />
     <result column="status" jdbcType="TINYINT" property="status" />
@@ -33,7 +33,7 @@
       `status`, if_certificate, picture2, 
       picture3)
     values (#{ptId,jdbcType=BIGINT}, #{category,jdbcType=INTEGER}, #{info,jdbcType=CHAR}, 
-      #{picture,jdbcType=VARCHAR}, #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
+      #{picture,jdbcType=CHAR}, #{certId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
       #{status,jdbcType=TINYINT}, #{ifCertificate,jdbcType=TINYINT}, #{picture2,jdbcType=CHAR}, 
       #{picture3,jdbcType=CHAR})
   </insert>
@@ -82,7 +82,7 @@
         #{info,jdbcType=CHAR},
       </if>
       <if test="picture != null">
-        #{picture,jdbcType=VARCHAR},
+        #{picture,jdbcType=CHAR},
       </if>
       <if test="certId != null">
         #{certId,jdbcType=BIGINT},
@@ -114,7 +114,7 @@
         info = #{info,jdbcType=CHAR},
       </if>
       <if test="picture != null">
-        picture = #{picture,jdbcType=VARCHAR},
+        picture = #{picture,jdbcType=CHAR},
       </if>
       <if test="certId != null">
         cert_id = #{certId,jdbcType=BIGINT},
@@ -141,7 +141,7 @@
     update t_prof_title
     set category = #{category,jdbcType=INTEGER},
       info = #{info,jdbcType=CHAR},
-      picture = #{picture,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=CHAR},
       cert_id = #{certId,jdbcType=BIGINT},
       talent_id = #{talentId,jdbcType=BIGINT},
       `status` = #{status,jdbcType=TINYINT},
