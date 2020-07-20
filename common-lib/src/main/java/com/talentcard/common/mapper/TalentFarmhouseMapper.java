@@ -20,4 +20,6 @@ public interface TalentFarmhouseMapper extends BaseMapper<TalentFarmhousePO, Lon
     List<HashMap<String, String>> groupByMonthUseUpdateTime();
 
     List<FarmhouseMonthPO> getMonthCountByUpdateTime(Map<String, String> times);
+
+    HashMap<String, Object> queryTotalByUpdateTime(Map<String, Object> map);
 }

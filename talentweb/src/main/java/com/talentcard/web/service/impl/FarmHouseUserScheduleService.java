@@ -6,6 +6,7 @@ import com.talentcard.common.mapper.TalentFarmhouseMapper;
 import com.talentcard.common.pojo.FarmhouseDailyPO;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.utils.DateInitUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,37 +45,70 @@ public class FarmHouseUserScheduleService {
         times.put("start",updateTime+" 00:00:00");
         times.put("end",updateTime+" 23:59:59");
         List<FarmhouseDailyPO> originFarmhouseDailyPOS = talentFarmhouseMapper.queryByUpdateTime(times);
-        boolean originFlag=originFarmhouseDailyPOS==null||originFarmhouseDailyPOS.size()==0;
         //源数据为空
-        if(originFlag){
+        if(originFarmhouseDailyPOS==null||originFarmhouseDailyPOS.size()==0){
             return;
         }
         //日活动当天的数据被覆盖
         List<FarmhouseDailyPO> toFarmhouseDailyPOS=farmhouseDailyMapper.queryByDailyTime(updateTime);
-        boolean toFlag=toFarmhouseDailyPOS==null||toFarmhouseDailyPOS.size()==0;
         //目标数据为空
-        if(toFlag){
+        if(toFarmhouseDailyPOS==null||toFarmhouseDailyPOS.size()==0){
             farmhouseDailyMapper.batchInsert(originFarmhouseDailyPOS);
             logger.info("批量写入了{}条记录",originFarmhouseDailyPOS.size());
             return;
         }
-        //源数据更新或者新增
-        Map<String,FarmhouseDailyPO> toMap=new HashMap<>(toFarmhouseDailyPOS.size());
-        for(FarmhouseDailyPO toPO:toFarmhouseDailyPOS){
-            toMap.put(toPO.getDailyFarmHouseID(),toPO);
-        }
         //遍历源数据，目标无则新增数据，目标有则更新数据
         for(FarmhouseDailyPO originPO:originFarmhouseDailyPOS){
-            if(toMap.containsKey(originPO.getDailyFarmHouseID())){
-                FarmhouseDailyPO toFarmhouseDailyPO = toMap.get(originPO.getDailyFarmHouseID());
+            FarmhouseDailyPO toFarmhouseDailyPO=farmhouseDailyMapper.queryByDailyFarmHouseID(originPO.getDailyFarmHouseID());
+            if(toFarmhouseDailyPO==null){
+                originPO.setUpdateTime(new Date());
+                farmhouseDailyMapper.insert(originPO);
+            }else{
                 toFarmhouseDailyPO.setNumber(originPO.getNumber());
                 toFarmhouseDailyPO.setTimes(originPO.getTimes());
                 farmhouseDailyMapper.updateByPrimaryKeySelective(toFarmhouseDailyPO);
-            }else{
-                farmhouseDailyMapper.insert(originPO);
             }
         }
-
+        logger.info("定时任务的农家乐日统计更新成功");
     }
-
+    /**
+     * 今天统计昨天的农家乐日统计
+     * */
+    @Scheduled(cron = "${farmhouse_use_daily.lastDay_count_time}")
+    @Transactional(rollbackFor = Exception.class)
+    public void lastDay_count_time(){
+        Calendar calendar=Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH,-1);
+        String updateTime=DateUtil.date2Str(calendar.getTime(),DateUtil.YMD);
+        Map<String,String> times=new HashMap<>(3);
+        times.put("updateTime",updateTime);
+        times.put("start",updateTime+" 00:00:00");
+        times.put("end",updateTime+" 23:59:59");
+        List<FarmhouseDailyPO> originFarmhouseDailyPOS = talentFarmhouseMapper.queryByUpdateTime(times);
+        //源数据为空
+        if(originFarmhouseDailyPOS==null||originFarmhouseDailyPOS.size()==0){
+            return;
+        }
+        //日活动当天的数据被覆盖
+        List<FarmhouseDailyPO> toFarmhouseDailyPOS=farmhouseDailyMapper.queryByDailyTime(updateTime);
+        //目标数据为空
+        if(toFarmhouseDailyPOS==null||toFarmhouseDailyPOS.size()==0){
+            farmhouseDailyMapper.batchInsert(originFarmhouseDailyPOS);
+            logger.info("批量写入了{}条记录",originFarmhouseDailyPOS.size());
+            return;
+        }
+        //遍历源数据，目标无则新增数据，目标有则更新数据
+        for(FarmhouseDailyPO originPO:originFarmhouseDailyPOS){
+            FarmhouseDailyPO toFarmhouseDailyPO=farmhouseDailyMapper.queryByDailyFarmHouseID(originPO.getDailyFarmHouseID());
+            if(toFarmhouseDailyPO==null){
+                originPO.setUpdateTime(new Date());
+                farmhouseDailyMapper.insert(originPO);
+            }else{
+                toFarmhouseDailyPO.setNumber(originPO.getNumber());
+                toFarmhouseDailyPO.setTimes(originPO.getTimes());
+                farmhouseDailyMapper.updateByPrimaryKeySelective(toFarmhouseDailyPO);
+            }
+        }
+        logger.info("定时任务之昨天的农家乐日统计更新成功");
+    }
 }

@@ -2,6 +2,7 @@ package com.talentcard.web.controller;
 
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IFarmhouseUseMonthService;
+import com.talentcard.web.utils.DateInitUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -64,12 +65,12 @@ public class FarmhouseUseMonthController {
         if(!StringUtils.isEmpty(start)){
             //start为01号，数据库的当月都是01号
             int len=start.length()- 2;
-            map.put("start",start.substring(0,len)+"01");
+            map.put("start",start.substring(0,len)+"01 00:00:00");
         }
-        //end为28号，
         if(!StringUtils.isEmpty(end)){
             int len=start.length()- 2;
-            map.put("end",end.substring(0,len)+"28");
+            //传入的年月的最后一天
+            map.put("end", DateInitUtil.getMonthFristAndLastByCurrenDay(end.substring(0,len))[1]);
         }
         return farmhouseUseMonthService.total(pageNum,pageSize,map);
     }

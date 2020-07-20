@@ -15,4 +15,5 @@ public interface FarmhouseDailyMapper extends BaseMapper<FarmhouseDailyPO, Long>
 
     List<FarmhouseDailyPO> queryByDailyTime(String updateTime);
 
+    FarmhouseDailyPO queryByDailyFarmHouseID(String dailyFarmHouseID);
 }

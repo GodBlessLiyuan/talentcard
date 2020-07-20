@@ -48,20 +48,4 @@ public class FarmhouseUseMonthVO implements Serializable {
         vo.setTimes(po.getTimes());
     }
 
-
-    public static Map totalNumber(List<FarmhouseMonthPO> farmhouseMonthPOS) {
-        if(farmhouseMonthPOS==null||farmhouseMonthPOS.size()==0){
-            return null;
-        }
-        Map<String,Object> map=new HashMap<>();
-        Long totalNumber=0L;
-        Long totalTimes=0L;
-        for(FarmhouseMonthPO po:farmhouseMonthPOS){
-            totalNumber+=po.getNumber();
-            totalTimes+=po.getTimes();
-        }
-        map.put("totalNumber",totalNumber);
-        map.put("totalTimes",totalTimes);
-        return map;
-    }
 }

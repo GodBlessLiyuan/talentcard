@@ -19,8 +19,16 @@ public class FarmhouseDailyPO implements Serializable {
     private Long number;
 
     private Long times;
-
+    private Date updateTime;
     private static final long serialVersionUID = 1L;
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public String getDailyFarmHouseID() {
         return dailyFarmHouseID;

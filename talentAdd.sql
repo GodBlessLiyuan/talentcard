@@ -14,12 +14,13 @@ DROP TABLE IF EXISTS t_user_feedback;
 CREATE TABLE m_farmhouse_daily
 (
 	fh_d bigint NOT NULL AUTO_INCREMENT,
-	dailyFarmHouseID char(255) NOT NULL,
+	dailyFarmHouseID char(32) NOT NULL,
 	farmhouse_id bigint NOT NULL,
 	name char(16) NOT NULL,
 	daily_time date NOT NULL,
 	number bigint,
 	times bigint,
+	update_time datetime,
 	PRIMARY KEY (fh_d),
 	UNIQUE (fh_d)
 );
@@ -28,12 +29,13 @@ CREATE TABLE m_farmhouse_daily
 CREATE TABLE m_farmhouse_month
 (
 	fh_m bigint NOT NULL AUTO_INCREMENT,
-	monthFarmhouseID char(255),
+	monthFarmhouseID char(32),
 	farmhouse_id bigint NOT NULL,
 	name char(16) NOT NULL,
 	month date NOT NULL,
 	number bigint,
 	times bigint,
+	update_time datetime,
 	PRIMARY KEY (fh_m),
 	UNIQUE (fh_m)
 );

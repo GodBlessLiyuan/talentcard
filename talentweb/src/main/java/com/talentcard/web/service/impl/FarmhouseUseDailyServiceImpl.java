@@ -40,7 +40,7 @@ public class FarmhouseUseDailyServiceImpl implements IFarmhouseUseDailyService {
             return new ResultVO(1000,"t_talent_farmhouse表中没有数据");
         }
         List<FarmhouseDailyPO> farmhouseDailyPOS=new ArrayList<>();
-        Map<String,String> times=new HashMap();
+        Map<String,String> times=new HashMap(3);
         for(HashMap<String,String> map:updateTimes){
             //当前天数
             times.put("updateTime",map.get("updateTime"));

@@ -171,10 +171,28 @@
   <select id="groupByMonthUseUpdateTime" resultType="java.util.HashMap">
     SELECT DATE_FORMAT(ttf.update_time,'%Y-%m') as updateTime FROM t_talent_farmhouse ttf GROUP BY updateTime
   </select>
-  <!--查询当月的数据-->
+  <!--查询当月的数据，且按照农家乐的id分组，目前用在定时任务中-->
   <select id="getMonthCountByUpdateTime" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.FarmhouseMonthPO">
-    SELECT tf.farmhouse_id as farmhouseId ,#{updateTime} as `month` ,concat("",tf.farmhouse_id,"-",#{updateTime}) as monthFarmhouseID,tf.name,count(distinct ttf.open_id) as number,count(ttf.tt_id) as times
+    SELECT tf.farmhouse_id as farmhouseId ,#{updateTime} as `month` ,concat("",tf.farmhouse_id,"-",#{updateTimeSQL}) as monthFarmhouseID,tf.name,
+    count(distinct ttf.open_id) as number,count(ttf.tt_id) as times
      from `t_talent_farmhouse` ttf left join t_farmhouse tf on ttf.farmhouse_id=tf.farmhouse_id
      where ttf.update_time>=#{start} and #{end}>=ttf.update_time and ttf.dr=1 group by tf.farmhouse_id order by tf.name asc
+  </select>
+  <!--总计，按照月时间查询统计人数和天数，且有筛选条件-->
+  <select id="queryTotalByUpdateTime" parameterType="java.util.Map" resultType="java.util.HashMap">
+    select count(distinct ttf.open_id) as totalNumber,count(ttf.tt_id) as totalTimes
+     from `t_talent_farmhouse` ttf left join t_farmhouse tf on ttf.farmhouse_id=tf.farmhouse_id
+    <where>
+      <if test="start!=null">
+        ttf.update_time>=#{start}
+      </if>
+      <if test="end!=null">
+        and #{end}>=ttf.update_time
+      </if>
+      <if test="name!=null">
+        and tf.name like #{name} '%'
+      </if>
+        and ttf.dr=1
+    </where>
   </select>
 </mapper>

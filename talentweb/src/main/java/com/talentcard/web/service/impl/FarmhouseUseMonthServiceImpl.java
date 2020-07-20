@@ -40,7 +40,7 @@ public class FarmhouseUseMonthServiceImpl implements IFarmhouseUseMonthService {
         if(monthMaps==null||monthMaps.size()==0){
             return new ResultVO(1000,"t_talent_farmhouse表中没有数据");
         }
-        Map<String,String> times=new HashMap<>(3);
+        Map<String,String> times=new HashMap<>(4);
         List<FarmhouseMonthPO> farmhouseMonthPOS=new ArrayList<>();
         for(HashMap<String,String> monthMap:monthMaps){
             String updateTime=monthMap.get("updateTime");
@@ -50,6 +50,7 @@ public class FarmhouseUseMonthServiceImpl implements IFarmhouseUseMonthService {
             String[] monthFristAndLastByCurrenDay= DateInitUtil.getMonthFristAndLastByCurrenDay(updateTime);
             times.put("start",monthFristAndLastByCurrenDay[0]);
             times.put("end",monthFristAndLastByCurrenDay[1]);
+            times.put("updateTimeSQL",updateTime);
             farmhouseMonthPOS.addAll(talentFarmhouseMapper.getMonthCountByUpdateTime(times));
         }
         if(farmhouseMonthPOS.size()>0){
@@ -72,8 +73,8 @@ public class FarmhouseUseMonthServiceImpl implements IFarmhouseUseMonthService {
 
     @Override
     public ResultVO total(Integer pageNum, Integer pageSize, Map<String, Object> map) {
-        List<FarmhouseMonthPO> farmhouseMonthPOS=farmhouseMonthMapper.query(map);
-        return new ResultVO(1000,FarmhouseUseMonthVO.totalNumber(farmhouseMonthPOS));
+        HashMap<String,Object> total=talentFarmhouseMapper.queryTotalByUpdateTime(map);
+        return new ResultVO(1000,total);
     }
 
 

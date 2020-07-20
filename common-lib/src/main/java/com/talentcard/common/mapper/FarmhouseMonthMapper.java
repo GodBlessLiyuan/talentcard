@@ -14,4 +14,6 @@ public interface FarmhouseMonthMapper extends BaseMapper<FarmhouseMonthPO, Long>
     int batchInsert(List<FarmhouseMonthPO> farmhouseMonthPOS);
 
     List<FarmhouseMonthPO> queryByMonth(String month);
+
+    FarmhouseMonthPO queryByDailyFarmHouseID(String monthFarmhouseID);
 }
