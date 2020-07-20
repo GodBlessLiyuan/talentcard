@@ -384,6 +384,7 @@ public class TalentServiceImpl implements ITalentService {
                 educationPO.setMajor(oldEducationPO.getMajor());
                 educationPO.setEducPicture(oldEducationPO.getEducPicture());
                 educationPO.setGraduateTime(oldEducationPO.getGraduateTime());
+                educationPO.setFullTime(oldEducationPO.getFullTime());
             }
         }
         if (educationPO != null && educationPO.getEducation() != null && educationPO.getEducation() != 0) {

@@ -162,6 +162,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
                 educationPO.setCertId(certId);
                 educationPO.setStatus((byte) 1);
                 educationPO.setTalentId(talentId);
+                educationPO.setFullTime(insertEducationPO.getFullTime());
                 educationMapper.insertSelective(educationPO);
             }
         } else if (type == 2) {
