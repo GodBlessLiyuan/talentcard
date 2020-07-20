@@ -1,13 +1,11 @@
 package com.talentcard.common.mapper;
 
 import com.talentcard.common.pojo.FarmhouseDailyPO;
+import com.talentcard.common.pojo.FarmhouseMonthPO;
 import com.talentcard.common.pojo.TalentFarmhousePO;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * TalentFarmhouseMapper继承基类
@@ -18,4 +16,10 @@ public interface TalentFarmhouseMapper extends BaseMapper<TalentFarmhousePO, Lon
 
 
     List<FarmhouseDailyPO> queryByUpdateTime(Map<String, String> times);
+
+    List<HashMap<String, String>> groupByMonthUseUpdateTime();
+
+    List<FarmhouseMonthPO> getMonthCountByUpdateTime(Map<String, String> times);
+
+    HashMap<String, Object> queryTotalByUpdateTime(Map<String, Object> map);
 }

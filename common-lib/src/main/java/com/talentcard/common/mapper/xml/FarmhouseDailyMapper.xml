@@ -3,14 +3,16 @@
 <mapper namespace="com.talentcard.common.mapper.FarmhouseDailyMapper">
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.FarmhouseDailyPO">
     <id column="fh_d" jdbcType="BIGINT" property="fhD" />
+    <result column="dailyFarmHouseID" jdbcType="CHAR" property="dailyFarmHouseID"/>
     <result column="farmhouse_id" jdbcType="BIGINT" property="farmhouseId" />
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="daily_time" jdbcType="DATE" property="dailyTime" />
     <result column="number" jdbcType="BIGINT" property="number" />
     <result column="times" jdbcType="BIGINT" property="times" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
   <sql id="Base_Column_List">
-    fh_d, farmhouse_id, `name`, daily_time, `number`, times
+    fh_d,dailyFarmHouseID, farmhouse_id, `name`, daily_time, `number`, times,update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -18,16 +20,42 @@
     from m_farmhouse_daily
     where fh_d = #{fhD,jdbcType=BIGINT}
   </select>
+  <select id="queryByDailyTime" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from m_farmhouse_daily
+    where daily_time=#{updateTime}
+  </select>
+  <select id="queryByDailyFarmHouseID" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from m_farmhouse_daily
+    where dailyFarmHouseID=#{dailyFarmHouseID}
+  </select>
+  <select id="query" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from m_farmhouse_daily
+    <where>
+      <if test="name!=null">
+        `name` like trim(replace (#{name,jdbcType=CHAR} '%' ,' ',''))
+      </if>
+      <if test="start!=null">
+        and daily_time>=#{start}
+      </if>
+      <if test="end!=null">
+        and #{end}>=daily_time
+      </if>
+    </where>
+    order by daily_time desc ,`name` asc
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from m_farmhouse_daily
     where fh_d = #{fhD,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.FarmhouseDailyPO">
-    insert into m_farmhouse_daily (fh_d, farmhouse_id, `name`, 
-      daily_time, `number`, times
+    insert into m_farmhouse_daily (fh_d, dailyFarmHouseID,farmhouse_id, `name`,
+      daily_time, `number`, times,update_time
       )
-    values (#{fhD,jdbcType=BIGINT}, #{farmhouseId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, 
-      #{dailyTime,jdbcType=DATE}, #{number,jdbcType=BIGINT}, #{times,jdbcType=BIGINT}
+    values (#{fhD,jdbcType=BIGINT},#{dailyFarmHouseID,jdbcType=CHAR}, #{farmhouseId,jdbcType=BIGINT}, #{name,jdbcType=CHAR},
+      #{dailyTime,jdbcType=DATE}, #{number,jdbcType=BIGINT}, #{times,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.FarmhouseDailyPO">
@@ -35,6 +63,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="fhD != null">
         fh_d,
+      </if>
+      <if test="dailyFarmHouseID!=null">
+        dailyFarmHouseID,
       </if>
       <if test="farmhouseId != null">
         farmhouse_id,
@@ -51,10 +82,16 @@
       <if test="times != null">
         times,
       </if>
+      <if test="updateTime!=null">
+        update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="fhD != null">
         #{fhD,jdbcType=BIGINT},
+      </if>
+      <if test="dailyFarmHouseID!=null">
+        #{dailyFarmHouseID,jdbcType=CHAR},
       </if>
       <if test="farmhouseId != null">
         #{farmhouseId,jdbcType=BIGINT},
@@ -71,11 +108,17 @@
       <if test="times != null">
         #{times,jdbcType=BIGINT},
       </if>
+      <if test="updateTime!=null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.FarmhouseDailyPO">
     update m_farmhouse_daily
     <set>
+      <if test="dailyFarmHouseID!=null">
+        dailyFarmHouseID=#{dailyFarmHouseID,jdbcType=CHAR},
+      </if>
       <if test="farmhouseId != null">
         farmhouse_id = #{farmhouseId,jdbcType=BIGINT},
       </if>
@@ -91,24 +134,29 @@
       <if test="times != null">
         times = #{times,jdbcType=BIGINT},
       </if>
+      <if test="updateTime!=null">
+        update_time=#{updateTime,jdbcType=TIMESTAMP}
+      </if>
     </set>
     where fh_d = #{fhD,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.FarmhouseDailyPO">
     update m_farmhouse_daily
-    set farmhouse_id = #{farmhouseId,jdbcType=BIGINT},
+    set dailyFarmHouseID=#{dailyFarmHouseID,jdbcType=CHAR},
+        farmhouse_id = #{farmhouseId,jdbcType=BIGINT},
       `name` = #{name,jdbcType=CHAR},
       daily_time = #{dailyTime,jdbcType=DATE},
       `number` = #{number,jdbcType=BIGINT},
       times = #{times,jdbcType=BIGINT}
+      update_time=#{updateTime,jdbcType=TIMESTAMP}
     where fh_d = #{fhD,jdbcType=BIGINT}
   </update>
   <insert id="batchInsert" parameterType="java.util.List">
-    insert into m_farmhouse_daily (fh_d, farmhouse_id, `name`,
-      daily_time, `number`, times)
+    insert into m_farmhouse_daily (dailyFarmHouseID, farmhouse_id, `name`,
+      daily_time, `number`, times,update_time)
     values <foreach collection="list" item="po" separator=",">
-    (null, #{po.farmhouseId,jdbcType=BIGINT}, #{po.name,jdbcType=CHAR},
-    #{po.dailyTime,jdbcType=DATE}, #{po.number,jdbcType=BIGINT}, #{po.times,jdbcType=BIGINT})
+    (#{po.dailyFarmHouseID,jdbcType=CHAR}, #{po.farmhouseId,jdbcType=BIGINT}, #{po.name,jdbcType=CHAR},
+    #{po.dailyTime,jdbcType=DATE}, #{po.number,jdbcType=BIGINT}, #{po.times,jdbcType=BIGINT},now())
   </foreach>
   </insert>
 </mapper>
