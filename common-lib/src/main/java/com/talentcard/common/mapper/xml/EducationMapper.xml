@@ -200,7 +200,10 @@
   <select id="queryNameByTalentId" parameterType="java.lang.Long" resultType="java.lang.Integer">
     select education
     from t_education
-    where talent_id = #{talentId,jdbcType=BIGINT} and `status` = 1
+    where talent_id = #{talentId,jdbcType=BIGINT}
+    and `status` = 1
+    /*学校为全日制才有用*/
+    and full_time = 1
   </select>
 
   <update id="updateStatusByCertId">
