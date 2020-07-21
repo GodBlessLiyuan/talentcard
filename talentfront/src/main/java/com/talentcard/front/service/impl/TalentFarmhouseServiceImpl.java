@@ -128,15 +128,30 @@ public class TalentFarmhouseServiceImpl implements ITalentFarmhouseService {
         }
 
         if (farmhouseIdList != null && farmhouseIdList.size() > 0) {
-            //景区表，查询符合条件的景区
-            List<FarmhousePO> farmhousePOList = farmhouseMapper.findEnjoyFarmhouse(farmhouseIdList, name, area, order);
-
-            if (farmhousePOList != null && farmhousePOList.size() > 0) {
-                List<FarmhouseVO> farmhouseVOList = FarmhouseVO.convert(farmhousePOList);
-                resultMap.put("farmhouseVOList", farmhouseVOList);
-            } else {
-                resultMap.put("farmhouseVOList", new ArrayList<>(0));
+            String key_code = "cache_" + code + "_" + name + "_" + area + "_" + order;
+            s_list = this.redisMapUtil.hget("talentfarmhouse", key_code);
+            List<FarmhouseVO> farmhouseVOList = null;
+            if (!StringUtils.isEmpty(s_list)) {
+                farmhouseVOList = StringToObjUtil.strToObj(s_list, List.class);
+                if (farmhouseVOList != null) {
+                    resultMap.put("farmhouseVOList", farmhouseVOList);
+                }
             }
+            if (farmhouseVOList == null) {
+                //景区表，查询符合条件的景区
+                List<FarmhousePO> farmhousePOList = farmhouseMapper.findEnjoyFarmhouse(farmhouseIdList, name, area, order);
+
+                if (farmhousePOList != null && farmhousePOList.size() > 0) {
+                    farmhouseVOList = FarmhouseVO.convert(farmhousePOList);
+
+                    this.redisMapUtil.hset("talentfarmhouse", key_code, JSON.toJSONString(farmhouseVOList));
+
+                    resultMap.put("farmhouseVOList", farmhouseVOList);
+                } else {
+                    resultMap.put("farmhouseVOList", new ArrayList<>(0));
+                }
+            }
+
         } else {
             resultMap.put("farmhouseVOList", new ArrayList<>(0));
         }
