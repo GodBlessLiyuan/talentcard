@@ -170,7 +170,7 @@ public class StaffServiceImpl implements IStaffService {
                 if (available <= 0) {
                     ifTicket = DISCOUNT;
                 } else {
-                    return new ResultVO(2693, "有次数，但没领！");
+                    return new ResultVO(2693, "用户还未领取此景区免费福利，请告知用户进入人才卡免费旅游页面领取！");
                 }
             }
         }
@@ -187,7 +187,7 @@ public class StaffServiceImpl implements IStaffService {
         /**
          * 如果是核销卡券，就更新talentTrip
          */
-        if(ifTicket == TICKET) {
+        if (ifTicket == TICKET) {
             //找到staffId，更新人才旅游表
             talentTripPO.setStatus((byte) 2);
             talentTripPO.setStaffId(staffId);
@@ -229,7 +229,11 @@ public class StaffServiceImpl implements IStaffService {
         Long vertifyNum = talentActivityHistoryMapper.getVertifyNum(staffId, (long) 1, activitySecondContentId, startTime, endTime);
         HashMap<String, Object> result = new HashMap<>(1);
         result.put("vertifyNum", vertifyNum);
-        result.put("ifTicket", ifTicket);
+        if (ifTicket == TICKET) {
+            result.put("discount", 0);
+        } else {
+            result.put("discount", scenicPO.getDiscount());
+        }
         sendMessage(talentOpenId, staffOpenId, (long) 1, activitySecondContentId);
 
         this.redisMapUtil.del(talentOpenId);
