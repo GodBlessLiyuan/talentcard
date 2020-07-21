@@ -22,7 +22,9 @@ public class EditTalentRecordServiceImpl implements IEditTalentRecordService {
     EditTalentRecordMapper editTalentRecordMapper;
 
     @Override
-    public Integer addRecord(HttpSession httpSession, Long talentId, Byte operationType, Byte operationContent, String beforeJson, String afterJson) {
+    public Integer addRecord(HttpSession httpSession, Long talentId, Byte operationType,
+                             Byte operationContent, String beforeJson,
+                             String afterJson, String opinion) {
         EditTalentRecordPO editTalentRecordPO = new EditTalentRecordPO();
         editTalentRecordPO.setOperationContent(operationContent);
         editTalentRecordPO.setOperationType(operationType);
@@ -32,6 +34,7 @@ public class EditTalentRecordServiceImpl implements IEditTalentRecordService {
         editTalentRecordPO.setComment("");
         editTalentRecordPO.setBeforeJsonRecord(beforeJson);
         editTalentRecordPO.setAfterJsonRecord(afterJson);
+        editTalentRecordPO.setComment(opinion);
         Integer insertResult = editTalentRecordMapper.insertSelective(editTalentRecordPO);
         return insertResult;
     }
