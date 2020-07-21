@@ -21,6 +21,7 @@ public interface EducationMapper extends BaseMapper<EducationPO, Long> {
 
     /**
      * 根据认证ID更新学历表中的认证状态
+     * 学校为全日制才为有效条件
      * @param certId
      * @param status
      * @return
