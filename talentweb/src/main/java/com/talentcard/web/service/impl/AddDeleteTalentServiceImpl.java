@@ -119,7 +119,9 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.addType, EditTalentRecordConstant.educationContent, "", JSONObject.toJSONString(educationPO));
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.addType,
+                EditTalentRecordConstant.educationContent, "",
+                JSONObject.toJSONString(educationPO), educationDTO.getOpinion());
         /**
          * 清除redis缓存
          */
@@ -201,7 +203,9 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.addType, EditTalentRecordConstant.qualityContent, "", JSONObject.toJSONString(profQualityPO));
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.addType,
+                EditTalentRecordConstant.qualityContent, "",
+                JSONObject.toJSONString(profQualityPO), profQualityDTO.getOpinion());
         /**
          * 清除redis缓存
          */
@@ -282,7 +286,9 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.addType, EditTalentRecordConstant.titleContent, "", JSONObject.toJSONString(profTitlePO));
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.addType,
+                EditTalentRecordConstant.titleContent, "",
+                JSONObject.toJSONString(profTitlePO), profTitleDTO.getOpinion());
         /**
          * 清除redis缓存
          */
@@ -364,7 +370,9 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.addType, EditTalentRecordConstant.honourContent, "", JSONObject.toJSONString(talentHonourPO));
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.addType,
+                EditTalentRecordConstant.honourContent, "",
+                JSONObject.toJSONString(talentHonourPO), talentHonourDTO.getOpinion());
         /**
          * 清除redis缓存
          */
@@ -401,7 +409,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
 
 
     @Override
-    public ResultVO deleteEducation(HttpSession httpSession, String openId, Long educId,String opinion) {
+    public ResultVO deleteEducation(HttpSession httpSession, String openId, Long educId, String opinion) {
         //查教育
         EducationPO educationPO = educationMapper.selectByPrimaryKey(educId);
         if (educationPO == null) {
@@ -434,7 +442,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         String beforeJson = JSONObject.toJSONString(educationPO);
 
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.deleteType, EditTalentRecordConstant.educationContent, beforeJson, "");
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.deleteType,
+                EditTalentRecordConstant.educationContent, beforeJson, "", opinion);
         /**
          * 清除redis缓存
          */
@@ -470,7 +479,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     }
 
     @Override
-    public ResultVO deleteProfQuality(HttpSession httpSession, String openId, Long pqId,String opinion) {
+    public ResultVO deleteProfQuality(HttpSession httpSession, String openId, Long pqId, String opinion) {
         //查职业资格表
         ProfQualityPO profQualityPO = profQualityMapper.selectByPrimaryKey(pqId);
         if (profQualityPO == null) {
@@ -499,7 +508,9 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentPO.getTalentId(), EditTalentRecordConstant.deleteType, EditTalentRecordConstant.qualityContent, JSONObject.toJSONString(profQualityPO), "");
+        iEditTalentRecordService.addRecord(httpSession, talentPO.getTalentId(),
+                EditTalentRecordConstant.deleteType, EditTalentRecordConstant.qualityContent,
+                JSONObject.toJSONString(profQualityPO), "", opinion);
         /**
          * 清除redis缓存
          */
@@ -516,7 +527,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         if (StringUtils.isEmpty(quality)) {
             quality = "";
         }
-        String first = "您好，您的职业资格\"" + quality+"\"因不符合条件，已被删除";
+        String first = "您好，您的职业资格\"" + quality + "\"因不符合条件，已被删除";
         messageDTO.setFirst(first);
         //信息类型
         messageDTO.setKeyword1("职业资格");
@@ -535,7 +546,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     }
 
     @Override
-    public ResultVO deleteProfTitle(HttpSession httpSession, String openId, Long ptId,String opinion) {
+    public ResultVO deleteProfTitle(HttpSession httpSession, String openId, Long ptId, String opinion) {
         //先查询，再查人才表，两个的id不一致，返回2500
         ProfTitlePO profTitlePO = profTitleMapper.selectByPrimaryKey(ptId);
         if (profTitlePO == null) {
@@ -561,7 +572,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.deleteType, EditTalentRecordConstant.titleContent, JSONObject.toJSONString(profTitlePO), "");
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.deleteType,
+                EditTalentRecordConstant.titleContent, JSONObject.toJSONString(profTitlePO), "", opinion);
         /**
          * 清除redis缓存
          */
@@ -578,7 +590,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         if (StringUtils.isEmpty(title)) {
             title = "";
         }
-        String first = "您好，您的职称\"" + title+"\"因不符合条件，已被删除";
+        String first = "您好，您的职称\"" + title + "\"因不符合条件，已被删除";
         messageDTO.setFirst(first);
         //信息类型
         messageDTO.setKeyword1("职称");
@@ -597,7 +609,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     }
 
     @Override
-    public ResultVO deleteTalentHonour(HttpSession httpSession, String openId, Long thId,String opinion) {
+    public ResultVO deleteTalentHonour(HttpSession httpSession, String openId, Long thId, String opinion) {
         TalentHonourPO talentHonourPO = talentHonourMapper.selectByPrimaryKey(thId);
         if (talentHonourPO == null) {
             return new ResultVO(2662, "删除失败！");
@@ -622,7 +634,9 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.deleteType, EditTalentRecordConstant.honourContent, JSONObject.toJSONString(talentHonourPO), "");
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.deleteType,
+                EditTalentRecordConstant.honourContent,
+                JSONObject.toJSONString(talentHonourPO), "", opinion);
         /**
          * 清除redis缓存
          */

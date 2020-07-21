@@ -101,7 +101,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
         talentPO.setWorkLocationType(basicInfoDTO.getWorkLocationType());
         talentMapper.updateByPrimaryKeySelective(talentPO);
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.basicInfoContent, beforeJSON, JSONObject.toJSONString(talentPO));
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.basicInfoContent,
+                beforeJSON, JSONObject.toJSONString(talentPO), basicInfoDTO.getOpinion());
         /**
          * 清除redis缓存
          */
@@ -190,7 +191,9 @@ public class EditTalentServiceImpl implements IEditTalentService {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.educationContent, beforeJSON, JSONObject.toJSONString(educationPO));
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType,
+                EditTalentRecordConstant.educationContent, beforeJSON,
+                JSONObject.toJSONString(educationPO), educationDTO.getOpinion());
         /**
          * 清除redis缓存
          */
@@ -277,7 +280,9 @@ public class EditTalentServiceImpl implements IEditTalentService {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.qualityContent, beforeJSON, JSONObject.toJSONString(profQualityPO));
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType,
+                EditTalentRecordConstant.qualityContent, beforeJSON,
+                JSONObject.toJSONString(profQualityPO), profQualityDTO.getOpinion());
         /**
          * 清除redis缓存
          */
@@ -366,7 +371,9 @@ public class EditTalentServiceImpl implements IEditTalentService {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.titleContent, beforeJSON, JSONObject.toJSONString(profTitlePO));
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType,
+                EditTalentRecordConstant.titleContent,
+                beforeJSON, JSONObject.toJSONString(profTitlePO), profTitleDTO.getOpinion());
         /**
          * 清除redis缓存
          */
@@ -453,7 +460,9 @@ public class EditTalentServiceImpl implements IEditTalentService {
             return new ResultVO(2663, "更新tci表失败！");
         }
         //新增EditTalentRecord表 编辑人才记录数据
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.honourContent, beforeJSON, JSONObject.toJSONString(talentHonourPO));
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType,
+                EditTalentRecordConstant.honourContent, beforeJSON,
+                JSONObject.toJSONString(talentHonourPO), talentHonourDTO.getOpinion());
         /**
          * 清除redis缓存
          */
@@ -513,34 +522,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
         }
         talentCertificationInfoPO.setTalentCategory(talentCategory);
         talentCertificationInfoMapper.updateByPrimaryKeySelective(talentCertificationInfoPO);
-        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.talentCategoryContent, beforeJSON, JSONObject.toJSONString(talentPO));
+        iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType,
+                EditTalentRecordConstant.talentCategoryContent, beforeJSON,
+                JSONObject.toJSONString(talentPO), opinion);
         /**
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
-        /**
-         * 用模版推送消息
-         */
-        //用消息模板推送微信消息
-        MessageDTO messageDTO = new MessageDTO();
-        //openId
-        messageDTO.setOpenid(talentPO.getOpenId());
-        //开头
-        String first = "您好，您的信息已更新。";
-        messageDTO.setFirst(first);
-        //信息类型
-        messageDTO.setKeyword1("人才类别");
-        //变更时间
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
-        String currentTime = formatter.format(new Date());
-        messageDTO.setKeyword2(currentTime);
-        //模版编号
-        messageDTO.setTemplateId(4);
-        //结束
-        String remark = "变更原因：" + opinion;
-        messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
-        MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
 
