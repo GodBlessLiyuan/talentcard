@@ -24,7 +24,10 @@ public class TalentConstant {
      * 用户有效的旅游次数
      */
     public static final String TALENT_AVAILABLE = "trip_available";
-
+    /**
+     * banner信息
+     */
+    public static final String BANNER_INFO ="banner_info";
     /**
      * 判断是否为默认游客账号
      * @param openId

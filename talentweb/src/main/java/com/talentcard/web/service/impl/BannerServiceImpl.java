@@ -3,9 +3,11 @@ package com.talentcard.web.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.BannerMapper;
 import com.talentcard.common.pojo.BannerPO;
 import com.talentcard.common.utils.FileUtil;
+import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.BannerDTO;
@@ -31,6 +33,8 @@ public class BannerServiceImpl implements IBannerService {
     private BannerMapper bannerMapper;
     @Autowired
     private FilePathConfig filePathConfig;
+    @Autowired
+    private RedisMapUtil redisMapUtil;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -67,6 +71,8 @@ public class BannerServiceImpl implements IBannerService {
         }
         po.setStatus(status);
         bannerMapper.updateByPrimaryKey(po);
+
+        this.redisMapUtil.del(TalentConstant.BANNER_INFO);
 
         return new ResultVO(1000);
     }
