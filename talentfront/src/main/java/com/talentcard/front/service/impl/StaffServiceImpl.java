@@ -60,6 +60,12 @@ public class StaffServiceImpl implements IStaffService {
     @Autowired
     private ITalentTripService iTalentTripService;
 
+    //用卡券核销
+    private final static byte TICKET = 2;
+    //打折核销
+    private final static byte DISCOUNT = 3;
+
+
     @Override
     public ResultVO ifEnableRegister(String openId, Long activityFirstContentId, Long activitySecondContentId) {
         Byte status;
@@ -141,6 +147,8 @@ public class StaffServiceImpl implements IStaffService {
         String currentTime = simpleDateFormat.format(new Date());
         //判断人才旅游表里是否有状态为1的记录
         TalentTripPO talentTripPO = talentTripMapper.findOneNotExpired(talentOpenId, activitySecondContentId, currentTime);
+        //判断是打折还是领卡券，默认领卡券
+        Byte ifTicket = TICKET;
         //没领取卡券
         if (talentTripPO == null) {
             /**
@@ -160,14 +168,11 @@ public class StaffServiceImpl implements IStaffService {
                  */
                 Integer available = iTalentTripService.getTalentTripAllNum(talentOpenId).getAvailable();
                 if (available <= 0) {
-                    return new ResultVO(2692, "该用户没有次数啦！");
+                    ifTicket = DISCOUNT;
                 } else {
                     return new ResultVO(2693, "有次数，但没领！");
                 }
             }
-        }
-        if (!talentTripPO.getScenicId().equals(activitySecondContentId)) {
-            return new ResultVO(1001, "该人才领的是其他的景区的！");
         }
         //得到staffPO
         StaffPO staffPO = staffMapper.findOneByOpenId(staffOpenId);
@@ -178,23 +183,30 @@ public class StaffServiceImpl implements IStaffService {
             return new ResultVO(1001, "该人才领的是其他的景区的，和员工不一致！");
         }
 
-
-        //找到staffId，更新人才旅游表
-        talentTripPO.setStatus((byte) 2);
         Long staffId = staffPO.getStaffId();
-        talentTripPO.setStaffId(staffId);
-        talentTripPO.setUpdateTime(new Date());
-        int updateResult = talentTripMapper.updateByPrimaryKeySelective(talentTripPO);
-        if (updateResult == 0) {
-            logger.error("update talentTripMapper error");
+        /**
+         * 如果是核销卡券，就更新talentTrip
+         */
+        if(ifTicket == TICKET) {
+            //找到staffId，更新人才旅游表
+            talentTripPO.setStatus((byte) 2);
+            talentTripPO.setStaffId(staffId);
+            talentTripPO.setUpdateTime(new Date());
+            int updateResult = talentTripMapper.updateByPrimaryKeySelective(talentTripPO);
+            if (updateResult == 0) {
+                logger.error("update talentTripMapper error");
+            }
         }
+        /**
+         * 两种都新增activityHistory表
+         */
         //更新历史表
         TalentActivityHistoryPO talentActivityHistoryPO = new TalentActivityHistoryPO();
         talentActivityHistoryPO.setOpenId(talentOpenId);
         talentActivityHistoryPO.setStaffId(staffId);
         talentActivityHistoryPO.setActivityFirstContentId((long) 1);
         talentActivityHistoryPO.setActivitySecondContentId(activitySecondContentId);
-        talentActivityHistoryPO.setStatus((byte) 2);
+        talentActivityHistoryPO.setStatus(ifTicket);
         ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
         if (scenicPO == null) {
             return new ResultVO(2504);
