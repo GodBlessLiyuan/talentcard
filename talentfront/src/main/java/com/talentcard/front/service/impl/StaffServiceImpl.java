@@ -209,7 +209,7 @@ public class StaffServiceImpl implements IStaffService {
         talentActivityHistoryPO.setStatus(ifTicket);
         ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(activitySecondContentId);
         if (scenicPO == null) {
-            return new ResultVO(2504);
+            return new ResultVO(2600);
         }
         talentActivityHistoryPO.setActivitySecondContentName(scenicPO.getName());
         talentActivityHistoryPO.setCreateTime(new Date());
@@ -229,6 +229,7 @@ public class StaffServiceImpl implements IStaffService {
         Long vertifyNum = talentActivityHistoryMapper.getVertifyNum(staffId, (long) 1, activitySecondContentId, startTime, endTime);
         HashMap<String, Object> result = new HashMap<>(1);
         result.put("vertifyNum", vertifyNum);
+        result.put("ifTicket", ifTicket);
         sendMessage(talentOpenId, staffOpenId, (long) 1, activitySecondContentId);
 
         this.redisMapUtil.del(talentOpenId);
