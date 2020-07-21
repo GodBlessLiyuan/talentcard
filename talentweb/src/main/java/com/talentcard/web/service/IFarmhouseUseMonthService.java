@@ -5,15 +5,12 @@ import com.talentcard.common.vo.ResultVO;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-/**
- * @Description:
- * @author: liyuan
- * @data 2020-07-16 09:03
- */
-public interface IFarmhouseUseDailyService {
-    ResultVO init_daily();
+public interface IFarmhouseUseMonthService {
+    ResultVO initMonth();
 
     ResultVO query(Integer pageNum, Integer pageSize, Map<String, Object> map);
 
     ResultVO export(Map<String, Object> map, HttpServletResponse response);
+
+    ResultVO total(Integer pageNum, Integer pageSize, Map<String, Object> map);
 }

@@ -13,6 +13,7 @@ import java.util.*;
  */
 @Data
 public class FarmHouseUserRealTimeVO {
+    private String ID;
     private Date time;//使用时间
     private String name;//农家乐名称
     private String youkename;//游客名
@@ -32,6 +33,7 @@ public class FarmHouseUserRealTimeVO {
         List<FarmHouseUserRealTimeVO> vos=new ArrayList<>();
         for(FarmHouseUserRealTimeBO bo:bos){
             FarmHouseUserRealTimeVO vo=new FarmHouseUserRealTimeVO();
+            vo.setID(bo.getTtId());
             vo.setTime(bo.getTime());
             vo.setName(bo.getName());
             vo.setYoukename(bo.getYoukename());

@@ -12,4 +12,8 @@ import java.util.List;
 @Mapper
 public interface FarmhouseDailyMapper extends BaseMapper<FarmhouseDailyPO, Long> {
     int batchInsert(List<FarmhouseDailyPO> farmhouseDailyPOS);
+
+    List<FarmhouseDailyPO> queryByDailyTime(String updateTime);
+
+    FarmhouseDailyPO queryByDailyFarmHouseID(String dailyFarmHouseID);
 }

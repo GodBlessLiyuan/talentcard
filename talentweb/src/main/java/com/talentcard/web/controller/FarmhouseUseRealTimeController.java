@@ -61,7 +61,7 @@ public class FarmhouseUseRealTimeController {
             @RequestParam(value = "end",required = false)String end,
             HttpServletResponse response
       ){
-        Map<String,Object> map=new HashMap<>();
+        Map<String,Object> map=new HashMap<>(1);
         String line=init3MonthTime();
         map.put("start",line);
         return farmhouseUseRealTimeService.export(map,response);
