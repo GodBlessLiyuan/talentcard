@@ -23,6 +23,41 @@
         from t_talent_activity_history
         where tah_id = #{tahId,jdbcType=BIGINT}
     </select>
+    <select id="query" parameterType="java.util.Map" resultType="com.talentcard.common.bo.TripRealTimeBO">
+        select tah.create_time as `time` ,tah.activity_second_content_name as scenicName,t.name as youkename, t.card_id as cardId,
+          tah.status as welfare,tah.staff_id as staffID
+          from t_talent_activity_history tah left join t_talent t on tah.open_id=t.open_id
+         where tah.activity_first_content_id=2
+          <if test="welfareType!=null">
+             and tah.status=#{welfareType}
+          </if>
+          <if test="cardID!=null">
+              t.card_id=#{cardID}
+          </if>
+          <if test="start!=null">
+              tah.create_time>=#{start}
+          </if>
+          <if test="end">
+              #{end}>=tah.create_time
+          </if>
+          and tah.dr=1 and t.dr=1
+    </select>
+    <select id="groupDailyByTime" resultType="java.util.HashMap">
+     select DATE_FORMAT(tah.create_time,'%Y-%m-%d') as updateTime from t_talent_activity_history tah GROUP BY tah.create_time
+    </select>
+    <!--按照景点分组之后按照景点名排序-->
+    <select id="getDailyPOS" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.TripDailyPO">
+        select concat("",tah.activity_second_content_id,#{updateTime})as sidDaily,tah.activity_second_content_id as sid,
+        #{updateTime} as daily,tah.activity_second_content_name as scenicName,
+        count(distinct tah.open_id) as numbers from t_talent_activity_history tah
+        where tah.activity_first_content_id=1 and tah.create_time>=#{start} and #{end}>=tah.create_time and dr=1
+        group by tah.activity_second_content_id order by tah.activity_second_content_name asc
+    </select>
+    <select id="getFreeOrDiscount" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(tah.id) from t_talent_activity_history tah
+        where tah.activity_first_content_id=1 and tah.activity_second_content_id=#{sid}
+         and tah.create_time>=#{start} and #{end}>=tah.create_time and status=#{status} and dr=1
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_talent_activity_history
     where tah_id = #{tahId,jdbcType=BIGINT}
