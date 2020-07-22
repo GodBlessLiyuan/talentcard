@@ -29,13 +29,13 @@
     select  <include refid="Base_Column_List" />
     from m_trip_month
     <where>
-      <if test="name!=null">
+      <if test="name!=null and name!=''">
         name like #{name} '%'
       </if>
-      <if test="start!=null">
+      <if test="start!=null and start!=''">
         and `month`>=#{start}
       </if>
-      <if test="end!=null">
+      <if test="end!=null and end!=''">
         and #{end}>=`month`
       </if>
     </where>

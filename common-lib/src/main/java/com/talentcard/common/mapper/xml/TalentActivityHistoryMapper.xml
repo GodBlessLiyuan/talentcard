@@ -29,7 +29,7 @@
           tah.status as welfare,tah.staff_id as staffID
           from t_talent_activity_history tah left join t_talent t on tah.open_id=t.open_id
          where tah.activity_first_content_id=1
-         <if test="scenicName!=null">
+         <if test="scenicName!=null and scenicName!=''">
              and tah.activity_second_content_name like #{scenicName} '%'
          </if>
           <if test="welfareType!=null">
@@ -38,10 +38,10 @@
           <if test="cardID!=null">
             and t.card_id=#{cardID}
           </if>
-          <if test="start!=null">
+          <if test="start!=null and start!=''">
              and tah.create_time>=#{start}
           </if>
-          <if test="end">
+          <if test="end!=null and end!=''">
              and #{end}>=tah.create_time
           </if>
           and tah.dr=1 and t.dr=1 order by tah.tah_id desc
