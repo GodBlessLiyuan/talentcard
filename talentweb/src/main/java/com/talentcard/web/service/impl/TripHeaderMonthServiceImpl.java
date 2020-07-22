@@ -2,9 +2,9 @@ package com.talentcard.web.service.impl;
 
 import com.talentcard.common.mapper.TalentTripMapper;
 import com.talentcard.common.utils.DateUtil;
+import com.talentcard.common.utils.RedisUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ITripHeaderMonthService;
-import com.talentcard.web.utils.ActivityResidueNumUtil;
 import com.talentcard.web.utils.DateInitUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class TripHeaderMonthServiceImpl implements ITripHeaderMonthService {
     private TalentTripMapper talentTripMapper;
     @Override
     public ResultVO count() {
-        Long totalNumbers = ActivityResidueNumUtil.getResidueNum();//本月总旅游数
+        Long totalNumbers = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));//本月总旅游数
         String[] monthFristAndLastByCurrenDay = DateInitUtil.getMonthFristAndLastByCurrenDay(DateUtil.date2Str(new Date(), DateUtil.YHM));
         Map<String,Object> map=new HashMap<>(3);
         map.put("start",monthFristAndLastByCurrenDay[0]);
