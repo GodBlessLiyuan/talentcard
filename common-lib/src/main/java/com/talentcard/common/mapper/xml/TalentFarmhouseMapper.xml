@@ -145,16 +145,16 @@
     left join t_staff ts on ttf.staff_id=ts.staff_id
     left join t_talent tt on ttf.open_id=tt.open_id
     where ttf.dr=1
-    <if test="name!=null">
+    <if test="name!=null and name !=''">
       and tf.name like trim(replace (#{name,jdbcType=CHAR} '%' ,' ',''))
     </if>
-    <if test="cardID!=null">
+    <if test="cardID!=null and cardID!=''">
      and tt.card_id=#{cardID,jdbcType=BIGINT}
     </if>
-    <if test="start!=null">
+    <if test="start!=null and start!=''">
      and ttf.update_time>#{start}
     </if>
-    <if test="end!=null">
+    <if test="end!=null and end!=''">
       and #{end}>ttf.update_time
     </if>
     order by ttf.tt_id desc
