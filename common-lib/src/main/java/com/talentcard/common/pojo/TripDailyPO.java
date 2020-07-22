@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * m_trip_daily
- * @author 
+ * @author
  */
 public class TripDailyPO implements Serializable {
     private Long tdId;
@@ -25,6 +25,8 @@ public class TripDailyPO implements Serializable {
     private Long discountTimes;
 
     private Long totalTimes;
+
+    private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -100,6 +102,14 @@ public class TripDailyPO implements Serializable {
         this.totalTimes = totalTimes;
     }
 
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -113,14 +123,15 @@ public class TripDailyPO implements Serializable {
         }
         TripDailyPO other = (TripDailyPO) that;
         return (this.getTdId() == null ? other.getTdId() == null : this.getTdId().equals(other.getTdId()))
-            && (this.getSidDaily() == null ? other.getSidDaily() == null : this.getSidDaily().equals(other.getSidDaily()))
-            && (this.getSid() == null ? other.getSid() == null : this.getSid().equals(other.getSid()))
-            && (this.getDaily() == null ? other.getDaily() == null : this.getDaily().equals(other.getDaily()))
-            && (this.getScenicName() == null ? other.getScenicName() == null : this.getScenicName().equals(other.getScenicName()))
-            && (this.getNumbers() == null ? other.getNumbers() == null : this.getNumbers().equals(other.getNumbers()))
-            && (this.getFreeTimes() == null ? other.getFreeTimes() == null : this.getFreeTimes().equals(other.getFreeTimes()))
-            && (this.getDiscountTimes() == null ? other.getDiscountTimes() == null : this.getDiscountTimes().equals(other.getDiscountTimes()))
-            && (this.getTotalTimes() == null ? other.getTotalTimes() == null : this.getTotalTimes().equals(other.getTotalTimes()));
+                && (this.getSidDaily() == null ? other.getSidDaily() == null : this.getSidDaily().equals(other.getSidDaily()))
+                && (this.getSid() == null ? other.getSid() == null : this.getSid().equals(other.getSid()))
+                && (this.getDaily() == null ? other.getDaily() == null : this.getDaily().equals(other.getDaily()))
+                && (this.getScenicName() == null ? other.getScenicName() == null : this.getScenicName().equals(other.getScenicName()))
+                && (this.getNumbers() == null ? other.getNumbers() == null : this.getNumbers().equals(other.getNumbers()))
+                && (this.getFreeTimes() == null ? other.getFreeTimes() == null : this.getFreeTimes().equals(other.getFreeTimes()))
+                && (this.getDiscountTimes() == null ? other.getDiscountTimes() == null : this.getDiscountTimes().equals(other.getDiscountTimes()))
+                && (this.getTotalTimes() == null ? other.getTotalTimes() == null : this.getTotalTimes().equals(other.getTotalTimes()))
+                && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
     }
 
     @Override
@@ -136,6 +147,7 @@ public class TripDailyPO implements Serializable {
         result = prime * result + ((getFreeTimes() == null) ? 0 : getFreeTimes().hashCode());
         result = prime * result + ((getDiscountTimes() == null) ? 0 : getDiscountTimes().hashCode());
         result = prime * result + ((getTotalTimes() == null) ? 0 : getTotalTimes().hashCode());
+        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         return result;
     }
 
@@ -154,6 +166,7 @@ public class TripDailyPO implements Serializable {
         sb.append(", freeTimes=").append(freeTimes);
         sb.append(", discountTimes=").append(discountTimes);
         sb.append(", totalTimes=").append(totalTimes);
+        sb.append(", updateTime=").append(updateTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

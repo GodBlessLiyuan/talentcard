@@ -54,6 +54,7 @@ CREATE TABLE m_trip_daily
 	free_times bigint unsigned,
 	discount_times bigint unsigned,
 	total_times bigint unsigned,
+	update_time datetime,
 	PRIMARY KEY (td_id),
 	UNIQUE (td_id)
 );
@@ -70,6 +71,7 @@ CREATE TABLE m_trip_month
 	free_times bigint unsigned,
 	discount_times bigint unsigned,
 	total_times bigint unsigned,
+	update_time datetime,
 	PRIMARY KEY (tm_id),
 	UNIQUE (tm_id)
 );

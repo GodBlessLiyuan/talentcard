@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * m_trip_month
- * @author 
+ * @author
  */
 public class TripMonthPO implements Serializable {
     private Long tmId;
@@ -25,6 +25,8 @@ public class TripMonthPO implements Serializable {
     private Long discountTimes;
 
     private Long totalTimes;
+
+    private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -100,6 +102,14 @@ public class TripMonthPO implements Serializable {
         this.totalTimes = totalTimes;
     }
 
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -113,14 +123,15 @@ public class TripMonthPO implements Serializable {
         }
         TripMonthPO other = (TripMonthPO) that;
         return (this.getTmId() == null ? other.getTmId() == null : this.getTmId().equals(other.getTmId()))
-            && (this.getSidMonth() == null ? other.getSidMonth() == null : this.getSidMonth().equals(other.getSidMonth()))
-            && (this.getSid() == null ? other.getSid() == null : this.getSid().equals(other.getSid()))
-            && (this.getMonth() == null ? other.getMonth() == null : this.getMonth().equals(other.getMonth()))
-            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getNumbers() == null ? other.getNumbers() == null : this.getNumbers().equals(other.getNumbers()))
-            && (this.getFreeTimes() == null ? other.getFreeTimes() == null : this.getFreeTimes().equals(other.getFreeTimes()))
-            && (this.getDiscountTimes() == null ? other.getDiscountTimes() == null : this.getDiscountTimes().equals(other.getDiscountTimes()))
-            && (this.getTotalTimes() == null ? other.getTotalTimes() == null : this.getTotalTimes().equals(other.getTotalTimes()));
+                && (this.getSidMonth() == null ? other.getSidMonth() == null : this.getSidMonth().equals(other.getSidMonth()))
+                && (this.getSid() == null ? other.getSid() == null : this.getSid().equals(other.getSid()))
+                && (this.getMonth() == null ? other.getMonth() == null : this.getMonth().equals(other.getMonth()))
+                && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
+                && (this.getNumbers() == null ? other.getNumbers() == null : this.getNumbers().equals(other.getNumbers()))
+                && (this.getFreeTimes() == null ? other.getFreeTimes() == null : this.getFreeTimes().equals(other.getFreeTimes()))
+                && (this.getDiscountTimes() == null ? other.getDiscountTimes() == null : this.getDiscountTimes().equals(other.getDiscountTimes()))
+                && (this.getTotalTimes() == null ? other.getTotalTimes() == null : this.getTotalTimes().equals(other.getTotalTimes()))
+                && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
     }
 
     @Override
@@ -136,6 +147,7 @@ public class TripMonthPO implements Serializable {
         result = prime * result + ((getFreeTimes() == null) ? 0 : getFreeTimes().hashCode());
         result = prime * result + ((getDiscountTimes() == null) ? 0 : getDiscountTimes().hashCode());
         result = prime * result + ((getTotalTimes() == null) ? 0 : getTotalTimes().hashCode());
+        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         return result;
     }
 
@@ -154,6 +166,7 @@ public class TripMonthPO implements Serializable {
         sb.append(", freeTimes=").append(freeTimes);
         sb.append(", discountTimes=").append(discountTimes);
         sb.append(", totalTimes=").append(totalTimes);
+        sb.append(", updateTime=").append(updateTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

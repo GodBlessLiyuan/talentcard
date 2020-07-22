@@ -57,12 +57,14 @@ public class TripDailyScheduleService {
             //目标数据查询
             TripDailyPO toTripDailyPO =tripDailyMapper.getBySidDaily(dailyPO.getSidDaily());
             if(toTripDailyPO==null){
+                dailyPO.setUpdateTime(new Date());
                 tripDailyMapper.insert(dailyPO);
             }else{
                 toTripDailyPO.setNumbers(dailyPO.getNumbers());
                 toTripDailyPO.setFreeTimes(dailyPO.getFreeTimes());
                 toTripDailyPO.setDiscountTimes(dailyPO.getDiscountTimes());
                 toTripDailyPO.setTotalTimes(dailyPO.getTotalTimes());
+                toTripDailyPO.setUpdateTime(new Date());
                 tripDailyMapper.updateByPrimaryKey(toTripDailyPO);
             }
 
