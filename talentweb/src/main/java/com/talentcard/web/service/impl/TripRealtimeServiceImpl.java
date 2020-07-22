@@ -92,6 +92,11 @@ public class TripRealtimeServiceImpl implements ITripRealtimeService {
             }else{
                 vo.setStaffname(staffPO.getName());
             }
+            if(bo.getWelfare()==2){
+                vo.setWelfare("免费");
+            }else if(bo.getWelfare()==3) {
+                vo.setWelfare("折扣");
+            }
             vos.add(vo);
         }
         return vos;

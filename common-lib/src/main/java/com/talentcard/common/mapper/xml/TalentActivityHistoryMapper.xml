@@ -25,10 +25,13 @@
     </select>
     <!--WHERE tah.activity_first_content_id = 1代表旅游，2位农家乐-->
     <select id="query" parameterType="java.util.Map" resultType="com.talentcard.common.bo.TripRealTimeBO">
-        select tah.create_time as `time` ,tah.activity_second_content_name as scenicName,t.name as youkename, t.card_id as cardId,
+        select tah.tah_id as ID,tah.create_time as `time` ,tah.activity_second_content_name as scenicName,t.name as youkename, t.card_id as cardId,
           tah.status as welfare,tah.staff_id as staffID
           from t_talent_activity_history tah left join t_talent t on tah.open_id=t.open_id
          where tah.activity_first_content_id=1
+         <if test="scenicName!=null">
+             and tah.activity_second_content_name like #{scenicName} '%'
+         </if>
           <if test="welfareType!=null">
              and tah.status=#{welfareType}
           </if>

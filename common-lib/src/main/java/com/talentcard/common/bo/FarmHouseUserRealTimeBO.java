@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Data
 public class FarmHouseUserRealTimeBO {
-    private String ttId;//主键
+    private Long ttId;//主键
     private Date time;//使用时间
     private String name;//农家乐名称
     private String youkename;//游客名
