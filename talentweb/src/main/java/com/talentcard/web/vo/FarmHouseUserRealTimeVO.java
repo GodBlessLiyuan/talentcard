@@ -13,7 +13,7 @@ import java.util.*;
  */
 @Data
 public class FarmHouseUserRealTimeVO {
-    private String ID;
+    private Long ID;
     private Date time;//使用时间
     private String name;//农家乐名称
     private String youkename;//游客名
