@@ -35,7 +35,7 @@ public class TripDailyScheduleService {
     }
 
     private ResultVO dailyShareCount(String updateTime) {
-        Map<String,Object> times=new HashMap<>(4);
+        Map<String,Object> times=new HashMap<>(5);
         times.put("updateTime", updateTime);
         //构造时间
         times.put("start", updateTime + " 00:00:00");

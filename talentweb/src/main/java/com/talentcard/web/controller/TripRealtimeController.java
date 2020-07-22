@@ -37,7 +37,7 @@ public class TripRealtimeController {
         if (!StringUtils.isEmpty(end)) {
             end = end + " 23:59:59";
         }
-        Map<String,Object> map=new HashMap<>(4);
+        Map<String,Object> map=new HashMap<>(5);
         map.put("scenicName",scenicName);
         map.put("welfareType",welfareType);//要问一下，数据库开始是2,3
         map.put("cardID",cardID);
