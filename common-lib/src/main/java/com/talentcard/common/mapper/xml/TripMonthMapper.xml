@@ -21,6 +21,10 @@
     from m_trip_month
     where tm_id = #{tmId,jdbcType=BIGINT}
   </select>
+  <select id="getBySidMonth" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select  <include refid="Base_Column_List" />
+    from m_trip_month where sid_month=#{sidMonth}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from m_trip_month
     where tm_id = #{tmId,jdbcType=BIGINT}
@@ -32,6 +36,16 @@
     values (#{tmId,jdbcType=BIGINT}, #{sidMonth,jdbcType=CHAR}, #{sid,jdbcType=BIGINT}, 
       #{month,jdbcType=DATE}, #{name,jdbcType=CHAR}, #{numbers,jdbcType=BIGINT}, #{freeTimes,jdbcType=BIGINT}, 
       #{discountTimes,jdbcType=BIGINT}, #{totalTimes,jdbcType=BIGINT})
+  </insert>
+  <insert id="batchInsert" parameterType="java.util.List">
+       insert into m_trip_month ( sid_month, sid,
+      `month`, `name`, numbers, free_times,
+      discount_times, total_times)
+    values  <foreach collection="list" separator="," item="po">
+    ( #{po.sidMonth,jdbcType=CHAR}, #{po.sid,jdbcType=BIGINT},
+    #{po.month,jdbcType=DATE}, #{po.name,jdbcType=CHAR}, #{po.numbers,jdbcType=BIGINT}, #{po.freeTimes,jdbcType=BIGINT},
+    #{po.discountTimes,jdbcType=BIGINT}, #{po.totalTimes,jdbcType=BIGINT})
+  </foreach>
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TripMonthPO">
     insert into m_trip_month

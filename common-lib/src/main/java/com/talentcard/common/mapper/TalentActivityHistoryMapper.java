@@ -3,6 +3,7 @@ package com.talentcard.common.mapper;
 import com.talentcard.common.bo.FootprintBO;
 import com.talentcard.common.pojo.TalentActivityHistoryPO;
 import com.talentcard.common.pojo.TripDailyPO;
+import com.talentcard.common.pojo.TripMonthPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -57,4 +58,8 @@ public interface TalentActivityHistoryMapper extends BaseMapper<TalentActivityHi
     List<TripDailyPO> getDailyPOS(Map<String, Object> times);
 
     Long getFreeOrDiscount(Map<String, Object> times);
+
+    List<TripMonthPO> getMonthPOS(Map<String, Object> times);
+
+    List<HashMap<String, String>> groupMonthByTime();
 }

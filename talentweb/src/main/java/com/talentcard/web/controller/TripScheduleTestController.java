@@ -2,6 +2,7 @@ package com.talentcard.web.controller;
 
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.impl.TripDailyScheduleService;
+import com.talentcard.web.service.impl.TripMonthScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("TripScheduleTest")
 public class TripScheduleTestController {
 //    @Autowired
+//    private TripMonthScheduleService tripMonthScheduleService;
+//    @Autowired
 //    private TripDailyScheduleService tripDailyScheduleService;
 //    @PostMapping("testdaily_count")
 //    public ResultVO testdaily_count(){
@@ -25,4 +28,9 @@ public class TripScheduleTestController {
 //    public ResultVO testLastDay_count(){
 //        return tripDailyScheduleService.lastDay_count();
 //    }
+//    @PostMapping("testMonthSchedule")
+//    public ResultVO testMonthCount(){
+//        return tripMonthScheduleService.monthCount();
+//    }
+
 }
