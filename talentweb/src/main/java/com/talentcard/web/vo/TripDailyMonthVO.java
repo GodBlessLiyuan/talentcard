@@ -1,6 +1,7 @@
 package com.talentcard.web.vo;
 
 import com.talentcard.common.pojo.TripDailyPO;
+import com.talentcard.common.pojo.TripMonthPO;
 import com.talentcard.common.utils.DateUtil;
 import lombok.Data;
 
@@ -32,6 +33,25 @@ public class TripDailyMonthVO {
             vo.setID(po.getTdId());
             vo.setTime(DateUtil.date2Str(po.getDaily(),DateUtil.YMD));
             vo.setName(po.getScenicName());
+            vo.setNumber(po.getNumbers());
+            vo.setFreeTimes(po.getFreeTimes());
+            vo.setDiscountTimes(po.getDiscountTimes());
+            vo.setTotalTimes(po.getTotalTimes());
+            vos.add(vo);
+        }
+        return vos;
+    }
+
+    public static List<TripDailyMonthVO> convertMonth(List<TripMonthPO> tripMonthPOS) {
+        if(tripMonthPOS==null||tripMonthPOS.size()==0){
+            return null;
+        }
+        List<TripDailyMonthVO> vos=new ArrayList<>(tripMonthPOS.size());
+        for(TripMonthPO po:tripMonthPOS){
+            TripDailyMonthVO vo=new TripDailyMonthVO();
+            vo.setID(po.getTmId());
+            vo.setTime(DateUtil.date2Str(po.getMonth(),DateUtil.YHM));
+            vo.setName(po.getName());//景区名
             vo.setNumber(po.getNumbers());
             vo.setFreeTimes(po.getFreeTimes());
             vo.setDiscountTimes(po.getDiscountTimes());

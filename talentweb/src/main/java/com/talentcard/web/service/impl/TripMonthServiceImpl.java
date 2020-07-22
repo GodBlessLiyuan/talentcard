@@ -1,15 +1,21 @@
 package com.talentcard.web.service.impl;
 
+import com.github.pagehelper.Page;
 import com.talentcard.common.mapper.TalentActivityHistoryMapper;
 import com.talentcard.common.mapper.TripMonthMapper;
 import com.talentcard.common.pojo.TripMonthPO;
+import com.talentcard.common.utils.ExportUtil;
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ITripDailyService;
 import com.talentcard.web.service.ITripMonthService;
 import com.talentcard.web.utils.DateInitUtil;
+import com.talentcard.web.utils.PageHelper;
+import com.talentcard.web.vo.TripDailyMonthVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +36,7 @@ public class TripMonthServiceImpl implements ITripMonthService {
     private TalentActivityHistoryMapper talentActivityHistoryMapper;
     @Autowired
     private TripMonthMapper tripMonthMapper;
-
+    private static final String[] EXPORT_TITLES={"时间","景区名称","使用人数","免费次数","折扣次数","总使用次数"};
     @Override
     public ResultVO init_month() {
         List<HashMap<String,String>> months=talentActivityHistoryMapper.groupMonthByTime();
@@ -73,5 +79,37 @@ public class TripMonthServiceImpl implements ITripMonthService {
             return new ResultVO(2000,"旅游批量新增失败了");
         }
         return new ResultVO(1000,"旅游批量新增了"+allTripMonthPOS.size()+"条数据");
+    }
+
+    @Override
+    public ResultVO query(Integer pageNum, Integer pageSize, Map<String, Object> map) {
+        Page<TripMonthPO> page= PageHelper.startPage(pageNum,pageSize);
+        List<TripMonthPO> tripMonthPOS=tripMonthMapper.query(map);
+        return new ResultVO(1000,new PageInfoVO<>(page.getTotal(), TripDailyMonthVO.convertMonth(tripMonthPOS)));
+    }
+
+    @Override
+    public ResultVO export(Map<String, Object> map, HttpServletResponse response) {
+        List<TripMonthPO> tripMonthPOS=tripMonthMapper.query(map);
+        ExportUtil.exportExcel(null, EXPORT_TITLES, this.buildExcelContents(TripDailyMonthVO.convertMonth(tripMonthPOS)), response);
+        return new ResultVO(1000);
+    }
+
+    private String[][] buildExcelContents(List<TripDailyMonthVO> vos) {
+        if(vos==null||vos.size()==0){
+            return null;
+        }
+        String[][] neiRongs=new String[vos.size()][EXPORT_TITLES.length];
+        int num=0;
+        for(TripDailyMonthVO vo:vos){
+            neiRongs[num][0]=vo.getTime();
+            neiRongs[num][1]=vo.getName();
+            neiRongs[num][2]=vo.getNumber()+"";
+            neiRongs[num][3]=vo.getFreeTimes()+"";
+            neiRongs[num][4]=vo.getDiscountTimes()+"";
+            neiRongs[num][5]=vo.getTotalTimes()+"";
+            num++;
+        }
+        return neiRongs;
     }
 }

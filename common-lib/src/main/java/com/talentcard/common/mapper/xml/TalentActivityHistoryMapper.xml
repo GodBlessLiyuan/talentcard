@@ -41,7 +41,7 @@
           <if test="end">
              and #{end}>=tah.create_time
           </if>
-          and tah.dr=1 and t.dr=1
+          and tah.dr=1 and t.dr=1 order by tah_id desc
     </select>
     <select id="groupDailyByTime" resultType="java.util.HashMap">
      select DATE_FORMAT(tah.create_time,'%Y-%m-%d') as updateTime from t_talent_activity_history tah GROUP BY updateTime
