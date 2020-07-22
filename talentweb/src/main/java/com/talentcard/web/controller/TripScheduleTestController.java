@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("TripScheduleTest")
-public class TripScheduleTest {
+public class TripScheduleTestController {
 //    @Autowired
 //    private TripDailyScheduleService tripDailyScheduleService;
 //    @PostMapping("testdaily_count")

@@ -23,11 +23,12 @@
         from t_talent_activity_history
         where tah_id = #{tahId,jdbcType=BIGINT}
     </select>
+    <!--WHERE tah.activity_first_content_id = 1代表旅游，2位农家乐-->
     <select id="query" parameterType="java.util.Map" resultType="com.talentcard.common.bo.TripRealTimeBO">
         select tah.create_time as `time` ,tah.activity_second_content_name as scenicName,t.name as youkename, t.card_id as cardId,
           tah.status as welfare,tah.staff_id as staffID
           from t_talent_activity_history tah left join t_talent t on tah.open_id=t.open_id
-         where tah.activity_first_content_id=2
+         where tah.activity_first_content_id=1
           <if test="welfareType!=null">
              and tah.status=#{welfareType}
           </if>
@@ -54,7 +55,7 @@
         group by tah.activity_second_content_id order by tah.activity_second_content_name asc
     </select>
     <select id="getFreeOrDiscount" parameterType="java.util.Map" resultType="java.lang.Long">
-        select count(tah.id) from t_talent_activity_history tah
+        select count(tah.tah_id) from t_talent_activity_history tah
         where tah.activity_first_content_id=1 and tah.activity_second_content_id=#{sid}
          and tah.create_time>=#{start} and #{end}>=tah.create_time and status=#{status} and dr=1
     </select>
