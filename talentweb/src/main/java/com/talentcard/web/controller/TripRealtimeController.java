@@ -5,10 +5,7 @@ import com.talentcard.web.service.ITripRealtimeService;
 import com.talentcard.web.utils.DateInitUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -20,6 +17,7 @@ import java.util.Map;
  * @data 2020-07-21 16:35
  */
 @RequestMapping("trip_realtime")
+@RestController
 public class TripRealtimeController {
     @Autowired
     private ITripRealtimeService tripRealtimeService;

@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface TripDailyMapper extends BaseMapper<TripDailyPO, Long> {
     int batchInsert(List<TripDailyPO> tripDailyPOS);
+
+    TripDailyPO getBySidDaily(String sidDaily);
 }

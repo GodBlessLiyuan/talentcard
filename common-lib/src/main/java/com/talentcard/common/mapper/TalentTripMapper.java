@@ -76,5 +76,5 @@ public interface TalentTripMapper extends BaseMapper<TalentTripPO, Long> {
                                                       @Param("currentTime") String currentTime,
                                                       @Param("type") Byte type);
 
-    long countUsedOrUsing(Map<String, Object> map);
+    Long countUsedOrUsing(Map<String, Object> map);
 }

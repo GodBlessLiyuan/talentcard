@@ -32,13 +32,13 @@
              and tah.status=#{welfareType}
           </if>
           <if test="cardID!=null">
-              t.card_id=#{cardID}
+            and t.card_id=#{cardID}
           </if>
           <if test="start!=null">
-              tah.create_time>=#{start}
+             and tah.create_time>=#{start}
           </if>
           <if test="end">
-              #{end}>=tah.create_time
+             and #{end}>=tah.create_time
           </if>
           and tah.dr=1 and t.dr=1
     </select>
