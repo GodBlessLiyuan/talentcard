@@ -36,9 +36,9 @@ public class EditTalentConstant {
         titleMap.put("4", "正高级");
 
         //职业资格
-        titleMap.put("1", "高级工");
-        titleMap.put("2", "技师");
-        titleMap.put("3", "高级技师");
+        qualityMap.put("1", "高级工");
+        qualityMap.put("2", "技师");
+        qualityMap.put("3", "高级技师");
 
         //人才荣誉
         honourMap.put("1", "企业高管");

@@ -134,7 +134,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String educ = EditTalentConstant.educationMap.get(educationDTO.getEducation());
+        String educ = EditTalentConstant.educationMap.get(educationDTO.getEducation().toString());
         if (StringUtils.isEmpty(educ)) {
             educ = "";
         }
@@ -218,7 +218,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String quality = EditTalentConstant.qualityMap.get(profQualityDTO.getCategory());
+        String quality = EditTalentConstant.qualityMap.get(profQualityDTO.getCategory().toString());
         if (StringUtils.isEmpty(quality)) {
             quality = "";
         }
@@ -301,7 +301,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String title = EditTalentConstant.qualityMap.get(profTitleDTO.getCategory());
+        String title = EditTalentConstant.qualityMap.get(profTitleDTO.getCategory().toString());
         if (StringUtils.isEmpty(title)) {
             title = "";
         }
@@ -385,7 +385,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String honour = EditTalentConstant.qualityMap.get(talentHonourDTO.getHonourId());
+        String honour = EditTalentConstant.qualityMap.get(talentHonourDTO.getHonourId().toString());
         if (StringUtils.isEmpty(honour)) {
             honour = "";
         }
@@ -456,7 +456,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String educ = EditTalentConstant.educationMap.get(educationPO.getEducation());
+        String educ = EditTalentConstant.educationMap.get(educationPO.getEducation().toString());
         if (StringUtils.isEmpty(educ)) {
             educ = "";
         }
@@ -523,7 +523,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String quality = EditTalentConstant.qualityMap.get(profQualityPO.getCategory());
+        String quality = EditTalentConstant.qualityMap.get(profQualityPO.getCategory().toString());
         if (StringUtils.isEmpty(quality)) {
             quality = "";
         }
@@ -586,7 +586,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String title = EditTalentConstant.qualityMap.get(profTitlePO.getCategory());
+        String title = EditTalentConstant.qualityMap.get(profTitlePO.getCategory().toString());
         if (StringUtils.isEmpty(title)) {
             title = "";
         }
@@ -649,7 +649,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String honour = EditTalentConstant.qualityMap.get(talentHonourPO.getHonourId());
+        String honour = EditTalentConstant.qualityMap.get(talentHonourPO.getHonourId().toString());
         if (StringUtils.isEmpty(honour)) {
             honour = "";
         }
