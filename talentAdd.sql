@@ -4,6 +4,8 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS m_farmhouse_daily;
 DROP TABLE IF EXISTS m_farmhouse_month;
+DROP TABLE IF EXISTS m_trip_daily;
+DROP TABLE IF EXISTS m_trip_month;
 DROP TABLE IF EXISTS t_user_feedback;
 
 
@@ -38,6 +40,38 @@ CREATE TABLE m_farmhouse_month
 	update_time datetime,
 	PRIMARY KEY (fh_m),
 	UNIQUE (fh_m)
+);
+
+
+CREATE TABLE m_trip_daily
+(
+	td_id bigint unsigned NOT NULL AUTO_INCREMENT,
+	sid_daily char(32) NOT NULL,
+	sid bigint unsigned,
+	daily date NOT NULL,
+	scenic_name char(16) NOT NULL,
+	numbers bigint unsigned,
+	free_times bigint unsigned,
+	discount_times bigint unsigned,
+	total_times bigint unsigned,
+	PRIMARY KEY (td_id),
+	UNIQUE (td_id)
+);
+
+
+CREATE TABLE m_trip_month
+(
+	tm_id bigint NOT NULL AUTO_INCREMENT,
+	sid_month char(32) NOT NULL,
+	sid bigint unsigned,
+	month date NOT NULL,
+	name char(16) NOT NULL,
+	numbers bigint unsigned,
+	free_times bigint unsigned,
+	discount_times bigint unsigned,
+	total_times bigint unsigned,
+	PRIMARY KEY (tm_id),
+	UNIQUE (tm_id)
 );
 
 

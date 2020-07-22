@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.TripMonthMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TripMonthPO">
+    <id column="tm_id" jdbcType="BIGINT" property="tmId" />
+    <result column="sid_month" jdbcType="CHAR" property="sidMonth" />
+    <result column="sid" jdbcType="BIGINT" property="sid" />
+    <result column="month" jdbcType="DATE" property="month" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="numbers" jdbcType="BIGINT" property="numbers" />
+    <result column="free_times" jdbcType="BIGINT" property="freeTimes" />
+    <result column="discount_times" jdbcType="BIGINT" property="discountTimes" />
+    <result column="total_times" jdbcType="BIGINT" property="totalTimes" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tm_id, sid_month, sid, `month`, `name`, numbers, free_times, discount_times, total_times
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from m_trip_month
+    where tm_id = #{tmId,jdbcType=BIGINT}
+  </select>
+  <select id="getBySidMonth" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select  <include refid="Base_Column_List" />
+    from m_trip_month where sid_month=#{sidMonth}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from m_trip_month
+    where tm_id = #{tmId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.TripMonthPO">
+    insert into m_trip_month (tm_id, sid_month, sid, 
+      `month`, `name`, numbers, free_times, 
+      discount_times, total_times)
+    values (#{tmId,jdbcType=BIGINT}, #{sidMonth,jdbcType=CHAR}, #{sid,jdbcType=BIGINT}, 
+      #{month,jdbcType=DATE}, #{name,jdbcType=CHAR}, #{numbers,jdbcType=BIGINT}, #{freeTimes,jdbcType=BIGINT}, 
+      #{discountTimes,jdbcType=BIGINT}, #{totalTimes,jdbcType=BIGINT})
+  </insert>
+  <insert id="batchInsert" parameterType="java.util.List">
+       insert into m_trip_month ( sid_month, sid,
+      `month`, `name`, numbers, free_times,
+      discount_times, total_times)
+    values  <foreach collection="list" separator="," item="po">
+    ( #{po.sidMonth,jdbcType=CHAR}, #{po.sid,jdbcType=BIGINT},
+    #{po.month,jdbcType=DATE}, #{po.name,jdbcType=CHAR}, #{po.numbers,jdbcType=BIGINT}, #{po.freeTimes,jdbcType=BIGINT},
+    #{po.discountTimes,jdbcType=BIGINT}, #{po.totalTimes,jdbcType=BIGINT})
+  </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TripMonthPO">
+    insert into m_trip_month
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tmId != null">
+        tm_id,
+      </if>
+      <if test="sidMonth != null">
+        sid_month,
+      </if>
+      <if test="sid != null">
+        sid,
+      </if>
+      <if test="month != null">
+        `month`,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="numbers != null">
+        numbers,
+      </if>
+      <if test="freeTimes != null">
+        free_times,
+      </if>
+      <if test="discountTimes != null">
+        discount_times,
+      </if>
+      <if test="totalTimes != null">
+        total_times,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tmId != null">
+        #{tmId,jdbcType=BIGINT},
+      </if>
+      <if test="sidMonth != null">
+        #{sidMonth,jdbcType=CHAR},
+      </if>
+      <if test="sid != null">
+        #{sid,jdbcType=BIGINT},
+      </if>
+      <if test="month != null">
+        #{month,jdbcType=DATE},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="numbers != null">
+        #{numbers,jdbcType=BIGINT},
+      </if>
+      <if test="freeTimes != null">
+        #{freeTimes,jdbcType=BIGINT},
+      </if>
+      <if test="discountTimes != null">
+        #{discountTimes,jdbcType=BIGINT},
+      </if>
+      <if test="totalTimes != null">
+        #{totalTimes,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TripMonthPO">
+    update m_trip_month
+    <set>
+      <if test="sidMonth != null">
+        sid_month = #{sidMonth,jdbcType=CHAR},
+      </if>
+      <if test="sid != null">
+        sid = #{sid,jdbcType=BIGINT},
+      </if>
+      <if test="month != null">
+        `month` = #{month,jdbcType=DATE},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="numbers != null">
+        numbers = #{numbers,jdbcType=BIGINT},
+      </if>
+      <if test="freeTimes != null">
+        free_times = #{freeTimes,jdbcType=BIGINT},
+      </if>
+      <if test="discountTimes != null">
+        discount_times = #{discountTimes,jdbcType=BIGINT},
+      </if>
+      <if test="totalTimes != null">
+        total_times = #{totalTimes,jdbcType=BIGINT},
+      </if>
+    </set>
+    where tm_id = #{tmId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TripMonthPO">
+    update m_trip_month
+    set sid_month = #{sidMonth,jdbcType=CHAR},
+      sid = #{sid,jdbcType=BIGINT},
+      `month` = #{month,jdbcType=DATE},
+      `name` = #{name,jdbcType=CHAR},
+      numbers = #{numbers,jdbcType=BIGINT},
+      free_times = #{freeTimes,jdbcType=BIGINT},
+      discount_times = #{discountTimes,jdbcType=BIGINT},
+      total_times = #{totalTimes,jdbcType=BIGINT}
+    where tm_id = #{tmId,jdbcType=BIGINT}
+  </update>
+</mapper>

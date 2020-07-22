@@ -2,10 +2,15 @@ package com.talentcard.common.mapper;
 
 import com.talentcard.common.bo.FootprintBO;
 import com.talentcard.common.pojo.TalentActivityHistoryPO;
+import com.talentcard.common.pojo.TripDailyPO;
+import com.talentcard.common.pojo.TripMonthPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TalentActivityHistoryMapper继承基类
@@ -47,4 +52,14 @@ public interface TalentActivityHistoryMapper extends BaseMapper<TalentActivityHi
      * @return
      */
     List<FootprintBO> footprint(@Param("openId") String openId);
+
+    List<HashMap<String, String>> groupDailyByTime();
+
+    List<TripDailyPO> getDailyPOS(Map<String, Object> times);
+
+    Long getFreeOrDiscount(Map<String, Object> times);
+
+    List<TripMonthPO> getMonthPOS(Map<String, Object> times);
+
+    List<HashMap<String, String>> groupMonthByTime();
 }
