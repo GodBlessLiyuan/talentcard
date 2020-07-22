@@ -32,6 +32,7 @@
             <result column="ie_graduate_time" jdbcType="CHAR" property="graduateTime"/>
             <result column="ie_insert_cert_id" jdbcType="BIGINT" property="insertCertId"/>
             <result column="ie_dr" jdbcType="TINYINT" property="dr"/>
+            <result column="ie_full_time" jdbcType="TINYINT" property="fullTime"/>
         </association>
         <association property="insertQualityPO" javaType="com.talentcard.common.pojo.InsertQualityPO">
             <id column="iq_insert_pq_id" jdbcType="BIGINT" property="insertPqId"/>
@@ -78,6 +79,7 @@
     ie.major as ie_major, ie.educ_picture as ie_educ_picture, ie.educ_picture2 as ie_educ_picture2,
     ie.educ_picture3 as ie_educ_picture3, ie.open_id as ie_open_id , ie.`status`as ie_status,
     ie.graduate_time as ie_graduate_time, ie.insert_cert_id as ie_insert_cert_id, ie.dr as ie_dr,
+    ie.full_time as ie_full_time,
 
     iq.insert_pq_id as iq_insert_pq_id, iq.category as iq_category, iq.picture as iq_picture,
     iq.picture2 as iq_picture2, iq.picture3 as iq_picture3, iq.info as iq_info,

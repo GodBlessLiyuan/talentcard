@@ -476,6 +476,9 @@ public class TalentServiceImpl implements ITalentService {
              * 脏数据矫正为C表状态5，UC表状态2
              */
             ActivcateBO oldCard = talentMapper.activate(openId, (byte) 2, (byte) 1);
+            if (oldCard == null) {
+                return new ResultVO(2701);
+            }
             Byte oldCardCertificationStatus = (byte) 5;
             Long oldCardCertId = oldCard.getCertId();
             certificationMapper.updateStatusByCertId(oldCardCertId, oldCardCertificationStatus);
@@ -489,7 +492,6 @@ public class TalentServiceImpl implements ITalentService {
         }
         /**
          * 校验数据库是否存在状态9的数据
-         * 以后应该会删！！！！！！！！
          */
         Integer ifOldCardIsBaseCard = certificationMapper.ifOldCardIsBaseCard(openId);
         if (ifOldCardIsBaseCard != null && ifOldCardIsBaseCard != 0) {
