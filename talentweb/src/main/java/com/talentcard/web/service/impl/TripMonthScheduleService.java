@@ -11,10 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description:
@@ -62,12 +59,14 @@ public class TripMonthScheduleService {
             originPO.setTotalTimes(total);
             TripMonthPO toTripMonthPO=tripMonthMapper.getBySidMonth(originPO.getSidMonth());
             if(toTripMonthPO==null){
+                originPO.setUpdateTime(new Date());
                 tripMonthMapper.insert(originPO);
             }else{
                 toTripMonthPO.setNumbers(originPO.getNumbers());
                 toTripMonthPO.setFreeTimes(originPO.getFreeTimes());
                 toTripMonthPO.setDiscountTimes(originPO.getDiscountTimes());
                 toTripMonthPO.setTotalTimes(originPO.getTotalTimes());
+                toTripMonthPO.setUpdateTime(new Date());
                 tripMonthMapper.updateByPrimaryKey(toTripMonthPO);
             }
         }

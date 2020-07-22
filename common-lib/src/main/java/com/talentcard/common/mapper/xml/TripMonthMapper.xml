@@ -11,9 +11,10 @@
     <result column="free_times" jdbcType="BIGINT" property="freeTimes" />
     <result column="discount_times" jdbcType="BIGINT" property="discountTimes" />
     <result column="total_times" jdbcType="BIGINT" property="totalTimes" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    tm_id, sid_month, sid, `month`, `name`, numbers, free_times, discount_times, total_times
+    tm_id, sid_month, sid, `month`, `name`, numbers, free_times, discount_times, total_times,update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -48,19 +49,19 @@
   <insert id="insert" parameterType="com.talentcard.common.pojo.TripMonthPO">
     insert into m_trip_month (tm_id, sid_month, sid, 
       `month`, `name`, numbers, free_times, 
-      discount_times, total_times)
+      discount_times, total_times,update_time)
     values (#{tmId,jdbcType=BIGINT}, #{sidMonth,jdbcType=CHAR}, #{sid,jdbcType=BIGINT}, 
       #{month,jdbcType=DATE}, #{name,jdbcType=CHAR}, #{numbers,jdbcType=BIGINT}, #{freeTimes,jdbcType=BIGINT}, 
-      #{discountTimes,jdbcType=BIGINT}, #{totalTimes,jdbcType=BIGINT})
+      #{discountTimes,jdbcType=BIGINT}, #{totalTimes,jdbcType=BIGINT},#{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="batchInsert" parameterType="java.util.List">
        insert into m_trip_month ( sid_month, sid,
       `month`, `name`, numbers, free_times,
-      discount_times, total_times)
+      discount_times, total_times,update_time)
     values  <foreach collection="list" separator="," item="po">
     ( #{po.sidMonth,jdbcType=CHAR}, #{po.sid,jdbcType=BIGINT},
     #{po.month,jdbcType=DATE}, #{po.name,jdbcType=CHAR}, #{po.numbers,jdbcType=BIGINT}, #{po.freeTimes,jdbcType=BIGINT},
-    #{po.discountTimes,jdbcType=BIGINT}, #{po.totalTimes,jdbcType=BIGINT})
+    #{po.discountTimes,jdbcType=BIGINT}, #{po.totalTimes,jdbcType=BIGINT},now())
   </foreach>
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TripMonthPO">
@@ -93,6 +94,9 @@
       <if test="totalTimes != null">
         total_times,
       </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="tmId != null">
@@ -121,6 +125,9 @@
       </if>
       <if test="totalTimes != null">
         #{totalTimes,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -151,6 +158,9 @@
       <if test="totalTimes != null">
         total_times = #{totalTimes,jdbcType=BIGINT},
       </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where tm_id = #{tmId,jdbcType=BIGINT}
   </update>
@@ -163,7 +173,8 @@
       numbers = #{numbers,jdbcType=BIGINT},
       free_times = #{freeTimes,jdbcType=BIGINT},
       discount_times = #{discountTimes,jdbcType=BIGINT},
-      total_times = #{totalTimes,jdbcType=BIGINT}
+      total_times = #{totalTimes,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where tm_id = #{tmId,jdbcType=BIGINT}
   </update>
 </mapper>
