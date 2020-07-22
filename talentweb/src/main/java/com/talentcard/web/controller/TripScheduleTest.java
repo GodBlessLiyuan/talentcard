@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("TripScheduleTest")
 public class TripScheduleTest {
-    @Autowired
-    private TripDailyScheduleService tripDailyScheduleService;
-    @PostMapping("testdaily_count")
-    public ResultVO testdaily_count(){
-        return tripDailyScheduleService.daily_count();
-    }
-    @PostMapping("testLastDay_count")
-    public ResultVO testLastDay_count(){
-        return tripDailyScheduleService.lastDay_count();
-    }
+//    @Autowired
+//    private TripDailyScheduleService tripDailyScheduleService;
+//    @PostMapping("testdaily_count")
+//    public ResultVO testdaily_count(){
+//        return tripDailyScheduleService.daily_count();
+//    }
+//    @PostMapping("testLastDay_count")
+//    public ResultVO testLastDay_count(){
+//        return tripDailyScheduleService.lastDay_count();
+//    }
 }

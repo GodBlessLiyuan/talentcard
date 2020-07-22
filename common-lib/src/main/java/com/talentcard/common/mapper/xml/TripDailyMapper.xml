@@ -29,16 +29,16 @@
         scenic_name like #{name} '%'
       </if>
       <if test="start!=null">
-        daily>=#{start}
+       and daily>=#{start}
       </if>
       <if test="end!=null">
-        #{end}>=daily
+       and  #{end}>=daily
       </if>
     </where>
   </select>
   <select id="getBySidDaily" parameterType="java.lang.String" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
-    from m_trip_daily where sid_daily=#{sidDaily}
+    from m_trip_daily where sid_daily=#{sidDaily} limit 1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from m_trip_daily

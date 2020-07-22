@@ -42,7 +42,7 @@ public class TripDailyServiceImpl implements ITripDailyService {
             return new ResultVO(1000, "表t_talent_activity_history中无数据");
         }
         List<TripDailyPO> tripDailyPOS = new ArrayList<>();
-        Map<String, Object> times = new HashMap(3);
+        Map<String, Object> times = new HashMap(5);
         for (HashMap<String, String> daily : dailys) {
             //当前天数
             times.put("updateTime", daily.get("updateTime"));
