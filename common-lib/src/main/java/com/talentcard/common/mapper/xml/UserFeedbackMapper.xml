@@ -24,10 +24,10 @@
     <include refid="Base_Column_List" />
     from t_user_feedback
     <where>
-      <if test="pageType!=null">
+      <if test="pageType!=null and pageType!=''">
         page_type=#{pageType}
       </if>
-      <if test="chooseItem!=null">
+      <if test="chooseItem!=null and chooseItem!=''">
         and choose_item =#{chooseItem,jdbcType=CHAR}
       </if>
     </where>
