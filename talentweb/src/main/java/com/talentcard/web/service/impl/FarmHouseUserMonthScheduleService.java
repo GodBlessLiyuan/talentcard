@@ -58,6 +58,7 @@ public class FarmHouseUserMonthScheduleService {
             logger.info("m_farmhouse_month批量写入了{}条记录",originFarmhouseMonthPOS.size());
             return;
         }
+        toFarmhouseMonthPOS=null;
         //遍历源数据,对着目标，源数据被修改或者新增，
         for(FarmhouseMonthPO originPO:originFarmhouseMonthPOS){
             FarmhouseMonthPO toFarmhouseMonthPO=farmhouseMonthMapper.queryByDailyFarmHouseID(originPO.getMonthFarmhouseID());

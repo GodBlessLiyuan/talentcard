@@ -57,6 +57,7 @@ public class FarmHouseUserScheduleService {
             logger.info("批量写入了{}条记录",originFarmhouseDailyPOS.size());
             return;
         }
+        toFarmhouseDailyPOS=null;
         //遍历源数据，目标无则新增数据，目标有则更新数据
         for(FarmhouseDailyPO originPO:originFarmhouseDailyPOS){
             FarmhouseDailyPO toFarmhouseDailyPO=farmhouseDailyMapper.queryByDailyFarmHouseID(originPO.getDailyFarmHouseID());
