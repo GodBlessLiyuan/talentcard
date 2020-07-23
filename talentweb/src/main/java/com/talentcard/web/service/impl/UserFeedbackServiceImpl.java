@@ -1,6 +1,7 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.TalentMapper;
 import com.talentcard.common.mapper.UserFeedbackMapper;
 import com.talentcard.common.pojo.TalentPO;
@@ -59,11 +60,11 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
         userFeedbackVO.setChooseItem(po.getChooseItem());
         userFeedbackVO.setProDescribe(po.getProDescribe());
         userFeedbackVO.setSubmitDate(po.getSubmitDate());
-        TalentPO talentPO = talentMapper.selectByOpenId(po.getOpenId());
-        if(talentPO!=null&&!StringUtils.isEmpty(talentPO.getOpenId())){
-            if(talentPO.getOpenId().equals("000000000000000")){
-                userFeedbackVO.setName("游客");//游客的话统一显示为“游客“
-            }else {
+        if(TalentConstant.isDefaultTalent(po.getOpenId())){
+            userFeedbackVO.setName("游客");//游客的话统一显示为“游客“
+        }else{
+            TalentPO talentPO = talentMapper.selectByOpenId(po.getOpenId());
+            if(talentPO!=null){
                 String name=talentPO.getName();
                 if(talentPO.getCardType()==1){ //1身份证2护照3驾照
                     name+="（身份证";

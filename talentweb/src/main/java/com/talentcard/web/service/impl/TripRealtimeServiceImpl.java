@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,6 +97,8 @@ public class TripRealtimeServiceImpl implements ITripRealtimeService {
                 vo.setWelfare("免费");
             }else if(bo.getWelfare()==3) {
                 vo.setWelfare("折扣");
+            }else if(bo.getWelfare()==null){
+                vo.setWelfare("");
             }
             vos.add(vo);
         }

@@ -1,7 +1,9 @@
 package com.talentcard.web.controller;
+import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IFarmhouseUseRealTimeService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,9 +70,8 @@ public class FarmhouseUseRealTimeController {
     }
 
     private String init3MonthTime(){
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd 00:00:00");
         Calendar line=Calendar.getInstance();
         line.add(Calendar.MONTH,-3);
-        return format.format(line.getTime());
+        return DateUtil.date2Str(line.getTime(),DateUtil.YMD_000);
     }
 }
