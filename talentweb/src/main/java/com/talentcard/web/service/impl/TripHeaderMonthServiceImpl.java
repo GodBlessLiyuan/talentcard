@@ -35,11 +35,11 @@ public class TripHeaderMonthServiceImpl implements ITripHeaderMonthService {
         map.put("end",monthFristAndLastByCurrenDay[1]);
         map.put("status",1);//未使用
         Map<String,Object> result=new HashMap<>(4);
-        long usingNumbers=talentTripMapper.countUsedOrUsing(map);
+        Long usingNumbers=talentTripMapper.countUsedOrUsing(map);
         result.put("totalNumbers",totalNumbers);
         result.put("usingNumbers",usingNumbers);
         map.put("status",2);//已经使用
-        long usedNumbers=talentTripMapper.countUsedOrUsing(map);
+        Long usedNumbers=talentTripMapper.countUsedOrUsing(map);
         result.put("usedNumbers",usedNumbers);
         if(totalNumbers==null) totalNumbers=0L;
         long unreceived=totalNumbers-usingNumbers-usedNumbers;
