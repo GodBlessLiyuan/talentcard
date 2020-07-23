@@ -1,6 +1,7 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.TalentMapper;
 import com.talentcard.common.mapper.UserFeedbackMapper;
 import com.talentcard.common.pojo.TalentPO;
@@ -61,7 +62,7 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
         userFeedbackVO.setSubmitDate(po.getSubmitDate());
         TalentPO talentPO = talentMapper.selectByOpenId(po.getOpenId());
         if(talentPO!=null&&!StringUtils.isEmpty(talentPO.getOpenId())){
-            if(talentPO.getOpenId().equals("000000000000000")){
+            if(talentPO.getOpenId().equals(TalentConstant.DEFAULT_TALENT_OPENID)){
                 userFeedbackVO.setName("游客");//游客的话统一显示为“游客“
             }else {
                 String name=talentPO.getName();
