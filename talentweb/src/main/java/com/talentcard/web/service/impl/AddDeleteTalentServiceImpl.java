@@ -385,14 +385,14 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String honour = EditTalentConstant.qualityMap.get(talentHonourDTO.getHonourId().toString());
+        String honour = EditTalentConstant.honourMap.get(talentHonourDTO.getHonourId().toString());
         if (StringUtils.isEmpty(honour)) {
             honour = "";
         }
         String first = "您好，您的信息已更新，为您新增人才荣誉" + honour;
         messageDTO.setFirst(first);
         //信息类型
-        messageDTO.setKeyword1("职称");
+        messageDTO.setKeyword1("人才荣誉");
         //变更时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         String currentTime = formatter.format(new Date());

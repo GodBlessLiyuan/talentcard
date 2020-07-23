@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -74,4 +75,6 @@ public interface TalentTripMapper extends BaseMapper<TalentTripPO, Long> {
     List<ActivityCardTicketBO> findActivityCardTicket(@Param("openId") String openId,
                                                       @Param("currentTime") String currentTime,
                                                       @Param("type") Byte type);
+
+    Long countUsedOrUsing(Map<String, Object> map);
 }
