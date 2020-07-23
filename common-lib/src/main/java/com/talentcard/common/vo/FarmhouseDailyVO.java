@@ -1,6 +1,7 @@
 package com.talentcard.common.vo;
 
 import com.talentcard.common.pojo.FarmhouseDailyPO;
+import com.talentcard.common.utils.DateUtil;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -27,11 +28,10 @@ public class FarmhouseDailyVO implements Serializable {
             return null;
         }
         List<FarmhouseDailyVO> vos=new ArrayList<>(farmhouseDailyPOS.size());
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
         for(FarmhouseDailyPO po:farmhouseDailyPOS){
             FarmhouseDailyVO vo=new FarmhouseDailyVO();
             vo.setID(po.getFhD());//改行的主键
-            vo.setDailyTime(format.format(po.getDailyTime()));
+            vo.setDailyTime(DateUtil.date2Str(po.getDailyTime(),DateUtil.YMD));
             vo.setName(po.getName());
             vo.setNumber(po.getNumber());
             vo.setTimes(po.getTimes());
