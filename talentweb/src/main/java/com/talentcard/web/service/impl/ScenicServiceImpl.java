@@ -182,6 +182,7 @@ public class ScenicServiceImpl implements IScenicService {
         vo.setRate(scenicPO.getRate());
         vo.setUnit(scenicPO.getUnit());
         vo.setTimes(scenicPO.getTimes());
+        vo.setDiscount(scenicPO.getDiscount());
         if (null != scenicPO.getAvatar()) {
             vo.setAvatar(filePathConfig.getPublicBasePath() + scenicPO.getAvatar());
         }
