@@ -25,7 +25,7 @@
     where tt_id = #{ttId,jdbcType=BIGINT}
   </select>
   <select id="countUsedOrUsing" parameterType="java.util.Map" resultType="java.lang.Long">
-    select count(tt_id) from t_talent_trip where
+    select IFNULL(count(tt_id),0) from t_talent_trip where
     create_time >=#{start} and #{end}>=create_time and dr=1 and status=#{status}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

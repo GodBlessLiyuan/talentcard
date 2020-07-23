@@ -41,6 +41,7 @@ public class TripHeaderMonthServiceImpl implements ITripHeaderMonthService {
         map.put("status",2);//已经使用
         long usedNumbers=talentTripMapper.countUsedOrUsing(map);
         result.put("usedNumbers",usedNumbers);
+        if(totalNumbers==null) totalNumbers=0L;
         long unreceived=totalNumbers-usingNumbers-usedNumbers;
         result.put("unreceived",unreceived);
         return new ResultVO(1000,result);
