@@ -62,7 +62,7 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
         userFeedbackVO.setSubmitDate(po.getSubmitDate());
         TalentPO talentPO = talentMapper.selectByOpenId(po.getOpenId());
         if(talentPO!=null&&!StringUtils.isEmpty(talentPO.getOpenId())){
-            if(talentPO.getOpenId().equals(TalentConstant.DEFAULT_TALENT_OPENID)){
+            if(TalentConstant.isDefaultTalent(po.getOpenId())){
                 userFeedbackVO.setName("游客");//游客的话统一显示为“游客“
             }else {
                 String name=talentPO.getName();
