@@ -65,13 +65,15 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
                 userFeedbackVO.setName("游客");//游客的话统一显示为“游客“
             }else {
                 String name=talentPO.getName();
-                name+=talentPO.getCardType();
                 if(talentPO.getCardType()==1){ //1身份证2护照3驾照
-                    name+=talentPO.getIdCard();
+                    name+="（身份证";
+                    name+=talentPO.getIdCard()+"）";
                 }else if(talentPO.getCardType()==2){
-                    name+=talentPO.getPassport();
+                    name+="（护照";
+                    name+=talentPO.getPassport()+"）";
                 }else if(talentPO.getCardType()==3){
-                    name+=talentPO.getDriverCard();
+                    name+="（驾照";
+                    name+=talentPO.getDriverCard()+"）";
                 }
                 userFeedbackVO.setName(name);//提交人的姓名+证件类型+证件号,
             }
