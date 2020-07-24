@@ -1,8 +1,5 @@
 package com.talentcard.front.controller;
-
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.utils.StringToObjUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.FrontApplication;
@@ -13,25 +10,10 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.awt.*;
-import java.io.FileInputStream;
 import java.util.*;
-import java.util.List;
-
 import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 /**
  * @author: velve
@@ -87,7 +69,7 @@ public class TalentControllerTest extends BaseTest{
             jsonObject.put("driverCard", "222222222222");
             ResultVO resultVO = mockMvcPostUrlContent(url, jsonObject.toJSONString());
             assertNotNull(resultVO);
-//            assertEquals(new Integer(1000), resultVO.getStatus());
+//            assertEquals(new Integer(1000), resultVO.getStatus());//2213.到头了，
         }
         {
             //验证身份证，没问题（至少sql没问题）
@@ -171,7 +153,7 @@ public class TalentControllerTest extends BaseTest{
         {
             //	application/x-png或者image/png都可以；openId：gaojiyonghu
             String jsonObject="{\n" +
-                    "    \"openId\": \"gaojiyonghu\",\n" +
+                    "    \"openId\": \"oQetQ1Qe4bIp5h7mmsmNOwVXAn3U\",\n" +
                     "    \"education\": \"1\",\n" +
                     "    \"school\": \"原味鸡\",\n" +
                     "    \"firstClass\": 1,\n" +
@@ -199,14 +181,7 @@ public class TalentControllerTest extends BaseTest{
             String url="/talent/identification";
             ResultVO resultVO = super.mockMvcPostUrlContent(url, jsonObject);//list
             assertNotNull(resultVO);
-            assertEquals(new Integer(1000), resultVO.getStatus());//2701；
-            /***
-             * 这数据没法测试了
-             *       ActivcateBO oldCard = talentMapper.activate(openId, (byte) 2, (byte) 1);
-             *             if (oldCard == null) {
-             *                 return new ResultVO(2701);
-             *             }
-             * */
+            assertEquals(new Integer(1000), resultVO.getStatus());
         }
     }
     /**

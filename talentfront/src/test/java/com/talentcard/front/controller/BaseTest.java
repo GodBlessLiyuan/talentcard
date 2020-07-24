@@ -48,11 +48,26 @@ public class BaseTest {
         ResultVO<T> resultVO = StringToObjUtil.strToObj(mvcResult.getResponse().getContentAsString(), ResultVO.class);
         return resultVO;
     }
+    public ResultVO<T> mockMvcPostUrlParams(String url,JSONObject jsonObject) throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post(url);
+        if(jsonObject!=null){
+            for(String key:jsonObject.keySet()){
+                requestBuilder.param(key,(String) jsonObject.get(key));
+            }
+        }
+        MvcResult mvcResult = mockMvc.perform(requestBuilder
+//                .content().accept()
+                ).andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
+        ResultVO<T> resultVO = StringToObjUtil.strToObj(mvcResult.getResponse().getContentAsString(),ResultVO.class);
+        return resultVO;
+    }
 
     public ResultVO<T> mockMvcPostUrlParams(String url, Map<String,String> stringParamsMap) throws Exception {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post(url);
-        for(Map.Entry<String,String> entry:stringParamsMap.entrySet()){
-            requestBuilder.param(entry.getKey(),entry.getValue());
+        if(stringParamsMap!=null){
+            for(Map.Entry<String,String> entry:stringParamsMap.entrySet()){
+                requestBuilder.param(entry.getKey(),entry.getValue());
+            }
         }
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
         ResultVO<T> resultVO = StringToObjUtil.strToObj(mvcResult.getResponse().getContentAsString(),ResultVO.class);
@@ -63,8 +78,10 @@ public class BaseTest {
      * */
     public ResultVO mockMvcFilePostUrlParams(String url,Map<String,String> stringParamsMap,MockMultipartFile... mockMultipartFile) throws Exception {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post(url, mockMultipartFile);
-        for(Map.Entry<String,String> entry:stringParamsMap.entrySet()){
-            requestBuilder.param(entry.getKey(),entry.getValue());
+        if(stringParamsMap!=null){
+            for(Map.Entry<String,String> entry:stringParamsMap.entrySet()){
+                requestBuilder.param(entry.getKey(),entry.getValue());
+            }
         }
         MvcResult mvcResult = mockMvc.perform(requestBuilder).andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
         ResultVO resultVO = StringToObjUtil.strToObj(mvcResult.getResponse().getContentAsString(), ResultVO.class);
