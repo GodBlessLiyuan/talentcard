@@ -24,14 +24,15 @@ CREATE TABLE m_farmhouse_daily
 	times bigint,
 	update_time datetime,
 	PRIMARY KEY (fh_d),
-	UNIQUE (fh_d)
+	UNIQUE (fh_d),
+	UNIQUE (dailyFarmHouseID)
 );
 
 
 CREATE TABLE m_farmhouse_month
 (
 	fh_m bigint NOT NULL AUTO_INCREMENT,
-	monthFarmhouseID char(32),
+	monthFarmhouseID char(32) NOT NULL,
 	farmhouse_id bigint NOT NULL,
 	name char(16) NOT NULL,
 	month date NOT NULL,
@@ -39,7 +40,8 @@ CREATE TABLE m_farmhouse_month
 	times bigint,
 	update_time datetime,
 	PRIMARY KEY (fh_m),
-	UNIQUE (fh_m)
+	UNIQUE (fh_m),
+	UNIQUE (monthFarmhouseID)
 );
 
 
@@ -47,7 +49,7 @@ CREATE TABLE m_trip_daily
 (
 	td_id bigint unsigned NOT NULL AUTO_INCREMENT,
 	sid_daily char(32) NOT NULL,
-	sid bigint unsigned,
+	sid bigint unsigned NOT NULL,
 	daily date NOT NULL,
 	scenic_name char(16) NOT NULL,
 	numbers bigint unsigned,
@@ -56,7 +58,8 @@ CREATE TABLE m_trip_daily
 	total_times bigint unsigned,
 	update_time datetime,
 	PRIMARY KEY (td_id),
-	UNIQUE (td_id)
+	UNIQUE (td_id),
+	UNIQUE (sid_daily)
 );
 
 
@@ -64,7 +67,7 @@ CREATE TABLE m_trip_month
 (
 	tm_id bigint NOT NULL AUTO_INCREMENT,
 	sid_month char(32) NOT NULL,
-	sid bigint unsigned,
+	sid bigint unsigned NOT NULL,
 	month date NOT NULL,
 	name char(16) NOT NULL,
 	numbers bigint unsigned,
@@ -73,7 +76,8 @@ CREATE TABLE m_trip_month
 	total_times bigint unsigned,
 	update_time datetime,
 	PRIMARY KEY (tm_id),
-	UNIQUE (tm_id)
+	UNIQUE (tm_id),
+	UNIQUE (sid_month)
 );
 
 

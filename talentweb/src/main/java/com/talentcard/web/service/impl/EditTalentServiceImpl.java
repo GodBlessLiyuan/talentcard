@@ -701,7 +701,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         //模版编号
         messageDTO.setTemplateId(4);
         //结束
-        String remark = "变更原因：您已经符合高层次人才的人才要求，故为您升级人才卡，可享受更多人才福利。";
+        String remark = opinion;
         messageDTO.setRemark(remark);
         messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
         MessageUtil.sendTemplateMessage(messageDTO);

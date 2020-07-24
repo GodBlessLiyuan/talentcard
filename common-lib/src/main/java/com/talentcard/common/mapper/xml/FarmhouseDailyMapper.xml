@@ -28,7 +28,7 @@
   <select id="queryByDailyFarmHouseID" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
     from m_farmhouse_daily
-    where dailyFarmHouseID=#{dailyFarmHouseID}
+    where dailyFarmHouseID=#{dailyFarmHouseID} limit 1
   </select>
   <select id="query" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
