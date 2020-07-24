@@ -156,7 +156,7 @@ public class StaffServiceImpl implements IStaffService {
              */
             TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
             if (talentPO == null) {
-                return new ResultVO(2504,"查无景区");
+                return new ResultVO(2504, "查无景区");
             }
             Integer ifEnjoyScenic = scenicMapper.ifEnjoyScenic(talentPO.getCardId(), activitySecondContentId);
             if (ifEnjoyScenic == 0) {
@@ -232,7 +232,12 @@ public class StaffServiceImpl implements IStaffService {
         if (ifTicket == TICKET) {
             result.put("discount", 0);
         } else {
-            result.put("discount", scenicPO.getDiscount());
+            //折扣为空，说明老景区，临时给10.0折
+            if (scenicPO.getDiscount() == null) {
+                result.put("discount", 0.0);
+            } else {
+                result.put("discount", scenicPO.getDiscount());
+            }
         }
         sendMessage(talentOpenId, staffOpenId, (long) 1, activitySecondContentId);
 
