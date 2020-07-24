@@ -301,7 +301,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String title = EditTalentConstant.qualityMap.get(profTitleDTO.getCategory().toString());
+        String title = EditTalentConstant.titleMap.get(profTitleDTO.getCategory().toString());
         if (StringUtils.isEmpty(title)) {
             title = "";
         }
@@ -586,7 +586,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String title = EditTalentConstant.qualityMap.get(profTitlePO.getCategory().toString());
+        String title = EditTalentConstant.titleMap.get(profTitlePO.getCategory().toString());
         if (StringUtils.isEmpty(title)) {
             title = "";
         }
@@ -649,14 +649,14 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String honour = EditTalentConstant.qualityMap.get(talentHonourPO.getHonourId().toString());
+        String honour = EditTalentConstant.honourMap.get(talentHonourPO.getHonourId().toString());
         if (StringUtils.isEmpty(honour)) {
             honour = "";
         }
         String first = "您好，您的主要人才荣誉\"" + honour + "\"因不符合条件，已被删除";
         messageDTO.setFirst(first);
         //信息类型
-        messageDTO.setKeyword1("职称");
+        messageDTO.setKeyword1("人才荣誉");
         //变更时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         String currentTime = formatter.format(new Date());
