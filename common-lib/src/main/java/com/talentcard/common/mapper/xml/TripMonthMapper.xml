@@ -24,7 +24,7 @@
   </select>
   <select id="getBySidMonth" parameterType="java.lang.String" resultMap="BaseResultMap">
     select  <include refid="Base_Column_List" />
-    from m_trip_month where sid_month=#{sidMonth}
+    from m_trip_month where sid_month=#{sidMonth} limit 1
   </select>
   <select id="query" parameterType="java.util.Map" resultMap="BaseResultMap">
     select  <include refid="Base_Column_List" />

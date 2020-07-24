@@ -23,7 +23,7 @@
   <select id="queryByDailyFarmHouseID" parameterType="java.lang.String" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" />
     from m_farmhouse_month
-    where monthFarmhouseID=#{monthFarmhouseID}
+    where monthFarmhouseID=#{monthFarmhouseID} limit 1
   </select>
   <!--查询当月的数据-->
   <select id="queryByMonth" parameterType="java.lang.String" resultMap="BaseResultMap">
