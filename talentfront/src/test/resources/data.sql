@@ -119,30 +119,30 @@ INSERT INTO `t_certification` VALUES (5, 4, 1, '2020-7-10 09:11:54', 5, NULL, 1)
 INSERT INTO `t_certification` VALUES (6, 5, 6, '2020-7-10 09:15:08', 5, NULL, 1);
 
 
-INSERT INTO `t_education` VALUES (1, 5, '战争学院', 1, '上单霸主', NULL, 1, 2, 9, 10, '2020-08-05');
-INSERT INTO `t_education` VALUES (2, 1, '测试测试测试', 1, '测试测试测试', '/talentcard//education/education1594342928454QrlJQ8Or.', 2, 2, 10, 2, NULL);
-INSERT INTO `t_education` VALUES (4, 0, '', NULL, '', NULL, 4, 3, 5, 10, '');
-INSERT INTO `t_education` VALUES (5, 6, 'jgv', 1, 'jgv', NULL, 5, 4, 5, 10, '2020-06-01');
-INSERT INTO `t_education` VALUES (6, 6, '公众号填写学校', 2, '公众号填写专业', NULL, 6, 5, 5, 10, '2017-07-10');
+INSERT INTO `t_education`(`educ_id`, `education`, `school`, `first_class`, `major`, `educ_picture`, `cert_id`, `talent_id`, `status`, `if_certificate`, `graduate_time`) VALUES (1, 5, '战争学院', 1, '上单霸主', NULL, 1, 2, 9, 10, '2020-08-05');
+INSERT INTO `t_education`(`educ_id`, `education`, `school`, `first_class`, `major`, `educ_picture`, `cert_id`, `talent_id`, `status`, `if_certificate`, `graduate_time`) VALUES (2, 1, '测试测试测试', 1, '测试测试测试', '/talentcard//education/education1594342928454QrlJQ8Or.', 2, 2, 10, 2, NULL);
+INSERT INTO `t_education`(`educ_id`, `education`, `school`, `first_class`, `major`, `educ_picture`, `cert_id`, `talent_id`, `status`, `if_certificate`, `graduate_time`) VALUES (4, 0, '', NULL, '', NULL, 4, 3, 5, 10, '');
+INSERT INTO `t_education`(`educ_id`, `education`, `school`, `first_class`, `major`, `educ_picture`, `cert_id`, `talent_id`, `status`, `if_certificate`, `graduate_time`) VALUES (5, 6, 'jgv', 1, 'jgv', NULL, 5, 4, 5, 10, '2020-06-01');
+INSERT INTO `t_education`(`educ_id`, `education`, `school`, `first_class`, `major`, `educ_picture`, `cert_id`, `talent_id`, `status`, `if_certificate`, `graduate_time`) VALUES (6, 6, '公众号填写学校', 2, '公众号填写专业', NULL, 6, 5, 5, 10, '2017-07-10');
 
 
-INSERT INTO `t_prof_quality` VALUES (1, 0, NULL, '', 1, 2, 9, 10);
-INSERT INTO `t_prof_quality` VALUES (2, 1, '/talentcard//profQuality/profQuality1594342928456LuDEAqGv.', '测试测试测试', 2, 2, 10, 2);
-INSERT INTO `t_prof_quality` VALUES (4, 0, NULL, '', 4, 3, 5, 10);
-INSERT INTO `t_prof_quality` VALUES (5, 0, NULL, '', 5, 4, 5, 10);
-INSERT INTO `t_prof_quality` VALUES (6, 0, NULL, '', 6, 5, 5, 10);
+INSERT INTO `t_prof_quality`(`pq_id`, `category`, `picture`, `info`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (1, 0, NULL, '', 1, 2, 9, 10);
+INSERT INTO `t_prof_quality`(`pq_id`, `category`, `picture`, `info`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (2, 1, '/talentcard//profQuality/profQuality1594342928456LuDEAqGv.', '测试测试测试', 2, 2, 10, 2);
+INSERT INTO `t_prof_quality`(`pq_id`, `category`, `picture`, `info`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (4, 0, NULL, '', 4, 3, 5, 10);
+INSERT INTO `t_prof_quality`(`pq_id`, `category`, `picture`, `info`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (5, 0, NULL, '', 5, 4, 5, 10);
+INSERT INTO `t_prof_quality`(`pq_id`, `category`, `picture`, `info`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (6, 0, NULL, '', 6, 5, 5, 10);
 
-INSERT INTO `t_prof_title` VALUES (1, 0, '', NULL, 1, 2, 9, 10);
-INSERT INTO `t_prof_title` VALUES (2, 1, '测试测试测试', '/talentcard//profTitle/profTitle1594342928456BSRb47hP.', 2, 2, 10, 2);
-INSERT INTO `t_prof_title` VALUES (4, 0, '', NULL, 4, 3, 5, 10);
-INSERT INTO `t_prof_title` VALUES (5, 0, '', NULL, 5, 4, 5, 10);
-INSERT INTO `t_prof_title` VALUES (6, 0, '', NULL, 6, 5, 5, 10);
+INSERT INTO `t_prof_title`(`pt_id`, `category`, `info`, `picture`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (1, 0, '', NULL, 1, 2, 9, 10);
+INSERT INTO `t_prof_title`(`pt_id`, `category`, `info`, `picture`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (2, 1, '测试测试测试', '/talentcard//profTitle/profTitle1594342928456BSRb47hP.', 2, 2, 10, 2);
+INSERT INTO `t_prof_title`(`pt_id`, `category`, `info`, `picture`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (4, 0, '', NULL, 4, 3, 5, 10);
+INSERT INTO `t_prof_title`(`pt_id`, `category`, `info`, `picture`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (5, 0, '', NULL, 5, 4, 5, 10);
+INSERT INTO `t_prof_title`(`pt_id`, `category`, `info`, `picture`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (6, 0, '', NULL, 6, 5, 5, 10);
 
-INSERT INTO `t_talent_honour` VALUES (1, 10, NULL, NULL, 1, 2, 9, 10);
-INSERT INTO `t_talent_honour` VALUES (2, 1, '/talentcard//talentHonourDir/talentHonour1594342928456l5Qa8HNk.png', NULL, 2, 2, 10, 2);
-INSERT INTO `t_talent_honour` VALUES (4, 1, NULL, NULL, 4, 3, 5, 10);
-INSERT INTO `t_talent_honour` VALUES (5, 0, NULL, NULL, 5, 4, 5, 10);
-INSERT INTO `t_talent_honour` VALUES (6, 0, NULL, NULL, 6, 5, 5, 10);
+INSERT INTO `t_talent_honour`(`th_id`, `honour_id`, `honour_picture`, `info`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (1, 10, NULL, NULL, 1, 2, 9, 10);
+INSERT INTO `t_talent_honour`(`th_id`, `honour_id`, `honour_picture`, `info`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (2, 1, '/talentcard//talentHonourDir/talentHonour1594342928456l5Qa8HNk.png', NULL, 2, 2, 10, 2);
+INSERT INTO `t_talent_honour`(`th_id`, `honour_id`, `honour_picture`, `info`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (4, 1, NULL, NULL, 4, 3, 5, 10);
+INSERT INTO `t_talent_honour`(`th_id`, `honour_id`, `honour_picture`, `info`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (5, 0, NULL, NULL, 5, 4, 5, 10);
+INSERT INTO `t_talent_honour`(`th_id`, `honour_id`, `honour_picture`, `info`, `cert_id`, `talent_id`, `status`, `if_certificate`) VALUES (6, 0, NULL, NULL, 6, 5, 5, 10);
 
 
 

@@ -1,5 +1,6 @@
 package com.talentcard.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.dto.EducationDTO;
@@ -12,6 +13,7 @@ import com.talentcard.common.utils.StringToObjUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.BaseTest;
 import com.talentcard.web.WebApplication;
+import org.apache.poi.ss.formula.functions.T;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -48,7 +52,6 @@ public class AddDeleteTalentControllerTest extends BaseTest {
 
     @Test
     public void addEducation() throws Exception {
-
         EducationDTO educationDTO = new EducationDTO();
         educationDTO.setEducation(1);
         educationDTO.setSchool("新增学历测试1");
@@ -57,43 +60,36 @@ public class AddDeleteTalentControllerTest extends BaseTest {
         educationDTO.setEducPicture("picture");
         educationDTO.setOpenId("gaojiyonghu");
         educationDTO.setGraduateTime("setGraduateTime");
-
         {
-            MvcResult actions = mockMvc.perform(MockMvcRequestBuilders.post("/addDeleteTalent/addEducation").
-                    contentType(MediaType.APPLICATION_JSON_UTF8).
-                    content(JSONObject.toJSONString(educationDTO))).
-                    andDo(MockMvcResultHandlers.print()).andReturn();
-            ResultVO resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO<T> resultVO = super.mockMvcPostUrlContent("/addDeleteTalent/addEducation", JSONObject.toJSONString(educationDTO));
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(1000), resultVO.getStatus());
         }
-
-
         {
             //重复提交
-            MvcResult actions = mockMvc.perform(MockMvcRequestBuilders.post("/addDeleteTalent/addEducation").
-                    contentType(MediaType.APPLICATION_JSON_UTF8).
-                    content(JSONObject.toJSONString(educationDTO))).
-                    andDo(MockMvcResultHandlers.print()).andReturn();
-            ResultVO resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO<T> resultVO = super.mockMvcPostUrlContent("/addDeleteTalent/addEducation", JSONObject.toJSONString(educationDTO));
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(2558), resultVO.getStatus());
         }
 
         {
+            Map<String,String> map=new HashMap<>();
+            map.put("openId",educationDTO.getOpenId());
             //查询结果
-            MockHttpServletRequestBuilder findTalentCertificationDetail = MockMvcRequestBuilders.post("/editTalent/findTalentCertificationDetail")
-                    .param("openId",educationDTO.getOpenId()).contentType(MediaType.APPLICATION_FORM_URLENCODED);//有@RequestParam注解优先对应,否则对应着表单的input标签的name属性的  值及value
-            MvcResult actions = mockMvc.perform(findTalentCertificationDetail).
-                    andDo(MockMvcResultHandlers.print()).andReturn();
-            ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO resultVO = super.mockMvcPostUrlFormParams("/editTalent/findTalentCertificationDetail", map);
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(1000), resultVO.getStatus());
             assertNotNull(resultVO.getData());
-            JSONObject data = resultVO.getData();
-            TalentBO talentBO = StringToObjUtil.strToObj(data.getJSONObject("talentInfo").toJSONString(),TalentBO.class);
+            JSONObject data = (JSONObject) resultVO.getData();
+            /***
+             * 对象转为对象
+             * List<PolicyPO> policyPOList = JSON.toJavaObject(data.getJSONArray("policyPOList"),List.class);//没数据 ；获取list数据
+             * CardPO cardPO=JSON.toJavaObject(data.getJSONObject("cardInfo"),CardPO.class);//后面有数据  获取对象数据
+             * CertificationTimesVO certificationTimesVO=JSON.toJavaObject(data.getJSONObject("certificationTimes"),CertificationTimesVO.class);
+             * */
+            TalentBO talentBO =JSON.toJavaObject(data.getJSONObject("talentInfo"),TalentBO.class);
             assertNotNull(talentBO);
-            EducationPO newEducation = talentBO.getEducationPOList().get(0);
+            EducationPO newEducation = talentBO.getEducationPOList().get(talentBO.getEducationPOList().size()-1);
             assertEquals(newEducation.getEducation(),educationDTO.getEducation());
             assertEquals(newEducation.getEducPicture(), educationDTO.getEducPicture());
             assertEquals(newEducation.getFirstClass(), educationDTO.getFirstClass());
@@ -101,34 +97,24 @@ public class AddDeleteTalentControllerTest extends BaseTest {
             assertEquals(newEducation.getSchool(), educationDTO.getSchool());
             assertEquals(newEducation.getGraduateTime(), educationDTO.getGraduateTime());
         }
-
-
         {
             //添加第二个
             educationDTO.setEducation(2);
-            MvcResult actions = mockMvc.perform(MockMvcRequestBuilders.post("/addDeleteTalent/addEducation").
-                    contentType(MediaType.APPLICATION_JSON_UTF8).
-                    content(JSONObject.toJSONString(educationDTO))).
-                    andDo(MockMvcResultHandlers.print()).andReturn();
-            ResultVO resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO<T> resultVO = super.mockMvcPostUrlContent("/addDeleteTalent/addEducation", JSONObject.toJSONString(educationDTO));
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(1000), resultVO.getStatus());
         }
-
         {
-            //查询结果
-            MockHttpServletRequestBuilder findTalentCertificationDetail = MockMvcRequestBuilders.post("/editTalent/findTalentCertificationDetail")
-                    .param("openId",educationDTO.getOpenId()).contentType(MediaType.APPLICATION_FORM_URLENCODED);//有@RequestParam注解优先对应,否则对应着表单的input标签的name属性的  值及value
-            MvcResult actions = mockMvc.perform(findTalentCertificationDetail).
-                    andDo(MockMvcResultHandlers.print()).andReturn();
-            ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(), ResultVO.class);
+            Map<String,String> map=new HashMap<>();
+            map.put("openId",educationDTO.getOpenId());
+            ResultVO resultVO = super.mockMvcPostUrlParams("/editTalent/findTalentCertificationDetail", map);
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(1000), resultVO.getStatus());
             assertNotNull(resultVO.getData());
-            JSONObject data = resultVO.getData();
-            TalentBO talentBO = StringToObjUtil.strToObj(data.getJSONObject("talentInfo").toJSONString(),TalentBO.class);
+            JSONObject data =(JSONObject) resultVO.getData();
+            TalentBO talentBO =JSON.toJavaObject(data.getJSONObject("talentInfo"),TalentBO.class);
             assertNotNull(talentBO);
-            EducationPO newEducation = talentBO.getEducationPOList().get(1);
+            EducationPO newEducation = talentBO.getEducationPOList().get(talentBO.getEducationPOList().size()-1);
             assertEquals(newEducation.getEducation(),educationDTO.getEducation());
             assertEquals(newEducation.getEducPicture(), educationDTO.getEducPicture());
             assertEquals(newEducation.getFirstClass(), educationDTO.getFirstClass());
@@ -136,8 +122,6 @@ public class AddDeleteTalentControllerTest extends BaseTest {
             assertEquals(newEducation.getSchool(), educationDTO.getSchool());
             assertEquals(newEducation.getGraduateTime(), educationDTO.getGraduateTime());
         }
-
-
     }
 
     //新增职业资格测试
@@ -152,39 +136,29 @@ public class AddDeleteTalentControllerTest extends BaseTest {
         profQualityDTO.setPicture("新增职业资格测试1");
         profQualityDTO.setOpenId("gaojiyonghu");//根据数据库的数据，必须是这个号
         {
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/addDeleteTalent/addProfQuality").
-                    contentType(MediaType.APPLICATION_JSON_UTF8).
-                    content(JSONObject.toJSONString(profQualityDTO))).
-                    andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
-            ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(mvcResult.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO resultVO = super.mockMvcPostUrlContent("/addDeleteTalent/addProfQuality", JSONObject.toJSONString(profQualityDTO));
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(1000), resultVO.getStatus());
         }
         //重复提交
         {
-            MvcResult actions = mockMvc.perform(MockMvcRequestBuilders.post("/addDeleteTalent/addProfQuality").
-                    contentType(MediaType.APPLICATION_JSON_UTF8).
-                    content(JSONObject.toJSONString(profQualityDTO))).
-                    andDo(MockMvcResultHandlers.print()).andReturn();
-            ResultVO resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO resultVO = super.mockMvcPostUrlContent("/addDeleteTalent/addProfQuality", JSONObject.toJSONString(profQualityDTO));
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(2558), resultVO.getStatus());
         }
+        Map<String,String> map=new HashMap<>();
+        map.put("openId", profQualityDTO.getOpenId());
         {
             //提交之后查询结果
-            MockHttpServletRequestBuilder findTalentCertificationDetail = MockMvcRequestBuilders.post("/editTalent/findTalentCertificationDetail")
-                    .param("openId", profQualityDTO.getOpenId()).contentType(MediaType.APPLICATION_FORM_URLENCODED);//有@RequestParam注解优先对应,否则对应着表单的input标签的name属性的  值及value
-            MvcResult actions = mockMvc.perform(findTalentCertificationDetail).
-                    andDo(MockMvcResultHandlers.print()).andReturn();
-            ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO resultVO = super.mockMvcPostUrlFormParams("/editTalent/findTalentCertificationDetail", map);
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(1000), resultVO.getStatus());
             assertNotNull(resultVO.getData());
-            JSONObject data = resultVO.getData();
+            JSONObject data =(JSONObject) resultVO.getData();
             TalentBO talentBO = StringToObjUtil.strToObj(data.getJSONObject("talentInfo").toJSONString(), TalentBO.class);
             assertNotNull(talentBO);
             List<ProfQualityPO> profQualityPOList = talentBO.getProfQualityPOList();
-            ProfQualityPO profQualityPO = profQualityPOList.get(0);
+            ProfQualityPO profQualityPO = profQualityPOList.get(profQualityPOList.size()-1);
             assertNotNull(profQualityPO);
             assertEquals(profQualityPO.getCategory(), profQualityDTO.getCategory());
             assertEquals(profQualityPO.getInfo(), profQualityDTO.getInfo());
@@ -194,29 +168,21 @@ public class AddDeleteTalentControllerTest extends BaseTest {
         }
         {
             profQualityDTO.setCategory(2);//添加第二个
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/addDeleteTalent/addProfQuality").
-                    contentType(MediaType.APPLICATION_JSON_UTF8).
-                    content(JSONObject.toJSONString(profQualityDTO))).
-                    andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
-            ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(mvcResult.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO<T> resultVO = super.mockMvcPostUrlContent("", JSONObject.toJSONString(profQualityDTO));
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(1000), resultVO.getStatus());
         }
         {
             //添加之后再次查询
-            MockHttpServletRequestBuilder findTalentCertificationDetail = MockMvcRequestBuilders.post("/editTalent/findTalentCertificationDetail")
-                    .param("openId", profQualityDTO.getOpenId()).contentType(MediaType.APPLICATION_FORM_URLENCODED);//有@RequestParam注解优先对应,否则对应着表单的input标签的name属性的  值及value
-            MvcResult actions = mockMvc.perform(findTalentCertificationDetail).
-                    andDo(MockMvcResultHandlers.print()).andReturn();
-            ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO resultVO = super.mockMvcPostUrlFormParams("/editTalent/findTalentCertificationDetail", map);
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(1000), resultVO.getStatus());
             assertNotNull(resultVO.getData());
-            JSONObject data = resultVO.getData();
+            JSONObject data =(JSONObject) resultVO.getData();
             TalentBO talentBO = StringToObjUtil.strToObj(data.getJSONObject("talentInfo").toJSONString(), TalentBO.class);
             assertNotNull(talentBO);
             List<ProfQualityPO> profQualityPOList = talentBO.getProfQualityPOList();
-            ProfQualityPO profQualityPO = profQualityPOList.get(1);
+            ProfQualityPO profQualityPO = profQualityPOList.get(profQualityPOList.size()-1);
             assertNotNull(profQualityPO);
             assertEquals(profQualityPO.getCategory(), profQualityDTO.getCategory());
             assertEquals(profQualityPO.getInfo(), profQualityDTO.getInfo());
@@ -234,39 +200,29 @@ public class AddDeleteTalentControllerTest extends BaseTest {
         profTitleDTO.setInfo("新增职称类别测试1");
         profTitleDTO.setOpenId("gaojiyonghu");
         {
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/addDeleteTalent/addProfTitle").
-                    contentType(MediaType.APPLICATION_JSON_UTF8).
-                    content(JSONObject.toJSONString(profTitleDTO))).
-                    andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
-            ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(mvcResult.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO resultVO = super.mockMvcPostUrlContent("/addDeleteTalent/addProfTitle",JSONObject.toJSONString(profTitleDTO));
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(1000), resultVO.getStatus());
         }
         //重复提交
         {
-            MvcResult actions = mockMvc.perform(MockMvcRequestBuilders.post("/addDeleteTalent/addProfTitle").
-                    contentType(MediaType.APPLICATION_JSON_UTF8).
-                    content(JSONObject.toJSONString(profTitleDTO))).
-                    andDo(MockMvcResultHandlers.print()).andReturn();
-            ResultVO resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO resultVO = super.mockMvcPostUrlContent("/addDeleteTalent/addProfTitle",JSONObject.toJSONString(profTitleDTO));
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(2558), resultVO.getStatus());
         }
+        Map<String,String> map=new HashMap<>();
+        map.put("openId", profTitleDTO.getOpenId());
         {
             //提交之后查询结果
-            MockHttpServletRequestBuilder findTalentCertificationDetail = MockMvcRequestBuilders.post("/editTalent/findTalentCertificationDetail")
-                    .param("openId", profTitleDTO.getOpenId()).contentType(MediaType.APPLICATION_FORM_URLENCODED);//有@RequestParam注解优先对应,否则对应着表单的input标签的name属性的  值及value
-            MvcResult actions = mockMvc.perform(findTalentCertificationDetail).
-                    andDo(MockMvcResultHandlers.print()).andReturn();
-            ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO resultVO = super.mockMvcPostUrlFormParams("/editTalent/findTalentCertificationDetail",map);
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(1000), resultVO.getStatus());
             assertNotNull(resultVO.getData());
-            JSONObject data = resultVO.getData();
+            JSONObject data = (JSONObject)resultVO.getData();
             TalentBO talentBO = StringToObjUtil.strToObj(data.getJSONObject("talentInfo").toJSONString(), TalentBO.class);
             assertNotNull(talentBO);
             List<ProfTitlePO> profTitlePOList = talentBO.getProfTitlePOList();
-            ProfTitlePO profTitlePO = profTitlePOList.get(0);
+            ProfTitlePO profTitlePO = profTitlePOList.get(profTitlePOList.size()-1);
             assertNotNull(profTitlePO);
             assertEquals(profTitlePO.getCategory(), profTitleDTO.getCategory());
             assertEquals(profTitlePO.getInfo(), profTitleDTO.getInfo());
@@ -276,29 +232,21 @@ public class AddDeleteTalentControllerTest extends BaseTest {
         }
         {
             profTitleDTO.setCategory(2);//添加第二个
-            MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/addDeleteTalent/addProfTitle").
-                    contentType(MediaType.APPLICATION_JSON_UTF8).
-                    content(JSONObject.toJSONString(profTitleDTO))).
-                    andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
-            ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(mvcResult.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO resultVO = super.mockMvcPostUrlContent("/addDeleteTalent/addProfTitle",JSONObject.toJSONString(profTitleDTO));
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(1000), resultVO.getStatus());
         }
         {
             //添加之后再次查询
-            MockHttpServletRequestBuilder findTalentCertificationDetail = MockMvcRequestBuilders.post("/editTalent/findTalentCertificationDetail")
-                    .param("openId", profTitleDTO.getOpenId()).contentType(MediaType.APPLICATION_FORM_URLENCODED);//有@RequestParam注解优先对应,否则对应着表单的input标签的name属性的  值及value
-            MvcResult actions = mockMvc.perform(findTalentCertificationDetail).
-                    andDo(MockMvcResultHandlers.print()).andReturn();
-            ResultVO<JSONObject> resultVO = StringToObjUtil.strToObj(actions.getResponse().getContentAsString(), ResultVO.class);
+            ResultVO resultVO = super.mockMvcPostUrlFormParams("/editTalent/findTalentCertificationDetail",map);
             assertNotNull(resultVO);
             assertEquals(Integer.valueOf(1000), resultVO.getStatus());
             assertNotNull(resultVO.getData());
-            JSONObject data = resultVO.getData();
+            JSONObject data =(JSONObject) resultVO.getData();
             TalentBO talentBO = StringToObjUtil.strToObj(data.getJSONObject("talentInfo").toJSONString(), TalentBO.class);
             assertNotNull(talentBO);
             List<ProfTitlePO> profTitlePOList = talentBO.getProfTitlePOList();
-            ProfTitlePO profTitlePO = profTitlePOList.get(1);
+            ProfTitlePO profTitlePO = profTitlePOList.get(profTitlePOList.size()-1);
             assertNotNull(profTitlePO);
             assertEquals(profTitlePO.getCategory(), profTitleDTO.getCategory());
             assertEquals(profTitlePO.getInfo(), profTitleDTO.getInfo());
