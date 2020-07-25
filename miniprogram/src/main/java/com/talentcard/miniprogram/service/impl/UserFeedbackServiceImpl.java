@@ -58,10 +58,13 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
         jsonObject.put("content",content);
         JSONObject result = WechatApiUtil.postRequest("https://api.weixin.qq.com/wxa/msg_sec_check?access_token="+ AccessTokenUtil.getAccessToken(),
                 jsonObject);
-
         if(result!=null&&result.containsKey("errcode")){
-            int err = result.getInteger("errcode");
-            return err == 0;
+            try {
+                int err = result.getInteger("errcode");
+                return err == 0;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         return true;
