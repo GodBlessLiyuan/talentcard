@@ -29,20 +29,27 @@ public class TripHeaderMonthServiceImpl implements ITripHeaderMonthService {
     @Override
     public ResultVO count() {
         Long totalNumbers = Long.valueOf(RedisUtil.getConfigValue("SCENIC_NUM"));//本月总旅游数
+        Map<String,Object> result=new HashMap<>(4);
+        if(totalNumbers==null||totalNumbers==0){
+            result.put("totalNumbers",0);
+            result.put("usingNumbers",0);
+            result.put("usedNumbers",0);
+            result.put("unreceived",0);
+            return new ResultVO(1000,result);
+        }
         String[] monthFristAndLastByCurrenDay = DateInitUtil.getMonthFristAndLastByCurrenDay(DateUtil.date2Str(new Date(), DateUtil.YHM));
         Map<String,Object> map=new HashMap<>(3);
         map.put("start",monthFristAndLastByCurrenDay[0]);
         map.put("end",monthFristAndLastByCurrenDay[1]);
         map.put("status",1);//未使用
-        Map<String,Object> result=new HashMap<>(4);
         Long usingNumbers=talentTripMapper.countUsedOrUsing(map);
-        result.put("totalNumbers",totalNumbers);
-        result.put("usingNumbers",usingNumbers);
         map.put("status",2);//已经使用
         Long usedNumbers=talentTripMapper.countUsedOrUsing(map);
+        result.put("totalNumbers",totalNumbers);
+        result.put("usingNumbers",usingNumbers);
         result.put("usedNumbers",usedNumbers);
-        if(totalNumbers==null) totalNumbers=0L;
         long unreceived=totalNumbers-usingNumbers-usedNumbers;
+        unreceived=unreceived>0?unreceived:0;
         result.put("unreceived",unreceived);
         return new ResultVO(1000,result);
     }
