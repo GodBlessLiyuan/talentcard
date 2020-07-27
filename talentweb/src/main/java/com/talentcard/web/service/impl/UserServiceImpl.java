@@ -2,7 +2,9 @@ package com.talentcard.web.service.impl;
 
 import com.talentcard.common.bo.UserBO;
 import com.talentcard.common.bo.UserRoleBO;
+import com.talentcard.common.mapper.OpwebRecordMapper;
 import com.talentcard.common.mapper.UserMapper;
+import com.talentcard.common.pojo.OpwebRecordPO;
 import com.talentcard.common.pojo.UserPO;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
@@ -29,7 +31,8 @@ import java.util.Map;
 public class UserServiceImpl implements IUserService {
     @Resource
     UserMapper userMapper;
-
+    @Resource
+    private OpwebRecordMapper opwebRecordMapper;
     /**
      * 加密用的盐
      */
@@ -60,6 +63,13 @@ public class UserServiceImpl implements IUserService {
             // 如果没有问题，则将当前userId用户更新密码
             userMapper.updatePassword(newPassword,userId);
         }
+        OpwebRecordPO opwebRecordPO=new OpwebRecordPO();
+        opwebRecordPO.setUseId(userId);
+        opwebRecordPO.setUsername(userPo.getUsername());//
+        opwebRecordPO.setFristMenu("");
+        opwebRecordPO.setSecondMenu("");
+        opwebRecordPO.setDetailInfo("修改密码");
+        opwebRecordPO.setCreateTime(new Date());
         return new ResultVO(1000);
     }
 
