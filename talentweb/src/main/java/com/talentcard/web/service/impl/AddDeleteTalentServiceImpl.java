@@ -16,6 +16,7 @@ import com.talentcard.web.constant.EditTalentConstant;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.*;
 import com.talentcard.web.utils.MessageUtil;
+import com.talentcard.web.utils.WebParameterUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -151,7 +152,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //结束
         String remark = "变更原因：" + educationDTO.getOpinion();
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
 
@@ -235,7 +236,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //结束
         String remark = "变更原因：" + profQualityDTO.getOpinion();
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
@@ -318,7 +319,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //结束
         String remark = "变更原因：" + profTitleDTO.getOpinion();
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
@@ -402,7 +403,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //结束
         String remark = "变更原因：" + talentHonourDTO.getOpinion();
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
@@ -473,7 +474,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //结束
         String remark = "变更原因：" + opinion;
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
@@ -540,7 +541,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //结束
         String remark = "变更原因：" + opinion;
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
@@ -603,7 +604,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //结束
         String remark = "变更原因：" + opinion;
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
@@ -666,7 +667,7 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //结束
         String remark = "变更原因：" + opinion;
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
