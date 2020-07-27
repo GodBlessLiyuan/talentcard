@@ -313,6 +313,12 @@ CREATE TABLE t_education
 2 未认证；
 10 本次不认证',
 	graduate_time char(64),
+		educ_picture2 char(255),
+	educ_picture3 char(255),
+	-- 1全日制；
+	-- 2不是全日制；
+	full_time tinyint unsigned DEFAULT 1 COMMENT '1全日制；
+2不是全日制；',
 	PRIMARY KEY (educ_id),
 	UNIQUE (educ_id)
 );
@@ -461,6 +467,9 @@ CREATE TABLE t_insert_education
 	insert_cert_id bigint unsigned,
 	-- 1 未删除  2 已删除
 	dr tinyint COMMENT '1 未删除  2 已删除',
+	educ_picture2 char(255),
+	educ_picture3 char(255),
+	full_time tinyint,
 	PRIMARY KEY (insert_educ_id),
 	UNIQUE (insert_educ_id)
 );
@@ -484,6 +493,8 @@ CREATE TABLE t_insert_honour
 	open_id char(128),
 	-- 1 未删除  2 已删除
 	dr tinyint COMMENT '1 未删除  2 已删除',
+	honour_picture2 char(255),
+	honour_picture3 char(255),
 	PRIMARY KEY (insert_th_id),
 	UNIQUE (insert_th_id)
 );
@@ -505,6 +516,8 @@ CREATE TABLE t_insert_quality
 	open_id char(128),
 	-- 1 未删除  2 已删除
 	dr tinyint COMMENT '1 未删除  2 已删除',
+	picture2 char(255),
+	picture3 char(255),
 	PRIMARY KEY (insert_pq_id),
 	UNIQUE (insert_pq_id)
 );
@@ -526,6 +539,8 @@ CREATE TABLE t_insert_title
 	open_id char(128),
 	-- 1 未删除  2 已删除
 	dr tinyint COMMENT '1 未删除  2 已删除',
+	picture2 char(255),
+	picture3 char(255),
 	PRIMARY KEY (insert_pt_id),
 	UNIQUE (insert_pt_id)
 );
@@ -626,6 +641,8 @@ CREATE TABLE t_prof_quality
 	if_certificate tinyint unsigned COMMENT '1 已认证；
 2 未认证；
 10 本次不认证',
+    picture2 char(255),
+	picture3 char(255),
 	PRIMARY KEY (pq_id),
 	UNIQUE (pq_id)
 );
@@ -659,6 +676,8 @@ CREATE TABLE t_prof_title
 	if_certificate tinyint unsigned COMMENT '1 已认证；
 2 未认证；
 10 本次不认证',
+    picture2 char(255),
+	picture3 char(255),
 	PRIMARY KEY (pt_id),
 	UNIQUE (pt_id)
 );
@@ -921,6 +940,8 @@ CREATE TABLE t_talent_honour
 	if_certificate tinyint unsigned COMMENT '1 已认证；
 2 未认证；
 10 本次不认证',
+    honour_picture2 char(255),
+	honour_picture3 char(255),
 	PRIMARY KEY (th_id),
 	UNIQUE (th_id)
 );
