@@ -127,7 +127,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         //结束
         String remark = "变更原因：" + basicInfoDTO.getOpinion();
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
@@ -219,7 +219,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         //结束
         String remark = "变更原因：" + educationDTO.getOpinion();
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
@@ -308,7 +308,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         //结束
         String remark = "变更原因：" + profQualityDTO.getOpinion();
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
@@ -399,7 +399,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         //结束
         String remark = "变更原因：" + profTitleDTO.getOpinion();
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
@@ -488,7 +488,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         //结束
         String remark = "变更原因：" + talentHonourDTO.getOpinion();
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         return new ResultVO(1000);
     }
@@ -703,7 +703,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         //结束
         String remark = opinion;
         messageDTO.setRemark(remark);
-        messageDTO.setUrl(FilePathConfig.getStaticPublicWxBasePath());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
         /**
          * 清缓存

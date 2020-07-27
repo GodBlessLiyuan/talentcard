@@ -1,10 +1,13 @@
 package com.talentcard.miniprogram.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.mapper.UserFeedbackMapper;
 import com.talentcard.common.pojo.UserFeedbackPO;
+import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.miniprogram.dto.UserFeedBackDTO;
 import com.talentcard.miniprogram.service.IUserFeedbackService;
+import com.talentcard.miniprogram.utils.AccessTokenUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,10 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
             return new ResultVO(2000);
         }
 
+        if(!sec_check(userFeedBackDTO.getProDescribe())){
+            return new ResultVO(2001);
+        }
+
         UserFeedbackPO userFeedbackPO = new UserFeedbackPO();
         userFeedbackPO.setOpenId(userFeedBackDTO.getOpenId());
         userFeedbackPO.setPageType(userFeedBackDTO.getPageType());
@@ -43,5 +50,23 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
             return new ResultVO(2000);
         }
         return new ResultVO(1000);
+    }
+
+    private boolean sec_check(String content){
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("content",content);
+        JSONObject result = WechatApiUtil.postRequest("https://api.weixin.qq.com/wxa/msg_sec_check?access_token="+ AccessTokenUtil.getAccessToken(),
+                jsonObject);
+        if(result!=null&&result.containsKey("errcode")){
+            try {
+                int err = result.getInteger("errcode");
+                return err == 0;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return true;
     }
 }
