@@ -112,4 +112,10 @@ public class TripMonthServiceImpl implements ITripMonthService {
         }
         return neiRongs;
     }
+
+    @Override
+    public ResultVO total(Map<String, Object> map) {
+        HashMap<String,Long> totals=tripMonthMapper.getTotal(map);
+        return new ResultVO(1000,totals);
+    }
 }
