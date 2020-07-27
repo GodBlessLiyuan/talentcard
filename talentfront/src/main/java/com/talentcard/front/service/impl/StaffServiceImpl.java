@@ -156,7 +156,7 @@ public class StaffServiceImpl implements IStaffService {
              */
             TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
             if (talentPO == null) {
-                return new ResultVO(2504,"查无景区");
+                return new ResultVO(2504, "查无景区");
             }
             Integer ifEnjoyScenic = scenicMapper.ifEnjoyScenic(talentPO.getCardId(), activitySecondContentId);
             if (ifEnjoyScenic == 0) {
