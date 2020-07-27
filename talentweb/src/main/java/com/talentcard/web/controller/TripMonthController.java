@@ -44,7 +44,7 @@ public class TripMonthController {
         }
         //end为28号，
         if(!StringUtils.isEmpty(end)){
-            int len=start.length()- 2;
+            int len=end.length()- 2;
             map.put("end",end.substring(0,len)+"28");
         }
         return tripMonthService.query(pageNum,pageSize,map);
@@ -61,5 +61,32 @@ public class TripMonthController {
     ){
         Map<String,Object> map=new HashMap<>(1);
         return tripMonthService.export(map,response);
+    }
+
+    /**
+     * 旅游的月统计：总计的显示的是当前筛选条件下的所有的汇总
+     * 思路：跟查询的一样，只是少了分页的条件
+     * */
+    @PostMapping("total")
+    public ResultVO total(
+        @RequestParam(value = "name",required = false)String name,
+        @RequestParam(value = "start",required = false)String start,
+        @RequestParam(value = "end",required = false)String end
+    ){
+        Map<String,Object> map=new HashMap<>();
+        if(!StringUtils.isEmpty(name)){
+            map.put("name",name);
+        }
+        if(!StringUtils.isEmpty(start)){
+            //start为01号，数据库的当月都是01号
+            int len=start.length()- 2;
+            map.put("start",start.substring(0,len)+"01");
+        }
+        //end为28号，
+        if(!StringUtils.isEmpty(end)){
+            int len=end.length()- 2;
+            map.put("end",end.substring(0,len)+"28");
+        }
+        return tripMonthService.total(map);
     }
 }
