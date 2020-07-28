@@ -15,8 +15,10 @@ import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.BatchCertificateDTO;
 import com.talentcard.web.dto.MessageDTO;
+import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.BatchCertificateUtil;
@@ -91,7 +93,8 @@ public class TalentServiceImpl implements ITalentService {
     //已认证或者待审批
     private static final Integer IN_CERTIFICATE_STATUS = 12;
     private static final Integer ERROR_TALENT_STATUS = 13;
-
+    @Autowired
+    private ILogService logService;
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
         Page<TalentBO> page = PageHelper.startPage(pageNum, pageSize);
@@ -214,7 +217,13 @@ public class TalentServiceImpl implements ITalentService {
 
     @Override
     @Async
-    public ResultVO batchCertificate(BatchCertificateDTO batchCertificateDTO) throws InterruptedException {
+    public ResultVO batchCertificate(HttpSession session,BatchCertificateDTO batchCertificateDTO) throws InterruptedException {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         List<String> names = batchCertificateDTO.getNames();
         List<String> idCards = batchCertificateDTO.getIdCards();
         BatchCertificatePO batchCertificatePO = batchCertificateDTO.getBatchCertificatePO();
@@ -294,7 +303,8 @@ public class TalentServiceImpl implements ITalentService {
         batchCertificatePO.setUpdateTime(new Date());
         batchCertificatePO.setStatus((byte) 2);
         batchCertificateMapper.updateByPrimaryKeySelective(batchCertificatePO);
-
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_CommentUser,"批量认证"
+                );
         return new ResultVO(1000, url);
     }
 
@@ -610,9 +620,20 @@ public class TalentServiceImpl implements ITalentService {
     }
 
     @Override
-    public ResultVO sendMessage(String openId) {
+    public ResultVO sendMessage(HttpSession session,String openId) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         TalentPO talentPO = this.talentMapper.selectByOpenId(openId);
         this.sendMessage(talentPO);
+        /**
+         * ly注释：后面的代码没有null的处理，所以我也没做
+         * */
+        logService.insertActionRecord(session,OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_SendMessage,"给%s用户发送信息",
+                talentPO.getName());
         return new ResultVO(1000);
     }
 }

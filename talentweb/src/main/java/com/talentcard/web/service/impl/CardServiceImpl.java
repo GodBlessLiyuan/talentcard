@@ -4,13 +4,19 @@ package com.talentcard.web.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.CardMapper;
+import com.talentcard.common.mapper.OpwebRecordMapper;
 import com.talentcard.common.mapper.PolicyMapper;
+import com.talentcard.common.mapper.UserMapper;
 import com.talentcard.common.pojo.CardPO;
+import com.talentcard.common.pojo.OpwebRecordPO;
 import com.talentcard.common.pojo.PolicyPO;
+import com.talentcard.common.pojo.UserPO;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.service.ICardService;
+import com.talentcard.web.service.ILogService;
 import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.CardUtil;
 import com.talentcard.web.vo.CardIdAndNameVO;
@@ -45,13 +51,24 @@ public class CardServiceImpl implements ICardService {
     private CardMapper cardMapper;
     @Autowired
     private PolicyMapper policyMapper;
-
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private OpwebRecordMapper opwebRecordMapper;
+    @Autowired
+    private ILogService logService;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO add(String name, String title, String notice,
                         String description, String prerogative, MultipartFile background,
                         String initialWord, String areaNum, String businessDescription,
                         Byte status, String color, Integer tripTimes, HttpSession httpSession) {
+        //从session中获取userId的值
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         //判断是否已经存在该初始字段
         Integer ifExistInitialWord = cardMapper.ifExistInitialWord(initialWord);
         if (ifExistInitialWord != null && ifExistInitialWord != 0) {
@@ -141,12 +158,21 @@ public class CardServiceImpl implements ICardService {
         cardPO.setUpdateTime(new Date());
         cardPO.setTripTimes(tripTimes);
         cardMapper.insertSelective(cardPO);
+        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,"新增%s卡片",
+                CardUtil.getCardName(cardPO));
+
         return new ResultVO(1000, wechatResult);
     }
 
     @Override
     public ResultVO edit(Long cardId, String title, String businessDescription,
                          MultipartFile background, Integer tripTimes, HttpSession httpSession) {
+        //从session中获取userId的值
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         if (StringUtils.isEmpty(title)
                 && StringUtils.isEmpty(businessDescription)
                 && background == null) {
@@ -215,6 +241,8 @@ public class CardServiceImpl implements ICardService {
         if (updateResult == 0) {
             logger.error("update cardMapper error");
         }
+        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,"新增%s卡片",CardUtil.getCardName(cardPO));
+
         return new ResultVO(1000);
     }
 
@@ -257,7 +285,13 @@ public class CardServiceImpl implements ICardService {
     }
 
     @Override
-    public ResultVO delete(Long cardId) {
+    public ResultVO delete(Long cardId,HttpSession httpSession) {
+        //从session中获取userId的值
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         //判断会员卡人数是否为0，0则不可删除
         Integer existMember = cardMapper.findIfExistMember(cardId);
         if (existMember != null && existMember != 0) {
@@ -281,6 +315,9 @@ public class CardServiceImpl implements ICardService {
         if (updateResult == 0) {
             logger.error("update cardMapper error");
         }
+        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,"删除%s卡片",
+                CardUtil.getCardName(cardPO));
+
         return new ResultVO(1000, result);
     }
 

@@ -1,5 +1,6 @@
 package com.talentcard.web.controller;
 
+import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IFarmhouseUseMonthService;
 import com.talentcard.web.utils.DateInitUtil;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,11 +47,14 @@ public class FarmhouseUseMonthController {
         }
         //end为28号，
         if(!StringUtils.isEmpty(end)){
-            int len=start.length()- 2;
+            int len=end.length()- 2;
             map.put("end",end.substring(0,len)+"28");
         }
         return farmhouseUseMonthService.query(pageNum,pageSize,map);
     }
+    /**
+     * 农家乐的人数和次数查询的是原表，
+     * */
     @PostMapping("total")
     public ResultVO total(
             @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
@@ -71,6 +76,8 @@ public class FarmhouseUseMonthController {
             int len=start.length()- 2;
             //传入的年月的最后一天
             map.put("end", DateInitUtil.getMonthFristAndLastByCurrenDay(end.substring(0,len))[1]);
+        }else{
+            end= DateUtil.date2Str(new Date(),DateUtil.YMD);
         }
         return farmhouseUseMonthService.total(pageNum,pageSize,map);
     }
