@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.OpwebRecordMapper">
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.OpwebRecordPO">
-    <id column="op_id" jdbcType="BIGINT" property="opId"/>
-    <result column="use_id" jdbcType="BIGINT" property="useId"/>
-    <result column="username" jdbcType="CHAR" property="username"/>
-    <result column="frist_menu" jdbcType="CHAR" property="fristMenu"/>
-    <result column="second_menu" jdbcType="CHAR" property="secondMenu"/>
-    <result column="third_menu" jdbcType="CHAR" property="thirdMenu"/>
-    <result column="detail_info" jdbcType="CHAR" property="detailInfo"/>
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <id column="op_id" jdbcType="BIGINT" property="opId" />
+    <result column="use_id" jdbcType="BIGINT" property="useId" />
+    <result column="username" jdbcType="CHAR" property="username" />
+    <result column="frist_menu" jdbcType="CHAR" property="fristMenu" />
+    <result column="second_menu" jdbcType="CHAR" property="secondMenu" />
+    <result column="third_menu" jdbcType="CHAR" property="thirdMenu" />
+    <result column="detail_info" jdbcType="CHAR" property="detailInfo" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
     op_id, use_id, username, frist_menu, second_menu, third_menu, detail_info, create_time
