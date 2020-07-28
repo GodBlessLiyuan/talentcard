@@ -11,38 +11,32 @@ import java.util.List;
 @Data
 public class OpwebRecordVO implements Serializable {
 
-    private Long opId;
+    private Integer log_id;
 
-    private Long useId;
+    private String user_name;
 
-    private String username;
+    private String first_menu;
 
-    private String fristMenu;
+    private String second_menu;
 
-    private String secondMenu;
+    private String detail;
 
-    private String thirdMenu;
-
-    private String detailInfo;
-
-    private Date createTime;
+    private Date create_time;
 
 
     public static ArrayList<OpwebRecordVO> convert(List<OpwebRecordPO> opwebRecordPOs) {
-        if(opwebRecordPOs ==null||opwebRecordPOs.size()==0){
+        if (opwebRecordPOs == null || opwebRecordPOs.size() == 0) {
             return null;
         }
         ArrayList<OpwebRecordVO> vos = new ArrayList<>(opwebRecordPOs.size());
-        for(OpwebRecordPO po:opwebRecordPOs){
+        for (OpwebRecordPO po : opwebRecordPOs) {
             OpwebRecordVO vo = new OpwebRecordVO();
-            vo.setOpId(po.getOpId());
-            vo.setUseId(po.getUseId());
-            vo.setUsername(po.getUsername());
-            vo.setFristMenu(po.getFristMenu());
-            vo.setSecondMenu(po.getSecondMenu());
-            vo.setThirdMenu(po.getThirdMenu());
-            vo.setDetailInfo(po.getDetailInfo());
-            vo.setCreateTime(po.getCreateTime());
+            vo.setLog_id(Integer.valueOf(po.getOpId().toString()));
+            vo.setUser_name(po.getUsername());
+            vo.setFirst_menu(po.getFristMenu());
+            vo.setSecond_menu(po.getSecondMenu());
+            vo.setDetail(po.getDetailInfo());
+            vo.setCreate_time(po.getCreateTime());
             vos.add(vo);
         }
         return vos;

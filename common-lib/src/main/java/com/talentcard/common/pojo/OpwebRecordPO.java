@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * t_opweb_record
- * @author 
+ * @author
  */
 public class OpwebRecordPO implements Serializable {
     private Long opId;
