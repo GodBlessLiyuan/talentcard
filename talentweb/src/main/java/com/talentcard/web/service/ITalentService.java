@@ -52,7 +52,7 @@ public interface ITalentService {
      * @param batchCertificateDTO
      * @return
      */
-    ResultVO batchCertificate(BatchCertificateDTO batchCertificateDTO) throws InterruptedException;
+    ResultVO batchCertificate(HttpSession session,BatchCertificateDTO batchCertificateDTO) throws InterruptedException;
 
     /**
      * 读取文件
@@ -76,5 +76,5 @@ public interface ITalentService {
      * @param openId
      * @return
      */
-    ResultVO sendMessage(String openId);
+    ResultVO sendMessage(HttpSession session,String openId);
 }

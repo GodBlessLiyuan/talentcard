@@ -32,7 +32,7 @@ public interface IUserService {
      * @param extra
      * @return
      */
-    ResultVO insertUser(String username, String password, String name, Long roleId, String extra);
+    ResultVO insertUser(HttpSession session, String username, String password, String name, Long roleId, String extra);
 
     /**
      * 编辑用户
@@ -42,7 +42,7 @@ public interface IUserService {
      * @param extra
      * @return
      */
-    ResultVO editUser(String username, String name, Long roleId, String extra);
+    ResultVO editUser(HttpSession session,String username, String name, Long roleId, String extra);
 
     /**
      * 管理员修改密码
@@ -50,14 +50,14 @@ public interface IUserService {
      * @param password
      * @return
      */
-    ResultVO adminUpdatePassword(String username, String password);
+    ResultVO adminUpdatePassword(HttpSession session,String username, String password);
 
     /**
      * 根据用户名（用户名不可重复，唯一）删除用户
      * @param username
      * @return
      */
-    ResultVO deleteUser(String username);
+    ResultVO deleteUser(HttpSession session,String username);
 
     /**
      * 根据用户名和角色id获取当前用户系统权限列表，需要分页展示

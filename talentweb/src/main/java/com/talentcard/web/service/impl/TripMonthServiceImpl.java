@@ -12,7 +12,9 @@ import com.talentcard.web.service.ITripDailyService;
 import com.talentcard.web.service.ITripMonthService;
 import com.talentcard.web.utils.DateInitUtil;
 import com.talentcard.web.vo.TripDailyMonthVO;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +39,7 @@ public class TripMonthServiceImpl implements ITripMonthService {
     @Autowired
     private TripMonthMapper tripMonthMapper;
     private static final String[] EXPORT_TITLES={"时间","景区名称","使用人数","免费次数","折扣次数","总使用次数"};
+
     @Override
     public ResultVO init_month() {
         List<HashMap<String,String>> months=talentActivityHistoryMapper.groupMonthByTime();
@@ -114,8 +117,10 @@ public class TripMonthServiceImpl implements ITripMonthService {
     }
 
     @Override
-    public ResultVO total(Map<String, Object> map) {
+    public ResultVO total(Map<String, Object> map, Map<String,Object> numbersMap) {
         HashMap<String,Long> totals=tripMonthMapper.getTotal(map);
+        Long numbers=talentActivityHistoryMapper.getTotalNumber(numbersMap);
+        totals.put("numbers",numbers);
         return new ResultVO(1000,totals);
     }
 }
