@@ -163,6 +163,9 @@ public class TalentController {
      * @return
      * @throws InterruptedException
      */
+    /**
+     * 文档要改
+     * */
     @RequestMapping("batchCertificate")
     public ResultVO batchCertificate(HttpSession httpSession,
                                      @RequestParam(value = "cardId") Long cardId,
@@ -176,7 +179,7 @@ public class TalentController {
         batchCertificateDTO.setTalentCategory(talentCategory);
         batchCertificateDTO.setTalentHonour(talentHonour);
         batchCertificateDTO.setCardId(cardId);
-        iTalentService.batchCertificate(batchCertificateDTO);
+        iTalentService.batchCertificate(httpSession,batchCertificateDTO);
         return new ResultVO(1000);
     }
 
@@ -216,7 +219,7 @@ public class TalentController {
 
 
     @RequestMapping("sendMessage")
-    public ResultVO sendMessage(@RequestParam(value = "openId", defaultValue = "") String openId) {
-        return this.iTalentService.sendMessage(openId);
+    public ResultVO sendMessage(HttpSession session, @RequestParam(value = "openId", defaultValue = "") String openId) {
+        return this.iTalentService.sendMessage(session,openId);
     }
 }

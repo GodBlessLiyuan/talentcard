@@ -89,10 +89,12 @@ public class CardController {
     public ResultVO findOne(@RequestParam(value = "cardId") Long cardId) {
         return iCardService.findOne(cardId);
     }
-
+    /**
+     * 操作日志，要加session
+     * */
     @PostMapping("delete")
-    public ResultVO delete(@RequestParam(value = "cardId") Long cardId) {
-        return iCardService.delete(cardId);
+    public ResultVO delete(@RequestParam(value = "cardId") Long cardId,HttpSession httpSession) {
+        return iCardService.delete(cardId,httpSession);
     }
 
     @PostMapping("findSeniorCard")

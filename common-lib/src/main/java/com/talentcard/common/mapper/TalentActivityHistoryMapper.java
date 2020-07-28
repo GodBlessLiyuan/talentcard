@@ -62,4 +62,8 @@ public interface TalentActivityHistoryMapper extends BaseMapper<TalentActivityHi
     List<TripMonthPO> getMonthPOS(Map<String, Object> times);
 
     List<HashMap<String, String>> groupMonthByTime();
+    /**
+     * 旅游的月统计的总人数
+     * */
+    Long getTotalNumber(Map<String, Object> numbersMap);
 }

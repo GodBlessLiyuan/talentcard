@@ -12,5 +12,5 @@ public interface ITripMonthService {
 
     ResultVO export(Map<String, Object> map, HttpServletResponse response);
 
-    ResultVO total(Map<String, Object> map);
+    ResultVO total(Map<String, Object> map,Map<String, Object> endTime);
 }

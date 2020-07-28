@@ -43,7 +43,7 @@
     order by tm_id desc
   </select>
   <select id="getTotal" parameterType="java.util.Map" resultType="java.util.HashMap">
-    select IFNULL(sum(numbers),0) as numbers,IFNULL(sum(free_times),0) as freeTimes,
+    select IFNULL(sum(free_times),0) as freeTimes,
      IFNULL(sum(discount_times),0) as discountTimes, IFNULL(sum(total_times),0) as totalTimes
      from m_trip_month
     <where>

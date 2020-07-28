@@ -38,13 +38,14 @@ public class UserController {
     }
 
     @RequestMapping("insertUser")
-    public ResultVO insertUser(@RequestParam(value = "username", required = false) String username,
+    public ResultVO insertUser(HttpSession httpSession,
+                               @RequestParam(value = "username", required = false) String username,
                                @RequestParam(value = "password", required = false) String password,
                                @RequestParam(value = "name", required = false) String name,
                                @RequestParam(value = "roleId", required = false) Long roleId,
                                @RequestParam(value = "extra", required = false) String extra) {
 
-        return userService.insertUser(username, password, name, roleId, extra);
+        return userService.insertUser(httpSession, username, password, name, roleId, extra);
     }
 
     /**
@@ -57,11 +58,12 @@ public class UserController {
      * @return
      */
     @RequestMapping("editUser")
-    public ResultVO editUser(@RequestParam(value = "username", required = false) String username,
+    public ResultVO editUser(HttpSession session,
+                             @RequestParam(value = "username", required = false)String username,
                              @RequestParam(value = "name", required = false) String name,
                              @RequestParam(value = "roleId", required = false) Long roleId,
                              @RequestParam(value = "extra", required = false) String extra) {
-        return userService.editUser(username, name, roleId, extra);
+        return userService.editUser(session,username, name, roleId, extra);
     }
 
     /**
@@ -72,9 +74,10 @@ public class UserController {
      * @return
      */
     @RequestMapping("adminUpUserPassword")
-    public ResultVO managerUpdatePassword(@RequestParam(value = "username", required = false) String username,
+    public ResultVO managerUpdatePassword(HttpSession session,
+                                          @RequestParam(value = "username", required = false) String username,
                                           @RequestParam(value = "password", required = false) String password) {
-        return userService.adminUpdatePassword(username, password);
+        return userService.adminUpdatePassword(session,username, password);
     }
 
     /**
@@ -84,8 +87,9 @@ public class UserController {
      * @return
      */
     @RequestMapping("deleteUser")
-    public ResultVO deleteUser(@RequestParam(value = "username", required = false) String username) {
-        return userService.deleteUser(username);
+    public ResultVO deleteUser(HttpSession httpSession,
+                               @RequestParam(value = "username", required = false) String username) {
+        return userService.deleteUser(httpSession,username);
     }
 
     /**

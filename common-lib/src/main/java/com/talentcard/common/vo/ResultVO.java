@@ -26,4 +26,8 @@ public class ResultVO<T> implements Serializable {
         this.status = status;
         this.data = data;
     }
+
+    public static ResultVO notLogin(){
+        return new ResultVO(2104);
+    }
 }
