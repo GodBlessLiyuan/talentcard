@@ -241,7 +241,7 @@ public class CardServiceImpl implements ICardService {
         if (updateResult == 0) {
             logger.error("update cardMapper error");
         }
-        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,"新增%s卡片",CardUtil.getCardName(cardPO));
+        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,"编辑%s卡片",CardUtil.getCardName(cardPO));
 
         return new ResultVO(1000);
     }

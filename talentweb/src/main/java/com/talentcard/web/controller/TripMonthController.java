@@ -29,8 +29,7 @@ public class TripMonthController {
     public ResultVO init_month(){
         return tripMonthService.init_month();
     }
-    @Value("${trip_month.count_date}")
-    private String  month_time;
+
     @PostMapping("query")
     public ResultVO query(
             @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
@@ -108,7 +107,7 @@ public class TripMonthController {
                 end=end.substring(0,len)+day+" 23:59:59";//不是当前月的最后一天
             }else{
                 calendar.add(Calendar.DAY_OF_MONTH,-1);//当前月的昨天
-                end= DateUtil.date2Str(calendar.getTime(),DateUtil.YMD)+" "+month_time;
+                end= DateUtil.date2Str(calendar.getTime(),DateUtil.YMD)+" 23:59:59";//定时任务计算的是23:59:59，保持和M_trip_month一致
             }
         }else{
             /**
@@ -116,7 +115,7 @@ public class TripMonthController {
              * */
             Calendar calendar=Calendar.getInstance();//给一个截止日期的默认值：昨天
             calendar.add(Calendar.DAY_OF_MONTH,-1);
-            end= DateUtil.date2Str(calendar.getTime(),DateUtil.YMD)+" "+month_time;
+            end= DateUtil.date2Str(calendar.getTime(),DateUtil.YMD)+" 23:59:59";
         }
         numbersMap.put("end",end);
         return tripMonthService.total(map,numbersMap);
