@@ -132,8 +132,10 @@
     from t_opweb_record
     <where>
       <if test="user_name != null and user_name !=''">and `username` like  #{user_name} '%'</if>
+      <if test="first_menu != null and first_menu !=''">and frist_menu = #{first_menu,jdbcType=VARCHAR}</if>
+      <if test="second_menu != null and second_menu !=''">and second_menu = #{second_menu,jdbcType=VARCHAR}</if>
       <if test="start_time != null and start_time !=''">and create_time >= #{start_time}</if>
-      <if test="end_time != null and end_time !=''">and #{end_time}>=create_time </if>
+      <if test="end_time != null and end_time !=''">and #{end_time} >= create_time </if>
     </where>
     order by op_id desc
   </select>
