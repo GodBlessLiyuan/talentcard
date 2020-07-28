@@ -133,7 +133,7 @@
     <where>
       <if test="userName != null and userName !=''">and `userName` like  #{userName} '%'</if>
       <if test="start != null and start !=''">and create_time >= #{start}</if>
-      <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
+      <if test="end != null and end !=''">and #{end}>=create_time </if>
     </where>
     order by op_id desc
   </select>
