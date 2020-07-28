@@ -29,8 +29,7 @@ public class TripMonthController {
     public ResultVO init_month(){
         return tripMonthService.init_month();
     }
-    @Value("${trip_month.count_date}")
-    private String  month_time;
+
     @PostMapping("query")
     public ResultVO query(
             @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
