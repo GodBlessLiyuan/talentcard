@@ -58,7 +58,7 @@
         #{updateTime} as daily,tah.activity_second_content_name as scenicName,
         count(distinct tah.open_id) as numbers from t_talent_activity_history tah
         where tah.activity_first_content_id=1 and tah.create_time>=#{start} and #{end}>=tah.create_time and dr=1
-        group by tah.activity_second_content_id order by tah.activity_second_content_name asc
+        group by tah.activity_second_content_id,tah.activity_second_content_name order by tah.activity_second_content_id asc
     </select>
     <!--日月统计的sql几乎一样-->
     <select id="getMonthPOS" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.TripMonthPO">
@@ -66,7 +66,7 @@
         #{updateTime} as `month`,tah.activity_second_content_name as name,
         count(distinct tah.open_id) as numbers from t_talent_activity_history tah
         where tah.activity_first_content_id=1 and tah.create_time>=#{start} and #{end}>=tah.create_time and dr=1
-        group by tah.activity_second_content_id order by tah.activity_second_content_name asc
+        group by tah.activity_second_content_id,tah.activity_second_content_name order by tah.activity_second_content_id asc
     </select>
     <select id="getTotalNumber" parameterType="java.util.Map" resultType="java.lang.Long">
         select count(distinct tah.open_id) as numbers from t_talent_activity_history tah
