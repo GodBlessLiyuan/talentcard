@@ -139,12 +139,4 @@
       after_json_record = #{afterJsonRecord,jdbcType=VARCHAR}
     where etc_id = #{etcId,jdbcType=BIGINT}
   </update>
-
-  <select id="selectByTalentId" resultType="com.talentcard.common.pojo.EditTalentRecordPO">
-    select
-    etc_id, talent_id, user_id, operation_type, operation_content, create_time, `comment`,
-    before_json_record, after_json_record
-    from t_edit_talent_record
-    where talent_id = #{talentId,jdbcType=VARCHAR}
-  </select>
 </mapper>
