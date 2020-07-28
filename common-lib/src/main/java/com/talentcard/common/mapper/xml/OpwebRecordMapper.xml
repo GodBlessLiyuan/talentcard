@@ -131,9 +131,9 @@
     <include refid="Base_Column_List"/>
     from t_opweb_record
     <where>
-      <if test="userName != null and userName !=''">and `userName` like  #{userName} '%'</if>
-      <if test="start != null and start !=''">and create_time >= #{start}</if>
-      <if test="end != null and end !=''">and #{end}>=create_time </if>
+      <if test="user_name != null and user_name !=''">and `username` like  #{user_name} '%'</if>
+      <if test="start_time != null and start_time !=''">and create_time >= #{start_time}</if>
+      <if test="end_time != null and end_time !=''">and #{end_time}>=create_time </if>
     </where>
     order by op_id desc
   </select>
