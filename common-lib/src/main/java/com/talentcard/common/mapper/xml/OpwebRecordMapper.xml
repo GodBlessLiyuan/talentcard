@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.OpwebRecordMapper">
-    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.OpwebRecordPO">
-        <id column="op_id" jdbcType="BIGINT" property="opId"/>
-        <result column="use_id" jdbcType="BIGINT" property="useId"/>
-        <result column="username" jdbcType="CHAR" property="username"/>
-        <result column="frist_menu" jdbcType="CHAR" property="fristMenu"/>
-        <result column="second_menu" jdbcType="CHAR" property="secondMenu"/>
-        <result column="third_menu" jdbcType="CHAR" property="thirdMenu"/>
-        <result column="detail_info" jdbcType="CHAR" property="detailInfo"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-    </resultMap>
-    <sql id="Base_Column_List">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.OpwebRecordPO">
+    <id column="op_id" jdbcType="BIGINT" property="opId"/>
+    <result column="use_id" jdbcType="BIGINT" property="useId"/>
+    <result column="username" jdbcType="CHAR" property="username"/>
+    <result column="frist_menu" jdbcType="CHAR" property="fristMenu"/>
+    <result column="second_menu" jdbcType="CHAR" property="secondMenu"/>
+    <result column="third_menu" jdbcType="CHAR" property="thirdMenu"/>
+    <result column="detail_info" jdbcType="CHAR" property="detailInfo"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+  </resultMap>
+  <sql id="Base_Column_List">
     op_id, use_id, username, frist_menu, second_menu, third_menu, detail_info, create_time
   </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_opweb_record
-        where op_id = #{opId,jdbcType=BIGINT}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_opweb_record
+    where op_id = #{opId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_opweb_record
     where op_id = #{opId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.talentcard.common.pojo.OpwebRecordPO">
+  <insert id="insert" parameterType="com.talentcard.common.pojo.OpwebRecordPO">
     insert into t_opweb_record (op_id, use_id, username,
       frist_menu, second_menu, third_menu,
       detail_info, create_time)
@@ -32,89 +32,89 @@
       #{fristMenu,jdbcType=CHAR}, #{secondMenu,jdbcType=CHAR}, #{thirdMenu,jdbcType=CHAR},
       #{detailInfo,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.OpwebRecordPO">
-        insert into t_opweb_record
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="opId != null">
-                op_id,
-            </if>
-            <if test="useId != null">
-                use_id,
-            </if>
-            <if test="username != null">
-                username,
-            </if>
-            <if test="fristMenu != null">
-                frist_menu,
-            </if>
-            <if test="secondMenu != null">
-                second_menu,
-            </if>
-            <if test="thirdMenu != null">
-                third_menu,
-            </if>
-            <if test="detailInfo != null">
-                detail_info,
-            </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="opId != null">
-                #{opId,jdbcType=BIGINT},
-            </if>
-            <if test="useId != null">
-                #{useId,jdbcType=BIGINT},
-            </if>
-            <if test="username != null">
-                #{username,jdbcType=CHAR},
-            </if>
-            <if test="fristMenu != null">
-                #{fristMenu,jdbcType=CHAR},
-            </if>
-            <if test="secondMenu != null">
-                #{secondMenu,jdbcType=CHAR},
-            </if>
-            <if test="thirdMenu != null">
-                #{thirdMenu,jdbcType=CHAR},
-            </if>
-            <if test="detailInfo != null">
-                #{detailInfo,jdbcType=CHAR},
-            </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.OpwebRecordPO">
-        update t_opweb_record
-        <set>
-            <if test="useId != null">
-                use_id = #{useId,jdbcType=BIGINT},
-            </if>
-            <if test="username != null">
-                username = #{username,jdbcType=CHAR},
-            </if>
-            <if test="fristMenu != null">
-                frist_menu = #{fristMenu,jdbcType=CHAR},
-            </if>
-            <if test="secondMenu != null">
-                second_menu = #{secondMenu,jdbcType=CHAR},
-            </if>
-            <if test="thirdMenu != null">
-                third_menu = #{thirdMenu,jdbcType=CHAR},
-            </if>
-            <if test="detailInfo != null">
-                detail_info = #{detailInfo,jdbcType=CHAR},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
-            </if>
-        </set>
-        where op_id = #{opId,jdbcType=BIGINT}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.OpwebRecordPO">
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.OpwebRecordPO">
+    insert into t_opweb_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="opId != null">
+        op_id,
+      </if>
+      <if test="useId != null">
+        use_id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="fristMenu != null">
+        frist_menu,
+      </if>
+      <if test="secondMenu != null">
+        second_menu,
+      </if>
+      <if test="thirdMenu != null">
+        third_menu,
+      </if>
+      <if test="detailInfo != null">
+        detail_info,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="opId != null">
+        #{opId,jdbcType=BIGINT},
+      </if>
+      <if test="useId != null">
+        #{useId,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=CHAR},
+      </if>
+      <if test="fristMenu != null">
+        #{fristMenu,jdbcType=CHAR},
+      </if>
+      <if test="secondMenu != null">
+        #{secondMenu,jdbcType=CHAR},
+      </if>
+      <if test="thirdMenu != null">
+        #{thirdMenu,jdbcType=CHAR},
+      </if>
+      <if test="detailInfo != null">
+        #{detailInfo,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.OpwebRecordPO">
+    update t_opweb_record
+    <set>
+      <if test="useId != null">
+        use_id = #{useId,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=CHAR},
+      </if>
+      <if test="fristMenu != null">
+        frist_menu = #{fristMenu,jdbcType=CHAR},
+      </if>
+      <if test="secondMenu != null">
+        second_menu = #{secondMenu,jdbcType=CHAR},
+      </if>
+      <if test="thirdMenu != null">
+        third_menu = #{thirdMenu,jdbcType=CHAR},
+      </if>
+      <if test="detailInfo != null">
+        detail_info = #{detailInfo,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where op_id = #{opId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.OpwebRecordPO">
     update t_opweb_record
     set use_id = #{useId,jdbcType=BIGINT},
       username = #{username,jdbcType=CHAR},
@@ -126,15 +126,15 @@
     where op_id = #{opId,jdbcType=BIGINT}
   </update>
 
-    <select id="query" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_opweb_record
-        <where>
-            <if test="userName != null and userName !=''">and `userName` like  #{userName} '%'</if>
-            <if test="start != null and start !=''">and create_time >= #{start}</if>
-            <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
-        </where>
-        order by op_id desc
-    </select>
+  <select id="query" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_opweb_record
+    <where>
+      <if test="userName != null and userName !=''">and `userName` like  #{userName} '%'</if>
+      <if test="start != null and start !=''">and create_time >= #{start}</if>
+      <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
+    </where>
+    order by op_id desc
+  </select>
 </mapper>
