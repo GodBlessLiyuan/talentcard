@@ -50,6 +50,7 @@ public class OpwebRecordController {
             reqMap.put("end", end);
         }
         if(!"".equals(start)){
+            start = start + " 00:00:00";
             reqMap.put("start", start);
         }
 

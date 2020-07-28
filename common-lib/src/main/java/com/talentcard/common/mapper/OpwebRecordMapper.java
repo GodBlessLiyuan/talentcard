@@ -8,6 +8,4 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface OpwebRecordMapper extends BaseMapper<OpwebRecordPO, Long> {
-
-    void query();
 }
