@@ -34,6 +34,8 @@ public class EditTalentRecordConstant {
     public static final Byte talentCategoryContent = 5;
     //基本信息
     public static final Byte basicInfoContent = 6;
+    //人才卡
+    public static final Byte talentCard = 7;
 
 
     public final static HashMap<Byte, String> operationTypeMap = new HashMap<>(3);
