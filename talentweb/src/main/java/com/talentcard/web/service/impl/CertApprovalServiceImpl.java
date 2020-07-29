@@ -127,8 +127,6 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             return ResultVO.notLogin();
         }
         // 判断审批结果，如果审批通过，需要多表更新；审批不通过则只新增认证审批表的信息
-        //首先获取审批人的用户id
-        userId = (Long) session.getAttribute("userId");
         Byte result = (Byte) reqData.get("result");
         Long certId = (Long) reqData.get("certId");
         Long talentId = (Long) reqData.get("talentId");
