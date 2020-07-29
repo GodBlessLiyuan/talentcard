@@ -2,6 +2,7 @@ package com.talentcard.web.vo;
 
 import com.talentcard.common.bo.EditTalentRecordBO;
 import com.talentcard.common.constant.EditTalentRecordConstant;
+import com.talentcard.common.utils.DateUtil;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class EditTalentRecordVO {
             vo.setAfter_json(bo.getAfterJsonRecord());
             vo.setComment(bo.getComment());
             vo.setUser_name(bo.getUserName());
-            vo.setCreate_time(bo.getCreateTime().toString());
+            vo.setCreate_time(DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD));
 
             //设置
             String fir = EditTalentRecordConstant.operationTypeMap.get(bo.getOperationType());

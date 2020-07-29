@@ -653,8 +653,8 @@ public class TalentServiceImpl implements ITalentService {
         //bo 转 vo
         ArrayList<EditTalentRecordVO> editTalentRecordVOS = EditTalentRecordVO.convert(bos);
 
-        Map<String,Object> map=new HashMap<>();
-        map.put("total",editTalentRecordVOS.size());
+        Map<String, Object> map = new HashMap<>();
+        map.put("total", editTalentRecordVOS.size());
         map.put("data", editTalentRecordVOS);
         return new ResultVO(1000, map);
     }
