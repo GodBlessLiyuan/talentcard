@@ -110,7 +110,7 @@ public class ScenicServiceImpl implements IScenicService {
                 scenicPictureMapper.batchInsert(picPOs);
             }
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FreeTrip,
-                    "新增%s景区",scenicPO.getName());
+                    "新增景区\"%s\"",scenicPO.getName());
             return new ResultVO(1000);
         }
 
@@ -151,7 +151,7 @@ public class ScenicServiceImpl implements IScenicService {
         tripGroupAuthorityMapper.clear();
         redisMapUtil.del("talentTrip");
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FreeTrip,
-                "编辑%s景区",scenicPO.getName());
+                "编辑景区\"%s\"",scenicPO.getName());
         return new ResultVO(1000);
     }
 
@@ -181,7 +181,7 @@ public class ScenicServiceImpl implements IScenicService {
         tripGroupAuthorityMapper.clear();
         redisMapUtil.del("talentTrip");
         logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FreeTrip,
-                "%s架%s景区",1 == status?"上":"下",scenicPO.getName());
+                "%s架景区\"%s\"",1 == status?"上":"下",scenicPO.getName());
         return new ResultVO(1000);
     }
 
@@ -263,7 +263,7 @@ public class ScenicServiceImpl implements IScenicService {
         }
         String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getScenicDir(), "scenic");
         logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FreeTrip,
-                "%s上传景区文件",(String) session.getAttribute("username"));
+                "\"%s\"上传景区图片",(String) session.getAttribute("username"));
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 
@@ -284,7 +284,7 @@ public class ScenicServiceImpl implements IScenicService {
         if (cardIdArray.length != tripTimes.length) {
             return new ResultVO(2680);
         }
-        List<Map<String,Object>> list=new ArrayList<>(editTripTimesDTO.getCardId().length);
+        StringBuilder builder=new StringBuilder();
         for (int i = 0; i < cardIdArray.length; i++) {
             Map<String,Object> map=new HashMap<>(2);
             cardPO = null;
@@ -294,13 +294,14 @@ public class ScenicServiceImpl implements IScenicService {
             }
             cardPO.setTripTimes(tripTimes[i]);
             cardMapper.updateByPrimaryKeySelective(cardPO);
-            map.put("cardName",cardPO.getName()+cardPO.getInitialWord());
-            map.put("tripTimes",tripTimes[i]);
-            list.add(map);
+            builder.append(cardPO.getName()+cardPO.getInitialWord());
+            builder.append("/");
+            builder.append(tripTimes[i]);
+            builder.append("次，");
         }
-
+        String tmp=builder.toString().substring(0,builder.toString().length()-1);
         logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FreeTrip,
-                "{\"message\":\"设置一批卡次数\",\"data\":%s}",JSON.toJSONString(list));//{"message":"设置一批卡次数","data":[{"1":"hah"}]}
+                "设置一批卡次数:%s。",tmp);//卡A/3次，卡A/3次。
 
         return new ResultVO(1000);
     }

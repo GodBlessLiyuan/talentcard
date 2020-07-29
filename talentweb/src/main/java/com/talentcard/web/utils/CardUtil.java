@@ -190,6 +190,6 @@ public class CardUtil {
      * @Date:2020/7/28
      * */
     public static String getCardName(CardPO cardPO) {
-        return cardPO.getTitle()+cardPO.getInitialWord();
+        return cardPO.getTitle()+"/"+cardPO.getInitialWord();
     }
 }

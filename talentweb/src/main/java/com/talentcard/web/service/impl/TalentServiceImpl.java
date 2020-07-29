@@ -305,8 +305,8 @@ public class TalentServiceImpl implements ITalentService {
         batchCertificatePO.setUpdateTime(new Date());
         batchCertificatePO.setStatus((byte) 2);
         batchCertificateMapper.updateByPrimaryKeySelective(batchCertificatePO);
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_CommentUser, "批量认证"
-        );
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_CommentUser,
+                "批量认证");
         return new ResultVO(1000, url);
     }
 

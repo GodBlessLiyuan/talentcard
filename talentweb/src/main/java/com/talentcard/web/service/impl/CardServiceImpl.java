@@ -158,8 +158,8 @@ public class CardServiceImpl implements ICardService {
         cardPO.setUpdateTime(new Date());
         cardPO.setTripTimes(tripTimes);
         cardMapper.insertSelective(cardPO);
-        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,"新增%s卡片",
-                CardUtil.getCardName(cardPO));
+        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,
+                "新增人才卡\"%s\"",CardUtil.getCardName(cardPO));
 
         return new ResultVO(1000, wechatResult);
     }
@@ -241,7 +241,8 @@ public class CardServiceImpl implements ICardService {
         if (updateResult == 0) {
             logger.error("update cardMapper error");
         }
-        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,"编辑%s卡片",CardUtil.getCardName(cardPO));
+        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,
+                "修改人才卡\"%s\"",CardUtil.getCardName(cardPO));
 
         return new ResultVO(1000);
     }
@@ -315,8 +316,8 @@ public class CardServiceImpl implements ICardService {
         if (updateResult == 0) {
             logger.error("update cardMapper error");
         }
-        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,"删除%s卡片",
-                CardUtil.getCardName(cardPO));
+        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,
+                "删除人才卡\"%s\"",CardUtil.getCardName(cardPO));
 
         return new ResultVO(1000, result);
     }

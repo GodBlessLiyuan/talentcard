@@ -58,7 +58,7 @@ public class StaffServiceImpl implements IStaffService {
             logger.error("update staffMapper error");
         }
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_Staff_Config,
-                "%s删除员工%s",(String)session.getAttribute("username"),staffPO.getName());
+                "删除员工\"%s\"",staffPO.getName());
         return new ResultVO(1000);
     }
 }
