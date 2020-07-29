@@ -89,6 +89,11 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editBasicInfo(HttpSession httpSession, BasicInfoDTO basicInfoDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         TalentPO talentPO = talentMapper.selectByOpenId(basicInfoDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO(2500);
@@ -131,12 +136,19 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的基本信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editEducation(HttpSession httpSession, EducationDTO educationDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String openId = educationDTO.getOpenId();
         EducationPO educationPO = educationMapper.selectByPrimaryKey(educationDTO.getEducId());
         if (educationPO == null || educationPO.getEducation() == null) {
@@ -223,12 +235,19 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的学历信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editProfQuality(HttpSession httpSession, ProfQualityDTO profQualityDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String openId = profQualityDTO.getOpenId();
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         ProfQualityPO profQualityPO = profQualityMapper.selectByPrimaryKey(profQualityDTO.getPqId());
@@ -312,12 +331,19 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的职业资格信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editProfTitle(HttpSession httpSession, ProfTitleDTO profTitleDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String openId = profTitleDTO.getOpenId();
         ProfTitlePO profTitlePO = profTitleMapper.selectByPrimaryKey(profTitleDTO.getPtId());
         if (profTitlePO == null || profTitlePO.getCategory() == null) {
@@ -403,12 +429,19 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的职称信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editTalentHonour(HttpSession httpSession, TalentHonourDTO talentHonourDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String openId = talentHonourDTO.getOpenId();
         TalentHonourPO talentHonourPO = talentHonourMapper.selectByPrimaryKey(talentHonourDTO.getThId());
         if (talentHonourPO == null || talentHonourPO.getHonourId() == null) {
@@ -492,6 +525,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的主要人才荣誉",talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -499,6 +534,11 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editTalentCategory(HttpSession httpSession, String openId,
                                        String talentCategory, String opinion) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
         if (talentPO == null) {
             return new ResultVO(2500);
@@ -531,6 +571,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的人才类别",talentPO.getName());
         return new ResultVO(1000);
     }
 
