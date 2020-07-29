@@ -65,7 +65,7 @@ public class BannerServiceImpl implements IBannerService {
         po.setDr((byte) 1);
         bannerMapper.insert(po);
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_BannerConfig,
-                "新增%s推广",dto.getName());
+                "新建banner\"%s\"",po.getName());
         return new ResultVO(1000);
     }
 
@@ -92,7 +92,7 @@ public class BannerServiceImpl implements IBannerService {
 
         this.redisMapUtil.del(TalentConstant.BANNER_INFO);
         logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_BannerConfig,
-                "%s架%s推广",1 == status?"上":"下",po.getName());
+                "%s架banner\"%s\"",1 == status?"上":"下",po.getName());
         return new ResultVO(1000);
     }
 
@@ -107,7 +107,7 @@ public class BannerServiceImpl implements IBannerService {
         BannerPO bannerPO = bannerMapper.selectByPrimaryKey(bid);
         bannerMapper.deleteByPrimaryKey(bid);
         logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_BannerConfig,
-                "删除%s推广",bannerPO==null?"":bannerPO.getName());
+                "删除banner\"%s\"",bannerPO==null?"":bannerPO.getName());
         return new ResultVO(1000);
     }
 
@@ -121,7 +121,7 @@ public class BannerServiceImpl implements IBannerService {
         }
         String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getBannerDir(), "banner");
         logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_BannerConfig,
-                "%s上传了推广文件",(String) session.getAttribute("username"));
+                "%s上传了banner文件",(String) session.getAttribute("username"));
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 }

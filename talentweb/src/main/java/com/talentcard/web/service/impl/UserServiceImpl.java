@@ -109,7 +109,7 @@ public class UserServiceImpl implements IUserService {
             return new ResultVO(2107);
         }
 
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_SysManager, OpsRecordMenuConstant.S_UserManager, "新增%s用户", username);
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_SysManager, OpsRecordMenuConstant.S_UserManager, "新增用户\"%s\"", username);
 
         return new ResultVO(1000);
     }
@@ -133,7 +133,7 @@ public class UserServiceImpl implements IUserService {
             // 编辑用户失败
             return new ResultVO(2108);
         }
-        logService.insertActionRecord(session,OpsRecordMenuConstant.F_SysManager,OpsRecordMenuConstant.S_UserManager,"编辑%s用户",username);
+        logService.insertActionRecord(session,OpsRecordMenuConstant.F_SysManager,OpsRecordMenuConstant.S_UserManager,"修改用户\"%s\"",username);
 
         return new ResultVO(1000);
     }
@@ -158,7 +158,7 @@ public class UserServiceImpl implements IUserService {
             // 管理员更新用户密码失败
             return new ResultVO(2109);
         }
-        logService.insertActionRecord(session,OpsRecordMenuConstant.F_SysManager,OpsRecordMenuConstant.S_UserManager,"更新管理员%s密码",username);
+        logService.insertActionRecord(session,OpsRecordMenuConstant.F_SysManager,OpsRecordMenuConstant.S_UserManager,"更新管理员\"%s\"的密码",username);
 
         return new ResultVO(1000);
     }
@@ -178,7 +178,7 @@ public class UserServiceImpl implements IUserService {
             // 删除用户失败
             return new ResultVO(2110);
         }
-        logService.insertActionRecord(session,OpsRecordMenuConstant.F_SysManager,OpsRecordMenuConstant.S_UserManager,"删除%s用户",username);
+        logService.insertActionRecord(session,OpsRecordMenuConstant.F_SysManager,OpsRecordMenuConstant.S_UserManager,"删除用户\"%s\"",username);
 
         return new ResultVO(1000);
     }

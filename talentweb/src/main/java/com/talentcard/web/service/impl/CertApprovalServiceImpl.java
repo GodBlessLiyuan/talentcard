@@ -485,7 +485,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
          * 清除redis缓存
          */
         talentService.clearRedisCache(openId);
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmExam,"审批同意%s的人才信息",currentTalent.getName());
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmExam,
+                "审批人才\"%s\"的认证信息",currentTalent.getName());
         return new ResultVO(1000);
 
     }

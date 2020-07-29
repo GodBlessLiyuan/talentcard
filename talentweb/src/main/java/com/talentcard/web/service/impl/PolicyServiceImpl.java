@@ -12,6 +12,7 @@ import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.PolicyDTO;
 import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IPolicyService;
+import com.talentcard.web.utils.PolicyNameUtil;
 import com.talentcard.web.vo.PolicyDetailVO;
 import com.talentcard.web.vo.PolicyVO;
 import org.apache.commons.lang.StringUtils;
@@ -67,7 +68,7 @@ public class PolicyServiceImpl implements IPolicyService {
 
         policyMapper.insert(po);
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager,OpsRecordMenuConstant.S_PolicyManager
-                ,"新增%s政策权益",dto.getNum());
+                ,"新增政策\"%s\"", PolicyNameUtil.getNameNumber(po));
         return new ResultVO(1000);
     }
 
@@ -86,7 +87,7 @@ public class PolicyServiceImpl implements IPolicyService {
         }
         policyMapper.updateByPrimaryKey(buildPOByDTO(po, dto));
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager,OpsRecordMenuConstant.S_PolicyManager,
-                "更新%s政策权益", dto.getNum());
+                "编辑政策\"%s\"", PolicyNameUtil.getNameNumber(po));
         return new ResultVO(1000);
     }
 
@@ -105,7 +106,7 @@ public class PolicyServiceImpl implements IPolicyService {
         policyPO.setDr((byte) 2);
         policyMapper.updateByPrimaryKey(policyPO);
         logService.insertActionRecord(session,OpsRecordMenuConstant.F_TalentPolicyManager,OpsRecordMenuConstant.S_PolicyManager,
-                "删除%s政策权益",policyPO.getName());
+                "删除政策\"%s\"",PolicyNameUtil.getNameNumber(policyPO));
         return new ResultVO(1000);
     }
 
@@ -130,7 +131,7 @@ public class PolicyServiceImpl implements IPolicyService {
         }
         String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getAnnexDir(), "annex");
         logService.insertActionRecord(session,OpsRecordMenuConstant.F_TalentPolicyManager,OpsRecordMenuConstant.S_PolicyManager,
-                "%s上传了政策权益文件",(String) session.getAttribute("username"));
+                "%s上传了政策文件",(String) session.getAttribute("username"));
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 
