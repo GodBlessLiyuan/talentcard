@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,20 +33,20 @@ public class UserController {
      * @return
      */
     @RequestMapping("updatePassword")
-    public ResultVO editPassword(HttpSession session, @RequestParam(value = "oldPassword", required = false) String oldPassword,
+    public ResultVO editPassword(HttpServletRequest request, @RequestParam(value = "oldPassword", required = false) String oldPassword,
                                  @RequestParam(value = "newPassword", required = false) String newPassword) {
-        return userService.editPassword(session, oldPassword, newPassword);
+        return userService.editPassword(request.getSession(), oldPassword, newPassword);
     }
 
     @RequestMapping("insertUser")
-    public ResultVO insertUser(HttpSession httpSession,
+    public ResultVO insertUser(HttpServletRequest request,
                                @RequestParam(value = "username", required = false) String username,
                                @RequestParam(value = "password", required = false) String password,
                                @RequestParam(value = "name", required = false) String name,
                                @RequestParam(value = "roleId", required = false) Long roleId,
                                @RequestParam(value = "extra", required = false) String extra) {
 
-        return userService.insertUser(httpSession, username, password, name, roleId, extra);
+        return userService.insertUser(request.getSession(), username, password, name, roleId, extra);
     }
 
     /**
@@ -58,12 +59,12 @@ public class UserController {
      * @return
      */
     @RequestMapping("editUser")
-    public ResultVO editUser(HttpSession session,
-                             @RequestParam(value = "username", required = false)String username,
+    public ResultVO editUser(HttpServletRequest request,
+                             @RequestParam(value = "username", required = false) String username,
                              @RequestParam(value = "name", required = false) String name,
                              @RequestParam(value = "roleId", required = false) Long roleId,
                              @RequestParam(value = "extra", required = false) String extra) {
-        return userService.editUser(session,username, name, roleId, extra);
+        return userService.editUser(request.getSession(), username, name, roleId, extra);
     }
 
     /**
@@ -74,10 +75,10 @@ public class UserController {
      * @return
      */
     @RequestMapping("adminUpUserPassword")
-    public ResultVO managerUpdatePassword(HttpSession session,
+    public ResultVO managerUpdatePassword(HttpServletRequest request,
                                           @RequestParam(value = "username", required = false) String username,
                                           @RequestParam(value = "password", required = false) String password) {
-        return userService.adminUpdatePassword(session,username, password);
+        return userService.adminUpdatePassword(request.getSession(), username, password);
     }
 
     /**
@@ -87,9 +88,9 @@ public class UserController {
      * @return
      */
     @RequestMapping("deleteUser")
-    public ResultVO deleteUser(HttpSession httpSession,
+    public ResultVO deleteUser(HttpServletRequest request,
                                @RequestParam(value = "username", required = false) String username) {
-        return userService.deleteUser(httpSession,username);
+        return userService.deleteUser(request.getSession(), username);
     }
 
     /**
@@ -100,7 +101,7 @@ public class UserController {
      * @return
      */
     @RequestMapping("queryByUser")
-    public ResultVO queryByUser(HttpSession session,
+    public ResultVO queryByUser(HttpServletRequest request,
                                 @RequestParam(value = "start", defaultValue = "1") int pageNum,
                                 @RequestParam(value = "length", defaultValue = "10") int pageSize,
                                 @RequestParam(value = "username", defaultValue = "") String username,

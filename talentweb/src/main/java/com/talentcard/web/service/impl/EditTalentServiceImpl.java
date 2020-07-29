@@ -755,6 +755,10 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+
+
+        this.iEditTalentRecordService.addRecord(session,talentId,EditTalentRecordConstant.editType, EditTalentRecordConstant.talentCard,
+                JSONObject.toJSONString(oldCardPO),JSONObject.toJSONString(newCardPO),opinion);
         /**
          * 清缓存
          */

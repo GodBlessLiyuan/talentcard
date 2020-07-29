@@ -1,8 +1,5 @@
 package com.talentcard.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.talentcard.common.pojo.CardPO;
-import com.talentcard.common.utils.StringToObjUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.EditTripTimesDTO;
 import com.talentcard.web.dto.ScenicDTO;
@@ -15,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -71,8 +66,8 @@ public class ScenicController {
      * @return
      */
     @RequestMapping("edit")
-    public ResultVO edit(HttpSession session,@RequestBody ScenicDTO dto) {
-        return scenicService.edit(session,dto);
+    public ResultVO edit(HttpServletRequest request, @RequestBody ScenicDTO dto) {
+        return scenicService.edit(request.getSession(), dto);
     }
 
     /**
@@ -83,8 +78,8 @@ public class ScenicController {
      * @return
      */
     @RequestMapping("status")
-    public ResultVO status(HttpSession session, @Param("scenicId") Long scenicId, @Param("status") Byte status) {
-        return scenicService.status(session,scenicId, status);
+    public ResultVO status(HttpServletRequest request, @Param("scenicId") Long scenicId, @Param("status") Byte status) {
+        return scenicService.status(request.getSession(), scenicId, status);
     }
 
     /**
@@ -105,8 +100,8 @@ public class ScenicController {
      * @return
      */
     @RequestMapping("upload")
-    public ResultVO upload(HttpSession session,@Param("file") MultipartFile file) {
-        return scenicService.upload(session,file);
+    public ResultVO upload(HttpServletRequest request, @Param("file") MultipartFile file) {
+        return scenicService.upload(request.getSession(), file);
     }
 
     /**
@@ -116,7 +111,7 @@ public class ScenicController {
      * @return
      */
     @RequestMapping("setTripTimes")
-    public ResultVO setTripTimes(HttpSession session,@RequestBody EditTripTimesDTO editTripTimesDTO) {
-        return scenicService.setTripTimes(session,editTripTimesDTO);
+    public ResultVO setTripTimes(HttpServletRequest request, @RequestBody EditTripTimesDTO editTripTimesDTO) {
+        return scenicService.setTripTimes(request.getSession(), editTripTimesDTO);
     }
 }

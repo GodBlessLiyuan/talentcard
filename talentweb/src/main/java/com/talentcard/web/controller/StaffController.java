@@ -3,9 +3,12 @@ package com.talentcard.web.controller;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 /**
@@ -47,7 +50,7 @@ public class StaffController {
     }
 
     @PostMapping("delete")
-    public ResultVO delete(HttpSession session, @RequestParam("staffId") Long staffId) {
-        return iStaffService.delete(session,staffId);
+    public ResultVO delete(HttpServletRequest request, @RequestParam("staffId") Long staffId) {
+        return iStaffService.delete(request.getSession(), staffId);
     }
 }

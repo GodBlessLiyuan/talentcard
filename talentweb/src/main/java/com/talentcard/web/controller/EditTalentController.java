@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author ChenXU
@@ -25,8 +25,8 @@ public class EditTalentController {
     IEditTalentService iEditTalentService;
 
     @RequestMapping("editBasicInfo")
-    public ResultVO editBasicInfo(HttpSession httpSession, @RequestBody BasicInfoDTO basicInfoDTO) {
-        return iEditTalentService.editBasicInfo(httpSession, basicInfoDTO);
+    public ResultVO editBasicInfo(HttpServletRequest request, @RequestBody BasicInfoDTO basicInfoDTO) {
+        return iEditTalentService.editBasicInfo(request.getSession(), basicInfoDTO);
     }
 
     /**
@@ -36,8 +36,8 @@ public class EditTalentController {
      * @return
      */
     @RequestMapping("editEducation")
-    public ResultVO editEducation(HttpSession httpSession, @RequestBody EducationDTO educationDTO) {
-        return iEditTalentService.editEducation(httpSession, educationDTO);
+    public ResultVO editEducation(HttpServletRequest request, @RequestBody EducationDTO educationDTO) {
+        return iEditTalentService.editEducation(request.getSession(), educationDTO);
     }
 
     /**
@@ -47,8 +47,8 @@ public class EditTalentController {
      * @return
      */
     @RequestMapping("editProfQuality")
-    public ResultVO editProfQuality(HttpSession httpSession, @RequestBody ProfQualityDTO profQualityDTO) {
-        return iEditTalentService.editProfQuality(httpSession, profQualityDTO);
+    public ResultVO editProfQuality(HttpServletRequest request, @RequestBody ProfQualityDTO profQualityDTO) {
+        return iEditTalentService.editProfQuality(request.getSession(), profQualityDTO);
     }
 
     /**
@@ -58,8 +58,8 @@ public class EditTalentController {
      * @return
      */
     @RequestMapping("editProfTitle")
-    public ResultVO editProfTitle(HttpSession httpSession, @RequestBody ProfTitleDTO profTitleDTO) {
-        return iEditTalentService.editProfTitle(httpSession, profTitleDTO);
+    public ResultVO editProfTitle(HttpServletRequest request, @RequestBody ProfTitleDTO profTitleDTO) {
+        return iEditTalentService.editProfTitle(request.getSession(), profTitleDTO);
     }
 
     /**
@@ -69,8 +69,8 @@ public class EditTalentController {
      * @return
      */
     @RequestMapping("editTalentHonour")
-    public ResultVO editTalentHonour(HttpSession httpSession, @RequestBody TalentHonourDTO talentHonourDTO) {
-        return iEditTalentService.editTalentHonour(httpSession, talentHonourDTO);
+    public ResultVO editTalentHonour(HttpServletRequest request, @RequestBody TalentHonourDTO talentHonourDTO) {
+        return iEditTalentService.editTalentHonour(request.getSession(), talentHonourDTO);
     }
 
     /**
@@ -81,11 +81,11 @@ public class EditTalentController {
      * @return
      */
     @RequestMapping("editTalentCategory")
-    public ResultVO editTalentCategory(HttpSession httpSession,
+    public ResultVO editTalentCategory(HttpServletRequest request,
                                        @RequestParam(value = "openId") String openId,
                                        @RequestParam(value = "talentCategory") String talentCategory,
                                        @RequestParam(value = "opinion") String opinion) {
-        return iEditTalentService.editTalentCategory(httpSession, openId, talentCategory, opinion);
+        return iEditTalentService.editTalentCategory(request.getSession(), openId, talentCategory, opinion);
     }
 
     /**
@@ -116,11 +116,11 @@ public class EditTalentController {
      * @return
      */
     @RequestMapping("changeCard")
-    public ResultVO changeCard(HttpSession session,
+    public ResultVO changeCard(HttpServletRequest request,
                                @RequestParam(value = "talentId") Long talentId,
                                @RequestParam(value = "cardId") Long cardId,
                                @RequestParam(value = "opinion") String opinion) {
-        return iEditTalentService.changeCard(session,talentId, cardId, opinion);
+        return iEditTalentService.changeCard(request.getSession(),talentId, cardId, opinion);
     }
 
     /**

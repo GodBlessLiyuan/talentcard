@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -164,21 +164,21 @@ public class TalentController {
      */
     /**
      * 文档要改
-     * */
+     */
     @RequestMapping("batchCertificate")
-    public ResultVO batchCertificate(HttpSession httpSession,
+    public ResultVO batchCertificate(HttpServletRequest request,
                                      @RequestParam(value = "cardId") Long cardId,
                                      @RequestParam(value = "talentCategory", required = false, defaultValue = "") String talentCategory,
                                      @RequestParam(value = "talentHonour") Long talentHonour,
                                      @RequestParam(value = "file") MultipartFile file) throws InterruptedException {
-        BatchCertificateDTO batchCertificateDTO = iTalentService.readCertificateFile(httpSession, file);
+        BatchCertificateDTO batchCertificateDTO = iTalentService.readCertificateFile(request.getSession(), file);
         if (batchCertificateDTO == null || batchCertificateDTO.getResultStatus() != 1000) {
             return new ResultVO(2800);
         }
         batchCertificateDTO.setTalentCategory(talentCategory);
         batchCertificateDTO.setTalentHonour(talentHonour);
         batchCertificateDTO.setCardId(cardId);
-        iTalentService.batchCertificate(httpSession,batchCertificateDTO);
+        iTalentService.batchCertificate(request.getSession(), batchCertificateDTO);
         return new ResultVO(1000);
     }
 
@@ -218,12 +218,12 @@ public class TalentController {
 
 
     @RequestMapping("sendMessage")
-    public ResultVO sendMessage(HttpSession session, @RequestParam(value = "openId", defaultValue = "") String openId) {
-        return this.iTalentService.sendMessage(session,openId);
+    public ResultVO sendMessage(HttpServletRequest request, @RequestParam(value = "openId", defaultValue = "") String openId) {
+        return this.iTalentService.sendMessage(request.getSession(), openId);
     }
 
     @PostMapping("getAllCert")
-    public ResultVO getAllCert(@RequestParam(value = "talentId") String talentId){
+    public ResultVO getAllCert(@RequestParam(value = "talentId") String talentId) {
         return iTalentService.getAllCert(talentId);
 
     }
