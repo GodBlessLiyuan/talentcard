@@ -3,15 +3,14 @@ package com.talentcard.web.controller;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.BatchCertificateDTO;
 import com.talentcard.web.service.ITalentService;
-import com.talentcard.web.utils.BatchCertificateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -221,5 +220,11 @@ public class TalentController {
     @RequestMapping("sendMessage")
     public ResultVO sendMessage(HttpSession session, @RequestParam(value = "openId", defaultValue = "") String openId) {
         return this.iTalentService.sendMessage(session,openId);
+    }
+
+    @PostMapping("getAllCert")
+    public ResultVO getAllCert(@RequestParam(value = "talentId") String talentId){
+        return iTalentService.getAllCert(talentId);
+
     }
 }
