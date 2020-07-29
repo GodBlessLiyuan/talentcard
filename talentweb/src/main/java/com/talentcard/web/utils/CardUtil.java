@@ -192,4 +192,8 @@ public class CardUtil {
     public static String getCardName(CardPO cardPO) {
         return cardPO.getTitle()+"/"+cardPO.getInitialWord();
     }
+
+    public static String getCardNum(CardPO cardPO) {
+        return cardPO.getTitle()+"/"+cardPO.getCurrNum();
+    }
 }

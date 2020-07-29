@@ -12,6 +12,7 @@ import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.IInsertCertificationService;
 import com.talentcard.web.service.ILogService;
@@ -118,7 +119,6 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             return new ResultVO(2900, "新增审批时，人才状态不对！");
         }
         Byte status;
-        String statuString="";
         if (result == 1) {
             //通过
             status = InsertCertificationConstant.approveStatus;
@@ -331,6 +331,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(talentPO.getOpenId());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmExam,
+                "审批人才\"%s\"的认证信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
