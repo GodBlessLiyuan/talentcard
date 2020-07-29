@@ -13,12 +13,15 @@ import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.MessageDTO;
+import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IPolicyApplyService;
 import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.PolicyApplyDetailVO;
 import com.talentcard.web.vo.PolicyApplyVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -45,7 +48,8 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     private TalentMapper talentMapper;
     private static final String[] EXPORT_TITLES = {"序号", "政策名称", "政策编号", "申请人", "申请时间", "状态", "银行卡号",
             "开户行名", "持卡人"};
-
+    @Autowired
+    private ILogService logService;
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap) {
         Page<PolicyApplyBO> page = PageHelper.startPage(pageNum, pageSize);
@@ -65,6 +69,12 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
 
     @Override
     public ResultVO approval(HttpSession session, Long paid, Byte status, String opinion) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         PolicyApplyPO applyPO = policyApplyMapper.selectByPrimaryKey(paid);
         if (null == applyPO) {
             return new ResultVO(1001);
@@ -104,6 +114,8 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         messageDTO.setRemark("点击查看详情");
         messageDTO.setUrl(WebParameterUtil.getMyApplicationUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager,OpsRecordMenuConstant.S_PolicyManager,
+                "审批%s政策",applyPO.getPolicyName());
         return new ResultVO(1000);
     }
 

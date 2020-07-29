@@ -2,6 +2,7 @@ package com.talentcard.web.service;
 
 import com.talentcard.common.vo.ResultVO;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 /**
@@ -20,5 +21,5 @@ public interface IStaffService {
      */
     ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap);
 
-    ResultVO delete(Long staffId);
+    ResultVO delete(HttpSession session,Long staffId);
 }

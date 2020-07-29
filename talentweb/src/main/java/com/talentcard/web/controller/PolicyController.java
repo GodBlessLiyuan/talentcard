@@ -59,8 +59,8 @@ public class PolicyController {
     }
 
     @RequestMapping("delete")
-    public ResultVO update(@RequestParam(value = "pid") Long pid) {
-        return service.delete(pid);
+    public ResultVO update(HttpSession session,@RequestParam(value = "pid") Long pid) {
+        return service.delete(session,pid);
     }
 
     @RequestMapping("detail")
@@ -75,7 +75,7 @@ public class PolicyController {
      * @return
      */
     @RequestMapping("upload")
-    public ResultVO upload(@Param("file") MultipartFile file) {
-        return service.upload(file);
+    public ResultVO upload(HttpSession session,@Param("file") MultipartFile file) {
+        return service.upload(session,file);
     }
 }

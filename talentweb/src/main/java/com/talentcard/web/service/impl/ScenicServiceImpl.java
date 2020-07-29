@@ -1,5 +1,6 @@
 package com.talentcard.web.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.talentcard.common.mapper.*;
@@ -13,8 +14,10 @@ import com.talentcard.common.utils.QrCodeUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.EditTripTimesDTO;
 import com.talentcard.web.dto.ScenicDTO;
+import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IScenicService;
 import com.talentcard.web.vo.ScenicDetailVO;
 import com.talentcard.web.vo.ScenicVO;
@@ -26,11 +29,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import javax.smartcardio.Card;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author: xiahui
@@ -56,7 +57,9 @@ public class ScenicServiceImpl implements IScenicService {
     private RedisMapUtil redisMapUtil;
     @Autowired
     private CardMapper cardMapper;
-
+    @Autowired
+    private ILogService logService;
+    private static final Logger logger=LoggerFactory.getLogger(ScenicServiceImpl.class);
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
         Page<ScenicPO> page = PageHelper.startPage(pageNum, pageSize);
@@ -66,7 +69,13 @@ public class ScenicServiceImpl implements IScenicService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultVO edit(ScenicDTO dto) {
+    public ResultVO edit(HttpSession session,ScenicDTO dto) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         dto.setCategoryIds(new Long[]{100L});
         ScenicPO existPO = scenicMapper.queryByName(dto.getName());
         if (null == dto.getScenicId()) {
@@ -100,7 +109,8 @@ public class ScenicServiceImpl implements IScenicService {
             if (picPOs.size() > 0) {
                 scenicPictureMapper.batchInsert(picPOs);
             }
-
+            logService.insertActionRecord(session, OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FreeTrip,
+                    "新增%s景区",scenicPO.getName());
             return new ResultVO(1000);
         }
 
@@ -140,12 +150,20 @@ public class ScenicServiceImpl implements IScenicService {
 
         tripGroupAuthorityMapper.clear();
         redisMapUtil.del("talentTrip");
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FreeTrip,
+                "编辑%s景区",scenicPO.getName());
         return new ResultVO(1000);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultVO status(Long scenicId, Byte status) {
+    public ResultVO status(HttpSession session,Long scenicId, Byte status) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         ScenicPO scenicPO = scenicMapper.selectByPrimaryKey(scenicId);
         if (null == scenicPO) {
             return new ResultVO(1102);
@@ -162,6 +180,8 @@ public class ScenicServiceImpl implements IScenicService {
 //        scenicMapper.updateStatus(scenicId, status);
         tripGroupAuthorityMapper.clear();
         redisMapUtil.del("talentTrip");
+        logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FreeTrip,
+                "%s架%s景区",1 == status?"上":"下",scenicPO.getName());
         return new ResultVO(1000);
     }
 
@@ -234,13 +254,27 @@ public class ScenicServiceImpl implements IScenicService {
     }
 
     @Override
-    public ResultVO upload(MultipartFile file) {
+    public ResultVO upload(HttpSession session,MultipartFile file) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getScenicDir(), "scenic");
+        logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FreeTrip,
+                "%s上传景区文件",(String) session.getAttribute("username"));
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 
     @Override
-    public ResultVO setTripTimes(EditTripTimesDTO editTripTimesDTO) {
+    public ResultVO setTripTimes(HttpSession session,EditTripTimesDTO editTripTimesDTO) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         Long[] cardIdArray = editTripTimesDTO.getCardId();
         Integer[] tripTimes = editTripTimesDTO.getTripTimes();
         CardPO cardPO;
@@ -250,7 +284,9 @@ public class ScenicServiceImpl implements IScenicService {
         if (cardIdArray.length != tripTimes.length) {
             return new ResultVO(2680);
         }
+        List<Map<String,Object>> list=new ArrayList<>(editTripTimesDTO.getCardId().length);
         for (int i = 0; i < cardIdArray.length; i++) {
+            Map<String,Object> map=new HashMap<>(2);
             cardPO = null;
             cardPO = cardMapper.selectByPrimaryKey(cardIdArray[i]);
             if (cardPO == null) {
@@ -258,7 +294,14 @@ public class ScenicServiceImpl implements IScenicService {
             }
             cardPO.setTripTimes(tripTimes[i]);
             cardMapper.updateByPrimaryKeySelective(cardPO);
+            map.put("cardName",cardPO.getName()+cardPO.getInitialWord());
+            map.put("tripTimes",tripTimes[i]);
+            list.add(map);
         }
+
+        logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FreeTrip,
+                "{\"message\":\"设置一批卡次数\",\"data\":%s}",JSON.toJSONString(list));//{"message":"设置一批卡次数","data":[{"1":"hah"}]}
+
         return new ResultVO(1000);
     }
 }

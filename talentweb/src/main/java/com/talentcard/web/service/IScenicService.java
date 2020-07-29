@@ -6,6 +6,7 @@ import com.talentcard.web.dto.EditTripTimesDTO;
 import com.talentcard.web.dto.ScenicDTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -18,13 +19,13 @@ import java.util.Map;
 public interface IScenicService {
     ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap);
 
-    ResultVO edit(ScenicDTO dto);
+    ResultVO edit(HttpSession session,ScenicDTO dto);
 
-    ResultVO status(Long scenicId, Byte status);
+    ResultVO status(HttpSession session,Long scenicId, Byte status);
 
     ResultVO detail(Long scenicId);
 
-    ResultVO upload(MultipartFile file);
+    ResultVO upload(HttpSession session,MultipartFile file);
 
-    ResultVO setTripTimes(EditTripTimesDTO editTripTimesDTO);
+    ResultVO setTripTimes(HttpSession session,EditTripTimesDTO editTripTimesDTO);
 }

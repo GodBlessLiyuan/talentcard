@@ -50,7 +50,7 @@ public interface IPolicyService {
      * @param pid
      * @return
      */
-    ResultVO delete(Long pid);
+    ResultVO delete(HttpSession session,Long pid);
 
     /**
      * 查看详情
@@ -66,5 +66,5 @@ public interface IPolicyService {
      * @param file
      * @return
      */
-    ResultVO upload(MultipartFile file);
+    ResultVO upload(HttpSession session,MultipartFile file);
 }
