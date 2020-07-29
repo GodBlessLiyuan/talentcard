@@ -1,9 +1,7 @@
 package com.talentcard.web.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.ActivcateBO;
-import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.constant.EditTalentRecordConstant;
 import com.talentcard.common.dto.EducationDTO;
 import com.talentcard.common.dto.ProfQualityDTO;
@@ -13,6 +11,7 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.EditTalentConstant;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.*;
 import com.talentcard.web.utils.MessageUtil;
@@ -66,10 +65,16 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     @Autowired
     IEditTalentRecordService iEditTalentRecordService;
     private byte ADD_VERIFY = 1;
-
+    @Autowired
+    private ILogService logService;
 
     @Override
     public ResultVO addEducation(HttpSession httpSession, EducationDTO educationDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String openId = educationDTO.getOpenId();
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         if (activcateBO == null) {
@@ -154,12 +159,19 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "新增人才\"%s\"的学历信息",talentPO.getName());
         return new ResultVO(1000);
 
     }
 
     @Override
     public ResultVO addProfQuality(HttpSession httpSession, ProfQualityDTO profQualityDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String openId = profQualityDTO.getOpenId();
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         if (activcateBO == null) {
@@ -238,11 +250,18 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "新增人才\"%s\"的职业资格信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
     public ResultVO addProfTitle(HttpSession httpSession, ProfTitleDTO profTitleDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String openId = profTitleDTO.getOpenId();
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         if (activcateBO == null) {
@@ -321,11 +340,18 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "新增人才\"%s\"的职称信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
     public ResultVO addTalentHonour(HttpSession httpSession, TalentHonourDTO talentHonourDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String openId = talentHonourDTO.getOpenId();
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         if (activcateBO == null) {
@@ -405,12 +431,19 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "新增人才\"%s\"的主要人才荣誉",talentPO.getName());
         return new ResultVO(1000);
     }
 
 
     @Override
     public ResultVO deleteEducation(HttpSession httpSession, String openId, Long educId, String opinion) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         //查教育
         EducationPO educationPO = educationMapper.selectByPrimaryKey(educId);
         if (educationPO == null) {
@@ -476,11 +509,18 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "删除人才\"%s\"的学历信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
     public ResultVO deleteProfQuality(HttpSession httpSession, String openId, Long pqId, String opinion) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         //查职业资格表
         ProfQualityPO profQualityPO = profQualityMapper.selectByPrimaryKey(pqId);
         if (profQualityPO == null) {
@@ -543,11 +583,18 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "删除人才\"%s\"的职业资格信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
     public ResultVO deleteProfTitle(HttpSession httpSession, String openId, Long ptId, String opinion) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         //先查询，再查人才表，两个的id不一致，返回2500
         ProfTitlePO profTitlePO = profTitleMapper.selectByPrimaryKey(ptId);
         if (profTitlePO == null) {
@@ -606,11 +653,18 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "删除人才\"%s\"的职称信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
     public ResultVO deleteTalentHonour(HttpSession httpSession, String openId, Long thId, String opinion) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         TalentHonourPO talentHonourPO = talentHonourMapper.selectByPrimaryKey(thId);
         if (talentHonourPO == null) {
             return new ResultVO(2662, "删除失败！");
@@ -669,6 +723,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "删除人才\"%s\"的主要人才荣誉",talentPO.getName());
         return new ResultVO(1000);
     }
 }
