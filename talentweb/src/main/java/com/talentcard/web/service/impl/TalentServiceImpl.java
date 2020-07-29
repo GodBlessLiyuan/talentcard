@@ -20,10 +20,7 @@ import com.talentcard.web.dto.BatchCertificateDTO;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.ITalentService;
-import com.talentcard.web.utils.AccessTokenUtil;
-import com.talentcard.web.utils.BatchCertificateUtil;
-import com.talentcard.web.utils.MessageUtil;
-import com.talentcard.web.utils.WebParameterUtil;
+import com.talentcard.web.utils.*;
 import com.talentcard.web.vo.EditTalentRecordVO;
 import com.talentcard.web.vo.TalentDetailVO;
 import com.talentcard.web.vo.TalentVO;
@@ -242,6 +239,7 @@ public class TalentServiceImpl implements ITalentService {
         String url;
         Integer successNum = 0;
         Integer failureNum = 0;
+        CardPO cardPO=null;
         try {
             // TODO: 业务逻辑
             List<Integer> resultList = new ArrayList<>();
@@ -251,7 +249,7 @@ public class TalentServiceImpl implements ITalentService {
                 resultList.add(result);
             }
 
-            CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
+            cardPO = cardMapper.selectByPrimaryKey(cardId);
             if (cardPO == null) {
                 logger.info("拿不到cardPO，cardId为：{}", cardId);
             }
@@ -305,8 +303,12 @@ public class TalentServiceImpl implements ITalentService {
         batchCertificatePO.setUpdateTime(new Date());
         batchCertificatePO.setStatus((byte) 2);
         batchCertificateMapper.updateByPrimaryKeySelective(batchCertificatePO);
+        /**
+         * 批量认证为"#人才卡名称/编号#"，总计:“#总条数#”，成功:“#成功条数#”，失败:“#失败条数#”
+         * */
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_CommentUser,
-                "批量认证");
+                "\"%s\"，总计：\"%s\"，成功：\"%s\"，失败：\"%s\"", CardUtil.getCardNum(cardPO),(successNum + failureNum)+"",
+                 successNum.toString(),failureNum.toString());
         return new ResultVO(1000, url);
     }
 

@@ -116,10 +116,11 @@ public class EditTalentController {
      * @return
      */
     @RequestMapping("changeCard")
-    public ResultVO changeCard(@RequestParam(value = "talentId") Long talentId,
+    public ResultVO changeCard(HttpSession session,
+                               @RequestParam(value = "talentId") Long talentId,
                                @RequestParam(value = "cardId") Long cardId,
                                @RequestParam(value = "opinion") String opinion) {
-        return iEditTalentService.changeCard(talentId, cardId, opinion);
+        return iEditTalentService.changeCard(session,talentId, cardId, opinion);
     }
 
     /**

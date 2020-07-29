@@ -11,6 +11,7 @@ import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.EditTalentPolicyDTO;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.*;
@@ -83,7 +84,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Autowired
     ICertApprovalService iCertApprovalService;
     private byte EDIT_VERIFY = 2;
-
+    @Autowired
+    private ILogService logService;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editBasicInfo(HttpSession httpSession, BasicInfoDTO basicInfoDTO) {
@@ -608,7 +610,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultVO changeCard(Long talentId, Long newCardId, String opinion) {
+    public ResultVO changeCard(HttpSession session,Long talentId, Long newCardId, String opinion) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
         if (talentPO == null) {
             return new ResultVO(2500);
@@ -709,6 +717,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 清缓存
          */
         iTalentService.clearRedisCache(talentPO.getOpenId());
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的人才卡",talentPO.getName());
         return new ResultVO(1000);
     }
 

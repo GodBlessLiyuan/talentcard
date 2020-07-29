@@ -72,7 +72,7 @@ public interface IEditTalentService {
      * @param cardId
      * @return
      */
-    ResultVO changeCard(Long talentId, Long cardId, String opinion);
+    ResultVO changeCard(HttpSession session,Long talentId, Long cardId, String opinion);
 
     /**
      * 可以更换的卡查询
