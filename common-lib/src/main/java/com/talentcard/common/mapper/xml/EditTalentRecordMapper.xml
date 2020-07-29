@@ -148,5 +148,6 @@
     from t_edit_talent_record e
     left join t_user u on e.user_id = u.user_id
     where talent_id = #{talentId,jdbcType=VARCHAR}
+    order by e.etc_id desc
   </select>
 </mapper>
