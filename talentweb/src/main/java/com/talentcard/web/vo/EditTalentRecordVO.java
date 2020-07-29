@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.EditTalentRecordBO;
 import com.talentcard.common.constant.EditTalentRecordConstant;
 import com.talentcard.common.utils.DateUtil;
+import com.talentcard.web.utils.BatchCertificateUtil;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 
@@ -44,12 +45,31 @@ public class EditTalentRecordVO {
             vo.setEtc_id(Integer.valueOf(String.valueOf(bo.getEtcId())));
             vo.setOperation_content(Integer.valueOf(String.valueOf(bo.getOperationContent())));
             vo.setOperation_type(Integer.valueOf(String.valueOf(bo.getOperationType())));
-            if(!StringUtils.isEmpty(bo.getBeforeJsonRecord())) {
-                vo.setBefore_json(JSONObject.parseObject(bo.getBeforeJsonRecord()));
+
+            //人才类型时，将对应的数据转为成可视文字
+            if(bo.getOperationContent() == (byte)EditTalentRecordConstant.talentCategoryContent){
+                if(!StringUtils.isEmpty(bo.getBeforeJsonRecord())) {
+                    JSONObject jsonObject = JSONObject.parseObject(bo.getBeforeJsonRecord());
+                    String category = jsonObject.getString("category");
+                    jsonObject.put("category",BatchCertificateUtil.convertTalentCategory(category));
+                    vo.setBefore_json(jsonObject);
+                }
+                if(!StringUtils.isEmpty(bo.getAfterJsonRecord())) {
+                    JSONObject jsonObject = JSONObject.parseObject(bo.getAfterJsonRecord());
+                    String category = jsonObject.getString("category");
+                    jsonObject.put("category",BatchCertificateUtil.convertTalentCategory(category));
+                    vo.setAfter_json(jsonObject);
+                }
+            } else {
+                if(!StringUtils.isEmpty(bo.getBeforeJsonRecord())) {
+                    vo.setBefore_json(JSONObject.parseObject(bo.getBeforeJsonRecord()));
+                }
+                if(!StringUtils.isEmpty(bo.getAfterJsonRecord())) {
+                    vo.setAfter_json(JSONObject.parseObject(bo.getAfterJsonRecord()));
+                }
             }
-            if(!StringUtils.isEmpty(bo.getAfterJsonRecord())) {
-                vo.setAfter_json(JSONObject.parseObject(bo.getAfterJsonRecord()));
-            }
+
+
             vo.setComment(bo.getComment());
             vo.setUser_name(bo.getUserName());
             vo.setCreate_time(DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD));
