@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -50,9 +51,9 @@ public class CardController {
                         @RequestParam(value = "status") Byte status,
                         @RequestParam(value = "color", required = false, defaultValue = "Color030") String color,
                         @RequestParam(value = "tripTimes", required = false, defaultValue = "0") Integer tripTimes,
-                        HttpSession httpSession) {
+                        HttpServletRequest request) {
         return iCardService.add(name, title, notice, description, prerogative,
-                background, initialWord, areaNum, businessDescription, status, color, tripTimes, httpSession);
+                background, initialWord, areaNum, businessDescription, status, color, tripTimes, request.getSession());
     }
 
 
@@ -62,8 +63,8 @@ public class CardController {
                          @RequestParam(value = "businessDescription", required = false, defaultValue = "") String businessDescription,
                          @RequestParam(value = "background", required = false) MultipartFile background,
                          @RequestParam(value = "tripTimes", required = false, defaultValue = "0") Integer tripTimes,
-                         HttpSession httpSession) {
-        return iCardService.edit(cardId, title, businessDescription, background, tripTimes, httpSession);
+                         HttpServletRequest request) {
+        return iCardService.edit(cardId, title, businessDescription, background, tripTimes, request.getSession());
     }
 
     @PostMapping("query")
@@ -93,8 +94,8 @@ public class CardController {
      * 操作日志，要加session
      * */
     @PostMapping("delete")
-    public ResultVO delete(@RequestParam(value = "cardId") Long cardId,HttpSession httpSession) {
-        return iCardService.delete(cardId,httpSession);
+    public ResultVO delete(@RequestParam(value = "cardId") Long cardId,HttpServletRequest request) {
+        return iCardService.delete(cardId,request.getSession());
     }
 
     @PostMapping("findSeniorCard")

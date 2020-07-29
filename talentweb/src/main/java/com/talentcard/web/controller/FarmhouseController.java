@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +67,7 @@ public class FarmhouseController {
      */
     @RequestMapping("edit")
     public ResultVO edit(HttpSession session, @RequestBody FarmhouseDTO dto) {
-        return farmhouseService.edit(session,dto);
+        return farmhouseService.edit(session, dto);
     }
 
     /**
@@ -77,8 +78,8 @@ public class FarmhouseController {
      * @return
      */
     @RequestMapping("status")
-    public ResultVO status(HttpSession session,@Param("farmhouseId") Long farmhouseId, @Param("status") Byte status) {
-        return farmhouseService.status(session,farmhouseId, status);
+    public ResultVO status(HttpSession session, @Param("farmhouseId") Long farmhouseId, @Param("status") Byte status) {
+        return farmhouseService.status(session, farmhouseId, status);
     }
 
     /**
@@ -99,7 +100,7 @@ public class FarmhouseController {
      * @return
      */
     @RequestMapping("upload")
-    public ResultVO upload(HttpSession session,@Param("file") MultipartFile file) {
-        return farmhouseService.upload(session,file);
+    public ResultVO upload(HttpServletRequest request, @Param("file") MultipartFile file) {
+        return farmhouseService.upload(request.getSession(), file);
     }
 }

@@ -22,15 +22,15 @@ public class UserFeedbackController {
 
     @Autowired
     private IUserFeedbackService userFeedbackService;
+
     @PostMapping("query")
-    public ResultVO query(@RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
-                          @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
-                          @RequestParam(value = "pageType",required = false)Byte pageType,
-                          @RequestParam(value = "chooseItem",required = false)String chooseItem)
-    {
-        Map<String,Object> map=new HashMap<>();
-        map.put("pageType",pageType);
-        map.put("chooseItem",chooseItem);
-        return userFeedbackService.query(pageNum,pageSize,map);
+    public ResultVO query(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                          @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                          @RequestParam(value = "pageType", required = false) Byte pageType,
+                          @RequestParam(value = "chooseItem", required = false) String chooseItem) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("pageType", pageType);
+        map.put("chooseItem", chooseItem);
+        return userFeedbackService.query(pageNum, pageSize, map);
     }
 }
