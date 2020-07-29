@@ -1,8 +1,11 @@
 package com.talentcard.web.vo;
 
+import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.EditTalentRecordBO;
 import com.talentcard.common.constant.EditTalentRecordConstant;
+import com.talentcard.common.utils.DateUtil;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +20,9 @@ public class EditTalentRecordVO {
 
     private Integer operation_type;
 
-    private String before_json;
+    private JSONObject before_json;
 
-    private String after_json;
+    private JSONObject after_json;
 
     private String comment;
 
@@ -41,11 +44,15 @@ public class EditTalentRecordVO {
             vo.setEtc_id(Integer.valueOf(String.valueOf(bo.getEtcId())));
             vo.setOperation_content(Integer.valueOf(String.valueOf(bo.getOperationContent())));
             vo.setOperation_type(Integer.valueOf(String.valueOf(bo.getOperationType())));
-            vo.setBefore_json(bo.getBeforeJsonRecord());
-            vo.setAfter_json(bo.getAfterJsonRecord());
+            if(!StringUtils.isEmpty(bo.getBeforeJsonRecord())) {
+                vo.setBefore_json(JSONObject.parseObject(bo.getBeforeJsonRecord()));
+            }
+            if(!StringUtils.isEmpty(bo.getAfterJsonRecord())) {
+                vo.setAfter_json(JSONObject.parseObject(bo.getAfterJsonRecord()));
+            }
             vo.setComment(bo.getComment());
             vo.setUser_name(bo.getUserName());
-            vo.setCreate_time(bo.getCreateTime().toString());
+            vo.setCreate_time(DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD));
 
             //设置
             String fir = EditTalentRecordConstant.operationTypeMap.get(bo.getOperationType());
