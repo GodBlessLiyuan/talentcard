@@ -5,6 +5,7 @@ import com.talentcard.web.service.IStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 /**
@@ -46,7 +47,7 @@ public class StaffController {
     }
 
     @PostMapping("delete")
-    public ResultVO delete(@RequestParam("staffId") Long staffId) {
-        return iStaffService.delete(staffId);
+    public ResultVO delete(HttpSession session, @RequestParam("staffId") Long staffId) {
+        return iStaffService.delete(session,staffId);
     }
 }

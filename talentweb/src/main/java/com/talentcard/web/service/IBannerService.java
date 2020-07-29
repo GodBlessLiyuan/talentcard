@@ -4,6 +4,7 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.BannerDTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -15,11 +16,11 @@ import java.util.Map;
 public interface IBannerService {
     ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap);
 
-    ResultVO insert(BannerDTO dto);
+    ResultVO insert(HttpSession session,BannerDTO dto);
 
-    ResultVO status(Long bid, Byte status);
+    ResultVO status(HttpSession session,Long bid, Byte status);
 
-    ResultVO delete(Long bid);
+    ResultVO delete(HttpSession session,Long bid);
 
-    ResultVO upload(MultipartFile file);
+    ResultVO upload(HttpSession session,MultipartFile file);
 }

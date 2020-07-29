@@ -23,6 +23,7 @@ public class OpsRecordMenuConstant {
     public static final String S_OptionFeedBack="意见反馈";
     public static final String S_FreeTrip="免费旅游";
     public static final String S_FarmHouse="农家乐";
+    public static final String S_Staff_Config="员工绑定信息";
     public static final String S_FeedBack="问题收集";
 
     public static String S_SendMessage="发送消息";

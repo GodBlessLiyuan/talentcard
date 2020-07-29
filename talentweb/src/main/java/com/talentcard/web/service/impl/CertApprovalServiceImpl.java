@@ -8,8 +8,10 @@ import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.WechatApiUtil;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ICertApprovalService;
+import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.MessageUtil;
@@ -76,7 +78,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     InsertCertificationMapper insertCertificationMapper;
     @Autowired
     CertApprovalPassRecordMapper certApprovalPassRecordMapper;
-
+    @Autowired
+    private ILogService logService;
     /**
      * 审批result的值含义
      */
@@ -117,10 +120,13 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO confirmCert(HttpSession session, Map<String, Object> reqData) {
-
-        // 判断审批结果，如果审批通过，需要多表更新；审批不通过则只新增认证审批表的信息
-        //首先获取审批人的用户id
+        //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
+        // 判断审批结果，如果审批通过，需要多表更新；审批不通过则只新增认证审批表的信息
         Byte result = (Byte) reqData.get("result");
         Long certId = (Long) reqData.get("certId");
         Long talentId = (Long) reqData.get("talentId");
@@ -479,7 +485,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
          * 清除redis缓存
          */
         talentService.clearRedisCache(openId);
-
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmExam,"审批同意%s的人才信息",currentTalent.getName());
         return new ResultVO(1000);
 
     }

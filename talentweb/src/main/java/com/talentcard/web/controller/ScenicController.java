@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,8 +71,8 @@ public class ScenicController {
      * @return
      */
     @RequestMapping("edit")
-    public ResultVO edit(@RequestBody ScenicDTO dto) {
-        return scenicService.edit(dto);
+    public ResultVO edit(HttpSession session,@RequestBody ScenicDTO dto) {
+        return scenicService.edit(session,dto);
     }
 
     /**
@@ -82,8 +83,8 @@ public class ScenicController {
      * @return
      */
     @RequestMapping("status")
-    public ResultVO status(@Param("scenicId") Long scenicId, @Param("status") Byte status) {
-        return scenicService.status(scenicId, status);
+    public ResultVO status(HttpSession session, @Param("scenicId") Long scenicId, @Param("status") Byte status) {
+        return scenicService.status(session,scenicId, status);
     }
 
     /**
@@ -104,8 +105,8 @@ public class ScenicController {
      * @return
      */
     @RequestMapping("upload")
-    public ResultVO upload(@Param("file") MultipartFile file) {
-        return scenicService.upload(file);
+    public ResultVO upload(HttpSession session,@Param("file") MultipartFile file) {
+        return scenicService.upload(session,file);
     }
 
     /**
@@ -115,7 +116,7 @@ public class ScenicController {
      * @return
      */
     @RequestMapping("setTripTimes")
-    public ResultVO setTripTimes(@RequestBody EditTripTimesDTO editTripTimesDTO) {
-        return scenicService.setTripTimes(editTripTimesDTO);
+    public ResultVO setTripTimes(HttpSession session,@RequestBody EditTripTimesDTO editTripTimesDTO) {
+        return scenicService.setTripTimes(session,editTripTimesDTO);
     }
 }

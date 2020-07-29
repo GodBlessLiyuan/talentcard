@@ -7,12 +7,15 @@ import com.talentcard.common.pojo.StaffPO;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
+import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IStaffService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +31,8 @@ public class StaffServiceImpl implements IStaffService {
     private static final Logger logger = LoggerFactory.getLogger(StaffServiceImpl.class);
     @Autowired
     private StaffMapper staffMapper;
-
+    @Autowired
+    private ILogService logService;
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
         Page<StaffPO> page = PageHelper.startPage(pageNum, pageSize);
@@ -37,7 +41,13 @@ public class StaffServiceImpl implements IStaffService {
     }
 
     @Override
-    public ResultVO delete(Long staffId) {
+    public ResultVO delete(HttpSession session,Long staffId) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         StaffPO staffPO = staffMapper.selectByPrimaryKey(staffId);
         if (staffPO == null) {
             return new ResultVO(2503, "没有此员工");
@@ -47,6 +57,8 @@ public class StaffServiceImpl implements IStaffService {
         if (updateResult == 0) {
             logger.error("update staffMapper error");
         }
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_Staff_Config,
+                "%s删除员工%s",(String)session.getAttribute("username"),staffPO.getName());
         return new ResultVO(1000);
     }
 }
