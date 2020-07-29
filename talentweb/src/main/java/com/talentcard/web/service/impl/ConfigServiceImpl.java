@@ -55,8 +55,11 @@ public class ConfigServiceImpl implements IConfigService {
 
         RedisUtil.setConfigValue(key, value);
         ActivityResidueNumUtil.reviseNum();
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FreeTrip,
-                "配置权益数量");
+        String menu_second="";
+        if("FARMHOUSE_INFO".equals(key)) menu_second=OpsRecordMenuConstant.S_FarmHouse;
+        else if("SCENIC_INFO".equals(key)) menu_second=OpsRecordMenuConstant.S_FreeTrip;
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_ExternalFunction,menu_second,
+                "配置关于信息");
         return new ResultVO(1000);
     }
 }
