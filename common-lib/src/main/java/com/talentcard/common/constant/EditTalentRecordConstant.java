@@ -51,5 +51,6 @@ public class EditTalentRecordConstant {
         operationContentMap.put(honourContent,"人才荣誉");
         operationContentMap.put(talentCategoryContent,"人才类别");
         operationContentMap.put(basicInfoContent,"基本信息");
+        operationContentMap.put(talentCard,"人才卡");
     }
 }
