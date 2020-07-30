@@ -28,6 +28,8 @@ public class MessageUtil {
 
     private static String editTalentTemplate;
 
+    private static String sendTalentUnConfirmTemplate;
+
     @Value("${wechat.template_id}")
     public void setTemplateId(String templateId) {
         MessageUtil.templateId = templateId;
@@ -47,7 +49,10 @@ public class MessageUtil {
     public void setEditTalentTemplate(String editTalentTemplate) {
         MessageUtil.editTalentTemplate = editTalentTemplate;
     }
-
+    @Value("${wechat.sendTalentUnConfirmTemplate}")
+    public static void setSendTalentUnConfirmTemplate(String sendTalentUnConfirmTemplate) {
+        MessageUtil.sendTalentUnConfirmTemplate = sendTalentUnConfirmTemplate;
+    }
     //注册完，审批完
     public static String sendTemplateMessage(MessageDTO messageDTO) {
         String at = AccessTokenUtil.getAccessToken();
@@ -67,6 +72,8 @@ public class MessageUtil {
         } else if (messageDTO.getTemplateId() == 4) {
             //政策审批
             weChatTemDto.setTemplate_id(editTalentTemplate);
+        }else if(messageDTO.getTemplateId()==5){
+            weChatTemDto.setTemplate_id(sendTalentUnConfirmTemplate);
         }
         weChatTemDto.setUrl(messageDTO.getUrl());
         Map<String, TemplateDataDTO> map = new HashMap<>(6);
