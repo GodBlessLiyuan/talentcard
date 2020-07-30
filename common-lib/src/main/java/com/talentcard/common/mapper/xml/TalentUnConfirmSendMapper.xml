@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.TalentUnConfirmSendMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentUnConfirmSendPO">
+    <id column="t_tsend_id" jdbcType="BIGINT" property="tTsendId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="open_id" jdbcType="CHAR" property="openId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    t_tsend_id, talent_id, open_id, `status`, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_talent_un_confirm_send
+    where t_tsend_id = #{tTsendId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_talent_un_confirm_send
+    where t_tsend_id = #{tTsendId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.TalentUnConfirmSendPO">
+    insert into t_talent_un_confirm_send (t_tsend_id, talent_id, open_id, 
+      `status`, create_time, update_time
+      )
+    values (#{tTsendId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, 
+      #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentUnConfirmSendPO">
+    insert into t_talent_un_confirm_send
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tTsendId != null">
+        t_tsend_id,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tTsendId != null">
+        #{tTsendId,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentUnConfirmSendPO">
+    update t_talent_un_confirm_send
+    <set>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where t_tsend_id = #{tTsendId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentUnConfirmSendPO">
+    update t_talent_un_confirm_send
+    set talent_id = #{talentId,jdbcType=BIGINT},
+      open_id = #{openId,jdbcType=CHAR},
+      `status` = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where t_tsend_id = #{tTsendId,jdbcType=BIGINT}
+  </update>
+</mapper>
