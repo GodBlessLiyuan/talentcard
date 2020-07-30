@@ -4,6 +4,7 @@ import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.bo.TalentCertStatusBO;
 import com.talentcard.common.pojo.TalentPO;
+import com.talentcard.common.pojo.TalentUnConfirmSendPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -190,4 +191,6 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
      * @return
      */
     List<TalentPO> queryAllNullUnionId();
+    //按照主键之后，截止时间之前的未认证的的
+    List<TalentUnConfirmSendPO> queryByBreakIDAndTime(@Param("unSendID") long unSendID, @Param("time") String time,@Param("status") Byte status);
 }

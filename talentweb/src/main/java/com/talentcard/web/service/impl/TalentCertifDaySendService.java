@@ -10,11 +10,16 @@ import com.talentcard.common.pojo.TalentUnConfirmSendPO;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.MessageDTO;
+import com.talentcard.web.utils.MessageUtil;
+import com.talentcard.web.utils.WebParameterUtil;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,6 +40,8 @@ public class TalentCertifDaySendService {
     private ConfigMapper configMapper;
     @Autowired
     private TalentUnConfirmSendMapper talentUnConfirmSendMapper;
+    @Value("${talent_uncertification.sendIncr}")
+    private Integer SendIncr;//发送增量
     private static final Logger logger= LoggerFactory.getLogger(TalentCertifDaySendService.class);
    /***
     * 1：查询源数据，在一个断点id之后查询两天外的，搬到目标数据；
@@ -45,36 +52,63 @@ public class TalentCertifDaySendService {
     *  3：采取另外的思路是不断查源数据，发消息，写到数据库，最后晚10点是将目标数据没发的发一遍；（应该是对的，这里不再使用）
     * */
     @Scheduled(cron = "${talent_certification.dayTime}")
-    public ResultVO daySend(){
-        /**
-         * 如果时间超过22点则退出
-         * */
-        if(DateUtil.date2Str(new Date(),DateUtil.HM).compareTo("22:00")>0){
-            logger.info("超过22点，发送完毕");
-            return new ResultVO(1000,"超过22点，发送完毕");
-        }
+    @Transactional
+    public ResultVO daySend() {
         ConfigPO configPO = configMapper.selectByPrimaryKey(ConfigConst.UnTalent_ID);
-        if(configPO==null){
+        if (configPO == null) {
             logger.info("t_config表还未构建数据");
-            return new ResultVO(2000,"t_config表还未构建数据");
+            return new ResultVO(2000, "t_config表还未构建数据");
         }
-        Calendar calendar=Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         //源数据只搬运一次，如果更新时间是今天，则代表源数据搬运完成。这里代码只取年月日，首先判断更新时间小于当前
-        if(DateUtil.date2Str(configPO.getUpdateTime(),DateUtil.YMD).compareTo(DateUtil.date2Str(calendar.getTime(),DateUtil.YMD))<0){
+        if (DateUtil.date2Str(configPO.getUpdateTime(), DateUtil.YMD).compareTo(DateUtil.date2Str(calendar.getTime(), DateUtil.YMD)) < 0) {
             //构造两天前的数据
-            calendar.add(Calendar.DAY_OF_MONTH,-2);
-            List<TalentUnConfirmSendPO> originTalents=talentMapper.queryByBreakIDAndTime(Long.parseLong(configPO.getConfigKey()),DateUtil.date2Str(calendar.getTime(),DateUtil.YMD_HMS));
-            if(originTalents==null||originTalents.size()==0){
-                logger.info("人才未认证没有数据");
-                return new ResultVO(1000,"人才未认证没有数据");
+            calendar.add(Calendar.DAY_OF_MONTH, -2);
+            List<TalentUnConfirmSendPO> originTalents = talentMapper.queryByBreakIDAndTime(Long.parseLong(configPO.getConfigValue()), DateUtil.date2Str(calendar.getTime(), DateUtil.YMD_HMS), (byte) 2);
+            if (originTalents == null || originTalents.size() == 0) {
+                logger.info("t_talent表没有人才未认证的数据");
+                return new ResultVO(1000, "t_talent表没有人才未认证的数据");
             }
+            configPO.setConfigValue(originTalents.get(originTalents.size() - 1).getTalentId().toString());
+            configPO.setUpdateTime(new Date());
+            configMapper.updateByPrimaryKey(configPO);//更新状态
             talentUnConfirmSendMapper.batchInsert(originTalents);
-        }else{
+            logger.info("{}:未认证人才新增了{}条数据到表:t_talent_un_confirm_send",DateUtil.date2Str(new Date(),DateUtil.YMD_HMS),originTalents.size());
+            return new ResultVO(1000,"未认证人才新增了数据条数："+originTalents.size());
+        }
+        /**
+         * 执行不断发送的操作，（最初的一段时间不再用于发送了），
+         * 增量式发送
+         * */
+        List<TalentUnConfirmSendPO> sendingPOS = talentUnConfirmSendMapper.getUnSend((byte) 2, SendIncr);
+        if (sendingPOS == null || sendingPOS.size() == 0) {
+            logger.info("t_talent_un_confirm_send表的数据都发完了");
+            return new ResultVO(1000, "t_talent_un_confirm_send表的数据都发完了");
+        }
+        //构造目标，发送数据
+        MessageDTO messageDTO = new MessageDTO();
+        for (TalentUnConfirmSendPO sendingPO : sendingPOS) {
+            messageDTO.setOpenid(sendingPO.getOpenId());
+            TalentPO talentPO = talentMapper.selectByPrimaryKey(sendingPO.getTalentId());
+            messageDTO.setFirst("您好，您还未进行人才认证");
+            messageDTO.setKeyword1("申请人姓名：" + talentPO.getName());
+            messageDTO.setKeyword2("所属单位：" + talentPO.getWorkUnit());
+            messageDTO.setRemark("点击前往认证，认证后可享受多项人才权益哦");
+            messageDTO.setTemplateId(5);
+            messageDTO.setUrl(WebParameterUtil.getIndexUrl());//很多都是这个url
+            String s = MessageUtil.sendTemplateMessage(messageDTO);
+//            String s="success";//测试使用
+            //发送成功
+            if (!StringUtils.isEmpty(s)) {
+                sendingPO.setStatus((byte) 1);//已发
+                talentUnConfirmSendMapper.updateStatusAndUpdateTime(sendingPO);
+            }else{
+                logger.info("发送给{}失败",sendingPO.getOpenId());
+            }
 
         }
-
-
-
+        logger.info("{}:发送了{}条数据",DateUtil.date2Str(new Date(),DateUtil.YMD_HMS),sendingPOS.size());
+        return new ResultVO(1000,"本次发送的记录条数"+sendingPOS.size());
     }
 
 }

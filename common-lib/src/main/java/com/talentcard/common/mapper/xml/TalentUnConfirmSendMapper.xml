@@ -103,4 +103,23 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where t_tsend_id = #{tTsendId,jdbcType=BIGINT}
   </update>
+  <!--状态2代表未发-->
+  <insert id="batchInsert" parameterType="java.util.List">
+    insert into t_talent_un_confirm_send (talent_id, open_id,
+      `status`, create_time, update_time
+      ) values
+      <foreach collection="list" item="po" separator=",">
+        ( #{po.talentId,jdbcType=BIGINT}, #{po.openId,jdbcType=CHAR},
+         2, now(), now()  )
+      </foreach>
+  </insert>
+  <select id="getUnSend" resultType="com.talentcard.common.pojo.TalentUnConfirmSendPO">
+    select t_tsend_id as tTsendId, talent_id as talentId
+    from t_talent_un_confirm_send where status=#{status} limit #{sendIncr}
+  </select>
+  <update id="updateStatusAndUpdateTime" parameterType="com.talentcard.common.pojo.TalentUnConfirmSendPO">
+    update t_talent_un_confirm_send
+    set `status` = #{status,jdbcType=TINYINT},update_time = now()
+    where t_tsend_id = #{tTsendId,jdbcType=BIGINT}
+  </update>
 </mapper>
