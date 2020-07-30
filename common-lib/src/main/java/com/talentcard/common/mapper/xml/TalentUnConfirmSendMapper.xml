@@ -114,7 +114,7 @@
       </foreach>
   </insert>
   <select id="getUnSend" resultType="com.talentcard.common.pojo.TalentUnConfirmSendPO">
-    select t_tsend_id as tTsendId, talent_id as talentId
+    select t_tsend_id as tTsendId, talent_id as talentId,open_id as openId
     from t_talent_un_confirm_send where status=#{status} limit #{sendIncr}
   </select>
   <update id="updateStatusAndUpdateTime" parameterType="com.talentcard.common.pojo.TalentUnConfirmSendPO">

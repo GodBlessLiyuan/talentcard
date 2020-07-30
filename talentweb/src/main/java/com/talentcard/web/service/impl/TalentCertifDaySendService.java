@@ -1,5 +1,6 @@
 package com.talentcard.web.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.talentcard.common.constant.ConfigConst;
 import com.talentcard.common.mapper.ConfigMapper;
 import com.talentcard.common.mapper.TalentMapper;
@@ -94,16 +95,18 @@ public class TalentCertifDaySendService {
             messageDTO.setKeyword1("申请人姓名：" + talentPO.getName());
             messageDTO.setKeyword2("所属单位：" + talentPO.getWorkUnit());
             messageDTO.setRemark("点击前往认证，认证后可享受多项人才权益哦");
-            messageDTO.setTemplateId(5);
+            messageDTO.setTemplateId(4);
             messageDTO.setUrl(WebParameterUtil.getIndexUrl());//很多都是这个url
             String s = MessageUtil.sendTemplateMessage(messageDTO);
+            logger.info(s);
 //            String s="success";//测试使用
             //发送成功
-            if (!StringUtils.isEmpty(s)) {
+            if (!StringUtils.isEmpty(s)&& (Integer) JSON.parseObject(s).get("errcode")==0) {
                 sendingPO.setStatus((byte) 1);//已发
                 talentUnConfirmSendMapper.updateStatusAndUpdateTime(sendingPO);
+                logger.debug("发送给{}成功",sendingPO.getOpenId());
             }else{
-                logger.info("发送给{}失败",sendingPO.getOpenId());
+                logger.error("发送给{}失败",sendingPO.getOpenId());
             }
 
         }
