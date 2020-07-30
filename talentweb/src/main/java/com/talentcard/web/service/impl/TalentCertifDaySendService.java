@@ -2,12 +2,11 @@ package com.talentcard.web.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.talentcard.common.constant.ConfigConst;
-import com.talentcard.common.mapper.ConfigMapper;
-import com.talentcard.common.mapper.TalentMapper;
-import com.talentcard.common.mapper.TalentUnConfirmSendMapper;
+import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.ConfigPO;
 import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.pojo.TalentUnConfirmSendPO;
+import com.talentcard.common.pojo.UserCurrentInfoPO;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.MessageDTO;
@@ -44,6 +43,8 @@ public class TalentCertifDaySendService {
     @Value("${talent_uncertification.sendIncr}")
     private Integer SendIncr;//发送增量
     private static final Logger logger= LoggerFactory.getLogger(TalentCertifDaySendService.class);
+    @Autowired
+    private UserCurrentInfoMapper userCurrentInfoMapper;
    /***
     * 1：查询源数据，在一个断点id之后查询两天外的，搬到目标数据；
     * 目标数据按照没有被发送（已经包含发送失败的）（发送成功修改状态标志位）\
@@ -92,14 +93,18 @@ public class TalentCertifDaySendService {
             messageDTO.setOpenid(sendingPO.getOpenId());
             TalentPO talentPO = talentMapper.selectByPrimaryKey(sendingPO.getTalentId());
             messageDTO.setFirst("您好，您还未进行人才认证");
-            messageDTO.setKeyword1("申请人姓名：" + talentPO.getName());
-            messageDTO.setKeyword2("所属单位：" + talentPO.getWorkUnit());
+            messageDTO.setKeyword1(talentPO.getName());
+            if(!StringUtils.isEmpty(talentPO.getWorkUnit())){
+                messageDTO.setKeyword2( talentPO.getWorkUnit());
+            }else{
+                UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentPO.getTalentId());
+                messageDTO.setKeyword2(userCurrentInfoPO==null?"":userCurrentInfoPO.getSchool()+"在读");
+            }
             messageDTO.setRemark("点击前往认证，认证后可享受多项人才权益哦");
-            messageDTO.setTemplateId(4);
+            messageDTO.setTemplateId(5);
             messageDTO.setUrl(WebParameterUtil.getIndexUrl());//很多都是这个url
             String s = MessageUtil.sendTemplateMessage(messageDTO);
             logger.info(s);
-//            String s="success";//测试使用
             //发送成功
             if (!StringUtils.isEmpty(s)&& (Integer) JSON.parseObject(s).get("errcode")==0) {
                 sendingPO.setStatus((byte) 1);//已发
