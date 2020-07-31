@@ -106,7 +106,7 @@ public class TalentCertifDaySendService {
                 messageDTO.setKeyword2( talentPO.getWorkUnit());
             }else{
                 UserCurrentInfoPO userCurrentInfoPO = userCurrentInfoMapper.selectByTalentId(talentPO.getTalentId());
-                messageDTO.setKeyword2(userCurrentInfoPO==null?"":userCurrentInfoPO.getSchool()+"在读");
+                messageDTO.setKeyword2(userCurrentInfoPO==null?"":userCurrentInfoPO.getSchool());
             }
             messageDTO.setRemark("点击前往认证，认证后可享受多项人才权益哦");
             messageDTO.setTemplateId(5);
