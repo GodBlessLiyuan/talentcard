@@ -202,7 +202,7 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
         }
         String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getFarmHouseDir(), "farmhouse");
         logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FarmHouse,
-                "%s上传文件",(String) session.getAttribute("username"));
+                "%s上传农家乐图片",(String) session.getAttribute("username"));
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 
