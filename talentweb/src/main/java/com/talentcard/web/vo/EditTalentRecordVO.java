@@ -72,7 +72,7 @@ public class EditTalentRecordVO {
 
             vo.setComment(bo.getComment());
             vo.setUser_name(bo.getUserName());
-            vo.setCreate_time(DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD));
+            vo.setCreate_time(DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD_HMS));
 
             //设置
             String fir = EditTalentRecordConstant.operationTypeMap.get(bo.getOperationType());

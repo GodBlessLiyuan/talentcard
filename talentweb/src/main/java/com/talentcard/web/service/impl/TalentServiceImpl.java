@@ -626,18 +626,15 @@ public class TalentServiceImpl implements ITalentService {
     @Override
     public ResultVO sendMessage(HttpSession session, String openId) {
         //从session中获取userId的值
-        Long userId = (Long) session.getAttribute("userId");
-        if (userId == null) {
-            // 用户过期
-            return ResultVO.notLogin();
-        }
+//        Long userId = (Long) session.getAttribute("userId");
+//        if (userId == null) {
+//            // 用户过期
+//            return ResultVO.notLogin();
+//        }
         TalentPO talentPO = this.talentMapper.selectByOpenId(openId);
         this.sendMessage(talentPO);
-        /**
-         * ly注释：后面的代码没有null的处理，所以我也没做
-         * */
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_SendMessage, "给%s用户发送信息",
-                talentPO.getName());
+//        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_SendMessage,
+//                "给用户\"%s\"发送信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
