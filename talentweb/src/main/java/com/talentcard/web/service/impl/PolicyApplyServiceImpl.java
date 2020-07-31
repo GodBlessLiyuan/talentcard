@@ -114,7 +114,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         messageDTO.setRemark("点击查看详情");
         messageDTO.setUrl(WebParameterUtil.getMyApplicationUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager,OpsRecordMenuConstant.S_PolicyManager,
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager,OpsRecordMenuConstant.S_PolicyApply,
                 "审批用户\"%s\"的政策申请",talentPO.getName());
         return new ResultVO(1000);
     }
