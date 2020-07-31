@@ -69,8 +69,9 @@ public class TalentCertifDaySendService {
             List<TalentUnConfirmSendPO> originTalents = talentMapper.queryByBreakIDAndTime(Long.parseLong(configPO.getConfigValue()), DateUtil.date2Str(calendar.getTime(), DateUtil.YMD_HMS), (byte) 2);
             if (originTalents == null || originTalents.size() == 0) {
                 logger.info("t_talent表没有人才未认证的数据");
-                return new ResultVO(1000, "t_talent表没有人才未认证的数据");
+                return this.destDataDailySend();//发送目标数据
             }
+            //更新config的记录源数据的id号和目标数据的查询时间
             configPO.setConfigValue(originTalents.get(originTalents.size() - 1).getTalentId().toString());
             configPO.setUpdateTime(new Date());
             configMapper.updateByPrimaryKey(configPO);//更新状态
@@ -82,6 +83,13 @@ public class TalentCertifDaySendService {
          * 执行不断发送的操作，（最初的一段时间不再用于发送了），
          * 增量式发送
          * */
+        return this.destDataDailySend();
+    }
+    /**
+     * 目标数据的每天发送，
+     * 这里存在一个情况是，目标数据有个openid是假的，则天天都发这个假数据了
+     * */
+    private ResultVO destDataDailySend(){
         List<TalentUnConfirmSendPO> sendingPOS = talentUnConfirmSendMapper.getUnSend((byte) 2, SendIncr);
         if (sendingPOS == null || sendingPOS.size() == 0) {
             logger.info("t_talent_un_confirm_send表的数据都发完了");
@@ -118,5 +126,4 @@ public class TalentCertifDaySendService {
         logger.info("{}:发送了{}条数据",DateUtil.date2Str(new Date(),DateUtil.YMD_HMS),sendingPOS.size());
         return new ResultVO(1000,"本次发送的记录条数"+sendingPOS.size());
     }
-
 }

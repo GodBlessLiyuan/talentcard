@@ -19,6 +19,7 @@ public class OpsRecordMenuConstant {
     public static final String S_ConfirmExam="认证审批";
     public static final String S_ConfirmTalent="认证人才";
     public static final String S_PolicyManager="政策管理";
+    public static final String S_PolicyApply="政策审批";
     public static final String S_BannerConfig="banner配置";
     public static final String S_OptionFeedBack="意见反馈";
     public static final String S_FreeTrip="免费旅游";
