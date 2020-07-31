@@ -3,13 +3,11 @@ package com.talentcard.web.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.TalentBO;
-import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.constant.EditTalentRecordConstant;
 import com.talentcard.common.dto.*;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.WechatApiUtil;
-import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.EditTalentPolicyDTO;
@@ -20,7 +18,10 @@ import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.CertificationTimesVO;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +40,8 @@ import java.util.List;
  */
 @Service
 public class EditTalentServiceImpl implements IEditTalentService {
+
+    private static final Logger logger = LoggerFactory.getLogger(EditTalentServiceImpl.class);
     @Autowired
     TalentMapper talentMapper;
     @Autowired
@@ -754,7 +757,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
         String remark = opinion;
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
-        MessageUtil.sendTemplateMessage(messageDTO);
+
+        sendTemplateMessage(messageDTO);
 
 
         this.iEditTalentRecordService.addRecord(session,talentId,EditTalentRecordConstant.editType, EditTalentRecordConstant.talentCard,
@@ -766,6 +770,18 @@ public class EditTalentServiceImpl implements IEditTalentService {
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
                 "编辑人才\"%s\"的人才卡",talentPO.getName());
         return new ResultVO(1000);
+    }
+
+    @Async
+    public void sendTemplateMessage(MessageDTO messageDTO){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.info("sync sendMessage");
+        //领卡通知
+        MessageUtil.sendTemplateMessage(messageDTO);
     }
 
     @Override
