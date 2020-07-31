@@ -30,10 +30,10 @@ CREATE TABLE t_talent_un_confirm_send
 	t_tsend_id bigint NOT NULL AUTO_INCREMENT,
 	talent_id bigint NOT NULL,
 	open_id char(64) NOT NULL,
-	-- 1:已发
-	-- 2:未发
-	status tinyint unsigned COMMENT '1:已发
-2:未发',
+	-- 1:宸插彂
+	-- 2:鏈彂
+	status tinyint unsigned COMMENT '1:宸插彂
+2:鏈彂',
 	create_time datetime,
 	update_time datetime,
 	PRIMARY KEY (t_tsend_id),
