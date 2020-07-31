@@ -24,6 +24,7 @@ import com.talentcard.web.vo.TalentJsonRecordVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -369,29 +370,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 logger.error("update cardMapper error");
             }
 
-            /**
-             * 用消息模板推送微信消息
-             */
-            MessageDTO messageDTO = new MessageDTO();
-            //openId
-            messageDTO.setOpenid(currentTalent.getOpenId());
-            //first
-            messageDTO.setFirst("您好，您的认证申请已通过，请您点击领取衢江人才卡");
-            //申请人姓名
-            messageDTO.setKeyword1(currentTalent.getName());
-            //身份证号
-            String identificationCardNum = identificationCardEncryption(currentTalent);
-            messageDTO.setKeyword2(identificationCardNum);
-            //领卡机构
-            messageDTO.setKeyword3("个人");
-            //通知时间
-            messageDTO.setKeyword4(currentTime);
-            //remark
-            messageDTO.setRemark("领取后可享受多项人才权益哦");
-            //url
-            messageDTO.setUrl(WebParameterUtil.getIndexUrl());
-            //模版编号
-            messageDTO.setTemplateId(1);
+
             /**
              * 我是标记，测试完毕后删除
              */
@@ -421,7 +400,32 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 }
             }
             //领卡通知
-            MessageUtil.sendTemplateMessage(messageDTO);
+            /**
+             * 用消息模板推送微信消息
+             */
+            MessageDTO messageDTO = new MessageDTO();
+            //openId
+            messageDTO.setOpenid(currentTalent.getOpenId());
+            //first
+            messageDTO.setFirst("您好，您的认证申请已通过，请您点击领取衢江人才卡");
+            //申请人姓名
+            messageDTO.setKeyword1(currentTalent.getName());
+            //身份证号
+            String identificationCardNum = identificationCardEncryption(currentTalent);
+            messageDTO.setKeyword2(identificationCardNum);
+            //领卡机构
+            messageDTO.setKeyword3("个人");
+            //通知时间
+            messageDTO.setKeyword4(currentTime);
+            //remark
+            messageDTO.setRemark("领取后可享受多项人才权益哦");
+            //url
+            messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+            //模版编号
+            messageDTO.setTemplateId(1);
+
+            sendTemplateMessage(messageDTO);
+
             //uc表最后insert，防止oldCard找到俩，因为按照uc状态为1的，用户删了卡，则会有两条uc状态为1的
             int resultUserCard = userCardMapper.insertSelective(userCardPO);
             if (resultUserCard == 0) {
@@ -491,6 +495,18 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
 
     }
 
+
+    @Async
+    public void sendTemplateMessage(MessageDTO messageDTO){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.info("sync sendMessage");
+        //领卡通知
+        MessageUtil.sendTemplateMessage(messageDTO);
+    }
 
     @Override
     public ResultVO queryByNumApproval() {
