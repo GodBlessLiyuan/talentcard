@@ -585,6 +585,18 @@ public class TalentServiceImpl implements ITalentService {
             }
         }
         //领卡通知
+        sendTemplateMessage(messageDTO);
+    }
+
+    @Async
+    public void sendTemplateMessage(MessageDTO messageDTO){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.info("sync sendMessage");
+        //领卡通知
         MessageUtil.sendTemplateMessage(messageDTO);
     }
 
