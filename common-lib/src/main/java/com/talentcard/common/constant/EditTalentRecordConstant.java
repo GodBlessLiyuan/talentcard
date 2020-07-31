@@ -46,7 +46,7 @@ public class EditTalentRecordConstant {
         operationTypeMap.put(editType, "修改");
 
         operationContentMap.put(educationContent,"学历");
-        operationContentMap.put(titleContent,"职称类型");
+        operationContentMap.put(titleContent,"职称");
         operationContentMap.put(qualityContent,"职业资格");
         operationContentMap.put(honourContent,"人才荣誉");
         operationContentMap.put(talentCategoryContent,"人才类别");
