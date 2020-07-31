@@ -9,6 +9,7 @@ import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -60,12 +61,34 @@ public class EditTalentRecordVO {
                     jsonObject.put("category",BatchCertificateUtil.convertTalentCategory(category));
                     vo.setAfter_json(jsonObject);
                 }
-            } else {
+            }
+            //时间戳转为字符串
+            else {
                 if(!StringUtils.isEmpty(bo.getBeforeJsonRecord())) {
-                    vo.setBefore_json(JSONObject.parseObject(bo.getBeforeJsonRecord()));
+                    JSONObject jsonObject = JSONObject.parseObject(bo.getBeforeJsonRecord());
+                    if(jsonObject.containsKey("updateTime")){
+                        Long aLong = jsonObject.getLong("updateTime");
+                        Date date = new Date(aLong);
+                        jsonObject.put("updateTime",DateUtil.date2Str(date,DateUtil.YMD_HMS));
+                    }else if(jsonObject.containsKey("createTime")){
+                        Long aLong = jsonObject.getLong("createTime");
+                        Date date = new Date(aLong);
+                        jsonObject.put("createTime",DateUtil.date2Str(date,DateUtil.YMD_HMS));
+                    }
+                    vo.setBefore_json(jsonObject);
                 }
                 if(!StringUtils.isEmpty(bo.getAfterJsonRecord())) {
-                    vo.setAfter_json(JSONObject.parseObject(bo.getAfterJsonRecord()));
+                    JSONObject jsonObject = JSONObject.parseObject(bo.getAfterJsonRecord());
+                    if(jsonObject.containsKey("updateTime")){
+                        Long aLong = jsonObject.getLong("updateTime");
+                        Date date = new Date(aLong);
+                        jsonObject.put("updateTime",DateUtil.date2Str(date,DateUtil.YMD_HMS));
+                    }else if(jsonObject.containsKey("createTime")){
+                        Long aLong = jsonObject.getLong("createTime");
+                        Date date = new Date(aLong);
+                        jsonObject.put("createTime",DateUtil.date2Str(date,DateUtil.YMD_HMS));
+                    }
+                    vo.setAfter_json(jsonObject);
                 }
             }
 
