@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @author: liyuan
  * @data 2020-07-30 14:03
  */
-//@RestController
-//@RequestMapping("TalentCertifDaySend")
+@RestController
+@RequestMapping("TalentCertifDaySend")
 public class TalentCertifDaySendTestController {
-//    @Autowired
-//    private TalentCertifDaySendService sendService;
-//    @PostMapping("daySend")
-//    public ResultVO dailySend(){
-//        return sendService.daySend();
-//    }
+    @Autowired
+    private TalentCertifDaySendService sendService;
+    @PostMapping("daySend")
+    public ResultVO dailySend(){
+        return sendService.daySend();
+    }
 }

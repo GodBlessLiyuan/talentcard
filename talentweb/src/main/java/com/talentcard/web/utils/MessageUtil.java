@@ -50,7 +50,7 @@ public class MessageUtil {
         MessageUtil.editTalentTemplate = editTalentTemplate;
     }
     @Value("${wechat.sendTalentUnConfirmTemplate}")
-    public static void setSendTalentUnConfirmTemplate(String sendTalentUnConfirmTemplate) {
+    public void setSendTalentUnConfirmTemplate(String sendTalentUnConfirmTemplate) {
         MessageUtil.sendTalentUnConfirmTemplate = sendTalentUnConfirmTemplate;
     }
     //注册完，审批完
