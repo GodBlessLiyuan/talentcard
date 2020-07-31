@@ -121,7 +121,7 @@ public class BannerServiceImpl implements IBannerService {
         }
         String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getBannerDir(), "banner");
         logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_BannerConfig,
-                "%s上传了banner文件",(String) session.getAttribute("username"));
+                "%s上传了banner图片",(String) session.getAttribute("username"));
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 }

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @author: liyuan
  * @data 2020-07-16 18:50
  */
-@RestController
-@RequestMapping("farmHouseUserScheduleTest")
+//@RestController
+//@RequestMapping("farmHouseUserScheduleTest")
 public class FarmHouseUserScheduleTest {
 //    @Autowired
 //    private FarmHouseUserScheduleService farmHouseUserScheduleService;
