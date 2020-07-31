@@ -21,7 +21,7 @@ public class LogServiceImpl implements ILogService {
     @Resource
     private OpwebRecordMapper opwebRecordMapper;
 
-    @Async
+    @Async("asyncTaskExecutor")
     @Override
     public void insertActionRecord(HttpSession session, String firstMenu, String secondMenu, String detail, String... params) {
         OpwebRecordPO opwebRecordPO = new OpwebRecordPO();

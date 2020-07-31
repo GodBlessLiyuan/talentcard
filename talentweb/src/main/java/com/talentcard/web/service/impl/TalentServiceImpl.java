@@ -215,7 +215,7 @@ public class TalentServiceImpl implements ITalentService {
     }
 
     @Override
-    @Async
+    @Async("asyncTaskExecutor")
     public ResultVO batchCertificate(HttpSession session, BatchCertificateDTO batchCertificateDTO) throws InterruptedException {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
@@ -588,7 +588,7 @@ public class TalentServiceImpl implements ITalentService {
         sendTemplateMessage(messageDTO);
     }
 
-    @Async
+    @Async("asyncTaskExecutor")
     public void sendTemplateMessage(MessageDTO messageDTO){
         try {
             Thread.sleep(1000);
@@ -637,16 +637,10 @@ public class TalentServiceImpl implements ITalentService {
 
     @Override
     public ResultVO sendMessage(HttpSession session, String openId) {
-        //从session中获取userId的值
-//        Long userId = (Long) session.getAttribute("userId");
-//        if (userId == null) {
-//            // 用户过期
-//            return ResultVO.notLogin();
-//        }
+
         TalentPO talentPO = this.talentMapper.selectByOpenId(openId);
         this.sendMessage(talentPO);
-//        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_SendMessage,
-//                "给用户\"%s\"发送信息",talentPO.getName());
+
         return new ResultVO(1000);
     }
 

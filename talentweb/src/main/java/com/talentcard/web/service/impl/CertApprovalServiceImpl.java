@@ -496,7 +496,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     }
 
 
-    @Async
+    @Async("asyncTaskExecutor")
     public void sendTemplateMessage(MessageDTO messageDTO){
         try {
             Thread.sleep(1000);

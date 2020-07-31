@@ -772,7 +772,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         return new ResultVO(1000);
     }
 
-    @Async
+    @Async("asyncTaskExecutor")
     public void sendTemplateMessage(MessageDTO messageDTO){
         try {
             Thread.sleep(1000);
