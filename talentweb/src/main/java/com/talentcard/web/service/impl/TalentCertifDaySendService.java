@@ -21,10 +21,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -88,6 +86,7 @@ public class TalentCertifDaySendService {
     /**
      * 目标数据的每天发送，
      * 这里存在一个情况是，目标数据有个openid是假的，则天天都发这个假数据了
+     * t_talent_un_confirm 表的状态1代表已发，2代表未发，3代表未关注公众号
      * */
     private ResultVO destDataDailySend(){
         List<TalentUnConfirmSendPO> sendingPOS = talentUnConfirmSendMapper.getUnSend((byte) 2, SendIncr);
@@ -114,10 +113,19 @@ public class TalentCertifDaySendService {
             String s = MessageUtil.sendTemplateMessage(messageDTO);
             logger.info(s);
             //发送成功
-            if (!StringUtils.isEmpty(s)&& (Integer) JSON.parseObject(s).get("errcode")==0) {
-                sendingPO.setStatus((byte) 1);//已发
-                talentUnConfirmSendMapper.updateStatusAndUpdateTime(sendingPO);
-                logger.debug("发送给{}成功",sendingPO.getOpenId());
+            if (!StringUtils.isEmpty(s)) {
+                if( JSON.parseObject(s).getLong("errcode")==0){
+                    sendingPO.setStatus((byte) 1);//已发
+                    talentUnConfirmSendMapper.updateStatusAndUpdateTime(sendingPO);
+                    logger.debug("发送给{}成功",sendingPO.getOpenId());
+                }else if(JSON.parseObject(s).getLong("errcode")==43004){//没有关注公众号的人
+                    sendingPO.setStatus((byte) 3);//
+                    talentUnConfirmSendMapper.updateStatusAndUpdateTime(sendingPO);
+                    logger.debug("发送给{}成功",sendingPO.getOpenId());
+                }else {
+                    logger.error("发送给{}失败",sendingPO.getOpenId());
+                }
+
             }else{
                 logger.error("发送给{}失败",sendingPO.getOpenId());
             }
