@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.HonourMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.HonourPO">
+    <id column="honour_id" jdbcType="BIGINT" property="honourId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="description" jdbcType="CHAR" property="description" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    honour_id, `name`, description, `status`, create_time, update_time, dr
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_honour
+    where honour_id = #{honourId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_honour
+    where honour_id = #{honourId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.HonourPO">
+    insert into t_honour (honour_id, `name`, description, 
+      `status`, create_time, update_time, 
+      dr)
+    values (#{honourId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{description,jdbcType=CHAR}, 
+      #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{dr,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.HonourPO">
+    insert into t_honour
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="honourId != null">
+        honour_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="dr != null">
+        dr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="honourId != null">
+        #{honourId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.HonourPO">
+    update t_honour
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
+    </set>
+    where honour_id = #{honourId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.HonourPO">
+    update t_honour
+    set `name` = #{name,jdbcType=CHAR},
+      description = #{description,jdbcType=CHAR},
+      `status` = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      dr = #{dr,jdbcType=TINYINT}
+    where honour_id = #{honourId,jdbcType=BIGINT}
+  </update>
+
+  <select id="query" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_honour
+    where
+    1 = 1
+    <if test="name != null and name !=''">
+      and trim(replace(`name` ,' ',''))
+      like trim(replace ('%' #{name,jdbcType=CHAR} '%' ,' ',''))
+    </if>
+    <if test="status != null and status!=0">
+      and status = #{status, jdbcType=TINYINT}
+    </if>
+  </select>
+</mapper>
