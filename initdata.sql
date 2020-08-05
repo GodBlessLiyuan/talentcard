@@ -8,7 +8,7 @@ TRUNCATE TABLE t_role;
 TRUNCATE TABLE t_authority;
 TRUNCATE TABLE t_role_authority;
 
-/*权限：所有权限展示*/
+/*权限：一期基本权限*/
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (1, 'roleQuery');
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (2, 'userCreate');
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (3, 'userUpdate');
@@ -29,7 +29,39 @@ INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (17, 'policyDelete');
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (18, 'policyQuery');
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (19, 'approvalPolicyQuery');
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (20, 'approvalPolicyAction');
-
+/*权限：扩展功能：banner配置*/
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (21, 'bannerQuery');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (22, 'bannerCreate');
+/*权限：扩展功能：意见反馈*/
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (23, 'commentQuery');
+/*权限：扩展功能：免费旅游*/
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (24, 'tripQuery');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (25, 'tripCreate');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (26, 'tripEdit');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (27, 'tripDataQuery');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (28, 'tripSetTripNumber');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (29, 'tripSetRelatedInfo');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (30, 'tripGetData');
+/*权限：扩展功能：农家乐*/
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (31, 'farmHouseQuery');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (32, 'farmHouseCreate');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (33, 'farmHouseEdit');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (34, 'farmHouseDataQuery');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (35, 'farmHouseSetRelatedInfo');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (36, 'farmHouseGetData');
+/*权限：扩展功能：员工绑定信息*/
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (37, 'staffBindInfoQuery');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (38, 'staffBindInfoDelete');
+/*权限：扩展功能：问题收集*/
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (39, 'QuestionCollectQuery');
+/*权限：人才标签管理：人才类别管理*/
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (40, 'TalentCategoryQuery');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (41, 'TalentCategoryAdd');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (42, 'TalentCategoryEdit');
+/*权限：人才标签管理：人才荣誉管理*/
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (53, 'TalentHonourQuery');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (44, 'TalentHonourAdd');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (45, 'TalentHonourEdit');
 
 
 /*角色：主要是超级管理员和运营人员*/
@@ -37,6 +69,7 @@ INSERT INTO `t_role`(`role_id`, `name`, `extra`, `create_time`) VALUES (1, '超�
 INSERT INTO `t_role`(`role_id`, `name`, `extra`, `create_time`) VALUES (2, '运营人员', NULL, '2020-04-17 14:06:44');
 
 /*角色权限表*/
+/*超管*/
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (1, 1, 1, 1);
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (2, 1, 2, 1);
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (3, 1, 3, 1);
@@ -57,6 +90,33 @@ INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VAL
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (18, 1, 18, 1);
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (19, 1, 19, 1);
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (20, 1, 20, 1);
+/*超管---第九期权限*/
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (41, 1, 21, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (42, 1, 22, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (43, 1, 23, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (44, 1, 24, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (45, 1, 25, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (46, 1, 26, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (47, 1, 27, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (48, 1, 28, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (49, 1, 29, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (50, 1, 30, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (51, 1, 31, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (52, 1, 32, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (53, 1, 33, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (54, 1, 34, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (55, 1, 35, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (56, 1, 36, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (57, 1, 37, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (58, 1, 38, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (59, 1, 39, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (60, 1, 40, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (61, 1, 41, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (62, 1, 42, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (63, 1, 43, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (64, 1, 44, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (65, 1, 45, 1);
+/*运营人员*/
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (22, 1, 2, 2);
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (23, 1, 3, 2);
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (24, 1, 4, 2);
@@ -76,6 +136,32 @@ INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VAL
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (38, 1, 18, 2);
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (39, 1, 19, 2);
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (40, 1, 20, 2);
+/*运营人员---第九期权限*/
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (66, 1, 21, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (67, 1, 22, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (68, 1, 23, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (69, 1, 24, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (70, 1, 25, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (71, 1, 26, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (72, 1, 27, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (73, 1, 28, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (74, 1, 29, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (75, 1, 30, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (76, 1, 31, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (77, 1, 32, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (78, 1, 33, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (79, 1, 34, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (80, 1, 35, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (81, 1, 36, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (82, 1, 37, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (83, 1, 38, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (84, 1, 39, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (85, 1, 40, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (86, 1, 41, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (87, 1, 42, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (88, 1, 43, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (89, 1, 44, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (90, 1, 45, 2);
 
 /*用户：超级管理员角色*/
 INSERT INTO `t_user`(`user_id`, `username`, `name`, `password`, `create_time`, `dr`, `extra`, `role_id`) VALUES
