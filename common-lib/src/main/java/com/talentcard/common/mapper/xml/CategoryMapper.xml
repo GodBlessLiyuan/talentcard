@@ -130,7 +130,7 @@
         </if>
     </select>
 
-    <select id="ifExistName" resultMap="BaseResultMap">
+    <select id="ifExistName" resultType="java.lang.Integer">
         select
         count(category_id)
         from t_category

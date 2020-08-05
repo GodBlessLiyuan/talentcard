@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @author ChenXU
  * @version 1.0
@@ -22,42 +24,46 @@ public class CategoryController {
 
     /**
      * 新增
+     *
      * @param name
      * @param description
      * @return
      */
     @PostMapping("add")
-    public ResultVO add(@RequestParam(value = "name") String name,
+    public ResultVO add(HttpSession httpSession, @RequestParam(value = "name") String name,
                         @RequestParam(value = "description") String description) {
-        return iCategoryService.add(name, description);
+        return iCategoryService.add(name, description, httpSession);
     }
 
     /**
      * 编辑
+     *
      * @param categoryId
      * @param description
      * @return
      */
     @PostMapping("edit")
-    public ResultVO add(@RequestParam(value = "categoryId") Long categoryId,
+    public ResultVO add(HttpSession httpSession, @RequestParam(value = "categoryId") Long categoryId,
                         @RequestParam(value = "description") String description) {
-        return iCategoryService.edit(categoryId, description);
+        return iCategoryService.edit(categoryId, description, httpSession);
     }
 
     /**
      * 上下架
+     *
      * @param categoryId
      * @param status
      * @return
      */
     @PostMapping("upDown")
-    public ResultVO upDown(@RequestParam(value = "categoryId") Long categoryId,
+    public ResultVO upDown(HttpSession httpSession, @RequestParam(value = "categoryId") Long categoryId,
                            @RequestParam(value = "status") Byte status) {
-        return iCategoryService.upDown(categoryId, status);
+        return iCategoryService.upDown(categoryId, status, httpSession);
     }
 
     /**
      * 查询
+     *
      * @param pageNum
      * @param pageSize
      * @param name
@@ -74,6 +80,7 @@ public class CategoryController {
 
     /**
      * 查询单个详情
+     *
      * @param categoryId
      * @return
      */
