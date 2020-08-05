@@ -820,4 +820,8 @@
         from t_talent
         where dr = 1 and union_id is null
     </select>
+    <select id="queryByBreakIDAndTime" resultType="com.talentcard.common.pojo.TalentUnConfirmSendPO">
+        select talent_id as talentId, open_id as openId from t_talent
+        where talent_id>#{unSendID} and <![CDATA[ create_time<=#{time} ]]> and status=#{status} and dr=1
+    </select>
 </mapper>

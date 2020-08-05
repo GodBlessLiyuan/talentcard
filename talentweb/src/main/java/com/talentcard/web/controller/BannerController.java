@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,8 +64,8 @@ public class BannerController {
      * @return
      */
     @RequestMapping("insert")
-    public ResultVO insert(@RequestBody BannerDTO dto) {
-        return bannerService.insert(dto);
+    public ResultVO insert(HttpServletRequest request, @RequestBody BannerDTO dto) {
+        return bannerService.insert(request.getSession(), dto);
     }
 
     /**
@@ -75,8 +76,8 @@ public class BannerController {
      * @return
      */
     @RequestMapping("status")
-    public ResultVO status(@Param("bid") Long bid, @Param("status") Byte status) {
-        return bannerService.status(bid, status);
+    public ResultVO status(HttpServletRequest request, @Param("bid") Long bid, @Param("status") Byte status) {
+        return bannerService.status(request.getSession(), bid, status);
     }
 
     /**
@@ -86,8 +87,8 @@ public class BannerController {
      * @return
      */
     @RequestMapping("delete")
-    public ResultVO delete(@Param("bid") Long bid) {
-        return bannerService.delete(bid);
+    public ResultVO delete(HttpServletRequest request, @Param("bid") Long bid) {
+        return bannerService.delete(request.getSession(), bid);
     }
 
     /**
@@ -97,7 +98,7 @@ public class BannerController {
      * @return
      */
     @RequestMapping("upload")
-    public ResultVO upload(@Param("file") MultipartFile file) {
-        return bannerService.upload(file);
+    public ResultVO upload(HttpServletRequest request, @Param("file") MultipartFile file) {
+        return bannerService.upload(request.getSession(), file);
     }
 }

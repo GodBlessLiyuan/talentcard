@@ -2,8 +2,8 @@ package com.talentcard.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
-import com.netflix.ribbon.proxy.annotation.Http;
 import com.talentcard.common.bo.ActivcateBO;
+import com.talentcard.common.bo.EditTalentRecordBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.bo.TalentCertificationBO;
 import com.talentcard.common.config.FilePathConfig;
@@ -15,13 +15,13 @@ import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.BatchCertificateDTO;
 import com.talentcard.web.dto.MessageDTO;
+import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.ITalentService;
-import com.talentcard.web.utils.AccessTokenUtil;
-import com.talentcard.web.utils.BatchCertificateUtil;
-import com.talentcard.web.utils.MessageUtil;
-import com.talentcard.web.utils.WebParameterUtil;
+import com.talentcard.web.utils.*;
+import com.talentcard.web.vo.EditTalentRecordVO;
 import com.talentcard.web.vo.TalentDetailVO;
 import com.talentcard.web.vo.TalentVO;
 import org.apache.commons.lang.StringUtils;
@@ -31,14 +31,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import javax.smartcardio.Card;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -82,6 +80,8 @@ public class TalentServiceImpl implements ITalentService {
     private TalentCertificationInfoMapper talentCertificationInfoMapper;
     @Autowired
     CertApprovalPassRecordMapper certApprovalPassRecordMapper;
+    @Autowired
+    private EditTalentRecordMapper editTalentRecordMapper;
 
     private static final String[] EXCEL_TITLE = {"姓名", "证件号码"};
     private static final String[] EXCEL_TITLE_RES = {"姓名", "证件号码", "人才卡", "人才类别", "人才荣誉", "认证结果", "说明"};
@@ -91,6 +91,8 @@ public class TalentServiceImpl implements ITalentService {
     //已认证或者待审批
     private static final Integer IN_CERTIFICATE_STATUS = 12;
     private static final Integer ERROR_TALENT_STATUS = 13;
+    @Autowired
+    private ILogService logService;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -213,8 +215,14 @@ public class TalentServiceImpl implements ITalentService {
     }
 
     @Override
-    @Async
-    public ResultVO batchCertificate(BatchCertificateDTO batchCertificateDTO) throws InterruptedException {
+    @Async("asyncTaskExecutor")
+    public ResultVO batchCertificate(HttpSession session, BatchCertificateDTO batchCertificateDTO) throws InterruptedException {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         List<String> names = batchCertificateDTO.getNames();
         List<String> idCards = batchCertificateDTO.getIdCards();
         BatchCertificatePO batchCertificatePO = batchCertificateDTO.getBatchCertificatePO();
@@ -231,6 +239,7 @@ public class TalentServiceImpl implements ITalentService {
         String url;
         Integer successNum = 0;
         Integer failureNum = 0;
+        CardPO cardPO=null;
         try {
             // TODO: 业务逻辑
             List<Integer> resultList = new ArrayList<>();
@@ -240,7 +249,7 @@ public class TalentServiceImpl implements ITalentService {
                 resultList.add(result);
             }
 
-            CardPO cardPO = cardMapper.selectByPrimaryKey(cardId);
+            cardPO = cardMapper.selectByPrimaryKey(cardId);
             if (cardPO == null) {
                 logger.info("拿不到cardPO，cardId为：{}", cardId);
             }
@@ -294,7 +303,12 @@ public class TalentServiceImpl implements ITalentService {
         batchCertificatePO.setUpdateTime(new Date());
         batchCertificatePO.setStatus((byte) 2);
         batchCertificateMapper.updateByPrimaryKeySelective(batchCertificatePO);
-
+        /**
+         * 批量认证为"#人才卡名称/编号#"，总计:“#总条数#”，成功:“#成功条数#”，失败:“#失败条数#”
+         * */
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_CommentUser,
+                "\"%s\"，总计：\"%s\"，成功：\"%s\"，失败：\"%s\"", CardUtil.getCardNum(cardPO),(successNum + failureNum)+"",
+                 successNum.toString(),failureNum.toString());
         return new ResultVO(1000, url);
     }
 
@@ -571,6 +585,18 @@ public class TalentServiceImpl implements ITalentService {
             }
         }
         //领卡通知
+        sendTemplateMessage(messageDTO);
+    }
+
+    @Async("asyncTaskExecutor")
+    public void sendTemplateMessage(MessageDTO messageDTO){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.info("sync sendMessage");
+        //领卡通知
         MessageUtil.sendTemplateMessage(messageDTO);
     }
 
@@ -610,9 +636,31 @@ public class TalentServiceImpl implements ITalentService {
     }
 
     @Override
-    public ResultVO sendMessage(String openId) {
+    public ResultVO sendMessage(HttpSession session, String openId) {
+
         TalentPO talentPO = this.talentMapper.selectByOpenId(openId);
         this.sendMessage(talentPO);
+
         return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO getAllCert(String talentId) {
+        if (StringUtils.isEmpty(talentId)) {
+            //未传入talentId
+            return new ResultVO(1002);
+        }
+        List<EditTalentRecordBO> bos = editTalentRecordMapper.queryByTalentId(talentId);
+        if (bos == null || bos.size() == 0) {
+            //当前操作记录为空
+            return new ResultVO(1000, null);
+        }
+        //bo 转 vo
+        ArrayList<EditTalentRecordVO> editTalentRecordVOS = EditTalentRecordVO.convert(bos);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("total", editTalentRecordVOS.size());
+        map.put("data", editTalentRecordVOS);
+        return new ResultVO(1000, map);
     }
 }

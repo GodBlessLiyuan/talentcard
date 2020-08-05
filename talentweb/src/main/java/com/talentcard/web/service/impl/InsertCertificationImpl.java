@@ -12,8 +12,10 @@ import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.IInsertCertificationService;
+import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.ITalentInfoCertificationService;
 import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.utils.MessageUtil;
@@ -70,7 +72,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     ITalentInfoCertificationService iTalentInfoCertificationService;
     @Autowired
     TalentJsonRecordMapper talentJsonRecordMapper;
-
+    @Autowired
+    private ILogService logService;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
@@ -83,6 +86,12 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO certResult(HttpSession httpSession, Long talentId,
                                Long insertCertId, Byte result, String opinion, String talentCategory) {
+        //从session中获取userId的值
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
         if (talentPO == null || talentPO.getDr() == 2) {
             return new ResultVO(2500);
@@ -322,6 +331,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(talentPO.getOpenId());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmExam,
+                "审批人才\"%s\"的认证信息",talentPO.getName());
         return new ResultVO(1000);
     }
 

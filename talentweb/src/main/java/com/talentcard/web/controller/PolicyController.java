@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 /**
@@ -28,12 +28,12 @@ public class PolicyController {
 
     @RequestMapping("query")
     public ResultVO query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                                      @RequestParam(value = "start", defaultValue = "") String start,
-                                      @RequestParam(value = "end", defaultValue = "") String end,
-                                      @RequestParam(value = "name", defaultValue = "") String name,
-                                      @RequestParam(value = "num", defaultValue = "") String num,
-                                      @RequestParam(value = "apply", defaultValue = "0") Byte apply) {
+                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                          @RequestParam(value = "start", defaultValue = "") String start,
+                          @RequestParam(value = "end", defaultValue = "") String end,
+                          @RequestParam(value = "name", defaultValue = "") String name,
+                          @RequestParam(value = "num", defaultValue = "") String num,
+                          @RequestParam(value = "apply", defaultValue = "0") Byte apply) {
 
         HashMap<String, Object> hashMap = new HashMap<>(6);
         if (!"".equals(end)) {
@@ -49,18 +49,18 @@ public class PolicyController {
     }
 
     @RequestMapping("insert")
-    public ResultVO insert(HttpSession session, @RequestBody PolicyDTO dto) {
-        return service.insert(session, dto);
+    public ResultVO insert(HttpServletRequest request, @RequestBody PolicyDTO dto) {
+        return service.insert(request.getSession(), dto);
     }
 
     @RequestMapping("update")
-    public ResultVO update(HttpSession session, @RequestBody PolicyDTO dto) {
-        return service.update(session, dto);
+    public ResultVO update(HttpServletRequest request, @RequestBody PolicyDTO dto) {
+        return service.update(request.getSession(), dto);
     }
 
     @RequestMapping("delete")
-    public ResultVO update(@RequestParam(value = "pid") Long pid) {
-        return service.delete(pid);
+    public ResultVO update(HttpServletRequest request, @RequestParam(value = "pid") Long pid) {
+        return service.delete(request.getSession(), pid);
     }
 
     @RequestMapping("detail")
@@ -75,7 +75,7 @@ public class PolicyController {
      * @return
      */
     @RequestMapping("upload")
-    public ResultVO upload(@Param("file") MultipartFile file) {
-        return service.upload(file);
+    public ResultVO upload(HttpServletRequest request, @Param("file") MultipartFile file) {
+        return service.upload(request.getSession(), file);
     }
 }

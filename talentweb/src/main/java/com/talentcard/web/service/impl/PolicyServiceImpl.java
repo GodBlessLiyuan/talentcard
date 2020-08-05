@@ -8,8 +8,11 @@ import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.PolicyDTO;
+import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IPolicyService;
+import com.talentcard.web.utils.PolicyNameUtil;
 import com.talentcard.web.vo.PolicyDetailVO;
 import com.talentcard.web.vo.PolicyVO;
 import org.apache.commons.lang.StringUtils;
@@ -35,7 +38,8 @@ public class PolicyServiceImpl implements IPolicyService {
     private PolicyMapper policyMapper;
     @Autowired
     private FilePathConfig filePathConfig;
-
+    @Autowired
+    private ILogService logService;
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
         Page<PolicyPO> page = PageHelper.startPage(pageNum, pageSize);
@@ -45,6 +49,12 @@ public class PolicyServiceImpl implements IPolicyService {
 
     @Override
     public ResultVO insert(HttpSession session, PolicyDTO dto) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         PolicyPO existPO = policyMapper.queryByNum(dto.getNum());
         if (null != existPO) {
             // 编号不能重复
@@ -57,29 +67,46 @@ public class PolicyServiceImpl implements IPolicyService {
         po.setDr((byte) 1);
 
         policyMapper.insert(po);
-
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager,OpsRecordMenuConstant.S_PolicyManager
+                ,"新增政策\"%s\"", PolicyNameUtil.getNameNumber(po));
         return new ResultVO(1000);
     }
 
     @Override
     public ResultVO update(HttpSession session, PolicyDTO dto) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         PolicyPO po = policyMapper.selectByPrimaryKey(dto.getPid());
         if (null == po) {
             // 数据已被删除
             return new ResultVO(1001);
         }
         policyMapper.updateByPrimaryKey(buildPOByDTO(po, dto));
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager,OpsRecordMenuConstant.S_PolicyManager,
+                "编辑政策\"%s\"", PolicyNameUtil.getNameNumber(po));
         return new ResultVO(1000);
     }
 
     @Override
-    public ResultVO delete(Long pid) {
+    public ResultVO delete(HttpSession session,Long pid) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         PolicyPO policyPO = policyMapper.selectByPrimaryKey(pid);
         if (policyPO == null) {
             return new ResultVO(2402, "查无此政策！");
         }
         policyPO.setDr((byte) 2);
         policyMapper.updateByPrimaryKey(policyPO);
+        logService.insertActionRecord(session,OpsRecordMenuConstant.F_TalentPolicyManager,OpsRecordMenuConstant.S_PolicyManager,
+                "删除政策\"%s\"",PolicyNameUtil.getNameNumber(policyPO));
         return new ResultVO(1000);
     }
 
@@ -95,8 +122,16 @@ public class PolicyServiceImpl implements IPolicyService {
     }
 
     @Override
-    public ResultVO upload(MultipartFile file) {
+    public ResultVO upload(HttpSession session,MultipartFile file) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getAnnexDir(), "annex");
+        logService.insertActionRecord(session,OpsRecordMenuConstant.F_TalentPolicyManager,OpsRecordMenuConstant.S_PolicyManager,
+                "%s上传了政策文件",(String) session.getAttribute("username"));
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 

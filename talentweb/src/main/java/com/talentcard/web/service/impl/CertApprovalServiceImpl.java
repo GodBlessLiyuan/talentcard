@@ -8,8 +8,10 @@ import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.WechatApiUtil;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ICertApprovalService;
+import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.MessageUtil;
@@ -22,6 +24,7 @@ import com.talentcard.web.vo.TalentJsonRecordVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,7 +79,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     InsertCertificationMapper insertCertificationMapper;
     @Autowired
     CertApprovalPassRecordMapper certApprovalPassRecordMapper;
-
+    @Autowired
+    private ILogService logService;
     /**
      * 审批result的值含义
      */
@@ -117,10 +121,13 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO confirmCert(HttpSession session, Map<String, Object> reqData) {
-
-        // 判断审批结果，如果审批通过，需要多表更新；审批不通过则只新增认证审批表的信息
-        //首先获取审批人的用户id
+        //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
+        // 判断审批结果，如果审批通过，需要多表更新；审批不通过则只新增认证审批表的信息
         Byte result = (Byte) reqData.get("result");
         Long certId = (Long) reqData.get("certId");
         Long talentId = (Long) reqData.get("talentId");
@@ -363,29 +370,7 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 logger.error("update cardMapper error");
             }
 
-            /**
-             * 用消息模板推送微信消息
-             */
-            MessageDTO messageDTO = new MessageDTO();
-            //openId
-            messageDTO.setOpenid(currentTalent.getOpenId());
-            //first
-            messageDTO.setFirst("您好，您的认证申请已通过，请您点击领取衢江人才卡");
-            //申请人姓名
-            messageDTO.setKeyword1(currentTalent.getName());
-            //身份证号
-            String identificationCardNum = identificationCardEncryption(currentTalent);
-            messageDTO.setKeyword2(identificationCardNum);
-            //领卡机构
-            messageDTO.setKeyword3("个人");
-            //通知时间
-            messageDTO.setKeyword4(currentTime);
-            //remark
-            messageDTO.setRemark("领取后可享受多项人才权益哦");
-            //url
-            messageDTO.setUrl(WebParameterUtil.getIndexUrl());
-            //模版编号
-            messageDTO.setTemplateId(1);
+
             /**
              * 我是标记，测试完毕后删除
              */
@@ -415,7 +400,32 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
                 }
             }
             //领卡通知
-            MessageUtil.sendTemplateMessage(messageDTO);
+            /**
+             * 用消息模板推送微信消息
+             */
+            MessageDTO messageDTO = new MessageDTO();
+            //openId
+            messageDTO.setOpenid(currentTalent.getOpenId());
+            //first
+            messageDTO.setFirst("您好，您的认证申请已通过，请您点击领取衢江人才卡");
+            //申请人姓名
+            messageDTO.setKeyword1(currentTalent.getName());
+            //身份证号
+            String identificationCardNum = identificationCardEncryption(currentTalent);
+            messageDTO.setKeyword2(identificationCardNum);
+            //领卡机构
+            messageDTO.setKeyword3("个人");
+            //通知时间
+            messageDTO.setKeyword4(currentTime);
+            //remark
+            messageDTO.setRemark("领取后可享受多项人才权益哦");
+            //url
+            messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+            //模版编号
+            messageDTO.setTemplateId(1);
+
+            sendTemplateMessage(messageDTO);
+
             //uc表最后insert，防止oldCard找到俩，因为按照uc状态为1的，用户删了卡，则会有两条uc状态为1的
             int resultUserCard = userCardMapper.insertSelective(userCardPO);
             if (resultUserCard == 0) {
@@ -479,11 +489,24 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
          * 清除redis缓存
          */
         talentService.clearRedisCache(openId);
-
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmExam,
+                "审批人才\"%s\"的认证信息",currentTalent.getName());
         return new ResultVO(1000);
 
     }
 
+
+    @Async("asyncTaskExecutor")
+    public void sendTemplateMessage(MessageDTO messageDTO){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.info("sync sendMessage");
+        //领卡通知
+        MessageUtil.sendTemplateMessage(messageDTO);
+    }
 
     @Override
     public ResultVO queryByNumApproval() {

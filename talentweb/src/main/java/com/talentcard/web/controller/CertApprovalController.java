@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class CertApprovalController {
 
 
     @RequestMapping("CertConfirm")
-    public ResultVO CertConfirm(HttpSession session,
+    public ResultVO CertConfirm(HttpServletRequest request,
                                 @RequestParam(value = "talentId", required = false) Long talentId,
                                 @RequestParam(value = "certId", required = false) Long certId,
                                 @RequestParam(value = "result", required = false) Byte result,
@@ -51,7 +52,7 @@ public class CertApprovalController {
         reqData.put("cardId",cardId);
         reqData.put("category",category);
         reqData.put("opinion",opinion);
-        return certApprovalService.confirmCert(session,reqData);
+        return certApprovalService.confirmCert(request.getSession(),reqData);
     }
 
     /**

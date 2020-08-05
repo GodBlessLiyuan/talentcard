@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 /**
  * @author: xiahui
  * @date: Created in 2020/5/9 16:20
@@ -25,7 +28,7 @@ public class ConfigController {
     }
 
     @RequestMapping("edit")
-    public ResultVO edit(@Param("key") String key, @Param("value") String value) {
-        return configService.edit(key, value);
+    public ResultVO edit(HttpServletRequest request, @Param("key") String key, @Param("value") String value) {
+        return configService.edit(request.getSession(),key, value);
     }
 }

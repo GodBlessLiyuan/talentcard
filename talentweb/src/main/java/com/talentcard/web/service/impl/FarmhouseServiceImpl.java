@@ -15,8 +15,10 @@ import com.talentcard.common.utils.QrCodeUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.FarmhouseDTO;
 import com.talentcard.web.service.IFarmhouseService;
+import com.talentcard.web.service.ILogService;
 import com.talentcard.web.vo.FarmhouseDetailVO;
 import com.talentcard.web.vo.FarmhouseVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +54,8 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
     private FilePathConfig filePathConfig;
     @Autowired
     private RedisMapUtil redisMapUtil;
-
+    @Autowired
+    private ILogService logService;
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
         Page<FarmhousePO> page = PageHelper.startPage(pageNum, pageSize);
@@ -61,7 +65,13 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultVO edit(FarmhouseDTO dto) {
+    public ResultVO edit(HttpSession session,FarmhouseDTO dto) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         FarmhousePO existPO = farmhouseMapper.queryByName(dto.getName());
         if (null == dto.getFarmhouseId()) {
             // 新建
@@ -95,7 +105,8 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
             if (picPOs.size() > 0) {
                 farmhousePictureMapper.batchInsert(picPOs);
             }
-
+            logService.insertActionRecord(session, OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FarmHouse,
+                    "新建农家乐\"%s\"",farmhousePO.getName());
             return new ResultVO(1000);
         }
 
@@ -135,11 +146,19 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
 
         farmhouseGroupAuthorityMapper.clear();
         deleteRedisCache();
+        logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FarmHouse,
+                "编辑农家乐\"%s\"",farmhousePO.getName());
         return new ResultVO(1000);
     }
 
     @Override
-    public ResultVO status(Long farmhouseId, Byte status) {
+    public ResultVO status(HttpSession session,Long farmhouseId, Byte status) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         FarmhousePO farmhousePO = farmhouseMapper.selectByPrimaryKey(farmhouseId);
         if (null == farmhousePO) {
             return new ResultVO(1102);
@@ -155,6 +174,8 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
 //        farmhouseMapper.updateStatus(farmhouseId, status);
         farmhouseGroupAuthorityMapper.clear();
         deleteRedisCache();
+        logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FarmHouse,
+                "%s架农家乐\"%s\"",status == 1?"上":"下",farmhousePO.getName());
         return new ResultVO(1000);
     }
 
@@ -172,8 +193,16 @@ public class FarmhouseServiceImpl implements IFarmhouseService {
     }
 
     @Override
-    public ResultVO upload(MultipartFile file) {
+    public ResultVO upload(HttpSession session,MultipartFile file) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String picture = FileUtil.uploadFile(file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(), filePathConfig.getFarmHouseDir(), "farmhouse");
+        logService.insertActionRecord(session,OpsRecordMenuConstant.F_ExternalFunction,OpsRecordMenuConstant.S_FarmHouse,
+                "%s上传农家乐图片",(String) session.getAttribute("username"));
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 

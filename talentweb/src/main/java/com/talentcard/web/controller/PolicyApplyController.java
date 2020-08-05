@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -70,11 +71,11 @@ public class PolicyApplyController {
     }
 
     @RequestMapping("approval")
-    public ResultVO approval(HttpSession session,
+    public ResultVO approval(HttpServletRequest request,
                              @RequestParam(value = "paid") Long paid,
                              @RequestParam(value = "status", defaultValue = "") Byte status,
                              @RequestParam(value = "opinion", defaultValue = "") String opinion) {
-        return service.approval(session, paid, status, opinion);
+        return service.approval(request.getSession(), paid, status, opinion);
     }
 
     @RequestMapping("detail")

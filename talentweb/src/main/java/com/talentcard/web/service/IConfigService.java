@@ -2,6 +2,8 @@ package com.talentcard.web.service;
 
 import com.talentcard.common.vo.ResultVO;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @author: xiahui
  * @date: Created in 2020/5/11 16:23
@@ -24,5 +26,5 @@ public interface IConfigService {
      * @param value
      * @return
      */
-    ResultVO edit(String key, String value);
+    ResultVO edit(HttpSession session,String key, String value);
 }

@@ -11,4 +11,6 @@ public interface ITripMonthService {
     ResultVO query(Integer pageNum, Integer pageSize, Map<String, Object> map);
 
     ResultVO export(Map<String, Object> map, HttpServletResponse response);
+
+    ResultVO total(Map<String, Object> map,Map<String, Object> endTime);
 }

@@ -42,6 +42,22 @@
     </where>
     order by tm_id desc
   </select>
+  <select id="getTotal" parameterType="java.util.Map" resultType="java.util.HashMap">
+    select IFNULL(sum(free_times),0) as freeTimes,
+     IFNULL(sum(discount_times),0) as discountTimes, IFNULL(sum(total_times),0) as totalTimes
+     from m_trip_month
+    <where>
+      <if test="name!=null and name!=''">
+        name like #{name} '%'
+      </if>
+      <if test="start!=null and start!=''">
+        and `month`>=#{start}
+      </if>
+      <if test="end!=null and end!=''">
+        and #{end}>=`month`
+      </if>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from m_trip_month
     where tm_id = #{tmId,jdbcType=BIGINT}

@@ -13,11 +13,11 @@
     <result column="after_json_record" jdbcType="VARCHAR" property="afterJsonRecord" />
   </resultMap>
   <sql id="Base_Column_List">
-    etc_id, talent_id, user_id, operation_type, operation_content, create_time, `comment`, 
+    etc_id, talent_id, user_id, operation_type, operation_content, create_time, `comment`,
     before_json_record, after_json_record
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_edit_talent_record
     where etc_id = #{etcId,jdbcType=BIGINT}
@@ -27,12 +27,12 @@
     where etc_id = #{etcId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.EditTalentRecordPO">
-    insert into t_edit_talent_record (etc_id, talent_id, user_id, 
-      operation_type, operation_content, create_time, 
+    insert into t_edit_talent_record (etc_id, talent_id, user_id,
+      operation_type, operation_content, create_time,
       `comment`, before_json_record, after_json_record
       )
-    values (#{etcId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
-      #{operationType,jdbcType=TINYINT}, #{operationContent,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+    values (#{etcId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+      #{operationType,jdbcType=TINYINT}, #{operationContent,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP},
       #{comment,jdbcType=CHAR}, #{beforeJsonRecord,jdbcType=VARCHAR}, #{afterJsonRecord,jdbcType=VARCHAR}
       )
   </insert>
@@ -139,4 +139,15 @@
       after_json_record = #{afterJsonRecord,jdbcType=VARCHAR}
     where etc_id = #{etcId,jdbcType=BIGINT}
   </update>
+
+  <select id="queryByTalentId" parameterType="java.lang.String" resultType="com.talentcard.common.bo.EditTalentRecordBO">
+    select
+    e.etc_id as etcId, e.user_id as userId, e.operation_type as operationType, operation_content as operationContent,
+    e.before_json_record as beforeJsonRecord, e.after_json_record as afterJsonRecord,
+    e.`comment`, e.create_time as createTime, u.username as userName
+    from t_edit_talent_record e
+    left join t_user u on e.user_id = u.user_id
+    where talent_id = #{talentId,jdbcType=VARCHAR}
+    order by e.etc_id desc
+  </select>
 </mapper>

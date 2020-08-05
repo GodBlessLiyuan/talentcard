@@ -1,6 +1,7 @@
 package com.talentcard.web.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.pojo.CardPO;
 import com.talentcard.common.pojo.wechat.create.*;
 import com.talentcard.common.utils.WechatApiUtil;
 import org.springframework.core.io.FileSystemResource;
@@ -183,5 +184,16 @@ public class CardUtil {
         String picUrl = restTemplate.postForObject(url, params, String.class);
         return picUrl;
     }
+    /**
+     * 得到卡片的显示字符串，
+     * @author:ly,
+     * @Date:2020/7/28
+     * */
+    public static String getCardName(CardPO cardPO) {
+        return cardPO.getTitle()+"/"+cardPO.getInitialWord();
+    }
 
+    public static String getCardNum(CardPO cardPO) {
+        return cardPO.getTitle()+"/"+cardPO.getCurrNum();
+    }
 }

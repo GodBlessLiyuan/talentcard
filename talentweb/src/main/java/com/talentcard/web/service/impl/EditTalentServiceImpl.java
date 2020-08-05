@@ -3,14 +3,13 @@ package com.talentcard.web.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.TalentBO;
-import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.constant.EditTalentRecordConstant;
 import com.talentcard.common.dto.*;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.WechatApiUtil;
-import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.EditTalentPolicyDTO;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.*;
@@ -19,7 +18,10 @@ import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.CertificationTimesVO;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +40,8 @@ import java.util.List;
  */
 @Service
 public class EditTalentServiceImpl implements IEditTalentService {
+
+    private static final Logger logger = LoggerFactory.getLogger(EditTalentServiceImpl.class);
     @Autowired
     TalentMapper talentMapper;
     @Autowired
@@ -83,10 +87,16 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Autowired
     ICertApprovalService iCertApprovalService;
     private byte EDIT_VERIFY = 2;
-
+    @Autowired
+    private ILogService logService;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editBasicInfo(HttpSession httpSession, BasicInfoDTO basicInfoDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         TalentPO talentPO = talentMapper.selectByOpenId(basicInfoDTO.getOpenId());
         if (talentPO == null) {
             return new ResultVO(2500);
@@ -129,12 +139,19 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的基本信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editEducation(HttpSession httpSession, EducationDTO educationDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String openId = educationDTO.getOpenId();
         EducationPO educationPO = educationMapper.selectByPrimaryKey(educationDTO.getEducId());
         if (educationPO == null || educationPO.getEducation() == null) {
@@ -221,12 +238,19 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的学历信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editProfQuality(HttpSession httpSession, ProfQualityDTO profQualityDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String openId = profQualityDTO.getOpenId();
         ActivcateBO activcateBO = talentMapper.activate(openId, (byte) 1, (byte) 2);
         ProfQualityPO profQualityPO = profQualityMapper.selectByPrimaryKey(profQualityDTO.getPqId());
@@ -310,12 +334,19 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的职业资格信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editProfTitle(HttpSession httpSession, ProfTitleDTO profTitleDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String openId = profTitleDTO.getOpenId();
         ProfTitlePO profTitlePO = profTitleMapper.selectByPrimaryKey(profTitleDTO.getPtId());
         if (profTitlePO == null || profTitlePO.getCategory() == null) {
@@ -401,12 +432,19 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的职称信息",talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editTalentHonour(HttpSession httpSession, TalentHonourDTO talentHonourDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         String openId = talentHonourDTO.getOpenId();
         TalentHonourPO talentHonourPO = talentHonourMapper.selectByPrimaryKey(talentHonourDTO.getThId());
         if (talentHonourPO == null || talentHonourPO.getHonourId() == null) {
@@ -490,6 +528,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的主要人才荣誉",talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -497,6 +537,11 @@ public class EditTalentServiceImpl implements IEditTalentService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editTalentCategory(HttpSession httpSession, String openId,
                                        String talentCategory, String opinion) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         TalentPO talentPO = talentMapper.selectByOpenId(openId);
         if (talentPO == null) {
             return new ResultVO(2500);
@@ -529,6 +574,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的人才类别",talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -608,7 +655,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultVO changeCard(Long talentId, Long newCardId, String opinion) {
+    public ResultVO changeCard(HttpSession session,Long talentId, Long newCardId, String opinion) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
         if (talentPO == null) {
             return new ResultVO(2500);
@@ -704,12 +757,31 @@ public class EditTalentServiceImpl implements IEditTalentService {
         String remark = opinion;
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
-        MessageUtil.sendTemplateMessage(messageDTO);
+
+        sendTemplateMessage(messageDTO);
+
+
+        this.iEditTalentRecordService.addRecord(session,talentId,EditTalentRecordConstant.editType, EditTalentRecordConstant.talentCard,
+                JSONObject.toJSONString(oldCardPO),JSONObject.toJSONString(newCardPO),opinion);
         /**
          * 清缓存
          */
         iTalentService.clearRedisCache(talentPO.getOpenId());
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的人才卡",talentPO.getName());
         return new ResultVO(1000);
+    }
+
+    @Async("asyncTaskExecutor")
+    public void sendTemplateMessage(MessageDTO messageDTO){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.info("sync sendMessage");
+        //领卡通知
+        MessageUtil.sendTemplateMessage(messageDTO);
     }
 
     @Override
