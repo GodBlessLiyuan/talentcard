@@ -31,6 +31,12 @@ public class HonourServiceImpl implements IHonourService {
 
     @Override
     public ResultVO add(String name, String description, HttpSession httpSession) {
+//        //从session中获取userId的值
+//        Long userId = (Long) httpSession.getAttribute("userId");
+//        if (userId == null) {
+//            // 用户过期
+//            return ResultVO.notLogin();
+//        }
         Integer ifExistName = honourMapper.ifExistName(name);
         if (ifExistName != 0) {
             return new ResultVO(2730, "人才类别或者人才荣誉重复了！");
@@ -50,6 +56,12 @@ public class HonourServiceImpl implements IHonourService {
 
     @Override
     public ResultVO edit(Long honourId, String description, HttpSession httpSession) {
+//        //从session中获取userId的值
+//        Long userId = (Long) httpSession.getAttribute("userId");
+//        if (userId == null) {
+//            // 用户过期
+//            return ResultVO.notLogin();
+//        }
         HonourPO honourPO = honourMapper.selectByPrimaryKey(honourId);
         if (honourPO == null) {
             return new ResultVO(2720, "查无此人才荣誉！");
@@ -63,6 +75,12 @@ public class HonourServiceImpl implements IHonourService {
 
     @Override
     public ResultVO upDown(Long honourId, Byte status, HttpSession httpSession) {
+//        //从session中获取userId的值
+//        Long userId = (Long) httpSession.getAttribute("userId");
+//        if (userId == null) {
+//            // 用户过期
+//            return ResultVO.notLogin();
+//        }
         HonourPO honourPO = honourMapper.selectByPrimaryKey(honourId);
         if (honourPO == null) {
             return new ResultVO(2720, "查无此人才荣誉！");

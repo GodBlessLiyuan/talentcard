@@ -32,6 +32,12 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public ResultVO add(String name, String description, HttpSession httpSession) {
+//        //从session中获取userId的值
+//        Long userId = (Long) httpSession.getAttribute("userId");
+//        if (userId == null) {
+//            // 用户过期
+//            return ResultVO.notLogin();
+//        }
         Integer ifExistName = categoryMapper.ifExistName(name);
         if (ifExistName != 0) {
             return new ResultVO(2730, "人才类别或者人才荣誉重复了！");
@@ -51,6 +57,12 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public ResultVO edit(Long categoryId, String description, HttpSession httpSession) {
+//        //从session中获取userId的值
+//        Long userId = (Long) httpSession.getAttribute("userId");
+//        if (userId == null) {
+//            // 用户过期
+//            return ResultVO.notLogin();
+//        }
         CategoryPO categoryPO = categoryMapper.selectByPrimaryKey(categoryId);
         if (categoryPO == null) {
             return new ResultVO(2710, "查无此人才类别！");
@@ -64,6 +76,12 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public ResultVO upDown(Long categoryId, Byte status, HttpSession httpSession) {
+//        //从session中获取userId的值
+//        Long userId = (Long) httpSession.getAttribute("userId");
+//        if (userId == null) {
+//            // 用户过期
+//            return ResultVO.notLogin();
+//        }
         CategoryPO categoryPO = categoryMapper.selectByPrimaryKey(categoryId);
         if (categoryPO == null) {
             return new ResultVO(2710, "查无此人才类别！");
