@@ -130,7 +130,7 @@
     </if>
   </select>
 
-  <select id="ifExistName" resultMap="BaseResultMap">
+  <select id="ifExistName" resultType="java.lang.Integer">
     select
     count(honourId)
     from t_honour
