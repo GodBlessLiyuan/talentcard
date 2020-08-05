@@ -7,10 +7,13 @@ import com.talentcard.common.pojo.CategoryPO;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.service.ICategoryService;
+import com.talentcard.web.service.ILogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
@@ -24,9 +27,11 @@ import java.util.List;
 public class CategoryServiceImpl implements ICategoryService {
     @Autowired
     CategoryMapper categoryMapper;
+    @Autowired
+    private ILogService logService;
 
     @Override
-    public ResultVO add(String name, String description) {
+    public ResultVO add(String name, String description, HttpSession httpSession) {
         Integer ifExistName = categoryMapper.ifExistName(name);
         if (ifExistName != 0) {
             return new ResultVO(2730, "人才类别或者人才荣誉重复了！");
@@ -39,28 +44,39 @@ public class CategoryServiceImpl implements ICategoryService {
         categoryPO.setDr((byte) 1);
         categoryPO.setStatus((byte) 2);
         categoryMapper.insertSelective(categoryPO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentLabelManage, OpsRecordMenuConstant.S_TalentCategory,
+                "新增人才类别\"%s\"", name);
         return new ResultVO(1000);
     }
 
     @Override
-    public ResultVO edit(Long categoryId, String description) {
+    public ResultVO edit(Long categoryId, String description, HttpSession httpSession) {
         CategoryPO categoryPO = categoryMapper.selectByPrimaryKey(categoryId);
         if (categoryPO == null) {
             return new ResultVO(2710, "查无此人才类别！");
         }
         categoryPO.setDescription(description);
         categoryMapper.updateByPrimaryKeySelective(categoryPO);
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentLabelManage, OpsRecordMenuConstant.S_TalentCategory,
+                "编辑人才类别\"%s\"", categoryPO.getName());
         return new ResultVO(1000);
     }
 
     @Override
-    public ResultVO upDown(Long categoryId, Byte status) {
+    public ResultVO upDown(Long categoryId, Byte status, HttpSession httpSession) {
         CategoryPO categoryPO = categoryMapper.selectByPrimaryKey(categoryId);
         if (categoryPO == null) {
             return new ResultVO(2710, "查无此人才类别！");
         }
         categoryPO.setStatus(status);
         categoryMapper.updateByPrimaryKeySelective(categoryPO);
+        if (status == 1) {
+            logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentLabelManage, OpsRecordMenuConstant.S_TalentCategory,
+                    "上架人才类别\"%s\"", categoryPO.getName());
+        } else {
+            logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentLabelManage, OpsRecordMenuConstant.S_TalentCategory,
+                    "下架人才类别\"%s\"", categoryPO.getName());
+        }
         return new ResultVO(1000);
     }
 
