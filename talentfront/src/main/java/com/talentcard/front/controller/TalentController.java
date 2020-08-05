@@ -84,22 +84,7 @@ public class TalentController {
 
     /**
      * 用户认证模块
-     *
-     * @param openId
-     * @param education
-     * @param school
-     * @param firstClass
-     * @param major
-     * @param profQualityCategory
-     * @param profQualityInfo
-     * @param profTitleCategory
-     * @param profTitleInfo
-     * @param honourId
-     * @param graduateTime
-     * @param educPicture
-     * @param profTitlePicture
-     * @param profQualityPicture
-     * @param talentHonourPicture
+     * @param identificationDTO
      * @return
      */
     @PostMapping("identification")
