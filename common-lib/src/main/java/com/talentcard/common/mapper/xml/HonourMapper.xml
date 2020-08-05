@@ -132,7 +132,7 @@
 
   <select id="ifExistName" resultType="java.lang.Integer">
     select
-    count(honourId)
+    count(honour_id)
     from t_honour
     where
     `name` = #{name, jdbcType=CHAR}
