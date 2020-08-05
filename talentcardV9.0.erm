@@ -10,9 +10,9 @@
 		<right_margin>30</right_margin>
 	</page_setting>
 	<category_index>0</category_index>
-	<zoom>1.5</zoom>
-	<x>2531</x>
-	<y>-774</y>
+	<zoom>1.0</zoom>
+	<x>1174</x>
+	<y>-516</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2020-04-08 11:16:39</creation_date>
-			<updated_date>2020-08-04 09:26:40</updated_date>
+			<updated_date>2020-08-04 11:25:35</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -25471,7 +25471,7 @@
 					<foreign_key>false</foreign_key>
 					<not_null>false</not_null>
 					<primary_key>false</primary_key>
-					<unique_key>true</unique_key>
+					<unique_key>false</unique_key>
 					<character_set></character_set>
 					<collation></collation>
 					<sequence>

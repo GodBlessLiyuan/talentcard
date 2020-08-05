@@ -26,6 +26,10 @@ public class HonourServiceImpl implements IHonourService {
 
     @Override
     public ResultVO add(String name, String description) {
+        Integer ifExistName = honourMapper.ifExistName(name);
+        if (ifExistName != 0) {
+            return new ResultVO(2730, "人才类别或者人才荣誉重复了！");
+        }
         HonourPO honourPO = new HonourPO();
         honourPO.setName(name);
         honourPO.setDescription(description);

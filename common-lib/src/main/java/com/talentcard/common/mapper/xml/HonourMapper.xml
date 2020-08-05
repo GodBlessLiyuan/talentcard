@@ -129,4 +129,12 @@
       and status = #{status, jdbcType=TINYINT}
     </if>
   </select>
+
+  <select id="ifExistName" resultMap="BaseResultMap">
+    select
+    count(honourId)
+    from t_honour
+    where
+    `name` = #{name, jdbcType=CHAR}
+  </select>
 </mapper>

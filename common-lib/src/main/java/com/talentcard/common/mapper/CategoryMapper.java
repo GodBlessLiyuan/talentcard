@@ -19,4 +19,11 @@ public interface CategoryMapper extends BaseMapper<CategoryPO, Long> {
      * @return
      */
     List<CategoryPO> query(@Param("name") String name, @Param("status") Byte status);
+
+    /**
+     * 判断是否存在该名称
+     * @param name
+     * @return
+     */
+    Integer ifExistName(@Param("name") String name);
 }

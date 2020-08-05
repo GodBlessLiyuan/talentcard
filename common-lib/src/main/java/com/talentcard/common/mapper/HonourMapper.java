@@ -20,4 +20,11 @@ public interface HonourMapper extends BaseMapper<HonourPO, Long> {
      * @return
      */
     List<HonourPO> query(@Param("name") String name, @Param("status") Byte status);
+
+    /**
+     * 判断是否存在该名称
+     * @param name
+     * @return
+     */
+    Integer ifExistName(@Param("name") String name);
 }

@@ -27,6 +27,10 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public ResultVO add(String name, String description) {
+        Integer ifExistName = categoryMapper.ifExistName(name);
+        if (ifExistName != 0) {
+            return new ResultVO(2730, "人才类别或者人才荣誉重复了！");
+        }
         CategoryPO categoryPO = new CategoryPO();
         categoryPO.setName(name);
         categoryPO.setDescription(description);
