@@ -17,7 +17,7 @@ import java.util.List;
 public class RoleAuthorityBO implements Serializable {
     private static final long SerialVersionUID = 1L;
     /**
-     * 系统管理权限, 1关闭，2开放
+     * 系统管理权限, 1开放，2关闭
      * roleQuery 查看角色
      * userCreate 新建用户
      * userUpdate 修改用户
@@ -31,7 +31,7 @@ public class RoleAuthorityBO implements Serializable {
     private Byte userQuery;
 
     /**
-     * 卡片管理权限，1关闭，2开放
+     * 卡片管理权限，1开放，2关闭
      * userCardUpdate 修改卡片
      * userCardDelete 删除卡片
      * userCardQuery 查看卡片
@@ -43,7 +43,7 @@ public class RoleAuthorityBO implements Serializable {
     private Byte userCardCreate;
 
     /**
-     * 人才管理权限，1关闭，2开放
+     * 人才管理权限，1开放，2关闭
      * generalTalentQuery 普通用户查看
      * verifiedTalentQuery 认证用户查看
      * verifiedTalentUpdate 认证用户修改
@@ -57,7 +57,7 @@ public class RoleAuthorityBO implements Serializable {
     private Byte approvalTalentAction;
 
     /**
-     * 人才政策管理权限，1关闭，2开放
+     * 人才政策管理权限，1开放，2关闭
      * policyCreate 新建政策
      * policyUpdate 修改政策
      * policyDelete 删除政策
@@ -71,6 +71,89 @@ public class RoleAuthorityBO implements Serializable {
     private Byte policyQuery;
     private Byte approvalPolicyQuery;
     private Byte approvalPolicyAction;
+
+    /**
+     * banner配置，1开放，2关闭
+     * bannerQuery  banner查看
+     * bannerCreate 新建banner
+     */
+    private Byte bannerQuery;
+    private Byte bannerCreate;
+
+    /**
+     * 意见反馈，1开放，2关闭
+     * commentQuery  意见反馈查看
+     */
+    private Byte commentQuery;
+
+    /**
+     * 免费旅游，1开放，2关闭
+     * tripQuery 查看
+     * tripCreate 新建景区
+     * tripEdit 编辑景区
+     * tripDataQuery 数据查看
+     * tripSetTripNumber 配置旅游数量
+     * tripSetRelatedInfo 配置关于信息
+     * tripGetData 导出数据
+     */
+    private Byte tripQuery;
+    private Byte tripCreate;
+    private Byte tripEdit;
+    private Byte tripDataQuery;
+    private Byte tripSetTripNumber;
+    private Byte tripSetRelatedInfo;
+    private Byte tripGetData;
+
+    /**
+     * 农家乐，1开放，2关闭
+     * farmHouseQuery 查看
+     * farmHouseCreate 新建农家乐
+     * farmHouseEdit 编辑农家乐
+     * farmHouseDataQuery 数据查看
+     * farmHouseSetRelatedInfo 配置关于信息
+     * farmHouseGetData 导出数据
+     */
+    private Byte farmHouseQuery;
+    private Byte farmHouseCreate;
+    private Byte farmHouseEdit;
+    private Byte farmHouseDataQuery;
+    private Byte farmHouseSetRelatedInfo;
+    private Byte farmHouseGetData;
+
+    /**
+     * 员工绑定信息，1开放，2关闭
+     * staffBindInfoQuery 查看
+     * staffBindInfoDelete 删除
+     */
+    private Byte staffBindInfoQuery;
+    private Byte staffBindInfoDelete;
+
+    /**
+     * 问题收集，1开放，2关闭
+     * QuestionCollectQuery 查看
+     */
+    private Byte QuestionCollectQuery;
+
+    /**
+     * 人才类别管理，1开放，2关闭
+     * TalentCategoryQuery 查看
+     * TalentCategoryAdd 新增人才类别
+     * TalentCategoryEdit 编辑人才类别
+     */
+    private Byte TalentCategoryQuery;
+    private Byte TalentCategoryAdd;
+    private Byte TalentCategoryEdit;
+
+    /**
+     * 人才荣誉管理，1开放，2关闭
+     * TalentHonourQuery 查看
+     * TalentHonourAdd 新增人才荣誉
+     * TalentHonourEdit 编辑人才荣誉
+     */
+    private Byte TalentHonourQuery;
+    private Byte TalentHonourAdd;
+    private Byte TalentHonourEdit;
+
 
     /**
      * 将角色权限表实体类转换为其VO表示实体类
@@ -102,6 +185,33 @@ public class RoleAuthorityBO implements Serializable {
                 case "policyQuery": vo.setPolicyQuery(bo.getStatus());break;
                 case "approvalPolicyQuery": vo.setApprovalPolicyQuery(bo.getStatus());break;
                 case "approvalPolicyAction": vo.setApprovalPolicyAction(bo.getStatus());break;
+                /*第九期*/
+                case "bannerQuery": vo.setBannerQuery(bo.getStatus());break;
+                case "bannerCreate": vo.setBannerCreate(bo.getStatus());break;
+                case "commentQuery": vo.setCommentQuery(bo.getStatus());break;
+                case "tripQuery": vo.setTripQuery(bo.getStatus());break;
+                case "tripCreate": vo.setTripCreate(bo.getStatus());break;
+                case "tripEdit": vo.setTripEdit(bo.getStatus());break;
+                case "tripDataQuery": vo.setTripDataQuery(bo.getStatus());break;
+                case "tripSetTripNumber": vo.setTripSetTripNumber(bo.getStatus());break;
+                case "tripSetRelatedInfo": vo.setTripSetRelatedInfo(bo.getStatus());break;
+                case "tripGetData": vo.setTripGetData(bo.getStatus());break;
+                case "farmHouseQuery": vo.setFarmHouseQuery(bo.getStatus());break;
+                case "farmHouseCreate": vo.setFarmHouseCreate(bo.getStatus());break;
+                case "farmHouseEdit": vo.setFarmHouseEdit(bo.getStatus());break;
+                case "farmHouseDataQuery": vo.setFarmHouseDataQuery(bo.getStatus());break;
+                case "farmHouseSetRelatedInfo": vo.setFarmHouseSetRelatedInfo(bo.getStatus());break;
+                case "farmHouseGetData": vo.setFarmHouseGetData(bo.getStatus());break;
+                case "staffBindInfoQuery": vo.setStaffBindInfoQuery(bo.getStatus());break;
+                case "staffBindInfoDelete": vo.setStaffBindInfoDelete(bo.getStatus());break;
+                case "QuestionCollectQuery": vo.setQuestionCollectQuery(bo.getStatus());break;
+                case "TalentCategoryQuery": vo.setTalentCategoryQuery(bo.getStatus());break;
+                case "TalentCategoryAdd": vo.setTalentCategoryAdd(bo.getStatus());break;
+                case "TalentCategoryEdit": vo.setTalentCategoryEdit(bo.getStatus());break;
+                case "TalentHonourQuery": vo.setTalentHonourQuery(bo.getStatus());break;
+                case "TalentHonourAdd": vo.setTalentHonourAdd(bo.getStatus());break;
+                case "TalentHonourEdit": vo.setTalentHonourEdit(bo.getStatus());break;
+
             }
         }
         return vo;
