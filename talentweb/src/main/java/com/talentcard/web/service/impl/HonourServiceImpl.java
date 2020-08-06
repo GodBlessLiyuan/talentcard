@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.talentcard.common.mapper.HonourMapper;
 import com.talentcard.common.pojo.HonourPO;
 import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
@@ -28,6 +29,8 @@ public class HonourServiceImpl implements IHonourService {
     HonourMapper honourMapper;
     @Autowired
     private ILogService logService;
+    @Autowired
+    private RedisMapUtil redisMapUtil;
 
     @Override
     public ResultVO add(String name, String description, HttpSession httpSession) {
@@ -51,6 +54,10 @@ public class HonourServiceImpl implements IHonourService {
         honourMapper.insertSelective(honourPO);
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentLabelManage, OpsRecordMenuConstant.S_TalentHonour,
                 "新增人才荣誉\"%s\"", name);
+        /**
+         * 清除用户缓存
+         */
+        this.redisMapUtil.del("talentHonourList");
         return new ResultVO(1000);
     }
 
@@ -70,6 +77,10 @@ public class HonourServiceImpl implements IHonourService {
         honourMapper.updateByPrimaryKeySelective(honourPO);
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentLabelManage, OpsRecordMenuConstant.S_TalentHonour,
                 "编辑人才荣誉\"%s\"", honourPO.getName());
+        /**
+         * 清除用户缓存
+         */
+        this.redisMapUtil.del("talentHonourList");
         return new ResultVO(1000);
     }
 
@@ -94,6 +105,10 @@ public class HonourServiceImpl implements IHonourService {
             logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentLabelManage, OpsRecordMenuConstant.S_TalentHonour,
                     "下架人才荣誉\"%s\"", honourPO.getName());
         }
+        /**
+         * 清除用户缓存
+         */
+        this.redisMapUtil.del("talentHonourList");
         return new ResultVO(1000);
     }
 
