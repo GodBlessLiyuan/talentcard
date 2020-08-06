@@ -29,6 +29,11 @@ public class TalentConstant {
      */
     public static final String BANNER_INFO ="banner_info";
     /**
+     * 人才荣誉查询
+     * 用于前台注册、认证等 人才荣誉的下拉框信息
+     */
+    public static final String TALENT_HONOUR_LIST ="talent_honour_list";
+    /**
      * 判断是否为默认游客账号
      * @param openId
      * @return
