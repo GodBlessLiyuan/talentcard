@@ -1,6 +1,7 @@
 package com.talentcard.front.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.HonourMapper;
 import com.talentcard.common.pojo.HonourPO;
 import com.talentcard.common.utils.StringToObjUtil;
@@ -31,7 +32,7 @@ public class HonourServiceImpl implements IHonourService {
         /**
          * 添加redis hash缓存
          */
-        String mapStr = this.redisMapUtil.hget("talentHonourList", "talentHonourList");
+        String mapStr = this.redisMapUtil.hget(TalentConstant.TALENT_HONOUR_LIST, TalentConstant.TALENT_HONOUR_LIST);
         List<HonourPO> honourPOList = StringToObjUtil.strToObj(mapStr, List.class);
         if (honourPOList != null) {
             return new ResultVO(1000, honourPOList);
@@ -40,7 +41,7 @@ public class HonourServiceImpl implements IHonourService {
         /**
          * 设置缓存
          */
-        this.redisMapUtil.hset("talentHonourList", "talentHonourList", JSON.toJSONString(honourPOList));
+        this.redisMapUtil.hset(TalentConstant.TALENT_HONOUR_LIST, TalentConstant.TALENT_HONOUR_LIST, JSON.toJSONString(honourPOList));
         return new ResultVO<>(1000, honourPOList);
     }
 }
