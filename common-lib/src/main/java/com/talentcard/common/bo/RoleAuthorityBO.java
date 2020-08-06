@@ -132,7 +132,7 @@ public class RoleAuthorityBO implements Serializable {
      * 问题收集，1开放，2关闭
      * QuestionCollectQuery 查看
      */
-    private Byte QuestionCollectQuery;
+    private Byte questionCollectQuery;
 
     /**
      * 人才类别管理，1开放，2关闭
@@ -140,9 +140,9 @@ public class RoleAuthorityBO implements Serializable {
      * TalentCategoryAdd 新增人才类别
      * TalentCategoryEdit 编辑人才类别
      */
-    private Byte TalentCategoryQuery;
-    private Byte TalentCategoryAdd;
-    private Byte TalentCategoryEdit;
+    private Byte talentCategoryQuery;
+    private Byte talentCategoryAdd;
+    private Byte talentCategoryEdit;
 
     /**
      * 人才荣誉管理，1开放，2关闭
@@ -150,9 +150,9 @@ public class RoleAuthorityBO implements Serializable {
      * TalentHonourAdd 新增人才荣誉
      * TalentHonourEdit 编辑人才荣誉
      */
-    private Byte TalentHonourQuery;
-    private Byte TalentHonourAdd;
-    private Byte TalentHonourEdit;
+    private Byte talentHonourQuery;
+    private Byte talentHonourAdd;
+    private Byte talentHonourEdit;
 
 
     /**
@@ -205,12 +205,12 @@ public class RoleAuthorityBO implements Serializable {
                 case "staffBindInfoQuery": vo.setStaffBindInfoQuery(bo.getStatus());break;
                 case "staffBindInfoDelete": vo.setStaffBindInfoDelete(bo.getStatus());break;
                 case "QuestionCollectQuery": vo.setQuestionCollectQuery(bo.getStatus());break;
-                case "TalentCategoryQuery": vo.setTalentCategoryQuery(bo.getStatus());break;
-                case "TalentCategoryAdd": vo.setTalentCategoryAdd(bo.getStatus());break;
-                case "TalentCategoryEdit": vo.setTalentCategoryEdit(bo.getStatus());break;
-                case "TalentHonourQuery": vo.setTalentHonourQuery(bo.getStatus());break;
-                case "TalentHonourAdd": vo.setTalentHonourAdd(bo.getStatus());break;
-                case "TalentHonourEdit": vo.setTalentHonourEdit(bo.getStatus());break;
+                case "talentCategoryQuery": vo.setTalentCategoryQuery(bo.getStatus());break;
+                case "talentCategoryAdd": vo.setTalentCategoryAdd(bo.getStatus());break;
+                case "talentCategoryEdit": vo.setTalentCategoryEdit(bo.getStatus());break;
+                case "talentHonourQuery": vo.setTalentHonourQuery(bo.getStatus());break;
+                case "talentHonourAdd": vo.setTalentHonourAdd(bo.getStatus());break;
+                case "talentHonourEdit": vo.setTalentHonourEdit(bo.getStatus());break;
 
             }
         }
