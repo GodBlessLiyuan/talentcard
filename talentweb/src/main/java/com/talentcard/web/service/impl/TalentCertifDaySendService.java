@@ -67,6 +67,8 @@ public class TalentCertifDaySendService {
             List<TalentUnConfirmSendPO> originTalents = talentMapper.queryByBreakIDAndTime(Long.parseLong(configPO.getConfigValue()), DateUtil.date2Str(calendar.getTime(), DateUtil.YMD_HMS), (byte) 2);
             if (originTalents == null || originTalents.size() == 0) {
                 logger.info("t_talent表没有人才未认证的数据");
+                configPO.setUpdateTime(new Date());
+                configMapper.updateByPrimaryKey(configPO);//更新状态
                 return this.destDataDailySend();//发送目标数据
             }
             //更新config的记录源数据的id号和目标数据的查询时间
