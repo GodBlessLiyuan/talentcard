@@ -128,6 +128,7 @@
     <if test="status != null and status!=0">
       and status = #{status, jdbcType=TINYINT}
     </if>
+    order by status asc, create_time asc
   </select>
 
   <select id="ifExistName" resultType="java.lang.Integer">
