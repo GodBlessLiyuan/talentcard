@@ -99,9 +99,9 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public ResultVO query(int pageNum, int pageSize, String name, Byte status) {
+    public ResultVO query(int pageNum, int pageSize, String name, Byte status, Byte type) {
         Page<CategoryPO> page = PageHelper.startPage(pageNum, pageSize);
-        List<CategoryPO> categoryPOList = categoryMapper.query(name, status);
+        List<CategoryPO> categoryPOList = categoryMapper.query(name, status, type);
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), categoryPOList));
     }
 
