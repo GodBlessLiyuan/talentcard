@@ -75,6 +75,7 @@ public class HonourServiceImpl implements IHonourService {
             return new ResultVO(2720, "查无此人才荣誉！");
         }
         honourPO.setDescription(description);
+        honourPO.setUpdateTime(new Date());
         honourMapper.updateByPrimaryKeySelective(honourPO);
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentLabelManage, OpsRecordMenuConstant.S_TalentHonour,
                 "编辑人才荣誉\"%s\"", honourPO.getName());
@@ -98,6 +99,7 @@ public class HonourServiceImpl implements IHonourService {
             return new ResultVO(2720, "查无此人才荣誉！");
         }
         honourPO.setStatus(status);
+        honourPO.setUpdateTime(new Date());
         honourMapper.updateByPrimaryKeySelective(honourPO);
         if (status == 1) {
             logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentLabelManage, OpsRecordMenuConstant.S_TalentHonour,
