@@ -62,7 +62,11 @@ INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (42, 'talentCategoryEdi
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (43, 'talentHonourQuery');
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (44, 'talentHonourAdd');
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (45, 'talentHonourEdit');
-
+/*第十期权限*/
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (46, 'logQuery');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (47, 'createPolicyType');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (48, 'editPolicyType');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (49, 'policyTypeQuery');
 
 /*角色：主要是超级管理员和运营人员*/
 INSERT INTO `t_role`(`role_id`, `name`, `extra`, `create_time`) VALUES (1, '超级管理员', NULL, '2020-04-17 14:06:25');
@@ -162,6 +166,15 @@ INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VAL
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (88, 1, 43, 2);
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (89, 1, 44, 2);
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (90, 1, 45, 2);
+/*第十期权限*/
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (91, 1, 46, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (92, 1, 47, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (93, 1, 48, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (94, 1, 49, 1);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (95, 1, 46, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (96, 1, 47, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (97, 1, 48, 2);
+INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (98, 1, 49, 2);
 
 /*用户：超级管理员角色*/
 INSERT INTO `t_user`(`user_id`, `username`, `name`, `password`, `create_time`, `dr`, `extra`, `role_id`) VALUES
