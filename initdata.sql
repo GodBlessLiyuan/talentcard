@@ -53,15 +53,15 @@ INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (36, 'farmHouseGetData'
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (37, 'staffBindInfoQuery');
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (38, 'staffBindInfoDelete');
 /*权限：扩展功能：问题收集*/
-INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (39, 'QuestionCollectQuery');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (39, 'questionCollectQuery');
 /*权限：人才标签管理：人才类别管理*/
-INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (40, 'TalentCategoryQuery');
-INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (41, 'TalentCategoryAdd');
-INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (42, 'TalentCategoryEdit');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (40, 'talentCategoryQuery');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (41, 'talentCategoryAdd');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (42, 'talentCategoryEdit');
 /*权限：人才标签管理：人才荣誉管理*/
-INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (53, 'TalentHonourQuery');
-INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (44, 'TalentHonourAdd');
-INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (45, 'TalentHonourEdit');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (43, 'talentHonourQuery');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (44, 'talentHonourAdd');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (45, 'talentHonourEdit');
 
 
 /*角色：主要是超级管理员和运营人员*/
