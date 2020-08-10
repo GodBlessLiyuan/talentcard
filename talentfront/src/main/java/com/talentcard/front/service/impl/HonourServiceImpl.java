@@ -37,7 +37,7 @@ public class HonourServiceImpl implements IHonourService {
         if (honourPOList != null) {
             return new ResultVO(1000, honourPOList);
         }
-        honourPOList = honourMapper.query(null, null);
+        honourPOList = honourMapper.query(null, null, (byte) 1);
         /**
          * 设置缓存
          */
