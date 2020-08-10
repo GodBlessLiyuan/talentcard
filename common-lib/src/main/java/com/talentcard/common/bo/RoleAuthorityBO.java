@@ -23,13 +23,14 @@ public class RoleAuthorityBO implements Serializable {
      * userUpdate 修改用户
      * userDelete 删除用户
      * userQuery 查看用户
+     * logQuery 日志查看
      */
     private Byte roleQuery;
     private Byte userCreate;
     private Byte userUpdate;
     private Byte userDelete;
     private Byte userQuery;
-
+    private Byte logQuery;
     /**
      * 卡片管理权限，1开放，2关闭
      * userCardUpdate 修改卡片
@@ -64,6 +65,9 @@ public class RoleAuthorityBO implements Serializable {
      * policyQuery 查看政策
      * approvalPolicyQuery 政策审批查看
      * approvalPolicyAction 政策审批审批
+     * createPolicyType 创建政策类型
+     * editPolicyType 编辑政策类型
+     * policyTypeQuery 政策类型查询
      */
     private Byte policyCreate;
     private Byte policyUpdate;
@@ -71,6 +75,9 @@ public class RoleAuthorityBO implements Serializable {
     private Byte policyQuery;
     private Byte approvalPolicyQuery;
     private Byte approvalPolicyAction;
+    private Byte createPolicyType;
+    private Byte editPolicyType;
+    private Byte policyTypeQuery;
 
     /**
      * banner配置，1开放，2关闭
@@ -130,15 +137,15 @@ public class RoleAuthorityBO implements Serializable {
 
     /**
      * 问题收集，1开放，2关闭
-     * QuestionCollectQuery 查看
+     * questionCollectQuery 查看
      */
     private Byte questionCollectQuery;
 
     /**
      * 人才类别管理，1开放，2关闭
-     * TalentCategoryQuery 查看
-     * TalentCategoryAdd 新增人才类别
-     * TalentCategoryEdit 编辑人才类别
+     * talentCategoryQuery 查看
+     * talentCategoryAdd 新增人才类别
+     * talentCategoryEdit 编辑人才类别
      */
     private Byte talentCategoryQuery;
     private Byte talentCategoryAdd;
@@ -204,14 +211,17 @@ public class RoleAuthorityBO implements Serializable {
                 case "farmHouseGetData": vo.setFarmHouseGetData(bo.getStatus());break;
                 case "staffBindInfoQuery": vo.setStaffBindInfoQuery(bo.getStatus());break;
                 case "staffBindInfoDelete": vo.setStaffBindInfoDelete(bo.getStatus());break;
-                case "QuestionCollectQuery": vo.setQuestionCollectQuery(bo.getStatus());break;
+                case "questionCollectQuery": vo.setQuestionCollectQuery(bo.getStatus());break;
                 case "talentCategoryQuery": vo.setTalentCategoryQuery(bo.getStatus());break;
                 case "talentCategoryAdd": vo.setTalentCategoryAdd(bo.getStatus());break;
                 case "talentCategoryEdit": vo.setTalentCategoryEdit(bo.getStatus());break;
                 case "talentHonourQuery": vo.setTalentHonourQuery(bo.getStatus());break;
                 case "talentHonourAdd": vo.setTalentHonourAdd(bo.getStatus());break;
                 case "talentHonourEdit": vo.setTalentHonourEdit(bo.getStatus());break;
-
+                case "createPolicyType": vo.setCreatePolicyType(bo.getStatus());break;
+                case "editPolicyType": vo.setEditPolicyType(bo.getStatus());break;
+                case "policyTypeQuery": vo.setPolicyTypeQuery((bo.getStatus()));break;
+                case "logQuery": vo.setLogQuery(bo.getStatus());break;
             }
         }
         return vo;
