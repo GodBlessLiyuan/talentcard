@@ -114,9 +114,9 @@ public class HonourServiceImpl implements IHonourService {
     }
 
     @Override
-    public ResultVO query(int pageNum, int pageSize, String name, Byte status) {
+    public ResultVO query(int pageNum, int pageSize, String name, Byte status, Byte type) {
         Page<HonourPO> page = PageHelper.startPage(pageNum, pageSize);
-        List<HonourPO> honourPOList = honourMapper.query(name, status);
+        List<HonourPO> honourPOList = honourMapper.query(name, status, type);
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), honourPOList));
     }
 

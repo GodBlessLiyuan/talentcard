@@ -74,8 +74,9 @@ public class CategoryController {
     public ResultVO query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                           @RequestParam(value = "pageSize", defaultValue = "100") int pageSize,
                           @RequestParam(value = "name", required = false) String name,
-                          @RequestParam(value = "status", required = false) Byte status) {
-        return iCategoryService.query(pageNum, pageSize, name, status);
+                          @RequestParam(value = "status", required = false) Byte status,
+                          @RequestParam(value = "type", defaultValue = "1") Byte type) {
+        return iCategoryService.query(pageNum, pageSize, name, status, type);
     }
 
     /**
