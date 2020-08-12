@@ -68,6 +68,7 @@ public class CategoryServiceImpl implements ICategoryService {
             return new ResultVO(2710, "查无此人才类别！");
         }
         categoryPO.setDescription(description);
+        categoryPO.setUpdateTime(new Date());
         categoryMapper.updateByPrimaryKeySelective(categoryPO);
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentLabelManage, OpsRecordMenuConstant.S_TalentCategory,
                 "编辑人才类别\"%s\"", categoryPO.getName());
@@ -87,6 +88,7 @@ public class CategoryServiceImpl implements ICategoryService {
             return new ResultVO(2710, "查无此人才类别！");
         }
         categoryPO.setStatus(status);
+        categoryPO.setUpdateTime(new Date());
         categoryMapper.updateByPrimaryKeySelective(categoryPO);
         if (status == 1) {
             logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentLabelManage, OpsRecordMenuConstant.S_TalentCategory,
@@ -99,9 +101,9 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public ResultVO query(int pageNum, int pageSize, String name, Byte status) {
+    public ResultVO query(int pageNum, int pageSize, String name, Byte status, Byte type) {
         Page<CategoryPO> page = PageHelper.startPage(pageNum, pageSize);
-        List<CategoryPO> categoryPOList = categoryMapper.query(name, status);
+        List<CategoryPO> categoryPOList = categoryMapper.query(name, status, type);
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), categoryPOList));
     }
 

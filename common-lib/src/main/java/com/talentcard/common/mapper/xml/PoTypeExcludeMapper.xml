@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.PoTypeExcludeMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PoTypeExcludePO">
+    <id column="exclude_id" jdbcType="BIGINT" property="excludeId" />
+    <result column="p_tid1" jdbcType="BIGINT" property="pTid1" />
+    <result column="p_tid2" jdbcType="BIGINT" property="pTid2" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    exclude_id, p_tid1, p_tid2
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from po_type_exclude
+    where exclude_id = #{excludeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from po_type_exclude
+    where exclude_id = #{excludeId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.PoTypeExcludePO">
+    insert into po_type_exclude (exclude_id, p_tid1, p_tid2
+      )
+    values (#{excludeId,jdbcType=BIGINT}, #{pTid1,jdbcType=BIGINT}, #{pTid2,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PoTypeExcludePO">
+    insert into po_type_exclude
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="excludeId != null">
+        exclude_id,
+      </if>
+      <if test="pTid1 != null">
+        p_tid1,
+      </if>
+      <if test="pTid2 != null">
+        p_tid2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="excludeId != null">
+        #{excludeId,jdbcType=BIGINT},
+      </if>
+      <if test="pTid1 != null">
+        #{pTid1,jdbcType=BIGINT},
+      </if>
+      <if test="pTid2 != null">
+        #{pTid2,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PoTypeExcludePO">
+    update po_type_exclude
+    <set>
+      <if test="pTid1 != null">
+        p_tid1 = #{pTid1,jdbcType=BIGINT},
+      </if>
+      <if test="pTid2 != null">
+        p_tid2 = #{pTid2,jdbcType=BIGINT},
+      </if>
+    </set>
+    where exclude_id = #{excludeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PoTypeExcludePO">
+    update po_type_exclude
+    set p_tid1 = #{pTid1,jdbcType=BIGINT},
+      p_tid2 = #{pTid2,jdbcType=BIGINT}
+    where exclude_id = #{excludeId,jdbcType=BIGINT}
+  </update>
+</mapper>

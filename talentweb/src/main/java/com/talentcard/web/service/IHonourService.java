@@ -17,7 +17,7 @@ public interface IHonourService {
 
     ResultVO upDown(Long categoryId, Byte status, HttpSession httpSession);
 
-    ResultVO query(int pageNum, int pageSize, String name, Byte status);
+    ResultVO query(int pageNum, int pageSize, String name, Byte status, Byte type);
 
     ResultVO findOne(Long categoryId);
 }
