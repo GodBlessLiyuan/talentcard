@@ -51,14 +51,14 @@ public class EditTalentRecordVO {
             if(bo.getOperationContent() == (byte)EditTalentRecordConstant.talentCategoryContent){
                 if(!StringUtils.isEmpty(bo.getBeforeJsonRecord())) {
                     JSONObject jsonObject = JSONObject.parseObject(bo.getBeforeJsonRecord());
-                    String category = jsonObject.getString("category");
-                    jsonObject.put("category",BatchCertificateUtil.convertTalentCategory(category));
+//                    String category = jsonObject.getString("category");
+//                    jsonObject.put("category",BatchCertificateUtil.convertTalentCategory(category));
                     vo.setBefore_json(jsonObject);
                 }
                 if(!StringUtils.isEmpty(bo.getAfterJsonRecord())) {
                     JSONObject jsonObject = JSONObject.parseObject(bo.getAfterJsonRecord());
-                    String category = jsonObject.getString("category");
-                    jsonObject.put("category",BatchCertificateUtil.convertTalentCategory(category));
+//                    String category = jsonObject.getString("category");
+//                    jsonObject.put("category",BatchCertificateUtil.convertTalentCategory(category));
                     vo.setAfter_json(jsonObject);
                 }
             }
