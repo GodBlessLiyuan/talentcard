@@ -158,6 +158,7 @@ public class PolicyDetailVO implements Serializable {
      */
     private String phone;
 
+    private Byte status;
     /**
      * po 转 vo
      *
