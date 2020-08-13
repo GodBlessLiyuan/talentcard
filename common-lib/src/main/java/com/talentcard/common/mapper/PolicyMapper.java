@@ -34,4 +34,6 @@ public interface PolicyMapper extends BaseMapper<PolicyPO, Long> {
      * @return
      */
     List<BankPO> queryBankCardInfo(String openId);
+
+    Integer add(PolicyPO policyPO);
 }

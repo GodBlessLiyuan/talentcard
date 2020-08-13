@@ -4,7 +4,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * po_type_exclude
+ * t_policy_type_exclude
  * @author 
  */
 @Data

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.talentcard.common.mapper.PoComplianceMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PoCompliancePO">
+<mapper namespace="com.talentcard.common.mapper.PolicyComplianceMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PolicyCompliancePO">
     <id column="p_co_id" jdbcType="BIGINT" property="pCoId" />
     <result column="policy_id" jdbcType="BIGINT" property="policyId" />
     <result column="talent_id" jdbcType="BIGINT" property="talentId" />
@@ -14,21 +14,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from po_compliance
+    from t_policy_compliance
     where p_co_id = #{pCoId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from po_compliance
+    delete from t_policy_compliance
     where p_co_id = #{pCoId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.PoCompliancePO">
-    insert into po_compliance (p_co_id, policy_id, talent_id, 
+  <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyCompliancePO">
+    insert into t_policy_compliance (p_co_id, policy_id, talent_id, 
       apply_time, `status`)
     values (#{pCoId,jdbcType=BIGINT}, #{policyId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
       #{applyTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PoCompliancePO">
-    insert into po_compliance
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyCompliancePO">
+    insert into t_policy_compliance
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="pCoId != null">
         p_co_id,
@@ -64,8 +64,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PoCompliancePO">
-    update po_compliance
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PolicyCompliancePO">
+    update t_policy_compliance
     <set>
       <if test="policyId != null">
         policy_id = #{policyId,jdbcType=BIGINT},
@@ -82,8 +82,8 @@
     </set>
     where p_co_id = #{pCoId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PoCompliancePO">
-    update po_compliance
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PolicyCompliancePO">
+    update t_policy_compliance
     set policy_id = #{policyId,jdbcType=BIGINT},
       talent_id = #{talentId,jdbcType=BIGINT},
       apply_time = #{applyTime,jdbcType=TIMESTAMP},

@@ -488,4 +488,32 @@
         WHERE open_id = #{openId,jdbcType=CHAR}
         ORDER BY tb.bank_id DESC
   </select>
+  <insert id="add" useGeneratedKeys="true" keyProperty="policy_id" parameterType="com.talentcard.common.pojo.PolicyPO">
+    insert into t_policy (policy_id, `name`, num,
+      description, cards, categories,
+      educations, titles, qualities,
+      honour_ids, apply, color,
+      rate, unit, times,
+      bank, annex, annex_info,
+      apply_form, funds, user_id,
+      create_time, dr, p_tId,
+      role_id, funds_form, declaration_target,
+      apply_time, apply_materials, bonus,
+      business_process, phone, if_social_security,
+      social_area, social_times, social_unit
+      )
+    values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR},
+      #{description,jdbcType=VARCHAR}, #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR},
+      #{educations,jdbcType=CHAR}, #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR},
+      #{honourIds,jdbcType=CHAR}, #{apply,jdbcType=TINYINT}, #{color,jdbcType=CHAR},
+      #{rate,jdbcType=INTEGER}, #{unit,jdbcType=TINYINT}, #{times,jdbcType=INTEGER},
+      #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT}, #{annexInfo,jdbcType=CHAR},
+      #{applyForm,jdbcType=CHAR}, #{funds,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, #{pTid,jdbcType=BIGINT},
+      #{roleId,jdbcType=BIGINT}, #{fundsForm,jdbcType=TINYINT}, #{declarationTarget,jdbcType=VARCHAR},
+      #{applyTime,jdbcType=CHAR}, #{applyMaterials,jdbcType=VARCHAR}, #{bonus,jdbcType=VARCHAR},
+      #{businessProcess,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{ifSocialSecurity,jdbcType=TINYINT},
+      #{socialArea,jdbcType=TINYINT}, #{socialTimes,jdbcType=TINYINT}, #{socialUnit,jdbcType=TINYINT}
+      )
+  </insert>
 </mapper>
