@@ -98,7 +98,7 @@ public class PolicyPO implements Serializable {
 
     private Byte socialArea;
 
-    private String socialTimes;
+    private Byte socialTimes;
 
     private Byte socialUnit;
 

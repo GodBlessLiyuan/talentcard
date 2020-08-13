@@ -37,7 +37,7 @@
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="if_social_security" jdbcType="TINYINT" property="ifSocialSecurity" />
     <result column="social_area" jdbcType="TINYINT" property="socialArea" />
-    <result column="social_times" jdbcType="CHAR" property="socialTimes" />
+    <result column="social_times" jdbcType="TINYINT" property="socialTimes" />
     <result column="social_unit" jdbcType="TINYINT" property="socialUnit" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -82,7 +82,7 @@
       #{roleId,jdbcType=BIGINT}, #{fundsForm,jdbcType=TINYINT}, #{declarationTarget,jdbcType=VARCHAR}, 
       #{startTime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{applyMaterials,jdbcType=VARCHAR}, 
       #{bonus,jdbcType=VARCHAR}, #{businessProcess,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{ifSocialSecurity,jdbcType=TINYINT}, #{socialArea,jdbcType=TINYINT}, #{socialTimes,jdbcType=CHAR}, 
+      #{ifSocialSecurity,jdbcType=TINYINT}, #{socialArea,jdbcType=TINYINT}, #{socialTimes,jdbcType=TINYINT}, 
       #{socialUnit,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyPO">
@@ -307,7 +307,7 @@
         #{socialArea,jdbcType=TINYINT},
       </if>
       <if test="socialTimes != null">
-        #{socialTimes,jdbcType=CHAR},
+        #{socialTimes,jdbcType=TINYINT},
       </if>
       <if test="socialUnit != null">
         #{socialUnit,jdbcType=TINYINT},
@@ -420,7 +420,7 @@
         social_area = #{socialArea,jdbcType=TINYINT},
       </if>
       <if test="socialTimes != null">
-        social_times = #{socialTimes,jdbcType=CHAR},
+        social_times = #{socialTimes,jdbcType=TINYINT},
       </if>
       <if test="socialUnit != null">
         social_unit = #{socialUnit,jdbcType=TINYINT},
@@ -464,7 +464,7 @@
       phone = #{phone,jdbcType=VARCHAR},
       if_social_security = #{ifSocialSecurity,jdbcType=TINYINT},
       social_area = #{socialArea,jdbcType=TINYINT},
-      social_times = #{socialTimes,jdbcType=CHAR},
+      social_times = #{socialTimes,jdbcType=TINYINT},
       social_unit = #{socialUnit,jdbcType=TINYINT}
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>
@@ -524,7 +524,7 @@
       #{roleId,jdbcType=BIGINT}, #{fundsForm,jdbcType=TINYINT}, #{declarationTarget,jdbcType=VARCHAR},
       #{startTime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{applyMaterials,jdbcType=VARCHAR},
       #{bonus,jdbcType=VARCHAR}, #{businessProcess,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
-      #{ifSocialSecurity,jdbcType=TINYINT}, #{socialArea,jdbcType=TINYINT}, #{socialTimes,jdbcType=CHAR},
+      #{ifSocialSecurity,jdbcType=TINYINT}, #{socialArea,jdbcType=TINYINT}, #{socialTimes,jdbcType=TINYINT},
       #{socialUnit,jdbcType=TINYINT})
   </insert>
 </mapper>

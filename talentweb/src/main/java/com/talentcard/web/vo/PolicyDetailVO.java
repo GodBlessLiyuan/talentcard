@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author: xiahui
@@ -133,9 +134,13 @@ public class PolicyDetailVO implements Serializable {
      */
     private String declarationTarget;
     /**
-     * 申请时间
+     * 申请开始时间
      */
-    private String applyTime;
+    private Date startTime;
+    /**
+     * 申请结束时间
+     */
+    private Date endTime;
     /**
      * 申请资料
      */
@@ -193,7 +198,8 @@ public class PolicyDetailVO implements Serializable {
         vo.setSocialUnit(po.getSocialUnit());
         vo.setFundsForm(po.getFundsForm());
         vo.setDeclarationTarget(po.getDeclarationTarget());
-        vo.setApplyTime(po.getApplyTime());
+        vo.setStartTime(po.getStartTime());
+        vo.setEndTime(po.getEndtime());
         vo.setApplyMaterials(po.getApplyMaterials());
         vo.setBonus(po.getBonus());
         vo.setBusinessProcess(po.getBusinessProcess());
