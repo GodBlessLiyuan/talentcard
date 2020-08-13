@@ -97,7 +97,7 @@ public class PolicyDTO implements Serializable {
     /**
      * 社保时间
      */
-    private String socialTimes;
+    private Byte socialTimes;
     /**
      * 	社保频次
      */

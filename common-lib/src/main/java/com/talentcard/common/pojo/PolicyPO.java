@@ -80,17 +80,25 @@ public class PolicyPO implements Serializable {
      */
     private Byte fundsForm;
 
-    private String declarationtarget;
+    private String declarationTarget;
 
-    private String applytime;
+    private String applyTime;
 
-    private String applymaterials;
+    private String applyMaterials;
 
     private String bonus;
 
-    private String businessprocess;
+    private String businessProcess;
 
     private String phone;
+
+    private Byte ifSocialSecurity;
+
+    private Byte socialArea;
+
+    private Byte socialTimes;
+
+    private Byte socialUnit;
 
     private static final long serialVersionUID = 1L;
 }

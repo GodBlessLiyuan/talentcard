@@ -164,6 +164,17 @@ public class PolicyServiceImpl implements IPolicyService {
 
         po.setPTid(dto.getPolicyType());
         po.setRoleId(dto.getRoleId());
+        po.setIfSocialSecurity(dto.getIfSocialSecurity());
+        po.setSocialArea(dto.getSocialArea());
+        po.setSocialTimes(dto.getSocialTimes());
+        po.setSocialUnit(dto.getSocialUnit());
+        po.setFundsForm(dto.getFundsForm());
+        po.setDeclarationTarget(dto.getDeclarationTarget());
+        po.setApplyTime(dto.getApplyTime());
+        po.setApplyMaterials(dto.getApplyMaterials());
+        po.setBonus(dto.getBonus());
+        po.setBusinessProcess(dto.getBusinessProcess());
+        po.setPhone(dto.getPhone());
         return po;
     }
 
