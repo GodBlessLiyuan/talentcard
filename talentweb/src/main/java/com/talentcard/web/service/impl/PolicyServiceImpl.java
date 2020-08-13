@@ -94,7 +94,7 @@ public class PolicyServiceImpl implements IPolicyService {
             // 数据已被删除
             return new ResultVO(1001);
         }
-        policyMapper.updateByPrimaryKey(buildPOByDTO(po, dto));
+        policyMapper.updateByPrimaryKeySelective(buildPOByDTO(po, dto));
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
                 "编辑政策\"%s\"", PolicyNameUtil.getNameNumber(po));
         return new ResultVO(1000);

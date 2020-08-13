@@ -101,6 +101,59 @@ public class PolicyDetailVO implements Serializable {
     private Integer funds;
 
     /**
+     * 政策类型
+     */
+    private Long policyType;
+    /**
+     * 责任单位/角色id
+     */
+    private Long roleId;
+    /**
+     * 是否社保要求
+     */
+    private Byte ifSocialSecurity;
+    /**
+     * 地区
+     */
+    private Byte socialArea;
+    /**
+     * 社保时间
+     */
+    private Byte socialTimes;
+    /**
+     * 	社保频次
+     */
+    private Byte socialUnit;
+    /**
+     * 资金发放形式
+     */
+    private Byte fundsForm;
+    /**
+     * 申报对象
+     */
+    private String declarationTarget;
+    /**
+     * 申请时间
+     */
+    private String applyTime;
+    /**
+     * 申请资料
+     */
+    private String applyMaterials;
+    /**
+     * 奖励/补助额度
+     */
+    private String bonus;
+    /**
+     * 办事流程
+     */
+    private String businessProcess;
+    /**
+     * 咨询电话
+     */
+    private String phone;
+
+    /**
      * po 转 vo
      *
      * @param po
@@ -132,6 +185,19 @@ public class PolicyDetailVO implements Serializable {
         }
         vo.setFunds(po.getFunds());
 
+        vo.setPolicyType(po.getPTid());
+        vo.setRoleId(po.getRoleId());
+        vo.setIfSocialSecurity(po.getIfSocialSecurity());
+        vo.setSocialArea(po.getSocialArea());
+        vo.setSocialTimes(po.getSocialTimes());
+        vo.setSocialUnit(po.getSocialUnit());
+        vo.setFundsForm(po.getFundsForm());
+        vo.setDeclarationTarget(po.getDeclarationTarget());
+        vo.setApplyTime(po.getApplyTime());
+        vo.setApplyMaterials(po.getApplyMaterials());
+        vo.setBonus(po.getBonus());
+        vo.setBusinessProcess(po.getBusinessProcess());
+        vo.setPhone(po.getPhone());
         return vo;
     }
 
