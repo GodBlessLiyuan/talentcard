@@ -5,7 +5,7 @@
     <id column="policy_id" jdbcType="BIGINT" property="policyId" />
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="num" jdbcType="CHAR" property="num" />
-    <result column="description" jdbcType="CHAR" property="description" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="cards" jdbcType="CHAR" property="cards" />
     <result column="categories" jdbcType="CHAR" property="categories" />
     <result column="educations" jdbcType="CHAR" property="educations" />
@@ -25,14 +25,30 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
+    <result column="p_tId" jdbcType="BIGINT" property="pTid" />
+    <result column="role_id" jdbcType="BIGINT" property="roleId" />
+    <result column="funds_form" jdbcType="TINYINT" property="fundsForm" />
+    <result column="declaration_target" jdbcType="VARCHAR" property="declarationTarget" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="endtime" />
+    <result column="apply_materials" jdbcType="VARCHAR" property="applyMaterials" />
+    <result column="bonus" jdbcType="VARCHAR" property="bonus" />
+    <result column="business_process" jdbcType="VARCHAR" property="businessProcess" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="if_social_security" jdbcType="TINYINT" property="ifSocialSecurity" />
+    <result column="social_area" jdbcType="TINYINT" property="socialArea" />
+    <result column="social_times" jdbcType="TINYINT" property="socialTimes" />
+    <result column="social_unit" jdbcType="TINYINT" property="socialUnit" />
   </resultMap>
   <sql id="Base_Column_List">
-    policy_id, `name`, num, description, cards, categories, educations, titles, qualities,
+    policy_id, `name`, num, description, cards, categories, educations, titles, qualities, 
     honour_ids, apply, color, rate, unit, times, bank, annex, annex_info, apply_form, 
-    funds, user_id, create_time, dr
+    funds, user_id, create_time, dr, p_tId, role_id, funds_form, declaration_target, 
+    start_time, endTime, apply_materials, bonus, business_process, phone, if_social_security, 
+    social_area, social_times, social_unit
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from t_policy
     where policy_id = #{policyId,jdbcType=BIGINT}
@@ -42,22 +58,32 @@
     where policy_id = #{policyId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyPO">
-    insert into t_policy (policy_id, `name`, num,
-      description, cards, categories,
-      educations, titles, qualities,
-      honour_ids, apply, color,
-      rate, unit, times,
-      bank, annex, annex_info,
-      apply_form, funds, user_id,
-      create_time, dr)
-    values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR},
-      #{description,jdbcType=CHAR}, #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR},
-      #{educations,jdbcType=CHAR}, #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR},
-      #{honourIds,jdbcType=CHAR}, #{apply,jdbcType=TINYINT}, #{color,jdbcType=CHAR},
-      #{rate,jdbcType=INTEGER}, #{unit,jdbcType=TINYINT}, #{times,jdbcType=INTEGER},
-      #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT}, #{annexInfo,jdbcType=CHAR},
-      #{applyForm,jdbcType=CHAR}, #{funds,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT},
-      #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT})
+    insert into t_policy (policy_id, `name`, num, 
+      description, cards, categories, 
+      educations, titles, qualities, 
+      honour_ids, apply, color, 
+      rate, unit, times, 
+      bank, annex, annex_info, 
+      apply_form, funds, user_id, 
+      create_time, dr, p_tId, 
+      role_id, funds_form, declaration_target, 
+      start_time, endTime, apply_materials, 
+      bonus, business_process, phone, 
+      if_social_security, social_area, social_times, 
+      social_unit)
+    values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR}, 
+      #{description,jdbcType=VARCHAR}, #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR}, 
+      #{educations,jdbcType=CHAR}, #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR}, 
+      #{honourIds,jdbcType=CHAR}, #{apply,jdbcType=TINYINT}, #{color,jdbcType=CHAR}, 
+      #{rate,jdbcType=INTEGER}, #{unit,jdbcType=TINYINT}, #{times,jdbcType=INTEGER}, 
+      #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT}, #{annexInfo,jdbcType=CHAR}, 
+      #{applyForm,jdbcType=CHAR}, #{funds,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, #{pTid,jdbcType=BIGINT}, 
+      #{roleId,jdbcType=BIGINT}, #{fundsForm,jdbcType=TINYINT}, #{declarationTarget,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{applyMaterials,jdbcType=VARCHAR}, 
+      #{bonus,jdbcType=VARCHAR}, #{businessProcess,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{ifSocialSecurity,jdbcType=TINYINT}, #{socialArea,jdbcType=TINYINT}, #{socialTimes,jdbcType=TINYINT}, 
+      #{socialUnit,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyPO">
     insert into t_policy
@@ -131,6 +157,48 @@
       <if test="dr != null">
         dr,
       </if>
+      <if test="pTid != null">
+        p_tId,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="fundsForm != null">
+        funds_form,
+      </if>
+      <if test="declarationTarget != null">
+        declaration_target,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endtime != null">
+        endTime,
+      </if>
+      <if test="applyMaterials != null">
+        apply_materials,
+      </if>
+      <if test="bonus != null">
+        bonus,
+      </if>
+      <if test="businessProcess != null">
+        business_process,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="ifSocialSecurity != null">
+        if_social_security,
+      </if>
+      <if test="socialArea != null">
+        social_area,
+      </if>
+      <if test="socialTimes != null">
+        social_times,
+      </if>
+      <if test="socialUnit != null">
+        social_unit,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="policyId != null">
@@ -143,7 +211,7 @@
         #{num,jdbcType=CHAR},
       </if>
       <if test="description != null">
-        #{description,jdbcType=CHAR},
+        #{description,jdbcType=VARCHAR},
       </if>
       <if test="cards != null">
         #{cards,jdbcType=CHAR},
@@ -202,6 +270,48 @@
       <if test="dr != null">
         #{dr,jdbcType=TINYINT},
       </if>
+      <if test="pTid != null">
+        #{pTid,jdbcType=BIGINT},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="fundsForm != null">
+        #{fundsForm,jdbcType=TINYINT},
+      </if>
+      <if test="declarationTarget != null">
+        #{declarationTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyMaterials != null">
+        #{applyMaterials,jdbcType=VARCHAR},
+      </if>
+      <if test="bonus != null">
+        #{bonus,jdbcType=VARCHAR},
+      </if>
+      <if test="businessProcess != null">
+        #{businessProcess,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="ifSocialSecurity != null">
+        #{ifSocialSecurity,jdbcType=TINYINT},
+      </if>
+      <if test="socialArea != null">
+        #{socialArea,jdbcType=TINYINT},
+      </if>
+      <if test="socialTimes != null">
+        #{socialTimes,jdbcType=TINYINT},
+      </if>
+      <if test="socialUnit != null">
+        #{socialUnit,jdbcType=TINYINT},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PolicyPO">
@@ -214,7 +324,7 @@
         num = #{num,jdbcType=CHAR},
       </if>
       <if test="description != null">
-        description = #{description,jdbcType=CHAR},
+        description = #{description,jdbcType=VARCHAR},
       </if>
       <if test="cards != null">
         cards = #{cards,jdbcType=CHAR},
@@ -273,6 +383,48 @@
       <if test="dr != null">
         dr = #{dr,jdbcType=TINYINT},
       </if>
+      <if test="pTid != null">
+        p_tId = #{pTid,jdbcType=BIGINT},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="fundsForm != null">
+        funds_form = #{fundsForm,jdbcType=TINYINT},
+      </if>
+      <if test="declarationTarget != null">
+        declaration_target = #{declarationTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        endTime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyMaterials != null">
+        apply_materials = #{applyMaterials,jdbcType=VARCHAR},
+      </if>
+      <if test="bonus != null">
+        bonus = #{bonus,jdbcType=VARCHAR},
+      </if>
+      <if test="businessProcess != null">
+        business_process = #{businessProcess,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="ifSocialSecurity != null">
+        if_social_security = #{ifSocialSecurity,jdbcType=TINYINT},
+      </if>
+      <if test="socialArea != null">
+        social_area = #{socialArea,jdbcType=TINYINT},
+      </if>
+      <if test="socialTimes != null">
+        social_times = #{socialTimes,jdbcType=TINYINT},
+      </if>
+      <if test="socialUnit != null">
+        social_unit = #{socialUnit,jdbcType=TINYINT},
+      </if>
     </set>
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>
@@ -280,7 +432,7 @@
     update t_policy
     set `name` = #{name,jdbcType=CHAR},
       num = #{num,jdbcType=CHAR},
-      description = #{description,jdbcType=CHAR},
+      description = #{description,jdbcType=VARCHAR},
       cards = #{cards,jdbcType=CHAR},
       categories = #{categories,jdbcType=CHAR},
       educations = #{educations,jdbcType=CHAR},
@@ -299,7 +451,21 @@
       funds = #{funds,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      dr = #{dr,jdbcType=TINYINT}
+      dr = #{dr,jdbcType=TINYINT},
+      p_tId = #{pTid,jdbcType=BIGINT},
+      role_id = #{roleId,jdbcType=BIGINT},
+      funds_form = #{fundsForm,jdbcType=TINYINT},
+      declaration_target = #{declarationTarget,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      endTime = #{endtime,jdbcType=TIMESTAMP},
+      apply_materials = #{applyMaterials,jdbcType=VARCHAR},
+      bonus = #{bonus,jdbcType=VARCHAR},
+      business_process = #{businessProcess,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      if_social_security = #{ifSocialSecurity,jdbcType=TINYINT},
+      social_area = #{socialArea,jdbcType=TINYINT},
+      social_times = #{socialTimes,jdbcType=TINYINT},
+      social_unit = #{socialUnit,jdbcType=TINYINT}
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>
 
@@ -333,4 +499,32 @@
         WHERE open_id = #{openId,jdbcType=CHAR}
         ORDER BY tb.bank_id DESC
   </select>
+  <insert id="add" useGeneratedKeys="true" keyProperty="policy_id" parameterType="com.talentcard.common.pojo.PolicyPO">
+    insert into t_policy (policy_id, `name`, num,
+      description, cards, categories,
+      educations, titles, qualities,
+      honour_ids, apply, color,
+      rate, unit, times,
+      bank, annex, annex_info,
+      apply_form, funds, user_id,
+      create_time, dr, p_tId,
+      role_id, funds_form, declaration_target,
+      start_time, endTime, apply_materials,
+      bonus, business_process, phone,
+      if_social_security, social_area, social_times,
+      social_unit)
+    values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR},
+      #{description,jdbcType=VARCHAR}, #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR},
+      #{educations,jdbcType=CHAR}, #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR},
+      #{honourIds,jdbcType=CHAR}, #{apply,jdbcType=TINYINT}, #{color,jdbcType=CHAR},
+      #{rate,jdbcType=INTEGER}, #{unit,jdbcType=TINYINT}, #{times,jdbcType=INTEGER},
+      #{bank,jdbcType=TINYINT}, #{annex,jdbcType=TINYINT}, #{annexInfo,jdbcType=CHAR},
+      #{applyForm,jdbcType=CHAR}, #{funds,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, #{pTid,jdbcType=BIGINT},
+      #{roleId,jdbcType=BIGINT}, #{fundsForm,jdbcType=TINYINT}, #{declarationTarget,jdbcType=VARCHAR},
+      #{startTime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{applyMaterials,jdbcType=VARCHAR},
+      #{bonus,jdbcType=VARCHAR}, #{businessProcess,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+      #{ifSocialSecurity,jdbcType=TINYINT}, #{socialArea,jdbcType=TINYINT}, #{socialTimes,jdbcType=TINYINT},
+      #{socialUnit,jdbcType=TINYINT})
+  </insert>
 </mapper>
