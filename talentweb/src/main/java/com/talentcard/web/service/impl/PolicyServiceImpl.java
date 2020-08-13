@@ -150,12 +150,8 @@ public class PolicyServiceImpl implements IPolicyService {
         po.setEducations(String.join(",", dto.getEducIds()));
         po.setTitles(String.join(",", dto.getTitleIds()));
         po.setQualities(String.join(",", dto.getQualityIds()));
-        po.setTimes(dto.getTimes());
         po.setBank(dto.getBank());
         po.setAnnex(dto.getAnnex());
-        po.setApply(dto.getApply());
-        po.setRate(dto.getRate());
-        po.setUnit(dto.getUnit());
         po.setDescription(dto.getDesc());
         String honour = listLongToString(dto.getTalentHonourIds(), ",");
         po.setHonourIds(honour);
@@ -166,6 +162,8 @@ public class PolicyServiceImpl implements IPolicyService {
         }
         po.setFunds(dto.getFunds());
 
+        po.setPTid(dto.getPolicyType());
+        po.setRoleId(dto.getRoleId());
         return po;
     }
 
