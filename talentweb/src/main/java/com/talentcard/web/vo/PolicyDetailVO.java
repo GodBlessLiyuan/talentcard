@@ -122,7 +122,7 @@ public class PolicyDetailVO implements Serializable {
      */
     private Byte socialTimes;
     /**
-     * 	社保频次
+     * 社保频次
      */
     private Byte socialUnit;
     /**
@@ -157,8 +157,15 @@ public class PolicyDetailVO implements Serializable {
      * 咨询电话
      */
     private String phone;
-
+    /**
+     * 状态
+     * 1、可申请
+     * 2、未开启
+     * 3、已失效
+     * 4、已下架
+     */
     private Byte status;
+
     /**
      * po 转 vo
      *
@@ -205,6 +212,25 @@ public class PolicyDetailVO implements Serializable {
         vo.setBonus(po.getBonus());
         vo.setBusinessProcess(po.getBusinessProcess());
         vo.setPhone(po.getPhone());
+        //判断政策状态
+        if (po.getUpDown() == 2) {
+            //已下架
+            vo.setStatus((byte) 4);
+        } else {
+            Long start = po.getStartTime().getTime();
+            Long end = po.getEndtime().getTime();
+            Long current = System.currentTimeMillis();
+            if (current >= end) {
+                //已失效
+                vo.setStatus((byte) 3);
+            } else if (current <= start) {
+                //未开启
+                vo.setStatus((byte) 2);
+            } else if (current >= start && current <= end) {
+                //可申请
+                vo.setStatus((byte) 1);
+            }
+        }
         return vo;
     }
 
