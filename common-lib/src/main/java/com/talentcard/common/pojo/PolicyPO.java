@@ -10,6 +10,9 @@ import lombok.Data;
  */
 @Data
 public class PolicyPO implements Serializable {
+    /**
+     * 人才政策ID
+     */
     private Long policyId;
 
     private String name;
@@ -67,6 +70,27 @@ public class PolicyPO implements Serializable {
      * 1 未删除  2 已删除
      */
     private Byte dr;
+
+    private Long pTid;
+
+    private Long roleId;
+
+    /**
+     * 1. 一次性发放。2. 按月发放。3. 按年发放。
+     */
+    private Byte fundsForm;
+
+    private String declarationtarget;
+
+    private String applytime;
+
+    private String applymaterials;
+
+    private String bonus;
+
+    private String businessprocess;
+
+    private String phone;
 
     private static final long serialVersionUID = 1L;
 }
