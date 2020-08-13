@@ -2,10 +2,10 @@ package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
 import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.mapper.PoSettingMapper;
 import com.talentcard.common.mapper.PolicyMapper;
-import com.talentcard.common.mapper.PolicySettingMapper;
+import com.talentcard.common.pojo.PoSettingPO;
 import com.talentcard.common.pojo.PolicyPO;
-import com.talentcard.common.pojo.PolicySettingPO;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
@@ -43,7 +43,7 @@ public class PolicyServiceImpl implements IPolicyService {
     @Autowired
     private ILogService logService;
     @Autowired
-    PolicySettingMapper policySettingMapper;
+    PoSettingMapper poSettingMapper;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -94,7 +94,7 @@ public class PolicyServiceImpl implements IPolicyService {
             // 数据已被删除
             return new ResultVO(1001);
         }
-        policyMapper.updateByPrimaryKey(buildPOByDTO(po, dto));
+        policyMapper.updateByPrimaryKeySelective(buildPOByDTO(po, dto));
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
                 "编辑政策\"%s\"", PolicyNameUtil.getNameNumber(po));
         return new ResultVO(1000);
@@ -179,7 +179,8 @@ public class PolicyServiceImpl implements IPolicyService {
         po.setSocialUnit(dto.getSocialUnit());
         po.setFundsForm(dto.getFundsForm());
         po.setDeclarationTarget(dto.getDeclarationTarget());
-        po.setApplyTime(dto.getApplyTime());
+        po.setStartTime(dto.getStartTime());
+        po.setEndtime(dto.getEndTime());
         po.setApplyMaterials(dto.getApplyMaterials());
         po.setBonus(dto.getBonus());
         po.setBusinessProcess(dto.getBusinessProcess());
@@ -214,59 +215,59 @@ public class PolicyServiceImpl implements IPolicyService {
      */
     private void insertPolicySetting(PolicyDTO policyDTO, Long policyId) {
         //新建setting表
-        PolicySettingPO policySettingPO;
+        PoSettingPO policySettingPO;
         if (policyDTO.getCardIds() != null) {
             for (String cardId : policyDTO.getCardIds()) {
-                policySettingPO = new PolicySettingPO();
+                policySettingPO = new PoSettingPO();
                 policySettingPO.setCardId(Long.parseLong(cardId));
                 policySettingPO.setPolicyId(policyId);
                 policySettingPO.setType((byte) 1);
-                policySettingMapper.insert(policySettingPO);
+                poSettingMapper.insert(policySettingPO);
             }
         }
         if (policyDTO.getCategoryIds() != null) {
             for (String categoryId : policyDTO.getCategoryIds()) {
-                policySettingPO = new PolicySettingPO();
+                policySettingPO = new PoSettingPO();
                 policySettingPO.setCardId(Long.parseLong(categoryId));
                 policySettingPO.setPolicyId(policyId);
                 policySettingPO.setType((byte) 2);
-                policySettingMapper.insert(policySettingPO);
+                poSettingMapper.insert(policySettingPO);
             }
         }
         if (policyDTO.getEducIds() != null) {
             for (String education : policyDTO.getEducIds()) {
-                policySettingPO = new PolicySettingPO();
+                policySettingPO = new PoSettingPO();
                 policySettingPO.setCardId(Long.parseLong(education));
                 policySettingPO.setPolicyId(policyId);
                 policySettingPO.setType((byte) 3);
-                policySettingMapper.insert(policySettingPO);
+                poSettingMapper.insert(policySettingPO);
             }
         }
         if (policyDTO.getTitleIds() != null) {
             for (String title : policyDTO.getTitleIds()) {
-                policySettingPO = new PolicySettingPO();
+                policySettingPO = new PoSettingPO();
                 policySettingPO.setCardId(Long.parseLong(title));
                 policySettingPO.setPolicyId(policyId);
                 policySettingPO.setType((byte) 4);
-                policySettingMapper.insert(policySettingPO);
+                poSettingMapper.insert(policySettingPO);
             }
         }
         if (policyDTO.getQualityIds() != null) {
             for (String quality : policyDTO.getQualityIds()) {
-                policySettingPO = new PolicySettingPO();
+                policySettingPO = new PoSettingPO();
                 policySettingPO.setCardId(Long.parseLong(quality));
                 policySettingPO.setPolicyId(policyId);
                 policySettingPO.setType((byte) 5);
-                policySettingMapper.insert(policySettingPO);
+                poSettingMapper.insert(policySettingPO);
             }
         }
         if (policyDTO.getTalentHonourIds() != null) {
             for (Long honour : policyDTO.getTalentHonourIds()) {
-                policySettingPO = new PolicySettingPO();
+                policySettingPO = new PoSettingPO();
                 policySettingPO.setCardId(honour);
                 policySettingPO.setPolicyId(policyId);
                 policySettingPO.setType((byte) 6);
-                policySettingMapper.insert(policySettingPO);
+                poSettingMapper.insert(policySettingPO);
             }
         }
     }

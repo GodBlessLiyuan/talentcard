@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.talentcard.common.mapper.PolicyTalentTypeMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PolicyTalentTypePO">
+<mapper namespace="com.talentcard.common.mapper.PoTalentTypeMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PoTalentTypePO">
     <id column="p_talent_type_id" jdbcType="BIGINT" property="pTalentTypeId" />
     <result column="talent_type" jdbcType="CHAR" property="talentType" />
     <result column="policy_id" jdbcType="BIGINT" property="policyId" />
@@ -12,21 +12,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_policy_talent_type
+    from po_talent_type
     where p_talent_type_id = #{pTalentTypeId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_policy_talent_type
+    delete from po_talent_type
     where p_talent_type_id = #{pTalentTypeId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyTalentTypePO">
-    insert into t_policy_talent_type (p_talent_type_id, talent_type, policy_id
+  <insert id="insert" parameterType="com.talentcard.common.pojo.PoTalentTypePO">
+    insert into po_talent_type (p_talent_type_id, talent_type, policy_id
       )
     values (#{pTalentTypeId,jdbcType=BIGINT}, #{talentType,jdbcType=CHAR}, #{policyId,jdbcType=BIGINT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyTalentTypePO">
-    insert into t_policy_talent_type
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PoTalentTypePO">
+    insert into po_talent_type
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="pTalentTypeId != null">
         p_talent_type_id,
@@ -50,8 +50,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PolicyTalentTypePO">
-    update t_policy_talent_type
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PoTalentTypePO">
+    update po_talent_type
     <set>
       <if test="talentType != null">
         talent_type = #{talentType,jdbcType=CHAR},
@@ -62,8 +62,8 @@
     </set>
     where p_talent_type_id = #{pTalentTypeId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PolicyTalentTypePO">
-    update t_policy_talent_type
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PoTalentTypePO">
+    update po_talent_type
     set talent_type = #{talentType,jdbcType=CHAR},
       policy_id = #{policyId,jdbcType=BIGINT}
     where p_talent_type_id = #{pTalentTypeId,jdbcType=BIGINT}

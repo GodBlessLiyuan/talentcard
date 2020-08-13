@@ -4,11 +4,11 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * t_policy_type_exclude
+ * po_type_exclude
  * @author 
  */
 @Data
-public class PolicyTypeExcludePO implements Serializable {
+public class PoTypeExcludePO implements Serializable {
     /**
      * 互斥id
      */

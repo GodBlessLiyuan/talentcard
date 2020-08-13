@@ -4,11 +4,11 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * t_policy_talent_type
+ * po_talent_type
  * @author 
  */
 @Data
-public class PolicyTalentTypePO implements Serializable {
+public class PoTalentTypePO implements Serializable {
     /**
      * 自增id
      */

@@ -82,7 +82,9 @@ public class PolicyPO implements Serializable {
 
     private String declarationTarget;
 
-    private String applyTime;
+    private Date startTime;
+
+    private Date endtime;
 
     private String applyMaterials;
 
