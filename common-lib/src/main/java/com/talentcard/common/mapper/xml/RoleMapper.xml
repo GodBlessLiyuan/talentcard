@@ -6,9 +6,10 @@
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="extra" jdbcType="CHAR" property="extra" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="role_type" jdbcType="TINYINT" property="roleType" />
   </resultMap>
   <sql id="Base_Column_List">
-    role_id, `name`, extra, create_time
+    role_id, `name`, extra, create_time, role_type
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -22,9 +23,9 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.RolePO">
     insert into t_role (role_id, `name`, extra, 
-      create_time)
+      create_time, role_type)
     values (#{roleId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{extra,jdbcType=CHAR}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      #{createTime,jdbcType=TIMESTAMP}, #{roleType,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.RolePO">
     insert into t_role
@@ -41,6 +42,9 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="roleType != null">
+        role_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="roleId != null">
@@ -54,6 +58,9 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roleType != null">
+        #{roleType,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -69,6 +76,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="roleType != null">
+        role_type = #{roleType,jdbcType=TINYINT},
+      </if>
     </set>
     where role_id = #{roleId,jdbcType=BIGINT}
   </update>
@@ -76,7 +86,8 @@
     update t_role
     set `name` = #{name,jdbcType=CHAR},
       extra = #{extra,jdbcType=CHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      role_type = #{roleType,jdbcType=TINYINT}
     where role_id = #{roleId,jdbcType=BIGINT}
   </update>
 
