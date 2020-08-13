@@ -59,22 +59,6 @@ public class PolicyDTO implements Serializable {
      */
     private String color;
     /**
-     * 政策权益是否需要申请: 1：需要；2：不需要
-     */
-    private Byte apply;
-    /**
-     * 政策权益申请频次 - 频
-     */
-    private Integer rate;
-    /**
-     * 政策权益申请频次 - 单位； 1：年；2：季；3：月
-     */
-    private Byte unit;
-    /**
-     * 政策权益申请频次 - 次
-     */
-    private Integer times;
-    /**
      * 银行卡信息；1：需要；2：不需要
      */
     private Byte bank;
@@ -94,4 +78,56 @@ public class PolicyDTO implements Serializable {
      * 政策资金
      */
     private Integer funds;
+    /**
+     * 政策类型
+     */
+    private Long policyType;
+    /**
+     * 责任单位/角色id
+     */
+    private Long roleId;
+    /**
+     * 是否社保要求
+     */
+    private Byte ifSocialSecurity;
+    /**
+     * 地区
+     */
+    private Byte socialArea;
+    /**
+     * 社保时间
+     */
+    private Byte socialTimes;
+    /**
+     * 	社保频次
+     */
+    private Byte socialUnit;
+    /**
+     * 资金发放形式
+     */
+    private Byte fundsForm;
+    /**
+     * 申报对象
+     */
+    private String declarationTarget;
+    /**
+     * 申请时间
+     */
+    private String applyTime;
+    /**
+     * 申请资料
+     */
+    private String applyMaterials;
+    /**
+     * 奖励/补助额度
+     */
+    private String bonus;
+    /**
+     * 办事流程
+     */
+    private String businessProcess;
+    /**
+     * 咨询电话
+     */
+    private String phone;
 }

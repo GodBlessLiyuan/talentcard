@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * po_type
+ * t_policy_type
  * @author 
  */
 @Data
