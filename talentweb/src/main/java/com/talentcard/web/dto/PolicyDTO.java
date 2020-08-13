@@ -3,6 +3,7 @@ package com.talentcard.web.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author: xiahui
@@ -111,9 +112,13 @@ public class PolicyDTO implements Serializable {
      */
     private String declarationTarget;
     /**
-     * 申请时间
+     * 申请开始时间
      */
-    private String applyTime;
+    private Date startTime;
+    /**
+     * 申请结束时间
+     */
+    private Date endTime;
     /**
      * 申请资料
      */

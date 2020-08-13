@@ -2,10 +2,9 @@ package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
 import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.mapper.PoSettingMapper;
 import com.talentcard.common.mapper.PolicyMapper;
-import com.talentcard.common.mapper.PolicySettingMapper;
 import com.talentcard.common.pojo.PolicyPO;
-import com.talentcard.common.pojo.PolicySettingPO;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
@@ -43,7 +42,7 @@ public class PolicyServiceImpl implements IPolicyService {
     @Autowired
     private ILogService logService;
     @Autowired
-    PolicySettingMapper policySettingMapper;
+    PoSettingMapper poSettingMapper;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -179,7 +178,7 @@ public class PolicyServiceImpl implements IPolicyService {
         po.setSocialUnit(dto.getSocialUnit());
         po.setFundsForm(dto.getFundsForm());
         po.setDeclarationTarget(dto.getDeclarationTarget());
-        po.setApplyTime(dto.getApplyTime());
+        po.sets(dto.getApplyTime());
         po.setApplyMaterials(dto.getApplyMaterials());
         po.setBonus(dto.getBonus());
         po.setBusinessProcess(dto.getBusinessProcess());

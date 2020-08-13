@@ -4,11 +4,11 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * t_policy_setting
+ * po_setting
  * @author 
  */
 @Data
-public class PolicySettingPO implements Serializable {
+public class PoSettingPO implements Serializable {
     /**
      * 政策适配人群属性id
      */

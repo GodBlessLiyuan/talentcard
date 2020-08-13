@@ -5,11 +5,11 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * t_policy_type
+ * po_type
  * @author 
  */
 @Data
-public class PolicyTypePO implements Serializable {
+public class PoTypePO implements Serializable {
     private Long pTid;
 
     /**
