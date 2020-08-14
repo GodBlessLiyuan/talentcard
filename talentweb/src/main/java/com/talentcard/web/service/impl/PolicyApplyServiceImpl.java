@@ -1,13 +1,10 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.talentcard.common.bo.HavingApprovePolicyBO;
 import com.talentcard.common.bo.PolicyApplyBO;
-import com.talentcard.common.mapper.PolicyApplyMapper;
-import com.talentcard.common.mapper.PolicyApprovalMapper;
-import com.talentcard.common.mapper.TalentMapper;
-import com.talentcard.common.pojo.PolicyApplyPO;
-import com.talentcard.common.pojo.PolicyApprovalPO;
-import com.talentcard.common.pojo.TalentPO;
+import com.talentcard.common.mapper.*;
+import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExportUtil;
@@ -46,12 +43,23 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     private PolicyApprovalMapper policyApprovalMapper;
     @Resource
     private TalentMapper talentMapper;
+    @Autowired
+    private RoleMapper roleMapper;
     private static final String[] EXPORT_TITLES = {"序号", "政策名称", "政策编号", "申请人", "申请时间", "状态", "银行卡号",
             "开户行名", "持卡人"};
     @Autowired
     private ILogService logService;
+    @Autowired
+    PolicyMapper policyMapper;
+
     @Override
-    public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap) {
+    public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap, Long roleId) {
+        RolePO rolePO = roleMapper.selectByPrimaryKey(roleId);
+        if (rolePO == null) {
+            return new ResultVO(2741, "无此角色！");
+        }
+        reqMap.put("roleType", rolePO.getRoleType());
+        reqMap.put("roleId", roleId);
         Page<PolicyApplyBO> page = PageHelper.startPage(pageNum, pageSize);
         List<PolicyApplyBO> bos = policyApplyMapper.query(reqMap);
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), PolicyApplyVO.convert(bos)));
@@ -114,8 +122,8 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         messageDTO.setRemark("点击查看详情");
         messageDTO.setUrl(WebParameterUtil.getMyApplicationUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager,OpsRecordMenuConstant.S_PolicyApply,
-                "审批用户\"%s\"的政策申请",talentPO.getName());
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyApply,
+                "审批用户\"%s\"的政策申请", talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -126,7 +134,12 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
             // 数据不存在
             return new ResultVO(1001);
         }
-        return new ResultVO<>(1000, PolicyApplyDetailVO.convert(bo));
+        Long talentId = bo.getTalentId();
+        PolicyApplyDetailVO policyApplyDetailVO = PolicyApplyDetailVO.convert(bo);
+        //已申请政策
+        List<HavingApprovePolicyBO> havingApprovePolicyBOList = policyMapper.findHavingApprovePolicy(talentId);
+        policyApplyDetailVO.setHavingApprovePolicyBOList(havingApprovePolicyBOList);
+        return new ResultVO<>(1000, policyApplyDetailVO);
     }
 
     @Override
@@ -150,13 +163,21 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
             content[1] = bo.getPolicyName();
             content[2] = bo.getNum();
             content[3] = bo.getTalentName();
-            content[4] = DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD_HMS);
-            content[5] = bo.getStatus() == 1 ? "已通过" : bo.getStatus() == 2 ? "已驳回" : "待审批";
-            content[6] = bo.getBankNum();
-            content[7] = bo.getBankName();
+            content[4] = bo.getStatus() == 1 ? "已通过" : bo.getStatus() == 2 ? "已驳回" : "待审批";
+            content[5] = bo.getBankNum();
+            content[6] = bo.getBankName();
             if (null != bo.getBankNum() && !"".equals(bo.getBankNum())) {
-                content[8] = bo.getTalentName();
+                content[7] = bo.getTalentName();
             }
+            if (bo.getStatus() != null && bo.getStatus() == 1 && bo.getActualFunds() != null) {
+                content[8] = bo.getActualFunds().toString();
+            } else {
+                PolicyPO policyPO = policyMapper.selectByPrimaryKey(bo.getPolicyId());
+                if (policyPO != null) {
+                    content[8] = policyPO.getFunds().toString();
+                }
+            }
+            content[9] = DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD_HMS);
             contents[num++] = content;
         }
 

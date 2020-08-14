@@ -102,5 +102,7 @@ public class PolicyPO implements Serializable {
 
     private Byte socialUnit;
 
+    private Byte upDown;
+
     private static final long serialVersionUID = 1L;
 }

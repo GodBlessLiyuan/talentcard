@@ -1,8 +1,10 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.bo.HavingApprovePolicyBO;
 import com.talentcard.common.pojo.BankPO;
 import com.talentcard.common.pojo.PolicyPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -35,5 +37,12 @@ public interface PolicyMapper extends BaseMapper<PolicyPO, Long> {
      */
     List<BankPO> queryBankCardInfo(String openId);
 
+    /**
+     * 添加，返回主键
+     * @param policyPO
+     * @return
+     */
     Integer add(PolicyPO policyPO);
+
+    List<HavingApprovePolicyBO> findHavingApprovePolicy(@Param("talentId") Long talentId);
 }

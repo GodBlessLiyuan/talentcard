@@ -39,13 +39,14 @@
     <result column="social_area" jdbcType="TINYINT" property="socialArea" />
     <result column="social_times" jdbcType="TINYINT" property="socialTimes" />
     <result column="social_unit" jdbcType="TINYINT" property="socialUnit" />
+    <result column="up_down" jdbcType="TINYINT" property="upDown" />
   </resultMap>
   <sql id="Base_Column_List">
     policy_id, `name`, num, description, cards, categories, educations, titles, qualities, 
     honour_ids, apply, color, rate, unit, times, bank, annex, annex_info, apply_form, 
     funds, user_id, create_time, dr, p_tId, role_id, funds_form, declaration_target, 
     start_time, endTime, apply_materials, bonus, business_process, phone, if_social_security, 
-    social_area, social_times, social_unit
+    social_area, social_times, social_unit, up_down
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -70,7 +71,7 @@
       start_time, endTime, apply_materials, 
       bonus, business_process, phone, 
       if_social_security, social_area, social_times, 
-      social_unit)
+      social_unit, up_down)
     values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR}, 
       #{description,jdbcType=VARCHAR}, #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR}, 
       #{educations,jdbcType=CHAR}, #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR}, 
@@ -83,7 +84,7 @@
       #{startTime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{applyMaterials,jdbcType=VARCHAR}, 
       #{bonus,jdbcType=VARCHAR}, #{businessProcess,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{ifSocialSecurity,jdbcType=TINYINT}, #{socialArea,jdbcType=TINYINT}, #{socialTimes,jdbcType=TINYINT}, 
-      #{socialUnit,jdbcType=TINYINT})
+      #{socialUnit,jdbcType=TINYINT}, #{upDown,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyPO">
     insert into t_policy
@@ -199,6 +200,9 @@
       <if test="socialUnit != null">
         social_unit,
       </if>
+      <if test="upDown != null">
+        up_down,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="policyId != null">
@@ -311,6 +315,9 @@
       </if>
       <if test="socialUnit != null">
         #{socialUnit,jdbcType=TINYINT},
+      </if>
+      <if test="upDown != null">
+        #{upDown,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -425,6 +432,9 @@
       <if test="socialUnit != null">
         social_unit = #{socialUnit,jdbcType=TINYINT},
       </if>
+      <if test="upDown != null">
+        up_down = #{upDown,jdbcType=TINYINT},
+      </if>
     </set>
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>
@@ -465,7 +475,8 @@
       if_social_security = #{ifSocialSecurity,jdbcType=TINYINT},
       social_area = #{socialArea,jdbcType=TINYINT},
       social_times = #{socialTimes,jdbcType=TINYINT},
-      social_unit = #{socialUnit,jdbcType=TINYINT}
+      social_unit = #{socialUnit,jdbcType=TINYINT},
+      up_down = #{upDown,jdbcType=TINYINT}
     where policy_id = #{policyId,jdbcType=BIGINT}
   </update>
 
@@ -499,7 +510,7 @@
         WHERE open_id = #{openId,jdbcType=CHAR}
         ORDER BY tb.bank_id DESC
   </select>
-  <insert id="add" useGeneratedKeys="true" keyProperty="policy_id" parameterType="com.talentcard.common.pojo.PolicyPO">
+  <insert id="add" useGeneratedKeys="true" keyProperty="policyId" parameterType="com.talentcard.common.pojo.PolicyPO">
     insert into t_policy (policy_id, `name`, num,
       description, cards, categories,
       educations, titles, qualities,
@@ -512,7 +523,7 @@
       start_time, endTime, apply_materials,
       bonus, business_process, phone,
       if_social_security, social_area, social_times,
-      social_unit)
+      social_unit, up_down)
     values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR},
       #{description,jdbcType=VARCHAR}, #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR},
       #{educations,jdbcType=CHAR}, #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR},
@@ -525,6 +536,20 @@
       #{startTime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{applyMaterials,jdbcType=VARCHAR},
       #{bonus,jdbcType=VARCHAR}, #{businessProcess,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
       #{ifSocialSecurity,jdbcType=TINYINT}, #{socialArea,jdbcType=TINYINT}, #{socialTimes,jdbcType=TINYINT},
-      #{socialUnit,jdbcType=TINYINT})
+      #{socialUnit,jdbcType=TINYINT}, #{upDown,jdbcType=TINYINT})
   </insert>
+  <select id="findHavingApprovePolicy" resultType="com.talentcard.common.bo.HavingApprovePolicyBO">
+    select
+    approval.create_time as createTime, p.name as name, p.num as num, u.name as userName,
+    approval.result as result, approval.opinion as opinion, approval.update_time as updateTime
+    from t_policy p
+    left join t_policy_apply pa
+    on p.policy_id = pa.policy_id
+    left join t_policy_approval approval
+    on pa.policy_approval_id = approval.approval_id
+    left join t_user u
+    on approval.user_id = u.user_id
+    where pa.talent_id = #{talentId,jdbcType=BIGINT}
+    and pa.status = 1
+  </select>
 </mapper>

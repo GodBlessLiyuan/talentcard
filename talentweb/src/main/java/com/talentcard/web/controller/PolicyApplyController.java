@@ -28,13 +28,15 @@ public class PolicyApplyController {
 
     @RequestMapping("query")
     public ResultVO query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                                           @RequestParam(value = "start", defaultValue = "") String start,
-                                           @RequestParam(value = "end", defaultValue = "") String end,
-                                           @RequestParam(value = "num", defaultValue = "") String num,
-                                           @RequestParam(value = "name", defaultValue = "") String name,
-                                           @RequestParam(value = "apply", defaultValue = "") String apply,
-                                           @RequestParam(value = "status", defaultValue = "0") Byte status) {
+                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                          @RequestParam(value = "start", defaultValue = "") String start,
+                          @RequestParam(value = "end", defaultValue = "") String end,
+                          @RequestParam(value = "num", defaultValue = "") String num,
+                          @RequestParam(value = "name", defaultValue = "") String name,
+                          @RequestParam(value = "apply", defaultValue = "") String apply,
+                          @RequestParam(value = "status", defaultValue = "0") Byte status,
+                          @RequestParam(value = "roleName", defaultValue = "") String roleName,
+                          @RequestParam(value = "roleId") Long roleId) {
 
         HashMap<String, Object> reqMap = new HashMap<>(6);
         if (!"".equals(end)) {
@@ -47,8 +49,8 @@ public class PolicyApplyController {
         reqMap.put("name", name.replaceAll("%", "\\\\%"));
         reqMap.put("apply", apply);
         reqMap.put("status", status);
-
-        return service.query(pageNum, pageSize, reqMap);
+        reqMap.put("roleName", roleName);
+        return service.query(pageNum, pageSize, reqMap, roleId);
     }
 
     @RequestMapping("export")
