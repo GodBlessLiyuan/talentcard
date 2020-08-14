@@ -488,7 +488,10 @@
         <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
         <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
         <if test="num != null and num !=''">and num like '%' #{num} '%'</if>
-        <if test="apply != null and apply !=0">and apply = #{apply}</if>
+        <if test="roleType != null and roleType ==2">and role_id = #{roleId,jdbcType=BIGINT}</if>
+        <if test="status != null and status == 1">
+        and <![CDATA[ c.create_time >= #{startTime}]]>
+        </if>
         order by create_time desc
     </select>
     <select id="queryByDr" parameterType="java.lang.Byte" resultMap="BaseResultMap">
