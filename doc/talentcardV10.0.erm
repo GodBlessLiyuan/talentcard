@@ -11,8 +11,8 @@
 	</page_setting>
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
-	<x>560</x>
-	<y>905</y>
+	<x>1174</x>
+	<y>1421</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2020-04-08 11:16:39</creation_date>
-			<updated_date>2020-08-14 11:24:29</updated_date>
+			<updated_date>2020-08-14 18:21:27</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -1961,7 +1961,7 @@
 			<char_semantics>false</char_semantics>
 			<description></description>
 			<logical_name>申报结束时间</logical_name>
-			<physical_name>endTime</physical_name>
+			<physical_name>end_time</physical_name>
 			<type>datetime</type>
 		</word>
 		<word>

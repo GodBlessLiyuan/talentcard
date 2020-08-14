@@ -1,5 +1,6 @@
 package com.talentcard.web.controller;
 
+import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.PolicyDTO;
 import com.talentcard.web.service.IPolicyService;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -33,7 +36,10 @@ public class PolicyController {
                           @RequestParam(value = "end", defaultValue = "") String end,
                           @RequestParam(value = "name", defaultValue = "") String name,
                           @RequestParam(value = "num", defaultValue = "") String num,
-                          @RequestParam(value = "apply", defaultValue = "0") Byte apply) {
+                          @RequestParam(value = "status", required = false) Byte status,
+                          @RequestParam(value = "policyType", required = false) Byte policyType,
+                          @RequestParam(value = "roleId", required = false) Long roleId,
+                          @RequestParam(value = "roleType", required = false) Byte roleType) {
 
         HashMap<String, Object> hashMap = new HashMap<>(6);
         if (!"".equals(end)) {
@@ -43,8 +49,13 @@ public class PolicyController {
         hashMap.put("end", end);
         hashMap.put("name", name.replaceAll("%", "\\\\%"));
         hashMap.put("num", num);
-        hashMap.put("apply", apply);
-
+        hashMap.put("status", status);
+        hashMap.put("policyType", policyType);
+        hashMap.put("roleId", roleId);
+        hashMap.put("roleType", roleType);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = simpleDateFormat.format(new Date());
+        hashMap.put("currentTime", currentTime);
         return service.query(pageNum, pageSize, hashMap);
     }
 
