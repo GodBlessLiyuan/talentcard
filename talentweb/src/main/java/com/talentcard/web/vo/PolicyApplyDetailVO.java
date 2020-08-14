@@ -99,7 +99,15 @@ public class PolicyApplyDetailVO implements Serializable {
                 approvalVO.setCtime(DateUtil.date2Str(po.getCreateTime(), DateUtil.YMD_HMS));
                 approvalVO.setType(po.getType() == 1 ? "提交申请" : "审批");
                 approvalVO.setUname(null == po.getUsername() || "".equals(po.getUsername()) ? "无" : po.getUsername());
-                approvalVO.setResult(null == po.getResult() ? "无" : po.getResult() == 1 ? "通过" : "驳回");
+                if (po.getResult() == null) {
+                    approvalVO.setResult("无");
+                } else if (po.getResult() == 1) {
+                    approvalVO.setResult("通过");
+                } else if (po.getResult() == 2) {
+                    approvalVO.setResult("驳回");
+                } else if (po.getResult() == 3) {
+                    approvalVO.setResult("已撤回");
+                }
                 approvalVO.setOpinion(null == po.getOpinion() || "".equals(po.getOpinion()) ? "无" : po.getOpinion());
                 approvalVOs.add(approvalVO);
             }

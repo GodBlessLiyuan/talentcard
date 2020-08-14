@@ -2,14 +2,8 @@ package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.PolicyApplyBO;
-import com.talentcard.common.mapper.PolicyApplyMapper;
-import com.talentcard.common.mapper.PolicyApprovalMapper;
-import com.talentcard.common.mapper.RoleMapper;
-import com.talentcard.common.mapper.TalentMapper;
-import com.talentcard.common.pojo.PolicyApplyPO;
-import com.talentcard.common.pojo.PolicyApprovalPO;
-import com.talentcard.common.pojo.RolePO;
-import com.talentcard.common.pojo.TalentPO;
+import com.talentcard.common.mapper.*;
+import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExportUtil;
@@ -54,6 +48,8 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
             "开户行名", "持卡人"};
     @Autowired
     private ILogService logService;
+    @Autowired
+    PolicyMapper policyMapper;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap, Long roleId) {
@@ -167,7 +163,14 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
             if (null != bo.getBankNum() && !"".equals(bo.getBankNum())) {
                 content[7] = bo.getTalentName();
             }
-            content[8] = bo.getActualFunds().toString();
+            if (bo.getActualFunds() != null) {
+                content[8] = bo.getActualFunds().toString();
+            } else {
+                PolicyPO policyPO = policyMapper.selectByPrimaryKey(bo.getPolicyId());
+                if (policyPO != null) {
+                    content[8] = policyPO.getFunds().toString();
+                }
+            }
             content[9] = DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD_HMS);
             contents[num++] = content;
         }
