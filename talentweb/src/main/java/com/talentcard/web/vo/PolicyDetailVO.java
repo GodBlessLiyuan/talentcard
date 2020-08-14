@@ -207,7 +207,7 @@ public class PolicyDetailVO implements Serializable {
         vo.setFundsForm(po.getFundsForm());
         vo.setDeclarationTarget(po.getDeclarationTarget());
         vo.setStartTime(po.getStartTime());
-        vo.setEndTime(po.getEndtime());
+        vo.setEndTime(po.getEndTime());
         vo.setApplyMaterials(po.getApplyMaterials());
         vo.setBonus(po.getBonus());
         vo.setBusinessProcess(po.getBusinessProcess());
@@ -218,7 +218,7 @@ public class PolicyDetailVO implements Serializable {
             vo.setStatus((byte) 4);
         } else {
             Long start = po.getStartTime().getTime();
-            Long end = po.getEndtime().getTime();
+            Long end = po.getEndTime().getTime();
             Long current = System.currentTimeMillis();
             if (current >= end) {
                 //已失效
