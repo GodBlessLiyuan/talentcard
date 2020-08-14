@@ -33,5 +33,7 @@ public class PolicyApplyPO implements Serializable {
 
     private BigDecimal actualFunds;
 
+    private Long policyApprovalId;
+
     private static final long serialVersionUID = 1L;
 }

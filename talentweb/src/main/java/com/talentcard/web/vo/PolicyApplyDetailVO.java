@@ -1,5 +1,6 @@
 package com.talentcard.web.vo;
 
+import com.talentcard.common.bo.HavingApprovePolicyBO;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.pojo.AnnexPO;
 import com.talentcard.common.pojo.PolicyApprovalPO;
@@ -57,6 +58,11 @@ public class PolicyApplyDetailVO implements Serializable {
      * 审批记录
      */
     private List<PolicyApprovalVO> approval;
+
+    /**
+     * 审批通过的政策
+     */
+    private List<HavingApprovePolicyBO> havingApprovePolicyBOList;
 
     /**
      * bo 转 vo

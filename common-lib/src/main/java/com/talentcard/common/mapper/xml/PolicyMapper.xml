@@ -510,7 +510,7 @@
         WHERE open_id = #{openId,jdbcType=CHAR}
         ORDER BY tb.bank_id DESC
   </select>
-  <insert id="add" useGeneratedKeys="true" keyProperty="policy_id" parameterType="com.talentcard.common.pojo.PolicyPO">
+  <insert id="add" useGeneratedKeys="true" keyProperty="policyId" parameterType="com.talentcard.common.pojo.PolicyPO">
     insert into t_policy (policy_id, `name`, num,
       description, cards, categories,
       educations, titles, qualities,
@@ -538,4 +538,18 @@
       #{ifSocialSecurity,jdbcType=TINYINT}, #{socialArea,jdbcType=TINYINT}, #{socialTimes,jdbcType=TINYINT},
       #{socialUnit,jdbcType=TINYINT}, #{upDown,jdbcType=TINYINT})
   </insert>
+  <select id="findHavingApprovePolicy" resultType="com.talentcard.common.bo.HavingApprovePolicyBO">
+    select
+    approval.create_time as createTime, p.name as name, p.num as num, u.name as userName,
+    approval.result as result, approval.opinion as opinion, approval.update_time as updateTime
+    from t_policy p
+    left join t_policy_apply pa
+    on p.policy_id = pa.policy_id
+    left join t_policy_approval approval
+    on pa.policy_approval_id = approval.approval_id
+    left join t_user u
+    on approval.user_id = u.user_id
+    where pa.talent_id = #{talentId,jdbcType=BIGINT}
+    and pa.status = 1
+  </select>
 </mapper>

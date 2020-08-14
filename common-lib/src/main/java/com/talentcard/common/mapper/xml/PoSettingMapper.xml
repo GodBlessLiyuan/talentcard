@@ -139,4 +139,8 @@
       `type` = #{type,jdbcType=TINYINT}
     where p_setingid = #{pSetingid,jdbcType=BIGINT}
   </update>
+  <delete id="deleteByPolicyId" >
+    delete from po_setting
+    where policy_id = #{policyId,jdbcType=BIGINT}
+  </delete>
 </mapper>

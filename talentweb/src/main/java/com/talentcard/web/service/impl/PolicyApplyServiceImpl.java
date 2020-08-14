@@ -1,6 +1,7 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.talentcard.common.bo.HavingApprovePolicyBO;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
@@ -133,7 +134,12 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
             // 数据不存在
             return new ResultVO(1001);
         }
-        return new ResultVO<>(1000, PolicyApplyDetailVO.convert(bo));
+        Long talentId = bo.getTalentId();
+        PolicyApplyDetailVO policyApplyDetailVO = PolicyApplyDetailVO.convert(bo);
+        //已申请政策
+        List<HavingApprovePolicyBO> havingApprovePolicyBOList = policyMapper.findHavingApprovePolicy(talentId);
+        policyApplyDetailVO.setHavingApprovePolicyBOList(havingApprovePolicyBOList);
+        return new ResultVO<>(1000, policyApplyDetailVO);
     }
 
     @Override
@@ -163,7 +169,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
             if (null != bo.getBankNum() && !"".equals(bo.getBankNum())) {
                 content[7] = bo.getTalentName();
             }
-            if (bo.getActualFunds() != null) {
+            if (bo.getStatus() != null && bo.getStatus() == 1 && bo.getActualFunds() != null) {
                 content[8] = bo.getActualFunds().toString();
             } else {
                 PolicyPO policyPO = policyMapper.selectByPrimaryKey(bo.getPolicyId());

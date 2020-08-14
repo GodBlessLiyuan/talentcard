@@ -10,6 +10,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="actual_funds" jdbcType="DECIMAL" property="actualFunds" />
+    <result column="policy_approval_id" jdbcType="BIGINT" property="policyApprovalId" />
   </resultMap>
   <resultMap id="DetailResultMap" type="com.talentcard.common.bo.PolicyApplyBO">
     <id column="pa_id" jdbcType="BIGINT" property="paId"/>
@@ -39,7 +40,8 @@
     </collection>
   </resultMap>
   <sql id="Base_Column_List">
-    pa_id, talent_id, talent_name, policy_id, policy_name, create_time, `status`, actual_funds
+    pa_id, talent_id, talent_name, policy_id, policy_name, create_time, `status`, actual_funds, 
+    policy_approval_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -54,10 +56,12 @@
   <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
     insert into t_policy_apply (pa_id, talent_id, talent_name, 
       policy_id, policy_name, create_time, 
-      `status`, actual_funds)
+      `status`, actual_funds, policy_approval_id
+      )
     values (#{paId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{talentName,jdbcType=CHAR}, 
       #{policyId,jdbcType=BIGINT}, #{policyName,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=TINYINT}, #{actualFunds,jdbcType=DECIMAL})
+      #{status,jdbcType=TINYINT}, #{actualFunds,jdbcType=DECIMAL}, #{policyApprovalId,jdbcType=BIGINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
     insert into t_policy_apply
@@ -86,6 +90,9 @@
       <if test="actualFunds != null">
         actual_funds,
       </if>
+      <if test="policyApprovalId != null">
+        policy_approval_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="paId != null">
@@ -111,6 +118,9 @@
       </if>
       <if test="actualFunds != null">
         #{actualFunds,jdbcType=DECIMAL},
+      </if>
+      <if test="policyApprovalId != null">
+        #{policyApprovalId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -138,6 +148,9 @@
       <if test="actualFunds != null">
         actual_funds = #{actualFunds,jdbcType=DECIMAL},
       </if>
+      <if test="policyApprovalId != null">
+        policy_approval_id = #{policyApprovalId,jdbcType=BIGINT},
+      </if>
     </set>
     where pa_id = #{paId,jdbcType=BIGINT}
   </update>
@@ -149,7 +162,8 @@
       policy_name = #{policyName,jdbcType=CHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=TINYINT},
-      actual_funds = #{actualFunds,jdbcType=DECIMAL}
+      actual_funds = #{actualFunds,jdbcType=DECIMAL},
+      policy_approval_id = #{policyApprovalId,jdbcType=BIGINT}
     where pa_id = #{paId,jdbcType=BIGINT}
   </update>
 
