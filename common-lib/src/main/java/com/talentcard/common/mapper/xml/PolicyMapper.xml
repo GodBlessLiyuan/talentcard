@@ -30,7 +30,7 @@
     <result column="funds_form" jdbcType="TINYINT" property="fundsForm" />
     <result column="declaration_target" jdbcType="VARCHAR" property="declarationTarget" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
-    <result column="endTime" jdbcType="TIMESTAMP" property="endtime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
     <result column="apply_materials" jdbcType="VARCHAR" property="applyMaterials" />
     <result column="bonus" jdbcType="VARCHAR" property="bonus" />
     <result column="business_process" jdbcType="VARCHAR" property="businessProcess" />
@@ -45,7 +45,7 @@
     policy_id, `name`, num, description, cards, categories, educations, titles, qualities, 
     honour_ids, apply, color, rate, unit, times, bank, annex, annex_info, apply_form, 
     funds, user_id, create_time, dr, p_tId, role_id, funds_form, declaration_target, 
-    start_time, endTime, apply_materials, bonus, business_process, phone, if_social_security, 
+    start_time, end_time, apply_materials, bonus, business_process, phone, if_social_security, 
     social_area, social_times, social_unit, up_down
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -68,7 +68,7 @@
       apply_form, funds, user_id, 
       create_time, dr, p_tId, 
       role_id, funds_form, declaration_target, 
-      start_time, endTime, apply_materials, 
+      start_time, end_time, apply_materials, 
       bonus, business_process, phone, 
       if_social_security, social_area, social_times, 
       social_unit, up_down)
@@ -81,7 +81,7 @@
       #{applyForm,jdbcType=CHAR}, #{funds,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, #{pTid,jdbcType=BIGINT}, 
       #{roleId,jdbcType=BIGINT}, #{fundsForm,jdbcType=TINYINT}, #{declarationTarget,jdbcType=VARCHAR}, 
-      #{startTime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{applyMaterials,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{applyMaterials,jdbcType=VARCHAR}, 
       #{bonus,jdbcType=VARCHAR}, #{businessProcess,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{ifSocialSecurity,jdbcType=TINYINT}, #{socialArea,jdbcType=TINYINT}, #{socialTimes,jdbcType=TINYINT}, 
       #{socialUnit,jdbcType=TINYINT}, #{upDown,jdbcType=TINYINT})
@@ -173,8 +173,8 @@
       <if test="startTime != null">
         start_time,
       </if>
-      <if test="endtime != null">
-        endTime,
+      <if test="endTime != null">
+        end_time,
       </if>
       <if test="applyMaterials != null">
         apply_materials,
@@ -289,8 +289,8 @@
       <if test="startTime != null">
         #{startTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="endtime != null">
-        #{endtime,jdbcType=TIMESTAMP},
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="applyMaterials != null">
         #{applyMaterials,jdbcType=VARCHAR},
@@ -405,8 +405,8 @@
       <if test="startTime != null">
         start_time = #{startTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="endtime != null">
-        endTime = #{endtime,jdbcType=TIMESTAMP},
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="applyMaterials != null">
         apply_materials = #{applyMaterials,jdbcType=VARCHAR},
@@ -467,7 +467,7 @@
       funds_form = #{fundsForm,jdbcType=TINYINT},
       declaration_target = #{declarationTarget,jdbcType=VARCHAR},
       start_time = #{startTime,jdbcType=TIMESTAMP},
-      endTime = #{endtime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
       apply_materials = #{applyMaterials,jdbcType=VARCHAR},
       bonus = #{bonus,jdbcType=VARCHAR},
       business_process = #{businessProcess,jdbcType=VARCHAR},
@@ -483,12 +483,32 @@
     <select id="query" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from t_policy where dr = 1
+        from t_policy p
+        left join t_role r
+        on p.role_id = r.role_id
+        left join po_type pt
+        on p.p_tId = pt.p_tId
+        where dr = 1
         <if test="start != null and start !=''">and create_time >= #{start}</if>
         <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
         <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
         <if test="num != null and num !=''">and num like '%' #{num} '%'</if>
-        <if test="apply != null and apply !=0">and apply = #{apply}</if>
+        <if test="policyType != null">
+        and p_tId = #{policyType, jdbcType=TINYINT}
+        </if>
+        <if test="roleType != null and roleType ==2">and role_id = #{roleId,jdbcType=BIGINT}</if>
+        <if test="status != null and status == 1">
+        and <![CDATA[ (start_time <= #{currentTime} and end_time >= #{currentTime} and up_low = 1) ]]>
+        </if>
+        <if test="status != null and status == 2">
+        and <![CDATA[ (start_time >= #{currentTime} and up_low = 1) ]]>
+         </if>
+        <if test="status != null and status == 3">
+        and <![CDATA[ (end_time <= #{currentTime} and up_low = 1) ]]>
+        </if>
+        <if test="status != null and status == 4">
+        and up_low = 2
+        </if>
         order by create_time desc
     </select>
     <select id="queryByDr" parameterType="java.lang.Byte" resultMap="BaseResultMap">

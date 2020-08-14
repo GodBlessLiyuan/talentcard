@@ -188,7 +188,7 @@ public class PolicyServiceImpl implements IPolicyService {
         Date start = DateUtil.str2Date(dto.getStartTime() + " 00:00:00", DateUtil.YMD_HMS);
         Date end = DateUtil.str2Date(dto.getEndTime() + " 23:59:59", DateUtil.YMD_HMS);
         po.setStartTime(start);
-        po.setEndtime(end);
+        po.setEndTime(end);
         po.setApplyMaterials(dto.getApplyMaterials());
         po.setBonus(dto.getBonus());
         po.setBusinessProcess(dto.getBusinessProcess());
