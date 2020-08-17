@@ -4,6 +4,7 @@ import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.PolicyDTO;
 import com.talentcard.web.service.IPolicyService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,8 +34,8 @@ public class PolicyController {
     @RequestMapping("query")
     public ResultVO query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                          @RequestParam(value = "start", defaultValue = "") String start,
-                          @RequestParam(value = "end", defaultValue = "") String end,
+                          @RequestParam(value = "start", required = false) String start,
+                          @RequestParam(value = "end", required = false) String end,
                           @RequestParam(value = "name", defaultValue = "") String name,
                           @RequestParam(value = "num", defaultValue = "") String num,
                           @RequestParam(value = "status", required = false) Byte status,
@@ -41,13 +43,16 @@ public class PolicyController {
                           @RequestParam(value = "roleId", required = false) Long roleId,
                           @RequestParam(value = "roleType", required = false) Byte roleType) {
 
-        HashMap<String, Object> hashMap = new HashMap<>(6);
-        if (!"".equals(end)) {
+        HashMap<String, Object> hashMap = new HashMap<>(10);
+        if (!StringUtils.isEmpty(start)) {
+            start = start + " 00:00:00";
+        }
+        if (!StringUtils.isEmpty(end)) {
             end = end + " 23:59:59";
         }
         hashMap.put("start", start);
         hashMap.put("end", end);
-        hashMap.put("name", name.replaceAll("%", "\\\\%"));
+        hashMap.put("name", name.replaceAll(" ", ""));
         hashMap.put("num", num);
         hashMap.put("status", status);
         hashMap.put("policyType", policyType);
@@ -88,5 +93,20 @@ public class PolicyController {
     @RequestMapping("upload")
     public ResultVO upload(HttpServletRequest request, @Param("file") MultipartFile file) {
         return service.upload(request.getSession(), file);
+    }
+
+    /**
+     * 上下架
+     *
+     * @param httpSession
+     * @param policyId
+     * @param upDown
+     * @return
+     */
+    @RequestMapping("upDown")
+    public ResultVO upDown(HttpSession httpSession,
+                           @Param("policyId") Long policyId,
+                           @Param("upDown") Byte upDown) {
+        return service.upDown(httpSession, policyId, upDown);
     }
 }

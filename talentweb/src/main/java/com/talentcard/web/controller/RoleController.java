@@ -43,4 +43,24 @@ public class RoleController {
     public ResultVO queryRoleIdMsg() {
         return roleService.queryRoleNameIdMsg();
     }
+
+    /**
+     * 所有责任单位查询
+     *
+     * @return
+     */
+    @RequestMapping("queryResponsibleUnit")
+    public ResultVO queryResponsibleUnit() {
+        return roleService.queryResponsibleUnit();
+    }
+
+    /**
+     * 根据roleId查找详情
+     *
+     * @return
+     */
+    @RequestMapping("findOne")
+    public ResultVO findOne(@RequestParam(value = "roleId") Long roleId) {
+        return roleService.findOne(roleId);
+    }
 }

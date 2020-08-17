@@ -7,6 +7,7 @@ import com.talentcard.web.vo.PolicyVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,7 +25,7 @@ public interface IPolicyService {
      * @param hashMap
      * @return
      */
-    ResultVO query(int pageNum, int pageSize, Map<String, Object> hashMap);
+    ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap);
 
     /**
      * 插入
@@ -50,7 +51,7 @@ public interface IPolicyService {
      * @param pid
      * @return
      */
-    ResultVO delete(HttpSession session,Long pid);
+    ResultVO delete(HttpSession session, Long pid);
 
     /**
      * 查看详情
@@ -66,5 +67,14 @@ public interface IPolicyService {
      * @param file
      * @return
      */
-    ResultVO upload(HttpSession session,MultipartFile file);
+    ResultVO upload(HttpSession session, MultipartFile file);
+
+    /**
+     * 上下架政策
+     *
+     * @param session
+     * @param policyId
+     * @return
+     */
+    ResultVO upDown(HttpSession session, Long policyId, Byte upDown);
 }
