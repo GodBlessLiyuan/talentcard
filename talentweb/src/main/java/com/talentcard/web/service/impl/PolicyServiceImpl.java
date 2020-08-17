@@ -153,6 +153,17 @@ public class PolicyServiceImpl implements IPolicyService {
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 
+    @Override
+    public ResultVO upDown(HttpSession session, Long policyId, Byte upDown) {
+        PolicyPO policyPO = policyMapper.selectByPrimaryKey(policyId);
+        if (policyPO == null) {
+            return new ResultVO<>(2740, "无此政策！");
+        }
+        policyPO.setUpDown(upDown);
+        policyMapper.updateByPrimaryKeySelective(policyPO);
+        return new ResultVO(1000);
+    }
+
     /**
      * 根据 dto 构建 po
      *

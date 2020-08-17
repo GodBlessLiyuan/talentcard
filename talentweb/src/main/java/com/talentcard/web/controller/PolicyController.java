@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public class PolicyController {
         }
         hashMap.put("start", start);
         hashMap.put("end", end);
-        hashMap.put("name", name.replaceAll("%", "\\\\%"));
+        hashMap.put("name", name.replaceAll(" ", ""));
         hashMap.put("num", num);
         hashMap.put("status", status);
         hashMap.put("policyType", policyType);
@@ -92,5 +93,20 @@ public class PolicyController {
     @RequestMapping("upload")
     public ResultVO upload(HttpServletRequest request, @Param("file") MultipartFile file) {
         return service.upload(request.getSession(), file);
+    }
+
+    /**
+     * 上下架
+     *
+     * @param httpSession
+     * @param policyId
+     * @param upDown
+     * @return
+     */
+    @RequestMapping("upDown")
+    public ResultVO upDown(HttpSession httpSession,
+                           @Param("policyId") Long policyId,
+                           @Param("upDown") Byte upDown) {
+        return service.upDown(httpSession, policyId, upDown);
     }
 }
