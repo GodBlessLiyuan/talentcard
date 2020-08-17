@@ -9,6 +9,7 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IRoleService;
 import com.talentcard.web.vo.ManageRoleVO;
 import com.talentcard.web.vo.RoleNameIdVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,10 +38,10 @@ public class RoleServiceImpl implements IRoleService {
         // 前端传过来的是年月日格式的时间数据，因此要给开始时间拼接00:00:00,给
         // 结束时间拼接23:59:59。一为了和数据库时间格式对应年月日 时分秒，以便查询 二 防止
         // 日期为同一天，若不加前后限制，则检索不出数据
-        if (!"".equals(startTime)) {
+        if (!StringUtils.isEmpty(startTime)) {
             startTime = startTime + " 00:00:00";
         }
-        if (!"".equals(endTime)) {
+        if (!StringUtils.isEmpty(endTime)) {
             endTime = endTime + " 23:59:59";
         }
         // 1 先在角色基础表中查询当前角色信息
@@ -73,5 +74,15 @@ public class RoleServiceImpl implements IRoleService {
             return new ResultVO(2666);
         }
         return new ResultVO(1000, vos);
+    }
+
+    @Override
+    public ResultVO queryResponsibleUnit() {
+        return new ResultVO(1000, roleMapper.queryResponsibleUnit());
+    }
+
+    @Override
+    public ResultVO findOne(Long roleId) {
+        return new ResultVO(1000, roleMapper.findOne(roleId));
     }
 }

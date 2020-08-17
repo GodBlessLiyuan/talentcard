@@ -20,4 +20,16 @@ public interface IRoleService {
     ResultVO queryByRole(String roleName, String startTime, String endTime);
 
     ResultVO queryRoleNameIdMsg();
+
+    /**
+     * 所有责任单位查询
+     * @return
+     */
+    ResultVO queryResponsibleUnit();
+
+    /**
+     * 根据roleId查找详情
+     * @return
+     */
+    ResultVO findOne(Long roleId);
 }
