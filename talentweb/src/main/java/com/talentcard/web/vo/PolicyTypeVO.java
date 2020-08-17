@@ -37,7 +37,7 @@ public class PolicyTypeVO implements Serializable {
     /**
      * 状态：1：上架  2：下架
      */
-    private String status;
+    private Byte status;
     /**
      * 描述
      */
@@ -70,7 +70,7 @@ public class PolicyTypeVO implements Serializable {
         vo.setEids(bo.getExcludeIds());
         vo.setDesc(bo.getDescription());
         vo.setEptnames(bo.getExcludeNames());
-        vo.setStatus(bo.getStatus() == 1? "上架" : "下架");
+        vo.setStatus(bo.getStatus());
         return vo;
     }
 }
