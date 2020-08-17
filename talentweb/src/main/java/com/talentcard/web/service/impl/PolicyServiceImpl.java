@@ -1,6 +1,7 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.talentcard.common.bo.PolicyQueryBO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.PoSettingMapper;
 import com.talentcard.common.mapper.PolicyMapper;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,10 +49,11 @@ public class PolicyServiceImpl implements IPolicyService {
     PoSettingMapper poSettingMapper;
 
     @Override
-    public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
-        Page<PolicyPO> page = PageHelper.startPage(pageNum, pageSize);
-        List<PolicyPO> pos = policyMapper.query(reqMap);
-        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), PolicyVO.convert(pos)));
+    public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
+        Page<PolicyQueryBO> page = PageHelper.startPage(pageNum, pageSize);
+        List<PolicyQueryBO> policyQueryBOList = policyMapper.policyQuery(hashMap);
+        policyQueryBOList = PolicyQueryBO.setUpStatus(policyQueryBOList);
+        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), policyQueryBOList));
     }
 
     @Override
@@ -194,6 +197,7 @@ public class PolicyServiceImpl implements IPolicyService {
         po.setBusinessProcess(dto.getBusinessProcess());
         po.setPhone(dto.getPhone());
         po.setUpDown((byte) 2);
+        po.setUpdateTime(new Date());
         return po;
     }
 

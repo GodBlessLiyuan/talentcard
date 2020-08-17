@@ -7,6 +7,7 @@ import com.talentcard.web.vo.PolicyVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,7 +25,7 @@ public interface IPolicyService {
      * @param hashMap
      * @return
      */
-    ResultVO query(int pageNum, int pageSize, Map<String, Object> hashMap);
+    ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap);
 
     /**
      * 插入

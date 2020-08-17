@@ -4,6 +4,7 @@ import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.PolicyDTO;
 import com.talentcard.web.service.IPolicyService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,8 +33,8 @@ public class PolicyController {
     @RequestMapping("query")
     public ResultVO query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                          @RequestParam(value = "start", defaultValue = "") String start,
-                          @RequestParam(value = "end", defaultValue = "") String end,
+                          @RequestParam(value = "start", required = false) String start,
+                          @RequestParam(value = "end", required = false) String end,
                           @RequestParam(value = "name", defaultValue = "") String name,
                           @RequestParam(value = "num", defaultValue = "") String num,
                           @RequestParam(value = "status", required = false) Byte status,
@@ -41,8 +42,11 @@ public class PolicyController {
                           @RequestParam(value = "roleId", required = false) Long roleId,
                           @RequestParam(value = "roleType", required = false) Byte roleType) {
 
-        HashMap<String, Object> hashMap = new HashMap<>(6);
-        if (!"".equals(end)) {
+        HashMap<String, Object> hashMap = new HashMap<>(10);
+        if (!StringUtils.isEmpty(start)) {
+            start = start + " 00:00:00";
+        }
+        if (!StringUtils.isEmpty(end)) {
             end = end + " 23:59:59";
         }
         hashMap.put("start", start);
