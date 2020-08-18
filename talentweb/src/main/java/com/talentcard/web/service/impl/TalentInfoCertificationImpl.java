@@ -3,12 +3,16 @@ package com.talentcard.web.service.impl;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.mapper.TalentCertificationInfoMapper;
 import com.talentcard.common.mapper.TalentMapper;
+import com.talentcard.common.mapper.TalentTypeMapper;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.web.service.ITalentInfoCertificationService;
 import com.talentcard.web.service.ITalentService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,6 +30,9 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
     private TalentMapper talentMapper;
     @Autowired
     TalentCertificationInfoMapper talentCertificationInfoMapper;
+
+    @Autowired
+    private TalentTypeMapper talentTypeMapper;
 
     @Override
     public Integer update(Long talentId) {
@@ -50,12 +57,19 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
         if (talentCertificationInfoPO == null) {
             return -1;
         }
+        List<TalentTypePO> talentTypePOS = new ArrayList<>();
         //学历
         if (talentBO.getEducationPOList() != null && talentBO.getEducationPOList().size() != 0) {
             String educationString = "";
             List<EducationPO> educationPOList = talentBO.getEducationPOList();
             for (int i = 0; i < educationPOList.size() - 1; i++) {
                 educationString = educationString + educationPOList.get(i).getEducation() + ",";
+
+                TalentTypePO talentTypePO = new TalentTypePO();
+                talentTypePO.setEducationId(educationPOList.get(i).getEducation());
+                talentTypePO.setType((byte)3);
+                talentTypePO.setTalentId(talentId);
+                talentTypePOS.add(talentTypePO);
             }
             educationString = educationString + educationPOList.get(educationPOList.size() - 1).getEducation();
             talentCertificationInfoPO.setEducation(educationString);
@@ -68,6 +82,12 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             List<ProfTitlePO> profTitlePOList = talentBO.getProfTitlePOList();
             for (int i = 0; i < profTitlePOList.size() - 1; i++) {
                 titleString = titleString + profTitlePOList.get(i).getCategory() + ",";
+
+                TalentTypePO talentTypePO = new TalentTypePO();
+                talentTypePO.setCategoryId((long)profTitlePOList.get(i).getCategory());
+                talentTypePO.setType((byte)4);
+                talentTypePO.setTalentId(talentId);
+                talentTypePOS.add(talentTypePO);
             }
             titleString = titleString + profTitlePOList.get(profTitlePOList.size() - 1).getCategory();
             talentCertificationInfoPO.setPtCategory(titleString);
@@ -80,6 +100,12 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             List<ProfQualityPO> profQualityPOList = talentBO.getProfQualityPOList();
             for (int i = 0; i < profQualityPOList.size() - 1; i++) {
                 qualityString = qualityString + profQualityPOList.get(i).getCategory() + ",";
+
+                TalentTypePO talentTypePO = new TalentTypePO();
+                talentTypePO.setCategoryId((long)profQualityPOList.get(i).getCategory());
+                talentTypePO.setType((byte)5);
+                talentTypePO.setTalentId(talentId);
+                talentTypePOS.add(talentTypePO);
             }
             qualityString = qualityString + profQualityPOList.get(profQualityPOList.size() - 1).getCategory();
             talentCertificationInfoPO.setPqCategory(qualityString);
@@ -92,6 +118,12 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             List<TalentHonourPO> talentHonourPOList = talentBO.getTalentHonourPOList();
             for (int i = 0; i < talentHonourPOList.size() - 1; i++) {
                 honourString = honourString + talentHonourPOList.get(i).getHonourId() + ",";
+
+                TalentTypePO talentTypePO = new TalentTypePO();
+                talentTypePO.setCategoryId(talentHonourPOList.get(i).getHonourId());
+                talentTypePO.setType((byte)6);
+                talentTypePO.setTalentId(talentId);
+                talentTypePOS.add(talentTypePO);
             }
             honourString = honourString + talentHonourPOList.get(talentHonourPOList.size() - 1).getHonourId();
             talentCertificationInfoPO.setHonourId(honourString);
@@ -101,6 +133,35 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
         //人才类别
         talentCertificationInfoPO.setTalentCategory(talentPO.getCategory());
         talentCertificationInfoMapper.updateByPrimaryKeySelective(talentCertificationInfoPO);
+
+        String s_category = talentPO.getCategory();
+        if(!StringUtils.isEmpty(s_category)){
+            String category[] = s_category.split(",");
+            if(category!=null && category.length>0){
+                for(String key:category){
+                    TalentTypePO talentTypePO = new TalentTypePO();
+                    talentTypePO.setCategoryId(Long.valueOf(key));
+                    talentTypePO.setType((byte)2);
+                    talentTypePO.setTalentId(talentId);
+                    talentTypePOS.add(talentTypePO);
+                }
+            }
+        }
+        //
+
+        talentTypeMapper.deleteByTalentId(talentId);
+
+        Long card = talentPO.getCardId();
+        if(card != null &&card != 0){
+            TalentTypePO talentTypePO = new TalentTypePO();
+            talentTypePO.setCardId(card);
+            talentTypePO.setType((byte)1);
+            talentTypePO.setTalentId(talentId);
+            talentTypePOS.add(talentTypePO);
+        }
+
+        talentTypeMapper.batchInsert(talentTypePOS);
+
         return 0;
     }
 }
