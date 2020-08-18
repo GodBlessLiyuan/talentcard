@@ -58,4 +58,6 @@ public interface IPolicyApplyService {
      * @return
      */
     ResultVO count();
+
+    ResultVO cancel(HttpSession httpSession, Long paId, String opinion);
 }

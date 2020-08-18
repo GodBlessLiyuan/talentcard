@@ -139,4 +139,14 @@
       opinion = #{opinion,jdbcType=CHAR}
     where approval_id = #{approvalId,jdbcType=BIGINT}
   </update>
+  <insert id="add" useGeneratedKeys="true" keyProperty="approvalId" parameterType="com.talentcard.common.pojo.PolicyApprovalPO">
+    insert into t_policy_approval (approval_id, pa_id, create_time,
+      `type`, user_id, username,
+      update_time, `result`, opinion
+      )
+    values (#{approvalId,jdbcType=BIGINT}, #{paId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP},
+      #{type,jdbcType=TINYINT}, #{userId,jdbcType=BIGINT}, #{username,jdbcType=CHAR},
+      #{updateTime,jdbcType=TIMESTAMP}, #{result,jdbcType=TINYINT}, #{opinion,jdbcType=CHAR}
+      )
+  </insert>
 </mapper>

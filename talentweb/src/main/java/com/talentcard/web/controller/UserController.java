@@ -27,7 +27,6 @@ public class UserController {
     /**
      * 普通用户更新用户密码
      *
-     * @param session
      * @param oldPassword
      * @param newPassword
      * @return
@@ -112,5 +111,16 @@ public class UserController {
         reqData.put("username", username.replaceAll(" ", ""));
         reqData.put("roleId", roleId);
         return userService.queryUserRole(pageNum, pageSize, reqData);
+    }
+
+    /**
+     * 根据session查找相关角色信息
+     *
+     * @param httpSession
+     * @return
+     */
+    @RequestMapping("findRoleBySession")
+    public ResultVO findRoleBySession(HttpSession httpSession) {
+        return userService.findRoleBySession(httpSession);
     }
 }

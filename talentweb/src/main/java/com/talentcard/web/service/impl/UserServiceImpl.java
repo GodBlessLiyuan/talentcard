@@ -3,8 +3,10 @@ package com.talentcard.web.service.impl;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.UserBO;
 import com.talentcard.common.bo.UserRoleBO;
+import com.talentcard.common.mapper.RoleMapper;
 import com.talentcard.common.mapper.UserMapper;
 import com.talentcard.common.pojo.OpwebRecordPO;
+import com.talentcard.common.pojo.RolePO;
 import com.talentcard.common.pojo.UserPO;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
@@ -16,6 +18,7 @@ import com.talentcard.web.utils.PageHelper;
 import com.talentcard.web.vo.UserRoleVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +40,8 @@ public class UserServiceImpl implements IUserService {
     UserMapper userMapper;
     @Resource
     private ILogService logService;
+    @Autowired
+    private RoleMapper roleMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     /**
@@ -116,7 +121,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO editUser(HttpSession session,String username, String name, Long roleId, String extra) {
+    public ResultVO editUser(HttpSession session, String username, String name, Long roleId, String extra) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
@@ -133,7 +138,7 @@ public class UserServiceImpl implements IUserService {
             // 编辑用户失败
             return new ResultVO(2108);
         }
-        logService.insertActionRecord(session,OpsRecordMenuConstant.F_SysManager,OpsRecordMenuConstant.S_UserManager,"修改用户\"%s\"",username);
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_SysManager, OpsRecordMenuConstant.S_UserManager, "修改用户\"%s\"", username);
 
         return new ResultVO(1000);
     }
@@ -141,7 +146,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO adminUpdatePassword(HttpSession session,String username, String password) {
+    public ResultVO adminUpdatePassword(HttpSession session, String username, String password) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
@@ -158,7 +163,7 @@ public class UserServiceImpl implements IUserService {
             // 管理员更新用户密码失败
             return new ResultVO(2109);
         }
-        logService.insertActionRecord(session,OpsRecordMenuConstant.F_SysManager,OpsRecordMenuConstant.S_UserManager,"更新管理员\"%s\"的密码",username);
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_SysManager, OpsRecordMenuConstant.S_UserManager, "更新管理员\"%s\"的密码", username);
 
         return new ResultVO(1000);
     }
@@ -166,7 +171,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResultVO deleteUser(HttpSession session,String username) {
+    public ResultVO deleteUser(HttpSession session, String username) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
@@ -178,7 +183,7 @@ public class UserServiceImpl implements IUserService {
             // 删除用户失败
             return new ResultVO(2110);
         }
-        logService.insertActionRecord(session,OpsRecordMenuConstant.F_SysManager,OpsRecordMenuConstant.S_UserManager,"删除用户\"%s\"",username);
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_SysManager, OpsRecordMenuConstant.S_UserManager, "删除用户\"%s\"", username);
 
         return new ResultVO(1000);
     }
@@ -191,5 +196,17 @@ public class UserServiceImpl implements IUserService {
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), UserRoleVO.convert(bos)));
     }
 
-
+    @Override
+    public ResultVO findRoleBySession(HttpSession httpSession) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        UserPO userPO = userMapper.selectByPrimaryKey(userId);
+        if (userPO == null) {
+            return new ResultVO(2741, "无此角色！");
+        }
+        RolePO rolePO = roleMapper.selectByPrimaryKey(userPO.getRoleId());
+        if (rolePO == null) {
+            return new ResultVO(2741, "无此角色！");
+        }
+        return new ResultVO(1000, rolePO);
+    }
 }

@@ -68,4 +68,11 @@ public interface IUserService {
      */
     ResultVO queryUserRole(int pageNum, int pageSize, Map<String, Object> reqData);
 
+    /**
+     * 根据session查找相关角色信息
+     * @param httpSession
+     * @return
+     */
+    ResultVO findRoleBySession(HttpSession httpSession);
+
 }
