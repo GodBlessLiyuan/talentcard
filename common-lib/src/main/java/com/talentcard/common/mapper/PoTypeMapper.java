@@ -26,7 +26,7 @@ public interface PoTypeMapper extends BaseMapper<PoTypePO, Long> {
      * @param reqData
      * @return
      */
-    List<PolicyTypeBO> queryPtNameByPtId(@Param("reqData")List<String> reqData);
+    List<PolicyTypeBO> queryPtNameByPtId(@Param("reqData")List<Long> reqData);
     /**
      * 查询所有的政策名称和对应的id，返给前端进行展示
      *
