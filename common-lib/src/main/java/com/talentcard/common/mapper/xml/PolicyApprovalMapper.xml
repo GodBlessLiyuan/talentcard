@@ -11,10 +11,11 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="result" jdbcType="TINYINT" property="result" />
     <result column="opinion" jdbcType="CHAR" property="opinion" />
+    <result column="actual_funds" jdbcType="DECIMAL" property="actualFunds" />
   </resultMap>
   <sql id="Base_Column_List">
     approval_id, pa_id, create_time, `type`, user_id, username, update_time, `result`, 
-    opinion
+    opinion, actual_funds
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -29,12 +30,12 @@
   <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyApprovalPO">
     insert into t_policy_approval (approval_id, pa_id, create_time, 
       `type`, user_id, username, 
-      update_time, `result`, opinion
-      )
+      update_time, `result`, opinion, 
+      actual_funds)
     values (#{approvalId,jdbcType=BIGINT}, #{paId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{type,jdbcType=TINYINT}, #{userId,jdbcType=BIGINT}, #{username,jdbcType=CHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{result,jdbcType=TINYINT}, #{opinion,jdbcType=CHAR}
-      )
+      #{updateTime,jdbcType=TIMESTAMP}, #{result,jdbcType=TINYINT}, #{opinion,jdbcType=CHAR}, 
+      #{actualFunds,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PolicyApprovalPO">
     insert into t_policy_approval
@@ -66,6 +67,9 @@
       <if test="opinion != null">
         opinion,
       </if>
+      <if test="actualFunds != null">
+        actual_funds,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="approvalId != null">
@@ -94,6 +98,9 @@
       </if>
       <if test="opinion != null">
         #{opinion,jdbcType=CHAR},
+      </if>
+      <if test="actualFunds != null">
+        #{actualFunds,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -124,6 +131,9 @@
       <if test="opinion != null">
         opinion = #{opinion,jdbcType=CHAR},
       </if>
+      <if test="actualFunds != null">
+        actual_funds = #{actualFunds,jdbcType=DECIMAL},
+      </if>
     </set>
     where approval_id = #{approvalId,jdbcType=BIGINT}
   </update>
@@ -136,17 +146,18 @@
       username = #{username,jdbcType=CHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       `result` = #{result,jdbcType=TINYINT},
-      opinion = #{opinion,jdbcType=CHAR}
+      opinion = #{opinion,jdbcType=CHAR},
+      actual_funds = #{actualFunds,jdbcType=DECIMAL}
     where approval_id = #{approvalId,jdbcType=BIGINT}
   </update>
   <insert id="add" useGeneratedKeys="true" keyProperty="approvalId" parameterType="com.talentcard.common.pojo.PolicyApprovalPO">
     insert into t_policy_approval (approval_id, pa_id, create_time,
       `type`, user_id, username,
-      update_time, `result`, opinion
-      )
+      update_time, `result`, opinion,
+      actual_funds)
     values (#{approvalId,jdbcType=BIGINT}, #{paId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP},
       #{type,jdbcType=TINYINT}, #{userId,jdbcType=BIGINT}, #{username,jdbcType=CHAR},
-      #{updateTime,jdbcType=TIMESTAMP}, #{result,jdbcType=TINYINT}, #{opinion,jdbcType=CHAR}
-      )
+      #{updateTime,jdbcType=TIMESTAMP}, #{result,jdbcType=TINYINT}, #{opinion,jdbcType=CHAR},
+      #{actualFunds,jdbcType=DECIMAL})
   </insert>
 </mapper>

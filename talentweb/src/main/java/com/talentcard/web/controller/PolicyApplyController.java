@@ -80,7 +80,7 @@ public class PolicyApplyController {
                              @RequestParam(value = "status", defaultValue = "") Byte status,
                              @RequestParam(value = "opinion", defaultValue = "") String opinion,
                              @RequestParam(value = "actualFunds") BigDecimal actualFunds) {
-        return iPolicyApplyService.approval(request.getSession(), paid, status, opinion);
+        return iPolicyApplyService.approval(request.getSession(), paid, status, opinion, actualFunds);
     }
 
     @RequestMapping("detail")
@@ -95,6 +95,7 @@ public class PolicyApplyController {
 
     /**
      * 政策撤回
+     *
      * @param httpSession
      * @param paId
      * @param opinion

@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -78,7 +79,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     }
 
     @Override
-    public ResultVO approval(HttpSession session, Long paid, Byte status, String opinion) {
+    public ResultVO approval(HttpSession session, Long paid, Byte status, String opinion, BigDecimal actualFunds) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
@@ -99,9 +100,11 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         po.setUsername((String) session.getAttribute("username"));
         po.setResult(status);
         po.setOpinion(opinion);
+        po.setActualFunds(actualFunds);
         policyApprovalMapper.add(po);
 
         applyPO.setPaId(po.getPaId());
+        applyPO.setActualFunds(actualFunds);
         policyApplyMapper.updateByPrimaryKey(applyPO);
 
 
