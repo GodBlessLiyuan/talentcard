@@ -15,6 +15,8 @@ import java.util.List;
 @Data
 @Component
 public class PolicyQueryBO {
+    //政策id
+    private Long policyId;
     //政策名称
     private String policyName;
     //政策编号
@@ -32,7 +34,7 @@ public class PolicyQueryBO {
     //上下架
     private Byte upDown;
     //符合条件人数
-    private Integer meetConditionNumber;
+//    private Integer meetConditionNumber;
     //状态
     private Byte status;
 

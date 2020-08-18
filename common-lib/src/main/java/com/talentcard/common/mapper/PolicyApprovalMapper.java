@@ -1,5 +1,6 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.pojo.PolicyApplyPO;
 import com.talentcard.common.pojo.PolicyApprovalPO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -8,4 +9,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface PolicyApprovalMapper extends BaseMapper<PolicyApprovalPO, Long> {
+    Integer add(PolicyApprovalPO policyApprovalPO);
 }
