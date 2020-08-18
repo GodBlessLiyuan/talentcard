@@ -126,8 +126,6 @@ public class TalentServiceImpl implements ITalentService {
         TalentCertificationBO talentCertificationBO;
         List<TalentCertificationBO> resultList = new ArrayList<>();
         for (int i = 0; i < talentCertificationBOList.size(); i++) {
-            cardPO = null;
-            talentCertificationBO = null;
             talentCertificationBO = talentCertificationBOList.get(i);
             cardPO = cardMapper.selectByPrimaryKey(talentCertificationBO.getCardId());
             if (cardPO == null) {

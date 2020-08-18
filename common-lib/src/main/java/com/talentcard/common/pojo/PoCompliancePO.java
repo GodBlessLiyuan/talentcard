@@ -31,6 +31,10 @@ public class PoCompliancePO implements Serializable {
      * 0：未申请；1：已同意；2：已驳回；3：待审批
      */
     private Byte status;
+    /**
+     * 申请年份
+     */
+    private int year;
 
     private static final long serialVersionUID = 1L;
 }

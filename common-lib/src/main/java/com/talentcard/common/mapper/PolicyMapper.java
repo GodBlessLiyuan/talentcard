@@ -60,4 +60,11 @@ public interface PolicyMapper extends BaseMapper<PolicyPO, Long> {
      * @return
      */
     List<PolicyQueryBO> policyQuery(HashMap<String, Object> hashMap);
+
+    /**
+     * 获取所有有效的政策信息
+     *
+     * @return
+     */
+    List<PolicyPO> queryAll();
 }
