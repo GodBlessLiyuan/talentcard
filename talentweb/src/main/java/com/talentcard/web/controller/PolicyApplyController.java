@@ -4,6 +4,7 @@ import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IPolicyApplyService;
 import com.talentcard.web.vo.PolicyApplyVO;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hpsf.Decimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,22 +38,29 @@ public class PolicyApplyController {
                           @RequestParam(value = "name", defaultValue = "") String name,
                           @RequestParam(value = "apply", defaultValue = "") String apply,
                           @RequestParam(value = "status", defaultValue = "0") Byte status,
-                          @RequestParam(value = "roleName", defaultValue = "") String roleName,
-                          @RequestParam(value = "roleId") Long roleId) {
+                          @RequestParam(value = "roleType", required = false, defaultValue = "0") Byte roleType,
+                          @RequestParam(value = "responsibleUnitId", required = false) Long responsibleUnitId,
+                          @RequestParam(value = "roleId", required = false) Long roleId) {
 
-        HashMap<String, Object> reqMap = new HashMap<>(6);
-        if (!"".equals(end)) {
-            end = end + " 23:59:59";
+        HashMap<String, Object> reqMap = new HashMap<>(9);
+
+        if (!StringUtils.isEmpty(start)) {
+            start = start + " 00:00:00";
         }
 
+        if (!StringUtils.isEmpty(end)) {
+            end = end + " 23:59:59";
+        }
         reqMap.put("start", start);
         reqMap.put("end", end);
         reqMap.put("num", num);
         reqMap.put("name", name.replaceAll("%", "\\\\%"));
         reqMap.put("apply", apply);
         reqMap.put("status", status);
-        reqMap.put("roleName", roleName);
-        return iPolicyApplyService.query(pageNum, pageSize, reqMap, roleId);
+        reqMap.put("roleType", roleType);
+        reqMap.put("roleId", roleId);
+        reqMap.put("responsibleUnitId", responsibleUnitId);
+        return iPolicyApplyService.query(pageNum, pageSize, reqMap);
     }
 
     @RequestMapping("export")

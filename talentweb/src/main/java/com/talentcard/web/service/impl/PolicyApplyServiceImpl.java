@@ -56,13 +56,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     UserMapper userMapper;
 
     @Override
-    public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap, Long roleId) {
-        RolePO rolePO = roleMapper.selectByPrimaryKey(roleId);
-        if (rolePO == null) {
-            return new ResultVO(2741, "无此角色！");
-        }
-        reqMap.put("roleType", rolePO.getRoleType());
-        reqMap.put("roleId", roleId);
+    public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap) {
         Page<PolicyApplyBO> page = PageHelper.startPage(pageNum, pageSize);
         List<PolicyApplyBO> bos = policyApplyMapper.query(reqMap);
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), PolicyApplyVO.convert(bos)));
@@ -71,10 +65,9 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     @Override
     public ResultVO export(HashMap<String, Object> reqMap, HttpServletResponse res) {
         List<PolicyApplyBO> bos = policyApplyMapper.query(reqMap);
-
+        String[][] content = buildExcelContents(bos);
         //生成Excel表格
-        ExportUtil.exportExcel(null, EXPORT_TITLES, this.buildExcelContents(bos), res);
-
+        ExportUtil.exportExcel(null, EXPORT_TITLES, content, res);
         return new ResultVO(1000);
     }
 
@@ -89,6 +82,9 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         PolicyApplyPO applyPO = policyApplyMapper.selectByPrimaryKey(paid);
         if (null == applyPO) {
             return new ResultVO(1001);
+        }
+        if (applyPO.getStatus() == null || applyPO.getStatus() != 3) {
+            return new ResultVO(2743, "当前政策状态不对！");
         }
         applyPO.setStatus(status);
 
@@ -165,7 +161,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         String[][] contents = new String[bos.size()][];
         int num = 0;
         for (PolicyApplyBO bo : bos) {
-            String[] content = new String[9];
+            String[] content = new String[10];
             content[0] = String.valueOf(num + 1);
             content[1] = bo.getPolicyName();
             content[2] = bo.getNum();
@@ -196,6 +192,9 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         PolicyApplyPO policyApplyPO = policyApplyMapper.selectByPrimaryKey(paId);
         if (policyApplyPO == null) {
             return new ResultVO(2742, "查无此政策审批！");
+        }
+        if (policyApplyPO.getStatus() == null || policyApplyPO.getStatus() == 3) {
+            return new ResultVO(2743, "当前政策状态不对！");
         }
         policyApplyPO.setStatus((byte) 3);
         PolicyApprovalPO policyApprovalPO = new PolicyApprovalPO();

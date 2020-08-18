@@ -41,9 +41,10 @@ public class PolicyController {
                           @RequestParam(value = "status", required = false) Byte status,
                           @RequestParam(value = "policyType", required = false) Byte policyType,
                           @RequestParam(value = "roleId", required = false) Long roleId,
-                          @RequestParam(value = "roleType", required = false) Byte roleType) {
+                          @RequestParam(value = "roleType", required = false, defaultValue = "0") Byte roleType,
+                          @RequestParam(value = "responsibleUnitId", required = false) Long responsibleUnitId) {
 
-        HashMap<String, Object> hashMap = new HashMap<>(10);
+        HashMap<String, Object> hashMap = new HashMap<>(11);
         if (!StringUtils.isEmpty(start)) {
             start = start + " 00:00:00";
         }
@@ -61,6 +62,7 @@ public class PolicyController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = simpleDateFormat.format(new Date());
         hashMap.put("currentTime", currentTime);
+        hashMap.put("responsibleUnitId", responsibleUnitId);
         return service.query(pageNum, pageSize, hashMap);
     }
 

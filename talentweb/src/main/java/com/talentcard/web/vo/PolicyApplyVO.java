@@ -44,6 +44,11 @@ public class PolicyApplyVO implements Serializable {
     private String status;
 
     /**
+     * 责任单位名称
+     */
+    private String roleName;
+
+    /**
      * bos 转 vos
      *
      * @param bos
@@ -72,7 +77,7 @@ public class PolicyApplyVO implements Serializable {
         vo.setName(bo.getPolicyName());
         vo.setApply(bo.getTalentName());
         vo.setStatus(bo.getStatus() == 1 ? "已通过" : bo.getStatus() == 2 ? "已驳回" : "待审批");
-
+        vo.setRoleName(bo.getRoleName());
         return vo;
     }
 }
