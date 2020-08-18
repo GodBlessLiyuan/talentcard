@@ -60,10 +60,10 @@ public class PolicyServiceImpl implements IPolicyService {
     public ResultVO insert(HttpSession session, PolicyDTO dto) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
-//        if (userId == null) {
-//            // 用户过期
-//            return ResultVO.notLogin();
-//        }
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         PolicyPO existPO = policyMapper.queryByNum(dto.getNum());
         if (null != existPO) {
             // 编号不能重复
