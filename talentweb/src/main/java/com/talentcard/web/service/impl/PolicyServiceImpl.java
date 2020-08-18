@@ -156,11 +156,18 @@ public class PolicyServiceImpl implements IPolicyService {
     @Override
     public ResultVO upDown(HttpSession session, Long policyId, Byte upDown) {
         PolicyPO policyPO = policyMapper.selectByPrimaryKey(policyId);
-        if (policyPO == null) {
+        if (policyPO == null || upDown == null) {
             return new ResultVO<>(2740, "无此政策！");
         }
         policyPO.setUpDown(upDown);
         policyMapper.updateByPrimaryKeySelective(policyPO);
+        if (upDown == 1) {
+            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
+                    "上架政策\"%s\"", policyPO.getName());
+        } else if (upDown == 2) {
+            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
+                    "下架政策\"%s\"", policyPO.getName());
+        }
         return new ResultVO(1000);
     }
 

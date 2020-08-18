@@ -559,10 +559,11 @@
       apply_form, funds, user_id,
       create_time, dr, p_tId,
       role_id, funds_form, declaration_target,
-      start_time, endTime, apply_materials,
+      start_time, end_time, apply_materials,
       bonus, business_process, phone,
       if_social_security, social_area, social_times,
-      social_unit, up_down)
+      social_unit, up_down, update_time
+      )
     values (#{policyId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{num,jdbcType=CHAR},
       #{description,jdbcType=VARCHAR}, #{cards,jdbcType=CHAR}, #{categories,jdbcType=CHAR},
       #{educations,jdbcType=CHAR}, #{titles,jdbcType=CHAR}, #{qualities,jdbcType=CHAR},
@@ -572,10 +573,11 @@
       #{applyForm,jdbcType=CHAR}, #{funds,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT},
       #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, #{pTid,jdbcType=BIGINT},
       #{roleId,jdbcType=BIGINT}, #{fundsForm,jdbcType=TINYINT}, #{declarationTarget,jdbcType=VARCHAR},
-      #{startTime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{applyMaterials,jdbcType=VARCHAR},
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{applyMaterials,jdbcType=VARCHAR},
       #{bonus,jdbcType=VARCHAR}, #{businessProcess,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
       #{ifSocialSecurity,jdbcType=TINYINT}, #{socialArea,jdbcType=TINYINT}, #{socialTimes,jdbcType=TINYINT},
-      #{socialUnit,jdbcType=TINYINT}, #{upDown,jdbcType=TINYINT})
+      #{socialUnit,jdbcType=TINYINT}, #{upDown,jdbcType=TINYINT}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
     <select id="findHavingApprovePolicy" resultType="com.talentcard.common.bo.HavingApprovePolicyBO">
     select
