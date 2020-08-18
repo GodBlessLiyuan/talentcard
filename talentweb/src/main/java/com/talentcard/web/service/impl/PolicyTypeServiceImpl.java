@@ -14,6 +14,7 @@ import com.talentcard.web.dto.PolicyTypeDTO;
 import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IPolicyTypeService;
 import com.talentcard.web.vo.PolicyTypeVO;
+import org.apache.commons.beanutils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +52,7 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
         List<PolicyTypeBO> policyTypeBOs = poTypeMapper.pageQuery(reqData);
         //将互斥id取出来，然后进作为List查询条件查询出对应的互斥政策名称放入list中
         for (int i = 0; i < policyTypeBOs.size(); i++) {
-            policyTypeBOs.get(i).setExcludeIds(Arrays.asList(policyTypeBOs.get(i).getExcludeId().split(",")));
+            policyTypeBOs.get(i).setExcludeIds(Arrays.asList((Long[]) ConvertUtils.convert(policyTypeBOs.get(i).getExcludeId().split(","),Long.class)));
             //根据互斥id查询互斥政策名称放入对应的List中
             List<PolicyTypeBO> policyTypeNameList = poTypeMapper.queryPtNameByPtId(policyTypeBOs.get(i).getExcludeIds());
             //将查询出的名字取出来放入List中

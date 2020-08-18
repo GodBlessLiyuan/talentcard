@@ -19,7 +19,7 @@ public class PolicyTypeBO extends PoTypePO {
     /**
      * 政策类型互斥id
      */
-    private List<String> excludeIds;
+    private List<Long> excludeIds;
     /**
      * 互斥政策类型名称
      */

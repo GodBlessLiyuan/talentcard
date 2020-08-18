@@ -3,6 +3,7 @@ package com.talentcard.web.vo;
 import com.talentcard.common.bo.PolicyTypeBO;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class PolicyTypeVO implements Serializable {
     /**
      * 政策类型互斥id
      */
-    private List<String> eids;
+    private List<Long> eids;
     /**
      * 状态：1：上架  2：下架
      */
