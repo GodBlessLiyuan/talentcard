@@ -63,7 +63,6 @@ public class PolicyTypeVO implements Serializable {
 
     public static PolicyTypeVO convert(PolicyTypeBO bo) {
         PolicyTypeVO vo = new PolicyTypeVO();
-
         vo.setPtid(bo.getPTid());
         vo.setUtime(bo.getUpdateTime());
         vo.setPtname(bo.getPTypeName());
