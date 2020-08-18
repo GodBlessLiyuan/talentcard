@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.TalentTypeMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.TalentTypePO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="card_id" jdbcType="BIGINT" property="cardId" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="education_id" jdbcType="INTEGER" property="educationId" />
+    <result column="title_id" jdbcType="INTEGER" property="titleId" />
+    <result column="quality" jdbcType="INTEGER" property="quality" />
+    <result column="honour_id" jdbcType="BIGINT" property="honourId" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, talent_id, card_id, category_id, education_id, title_id, quality, honour_id, 
+    `type`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_talent_type
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_talent_type
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.TalentTypePO">
+    insert into t_talent_type (id, talent_id, card_id, 
+      category_id, education_id, title_id, 
+      quality, honour_id, `type`
+      )
+    values (#{id,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT}, 
+      #{categoryId,jdbcType=BIGINT}, #{educationId,jdbcType=INTEGER}, #{titleId,jdbcType=INTEGER}, 
+      #{quality,jdbcType=INTEGER}, #{honourId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.TalentTypePO">
+    insert into t_talent_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="cardId != null">
+        card_id,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="educationId != null">
+        education_id,
+      </if>
+      <if test="titleId != null">
+        title_id,
+      </if>
+      <if test="quality != null">
+        quality,
+      </if>
+      <if test="honourId != null">
+        honour_id,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="cardId != null">
+        #{cardId,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="educationId != null">
+        #{educationId,jdbcType=INTEGER},
+      </if>
+      <if test="titleId != null">
+        #{titleId,jdbcType=INTEGER},
+      </if>
+      <if test="quality != null">
+        #{quality,jdbcType=INTEGER},
+      </if>
+      <if test="honourId != null">
+        #{honourId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.TalentTypePO">
+    update t_talent_type
+    <set>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="cardId != null">
+        card_id = #{cardId,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="educationId != null">
+        education_id = #{educationId,jdbcType=INTEGER},
+      </if>
+      <if test="titleId != null">
+        title_id = #{titleId,jdbcType=INTEGER},
+      </if>
+      <if test="quality != null">
+        quality = #{quality,jdbcType=INTEGER},
+      </if>
+      <if test="honourId != null">
+        honour_id = #{honourId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.TalentTypePO">
+    update t_talent_type
+    set talent_id = #{talentId,jdbcType=BIGINT},
+      card_id = #{cardId,jdbcType=BIGINT},
+      category_id = #{categoryId,jdbcType=BIGINT},
+      education_id = #{educationId,jdbcType=INTEGER},
+      title_id = #{titleId,jdbcType=INTEGER},
+      quality = #{quality,jdbcType=INTEGER},
+      honour_id = #{honourId,jdbcType=BIGINT},
+      `type` = #{type,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+  <select id="selectByAllType" resultType="Long" parameterType="java.util.Map">
+    select  DISTINCT talent_id  from t_talent_type
+    <where>
+      <if test="card != null">
+        card_id in
+        <foreach collection="card" item="ca" index="index" open="(" close=")" separator=",">
+          #{ca}
+        </foreach>
+      </if>
+      <if test="category != null">
+        or
+        category_id in
+        <foreach collection="category" item="cat" index="index" open="(" close=")" separator=",">
+          #{cat}
+        </foreach>
+      </if>
+    </where>
+    <if test="education != null">
+        or
+      education_id in
+      <foreach collection="education" item="ed" index="index" open="(" close=")" separator=",">
+        #{ed}
+      </foreach>
+    </if>
+    <if test="title != null">
+        or
+      title_id in
+      <foreach collection="title" item="ti" index="index" open="(" close=")" separator=",">
+        #{ti}
+      </foreach>
+    </if>
+    <if test="quality != null">
+        or
+      quality in
+      <foreach collection="quality" item="qu" index="index" open="(" close=")" separator=",">
+        #{qu}
+      </foreach>
+    </if>
+    <if test="honour != null">
+        or
+      honour_id in
+      <foreach collection="honour" item="ho" index="index" open="(" close=")" separator=",">
+        #{ho}
+      </foreach>
+    </if>
+
+  </select>
+  <select id="selectByTalentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_talent_type
+    where talent_id = #{talentId,jdbcType=BIGINT}
+  </select>
+
+</mapper>
