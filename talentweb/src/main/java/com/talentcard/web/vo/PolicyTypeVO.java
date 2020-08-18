@@ -3,6 +3,7 @@ package com.talentcard.web.vo;
 import com.talentcard.common.bo.PolicyTypeBO;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -67,6 +68,9 @@ public class PolicyTypeVO implements Serializable {
         vo.setPtid(bo.getPTid());
         vo.setUtime(bo.getUpdateTime());
         vo.setPtname(bo.getPTypeName());
+        if (!StringUtils.isEmpty(bo.getExcludeIds())&&bo.getExcludeIds().get(0)==0) {
+            vo.setEids(null);
+        }
         vo.setEids(bo.getExcludeIds());
         vo.setDesc(bo.getDescription());
         vo.setEptnames(bo.getExcludeNames());
