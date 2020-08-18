@@ -14,6 +14,7 @@ import java.util.List;
 public interface RoleMapper extends BaseMapper<RolePO, Long> {
     /**
      * 根据角色名和创建时间间隔查询
+     *
      * @param roleName
      * @param startTime
      * @param endTime
@@ -23,6 +24,7 @@ public interface RoleMapper extends BaseMapper<RolePO, Long> {
 
     /**
      * 根据角色名和创建时间查询角色id
+     *
      * @param roleName
      * @param createTime
      * @return
@@ -31,10 +33,26 @@ public interface RoleMapper extends BaseMapper<RolePO, Long> {
 
     /**
      * 查询所有角色信息
+     *
      * @return
      */
     List<RolePO> queryRoleNameMsg();
 
 
     RolePO queryRoleNameHave(String roleName);
+
+    /**
+     * 所有责任单位查询
+     * roleType=2的政策角色
+     *
+     * @return
+     */
+    List<RolePO> queryResponsibleUnit();
+
+    /**
+     * 根据roleId查找详情
+     *
+     * @return
+     */
+    RolePO findOne(@Param("roleId") Long roleId);
 }

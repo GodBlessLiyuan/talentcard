@@ -1,11 +1,13 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.talentcard.common.bo.PolicyQueryBO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.PoSettingMapper;
 import com.talentcard.common.mapper.PolicyMapper;
 import com.talentcard.common.pojo.PoSettingPO;
 import com.talentcard.common.pojo.PolicyPO;
+import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
@@ -25,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,10 +49,11 @@ public class PolicyServiceImpl implements IPolicyService {
     PoSettingMapper poSettingMapper;
 
     @Override
-    public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
-        Page<PolicyPO> page = PageHelper.startPage(pageNum, pageSize);
-        List<PolicyPO> pos = policyMapper.query(reqMap);
-        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), PolicyVO.convert(pos)));
+    public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
+        Page<PolicyQueryBO> page = PageHelper.startPage(pageNum, pageSize);
+        List<PolicyQueryBO> policyQueryBOList = policyMapper.policyQuery(hashMap);
+        policyQueryBOList = PolicyQueryBO.setUpStatus(policyQueryBOList);
+        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), policyQueryBOList));
     }
 
     @Override
@@ -89,12 +93,17 @@ public class PolicyServiceImpl implements IPolicyService {
             // 用户过期
             return ResultVO.notLogin();
         }
-        PolicyPO po = policyMapper.selectByPrimaryKey(dto.getPid());
+        Long policyId = dto.getPid();
+        PolicyPO po = policyMapper.selectByPrimaryKey(policyId);
         if (null == po) {
             // 数据已被删除
             return new ResultVO(1001);
         }
         policyMapper.updateByPrimaryKeySelective(buildPOByDTO(po, dto));
+        //新建setting表
+        poSettingMapper.deleteByPolicyId(policyId);
+        insertPolicySetting(dto, policyId);
+
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
                 "编辑政策\"%s\"", PolicyNameUtil.getNameNumber(po));
         return new ResultVO(1000);
@@ -144,6 +153,24 @@ public class PolicyServiceImpl implements IPolicyService {
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 
+    @Override
+    public ResultVO upDown(HttpSession session, Long policyId, Byte upDown) {
+        PolicyPO policyPO = policyMapper.selectByPrimaryKey(policyId);
+        if (policyPO == null || upDown == null) {
+            return new ResultVO<>(2740, "无此政策！");
+        }
+        policyPO.setUpDown(upDown);
+        policyMapper.updateByPrimaryKeySelective(policyPO);
+        if (upDown == 1) {
+            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
+                    "上架政策\"%s\"", policyPO.getName());
+        } else if (upDown == 2) {
+            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
+                    "下架政策\"%s\"", policyPO.getName());
+        }
+        return new ResultVO(1000);
+    }
+
     /**
      * 根据 dto 构建 po
      *
@@ -179,12 +206,16 @@ public class PolicyServiceImpl implements IPolicyService {
         po.setSocialUnit(dto.getSocialUnit());
         po.setFundsForm(dto.getFundsForm());
         po.setDeclarationTarget(dto.getDeclarationTarget());
-        po.setStartTime(dto.getStartTime());
-        po.setEndtime(dto.getEndTime());
+        Date start = DateUtil.str2Date(dto.getStartTime() + " 00:00:00", DateUtil.YMD_HMS);
+        Date end = DateUtil.str2Date(dto.getEndTime() + " 23:59:59", DateUtil.YMD_HMS);
+        po.setStartTime(start);
+        po.setEndTime(end);
         po.setApplyMaterials(dto.getApplyMaterials());
         po.setBonus(dto.getBonus());
         po.setBusinessProcess(dto.getBusinessProcess());
         po.setPhone(dto.getPhone());
+        po.setUpDown((byte) 2);
+        po.setUpdateTime(new Date());
         return po;
     }
 
@@ -210,11 +241,12 @@ public class PolicyServiceImpl implements IPolicyService {
 
     /**
      * 新建setting表
+     *
      * @param policyDTO
      * @param policyId
      */
     private void insertPolicySetting(PolicyDTO policyDTO, Long policyId) {
-        //新建setting表
+//        新建setting表
         PoSettingPO policySettingPO;
         if (policyDTO.getCardIds() != null) {
             for (String cardId : policyDTO.getCardIds()) {
@@ -228,7 +260,7 @@ public class PolicyServiceImpl implements IPolicyService {
         if (policyDTO.getCategoryIds() != null) {
             for (String categoryId : policyDTO.getCategoryIds()) {
                 policySettingPO = new PoSettingPO();
-                policySettingPO.setCardId(Long.parseLong(categoryId));
+                policySettingPO.setCategoryId(Long.parseLong(categoryId));
                 policySettingPO.setPolicyId(policyId);
                 policySettingPO.setType((byte) 2);
                 poSettingMapper.insert(policySettingPO);
@@ -237,7 +269,7 @@ public class PolicyServiceImpl implements IPolicyService {
         if (policyDTO.getEducIds() != null) {
             for (String education : policyDTO.getEducIds()) {
                 policySettingPO = new PoSettingPO();
-                policySettingPO.setCardId(Long.parseLong(education));
+                policySettingPO.setEducationId(Integer.parseInt(education));
                 policySettingPO.setPolicyId(policyId);
                 policySettingPO.setType((byte) 3);
                 poSettingMapper.insert(policySettingPO);
@@ -246,7 +278,7 @@ public class PolicyServiceImpl implements IPolicyService {
         if (policyDTO.getTitleIds() != null) {
             for (String title : policyDTO.getTitleIds()) {
                 policySettingPO = new PoSettingPO();
-                policySettingPO.setCardId(Long.parseLong(title));
+                policySettingPO.setTitleId(Integer.parseInt(title));
                 policySettingPO.setPolicyId(policyId);
                 policySettingPO.setType((byte) 4);
                 poSettingMapper.insert(policySettingPO);
@@ -255,7 +287,7 @@ public class PolicyServiceImpl implements IPolicyService {
         if (policyDTO.getQualityIds() != null) {
             for (String quality : policyDTO.getQualityIds()) {
                 policySettingPO = new PoSettingPO();
-                policySettingPO.setCardId(Long.parseLong(quality));
+                policySettingPO.setQuality(Integer.parseInt(quality));
                 policySettingPO.setPolicyId(policyId);
                 policySettingPO.setType((byte) 5);
                 poSettingMapper.insert(policySettingPO);
@@ -264,7 +296,7 @@ public class PolicyServiceImpl implements IPolicyService {
         if (policyDTO.getTalentHonourIds() != null) {
             for (Long honour : policyDTO.getTalentHonourIds()) {
                 policySettingPO = new PoSettingPO();
-                policySettingPO.setCardId(honour);
+                policySettingPO.setHonourId(honour);
                 policySettingPO.setPolicyId(policyId);
                 policySettingPO.setType((byte) 6);
                 poSettingMapper.insert(policySettingPO);

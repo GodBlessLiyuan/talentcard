@@ -84,7 +84,7 @@ public class PolicyPO implements Serializable {
 
     private Date startTime;
 
-    private Date endtime;
+    private Date endTime;
 
     private String applyMaterials;
 
@@ -101,6 +101,10 @@ public class PolicyPO implements Serializable {
     private Byte socialTimes;
 
     private Byte socialUnit;
+
+    private Byte upDown;
+
+    private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 }

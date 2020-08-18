@@ -114,11 +114,11 @@ public class PolicyDTO implements Serializable {
     /**
      * 申请开始时间
      */
-    private Date startTime;
+    private String startTime;
     /**
      * 申请结束时间
      */
-    private Date endTime;
+    private String endTime;
     /**
      * 申请资料
      */
