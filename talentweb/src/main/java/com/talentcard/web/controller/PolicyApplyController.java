@@ -4,6 +4,8 @@ import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IPolicyApplyService;
 import com.talentcard.web.vo.PolicyApplyVO;
+import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hpsf.Decimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 /**
@@ -24,7 +27,7 @@ import java.util.HashMap;
 @RestController
 public class PolicyApplyController {
     @Autowired
-    private IPolicyApplyService service;
+    private IPolicyApplyService iPolicyApplyService;
 
     @RequestMapping("query")
     public ResultVO query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -35,22 +38,29 @@ public class PolicyApplyController {
                           @RequestParam(value = "name", defaultValue = "") String name,
                           @RequestParam(value = "apply", defaultValue = "") String apply,
                           @RequestParam(value = "status", defaultValue = "0") Byte status,
-                          @RequestParam(value = "roleName", defaultValue = "") String roleName,
-                          @RequestParam(value = "roleId") Long roleId) {
+                          @RequestParam(value = "roleType", required = false, defaultValue = "0") Byte roleType,
+                          @RequestParam(value = "responsibleUnitId", required = false) Long responsibleUnitId,
+                          @RequestParam(value = "roleId", required = false) Long roleId) {
 
-        HashMap<String, Object> reqMap = new HashMap<>(6);
-        if (!"".equals(end)) {
-            end = end + " 23:59:59";
+        HashMap<String, Object> reqMap = new HashMap<>(9);
+
+        if (!StringUtils.isEmpty(start)) {
+            start = start + " 00:00:00";
         }
 
+        if (!StringUtils.isEmpty(end)) {
+            end = end + " 23:59:59";
+        }
         reqMap.put("start", start);
         reqMap.put("end", end);
         reqMap.put("num", num);
         reqMap.put("name", name.replaceAll("%", "\\\\%"));
         reqMap.put("apply", apply);
         reqMap.put("status", status);
-        reqMap.put("roleName", roleName);
-        return service.query(pageNum, pageSize, reqMap, roleId);
+        reqMap.put("roleType", roleType);
+        reqMap.put("roleId", roleId);
+        reqMap.put("responsibleUnitId", responsibleUnitId);
+        return iPolicyApplyService.query(pageNum, pageSize, reqMap);
     }
 
     @RequestMapping("export")
@@ -69,24 +79,40 @@ public class PolicyApplyController {
         reqMap.put("apply", apply);
         reqMap.put("status", status);
 
-        return service.export(reqMap, res);
+        return iPolicyApplyService.export(reqMap, res);
     }
 
     @RequestMapping("approval")
     public ResultVO approval(HttpServletRequest request,
                              @RequestParam(value = "paid") Long paid,
                              @RequestParam(value = "status", defaultValue = "") Byte status,
-                             @RequestParam(value = "opinion", defaultValue = "") String opinion) {
-        return service.approval(request.getSession(), paid, status, opinion);
+                             @RequestParam(value = "opinion", defaultValue = "") String opinion,
+                             @RequestParam(value = "actualFunds") BigDecimal actualFunds) {
+        return iPolicyApplyService.approval(request.getSession(), paid, status, opinion, actualFunds);
     }
 
     @RequestMapping("detail")
     public ResultVO detail(@RequestParam(value = "paid") Long paid) {
-        return service.detail(paid);
+        return iPolicyApplyService.detail(paid);
     }
 
     @RequestMapping("count")
     public ResultVO count() {
-        return service.count();
+        return iPolicyApplyService.count();
+    }
+
+    /**
+     * 政策撤回
+     *
+     * @param httpSession
+     * @param paId
+     * @param opinion
+     * @return
+     */
+    @RequestMapping("cancel")
+    public ResultVO cancel(HttpSession httpSession,
+                           @RequestParam(value = "paId") Long paId,
+                           @RequestParam(value = "opinion", required = false, defaultValue = "") String opinion) {
+        return iPolicyApplyService.cancel(httpSession, paId, opinion);
     }
 }

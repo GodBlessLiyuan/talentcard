@@ -497,7 +497,7 @@
         select
         p.name as policyName, p.num as num, p.start_time as startTime,
         p.end_time as endTime, pt.p_type_name as policyTypeName, r.name as roleName,
-        p.update_time as updateTime, p.up_down as upDown
+        p.update_time as updateTime, p.up_down as upDown, p.policy_id as policyId
         from t_policy p
         left join t_role r
         on p.role_id = r.role_id
@@ -515,7 +515,12 @@
         <if test="policyType != null">
             and p.p_tId = #{policyType, jdbcType=TINYINT}
         </if>
-        <if test="roleType != null and roleType ==2">and r.role_id = #{roleId,jdbcType=BIGINT}</if>
+        <if test="roleType ==1 and responsibleUnitId!=null and responsibleUnitId!=0 ">
+            and p.role_id = #{responsibleUnitId,jdbcType=BIGINT}
+        </if>
+        <if test="roleType ==2">
+        and r.role_id = #{roleId,jdbcType=BIGINT}
+        </if>
         <if test="status != null and status == 1">
             and <![CDATA[ (p.start_time <= #{currentTime} and p.end_time >= #{currentTime} and p.up_down = 1) ]]>
         </if>

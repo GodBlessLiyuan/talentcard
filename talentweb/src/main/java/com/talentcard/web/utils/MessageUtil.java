@@ -70,7 +70,7 @@ public class MessageUtil {
             //政策审批
             weChatTemDto.setTemplate_id(policyApprovalTemplate);
         } else if (messageDTO.getTemplateId() == 4) {
-            //政策审批
+            //编辑人才
             weChatTemDto.setTemplate_id(editTalentTemplate);
         }else if(messageDTO.getTemplateId()==5){
             weChatTemDto.setTemplate_id(sendTalentUnConfirmTemplate);

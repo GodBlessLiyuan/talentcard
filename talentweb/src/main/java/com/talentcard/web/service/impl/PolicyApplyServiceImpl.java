@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,15 +52,11 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     private ILogService logService;
     @Autowired
     PolicyMapper policyMapper;
+    @Autowired
+    UserMapper userMapper;
 
     @Override
-    public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap, Long roleId) {
-        RolePO rolePO = roleMapper.selectByPrimaryKey(roleId);
-        if (rolePO == null) {
-            return new ResultVO(2741, "无此角色！");
-        }
-        reqMap.put("roleType", rolePO.getRoleType());
-        reqMap.put("roleId", roleId);
+    public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap) {
         Page<PolicyApplyBO> page = PageHelper.startPage(pageNum, pageSize);
         List<PolicyApplyBO> bos = policyApplyMapper.query(reqMap);
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), PolicyApplyVO.convert(bos)));
@@ -68,15 +65,14 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     @Override
     public ResultVO export(HashMap<String, Object> reqMap, HttpServletResponse res) {
         List<PolicyApplyBO> bos = policyApplyMapper.query(reqMap);
-
+        String[][] content = buildExcelContents(bos);
         //生成Excel表格
-        ExportUtil.exportExcel(null, EXPORT_TITLES, this.buildExcelContents(bos), res);
-
+        ExportUtil.exportExcel(null, EXPORT_TITLES, content, res);
         return new ResultVO(1000);
     }
 
     @Override
-    public ResultVO approval(HttpSession session, Long paid, Byte status, String opinion) {
+    public ResultVO approval(HttpSession session, Long paid, Byte status, String opinion, BigDecimal actualFunds) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
@@ -87,8 +83,10 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         if (null == applyPO) {
             return new ResultVO(1001);
         }
+        if (applyPO.getStatus() == null || applyPO.getStatus() != 3) {
+            return new ResultVO(2743, "当前政策状态不对！");
+        }
         applyPO.setStatus(status);
-        policyApplyMapper.updateByPrimaryKey(applyPO);
 
         PolicyApprovalPO po = new PolicyApprovalPO();
         po.setPaId(paid);
@@ -98,7 +96,12 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         po.setUsername((String) session.getAttribute("username"));
         po.setResult(status);
         po.setOpinion(opinion);
-        policyApprovalMapper.insert(po);
+        po.setActualFunds(actualFunds);
+        policyApprovalMapper.add(po);
+
+        applyPO.setPaId(po.getPaId());
+        applyPO.setActualFunds(actualFunds);
+        policyApplyMapper.updateByPrimaryKey(applyPO);
 
 
         //用消息模板推送微信消息
@@ -158,7 +161,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         String[][] contents = new String[bos.size()][];
         int num = 0;
         for (PolicyApplyBO bo : bos) {
-            String[] content = new String[9];
+            String[] content = new String[10];
             content[0] = String.valueOf(num + 1);
             content[1] = bo.getPolicyName();
             content[2] = bo.getNum();
@@ -182,5 +185,63 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         }
 
         return contents;
+    }
+
+    @Override
+    public ResultVO cancel(HttpSession httpSession, Long paId, String opinion) {
+        PolicyApplyPO policyApplyPO = policyApplyMapper.selectByPrimaryKey(paId);
+        if (policyApplyPO == null) {
+            return new ResultVO(2742, "查无此政策审批！");
+        }
+        if (policyApplyPO.getStatus() == null || policyApplyPO.getStatus() == 3) {
+            return new ResultVO(2743, "当前政策状态不对！");
+        }
+        policyApplyPO.setStatus((byte) 3);
+        PolicyApprovalPO policyApprovalPO = new PolicyApprovalPO();
+        policyApprovalPO.setCreateTime(new Date());
+        policyApprovalPO.setPaId(paId);
+        policyApprovalPO.setResult((byte) 3);
+        policyApprovalPO.setType((byte) 3);
+        policyApprovalPO.setOpinion(opinion);
+        UserPO userPO = userMapper.selectByPrimaryKey((Long) httpSession.getAttribute("userId"));
+        if (userPO != null) {
+            policyApprovalPO.setUserId(userPO.getUserId());
+            policyApprovalPO.setUsername(userPO.getUsername());
+        }
+        policyApprovalPO.setUpdateTime(new Date());
+        policyApprovalMapper.add(policyApprovalPO);
+        policyApplyPO.setPolicyApprovalId(policyApprovalPO.getApprovalId());
+        policyApplyMapper.updateByPrimaryKey(policyApplyPO);
+
+        /**
+         * 用模版推送消息
+         */
+        TalentPO talentPO = talentMapper.selectByPrimaryKey(policyApplyPO.getTalentId());
+        if (talentPO == null) {
+            return new ResultVO(2500, "查无此人！");
+        }
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(talentPO.getOpenId());
+        //开头
+        messageDTO.setFirst("您好，您申请的“" + policyApplyPO.getPolicyName() + "”需要重新审批。");
+        //信息类型
+        messageDTO.setKeyword1("政策权益");
+        //变更时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        String currentTime = formatter.format(new Date());
+        messageDTO.setKeyword2(currentTime);
+        //模版编号
+        messageDTO.setTemplateId(4);
+        //结束
+        String remark = "变更原因：您的个人信息有待重新核实。";
+        messageDTO.setRemark(remark);
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+        MessageUtil.sendTemplateMessage(messageDTO);
+        String detail = "撤销人才\"%s\"的政策申请“" + policyApplyPO.getPolicyName() + "”";
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentPolicyManager,
+                OpsRecordMenuConstant.S_PolicyApply, detail, talentPO.getName());
+        return new ResultVO(1000);
     }
 }

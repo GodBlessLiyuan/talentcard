@@ -6,6 +6,7 @@ import com.talentcard.web.vo.PolicyApplyVO;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 /**
@@ -23,7 +24,7 @@ public interface IPolicyApplyService {
      * @param reqMap
      * @return
      */
-    ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap, Long roleId);
+    ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap);
 
     /**
      * 导出
@@ -42,7 +43,7 @@ public interface IPolicyApplyService {
      * @param opinion 意见
      * @return
      */
-    ResultVO approval(HttpSession session, Long paid, Byte status, String opinion);
+    ResultVO approval(HttpSession session, Long paid, Byte status, String opinion, BigDecimal actualFunds);
 
     /**
      * 详情
@@ -58,4 +59,6 @@ public interface IPolicyApplyService {
      * @return
      */
     ResultVO count();
+
+    ResultVO cancel(HttpSession httpSession, Long paId, String opinion);
 }
