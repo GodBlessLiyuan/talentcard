@@ -68,4 +68,12 @@
       p_tid2 = #{pTid2,jdbcType=BIGINT}
     where exclude_id = #{excludeId,jdbcType=BIGINT}
   </update>
+  <delete id="delete" parameterType="java.lang.Long">
+    delete from po_type_exclude
+    where p_tid1 = #{eid,jdbcType=BIGINT} or p_tid2 = #{eid,jdbcType=BIGINT}
+  </delete>
+  <select id="queryExId" parameterType="java.lang.Long" resultType="com.talentcard.common.pojo.PoTypeExcludePO">
+    select p_tid2 as pTid2 from po_type_exclude
+    where p_tid1 = #{eid,jdbcType=BIGINT}
+  </select>
 </mapper>

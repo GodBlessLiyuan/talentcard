@@ -105,7 +105,6 @@ public class WebParameterUtil {
     @Value("${project.appBrandPass}")
     private void setAppBrandPass(String appBrandPass) {
         WebParameterUtil.appBrandPass = appBrandPass;
-        System.out.println(WebParameterUtil.getAppBrandPass());
     }
 
     @Value("${project.appBrandUserName}")
