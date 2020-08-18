@@ -19,6 +19,7 @@ import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.BatchCertificateDTO;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ILogService;
+import com.talentcard.web.service.ITalentInfoCertificationService;
 import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.utils.*;
 import com.talentcard.web.vo.EditTalentRecordVO;
@@ -82,6 +83,8 @@ public class TalentServiceImpl implements ITalentService {
     CertApprovalPassRecordMapper certApprovalPassRecordMapper;
     @Autowired
     private EditTalentRecordMapper editTalentRecordMapper;
+    @Autowired
+    private ITalentInfoCertificationService iTalentInfoCertificationService;
 
     private static final String[] EXCEL_TITLE = {"姓名", "证件号码"};
     private static final String[] EXCEL_TITLE_RES = {"姓名", "证件号码", "人才卡", "人才类别", "人才荣誉", "认证结果", "说明"};
@@ -537,6 +540,12 @@ public class TalentServiceImpl implements ITalentService {
         talentCertificationInfoPO.setTalentCategory(talentPO.getCategory());
         talentCertificationInfoMapper.insertSelective(talentCertificationInfoPO);
         sendMessage(talentPO);
+
+        /**
+         * 更新用户类别表中的人才卡信息
+         */
+        iTalentInfoCertificationService.updateCard(talentId, cardId);
+
         return SUCCESS;
     }
 

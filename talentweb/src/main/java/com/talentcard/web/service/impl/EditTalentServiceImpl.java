@@ -761,8 +761,14 @@ public class EditTalentServiceImpl implements IEditTalentService {
         sendTemplateMessage(messageDTO);
 
 
+
         this.iEditTalentRecordService.addRecord(session,talentId,EditTalentRecordConstant.editType, EditTalentRecordConstant.talentCard,
                 JSONObject.toJSONString(oldCardPO),JSONObject.toJSONString(newCardPO),opinion);
+
+        /**
+         * 更新用户类别表中的人才卡信息
+         */
+        iTalentInfoCertificationService.updateCard(talentId, newCardId);
         /**
          * 清缓存
          */

@@ -12,4 +12,12 @@ public interface ITalentInfoCertificationService {
      * @param talentId
      */
     Integer update(Long talentId);
+
+    /**
+     * 更新用户会员卡信息
+     * @param talentId
+     * @param cardId
+     * @return
+     */
+    int updateCard(Long talentId, Long cardId);
 }

@@ -5,9 +5,7 @@ import com.talentcard.common.mapper.TalentCertificationInfoMapper;
 import com.talentcard.common.mapper.TalentMapper;
 import com.talentcard.common.mapper.TalentTypeMapper;
 import com.talentcard.common.pojo.*;
-import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.web.service.ITalentInfoCertificationService;
-import com.talentcard.web.service.ITalentService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,7 +65,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
 
                 TalentTypePO talentTypePO = new TalentTypePO();
                 talentTypePO.setEducationId(educationPOList.get(i).getEducation());
-                talentTypePO.setType((byte)3);
+                talentTypePO.setType((byte) 3);
                 talentTypePO.setTalentId(talentId);
                 talentTypePOS.add(talentTypePO);
             }
@@ -84,8 +82,8 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
                 titleString = titleString + profTitlePOList.get(i).getCategory() + ",";
 
                 TalentTypePO talentTypePO = new TalentTypePO();
-                talentTypePO.setCategoryId((long)profTitlePOList.get(i).getCategory());
-                talentTypePO.setType((byte)4);
+                talentTypePO.setCategoryId((long) profTitlePOList.get(i).getCategory());
+                talentTypePO.setType((byte) 4);
                 talentTypePO.setTalentId(talentId);
                 talentTypePOS.add(talentTypePO);
             }
@@ -102,8 +100,8 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
                 qualityString = qualityString + profQualityPOList.get(i).getCategory() + ",";
 
                 TalentTypePO talentTypePO = new TalentTypePO();
-                talentTypePO.setCategoryId((long)profQualityPOList.get(i).getCategory());
-                talentTypePO.setType((byte)5);
+                talentTypePO.setCategoryId((long) profQualityPOList.get(i).getCategory());
+                talentTypePO.setType((byte) 5);
                 talentTypePO.setTalentId(talentId);
                 talentTypePOS.add(talentTypePO);
             }
@@ -121,7 +119,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
 
                 TalentTypePO talentTypePO = new TalentTypePO();
                 talentTypePO.setCategoryId(talentHonourPOList.get(i).getHonourId());
-                talentTypePO.setType((byte)6);
+                talentTypePO.setType((byte) 6);
                 talentTypePO.setTalentId(talentId);
                 talentTypePOS.add(talentTypePO);
             }
@@ -135,13 +133,13 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
         talentCertificationInfoMapper.updateByPrimaryKeySelective(talentCertificationInfoPO);
 
         String s_category = talentPO.getCategory();
-        if(!StringUtils.isEmpty(s_category)){
+        if (!StringUtils.isEmpty(s_category)) {
             String category[] = s_category.split(",");
-            if(category!=null && category.length>0){
-                for(String key:category){
+            if (category != null && category.length > 0) {
+                for (String key : category) {
                     TalentTypePO talentTypePO = new TalentTypePO();
                     talentTypePO.setCategoryId(Long.valueOf(key));
-                    talentTypePO.setType((byte)2);
+                    talentTypePO.setType((byte) 2);
                     talentTypePO.setTalentId(talentId);
                     talentTypePOS.add(talentTypePO);
                 }
@@ -152,16 +150,37 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
         talentTypeMapper.deleteByTalentId(talentId);
 
         Long card = talentPO.getCardId();
-        if(card != null &&card != 0){
+        if (card != null && card != 0) {
             TalentTypePO talentTypePO = new TalentTypePO();
             talentTypePO.setCardId(card);
-            talentTypePO.setType((byte)1);
+            talentTypePO.setType((byte) 1);
             talentTypePO.setTalentId(talentId);
             talentTypePOS.add(talentTypePO);
         }
 
         talentTypeMapper.batchInsert(talentTypePOS);
 
+        return 0;
+    }
+
+
+    @Override
+    public int updateCard(Long talentId, Long cardId) {
+        List<TalentTypePO> talentTypePOS = talentTypeMapper.selectByTalentId(talentId);
+        if (talentTypePOS != null && talentTypePOS.size() > 0) {
+            for(TalentTypePO po:talentTypePOS){
+                if(po.getType() == 1){
+                    po.setCardId(cardId);
+                    talentTypeMapper.updateByPrimaryKey(po);
+                    return 0;
+                }
+            }
+        }
+        TalentTypePO talentTypePO = new TalentTypePO();
+        talentTypePO.setCardId(cardId);
+        talentTypePO.setType((byte) 1);
+        talentTypePO.setTalentId(talentId);
+        talentTypeMapper.insert(talentTypePO);
         return 0;
     }
 }
