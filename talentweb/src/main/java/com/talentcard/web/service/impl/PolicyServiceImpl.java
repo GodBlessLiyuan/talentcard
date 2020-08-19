@@ -3,10 +3,13 @@ package com.talentcard.web.service.impl;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.PolicyQueryBO;
 import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.mapper.PoComplianceMapper;
 import com.talentcard.common.mapper.PoSettingMapper;
 import com.talentcard.common.mapper.PolicyMapper;
+import com.talentcard.common.mapper.RoleMapper;
 import com.talentcard.common.pojo.PoSettingPO;
 import com.talentcard.common.pojo.PolicyPO;
+import com.talentcard.common.pojo.RolePO;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.PageHelper;
@@ -22,6 +25,7 @@ import com.talentcard.web.vo.PolicyVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -46,7 +50,11 @@ public class PolicyServiceImpl implements IPolicyService {
     @Autowired
     private ILogService logService;
     @Autowired
-    PoSettingMapper poSettingMapper;
+    private PoSettingMapper poSettingMapper;
+    @Autowired
+    private RoleMapper roleMapper;
+    @Autowired
+    private PoComplianceMapper poComplianceMapper;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
@@ -57,6 +65,7 @@ public class PolicyServiceImpl implements IPolicyService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO insert(HttpSession session, PolicyDTO dto) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
@@ -86,6 +95,7 @@ public class PolicyServiceImpl implements IPolicyService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO update(HttpSession session, PolicyDTO dto) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
@@ -135,8 +145,16 @@ public class PolicyServiceImpl implements IPolicyService {
             // 数据已被删除
             return new ResultVO(1001);
         }
-
-        return new ResultVO<>(1000, PolicyDetailVO.convert(po));
+        RolePO rolePO = roleMapper.selectByPrimaryKey(po.getRoleId());
+        PolicyDetailVO policyDetailVO = PolicyDetailVO.convert(po);
+        if (rolePO != null) {
+            //将roleId转换为名称，即责任单位名称
+            policyDetailVO.setResponsibleUnit(rolePO.getName());
+        }
+        //计算符合条件人数
+        Long meetConditionNumber = poComplianceMapper.countMeetConditionNumber(pid);
+        policyDetailVO.setMeetConditionNumber(meetConditionNumber);
+        return new ResultVO<>(1000, policyDetailVO);
     }
 
     @Override

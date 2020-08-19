@@ -1,12 +1,11 @@
 package com.talentcard.web.controller;
 
-import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.common.dto.ApplyNumCountDTO;
 import com.talentcard.web.service.IPolicyApplyService;
-import com.talentcard.web.vo.PolicyApplyVO;
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.hpsf.Decimal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +41,7 @@ public class PolicyApplyController {
                           @RequestParam(value = "responsibleUnitId", required = false) Long responsibleUnitId,
                           @RequestParam(value = "roleId", required = false) Long roleId) {
 
-        HashMap<String, Object> reqMap = new HashMap<>(9);
+        HashMap<String, Object> reqMap = new HashMap<>(11);
 
         if (!StringUtils.isEmpty(start)) {
             start = start + " 00:00:00";
@@ -114,5 +113,18 @@ public class PolicyApplyController {
                            @RequestParam(value = "paId") Long paId,
                            @RequestParam(value = "opinion", required = false, defaultValue = "") String opinion) {
         return iPolicyApplyService.cancel(httpSession, paId, opinion);
+    }
+
+    @RequestMapping("applyNumCount")
+    public ResultVO applyNumCount(@RequestBody ApplyNumCountDTO applyNumCountDTO) {
+        if (!StringUtils.isEmpty(applyNumCountDTO.getStart())) {
+            String start = applyNumCountDTO.getStart() + " 00:00:00";
+            applyNumCountDTO.setStart(start);
+        }
+        if (!StringUtils.isEmpty(applyNumCountDTO.getEnd())) {
+            String end = applyNumCountDTO.getEnd() + " 23:59:59";
+            applyNumCountDTO.setEnd(end);
+        }
+        return iPolicyApplyService.applyNumCount(applyNumCountDTO);
     }
 }

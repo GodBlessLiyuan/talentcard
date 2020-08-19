@@ -1,6 +1,7 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.talentcard.common.bo.ApplyNumCountBO;
 import com.talentcard.common.bo.HavingApprovePolicyBO;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.mapper.*;
@@ -11,6 +12,7 @@ import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
+import com.talentcard.common.dto.ApplyNumCountDTO;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IPolicyApplyService;
@@ -149,6 +151,19 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     public ResultVO count() {
         Long count = policyApplyMapper.countByStatus((byte) 3);
         return new ResultVO<>(1000, count);
+    }
+
+    @Override
+    public ResultVO applyNumCount(ApplyNumCountDTO applyNumCountDTO) {
+        ApplyNumCountBO applyNumCountBO = policyApplyMapper.applyNumCount(applyNumCountDTO);
+        //算总数
+        if (applyNumCountBO == null) {
+            return new ResultVO(1000, new ApplyNumCountBO());
+        }
+        Integer allNum = applyNumCountBO.getAgreeNum() +
+                applyNumCountBO.getRejectNum() + applyNumCountBO.getWaitApprovalNum();
+        applyNumCountBO.setAllNum(allNum);
+        return new ResultVO(1000, applyNumCountBO);
     }
 
     /**

@@ -135,4 +135,25 @@
             </if>
         </where>
     </select>
+
+    <select id="queryPolicyByTalentId" resultType="com.talentcard.common.bo.queryPolicyByTalentIdBO">
+        select
+        p.name as policyName, p.start_time as startTime, p.end_time as endTime,
+        poc.status as status
+        from po_compliance poc
+        left join t_policy p
+        on poc.policy_id = p.policy_id
+        where
+        poc.talent_id = #{talentId,jdbcType=BIGINT}
+        and poc.year = #{year,jdbcType=INTEGER}
+    </select>
+
+    <select id="countMeetConditionNumber"  resultMap="BaseResultMap">
+        select
+        count(p_co_id)
+        from po_compliance
+        where policy_id = #{policyId,jdbcType=BIGINT}
+        and
+        status = 0
+    </select>
 </mapper>

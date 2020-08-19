@@ -1,8 +1,7 @@
 package com.talentcard.web.service;
 
-import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
-import com.talentcard.web.vo.PolicyApplyVO;
+import com.talentcard.common.dto.ApplyNumCountDTO;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -61,4 +60,12 @@ public interface IPolicyApplyService {
     ResultVO count();
 
     ResultVO cancel(HttpSession httpSession, Long paId, String opinion);
+
+    /**
+     * 人数统计查询
+     *
+     * @param applyNumCountDTO
+     * @return
+     */
+    ResultVO applyNumCount(ApplyNumCountDTO applyNumCountDTO);
 }

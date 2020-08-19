@@ -1,11 +1,14 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.bo.ApplyNumCountBO;
 import com.talentcard.common.bo.PolicyApplyBO;
+import com.talentcard.common.dto.ApplyNumCountDTO;
 import com.talentcard.common.pojo.PolicyApplyPO;
 import com.talentcard.common.vo.ResultVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -45,4 +48,12 @@ public interface PolicyApplyMapper extends BaseMapper<PolicyApplyPO, Long> {
      * @return
      */
     Long countByStatus(Byte status);
+
+    /**
+     * 计算具体责任单位相关状态的申请数量
+     *
+     * @param applyNumCountDTO
+     * @return
+     */
+    ApplyNumCountBO applyNumCount(ApplyNumCountDTO applyNumCountDTO);
 }
