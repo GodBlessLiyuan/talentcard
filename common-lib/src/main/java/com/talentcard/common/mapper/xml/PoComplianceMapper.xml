@@ -22,7 +22,7 @@
     delete from po_compliance
     where p_co_id = #{pCoId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.talentcard.common.pojo.PoCompliancePO">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pCoId" parameterType="com.talentcard.common.pojo.PoCompliancePO">
     insert into po_compliance (p_co_id, policy_id, talent_id, 
       apply_time, `status`, `year` )
     values (#{pCoId,jdbcType=BIGINT}, #{policyId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 

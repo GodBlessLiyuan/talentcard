@@ -346,6 +346,20 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                             this.poComplianceMapper.insert(poCompliancePO);
 
                             oneApplyMapPolicy.put(po.getPolicyId(), poCompliancePO);
+                            if (oneApplyTypeToPolicy.containsKey(po.getPTid())) {
+                                List<PoCompliancePO> poCompliancePOS = oneApplyTypeToPolicy.get(po.getPTid());
+                                if (poCompliancePOS != null) {
+                                    poCompliancePOS.add(poCompliancePO);
+                                }else {
+                                    poCompliancePOS = new ArrayList<>(1);
+                                    poCompliancePOS.add(poCompliancePO);
+                                    oneApplyTypeToPolicy.put(po.getPTid(), poCompliancePOS);
+                                }
+                            } else {
+                                List<PoCompliancePO> poCompliancePOS = new ArrayList<>(1);
+                                poCompliancePOS.add(poCompliancePO);
+                                oneApplyTypeToPolicy.put(po.getPTid(), poCompliancePOS);
+                            }
                         }
                     }
                 }
@@ -384,10 +398,13 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                 if (haveApply) {
                     List<PoTypeExcludePO> poTypeExcludePOS = this.poTypeExcludeMapper.queryExId(pTid);
                     for (PoTypeExcludePO poTypeExcludePO : poTypeExcludePOS) {
+                        logger.error("poTypeExcludePO:{}",poTypeExcludePO);
                         if (oneApplyTypeToPolicy.containsKey(poTypeExcludePO.getPTid2())) {
+
                             List<PoCompliancePO> exclude = oneApplyTypeToPolicy.get(poTypeExcludePO.getPTid2());
+                            logger.error("exclude:{}",exclude);
                             if (exclude != null && exclude.size() > 0) {
-                                for (PoCompliancePO poCompliancePO : poCompliancePOS) {
+                                for (PoCompliancePO poCompliancePO : exclude) {
                                     if (poCompliancePO.getStatus() != 1 && poCompliancePO.getStatus() != 3) {
                                         poCompliancePO.setStatus((byte) 10);
                                         this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
