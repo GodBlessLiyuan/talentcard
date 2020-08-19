@@ -81,4 +81,14 @@ public class PolicyController {
     public ResultVO queryBankCardInfo(@RequestParam(name = "openId") String openId){
         return service.queryBankCardInfo(openId);
     }
+
+    /**
+     * 根据policyId查找单个政策信息
+     * @param policyId
+     * @return
+     */
+    @RequestMapping("policyFindOne")
+    public ResultVO policyFindOne(@RequestParam(name = "policyId") Long policyId){
+        return service.policyFindOne(policyId);
+    }
 }

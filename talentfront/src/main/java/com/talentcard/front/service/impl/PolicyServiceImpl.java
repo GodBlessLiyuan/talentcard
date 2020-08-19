@@ -347,4 +347,10 @@ public class PolicyServiceImpl implements IPolicyService {
 
         return new ResultVO(1000, bankInfoList.get(0));
     }
+
+    @Override
+    public ResultVO policyFindOne(Long policyId) {
+        PolicyPO policyPO = policyMapper.selectByPrimaryKey(policyId);
+        return new ResultVO(1000, policyPO);
+    }
 }

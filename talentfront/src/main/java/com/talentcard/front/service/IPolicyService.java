@@ -49,4 +49,12 @@ public interface IPolicyService {
      * @return
      */
     ResultVO queryBankCardInfo(String openId);
+
+
+    /**
+     * 根据policyId，获取指定政策信息
+     * @param policyId
+     * @return
+     */
+    ResultVO policyFindOne(Long policyId);
 }
