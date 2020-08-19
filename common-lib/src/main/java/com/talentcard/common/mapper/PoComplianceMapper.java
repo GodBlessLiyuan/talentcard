@@ -41,4 +41,11 @@ public interface PoComplianceMapper extends BaseMapper<PoCompliancePO, Long> {
      */
     List<queryPolicyByTalentIdBO> queryPolicyByTalentId(@Param("talentId") Long talentId,
                                                         @Param("year") Integer year);
+
+    /**
+     * 获取当前政策所对应的人数
+     * @param policyId
+     * @return
+     */
+    Long countMeetConditionNumber(@Param("policyId") Long policyId);
 }

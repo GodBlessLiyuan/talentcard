@@ -41,7 +41,7 @@ public class PolicyApplyVO implements Serializable {
     /**
      * 状态
      */
-    private String status;
+    private Byte status;
 
     /**
      * 责任单位名称
@@ -76,7 +76,7 @@ public class PolicyApplyVO implements Serializable {
         vo.setNum(bo.getNum());
         vo.setName(bo.getPolicyName());
         vo.setApply(bo.getTalentName());
-        vo.setStatus(bo.getStatus() == 1 ? "已通过" : bo.getStatus() == 2 ? "已驳回" : "待审批");
+        vo.setStatus(bo.getStatus());
         vo.setRoleName(bo.getRoleName());
         return vo;
     }

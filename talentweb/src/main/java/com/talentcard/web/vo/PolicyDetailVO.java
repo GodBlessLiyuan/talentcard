@@ -172,7 +172,7 @@ public class PolicyDetailVO implements Serializable {
 
     private String responsibleUnit;
     //符合条件人数
-    private Integer meetConditionNumber;
+    private Long meetConditionNumber;
     /**
      * po 转 vo
      *

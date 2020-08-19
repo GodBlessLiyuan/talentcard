@@ -151,6 +151,36 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         return new ResultVO<>(1000, count);
     }
 
+    @Override
+    public ResultVO applyNumCount(HashMap<String, Object> hashMap) {
+        List<PolicyApplyBO> policyApplyBOList = policyApplyMapper.query(hashMap);
+        //全部数量
+        Integer allNum = policyApplyBOList.size();
+        //待审批数量
+        Integer waitApprovalNum = 0;
+        //已通过数量
+        Integer agreeNum = 0;
+        //已驳回数量
+        Integer rejectNum = 0;
+        if (policyApplyBOList.size() != 0) {
+            for (PolicyApplyBO policyApplyBO : policyApplyBOList) {
+                if (policyApplyBO.getStatus() == 1) {
+                    agreeNum++;
+                } else if (policyApplyBO.getStatus() == 2) {
+                    rejectNum++;
+                } else if (policyApplyBO.getStatus() == 3) {
+                    waitApprovalNum++;
+                }
+            }
+        }
+        HashMap<String, Integer> result = new HashMap<>(4);
+        result.put("allNum", allNum);
+        result.put("waitApprovalNum", waitApprovalNum);
+        result.put("agreeNum", agreeNum);
+        result.put("rejectNum", rejectNum);
+        return new ResultVO(1000, result);
+    }
+
     /**
      * 根据 bos 构建 导出内容
      *

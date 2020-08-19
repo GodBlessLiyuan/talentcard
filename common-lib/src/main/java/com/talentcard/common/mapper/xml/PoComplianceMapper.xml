@@ -147,4 +147,13 @@
         poc.talent_id = #{talentId,jdbcType=BIGINT}
         and poc.year = #{year,jdbcType=INTEGER}
     </select>
+
+    <select id="countMeetConditionNumber"  resultMap="BaseResultMap">
+        select
+        count(p_co_id)
+        from po_compliance
+        where policy_id = #{policyId,jdbcType=BIGINT}
+        and
+        status = 0
+    </select>
 </mapper>

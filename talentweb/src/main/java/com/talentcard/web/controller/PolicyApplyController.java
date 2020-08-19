@@ -42,7 +42,7 @@ public class PolicyApplyController {
                           @RequestParam(value = "responsibleUnitId", required = false) Long responsibleUnitId,
                           @RequestParam(value = "roleId", required = false) Long roleId) {
 
-        HashMap<String, Object> reqMap = new HashMap<>(9);
+        HashMap<String, Object> reqMap = new HashMap<>(11);
 
         if (!StringUtils.isEmpty(start)) {
             start = start + " 00:00:00";
@@ -114,5 +114,35 @@ public class PolicyApplyController {
                            @RequestParam(value = "paId") Long paId,
                            @RequestParam(value = "opinion", required = false, defaultValue = "") String opinion) {
         return iPolicyApplyService.cancel(httpSession, paId, opinion);
+    }
+
+    @RequestMapping("applyNumCount")
+    public ResultVO applyNumCount(@RequestParam(value = "start", defaultValue = "") String start,
+                                  @RequestParam(value = "end", defaultValue = "") String end,
+                                  @RequestParam(value = "num", defaultValue = "") String num,
+                                  @RequestParam(value = "name", defaultValue = "") String name,
+                                  @RequestParam(value = "apply", defaultValue = "") String apply,
+                                  @RequestParam(value = "status", defaultValue = "0") Byte status,
+                                  @RequestParam(value = "roleType", required = false, defaultValue = "0") Byte roleType,
+                                  @RequestParam(value = "responsibleUnitId", required = false) Long responsibleUnitId,
+                                  @RequestParam(value = "roleId", required = false) Long roleId) {
+
+        HashMap<String, Object> reqMap = new HashMap<>(9);
+        if (!StringUtils.isEmpty(start)) {
+            start = start + " 00:00:00";
+        }
+        if (!StringUtils.isEmpty(end)) {
+            end = end + " 23:59:59";
+        }
+        reqMap.put("start", start);
+        reqMap.put("end", end);
+        reqMap.put("num", num);
+        reqMap.put("name", name.replaceAll("%", "\\\\%"));
+        reqMap.put("apply", apply);
+        reqMap.put("status", status);
+        reqMap.put("roleType", roleType);
+        reqMap.put("roleId", roleId);
+        reqMap.put("responsibleUnitId", responsibleUnitId);
+        return iPolicyApplyService.applyNumCount(reqMap);
     }
 }
