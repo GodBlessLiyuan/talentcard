@@ -248,4 +248,25 @@
         where pa.`status` = #{status,jdbcType=TINYINT}
         and p.dr = 1
     </select>
+    <select id="applyNumCount" parameterType="com.talentcard.common.dto.ApplyNumCountDTO" resultType="com.talentcard.common.bo.ApplyNumCountBO">
+        select
+        sum(CASE WHEN pa.`status`=1 THEN 1 ELSE 0 END) as agreeNum,
+        sum(CASE WHEN pa.`status`=2 THEN 1 ELSE 0 END) as rejectNum,
+        sum(CASE WHEN pa.`status`=3 THEN 1 ELSE 0 END) as waitApprovalNum
+        from t_policy_apply pa
+        left join t_policy p on pa.policy_id = p.policy_id
+        where p.dr = 1
+        <if test="start != null and start !=''">and pa.create_time >= #{start}</if>
+        <if test="end != null and end !=''">and pa.create_time &lt;= #{end}</if>
+        <if test="name != null and name !=''">and pa.policy_name like '%' #{name} '%'</if>
+        <if test="num != null and num !=''">and p.num like '%' #{num} '%'</if>
+        <if test="apply != null and apply !=''">and pa.talent_name like '%' #{apply} '%'</if>
+        <if test="status != null and status !=0">and pa.`status` = #{status,jdbcType=TINYINT}</if>
+        <if test="roleType ==1 and responsibleUnitId!=null and responsibleUnitId!=0 ">
+            and p.role_id = #{responsibleUnitId,jdbcType=BIGINT}
+        </if>
+        <if test="roleType ==2">
+            and p.role_id = #{roleId,jdbcType=BIGINT}
+        </if>
+    </select>
 </mapper>

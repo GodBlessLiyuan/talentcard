@@ -1,12 +1,11 @@
 package com.talentcard.web.controller;
 
-import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.common.dto.ApplyNumCountDTO;
 import com.talentcard.web.service.IPolicyApplyService;
-import com.talentcard.web.vo.PolicyApplyVO;
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.hpsf.Decimal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -117,32 +116,15 @@ public class PolicyApplyController {
     }
 
     @RequestMapping("applyNumCount")
-    public ResultVO applyNumCount(@RequestParam(value = "start", defaultValue = "") String start,
-                                  @RequestParam(value = "end", defaultValue = "") String end,
-                                  @RequestParam(value = "num", defaultValue = "") String num,
-                                  @RequestParam(value = "name", defaultValue = "") String name,
-                                  @RequestParam(value = "apply", defaultValue = "") String apply,
-                                  @RequestParam(value = "status", defaultValue = "0") Byte status,
-                                  @RequestParam(value = "roleType", required = false, defaultValue = "0") Byte roleType,
-                                  @RequestParam(value = "responsibleUnitId", required = false) Long responsibleUnitId,
-                                  @RequestParam(value = "roleId", required = false) Long roleId) {
-
-        HashMap<String, Object> reqMap = new HashMap<>(9);
-        if (!StringUtils.isEmpty(start)) {
-            start = start + " 00:00:00";
+    public ResultVO applyNumCount(@RequestBody ApplyNumCountDTO applyNumCountDTO) {
+        if (!StringUtils.isEmpty(applyNumCountDTO.getStart())) {
+            String start = applyNumCountDTO.getStart() + " 00:00:00";
+            applyNumCountDTO.setStart(start);
         }
-        if (!StringUtils.isEmpty(end)) {
-            end = end + " 23:59:59";
+        if (!StringUtils.isEmpty(applyNumCountDTO.getEnd())) {
+            String end = applyNumCountDTO.getEnd() + " 23:59:59";
+            applyNumCountDTO.setEnd(end);
         }
-        reqMap.put("start", start);
-        reqMap.put("end", end);
-        reqMap.put("num", num);
-        reqMap.put("name", name.replaceAll("%", "\\\\%"));
-        reqMap.put("apply", apply);
-        reqMap.put("status", status);
-        reqMap.put("roleType", roleType);
-        reqMap.put("roleId", roleId);
-        reqMap.put("responsibleUnitId", responsibleUnitId);
-        return iPolicyApplyService.applyNumCount(reqMap);
+        return iPolicyApplyService.applyNumCount(applyNumCountDTO);
     }
 }
