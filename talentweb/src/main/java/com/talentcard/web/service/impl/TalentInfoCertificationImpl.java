@@ -5,6 +5,7 @@ import com.talentcard.common.mapper.TalentCertificationInfoMapper;
 import com.talentcard.common.mapper.TalentMapper;
 import com.talentcard.common.mapper.TalentTypeMapper;
 import com.talentcard.common.pojo.*;
+import com.talentcard.web.service.IBestPolicyToTalentService;
 import com.talentcard.web.service.ITalentInfoCertificationService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
 
     @Autowired
     private TalentTypeMapper talentTypeMapper;
+    @Autowired
+    private IBestPolicyToTalentService iBestPolicyToTalentService;
+
 
     @Override
     public Integer update(Long talentId) {
@@ -160,6 +164,8 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
 
         talentTypeMapper.batchInsert(talentTypePOS);
 
+        iBestPolicyToTalentService.asynBestPolicyForTalent(talentId);
+
         return 0;
     }
 
@@ -181,6 +187,9 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
         talentTypePO.setType((byte) 1);
         talentTypePO.setTalentId(talentId);
         talentTypeMapper.insert(talentTypePO);
+
+        iBestPolicyToTalentService.asynBestPolicyForTalent(talentId);
+
         return 0;
     }
 }
