@@ -17,6 +17,7 @@ import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.PolicyDTO;
+import com.talentcard.web.service.IBestPolicyToTalentService;
 import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IPolicyService;
 import com.talentcard.web.utils.PolicyNameUtil;
@@ -55,6 +56,8 @@ public class PolicyServiceImpl implements IPolicyService {
     private RoleMapper roleMapper;
     @Autowired
     private PoComplianceMapper poComplianceMapper;
+    @Autowired
+    private IBestPolicyToTalentService iBestPolicyToTalentService;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
@@ -91,6 +94,7 @@ public class PolicyServiceImpl implements IPolicyService {
 
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
                 , "新增政策\"%s\"", PolicyNameUtil.getNameNumber(po));
+
         return new ResultVO(1000);
     }
 
@@ -180,12 +184,19 @@ public class PolicyServiceImpl implements IPolicyService {
         policyPO.setUpDown(upDown);
         policyMapper.updateByPrimaryKeySelective(policyPO);
         if (upDown == 1) {
+            /**
+             * 重新计算适配的人群
+             */
+            iBestPolicyToTalentService.asynBestPolicy();
+
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
                     "上架政策\"%s\"", policyPO.getName());
         } else if (upDown == 2) {
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
                     "下架政策\"%s\"", policyPO.getName());
         }
+
+
         return new ResultVO(1000);
     }
 
