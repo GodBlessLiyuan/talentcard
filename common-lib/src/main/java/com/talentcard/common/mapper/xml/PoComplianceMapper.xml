@@ -113,13 +113,34 @@
         from po_compliance
         <where>
             <if test="policyId != null">
-                policy_id = #{policyId,jdbcType=BIGINT} and
+                policy_id = #{policyId,jdbcType=BIGINT}
             </if>
             <if test="talentId != null">
-                talent_id = #{talentId,jdbcType=BIGINT}
+                and talent_id = #{talentId,jdbcType=BIGINT}
+            </if>
+            <if test="year != null">
+                and `year` = #{year,jdbcType=BIGINT}
             </if>
         </where>
         limit 1
+    </select>
+
+    <select id="policyCount" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.PoStatisticsPO">
+        select
+            policy_id as policyId,
+            sum(CASE WHEN po.`status`=0 THEN 1 ELSE 0 END) as notApply,
+            sum(CASE WHEN po.`status`=1 THEN 1 ELSE 0 END) as pass,
+            sum(CASE WHEN po.`status`=2 THEN 1 ELSE 0 END) as reject,
+            sum(CASE WHEN po.`status`=3 THEN 1 ELSE 0 END) as notApproval
+        from po_compliance po
+        <where>
+            <if test="policyId != null">
+                policy_id = #{policyId,jdbcType=BIGINT}
+            </if>
+            <if test="year != null">
+                and `year` = #{year,jdbcType=BIGINT}
+            </if>
+        </where>
     </select>
 
     <select id="selectByYearTalent" parameterType="java.util.Map" resultMap="BaseResultMap">
@@ -128,10 +149,10 @@
         from po_compliance
         <where>
             <if test="year != null">
-                year = #{year,jdbcType=BIGINT} and
+                year = #{year,jdbcType=BIGINT}
             </if>
             <if test="talentId != null">
-                talent_id = #{talentId,jdbcType=BIGINT}
+                and talent_id = #{talentId,jdbcType=BIGINT}
             </if>
         </where>
     </select>

@@ -2,6 +2,7 @@ package com.talentcard.common.mapper;
 
 import com.talentcard.common.bo.queryPolicyByTalentIdBO;
 import com.talentcard.common.pojo.PoCompliancePO;
+import com.talentcard.common.pojo.PoStatisticsPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -48,4 +49,11 @@ public interface PoComplianceMapper extends BaseMapper<PoCompliancePO, Long> {
      * @return
      */
     Long countMeetConditionNumber(@Param("policyId") Long policyId);
+
+    /**
+     * 根据policyId和talentId查询出政策对应的统计信息
+     * @param map
+     * @return
+     */
+    List<PoStatisticsPO> policyCount(Map map);
 }

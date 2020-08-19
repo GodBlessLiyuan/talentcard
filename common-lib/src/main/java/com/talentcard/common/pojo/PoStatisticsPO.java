@@ -21,7 +21,7 @@ public class PoStatisticsPO implements Serializable {
     private Long total;
 
     /**
-     * 符合条件的人数
+     * 待审批
      */
     private Long notApproval;
 

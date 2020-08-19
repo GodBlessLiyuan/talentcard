@@ -46,6 +46,12 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
      */
     @Autowired
     private PoSettingMapper poSettingMapper;
+    /**
+     * 政策统计信息
+     */
+    @Autowired
+    private PoStatisticsMapper poStatisticsMapper;
+
 
     @Async("asyncTaskExecutor")
     @Override
@@ -109,6 +115,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
             bestTalent(talentId, allPolicy);
         }
 
+        updatePolicyStatistics(allPolicy);
         return;
     }
 
@@ -154,7 +161,59 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
         }
 
         bestTalent(talentId, allPolicy);
+        /**
+         * 更新政策对应的统计信息
+         */
+        updatePolicyStatistics(allPolicy);
         return;
+    }
+
+    private boolean updatePolicyStatistics(Map<Long, PolicyPO> allPolicy) {
+        Map<String, Object> map = new HashMap<>(1);
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        for (Long policyId : allPolicy.keySet()) {
+            map.clear();
+            map.put("policyId", policyId);
+            map.put("year", year);
+            List<PoStatisticsPO> bos = this.poComplianceMapper.policyCount(map);
+            if (bos != null && bos.size() > 0) {
+                for (PoStatisticsPO bo : bos) {
+                    if (bo != null) {
+                        PoStatisticsPO b = this.poStatisticsMapper.selectByPrimaryKey(bo.getPolicyId());
+                        bo.setTotal(bo.getNotApply() + bo.getNotApproval() + bo.getPass() + bo.getReject());
+
+                        if (b != null) {
+                            this.poStatisticsMapper.updateByPrimaryKey(bo);
+                        } else {
+                            this.poStatisticsMapper.insert(bo);
+                        }
+                    } else {
+                        PoStatisticsPO b = this.poStatisticsMapper.selectByPrimaryKey(policyId);
+                        if (b == null) {
+                            PoStatisticsPO t = new PoStatisticsPO();
+                            t.setTotal(0L);
+                            t.setNotApply(0L);
+                            t.setNotApproval(0L);
+                            t.setPass(0L);
+                            t.setPolicyId(policyId);
+                            t.setReject(0L);
+                            this.poStatisticsMapper.insert(t);
+                        } else {
+                            b.setTotal(0L);
+                            b.setNotApply(0L);
+                            b.setNotApproval(0L);
+                            b.setPass(0L);
+                            b.setReject(0L);
+                            this.poStatisticsMapper.updateByPrimaryKey(b);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return true;
     }
 
     /**
@@ -350,7 +409,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                                 List<PoCompliancePO> poCompliancePOS = oneApplyTypeToPolicy.get(po.getPTid());
                                 if (poCompliancePOS != null) {
                                     poCompliancePOS.add(poCompliancePO);
-                                }else {
+                                } else {
                                     poCompliancePOS = new ArrayList<>(1);
                                     poCompliancePOS.add(poCompliancePO);
                                     oneApplyTypeToPolicy.put(po.getPTid(), poCompliancePOS);
@@ -398,11 +457,11 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                 if (haveApply) {
                     List<PoTypeExcludePO> poTypeExcludePOS = this.poTypeExcludeMapper.queryExId(pTid);
                     for (PoTypeExcludePO poTypeExcludePO : poTypeExcludePOS) {
-                        logger.error("poTypeExcludePO:{}",poTypeExcludePO);
+                        //logger.error("poTypeExcludePO:{}", poTypeExcludePO);
                         if (oneApplyTypeToPolicy.containsKey(poTypeExcludePO.getPTid2())) {
 
                             List<PoCompliancePO> exclude = oneApplyTypeToPolicy.get(poTypeExcludePO.getPTid2());
-                            logger.error("exclude:{}",exclude);
+                            //logger.error("exclude:{}", exclude);
                             if (exclude != null && exclude.size() > 0) {
                                 for (PoCompliancePO poCompliancePO : exclude) {
                                     if (poCompliancePO.getStatus() != 1 && poCompliancePO.getStatus() != 3) {
