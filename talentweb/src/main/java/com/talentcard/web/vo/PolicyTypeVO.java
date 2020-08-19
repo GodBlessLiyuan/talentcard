@@ -68,10 +68,11 @@ public class PolicyTypeVO implements Serializable {
         vo.setPtid(bo.getPTid());
         vo.setUtime(bo.getUpdateTime());
         vo.setPtname(bo.getPTypeName());
-        if (!StringUtils.isEmpty(bo.getExcludeIds())&&bo.getExcludeIds().get(0)==0) {
+        if (!StringUtils.isEmpty(bo.getExcludeIds()) && bo.getExcludeIds().get(0) == 0) {
             vo.setEids(null);
+        } else {
+            vo.setEids(bo.getExcludeIds());
         }
-        vo.setEids(bo.getExcludeIds());
         vo.setDesc(bo.getDescription());
         vo.setEptnames(bo.getExcludeNames());
         vo.setStatus(bo.getStatus());
