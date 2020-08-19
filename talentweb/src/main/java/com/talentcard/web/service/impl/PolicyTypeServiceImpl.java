@@ -4,8 +4,10 @@ import com.github.pagehelper.Page;
 import com.talentcard.common.bo.PolicyTypeBO;
 import com.talentcard.common.mapper.PoTypeExcludeMapper;
 import com.talentcard.common.mapper.PoTypeMapper;
+import com.talentcard.common.mapper.PolicyMapper;
 import com.talentcard.common.pojo.PoTypeExcludePO;
 import com.talentcard.common.pojo.PoTypePO;
+import com.talentcard.common.pojo.PolicyPO;
 import com.talentcard.common.utils.PageQueryUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
@@ -37,6 +39,8 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
     private PoTypeExcludeMapper poTypeExcludeMapper;
     @Autowired
     private ILogService logService;
+    @Autowired
+    private PolicyMapper policyMapper;
 
     /**
      * @Description 政策类型分页查询
@@ -52,7 +56,7 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
         List<PolicyTypeBO> policyTypeBOs = poTypeMapper.pageQuery(reqData);
         //将互斥id取出来，然后进作为List查询条件查询出对应的互斥政策名称放入list中
         for (int i = 0; i < policyTypeBOs.size(); i++) {
-            policyTypeBOs.get(i).setExcludeIds(Arrays.asList((Long[]) ConvertUtils.convert(policyTypeBOs.get(i).getExcludeId().split(","),Long.class)));
+            policyTypeBOs.get(i).setExcludeIds(Arrays.asList((Long[]) ConvertUtils.convert(policyTypeBOs.get(i).getExcludeId().split(","), Long.class)));
             //根据互斥id查询互斥政策名称放入对应的List中
             List<PolicyTypeBO> policyTypeNameList = poTypeMapper.queryPtNameByPtId(policyTypeBOs.get(i).getExcludeIds());
             //将查询出的名字取出来放入List中
@@ -176,6 +180,25 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
         }
         PoTypePO po = buildChangeStatusPOByDTO(new PoTypePO(), dto);
         poTypeMapper.updateByPrimaryKeySelective(po);
+
+        /**
+         * 下架时，需要执行将政策下架
+         */
+        if (po.getStatus() != 1) {
+            Map<String, Object> map = new HashMap<>(3);
+            map.put("pTid", po.getPTid());
+            map.put("dr", 1);
+            map.put("upDown", 1);
+
+            List<PolicyPO> policyPOS = this.policyMapper.selectByMap(map);
+            if (policyPOS != null && policyPOS.size() > 0) {
+                for (PolicyPO po1 : policyPOS) {
+                    po1.setUpDown((byte)2);
+                    this.policyMapper.updateByPrimaryKey(po1);
+                }
+            }
+        }
+
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
                 , "变更政策类型表数据状态\"%s\"", po.getStatus() == 1 ? "上架" : "下架");
         return new ResultVO(1000);

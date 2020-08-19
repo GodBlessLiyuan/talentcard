@@ -67,4 +67,11 @@ public interface PolicyMapper extends BaseMapper<PolicyPO, Long> {
      * @return
      */
     List<PolicyPO> queryAll();
+
+    /**
+     * 按照条件查询
+     * @param map
+     * @return
+     */
+    List<PolicyPO> selectByMap(Map map);
 }

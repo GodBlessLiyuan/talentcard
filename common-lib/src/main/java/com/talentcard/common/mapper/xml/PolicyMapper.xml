@@ -55,6 +55,22 @@
         from t_policy
         where policy_id = #{policyId,jdbcType=BIGINT}
     </select>
+    <select id="selectByMap" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy
+        <where>
+            <if test="pTid != null">
+                p_tid = #{pTid,jdbcType=BIGINT}
+            </if>
+            <if test="dr != null">
+                and dr = #{dr,jdbcType=TINYINT},
+            </if>
+            <if test="upDown != null">
+                and up_down = #{upDown,jdbcType=TINYINT},
+            </if>
+        </where>
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_policy
     where policy_id = #{policyId,jdbcType=BIGINT}
@@ -520,7 +536,7 @@
             and p.role_id = #{responsibleUnitId,jdbcType=BIGINT}
         </if>
         <if test="roleType ==2">
-        and r.role_id = #{roleId,jdbcType=BIGINT}
+            and r.role_id = #{roleId,jdbcType=BIGINT}
         </if>
         <if test="status != null and status == 1">
             and <![CDATA[ (p.start_time <= #{currentTime} and p.end_time >= #{currentTime} and p.up_down = 1) ]]>
@@ -603,7 +619,7 @@
 
     <select id="queryAll" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from t_policy
         where dr = 1 and up_down = 1
     </select>
