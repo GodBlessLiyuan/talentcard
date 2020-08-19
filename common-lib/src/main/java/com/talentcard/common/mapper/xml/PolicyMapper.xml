@@ -601,7 +601,7 @@
   </select>
 
 
-    <select id="queryAll" resultType="com.talentcard.common.pojo.PolicyPO">
+    <select id="queryAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from t_policy
