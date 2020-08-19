@@ -26,3 +26,7 @@ update_time
 6. t_talent_type表
 
 
+### 需要执行的旧数据导入到新的表格的数据 ###
+
+1. t_talent_type表
+2. po_compliance表
