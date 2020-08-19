@@ -599,4 +599,12 @@
     where pa.talent_id = #{talentId,jdbcType=BIGINT}
     and pa.status = 1
   </select>
+
+
+    <select id="queryAll" resultType="com.talentcard.common.pojo.PolicyPO">
+        select
+        <include refid="Base_Column_List" />
+        from t_policy
+        where dr = 1 and up_down = 1
+    </select>
 </mapper>

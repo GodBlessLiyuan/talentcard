@@ -1,93 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.PoComplianceMapper">
-  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PoCompliancePO">
-    <id column="p_co_id" jdbcType="BIGINT" property="pCoId" />
-    <result column="policy_id" jdbcType="BIGINT" property="policyId" />
-    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
-    <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    p_co_id, policy_id, talent_id, apply_time, `status`
+    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PoCompliancePO">
+        <id column="p_co_id" jdbcType="BIGINT" property="pCoId"/>
+        <result column="policy_id" jdbcType="BIGINT" property="policyId"/>
+        <result column="talent_id" jdbcType="BIGINT" property="talentId"/>
+        <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="year" jdbcType="INTEGER" property="year"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    p_co_id, policy_id, talent_id, apply_time, `status`, year
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from po_compliance
-    where p_co_id = #{pCoId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from po_compliance
+        where p_co_id = #{pCoId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from po_compliance
     where p_co_id = #{pCoId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.PoCompliancePO">
+    <insert id="insert" parameterType="com.talentcard.common.pojo.PoCompliancePO">
     insert into po_compliance (p_co_id, policy_id, talent_id, 
-      apply_time, `status`)
+      apply_time, `status`, `year` )
     values (#{pCoId,jdbcType=BIGINT}, #{policyId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
-      #{applyTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
+      #{applyTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{year,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PoCompliancePO">
-    insert into po_compliance
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="pCoId != null">
-        p_co_id,
-      </if>
-      <if test="policyId != null">
-        policy_id,
-      </if>
-      <if test="talentId != null">
-        talent_id,
-      </if>
-      <if test="applyTime != null">
-        apply_time,
-      </if>
-      <if test="status != null">
-        `status`,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="pCoId != null">
-        #{pCoId,jdbcType=BIGINT},
-      </if>
-      <if test="policyId != null">
-        #{policyId,jdbcType=BIGINT},
-      </if>
-      <if test="talentId != null">
-        #{talentId,jdbcType=BIGINT},
-      </if>
-      <if test="applyTime != null">
-        #{applyTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PoCompliancePO">
-    update po_compliance
-    <set>
-      <if test="policyId != null">
-        policy_id = #{policyId,jdbcType=BIGINT},
-      </if>
-      <if test="talentId != null">
-        talent_id = #{talentId,jdbcType=BIGINT},
-      </if>
-      <if test="applyTime != null">
-        apply_time = #{applyTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=TINYINT},
-      </if>
-    </set>
-    where p_co_id = #{pCoId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PoCompliancePO">
+    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PoCompliancePO">
+        insert into po_compliance
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pCoId != null">
+                p_co_id,
+            </if>
+            <if test="policyId != null">
+                policy_id,
+            </if>
+            <if test="talentId != null">
+                talent_id,
+            </if>
+            <if test="applyTime != null">
+                apply_time,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="year != null">
+                `year`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pCoId != null">
+                #{pCoId,jdbcType=BIGINT},
+            </if>
+            <if test="policyId != null">
+                #{policyId,jdbcType=BIGINT},
+            </if>
+            <if test="talentId != null">
+                #{talentId,jdbcType=BIGINT},
+            </if>
+            <if test="applyTime != null">
+                #{applyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="year != null">
+                #{year,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PoCompliancePO">
+        update po_compliance
+        <set>
+            <if test="policyId != null">
+                policy_id = #{policyId,jdbcType=BIGINT},
+            </if>
+            <if test="talentId != null">
+                talent_id = #{talentId,jdbcType=BIGINT},
+            </if>
+            <if test="applyTime != null">
+                apply_time = #{applyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="year != null">
+                `year` = #{year,jdbcType=TINYINT},
+            </if>
+        </set>
+        where p_co_id = #{pCoId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PoCompliancePO">
     update po_compliance
     set policy_id = #{policyId,jdbcType=BIGINT},
       talent_id = #{talentId,jdbcType=BIGINT},
       apply_time = #{applyTime,jdbcType=TIMESTAMP},
-      `status` = #{status,jdbcType=TINYINT}
+      `status` = #{status,jdbcType=TINYINT},
+      `year` = #{year,jdbcType=INTEGER}
     where p_co_id = #{pCoId,jdbcType=BIGINT}
   </update>
+
+    <delete id="deleteByApplyTime" parameterType="java.lang.Long">
+    delete from po_compliance
+    where apply_time is NULL
+  </delete>
+
+    <select id="selectByPolicyTalent" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from po_compliance
+        <where>
+            <if test="policyId != null">
+                policy_id = #{policyId,jdbcType=BIGINT} and
+            </if>
+            <if test="talentId != null">
+                talent_id = #{talentId,jdbcType=BIGINT}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="selectByYearTalent" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from po_compliance
+        <where>
+            <if test="year != null">
+                year = #{year,jdbcType=BIGINT} and
+            </if>
+            <if test="talentId != null">
+                talent_id = #{talentId,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
 </mapper>

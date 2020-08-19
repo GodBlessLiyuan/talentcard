@@ -12,6 +12,7 @@ import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ICertApprovalService;
 import com.talentcard.web.service.ILogService;
+import com.talentcard.web.service.ITalentInfoCertificationService;
 import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.MessageUtil;
@@ -81,6 +82,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     CertApprovalPassRecordMapper certApprovalPassRecordMapper;
     @Autowired
     private ILogService logService;
+    @Autowired
+    private ITalentInfoCertificationService iTalentInfoCertificationService;
     /**
      * 审批result的值含义
      */
@@ -485,6 +488,11 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         talentJsonRecordPO.setCreateTime(new Date());
         talentJsonRecordPO.setOpenId(openId);
         talentJsonRecordMapper.insertSelective(talentJsonRecordPO);
+
+        /**
+         * 更新用户类别表中的人才卡信息
+         */
+        iTalentInfoCertificationService.updateCard(talentId, cardId);
         /**
          * 清除redis缓存
          */
