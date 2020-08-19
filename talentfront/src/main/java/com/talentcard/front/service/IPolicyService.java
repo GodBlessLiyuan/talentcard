@@ -57,4 +57,12 @@ public interface IPolicyService {
      * @return
      */
     ResultVO policyFindOne(Long policyId);
+
+
+    /**
+     * 我的权益政策
+     * @param openId
+     * @return
+     */
+    ResultVO myPolicy(String openId);
 }

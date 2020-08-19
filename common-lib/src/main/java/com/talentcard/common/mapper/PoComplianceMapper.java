@@ -1,7 +1,9 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.bo.queryPolicyByTalentIdBO;
 import com.talentcard.common.pojo.PoCompliancePO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -30,4 +32,13 @@ public interface PoComplianceMapper extends BaseMapper<PoCompliancePO, Long> {
      * @return
      */
     List<PoCompliancePO> selectByYearTalent(Map map);
+
+    /**
+     * 获取人才当前所有的政策
+     * @param talentId
+     * @param year
+     * @return
+     */
+    List<queryPolicyByTalentIdBO> queryPolicyByTalentId(@Param("talentId") Long talentId,
+                                                        @Param("year") Integer year);
 }

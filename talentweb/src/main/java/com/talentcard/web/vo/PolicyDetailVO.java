@@ -166,6 +166,13 @@ public class PolicyDetailVO implements Serializable {
      */
     private Byte status;
 
+    private Byte upDown;
+
+    private Date updateTime;
+
+    private String responsibleUnit;
+    //符合条件人数
+    private Integer meetConditionNumber;
     /**
      * po 转 vo
      *
@@ -212,6 +219,8 @@ public class PolicyDetailVO implements Serializable {
         vo.setBonus(po.getBonus());
         vo.setBusinessProcess(po.getBusinessProcess());
         vo.setPhone(po.getPhone());
+        vo.setUpDown(po.getUpDown());
+        vo.setUpdateTime(po.getUpdateTime());
         //判断政策状态
         if (po.getUpDown() == 2) {
             //已下架
