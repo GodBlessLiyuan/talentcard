@@ -16,9 +16,17 @@ social_times
 social_unit
 up_down
 update_time 
+3. po_compliance表中添加step字段
 ### 新添加表 ###
 1. po_compliance表
 2. po_setting表，政策设置享受人群标签属性表
 3. po_talent_type表
 4. po_type表
 5. po_type_exclude表
+6. t_talent_type表
+
+
+### 需要执行的旧数据导入到新的表格的数据 ###
+
+1. t_talent_type表
+2. po_compliance表

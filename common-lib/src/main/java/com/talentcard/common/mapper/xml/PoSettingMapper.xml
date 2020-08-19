@@ -22,6 +22,12 @@
     from po_setting
     where p_setingid = #{pSetingid,jdbcType=BIGINT}
   </select>
+  <select id="selectByPolicyId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from po_setting
+    where policy_id = #{policyId,jdbcType=BIGINT}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from po_setting
     where p_setingid = #{pSetingid,jdbcType=BIGINT}
@@ -143,4 +149,54 @@
     delete from po_setting
     where policy_id = #{policyId,jdbcType=BIGINT}
   </delete>
+
+
+<select id="selectByType" resultType="Long" parameterType="java.util.Map">
+    select DISTINCT policy_id  from po_setting
+    <where>
+        <if test="card != null">
+            card_id in
+            <foreach collection="card" item="ca" index="index" open="(" close=")" separator=",">
+                #{ca}
+            </foreach>
+        </if>
+        <if test="category != null">
+            or
+            category_id in
+            <foreach collection="category" item="cat" index="index" open="(" close=")" separator=",">
+                #{cat}
+            </foreach>
+        </if>
+    </where>
+    <if test="education != null">
+        or
+        education_id in
+        <foreach collection="education" item="ed" index="index" open="(" close=")" separator=",">
+            #{ed}
+        </foreach>
+    </if>
+    <if test="title != null">
+        or
+        title_id in
+        <foreach collection="title" item="ti" index="index" open="(" close=")" separator=",">
+            #{ti}
+        </foreach>
+    </if>
+    <if test="quality != null">
+        or
+        quality in
+        <foreach collection="quality" item="qu" index="index" open="(" close=")" separator=",">
+            #{qu}
+        </foreach>
+    </if>
+    <if test="honour != null">
+        or
+        honour_id in
+        <foreach collection="honour" item="ho" index="index" open="(" close=")" separator=",">
+            #{ho}
+        </foreach>
+    </if>
+</select>
+
+
 </mapper>

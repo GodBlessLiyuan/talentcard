@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.PoStatisticsMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.PoStatisticsPO">
+    <id column="policy_id" jdbcType="BIGINT" property="policyId" />
+    <result column="total" jdbcType="BIGINT" property="total" />
+    <result column="not_approval" jdbcType="BIGINT" property="notApproval" />
+    <result column="not_apply" jdbcType="BIGINT" property="notApply" />
+    <result column="pass" jdbcType="BIGINT" property="pass" />
+    <result column="reject" jdbcType="BIGINT" property="reject" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    policy_id, total, not_approval, not_apply, pass, reject
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from po_statistics
+    where policy_id = #{policyId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from po_statistics
+    where policy_id = #{policyId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.PoStatisticsPO">
+    insert into po_statistics (policy_id, total, not_approval, 
+      not_apply, pass, reject
+      )
+    values (#{policyId,jdbcType=BIGINT}, #{total,jdbcType=BIGINT}, #{notApproval,jdbcType=BIGINT}, 
+      #{notApply,jdbcType=BIGINT}, #{pass,jdbcType=BIGINT}, #{reject,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PoStatisticsPO">
+    insert into po_statistics
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="policyId != null">
+        policy_id,
+      </if>
+      <if test="total != null">
+        total,
+      </if>
+      <if test="notApproval != null">
+        not_approval,
+      </if>
+      <if test="notApply != null">
+        not_apply,
+      </if>
+      <if test="pass != null">
+        pass,
+      </if>
+      <if test="reject != null">
+        reject,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="policyId != null">
+        #{policyId,jdbcType=BIGINT},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=BIGINT},
+      </if>
+      <if test="notApproval != null">
+        #{notApproval,jdbcType=BIGINT},
+      </if>
+      <if test="notApply != null">
+        #{notApply,jdbcType=BIGINT},
+      </if>
+      <if test="pass != null">
+        #{pass,jdbcType=BIGINT},
+      </if>
+      <if test="reject != null">
+        #{reject,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.PoStatisticsPO">
+    update po_statistics
+    <set>
+      <if test="total != null">
+        total = #{total,jdbcType=BIGINT},
+      </if>
+      <if test="notApproval != null">
+        not_approval = #{notApproval,jdbcType=BIGINT},
+      </if>
+      <if test="notApply != null">
+        not_apply = #{notApply,jdbcType=BIGINT},
+      </if>
+      <if test="pass != null">
+        pass = #{pass,jdbcType=BIGINT},
+      </if>
+      <if test="reject != null">
+        reject = #{reject,jdbcType=BIGINT},
+      </if>
+    </set>
+    where policy_id = #{policyId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.PoStatisticsPO">
+    update po_statistics
+    set total = #{total,jdbcType=BIGINT},
+      not_approval = #{notApproval,jdbcType=BIGINT},
+      not_apply = #{notApply,jdbcType=BIGINT},
+      pass = #{pass,jdbcType=BIGINT},
+      reject = #{reject,jdbcType=BIGINT}
+    where policy_id = #{policyId,jdbcType=BIGINT}
+  </update>
+</mapper>

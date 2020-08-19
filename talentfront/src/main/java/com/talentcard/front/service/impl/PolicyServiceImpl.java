@@ -1,6 +1,7 @@
 package com.talentcard.front.service.impl;
 
 import com.talentcard.common.bo.PolicyApplyBO;
+import com.talentcard.common.bo.queryPolicyByTalentIdBO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -54,6 +56,8 @@ public class PolicyServiceImpl implements IPolicyService {
     private AnnexMapper annexMapper;
     @Autowired
     private FilePathConfig filePathConfig;
+    @Autowired
+    private PoComplianceMapper poComplianceMapper;
 
     @Override
     public ResultVO policies(String openid) {
@@ -272,13 +276,13 @@ public class PolicyServiceImpl implements IPolicyService {
             // 当前政策不存在或已被删除
             return new ResultVO(1002);
         }
-        List<PolicyApplyPO> applyPOs = policyApplyMapper.queryByTidAndPidAndMonth(talentPO.getTalentId(), dto.getPid(), null);
-        for (PolicyApplyPO applyPO : applyPOs) {
-            if (applyPO.getStatus() == 3) {
-                // 已有待审批的申请，请勿重复申请
-                return new ResultVO(1003);
-            }
-        }
+//        List<PolicyApplyPO> applyPOs = policyApplyMapper.queryByTidAndPidAndMonth(talentPO.getTalentId(), dto.getPid(), null);
+//        for (PolicyApplyPO applyPO : applyPOs) {
+//            if (applyPO.getStatus() == 3) {
+//                // 已有待审批的申请，请勿重复申请
+//                return new ResultVO(1003);
+//            }
+//        }
 
         PolicyApplyPO applyPO = new PolicyApplyPO();
         applyPO.setTalentId(talentPO.getTalentId());
@@ -346,5 +350,24 @@ public class PolicyServiceImpl implements IPolicyService {
         }
 
         return new ResultVO(1000, bankInfoList.get(0));
+    }
+
+    @Override
+    public ResultVO policyFindOne(Long policyId) {
+        PolicyPO policyPO = policyMapper.selectByPrimaryKey(policyId);
+        return new ResultVO(1000, policyPO);
+    }
+
+    @Override
+    public ResultVO myPolicy(String openId) {
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        List<queryPolicyByTalentIdBO> queryPolicyByTalentIdBOList = poComplianceMapper.
+                queryPolicyByTalentId(talentPO.getTalentId(), year);
+        return new ResultVO(1000, queryPolicyByTalentIdBOList);
     }
 }

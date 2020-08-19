@@ -53,7 +53,7 @@
     delete from t_policy_apply
     where pa_id = #{paId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="paId" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
     insert into t_policy_apply (pa_id, talent_id, talent_name, 
       policy_id, policy_name, create_time, 
       `status`, actual_funds, policy_approval_id

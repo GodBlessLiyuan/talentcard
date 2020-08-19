@@ -61,4 +61,12 @@ public interface IPolicyApplyService {
     ResultVO count();
 
     ResultVO cancel(HttpSession httpSession, Long paId, String opinion);
+
+    /**
+     * 人数统计查询
+     *
+     * @param hashMap
+     * @return
+     */
+    ResultVO applyNumCount(HashMap<String, Object> hashMap);
 }
