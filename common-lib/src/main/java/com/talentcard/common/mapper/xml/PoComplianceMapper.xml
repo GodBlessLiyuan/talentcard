@@ -122,7 +122,6 @@
                 and `year` = #{year,jdbcType=BIGINT}
             </if>
         </where>
-        limit 1
     </select>
 
     <select id="policyCount" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.PoStatisticsPO">

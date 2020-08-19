@@ -25,7 +25,7 @@ public interface PoComplianceMapper extends BaseMapper<PoCompliancePO, Long> {
      * @param map
      * @return
      */
-    PoCompliancePO selectByPolicyTalent(Map map);
+    List<PoCompliancePO> selectByPolicyTalent(Map map);
 
     /**
      * 获取人才当前所有的申请情况

@@ -20,6 +20,13 @@ public interface TalentTypeMapper extends BaseMapper<TalentTypePO, Long> {
     List<Long> selectByAllType(Map map);
 
     /**
+     * 查询所有不符合条件的用户
+     * @param map
+     * @return
+     */
+    List<Long> selectByNotType(Map map);
+
+    /**
      * 查询某个用户的所有标签
      * @param talentId
      * @return

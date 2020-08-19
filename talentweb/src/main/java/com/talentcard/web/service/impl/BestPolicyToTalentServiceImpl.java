@@ -106,6 +106,32 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
         setDBMapValue(map, "quality", quality);
         setDBMapValue(map, "honour", honour);
 
+
+        /**
+         * 删除已经匹配的用户，但是政策修改后，此用户不再享受任何政策
+         */
+        List<Long> notTalent = this.talentTypeMapper.selectByNotType(map);
+        if (notTalent != null && notTalent.size() > 0) {
+            Map<String, Object> not = new HashMap(2);
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+
+            for (Long talentId : notTalent) {
+                not.clear();
+                not.put("talentId", talentId);
+                not.put("year", year);
+                List<PoCompliancePO> list = this.poComplianceMapper.selectByPolicyTalent(not);
+                if (list != null && list.size() > 0) {
+                    for (PoCompliancePO poCompliancePO : list) {
+                        if (poCompliancePO.getStatus() != 1 && poCompliancePO.getStatus() != 3) {
+                            this.poComplianceMapper.deleteByPrimaryKey(poCompliancePO.getPCoId());
+                        }
+                    }
+                }
+            }
+        }
+
+
         List<Long> allTalent = this.talentTypeMapper.selectByAllType(map);
 
         /**
@@ -329,6 +355,16 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
         Map<Long, List<PoCompliancePO>> oneApplyTypeToPolicy = new HashMap<>(5);
         Map<Long, PoCompliancePO> oneApplyMapPolicy = new HashMap<>();
         for (PoCompliancePO p1 : oneApplyPolicy) {
+
+            /**
+             * 当下架时，不执行遍历
+             */
+            if (!allPolicy.containsKey(p1.getPolicyId())) {
+                if (p1.getStatus() != 1 && p1.getStatus() != 3) {
+                    this.poComplianceMapper.deleteByPrimaryKey(p1.getPCoId());
+                }
+                continue;
+            }
 
             oneApplyMapPolicy.put(p1.getPolicyId(), p1);
 
