@@ -76,4 +76,15 @@
     select p_tid2 as pTid2 from po_type_exclude
     where p_tid1 = #{eid,jdbcType=BIGINT}
   </select>
+
+  <select id="findExcludePolicy" parameterType="java.lang.Long" resultType="java.lang.String">
+    select
+    p.name
+    from po_type_exclude pte
+    left join t_policy p
+    on p.p_tid = pte.p_tid2
+    where
+    p.up_down=1
+    and pte.p_tid1 = #{policyTypeId,jdbcType=BIGINT}
+  </select>
 </mapper>
