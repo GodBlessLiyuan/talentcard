@@ -22,7 +22,7 @@
     delete from po_compliance
     where p_co_id = #{pCoId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.talentcard.common.pojo.PoCompliancePO">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="pCoId" parameterType="com.talentcard.common.pojo.PoCompliancePO">
     insert into po_compliance (p_co_id, policy_id, talent_id, 
       apply_time, `status`, `year` )
     values (#{pCoId,jdbcType=BIGINT}, #{policyId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
@@ -113,13 +113,33 @@
         from po_compliance
         <where>
             <if test="policyId != null">
-                policy_id = #{policyId,jdbcType=BIGINT} and
+                policy_id = #{policyId,jdbcType=BIGINT}
             </if>
             <if test="talentId != null">
-                talent_id = #{talentId,jdbcType=BIGINT}
+                and talent_id = #{talentId,jdbcType=BIGINT}
+            </if>
+            <if test="year != null">
+                and `year` = #{year,jdbcType=BIGINT}
             </if>
         </where>
-        limit 1
+    </select>
+
+    <select id="policyCount" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.PoStatisticsPO">
+        select
+            policy_id as policyId,
+            sum(CASE WHEN po.`status`=0 THEN 1 ELSE 0 END) as notApply,
+            sum(CASE WHEN po.`status`=1 THEN 1 ELSE 0 END) as pass,
+            sum(CASE WHEN po.`status`=2 THEN 1 ELSE 0 END) as reject,
+            sum(CASE WHEN po.`status`=3 THEN 1 ELSE 0 END) as notApproval
+        from po_compliance po
+        <where>
+            <if test="policyId != null">
+                policy_id = #{policyId,jdbcType=BIGINT}
+            </if>
+            <if test="year != null">
+                and `year` = #{year,jdbcType=BIGINT}
+            </if>
+        </where>
     </select>
 
     <select id="selectByYearTalent" parameterType="java.util.Map" resultMap="BaseResultMap">
@@ -128,24 +148,26 @@
         from po_compliance
         <where>
             <if test="year != null">
-                year = #{year,jdbcType=BIGINT} and
+                year = #{year,jdbcType=BIGINT}
             </if>
             <if test="talentId != null">
-                talent_id = #{talentId,jdbcType=BIGINT}
+                and talent_id = #{talentId,jdbcType=BIGINT}
             </if>
         </where>
     </select>
 
-    <select id="queryPolicyByTalentId" resultType="com.talentcard.common.bo.queryPolicyByTalentIdBO">
+    <select id="queryPolicyByTalentId" resultType="com.talentcard.common.bo.QueryPolicyByTalentIdBO">
         select
         p.name as policyName, p.start_time as startTime, p.end_time as endTime,
-        poc.status as status
+        poc.status as status, p.policy_id as policyId
         from po_compliance poc
         left join t_policy p
         on poc.policy_id = p.policy_id
         where
-        poc.talent_id = #{talentId,jdbcType=BIGINT}
+        (poc.status = 0 or poc.status = 3 or poc.status = 10)
+        and poc.talent_id = #{talentId,jdbcType=BIGINT}
         and poc.year = #{year,jdbcType=INTEGER}
+        order by poc.status asc, p.end_time asc
     </select>
 
     <select id="countMeetConditionNumber"  resultMap="BaseResultMap">

@@ -46,6 +46,12 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
      */
     @Autowired
     private PoSettingMapper poSettingMapper;
+    /**
+     * 政策统计信息
+     */
+    @Autowired
+    private PoStatisticsMapper poStatisticsMapper;
+
 
     @Async("asyncTaskExecutor")
     @Override
@@ -100,6 +106,32 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
         setDBMapValue(map, "quality", quality);
         setDBMapValue(map, "honour", honour);
 
+
+        /**
+         * 删除已经匹配的用户，但是政策修改后，此用户不再享受任何政策
+         */
+        List<Long> notTalent = this.talentTypeMapper.selectByNotType(map);
+        if (notTalent != null && notTalent.size() > 0) {
+            Map<String, Object> not = new HashMap(2);
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+
+            for (Long talentId : notTalent) {
+                not.clear();
+                not.put("talentId", talentId);
+                not.put("year", year);
+                List<PoCompliancePO> list = this.poComplianceMapper.selectByPolicyTalent(not);
+                if (list != null && list.size() > 0) {
+                    for (PoCompliancePO poCompliancePO : list) {
+                        if (poCompliancePO.getStatus() != 1 && poCompliancePO.getStatus() != 3) {
+                            this.poComplianceMapper.deleteByPrimaryKey(poCompliancePO.getPCoId());
+                        }
+                    }
+                }
+            }
+        }
+
+
         List<Long> allTalent = this.talentTypeMapper.selectByAllType(map);
 
         /**
@@ -109,6 +141,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
             bestTalent(talentId, allPolicy);
         }
 
+        updatePolicyStatistics(allPolicy);
         return;
     }
 
@@ -154,7 +187,59 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
         }
 
         bestTalent(talentId, allPolicy);
+        /**
+         * 更新政策对应的统计信息
+         */
+        updatePolicyStatistics(allPolicy);
         return;
+    }
+
+    private boolean updatePolicyStatistics(Map<Long, PolicyPO> allPolicy) {
+        Map<String, Object> map = new HashMap<>(1);
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        for (Long policyId : allPolicy.keySet()) {
+            map.clear();
+            map.put("policyId", policyId);
+            map.put("year", year);
+            List<PoStatisticsPO> bos = this.poComplianceMapper.policyCount(map);
+            if (bos != null && bos.size() > 0) {
+                for (PoStatisticsPO bo : bos) {
+                    if (bo != null) {
+                        PoStatisticsPO b = this.poStatisticsMapper.selectByPrimaryKey(bo.getPolicyId());
+                        bo.setTotal(bo.getNotApply() + bo.getNotApproval() + bo.getPass() + bo.getReject());
+
+                        if (b != null) {
+                            this.poStatisticsMapper.updateByPrimaryKey(bo);
+                        } else {
+                            this.poStatisticsMapper.insert(bo);
+                        }
+                    } else {
+                        PoStatisticsPO b = this.poStatisticsMapper.selectByPrimaryKey(policyId);
+                        if (b == null) {
+                            PoStatisticsPO t = new PoStatisticsPO();
+                            t.setTotal(0L);
+                            t.setNotApply(0L);
+                            t.setNotApproval(0L);
+                            t.setPass(0L);
+                            t.setPolicyId(policyId);
+                            t.setReject(0L);
+                            this.poStatisticsMapper.insert(t);
+                        } else {
+                            b.setTotal(0L);
+                            b.setNotApply(0L);
+                            b.setNotApproval(0L);
+                            b.setPass(0L);
+                            b.setReject(0L);
+                            this.poStatisticsMapper.updateByPrimaryKey(b);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return true;
     }
 
     /**
@@ -260,190 +345,170 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
         int year = cal.get(Calendar.YEAR);
         m.put("year", year);
         m.put("talentId", talentId);
+        //oneApplyPolicy保存当前人才申请的所有记录
         List<PoCompliancePO> oneApplyPolicy = this.poComplianceMapper.selectByYearTalent(m);
+
+
         /**
-         * 申请过政策，同类政策删除，互斥政策标记为互斥
+         * 讲人才所有的申请按照类型分组
          */
-        if (logger.isDebugEnabled()) {
-            logger.debug("oneApplyPolicy size:{}", oneApplyPolicy.size());
-        }
-        if (oneApplyPolicy.size() > 0) {
-            List<PoCompliancePO> needRemove = new ArrayList<>(5);
-            for (PoCompliancePO poCompliancePO : oneApplyPolicy) {
-                //包含当前政策，
-                if (onePolicys.contains(poCompliancePO.getPolicyId())) {
-                    /**
-                     * 不包含当前规范的政策
-                     * 0：未申请状态时，
-                     * 1：已同意状态
-                     * 2：已驳回状态，
-                     * 3：待审批状态
-                     * 10：不可申请状态
-                     */
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("onePolicys.contains {}  ", poCompliancePO);
+        Map<Long, List<PoCompliancePO>> oneApplyTypeToPolicy = new HashMap<>(5);
+        Map<Long, PoCompliancePO> oneApplyMapPolicy = new HashMap<>();
+        for (PoCompliancePO p1 : oneApplyPolicy) {
+
+            /**
+             * 当下架时，不执行遍历
+             */
+            if (!allPolicy.containsKey(p1.getPolicyId())) {
+                if (p1.getStatus() != 1 && p1.getStatus() != 3) {
+                    this.poComplianceMapper.deleteByPrimaryKey(p1.getPCoId());
+                }
+                continue;
+            }
+
+            oneApplyMapPolicy.put(p1.getPolicyId(), p1);
+
+            PolicyPO po = allPolicy.get(p1.getPolicyId());
+            if (po != null) {
+                if (oneApplyTypeToPolicy.containsKey(po.getPTid())) {
+                    List<PoCompliancePO> typeTo = oneApplyTypeToPolicy.get(po.getPTid());
+                    if (typeTo != null) {
+                        typeTo.add(p1);
+                    } else {
+                        List<PoCompliancePO> pos = new ArrayList<>(2);
+                        pos.add(p1);
+                        oneApplyTypeToPolicy.put(po.getPTid(), pos);
                     }
+                } else {
+                    List<PoCompliancePO> pos = new ArrayList<>(2);
+                    pos.add(p1);
+                    oneApplyTypeToPolicy.put(po.getPTid(), pos);
+                }
+            }
+        }
 
-                    if (poCompliancePO.getStatus() == 1 || poCompliancePO.getStatus() == 3) {
 
-                    } else if (poCompliancePO.getStatus() == 0 || poCompliancePO.getStatus() == 2 || poCompliancePO.getStatus() == 10) {
+        /**
+         * 相同类型内寻找最优政策
+         */
+        for (Long pTid : oneTypeToPolicy.keySet()) {
+            List<PolicyPO> policyPOS = oneTypeToPolicy.get(pTid);
+            long applyPolicyId = 0L;
+            for (PolicyPO po : policyPOS) {
+                if (oneApplyMapPolicy.containsKey(po.getPolicyId())) {
+                    PoCompliancePO poCompliancePO = oneApplyMapPolicy.get(po.getPolicyId());
+                    if (poCompliancePO != null) {
+                        if (poCompliancePO.getStatus() == 1 || poCompliancePO.getStatus() == 3) {
+                            applyPolicyId = po.getPolicyId();
+                        }
+                    }
+                }
+            }
 
-                        PolicyPO po = allPolicy.get(poCompliancePO.getPolicyId());
-                        List<PolicyPO> po1 = oneTypeToPolicy.get(po.getPTid());
-                        if (po1 != null) {
-                            /**
-                             * 同类型删除
-                             */
-                            int maxFunds = po.getFunds();
-                            for (PolicyPO po2 : po1) {
-                                if (!po2.getPolicyId().equals(poCompliancePO.getPolicyId())) {
-                                    if (po2.getFunds() > maxFunds) {
-                                        maxFunds = po2.getFunds();
-                                    }
+            if (applyPolicyId != 0) {
+                for (PolicyPO po : policyPOS) {
+                    if (oneApplyMapPolicy.containsKey(po.getPolicyId())) {
+                        PoCompliancePO poCompliancePO = oneApplyMapPolicy.get(po.getPolicyId());
+                        if (poCompliancePO.getStatus() != 1 && poCompliancePO.getStatus() != 3) {
+                            this.poComplianceMapper.deleteByPrimaryKey(poCompliancePO.getPCoId());
+                            oneApplyMapPolicy.remove(po.getPolicyId());
+                        }
+                    }
+                }
+            } else {
+                int maxFund = 0;
+                for (PolicyPO po : policyPOS) {
+                    if (po.getFunds() > maxFund) {
+                        maxFund = po.getFunds();
+                    }
+                }
+                logger.error("maxFund size:{}", maxFund);
+                for (PolicyPO po : policyPOS) {
+                    if (po.getFunds() >= maxFund) {
+                        if (oneApplyMapPolicy.containsKey(po.getPolicyId())) {
+                            PoCompliancePO poCompliancePO = oneApplyMapPolicy.get(po.getPolicyId());
+                            if (poCompliancePO != null) {
+                                if (poCompliancePO.getStatus() != 0) {
+                                    this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
                                 }
                             }
+                        } else {
+                            PoCompliancePO poCompliancePO = new PoCompliancePO();
+                            poCompliancePO.setPolicyId(po.getPolicyId());
+                            poCompliancePO.setTalentId(talentId);
+                            poCompliancePO.setStatus((byte) 0);
+                            poCompliancePO.setYear(year);
+                            this.poComplianceMapper.insert(poCompliancePO);
 
-                            if (logger.isDebugEnabled()) {
-                                logger.debug("po.getFunds():{} maxFunds:{} ", po.getFunds(), maxFunds);
-                            }
-                            if (po.getFunds() != maxFunds) {
-
-                                this.poComplianceMapper.deleteByPrimaryKey(poCompliancePO.getPCoId());
-                                needRemove.add(poCompliancePO);
-                                for (PolicyPO po2 : po1) {
-                                    if (po2.getPolicyId().equals(poCompliancePO.getPolicyId())) {
-                                        po1.remove(po2);
-                                    }
+                            oneApplyMapPolicy.put(po.getPolicyId(), poCompliancePO);
+                            if (oneApplyTypeToPolicy.containsKey(po.getPTid())) {
+                                List<PoCompliancePO> poCompliancePOS = oneApplyTypeToPolicy.get(po.getPTid());
+                                if (poCompliancePOS != null) {
+                                    poCompliancePOS.add(poCompliancePO);
+                                } else {
+                                    poCompliancePOS = new ArrayList<>(1);
+                                    poCompliancePOS.add(poCompliancePO);
+                                    oneApplyTypeToPolicy.put(po.getPTid(), poCompliancePOS);
                                 }
                             } else {
+                                List<PoCompliancePO> poCompliancePOS = new ArrayList<>(1);
+                                poCompliancePOS.add(poCompliancePO);
+                                oneApplyTypeToPolicy.put(po.getPTid(), poCompliancePOS);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        /**
+         * 将Map中只保留当前每组内最优的结果
+         */
+        for (Long pTid : oneApplyTypeToPolicy.keySet()) {
+            List<PoCompliancePO> poCompliancePOS = oneApplyTypeToPolicy.get(pTid);
+            if (poCompliancePOS != null && poCompliancePOS.size() > 0) {
+                List<PoCompliancePO> remove = new ArrayList<>(poCompliancePOS.size());
+                for (PoCompliancePO poCompliancePO : poCompliancePOS) {
+                    if (!oneApplyMapPolicy.containsKey(poCompliancePO.getPolicyId())) {
+                        remove.add(poCompliancePO);
+                    }
+                }
+                if (remove.size() > 0) {
+                    poCompliancePOS.removeAll(remove);
+                }
+            }
+        }
+        /**
+         * 更新不同分组之间的互斥关系
+         */
+        for (Long pTid : oneApplyTypeToPolicy.keySet()) {
+            List<PoCompliancePO> poCompliancePOS = oneApplyTypeToPolicy.get(pTid);
+            if (poCompliancePOS.size() > 0) {
+                boolean haveApply = false;
+                for (PoCompliancePO poCompliancePO : poCompliancePOS) {
+                    if (poCompliancePO.getStatus() == 1 || poCompliancePO.getStatus() == 3) {
+                        haveApply = true;
+                        break;
+                    }
+                }
+                if (haveApply) {
+                    List<PoTypeExcludePO> poTypeExcludePOS = this.poTypeExcludeMapper.queryExId(pTid);
+                    for (PoTypeExcludePO poTypeExcludePO : poTypeExcludePOS) {
+                        //logger.error("poTypeExcludePO:{}", poTypeExcludePO);
+                        if (oneApplyTypeToPolicy.containsKey(poTypeExcludePO.getPTid2())) {
 
-                                /**
-                                 * 不同类型互斥
-                                 */
-                                List<PoTypeExcludePO> poTypeExcludePOS = this.poTypeExcludeMapper.queryExId(po.getPTid());
-
-                                boolean isFind = false;
-                                if (poTypeExcludePOS != null && poTypeExcludePOS.size() > 0) {
-                                    for (PoTypeExcludePO poTypeExcludePO : poTypeExcludePOS) {
-                                        List<PolicyPO> po2 = oneTypeToPolicy.get(poTypeExcludePO.getPTid2());
-
-                                        if (po2 != null && po2.size() > 0) {
-
-                                            for (PolicyPO po3 : po2) {
-                                                for (PoCompliancePO poCompliancePO1 : oneApplyPolicy) {
-                                                    if (po3.getPolicyId().equals(poCompliancePO1.getPolicyId())) {
-
-                                                        isFind = true;
-                                                        if (poCompliancePO1.getStatus() == 1 || poCompliancePO1.getStatus() == 3) {
-                                                            if (poCompliancePO.getStatus() != 10) {
-                                                                poCompliancePO.setStatus((byte) 10);
-                                                                this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
-                                                            }
-                                                        } else {
-                                                            if (poCompliancePO.getStatus() == 10) {
-                                                                poCompliancePO.setStatus((byte) 0);
-                                                                this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
-                                                            }
-                                                        }
-                                                        break;
-                                                    }
-                                                }
-                                            }
-
-
-                                        }
-                                    }
-                                }
-
-
-                                /**
-                                 * 当没有找到对应申请记录，并且自身申请记录状态是10，则进行修复
-                                 */
-                                if (logger.isDebugEnabled()) {
-                                    logger.debug("isFind:{} ", isFind);
-                                }
-                                if (!isFind) {
-                                    if (poCompliancePO.getStatus() == 10) {
-                                        poCompliancePO.setStatus((byte) 0);
+                            List<PoCompliancePO> exclude = oneApplyTypeToPolicy.get(poTypeExcludePO.getPTid2());
+                            //logger.error("exclude:{}", exclude);
+                            if (exclude != null && exclude.size() > 0) {
+                                for (PoCompliancePO poCompliancePO : exclude) {
+                                    if (poCompliancePO.getStatus() != 1 && poCompliancePO.getStatus() != 3) {
+                                        poCompliancePO.setStatus((byte) 10);
                                         this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
                                     }
                                 }
                             }
-
-
-                        }
-
-                    }
-                } else {
-                    /**
-                     * 不包含当前规范的政策
-                     * 0：未申请状态时，删除
-                     * 1：已同意状态
-                     * 2：已驳回状态，删除
-                     * 3：待审批状态
-                     * 10：不可申请状态
-                     */
-
-                    if (poCompliancePO.getStatus() == 0 || poCompliancePO.getStatus() == 2 || poCompliancePO.getStatus() == 10) {
-                        this.poComplianceMapper.deleteByPrimaryKey(poCompliancePO.getPCoId());
-                        needRemove.add(poCompliancePO);
-                    } else {
-                        needRemove.add(poCompliancePO);
-                        logger.error("contain bad data, poCompliancePO {} error.", poCompliancePO);
-                    }
-                }
-            }
-            if (needRemove.size() > 0) {
-                oneApplyPolicy.remove(needRemove);
-            }
-        }
-
-        for (Long poId : onePolicys) {
-
-            boolean need = true;
-            for (PoCompliancePO poCompliancePO : oneApplyPolicy) {
-                if (poCompliancePO.getPolicyId().equals(poId)) {
-                    need = false;
-                    break;
-                }
-            }
-
-            if (need) {
-                PoCompliancePO poCompliancePO = new PoCompliancePO();
-                poCompliancePO.setPolicyId(poId);
-                poCompliancePO.setTalentId(talentId);
-                poCompliancePO.setStatus((byte) 0);
-                poCompliancePO.setYear(year);
-
-                /**
-                 * 不同类型互斥
-                 */
-                PolicyPO po = allPolicy.get(poId);
-                List<PoTypeExcludePO> poTypeExcludePOS = this.poTypeExcludeMapper.queryExId(po.getPTid());
-
-                if (poTypeExcludePOS != null && poTypeExcludePOS.size() > 0) {
-                    for (PoTypeExcludePO poTypeExcludePO : poTypeExcludePOS) {
-                        List<PolicyPO> po2 = oneTypeToPolicy.get(poTypeExcludePO.getPTid2());
-
-                        if (po2 != null && po2.size() > 0) {
-                            for (PolicyPO po3 : po2) {
-                                for (PoCompliancePO poCompliancePO1 : oneApplyPolicy) {
-                                    if (po3.getPolicyId().equals(poCompliancePO1.getPolicyId())) {
-
-                                        if (poCompliancePO1.getStatus() == 1 || poCompliancePO1.getStatus() == 3) {
-                                            if (poCompliancePO.getStatus() != 10) {
-                                                poCompliancePO.setStatus((byte) 10);
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
-                            }
-
                         }
                     }
                 }
-                this.poComplianceMapper.insert(poCompliancePO);
             }
         }
 

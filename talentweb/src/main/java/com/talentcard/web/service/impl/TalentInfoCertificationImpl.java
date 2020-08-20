@@ -164,6 +164,9 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
 
         talentTypeMapper.batchInsert(talentTypePOS);
 
+        /**
+         * 重新计算人才对应的政策信息
+         */
         iBestPolicyToTalentService.asynBestPolicyForTalent(talentId);
 
         return 0;
