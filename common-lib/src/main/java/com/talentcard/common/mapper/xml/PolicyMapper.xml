@@ -64,10 +64,10 @@
                 p_tid = #{pTid,jdbcType=BIGINT}
             </if>
             <if test="dr != null">
-                and dr = #{dr,jdbcType=TINYINT},
+                and dr = #{dr,jdbcType=TINYINT}
             </if>
             <if test="upDown != null">
-                and up_down = #{upDown,jdbcType=TINYINT},
+                and up_down = #{upDown,jdbcType=TINYINT}
             </if>
         </where>
     </select>

@@ -81,6 +81,15 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
         }
         //将前台dto中获取的数据转换成po进行插入
         PoTypePO po = buildPOByDTO(new PoTypePO(), dto);
+        //查询素有的政策类型，如果表中有，不允许插入
+        List<PolicyTypeBO> policyTypeBOs = poTypeMapper.queryExIdAndName();
+        for (PolicyTypeBO policyName :
+                policyTypeBOs) {
+            if (policyName.getPTypeName().equals(po.getPTypeName())) {
+                //表中已有政策类型数据，不允许插入操作
+                return new ResultVO(1010);
+            }
+        }
         poTypeMapper.insertSelective(po);
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
                 , "新增政策类型\"%s\"", po.getPTypeName());
@@ -111,6 +120,7 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO update(HttpSession session, PolicyTypeDTO dto) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
@@ -171,6 +181,7 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO changeStatus(HttpSession session, PolicyTypeDTO dto) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
@@ -193,7 +204,7 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
             List<PolicyPO> policyPOS = this.policyMapper.selectByMap(map);
             if (policyPOS != null && policyPOS.size() > 0) {
                 for (PolicyPO po1 : policyPOS) {
-                    po1.setUpDown((byte)2);
+                    po1.setUpDown((byte) 2);
                     this.policyMapper.updateByPrimaryKey(po1);
                 }
             }
@@ -205,6 +216,7 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO delete(HttpSession session, PolicyTypeDTO dto) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
