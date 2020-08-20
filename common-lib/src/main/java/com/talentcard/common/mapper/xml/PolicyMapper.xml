@@ -520,7 +520,6 @@
         left join po_type pt
         on p.p_tId = pt.p_tId
         where p.dr = 1
-        and p.up_down = 1
         <if test="start != null and start !=''">
             and <![CDATA[p.update_time >= #{start}]]>
         </if>
