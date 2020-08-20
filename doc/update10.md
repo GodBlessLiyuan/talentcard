@@ -17,6 +17,7 @@ social_unit
 up_down
 update_time 
 3. po_compliance表中添加step字段
+4. t_policy_approval 增加actual_funds字段
 ### 新添加表 ###
 1. po_compliance表
 2. po_setting表，政策设置享受人群标签属性表

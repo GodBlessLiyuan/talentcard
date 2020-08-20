@@ -1,6 +1,6 @@
 package com.talentcard.common.mapper;
 
-import com.talentcard.common.bo.queryPolicyByTalentIdBO;
+import com.talentcard.common.bo.QueryPolicyByTalentIdBO;
 import com.talentcard.common.pojo.PoCompliancePO;
 import com.talentcard.common.pojo.PoStatisticsPO;
 import org.apache.ibatis.annotations.Mapper;
@@ -40,7 +40,7 @@ public interface PoComplianceMapper extends BaseMapper<PoCompliancePO, Long> {
      * @param year
      * @return
      */
-    List<queryPolicyByTalentIdBO> queryPolicyByTalentId(@Param("talentId") Long talentId,
+    List<QueryPolicyByTalentIdBO> queryPolicyByTalentId(@Param("talentId") Long talentId,
                                                         @Param("year") Integer year);
 
     /**
