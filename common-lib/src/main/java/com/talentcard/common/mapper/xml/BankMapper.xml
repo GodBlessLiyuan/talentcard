@@ -87,7 +87,7 @@
     left join t_policy_apply pa
     on b.pa_id = pa.pa_id
     where pa.talent_id = #{talentId,jdbcType=BIGINT}
-    order by pa.create_time desc
+    order by pa.pa_id desc
     limit 1
   </select>
 </mapper>
