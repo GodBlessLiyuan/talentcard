@@ -18,4 +18,12 @@ public interface IBestPolicyToTalentService {
      * @param talentId
      */
     void asynBestPolicyForTalent(Long talentId);
+
+    /**
+     * 更新人才政策匹配表
+     * @param talentId
+     * @param policyId
+     * @return
+     */
+    int updatePOCompliance(Long talentId, Long policyId, byte status);
 }

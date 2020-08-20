@@ -194,6 +194,11 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
         return;
     }
 
+    /**
+     * 更新政策对应的统计信息
+     * @param allPolicy
+     * @return
+     */
     private boolean updatePolicyStatistics(Map<Long, PolicyPO> allPolicy) {
         Map<String, Object> map = new HashMap<>(1);
         Calendar cal = Calendar.getInstance();
@@ -515,5 +520,34 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
         return true;
     }
 
+
+    /**
+     * 更新人才政策匹配表
+     * @param talentId
+     * @param policyId
+     * @return
+     */
+    @Override
+    public int updatePOCompliance(Long talentId, Long policyId, byte status) {
+        /**
+         * 同步政策申请表到符合政策条件的记录表中
+         */
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("talentId", talentId);
+        map.put("policyId", talentId);
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        map.put("year", year);
+        List<PoCompliancePO> poCompliancePOS = this.poComplianceMapper.selectByPolicyTalent(map);
+
+        if (poCompliancePOS != null && poCompliancePOS.size() > 0) {
+            for (PoCompliancePO poCompliancePO : poCompliancePOS) {
+                poCompliancePO.setStatus(status);
+                this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
+            }
+        }
+
+        return 0;
+    }
 
 }

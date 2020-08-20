@@ -65,13 +65,19 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             String educationString = "";
             List<EducationPO> educationPOList = talentBO.getEducationPOList();
             for (int i = 0; i < educationPOList.size() - 1; i++) {
-                educationString = educationString + educationPOList.get(i).getEducation() + ",";
+                EducationPO educationPO = educationPOList.get(i);
+                educationString = educationString + educationPO.getEducation() + ",";
 
-                TalentTypePO talentTypePO = new TalentTypePO();
-                talentTypePO.setEducationId(educationPOList.get(i).getEducation());
-                talentTypePO.setType((byte) 3);
-                talentTypePO.setTalentId(talentId);
-                talentTypePOS.add(talentTypePO);
+                /**
+                 * 只有全日制的学历才进行政策匹配
+                 */
+                if(educationPO.getFullTime() == 1) {
+                    TalentTypePO talentTypePO = new TalentTypePO();
+                    talentTypePO.setEducationId(educationPO.getEducation());
+                    talentTypePO.setType((byte) 3);
+                    talentTypePO.setTalentId(talentId);
+                    talentTypePOS.add(talentTypePO);
+                }
             }
             educationString = educationString + educationPOList.get(educationPOList.size() - 1).getEducation();
             talentCertificationInfoPO.setEducation(educationString);
@@ -181,18 +187,20 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
                 if(po.getType() == 1){
                     po.setCardId(cardId);
                     talentTypeMapper.updateByPrimaryKey(po);
-                    return 0;
                 }
             }
+        } else {
+            TalentTypePO talentTypePO = new TalentTypePO();
+            talentTypePO.setCardId(cardId);
+            talentTypePO.setType((byte) 1);
+            talentTypePO.setTalentId(talentId);
+            talentTypeMapper.insert(talentTypePO);
         }
-        TalentTypePO talentTypePO = new TalentTypePO();
-        talentTypePO.setCardId(cardId);
-        talentTypePO.setType((byte) 1);
-        talentTypePO.setTalentId(talentId);
-        talentTypeMapper.insert(talentTypePO);
 
         iBestPolicyToTalentService.asynBestPolicyForTalent(talentId);
 
         return 0;
     }
+
+
 }

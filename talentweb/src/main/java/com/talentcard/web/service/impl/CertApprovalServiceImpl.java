@@ -455,6 +455,11 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             certApprovalPassRecordPO.setTalentId(talentId);
             certApprovalPassRecordPO.setTalentBoJson(talentBoJson);
             certApprovalPassRecordMapper.insertSelective(certApprovalPassRecordPO);
+
+            /**
+             * 更新用户类别表中的人才类别信息
+             */
+            iTalentInfoCertificationService.update(talentId);
         }
 
         /**
@@ -489,10 +494,6 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
         talentJsonRecordPO.setOpenId(openId);
         talentJsonRecordMapper.insertSelective(talentJsonRecordPO);
 
-        /**
-         * 更新用户类别表中的人才卡信息
-         */
-        iTalentInfoCertificationService.updateCard(talentId, cardId);
         /**
          * 清除redis缓存
          */

@@ -14,6 +14,7 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.common.dto.ApplyNumCountDTO;
 import com.talentcard.web.dto.MessageDTO;
+import com.talentcard.web.service.IBestPolicyToTalentService;
 import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IPolicyApplyService;
 import com.talentcard.web.utils.MessageUtil;
@@ -56,6 +57,8 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     PolicyMapper policyMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    private IBestPolicyToTalentService iBestPolicyToTalentService;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap) {
@@ -104,6 +107,11 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         applyPO.setPaId(po.getPaId());
         applyPO.setActualFunds(actualFunds);
         policyApplyMapper.updateByPrimaryKey(applyPO);
+
+        /**
+         * 更新政策适配用户表
+         */
+        iBestPolicyToTalentService.updatePOCompliance(applyPO.getTalentId(),applyPO.getPolicyId(),status);
 
 
         //用消息模板推送微信消息
@@ -227,6 +235,11 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         policyApprovalMapper.add(policyApprovalPO);
         policyApplyPO.setPolicyApprovalId(policyApprovalPO.getApprovalId());
         policyApplyMapper.updateByPrimaryKey(policyApplyPO);
+
+        /**
+         * 更新政策适配用户表
+         */
+        iBestPolicyToTalentService.updatePOCompliance(policyApplyPO.getTalentId(),policyApplyPO.getPolicyId(),policyApplyPO.getStatus());
 
         /**
          * 用模版推送消息
