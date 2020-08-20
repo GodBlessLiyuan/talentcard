@@ -1,7 +1,7 @@
 package com.talentcard.front.service.impl;
 
 import com.talentcard.common.bo.PolicyApplyBO;
-import com.talentcard.common.bo.queryPolicyByTalentIdBO;
+import com.talentcard.common.bo.QueryPolicyByTalentIdBO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
@@ -366,8 +366,9 @@ public class PolicyServiceImpl implements IPolicyService {
         }
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        List<queryPolicyByTalentIdBO> queryPolicyByTalentIdBOList = poComplianceMapper.
+        List<QueryPolicyByTalentIdBO> queryPolicyByTalentIdBOList = poComplianceMapper.
                 queryPolicyByTalentId(talentPO.getTalentId(), year);
+        queryPolicyByTalentIdBOList = QueryPolicyByTalentIdBO.setValueActualStatus(queryPolicyByTalentIdBOList);
         return new ResultVO(1000, queryPolicyByTalentIdBOList);
     }
 }
