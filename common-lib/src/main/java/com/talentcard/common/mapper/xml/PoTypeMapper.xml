@@ -161,7 +161,7 @@
     <select id="queryExIdAndName" resultType="com.talentcard.common.bo.PolicyTypeBO">
     SELECT p_tId as pTid, p_type_name as pTypeName, `status` FROM po_type
     <where>
-    dr = 1 AND status = 1
+    dr = 1
     </where>
     order by update_time desc
     </select>
