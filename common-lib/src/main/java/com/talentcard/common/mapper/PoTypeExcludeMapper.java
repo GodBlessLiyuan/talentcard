@@ -16,4 +16,11 @@ import java.util.Map;
 public interface PoTypeExcludeMapper extends BaseMapper<PoTypeExcludePO, Long> {
     void delete(@Param("eid")Long eid);
     List<PoTypeExcludePO> queryExId(@Param("eid")Long eid);
+
+    /**
+     *
+     * @param policyTypeId
+     * @return
+     */
+    List<String> findExcludePolicy(@Param("policyTypeId")Long policyTypeId);
 }
