@@ -79,4 +79,15 @@
       pa_id = #{paId,jdbcType=BIGINT}
     where bank_id = #{bankId,jdbcType=BIGINT}
   </update>
+
+  <select id="findBankInfo" resultType="com.talentcard.common.bo.BankInfoBO">
+    select
+    num as cardNum, b.name as bankName
+    from t_bank b
+    left join t_policy_apply pa
+    on b.pa_id = pa.pa_id
+    where pa.talent_id = #{talentId,jdbcType=BIGINT}
+    order by pa.create_time desc
+    limit 1
+  </select>
 </mapper>

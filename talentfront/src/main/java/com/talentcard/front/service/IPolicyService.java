@@ -65,4 +65,19 @@ public interface IPolicyService {
      * @return
      */
     ResultVO myPolicy(String openId);
+
+    /**
+     * 根据policyId，寻找当前类之下对应的互斥id
+     * @param policyId
+     * @return
+     */
+    ResultVO findExcludePolicy(Long policyId);
+
+    /**
+     * 根据talentId查找当前人才最近一次申请政策填写的银行卡信息
+     * 用于申请接口中回填银行信息
+     * @param openId
+     * @return
+     */
+    ResultVO findBankInfo(String openId);
 }

@@ -105,4 +105,26 @@ public class PolicyController {
     public ResultVO myPolicy(@RequestParam(name = "openid") String openid) {
         return service.myPolicy(openid);
     }
+
+    /**
+     * 根据policyId，寻找当前类之下对应的互斥id
+     *
+     * @param policyId
+     * @return
+     */
+    @RequestMapping("findExcludePolicy")
+    public ResultVO findExcludePolicy(@RequestParam(name = "policyId") Long policyId) {
+        return service.findExcludePolicy(policyId);
+    }
+
+    /**
+     * 根据talentId查找当前人才最近一次申请政策填写的银行卡信息
+     * 用于申请接口中回填银行信息
+     * @param openId
+     * @return
+     */
+    @RequestMapping("findBankInfo")
+    public ResultVO findBankInfo(@RequestParam(name = "openId") String openId) {
+        return service.findBankInfo(openId);
+    }
 }

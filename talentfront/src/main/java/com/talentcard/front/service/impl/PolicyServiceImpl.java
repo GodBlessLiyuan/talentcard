@@ -1,5 +1,7 @@
 package com.talentcard.front.service.impl;
 
+import com.netflix.discovery.converters.Auto;
+import com.talentcard.common.bo.BankInfoBO;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.bo.QueryPolicyByTalentIdBO;
 import com.talentcard.common.config.FilePathConfig;
@@ -14,6 +16,7 @@ import com.talentcard.front.vo.PolicyApplyDetailVO;
 import com.talentcard.front.vo.PolicyDetailVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,7 +61,8 @@ public class PolicyServiceImpl implements IPolicyService {
     private FilePathConfig filePathConfig;
     @Autowired
     private PoComplianceMapper poComplianceMapper;
-
+    @Autowired
+    private PoTypeExcludeMapper poTypeExcludeMapper;
     @Override
     public ResultVO policies(String openid) {
         TalentPO talentPO = talentMapper.queryByOpenid(openid);
@@ -370,5 +374,27 @@ public class PolicyServiceImpl implements IPolicyService {
                 queryPolicyByTalentId(talentPO.getTalentId(), year);
         queryPolicyByTalentIdBOList = QueryPolicyByTalentIdBO.setValueActualStatus(queryPolicyByTalentIdBOList);
         return new ResultVO(1000, queryPolicyByTalentIdBOList);
+    }
+
+    @Override
+    public ResultVO findExcludePolicy(Long policyId) {
+        PolicyPO policyPO = policyMapper.selectByPrimaryKey(policyId);
+        if (policyPO == null) {
+            return new ResultVO(2740);
+        }
+        Long policyTypeId = policyPO.getPTid();
+        List<String> stringList = poTypeExcludeMapper.findExcludePolicy(policyTypeId);
+        return new ResultVO(1000, stringList);
+    }
+
+    @Override
+    public ResultVO findBankInfo(String openId) {
+        TalentPO talentPO = talentMapper.selectByOpenId(openId);
+        if (talentPO == null) {
+            return new ResultVO(2500);
+        }
+        BankInfoBO bankInfoBO = bankMapper.findBankInfo(talentPO.getTalentId());
+        bankInfoBO.setTalentName(talentPO.getName());
+        return new ResultVO(1000, bankInfoBO);
     }
 }
