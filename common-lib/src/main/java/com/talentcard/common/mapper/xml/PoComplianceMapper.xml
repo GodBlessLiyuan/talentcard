@@ -178,4 +178,25 @@
         and
         status = 0
     </select>
+    <!--符合条件人数首页数据查询-->
+    <sql id="pageQuery_Column_List">
+    p.policy_id as policyId, p.talent_id as talentId, p.apply_time as applyTime, p.status as status, t.name as name, t.sex as tex, t.work_unit as workUnit, t.phone as phone,
+    </sql>
+    <select id="pageQuery" parameterType="java.util.Map" resultType="com.talentcard.common.bo.PoComplianceBO">
+        SELECT
+        <include refid="pageQuery_Column_List"/>
+        FROM
+        po_compliance p, t_talent t,
+        <where>
+            p.talent_id=t.talent_id
+            <if test="policyId != null and policyId !=''">and  p.policy_id = #{pid,jdbcType=BIGINT}</if>
+            <if test="name != null and name !=''">and t.name like '%' #{name,jdbcType=CHAR} '%'</if>
+            <if test="workUnit != null and workUnit !=''">and t.work_unit ike '%' #{wunit,jdbcType=CHAR} '%'</if>
+            <if test="phone != null and phone !=''">and t.phone like '%' #{phone,jdbcType=CHAR} '%'</if>
+            <if test="status != null and status !=''">and p.status = #{status,jdbcType=TINYINT}</if>
+            <if test="beginDate != null">AND p.apply_time <![CDATA[>=]]> #{beginDate,jdbcType=TIMESTAMP}</if>
+            <if test="endDate != null">AND p.apply_time <![CDATA[<=]]> #{endDate,jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY FIND_IN_SET(p.`status`,'3,0,1,2') asc, p.apply_time desc;
+    </select>
 </mapper>

@@ -114,4 +114,10 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where send_id = #{sendId,jdbcType=BIGINT}
   </update>
+  <select id="pushRecordQuery" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from op_sendmessage
+    where policy_id = #{pid,jdbcType=BIGINT}
+  </select>
 </mapper>

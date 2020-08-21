@@ -269,4 +269,17 @@
             and p.role_id = #{roleId,jdbcType=BIGINT}
         </if>
     </select>
+
+    <select id="queryBankByTalentId" parameterType="java.lang.Long" resultType="com.talentcard.common.bo.PoComplianceBO">
+        select
+        b.num as bankNum, b.name as bankName
+        from t_policy_apply p,t_bank b
+        <where>
+        p.pa_id=b.pa_id
+        <if test="paId != null and paId != ''">
+            and p.talent_id= #{paId,jdbcType=BIGINT}
+        </if>
+        </where>
+    </select>
+
 </mapper>
