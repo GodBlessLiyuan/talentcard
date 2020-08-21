@@ -549,7 +549,7 @@
         <if test="status != null and status == 4">
             and p.up_down = 2
         </if>
-        order by p.update_time desc
+        order by p.up_down asc, p.update_time desc
     </select>
     <select id="queryByDr" parameterType="java.lang.Byte" resultMap="BaseResultMap">
         select

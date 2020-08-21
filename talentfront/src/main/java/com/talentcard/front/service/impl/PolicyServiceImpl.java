@@ -1,6 +1,5 @@
 package com.talentcard.front.service.impl;
 
-import com.netflix.discovery.converters.Auto;
 import com.talentcard.common.bo.BankInfoBO;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.bo.QueryPolicyByTalentIdBO;
@@ -16,17 +15,13 @@ import com.talentcard.front.vo.PolicyApplyDetailVO;
 import com.talentcard.front.vo.PolicyDetailVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author: xiahui
@@ -196,11 +191,14 @@ public class PolicyServiceImpl implements IPolicyService {
                 int month = 0;
                 if (null != po.getUnit() && null != po.getRate() && null != po.getTimes()) {
                     if (po.getUnit() == 1) {
-                        month = po.getRate() * 12;  // 年
+                        // 年
+                        month = po.getRate() * 12;
                     } else if (po.getUnit() == 2) {
-                        month = po.getRate() * 3;   // 季
+                        // 季
+                        month = po.getRate() * 3;
                     } else if (po.getUnit() == 3) {
-                        month = po.getRate();       // 月
+                        // 月
+                        month = po.getRate();
                     }
                 }
 
@@ -280,6 +278,16 @@ public class PolicyServiceImpl implements IPolicyService {
             // 当前政策不存在或已被删除
             return new ResultVO(1002);
         }
+
+        /**
+         * 检查政策是否下线
+         */
+        if (policyPO.getUpDown() != 1) {
+            return new ResultVO(1002);
+        }
+
+        updatePOCompliance(talentPO.getTalentId(),policyPO.getPolicyId());
+
 //        List<PolicyApplyPO> applyPOs = policyApplyMapper.queryByTidAndPidAndMonth(talentPO.getTalentId(), dto.getPid(), null);
 //        for (PolicyApplyPO applyPO : applyPOs) {
 //            if (applyPO.getStatus() == 3) {
@@ -396,5 +404,34 @@ public class PolicyServiceImpl implements IPolicyService {
         BankInfoBO bankInfoBO = bankMapper.findBankInfo(talentPO.getTalentId());
         bankInfoBO.setTalentName(talentPO.getName());
         return new ResultVO(1000, bankInfoBO);
+    }
+
+
+    /**
+     * 更新人才政策匹配表
+     * @param talentId
+     * @param policyId
+     * @return
+     */
+    private int updatePOCompliance(Long talentId, Long policyId) {
+        /**
+         * 同步政策申请表到符合政策条件的记录表中
+         */
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("talentId", talentId);
+        map.put("policyId", policyId);
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        map.put("year", year);
+        List<PoCompliancePO> poCompliancePOS = this.poComplianceMapper.selectByPolicyTalent(map);
+
+        if (poCompliancePOS != null && poCompliancePOS.size() > 0) {
+            for (PoCompliancePO poCompliancePO : poCompliancePOS) {
+                poCompliancePO.setStatus((byte) 3);
+                this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
+            }
+        }
+
+        return 0;
     }
 }
