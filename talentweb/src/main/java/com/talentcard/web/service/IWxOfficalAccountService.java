@@ -18,7 +18,7 @@ public interface IWxOfficalAccountService {
      * 审批结果：未申请
      * 温馨提醒：申请后可享受政策补贴，请及时申请哦~
      *
-     * @return
+     * @return 成功：0；为关注公众号：43004
      */
     int messToNotApply(String openId, String policyName);
 }

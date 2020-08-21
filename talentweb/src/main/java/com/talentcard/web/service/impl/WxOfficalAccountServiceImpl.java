@@ -8,6 +8,9 @@ import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.RequestUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,7 @@ import java.util.Map;
 @Service
 public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
 
+    private static final Logger logger = LoggerFactory.getLogger(WxOfficalAccountServiceImpl.class);
     /**
      * 将符合政策但未申请对应政策的人才进行推送消息
      */
@@ -38,7 +42,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
      *                   您好，您符合“{{policyName}}”条件，但系统暂未收到您的申请，申请后可享受政策补贴
      *                   审批结果：未申请
      *                   温馨提醒：申请后可享受政策补贴，请及时申请哦~
-     * @return
+     * @return 成功：0；为关注公众号：43004
      */
     @Override
     public int messToNotApply(String openId, String policyName) {
@@ -55,8 +59,17 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword2("申请后可享受政策补贴，请及时申请哦~");
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
 
-        sendTemplateMessage(messageDTO, notApplyPolicy);
-        return 0;
+        String res = sendTemplateMessage(messageDTO, notApplyPolicy);
+        if(StringUtils.isEmpty(res)){
+            return -1;
+        }
+        try {
+            int result = Integer.valueOf(res);
+            return result;
+        }catch (Exception e){
+            logger.error("send message for not apply talent is error {}",e);
+            return -1;
+        }
     }
 
 
