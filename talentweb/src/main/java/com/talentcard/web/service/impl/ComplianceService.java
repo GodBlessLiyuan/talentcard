@@ -3,23 +3,25 @@ package com.talentcard.web.service.impl;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.PoComplianceBO;
 import com.talentcard.common.mapper.*;
-import com.talentcard.common.pojo.OpSendmessagePO;
-import com.talentcard.common.pojo.PoStatisticsPO;
-import com.talentcard.common.pojo.PolicyPO;
+import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.ExcelExportUtil;
 import com.talentcard.common.utils.PageQueryUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IComplianceService;
+import com.talentcard.web.service.IWxOfficalAccountService;
 import com.talentcard.web.vo.ComplianceNumVO;
 import com.talentcard.web.vo.ComplianceVO;
 import com.talentcard.web.vo.PushRecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +48,10 @@ public class ComplianceService implements IComplianceService {
     private OpSendmessageMapper opSendmessageMapper;
     @Autowired
     private OpMessRecordMapper opMessRecordMapper;
-
+    @Autowired
+    private TalentMapper talentMapper;
+    @Autowired
+    private IWxOfficalAccountService wxOfficalAccountService;
 
     private static final String[] EXPORT_TITLES={"序号","政策名称","政策编号","申请人","申请状态","银行卡号","开户行名","持卡人","政策资金（元）","申请时间"};
 
@@ -115,12 +120,12 @@ public class ComplianceService implements IComplianceService {
             contents[num][3]=bo.getName();
             Byte status = bo.getStatus();
             String statusString="";
-            if("".equals(status)){
+            if("0".equals(status)){
                 statusString ="未申请";
             }else if("1".equals(status)){
                 statusString ="已通过";
             }
-            else if("".equals(status)){
+            else if("2".equals(status)){
                 statusString ="已驳回";
             }
             else if("3".equals(status)){
@@ -143,6 +148,60 @@ public class ComplianceService implements IComplianceService {
     public ResultVO pushRecordQuery(Long pid) {
         List<OpSendmessagePO> pos = opSendmessageMapper.pushRecordQuery(pid);
         return new ResultVO(1000, PushRecordVO.convert(pos));
+    }
+
+    @Override
+    @Transactional
+    public ResultVO push(HttpSession session,Map<String, Object> reqData) {
+        List<PoComplianceBO> bos = complianceMapper.pageQuery(reqData);
+        //遍历取出人才政策id查出政策权益名称和政策权益编号和政策资金放入对应的BO对象中
+        //计算成功和失败次数
+        int successNum=0;
+        int failureNum=0;
+        //记录一键推送消息表自增id，之后将生成的一键推送id插入一键推送消息记录表中
+        List<Long> idList=new ArrayList<>();
+        OpMessRecordPO opMessRecordPO= new OpMessRecordPO();
+        for (PoComplianceBO poComplianceBO:
+                bos) {
+            PolicyPO policyPo=policyMapper.selectByPrimaryKey(poComplianceBO.getPolicyId());
+            poComplianceBO.setPolicyName(policyPo.getName());
+            poComplianceBO.setPolicyNum(policyPo.getNum());
+            poComplianceBO.setPolicyFunds(policyPo.getFunds());
+            Long talentId=poComplianceBO.getTalentId();
+            TalentPO talentPO=talentMapper.selectByPrimaryKey(talentId);
+            String openId=talentPO.getOpenId();
+            //推送
+            int statusCode=wxOfficalAccountService.messToNotApply(openId,poComplianceBO.getPolicyName());
+            //计算成功和失败次数
+            if(statusCode==0){
+                successNum++;
+            }else{
+                failureNum++;
+            }
+            //插入一键推送消息记录表
+            opMessRecordPO.setTalentId(talentId);
+            opMessRecordPO.setOpenId(openId);
+            opMessRecordPO.setStatus(statusCode);
+            opMessRecordMapper.insertSelective(opMessRecordPO);
+            idList.add(opMessRecordPO.getId());
+            }
+        //插入推送消息汇总表
+        OpSendmessagePO opSendmessagePO= new OpSendmessagePO();
+        opSendmessagePO.setUserId((Long) session.getAttribute("userId"));
+        opSendmessagePO.setUsername(session.getAttribute("userName").toString());
+        opSendmessagePO.setSuccess(new Long(successNum));
+        opSendmessagePO.setFailure(new Long(failureNum));
+        opSendmessagePO.setCreateTime(new Date());
+        opSendmessageMapper.insert(opSendmessagePO);
+        //将返回的一键推送id插入到一键推送消息记录表中
+        OpMessRecordPO opMessRecordPO1= new OpMessRecordPO();
+        for (Long id:idList){
+            opMessRecordPO1.setId(id);
+            opMessRecordPO1.setSendId(opSendmessagePO.getSendId());
+            opMessRecordMapper.updateByPrimaryKeySelective(opMessRecordPO1);
+        }
+
+        return new ResultVO(1000);
     }
 
 

@@ -171,7 +171,6 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
             //将拼接后的互斥id更新到政策类型表中进行回显
             poForUPdateEId.setPTid(policyTypeBO.getPTid());
             poForUPdateEId.setExcludeId(exIds);
-            poForUPdateEId.setUpdateTime(new Date());
             poTypeMapper.updateByPrimaryKeySelective(poForUPdateEId);
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
                     , "更新政策类型表中的互斥id进行回显\"%s\"", poForUPdateEId.getExcludeId());

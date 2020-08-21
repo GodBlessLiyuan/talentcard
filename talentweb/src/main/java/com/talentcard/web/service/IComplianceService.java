@@ -3,6 +3,7 @@ package com.talentcard.web.service;
 import com.talentcard.common.vo.ResultVO;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -18,5 +19,5 @@ public interface IComplianceService {
     ResultVO pageQuery(Map<String, Object> reqData);
     ResultVO exportExcel(Map<String, Object> reqData, HttpServletResponse response);
     ResultVO pushRecordQuery(Long pId);
-
+    ResultVO push(HttpSession session,Map<String, Object> reqData);
 }
