@@ -25,7 +25,8 @@ update_time
 4. po_type表
 5. po_type_exclude表
 6. t_talent_type表
-
+7. op_sendmessage表
+8. op_sendmessage表
 
 ### 需要执行的旧数据导入到新的表格的数据 ###
 
