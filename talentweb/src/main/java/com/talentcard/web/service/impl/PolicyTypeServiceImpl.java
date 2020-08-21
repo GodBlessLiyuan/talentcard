@@ -286,7 +286,7 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
         po.setPTypeName(dto.getPtname());
         po.setExcludeId(String.join(",", dto.getEids()));
         po.setDr((byte) 1);
-        po.setStatus((byte) 1);
+        po.setStatus((byte) 2);
         po.setDescription(dto.getDesc());
         po.setUpdateTime(new Date());
         return po;
