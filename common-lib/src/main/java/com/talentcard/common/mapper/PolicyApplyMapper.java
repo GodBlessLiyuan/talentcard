@@ -1,6 +1,7 @@
 package com.talentcard.common.mapper;
 
 import com.talentcard.common.bo.ApplyNumCountBO;
+import com.talentcard.common.bo.PoComplianceBO;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.dto.ApplyNumCountDTO;
 import com.talentcard.common.pojo.PolicyApplyPO;
@@ -56,4 +57,11 @@ public interface PolicyApplyMapper extends BaseMapper<PolicyApplyPO, Long> {
      * @return
      */
     ApplyNumCountBO applyNumCount(ApplyNumCountDTO applyNumCountDTO);
+    /**
+     * 根据人才id查询银行卡信息
+     *
+     * @param paId
+     * @return
+     */
+    PoComplianceBO queryBankByTalentId(Long paId);
 }

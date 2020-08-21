@@ -1,5 +1,6 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.bo.PoComplianceBO;
 import com.talentcard.common.bo.QueryPolicyByTalentIdBO;
 import com.talentcard.common.pojo.PoCompliancePO;
 import com.talentcard.common.pojo.PoStatisticsPO;
@@ -56,4 +57,10 @@ public interface PoComplianceMapper extends BaseMapper<PoCompliancePO, Long> {
      * @return
      */
     List<PoStatisticsPO> policyCount(Map map);
+    /**
+     * 获取人才当前所有的申请情况
+     * @param reqData
+     * @return
+     */
+    List<PoComplianceBO> pageQuery(Map<String, Object> reqData);
 }
