@@ -40,4 +40,8 @@ public class ComplianceController {
         Long pid=Long.parseLong(reqData.get("pid").toString());
         return complianceService.pushRecordQuery(pid);
     }
+    @RequestMapping("push")
+    public ResultVO push(@RequestBody Map<String, Object> reqData) {return complianceService.push(reqData);
+        }
+
 }

@@ -6,16 +6,19 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.OpSendmessagePO;
 import com.talentcard.common.pojo.PoStatisticsPO;
 import com.talentcard.common.pojo.PolicyPO;
+import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.utils.ExcelExportUtil;
 import com.talentcard.common.utils.PageQueryUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IComplianceService;
+import com.talentcard.web.service.IWxOfficalAccountService;
 import com.talentcard.web.vo.ComplianceNumVO;
 import com.talentcard.web.vo.ComplianceVO;
 import com.talentcard.web.vo.PushRecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
@@ -46,7 +49,10 @@ public class ComplianceService implements IComplianceService {
     private OpSendmessageMapper opSendmessageMapper;
     @Autowired
     private OpMessRecordMapper opMessRecordMapper;
-
+    @Autowired
+    private TalentMapper talentMapper;
+    @Autowired
+    private IWxOfficalAccountService wxOfficalAccountService;
 
     private static final String[] EXPORT_TITLES={"序号","政策名称","政策编号","申请人","申请状态","银行卡号","开户行名","持卡人","政策资金（元）","申请时间"};
 
@@ -115,12 +121,12 @@ public class ComplianceService implements IComplianceService {
             contents[num][3]=bo.getName();
             Byte status = bo.getStatus();
             String statusString="";
-            if("".equals(status)){
+            if("0".equals(status)){
                 statusString ="未申请";
             }else if("1".equals(status)){
                 statusString ="已通过";
             }
-            else if("".equals(status)){
+            else if("2".equals(status)){
                 statusString ="已驳回";
             }
             else if("3".equals(status)){
@@ -143,6 +149,25 @@ public class ComplianceService implements IComplianceService {
     public ResultVO pushRecordQuery(Long pid) {
         List<OpSendmessagePO> pos = opSendmessageMapper.pushRecordQuery(pid);
         return new ResultVO(1000, PushRecordVO.convert(pos));
+    }
+
+    @Override
+    @Transactional
+    public ResultVO push(Map<String, Object> reqData) {
+        List<PoComplianceBO> bos = complianceMapper.pageQuery(reqData);
+        //遍历取出人才政策id查出政策权益名称和政策权益编号和政策资金放入对应的BO对象中
+        for (PoComplianceBO poComplianceBO:
+                bos) {
+            PolicyPO policyPo=policyMapper.selectByPrimaryKey(poComplianceBO.getPolicyId());
+            poComplianceBO.setPolicyName(policyPo.getName());
+            poComplianceBO.setPolicyNum(policyPo.getNum());
+            poComplianceBO.setPolicyFunds(policyPo.getFunds());
+            Long talentId=poComplianceBO.getTalentId();
+            TalentPO talentPO=talentMapper.selectByPrimaryKey(talentId);
+            String openId=talentPO.getOpenId();
+            wxOfficalAccountService.messToNotApply(openId,poComplianceBO.getPolicyName());
+        }
+        return new ResultVO(1000);
     }
 
 
