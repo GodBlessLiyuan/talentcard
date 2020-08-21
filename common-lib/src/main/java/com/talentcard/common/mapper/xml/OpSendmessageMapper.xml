@@ -23,7 +23,7 @@
     delete from op_sendmessage
     where send_id = #{sendId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.OpSendmessagePO">
+  <insert id="insert" parameterType="com.talentcard.common.pojo.OpSendmessagePO" keyProperty="sendId" useGeneratedKeys="true">
     insert into op_sendmessage (send_id, policy_id, user_id, 
       username, success, failure, 
       create_time)

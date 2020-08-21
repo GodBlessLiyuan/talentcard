@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -41,7 +42,5 @@ public class ComplianceController {
         return complianceService.pushRecordQuery(pid);
     }
     @RequestMapping("push")
-    public ResultVO push(@RequestBody Map<String, Object> reqData) {return complianceService.push(reqData);
-        }
-
+    public ResultVO push(HttpSession session,@RequestBody Map<String, Object> reqData) {return complianceService.push(session,reqData);}
 }

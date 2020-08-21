@@ -27,7 +27,7 @@
     values (#{id,jdbcType=BIGINT}, #{sendId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
       #{openId,jdbcType=CHAR}, #{status,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.OpMessRecordPO">
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.OpMessRecordPO" keyProperty="id" useGeneratedKeys="true">
     insert into op_mess_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
