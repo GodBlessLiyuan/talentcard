@@ -30,7 +30,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
     /**
      * 将符合政策但未申请对应政策的人才进行推送消息
      */
-    @Value("wechat.sendToNotApplyPolicy")
+    @Value("${wechat.sendToNotApplyPolicy}")
     private String notApplyPolicy;
 
     /**
