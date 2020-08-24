@@ -190,7 +190,7 @@ public class ComplianceService implements IComplianceService {
             }
         //插入推送消息汇总表
         OpSendmessagePO opSendmessagePO= new OpSendmessagePO();
-        opSendmessagePO.setPolicyId(bos.get(0).getPolicyId());
+        opSendmessagePO.setPolicyId((Long)reqData.get("pid"));
         opSendmessagePO.setUserId((Long) session.getAttribute("userId"));
         opSendmessagePO.setUsername(session.getAttribute("userName").toString());
        /* opSendmessagePO.setUserId(9527L);
