@@ -210,16 +210,16 @@ VALUES ('5', '政策5', '编号5', '新增测试', '', '5', '5', '', '1', '', NU
 INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
 VALUES ('1', '1', '1', NULL, NULL, NULL, NULL, NULL, '1');
 INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
-VALUES ('2', '2', '12', NULL, NULL, NULL, NULL, NULL, '1');
+VALUES ('2', '2', '2', NULL, NULL, NULL, NULL, NULL, '1');
 INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
-VALUES ('3', '16', '13', NULL, NULL, NULL, NULL, NULL, '1');
+VALUES ('3', '3', NULL, 1, NULL, NULL, NULL, NULL, '2');
 INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
-VALUES ('4', '16', '21', NULL, NULL, NULL, NULL, NULL, '2');
+VALUES ('4', '4', NULL, 1, NULL, NULL, NULL, NULL, '2');
 INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
-VALUES ('5', '16', '22', NULL, NULL, NULL, NULL, NULL, '2');
+VALUES ('5', '5', '1', 2, NULL, NULL, NULL, NULL, '2');
 INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
-VALUES ('6', '16', '23', NULL, NULL, NULL, NULL, NULL, '2');
+VALUES ('6', '2', NULL, 3, NULL, NULL, NULL, NULL, '2');
 INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
-VALUES ('7', '16', '31', NULL, NULL, NULL, NULL, NULL, '3');
+VALUES ('7', '3', NULL, NULL, 1, NULL, NULL, NULL, '3');
 INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
-VALUES ('8', '16', '41', NULL, NULL, NULL, NULL, NULL, '4');
+VALUES ('8', '4', NULL, NULL, NULL, 5, NULL, NULL, '4');
