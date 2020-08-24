@@ -25,10 +25,14 @@ update_time
 4. po_type表
 5. po_type_exclude表
 6. t_talent_type表
-7. op_sendmessage表
-8. op_sendmessage表
+7. op_sendmessage表，符合政策用户的推送消息汇总
+8. op_mess_record表，一键推送消息记录表
 
 ### 需要执行的旧数据导入到新的表格的数据 ###
 
-1. t_talent_type表
-2. po_compliance表
+1. t_talent_type表，执行 {{server}}/dataMigration/cerToTalentTypeDB
+2. po_compliance表，
+
+
+### application.properties ###
+1. 添加配置wechat.sendToNotApplyPolicy

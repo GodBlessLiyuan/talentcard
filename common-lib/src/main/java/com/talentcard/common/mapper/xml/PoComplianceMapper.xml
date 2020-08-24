@@ -140,6 +140,7 @@
                 and `year` = #{year,jdbcType=BIGINT}
             </if>
         </where>
+        group by policy_id
     </select>
 
     <select id="selectByYearTalent" parameterType="java.util.Map" resultMap="BaseResultMap">
@@ -147,11 +148,11 @@
         <include refid="Base_Column_List"/>
         from po_compliance
         <where>
-            <if test="year != null">
-                year = #{year,jdbcType=BIGINT}
-            </if>
             <if test="talentId != null">
-                and talent_id = #{talentId,jdbcType=BIGINT}
+                talent_id = #{talentId,jdbcType=BIGINT}
+            </if>
+            <if test="year != null">
+                and year = #{year,jdbcType=BIGINT}
             </if>
         </where>
     </select>
