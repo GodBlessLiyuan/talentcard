@@ -8,7 +8,9 @@ import com.talentcard.common.utils.ExcelExportUtil;
 import com.talentcard.common.utils.PageQueryUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.service.IComplianceService;
+import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IWxOfficalAccountService;
 import com.talentcard.web.vo.ComplianceNumVO;
 import com.talentcard.web.vo.ComplianceVO;
@@ -35,7 +37,8 @@ import java.util.Map;
 
 @Service
 public class ComplianceService implements IComplianceService {
-
+    @Autowired
+    private ILogService logService;
     @Autowired
     private PoComplianceMapper complianceMapper;
     @Autowired
@@ -183,6 +186,8 @@ public class ComplianceService implements IComplianceService {
             opMessRecordPO.setOpenId(openId);
             opMessRecordPO.setStatus(statusCode);
             opMessRecordMapper.insertSelective(opMessRecordPO);
+            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
+                    , "插入一条推送记录\"%s\"", opMessRecordPO.toString());
             idList.add(opMessRecordPO.getId());
             }
         //插入推送消息汇总表
@@ -193,14 +198,17 @@ public class ComplianceService implements IComplianceService {
         opSendmessagePO.setFailure(new Long(failureNum));
         opSendmessagePO.setCreateTime(new Date());
         opSendmessageMapper.insert(opSendmessagePO);
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
+                , "将本次推送记录插入到记录汇总表中\"%s\"", opMessRecordPO.toString());
         //将返回的一键推送id插入到一键推送消息记录表中
         OpMessRecordPO opMessRecordPO1= new OpMessRecordPO();
         for (Long id:idList){
             opMessRecordPO1.setId(id);
             opMessRecordPO1.setSendId(opSendmessagePO.getSendId());
             opMessRecordMapper.updateByPrimaryKeySelective(opMessRecordPO1);
+            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
+                    , "将记录汇总表中的一键推送记录id插入到历史记录表中进行关联\"%s\"", opMessRecordPO.toString());
         }
-
         return new ResultVO(1000);
     }
 
