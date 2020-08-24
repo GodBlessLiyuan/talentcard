@@ -281,5 +281,9 @@
         </if>
         </where>
     </select>
-
+    <select id="selectAll"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy_apply order by pa_id desc
+    </select>
 </mapper>

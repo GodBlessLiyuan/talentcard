@@ -1,11 +1,7 @@
 package com.talentcard.web.controller;
 
-import com.talentcard.common.mapper.TalentCertificationInfoMapper;
-import com.talentcard.common.mapper.TalentMapper;
-import com.talentcard.common.mapper.TalentTypeMapper;
-import com.talentcard.common.pojo.TalentCertificationInfoPO;
-import com.talentcard.common.pojo.TalentPO;
-import com.talentcard.common.pojo.TalentTypePO;
+import com.talentcard.common.mapper.*;
+import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IBestPolicyToTalentService;
 import com.talentcard.web.service.IDataMigrationService;
@@ -15,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ChenXU
@@ -42,6 +35,12 @@ public class DataMigrationController {
 
     @Autowired
     private TalentMapper talentMapper;
+
+    @Autowired
+    private PolicyApplyMapper policyApplyMapper;
+
+    @Autowired
+    private PoComplianceMapper poComplianceMapper;
 
     /**
      * 认证审批表 人才数据迁移
@@ -131,7 +130,7 @@ public class DataMigrationController {
                 if (ll != null && ll.size() > 0) {
 
                     for (TalentTypePO po1 : ll) {
-                        if(!po1.getCardId().equals(tal.getCardId())){
+                        if (!po1.getCardId().equals(tal.getCardId())) {
                             po1.setCardId(tal.getCardId());
                             this.talentTypeMapper.updateByPrimaryKey(po1);
                         }
@@ -146,6 +145,9 @@ public class DataMigrationController {
                     if (eds != null && eds.length > 0) {
                         for (String e : eds) {
                             if (StringUtils.isEmpty(e)) {
+                                continue;
+                            }
+                            if(StringUtils.equals(e,"0")){
                                 continue;
                             }
                             Integer integer = Integer.valueOf(e);
@@ -186,6 +188,9 @@ public class DataMigrationController {
                     if (cat != null && cat.length > 0) {
                         for (String e : cat) {
                             if (StringUtils.isEmpty(e)) {
+                                continue;
+                            }
+                            if(StringUtils.equals(e,"0")){
                                 continue;
                             }
                             Long aLong = Long.valueOf(e);
@@ -229,6 +234,10 @@ public class DataMigrationController {
                             if (StringUtils.isEmpty(e)) {
                                 continue;
                             }
+                            if(StringUtils.equals(e,"0")){
+                                continue;
+                            }
+
                             Integer integer = Integer.valueOf(e);
                             boolean needInsert = true;
                             if (l != null && l.size() > 0) {
@@ -268,6 +277,9 @@ public class DataMigrationController {
                     if (qua != null && qua.length > 0) {
                         for (String e : qua) {
                             if (StringUtils.isEmpty(e)) {
+                                continue;
+                            }
+                            if(StringUtils.equals(e,"0")){
                                 continue;
                             }
                             Integer integer = Integer.valueOf(e);
@@ -310,6 +322,9 @@ public class DataMigrationController {
                             if (StringUtils.isEmpty(e)) {
                                 continue;
                             }
+                            if(StringUtils.equals(e,"0")){
+                                continue;
+                            }
                             Long aLong = Long.valueOf(e);
                             boolean needInsert = true;
                             if (l != null && l.size() > 0) {
@@ -342,6 +357,37 @@ public class DataMigrationController {
             }
         }
         return new ResultVO(1000, "success");
+    }
+
+    @RequestMapping("policyApprovalToPoCompliance")
+    public ResultVO policyApprovalToPoCompliance() {
+
+        List<PolicyApplyPO> policyApplyPOS = this.policyApplyMapper.selectAll();
+        for (PolicyApplyPO po : policyApplyPOS) {
+
+            Map<String, Object> map = new HashMap<>(2);
+            map.put("talentId", po.getTalentId());
+            map.put("policyId", po.getPolicyId());
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            map.put("year", year);
+
+            List<PoCompliancePO> pos  = this.poComplianceMapper.selectByPolicyTalent(map);
+            if(pos!=null&&pos.size()>0){
+                PoCompliancePO poCompliancePO = pos.get(0);
+                poCompliancePO.setStatus(po.getStatus());
+                this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
+            }else {
+                PoCompliancePO poCompliancePO = new PoCompliancePO();
+                poCompliancePO.setTalentId(po.getTalentId());
+                poCompliancePO.setPolicyId(po.getPolicyId());
+                poCompliancePO.setYear(year);
+                poCompliancePO.setStatus(po.getStatus());
+
+                this.poComplianceMapper.insert(poCompliancePO);
+            }
+        }
+        return new ResultVO(1000);
     }
 
 }
