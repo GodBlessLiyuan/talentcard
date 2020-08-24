@@ -8,7 +8,9 @@ import com.talentcard.web.service.IDataMigrationService;
 import com.talentcard.web.service.ITalentInfoCertificationService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
@@ -41,6 +43,8 @@ public class DataMigrationController {
 
     @Autowired
     private PoComplianceMapper poComplianceMapper;
+    @Value("${vbooster.token}")
+    private String s_token;
 
     /**
      * 认证审批表 人才数据迁移
@@ -49,7 +53,10 @@ public class DataMigrationController {
      * @return
      */
     @RequestMapping("certExamineRecord")
-    public ResultVO certExamineRecord() {
+    public ResultVO certExamineRecord(@RequestParam(value = "token") String token) {
+        if (!StringUtils.equals(s_token, token)) {
+            return new ResultVO(2000);
+        }
         return iDataMigrationService.certExamineRecord();
     }
 
@@ -60,7 +67,10 @@ public class DataMigrationController {
      * @return
      */
     @RequestMapping("certTalent")
-    public ResultVO certTalent() {
+    public ResultVO certTalent(@RequestParam(value = "token") String token) {
+        if (!StringUtils.equals(s_token, token)) {
+            return new ResultVO(2000);
+        }
         return iDataMigrationService.certTalent();
     }
 
@@ -71,7 +81,10 @@ public class DataMigrationController {
      * @return
      */
     @RequestMapping("certApprovalDetail")
-    public ResultVO certApprovalDetail() {
+    public ResultVO certApprovalDetail(@RequestParam(value = "token") String token) {
+        if (!StringUtils.equals(s_token, token)) {
+            return new ResultVO(2000);
+        }
         return iDataMigrationService.certApprovalDetail();
     }
 
@@ -82,7 +95,10 @@ public class DataMigrationController {
      * @return
      */
     @RequestMapping("best")
-    public ResultVO best() {
+    public ResultVO best(@RequestParam(value = "token") String token) {
+        if (!StringUtils.equals(s_token, token)) {
+            return new ResultVO(2000);
+        }
         iBestPolicyToTalentService.asynBestPolicy();
         return new ResultVO(1000, "success");
     }
@@ -94,7 +110,10 @@ public class DataMigrationController {
      * @return
      */
     @RequestMapping("update")
-    public ResultVO update() {
+    public ResultVO update(@RequestParam(value = "token") String token) {
+        if (!StringUtils.equals(s_token, token)) {
+            return new ResultVO(2000);
+        }
         iTalentInfoCertificationService.update((long) 3);
         return new ResultVO(1000, "success");
     }
@@ -105,7 +124,10 @@ public class DataMigrationController {
      * @return
      */
     @RequestMapping("cerToTalentTypeDB")
-    public ResultVO cerToTalentTypeDB() {
+    public ResultVO cerToTalentTypeDB(@RequestParam(value = "token") String token) {
+        if (!StringUtils.equals(s_token, token)) {
+            return new ResultVO(2000);
+        }
 
         List<TalentCertificationInfoPO> pos = this.talentCertificationInfoMapper.selectAll();
         if (pos != null && pos.size() > 0) {
@@ -147,7 +169,7 @@ public class DataMigrationController {
                             if (StringUtils.isEmpty(e)) {
                                 continue;
                             }
-                            if(StringUtils.equals(e,"0")){
+                            if (StringUtils.equals(e, "0")) {
                                 continue;
                             }
                             Integer integer = Integer.valueOf(e);
@@ -190,7 +212,7 @@ public class DataMigrationController {
                             if (StringUtils.isEmpty(e)) {
                                 continue;
                             }
-                            if(StringUtils.equals(e,"0")){
+                            if (StringUtils.equals(e, "0")) {
                                 continue;
                             }
                             Long aLong = Long.valueOf(e);
@@ -234,7 +256,7 @@ public class DataMigrationController {
                             if (StringUtils.isEmpty(e)) {
                                 continue;
                             }
-                            if(StringUtils.equals(e,"0")){
+                            if (StringUtils.equals(e, "0")) {
                                 continue;
                             }
 
@@ -279,7 +301,7 @@ public class DataMigrationController {
                             if (StringUtils.isEmpty(e)) {
                                 continue;
                             }
-                            if(StringUtils.equals(e,"0")){
+                            if (StringUtils.equals(e, "0")) {
                                 continue;
                             }
                             Integer integer = Integer.valueOf(e);
@@ -322,7 +344,7 @@ public class DataMigrationController {
                             if (StringUtils.isEmpty(e)) {
                                 continue;
                             }
-                            if(StringUtils.equals(e,"0")){
+                            if (StringUtils.equals(e, "0")) {
                                 continue;
                             }
                             Long aLong = Long.valueOf(e);
@@ -359,8 +381,16 @@ public class DataMigrationController {
         return new ResultVO(1000, "success");
     }
 
+    /**
+     * 人才申请的符合条件的政策信息进行同步
+     * @param token
+     * @return
+     */
     @RequestMapping("policyApprovalToPoCompliance")
-    public ResultVO policyApprovalToPoCompliance() {
+    public ResultVO policyApprovalToPoCompliance(@RequestParam(value = "token") String token) {
+        if(!StringUtils.equals(s_token,token)){
+            return new ResultVO(2000);
+        }
 
         List<PolicyApplyPO> policyApplyPOS = this.policyApplyMapper.selectAll();
         for (PolicyApplyPO po : policyApplyPOS) {
@@ -372,15 +402,16 @@ public class DataMigrationController {
             int year = calendar.get(Calendar.YEAR);
             map.put("year", year);
 
-            List<PoCompliancePO> pos  = this.poComplianceMapper.selectByPolicyTalent(map);
-            if(pos!=null&&pos.size()>0){
+            List<PoCompliancePO> pos = this.poComplianceMapper.selectByPolicyTalent(map);
+            if (pos != null && pos.size() > 0) {
                 PoCompliancePO poCompliancePO = pos.get(0);
                 poCompliancePO.setStatus(po.getStatus());
                 this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
-            }else {
+            } else {
                 PoCompliancePO poCompliancePO = new PoCompliancePO();
                 poCompliancePO.setTalentId(po.getTalentId());
                 poCompliancePO.setPolicyId(po.getPolicyId());
+                poCompliancePO.setApplyTime(po.getCreateTime());
                 poCompliancePO.setYear(year);
                 poCompliancePO.setStatus(po.getStatus());
 
