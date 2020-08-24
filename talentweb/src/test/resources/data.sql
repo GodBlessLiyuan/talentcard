@@ -173,3 +173,53 @@ INSERT INTO t_talent_certification_info (`tci_id`, `talent_id`, `education`, `pt
 --
 
 
+
+
+
+-- 政策相关
+INSERT INTO `po_type` (`p_tId`, `p_type_name`, `exclude_id`, `best_policys`, `status`, `dr`, `description`, `update_time`)
+VALUES ('1', '人才津贴', '2，3', '3', '1', '1', '人才津贴政策享受人才津贴111222333', '2020-08-21 16:48:05');
+INSERT INTO `po_type` (`p_tId`, `p_type_name`, `exclude_id`, `best_policys`, `status`, `dr`, `description`, `update_time`)
+VALUES ('2', '购房补助', '1', '1', '1', '1', '购房补助享受购房不足111222333', '2020-08-21 16:48:05');
+INSERT INTO `po_type` (`p_tId`, `p_type_name`, `exclude_id`, `best_policys`, `status`, `dr`, `description`, `update_time`)
+VALUES ('3', '租房补助', '1', '1', '1', '1', '租补助享受租房补助', '2020-08-21 16:48:05');
+
+
+INSERT INTO `po_type_exclude` (`exclude_id`, `p_tid1`, `p_tid2`) VALUES (1, 1, 2);
+INSERT INTO `po_type_exclude` (`exclude_id`, `p_tid1`, `p_tid2`) VALUES (2, 1, 3);
+INSERT INTO `po_type_exclude` (`exclude_id`, `p_tid1`, `p_tid2`) VALUES (3, 2, 1);
+
+-- categories 人才类别
+-- educations 5：博士 4：研究生 3：大学本科 2：大学专科 1：中专/高中以下 6： 学校在读
+-- titles 职称
+-- qualities 人才职业资格
+-- honour_ids 人才荣誉
+INSERT INTO `t_policy` (`policy_id`, `name`, `num`, `description`, `cards`, `categories`, `educations`, `titles`, `qualities`, `honour_ids`, `apply`, `color`, `rate`, `unit`, `times`, `bank`, `annex`, `annex_info`, `apply_form`, `funds`, `user_id`, `create_time`, `dr`, `p_tId`, `role_id`, `funds_form`, `declaration_target`, `start_time`, `end_time`, `apply_materials`, `bonus`, `business_process`, `phone`, `if_social_security`, `social_area`, `social_times`, `social_unit`, `up_down`, `update_time`)
+VALUES ('1', '政策1', '编号1', '新增测试', '1', '1', '1', '1', '', '', NULL, NULL, NULL, NULL, NULL, '1', '1', '政策描述', '//xxxx/xxx/xx.png', '10000', NULL, '2020-08-14 15:16:31', '1', '1', '1', '1', '111111111111', '2020-08-23 00:00:00', '2020-10-03 23:59:59', '1111111', '222222', '111111133333333', 'assssss', '1', '1', '2', '1', '1', '2020-08-05 10:19:25');
+INSERT INTO `t_policy` (`policy_id`, `name`, `num`, `description`, `cards`, `categories`, `educations`, `titles`, `qualities`, `honour_ids`, `apply`, `color`, `rate`, `unit`, `times`, `bank`, `annex`, `annex_info`, `apply_form`, `funds`, `user_id`, `create_time`, `dr`, `p_tId`, `role_id`, `funds_form`, `declaration_target`, `start_time`, `end_time`, `apply_materials`, `bonus`, `business_process`, `phone`, `if_social_security`, `social_area`, `social_times`, `social_unit`, `up_down`, `update_time`)
+VALUES ('2', '政策2', '编号2', '新增测试', '', '2', '2', '2', '2', '2', NULL, NULL, NULL, NULL, NULL, '1', '1', '政策描述', '//xxxx/xxx/xx.png', '10000', NULL, '2020-08-14 15:17:20', '1', '1', '1', '1', '111111111111', '2020-08-15 00:00:00', '2020-08-15 23:59:59', '1111111', '222222', '111111133333333', 'assssss', '1', '1', '2', '1', '1', '2020-08-05 10:19:28');
+INSERT INTO `t_policy` (`policy_id`, `name`, `num`, `description`, `cards`, `categories`, `educations`, `titles`, `qualities`, `honour_ids`, `apply`, `color`, `rate`, `unit`, `times`, `bank`, `annex`, `annex_info`, `apply_form`, `funds`, `user_id`, `create_time`, `dr`, `p_tId`, `role_id`, `funds_form`, `declaration_target`, `start_time`, `end_time`, `apply_materials`, `bonus`, `business_process`, `phone`, `if_social_security`, `social_area`, `social_times`, `social_unit`, `up_down`, `update_time`)
+VALUES ('3', '政策3', '编号3', '新增测试', '', '3', '3', '', '3', '3', NULL, NULL, NULL, NULL, NULL, '1', '1', '政策描述', '//xxxx/xxx/xx.png', '10000', NULL, '2020-08-14 15:17:46', '1', '1', '1', '1', '111111111111', '2020-08-15 00:00:00', '2020-08-15 23:59:59', '1111111', '222222', '111111133333333', 'assssss', '1', '1', '2', '1', '1', '2020-08-05 10:19:28');
+INSERT INTO `t_policy` (`policy_id`, `name`, `num`, `description`, `cards`, `categories`, `educations`, `titles`, `qualities`, `honour_ids`, `apply`, `color`, `rate`, `unit`, `times`, `bank`, `annex`, `annex_info`, `apply_form`, `funds`, `user_id`, `create_time`, `dr`, `p_tId`, `role_id`, `funds_form`, `declaration_target`, `start_time`, `end_time`, `apply_materials`, `bonus`, `business_process`, `phone`, `if_social_security`, `social_area`, `social_times`, `social_unit`, `up_down`, `update_time`)
+VALUES ('4', '政策4', '编号4', '新增测试', '', '4', '4', '', '1', '', NULL, NULL, NULL, NULL, NULL, '1', '1', '政策描述', '//xxxx/xxx/xx.png', '10000', NULL, '2020-08-14 15:18:54', '1', '1', '1', '1', '111111111111', '2020-08-15 00:00:00', '2020-08-15 23:59:59', '1111111', '222222', '111111133333333', 'assssss', '1', '1', '2', '1', '1', '2020-08-05 10:19:28');
+INSERT INTO `t_policy` (`policy_id`, `name`, `num`, `description`, `cards`, `categories`, `educations`, `titles`, `qualities`, `honour_ids`, `apply`, `color`, `rate`, `unit`, `times`, `bank`, `annex`, `annex_info`, `apply_form`, `funds`, `user_id`, `create_time`, `dr`, `p_tId`, `role_id`, `funds_form`, `declaration_target`, `start_time`, `end_time`, `apply_materials`, `bonus`, `business_process`, `phone`, `if_social_security`, `social_area`, `social_times`, `social_unit`, `up_down`, `update_time`)
+VALUES ('5', '政策5', '编号5', '新增测试', '', '5', '5', '', '1', '', NULL, NULL, NULL, NULL, NULL, '1', '1', '政策描述', '//xxxx/xxx/xx.png', '10000', NULL, '2020-08-14 15:19:04', '1', '1', '1', '1', '111111111111', '2020-08-15 00:00:00', '2020-08-15 23:59:59', '1111111', '222222', '111111133333333', 'assssss', '1', '1', '2', '1', '1', '2020-08-05 10:19:28');
+
+
+
+INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
+VALUES ('1', '1', '1', NULL, NULL, NULL, NULL, NULL, '1');
+INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
+VALUES ('2', '2', '12', NULL, NULL, NULL, NULL, NULL, '1');
+INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
+VALUES ('3', '16', '13', NULL, NULL, NULL, NULL, NULL, '1');
+INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
+VALUES ('4', '16', '21', NULL, NULL, NULL, NULL, NULL, '2');
+INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
+VALUES ('5', '16', '22', NULL, NULL, NULL, NULL, NULL, '2');
+INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
+VALUES ('6', '16', '23', NULL, NULL, NULL, NULL, NULL, '2');
+INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
+VALUES ('7', '16', '31', NULL, NULL, NULL, NULL, NULL, '3');
+INSERT INTO `po_setting` (`p_setingid`, `policy_id`, `card_id`, `category_id`, `education_id`, `title_id`, `quality`, `honour_id`, `type`)
+VALUES ('8', '16', '41', NULL, NULL, NULL, NULL, NULL, '4');

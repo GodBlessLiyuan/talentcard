@@ -286,8 +286,13 @@ public class PolicyServiceImpl implements IPolicyService {
             return new ResultVO(1002);
         }
 
-        updatePOCompliance(talentPO.getTalentId(),policyPO.getPolicyId());
-
+        /**
+         * 当用户没有符合条件的政策时，提示对应政策
+         */
+        int res = updatePOCompliance(talentPO.getTalentId(), policyPO.getPolicyId(), 3);
+        if (res == -1) {
+            return new ResultVO(1002);
+        }
 //        List<PolicyApplyPO> applyPOs = policyApplyMapper.queryByTidAndPidAndMonth(talentPO.getTalentId(), dto.getPid(), null);
 //        for (PolicyApplyPO applyPO : applyPOs) {
 //            if (applyPO.getStatus() == 3) {
@@ -409,11 +414,12 @@ public class PolicyServiceImpl implements IPolicyService {
 
     /**
      * 更新人才政策匹配表
+     *
      * @param talentId
      * @param policyId
-     * @return
+     * @return -1：没有找到匹配的政策信息
      */
-    private int updatePOCompliance(Long talentId, Long policyId) {
+    private int updatePOCompliance(Long talentId, Long policyId, int status) {
         /**
          * 同步政策申请表到符合政策条件的记录表中
          */
@@ -427,11 +433,12 @@ public class PolicyServiceImpl implements IPolicyService {
 
         if (poCompliancePOS != null && poCompliancePOS.size() > 0) {
             for (PoCompliancePO poCompliancePO : poCompliancePOS) {
-                poCompliancePO.setStatus((byte) 3);
+                poCompliancePO.setStatus((byte) status);
                 this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
+                return 0;
             }
         }
 
-        return 0;
+        return -1;
     }
 }

@@ -55,6 +55,9 @@ public class MessageUtil {
     }
     //注册完，审批完
     public static String sendTemplateMessage(MessageDTO messageDTO) {
+        if(messageDTO == null) {
+            return "";
+        }
         String at = AccessTokenUtil.getAccessToken();
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + at;
         WeChatTemDTO weChatTemDto = new WeChatTemDTO();

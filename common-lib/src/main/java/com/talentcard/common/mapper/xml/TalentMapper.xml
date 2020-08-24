@@ -557,7 +557,7 @@
         <if test="quality != null and quality !=0">and uci.pq_category = #{quality}</if>
         <if test="honour != null and honour != 0">and uci.honour_id = #{honour}</if>
         <if test="card != null and card !=''">and (c.name like '%' #{card} '%' or c.num like '%' #{card} '%')</if>
-        order by t.create_time desc
+        order by t.talent_id desc
     </select>
     <select id="queryCert" resultType="com.talentcard.common.bo.TalentBO">
         select t.talent_id as talentId,

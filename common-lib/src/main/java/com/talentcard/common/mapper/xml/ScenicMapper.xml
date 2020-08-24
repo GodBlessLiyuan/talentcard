@@ -277,7 +277,7 @@
         <if test="end != null and end !=''">and create_time &lt;= #{end}</if>
         <if test="name != null and name !=''">and `name` like '%' #{name} '%'</if>
         <if test="status != null and status !=0">and `status` = #{status}</if>
-        order by status asc, create_time asc
+        order by status asc, scenic_id asc
     </select>
 
     <select id="queryByName" resultMap="BaseResultMap">

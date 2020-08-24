@@ -22,7 +22,7 @@ import java.util.List;
 public class ComplianceNumVO implements Serializable {
 
     /**
-     * 人才政策id
+     * 政策id
      */
 
     private Long pid;
