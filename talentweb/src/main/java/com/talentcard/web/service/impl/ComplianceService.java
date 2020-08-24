@@ -8,7 +8,9 @@ import com.talentcard.common.utils.ExcelExportUtil;
 import com.talentcard.common.utils.PageQueryUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.service.IComplianceService;
+import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IWxOfficalAccountService;
 import com.talentcard.web.vo.ComplianceNumVO;
 import com.talentcard.web.vo.ComplianceVO;
@@ -35,7 +37,8 @@ import java.util.Map;
 
 @Service
 public class ComplianceService implements IComplianceService {
-
+    @Autowired
+    private ILogService logService;
     @Autowired
     private PoComplianceMapper complianceMapper;
     @Autowired
@@ -158,9 +161,8 @@ public class ComplianceService implements IComplianceService {
         //计算成功和失败次数
         int successNum=0;
         int failureNum=0;
-        //记录一键推送消息表自增id，之后将生成的一键推送id插入一键推送消息记录表中
-        List<Long> idList=new ArrayList<>();
-        OpMessRecordPO opMessRecordPO= new OpMessRecordPO();
+        //将推送的记录下来取到插入统计表后的数据获得SendId在进行插入，不然有关联关系插入不进去
+        List<OpMessRecordPO> opMessRecordPOList=new ArrayList<>();
         for (PoComplianceBO poComplianceBO:
                 bos) {
             PolicyPO policyPo=policyMapper.selectByPrimaryKey(poComplianceBO.getPolicyId());
@@ -171,7 +173,8 @@ public class ComplianceService implements IComplianceService {
             TalentPO talentPO=talentMapper.selectByPrimaryKey(talentId);
             String openId=talentPO.getOpenId();
             //推送
-            int statusCode=wxOfficalAccountService.messToNotApply(openId,poComplianceBO.getPolicyName());
+            //int statusCode=wxOfficalAccountService.messToNotApply(openId,poComplianceBO.getPolicyName());
+            int statusCode=0;
             //计算成功和失败次数
             if(statusCode==0){
                 successNum++;
@@ -179,28 +182,33 @@ public class ComplianceService implements IComplianceService {
                 failureNum++;
             }
             //插入一键推送消息记录表
+            OpMessRecordPO opMessRecordPO= new OpMessRecordPO();
             opMessRecordPO.setTalentId(talentId);
             opMessRecordPO.setOpenId(openId);
             opMessRecordPO.setStatus(statusCode);
-            opMessRecordMapper.insertSelective(opMessRecordPO);
-            idList.add(opMessRecordPO.getId());
+            opMessRecordPOList.add(opMessRecordPO);
             }
         //插入推送消息汇总表
         OpSendmessagePO opSendmessagePO= new OpSendmessagePO();
+        opSendmessagePO.setPolicyId(bos.get(0).getPolicyId());
         opSendmessagePO.setUserId((Long) session.getAttribute("userId"));
         opSendmessagePO.setUsername(session.getAttribute("userName").toString());
+       /* opSendmessagePO.setUserId(9527L);
+        opSendmessagePO.setUsername("安洪旭");*/
         opSendmessagePO.setSuccess(new Long(successNum));
         opSendmessagePO.setFailure(new Long(failureNum));
         opSendmessagePO.setCreateTime(new Date());
         opSendmessageMapper.insert(opSendmessagePO);
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
+                , "将本次推送记录插入到记录汇总表中\"%s\"", opSendmessagePO.toString());
         //将返回的一键推送id插入到一键推送消息记录表中
-        OpMessRecordPO opMessRecordPO1= new OpMessRecordPO();
-        for (Long id:idList){
-            opMessRecordPO1.setId(id);
-            opMessRecordPO1.setSendId(opSendmessagePO.getSendId());
-            opMessRecordMapper.updateByPrimaryKeySelective(opMessRecordPO1);
+        for (OpMessRecordPO opMessRecordPO:opMessRecordPOList){
+            //将插入消息汇总表的SendId取到进行关联插入到消息记录表
+            opMessRecordPO.setSendId(opSendmessagePO.getSendId());
+            opMessRecordMapper.insert(opMessRecordPO);
+            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
+                    , "插入到历史记录表中进行关联\"%s\"", opMessRecordPO.toString());
         }
-
         return new ResultVO(1000);
     }
 
