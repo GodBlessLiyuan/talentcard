@@ -160,4 +160,11 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{result,jdbcType=TINYINT}, #{opinion,jdbcType=CHAR},
       #{actualFunds,jdbcType=DECIMAL})
   </insert>
+
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_policy_approval order by approval_id asc
+  </select>
 </mapper>

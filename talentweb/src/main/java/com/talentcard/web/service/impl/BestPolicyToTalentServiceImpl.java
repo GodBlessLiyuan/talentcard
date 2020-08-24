@@ -534,7 +534,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
          */
         Map<String, Object> map = new HashMap<>(2);
         map.put("talentId", talentId);
-        map.put("policyId", talentId);
+        map.put("policyId", policyId);
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         map.put("year", year);
