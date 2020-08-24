@@ -3,9 +3,11 @@ package com.talentcard.web;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.utils.StringToObjUtil;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.utils.MessageUtil;
 import org.apache.poi.ss.formula.functions.T;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,12 +39,17 @@ public class BaseTest {
     @Before
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+        MessageUtil messageUtil = Mockito.mock(MessageUtil.class);
+        Mockito.doNothing().when(messageUtil);
     }
 
     public ResultVO<T> mockMvcPostUrlContent(String url, String jsonString) throws Exception {
         MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.post(url)//get、post、put、delete
                 .contentType(MediaType.APPLICATION_JSON_UTF8)//设置编码格式
                 .content(jsonString)
+                .sessionAttr("userId",1L)
+                .sessionAttr("username","admin")
                 .accept(MediaType.APPLICATION_JSON) //接收的是json数据
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())

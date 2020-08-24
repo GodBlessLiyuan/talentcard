@@ -149,12 +149,12 @@ public class PolicyServiceImpl implements IPolicyService {
             // 数据已被删除
             return new ResultVO(1001);
         }
-        RolePO rolePO = roleMapper.selectByPrimaryKey(po.getRoleId());
         PolicyDetailVO policyDetailVO = PolicyDetailVO.convert(po);
-        if (rolePO != null) {
-            //将roleId转换为名称，即责任单位名称
-            policyDetailVO.setResponsibleUnit(rolePO.getName());
-        }
+//        RolePO rolePO = roleMapper.selectByPrimaryKey(po.getRoleId());
+//        if (rolePO != null) {
+//            //将roleId转换为名称，即责任单位名称
+//            policyDetailVO.setResponsibleUnit(rolePO.getName());
+//        }
         //计算符合条件人数
         Long meetConditionNumber = poComplianceMapper.countMeetConditionNumber(pid);
         policyDetailVO.setMeetConditionNumber(meetConditionNumber);

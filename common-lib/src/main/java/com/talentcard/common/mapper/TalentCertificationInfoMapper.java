@@ -1,12 +1,9 @@
 package com.talentcard.common.mapper;
 
-import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.bo.TalentCertificationBO;
 import com.talentcard.common.pojo.TalentCertificationInfoPO;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +14,12 @@ import java.util.Map;
 public interface TalentCertificationInfoMapper extends BaseMapper<TalentCertificationInfoPO, Long> {
     /**
      * 根据talentId拿PO
+     *
      * @param talentId
      * @return
      */
     TalentCertificationInfoPO selectByTalentId(Long talentId);
+
     /**
      * 认证人才查询
      *
@@ -28,4 +27,11 @@ public interface TalentCertificationInfoMapper extends BaseMapper<TalentCertific
      * @return
      */
     List<TalentCertificationBO> queryCertTalent(Map<String, Object> map);
+
+    /**
+     * 查询表里面所有的数据
+     *
+     * @return
+     */
+    List<TalentCertificationInfoPO> selectAll();
 }

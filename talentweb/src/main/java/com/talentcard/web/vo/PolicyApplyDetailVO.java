@@ -103,7 +103,7 @@ public class PolicyApplyDetailVO implements Serializable {
             for (PolicyApprovalPO po : bo.getApproval()) {
                 PolicyApprovalVO approvalVO = new PolicyApprovalVO();
                 approvalVO.setCtime(DateUtil.date2Str(po.getCreateTime(), DateUtil.YMD_HMS));
-                approvalVO.setType(po.getType() == 1 ? "提交申请" : "审批");
+                approvalVO.setType(po.getType() == 1 ? "提交申请" : po.getType() == 2 ? "审批" : "撤销");
                 approvalVO.setUname(null == po.getUsername() || "".equals(po.getUsername()) ? "无" : po.getUsername());
                 if (po.getResult() == null) {
                     approvalVO.setResult("无");
@@ -113,7 +113,6 @@ public class PolicyApplyDetailVO implements Serializable {
                     approvalVO.setResult("驳回");
                 } else if (po.getResult() == 3) {
                     approvalVO.setResult("已撤回");
-                    approvalVO.setType("撤销");
                 }
                 approvalVO.setOpinion(null == po.getOpinion() || "".equals(po.getOpinion()) ? "无" : po.getOpinion());
                 approvalVOs.add(approvalVO);
