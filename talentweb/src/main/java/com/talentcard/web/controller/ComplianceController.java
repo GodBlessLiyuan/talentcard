@@ -49,7 +49,7 @@ public class ComplianceController {
         }
         return complianceService.exportExcel(reqData,response);
     }
-    @RequestMapping("pushRecord")
+    @RequestMapping("pushRecordQuery")
     public ResultVO pushRecord(@RequestBody Map<String, Object> reqData) {
         Long pid=Long.parseLong(reqData.get("pid").toString());
         return complianceService.pushRecordQuery(pid);
