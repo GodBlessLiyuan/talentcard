@@ -194,8 +194,8 @@
             <if test="wunit != null and wunit !=''">and t.work_unit like '%' #{wunit,jdbcType=CHAR} '%'</if>
             <if test="phone != null and phone !=''">and t.phone like '%' #{phone,jdbcType=CHAR} '%'</if>
             <if test="status != null and status !=''">and p.status = #{status,jdbcType=TINYINT}</if>
-            <if test="beginDate != null">AND p.apply_time <![CDATA[>=]]> #{beginDate,jdbcType=TIMESTAMP}</if>
-            <if test="endDate != null">AND p.apply_time <![CDATA[<=]]> #{endDate,jdbcType=TIMESTAMP}</if>
+            <if test="beginDate != null">AND p.apply_time <![CDATA[>=]]> DATE_FORMAT(#{beginDate,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')</if>
+            <if test="endDate != null">AND p.apply_time <![CDATA[<=]]> DATE_FORMAT(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')</if>
         </where>
         ORDER BY FIND_IN_SET(p.`status`,'3,0,1,2') asc, p.apply_time desc
     </select>
