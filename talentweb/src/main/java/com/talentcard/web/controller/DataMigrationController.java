@@ -147,6 +147,9 @@ public class DataMigrationController {
                             if (StringUtils.isEmpty(e)) {
                                 continue;
                             }
+                            if(StringUtils.equals(e,"0")){
+                                continue;
+                            }
                             Integer integer = Integer.valueOf(e);
                             boolean needInsert = true;
                             if (l != null && l.size() > 0) {
@@ -185,6 +188,9 @@ public class DataMigrationController {
                     if (cat != null && cat.length > 0) {
                         for (String e : cat) {
                             if (StringUtils.isEmpty(e)) {
+                                continue;
+                            }
+                            if(StringUtils.equals(e,"0")){
                                 continue;
                             }
                             Long aLong = Long.valueOf(e);
@@ -228,6 +234,10 @@ public class DataMigrationController {
                             if (StringUtils.isEmpty(e)) {
                                 continue;
                             }
+                            if(StringUtils.equals(e,"0")){
+                                continue;
+                            }
+
                             Integer integer = Integer.valueOf(e);
                             boolean needInsert = true;
                             if (l != null && l.size() > 0) {
@@ -269,6 +279,9 @@ public class DataMigrationController {
                             if (StringUtils.isEmpty(e)) {
                                 continue;
                             }
+                            if(StringUtils.equals(e,"0")){
+                                continue;
+                            }
                             Integer integer = Integer.valueOf(e);
                             boolean needInsert = true;
                             if (l != null && l.size() > 0) {
@@ -307,6 +320,9 @@ public class DataMigrationController {
                     if (hon != null && hon.length > 0) {
                         for (String e : hon) {
                             if (StringUtils.isEmpty(e)) {
+                                continue;
+                            }
+                            if(StringUtils.equals(e,"0")){
                                 continue;
                             }
                             Long aLong = Long.valueOf(e);
