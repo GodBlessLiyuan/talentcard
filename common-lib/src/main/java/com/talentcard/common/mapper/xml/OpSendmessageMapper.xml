@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.OpSendmessageMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.OpSendmessagePO">
+    <id column="send_id" jdbcType="BIGINT" property="sendId" />
+    <result column="policy_id" jdbcType="BIGINT" property="policyId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="username" jdbcType="CHAR" property="username" />
+    <result column="success" jdbcType="BIGINT" property="success" />
+    <result column="failure" jdbcType="BIGINT" property="failure" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    send_id, policy_id, user_id, username, success, failure, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from op_sendmessage
+    where send_id = #{sendId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from op_sendmessage
+    where send_id = #{sendId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.OpSendmessagePO" keyProperty="sendId" useGeneratedKeys="true">
+    insert into op_sendmessage (send_id, policy_id, user_id, 
+      username, success, failure, 
+      create_time)
+    values (#{sendId,jdbcType=BIGINT}, #{policyId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{username,jdbcType=CHAR}, #{success,jdbcType=BIGINT}, #{failure,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.OpSendmessagePO">
+    insert into op_sendmessage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sendId != null">
+        send_id,
+      </if>
+      <if test="policyId != null">
+        policy_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="success != null">
+        success,
+      </if>
+      <if test="failure != null">
+        failure,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sendId != null">
+        #{sendId,jdbcType=BIGINT},
+      </if>
+      <if test="policyId != null">
+        #{policyId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=CHAR},
+      </if>
+      <if test="success != null">
+        #{success,jdbcType=BIGINT},
+      </if>
+      <if test="failure != null">
+        #{failure,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.OpSendmessagePO">
+    update op_sendmessage
+    <set>
+      <if test="policyId != null">
+        policy_id = #{policyId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=CHAR},
+      </if>
+      <if test="success != null">
+        success = #{success,jdbcType=BIGINT},
+      </if>
+      <if test="failure != null">
+        failure = #{failure,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where send_id = #{sendId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.OpSendmessagePO">
+    update op_sendmessage
+    set policy_id = #{policyId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      username = #{username,jdbcType=CHAR},
+      success = #{success,jdbcType=BIGINT},
+      failure = #{failure,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where send_id = #{sendId,jdbcType=BIGINT}
+  </update>
+  <select id="pushRecordQuery" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from op_sendmessage
+    where policy_id = #{pid,jdbcType=BIGINT}
+  </select>
+</mapper>

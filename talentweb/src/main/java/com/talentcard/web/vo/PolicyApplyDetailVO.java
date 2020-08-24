@@ -113,6 +113,7 @@ public class PolicyApplyDetailVO implements Serializable {
                     approvalVO.setResult("驳回");
                 } else if (po.getResult() == 3) {
                     approvalVO.setResult("已撤回");
+                    approvalVO.setType("撤销");
                 }
                 approvalVO.setOpinion(null == po.getOpinion() || "".equals(po.getOpinion()) ? "无" : po.getOpinion());
                 approvalVOs.add(approvalVO);

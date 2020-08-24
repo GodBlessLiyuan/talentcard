@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.OpMessRecordMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.OpMessRecordPO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="send_id" jdbcType="BIGINT" property="sendId" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="open_id" jdbcType="CHAR" property="openId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, send_id, talent_id, open_id, `status`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from op_mess_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from op_mess_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.OpMessRecordPO">
+    insert into op_mess_record (id, send_id, talent_id, 
+      open_id, `status`)
+    values (#{id,jdbcType=BIGINT}, #{sendId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
+      #{openId,jdbcType=CHAR}, #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.OpMessRecordPO" keyProperty="id" useGeneratedKeys="true">
+    insert into op_mess_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sendId != null">
+        send_id,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sendId != null">
+        #{sendId,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.OpMessRecordPO">
+    update op_mess_record
+    <set>
+      <if test="sendId != null">
+        send_id = #{sendId,jdbcType=BIGINT},
+      </if>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.OpMessRecordPO">
+    update op_mess_record
+    set send_id = #{sendId,jdbcType=BIGINT},
+      talent_id = #{talentId,jdbcType=BIGINT},
+      open_id = #{openId,jdbcType=CHAR},
+      `status` = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
