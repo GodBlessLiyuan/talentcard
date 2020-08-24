@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.talentcard.common.bo.PoComplianceBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExcelExportUtil;
 import com.talentcard.common.utils.PageQueryUtil;
 import com.talentcard.common.vo.PageInfoVO;
@@ -15,6 +16,7 @@ import com.talentcard.web.service.IWxOfficalAccountService;
 import com.talentcard.web.vo.ComplianceNumVO;
 import com.talentcard.web.vo.ComplianceVO;
 import com.talentcard.web.vo.PushRecordVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static com.talentcard.common.utils.DateUtil.YMD;
 
 /**
  * @ Author     ：AnHongxu.
@@ -139,7 +143,9 @@ public class ComplianceService implements IComplianceService {
             contents[num][6]=bo.getBankName();
             contents[num][7]=bo.getName();
             contents[num][8]=Integer.toString(bo.getPolicyFunds());
-            contents[num][9]=bo.getApplyTime()+"";
+            if (bo.getApplyTime()!=null){
+                contents[num][9]= DateUtil.date2Str(bo.getApplyTime(),YMD);
+            }
             num++;
             order++;
         }
@@ -190,7 +196,7 @@ public class ComplianceService implements IComplianceService {
             }
         //插入推送消息汇总表
         OpSendmessagePO opSendmessagePO= new OpSendmessagePO();
-        opSendmessagePO.setPolicyId((Long)reqData.get("pid"));
+        opSendmessagePO.setPolicyId(Long.parseLong(reqData.get("pid").toString()));
         opSendmessagePO.setUserId((Long) session.getAttribute("userId"));
         opSendmessagePO.setUsername(session.getAttribute("userName").toString());
        /* opSendmessagePO.setUserId(9527L);
