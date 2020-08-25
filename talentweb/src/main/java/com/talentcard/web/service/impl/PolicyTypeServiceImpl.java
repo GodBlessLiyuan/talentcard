@@ -210,7 +210,7 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
         }
 
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                , "变更政策类型表数据状态\"%s\"", po.getStatus() == 1 ? "上架" : "下架");
+                , po.getStatus() == 1 ? "上架政策类型:" : "下架政策类型:", po.getPTypeName());
         return new ResultVO(1000);
     }
 
