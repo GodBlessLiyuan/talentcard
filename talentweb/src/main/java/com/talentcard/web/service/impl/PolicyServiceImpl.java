@@ -3,11 +3,9 @@ package com.talentcard.web.service.impl;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.PolicyQueryBO;
 import com.talentcard.common.config.FilePathConfig;
-import com.talentcard.common.mapper.PoComplianceMapper;
-import com.talentcard.common.mapper.PoSettingMapper;
-import com.talentcard.common.mapper.PolicyMapper;
-import com.talentcard.common.mapper.RoleMapper;
+import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.PoSettingPO;
+import com.talentcard.common.pojo.PoTypePO;
 import com.talentcard.common.pojo.PolicyPO;
 import com.talentcard.common.pojo.RolePO;
 import com.talentcard.common.utils.DateUtil;
@@ -58,6 +56,8 @@ public class PolicyServiceImpl implements IPolicyService {
     private PoComplianceMapper poComplianceMapper;
     @Autowired
     private IBestPolicyToTalentService iBestPolicyToTalentService;
+    @Autowired
+    private PoTypeMapper poTypeMapper;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
@@ -180,6 +180,15 @@ public class PolicyServiceImpl implements IPolicyService {
         PolicyPO policyPO = policyMapper.selectByPrimaryKey(policyId);
         if (policyPO == null || upDown == null) {
             return new ResultVO<>(2740, "无此政策！");
+        }
+        if (upDown == 1) {
+            PoTypePO poTypePO = poTypeMapper.selectByPrimaryKey(policyPO.getPTid());
+            if (poTypePO == null) {
+                return new ResultVO<>(2744, "无此政策大类！");
+            }
+            if (poTypePO.getStatus() == 2) {
+                return new ResultVO<>(2745, "该政策的政策大类已下架，所以无法上架此政策！");
+            }
         }
         policyPO.setUpDown(upDown);
         policyMapper.updateByPrimaryKeySelective(policyPO);
