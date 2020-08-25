@@ -92,6 +92,11 @@ public class ComplianceVO implements Serializable {
 
 
     private Integer funds;
+    /**
+     * 政策资金
+     */
+    private String openid;
+
 
 
     /**
@@ -122,6 +127,7 @@ public class ComplianceVO implements Serializable {
         vo.setSex(bo.getSex());
         vo.setTid(bo.getTalentId());
         vo.setWunit(bo.getWorkUnit());
+        vo.setOpenid(bo.getOpenId());
         return vo;
     }
 }

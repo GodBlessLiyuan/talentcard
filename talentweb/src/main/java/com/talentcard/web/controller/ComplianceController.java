@@ -77,4 +77,8 @@ public class ComplianceController {
     public ResultVO push(HttpSession session, @RequestBody Map<String, Object> reqData) {
         return complianceService.push(session, reqData);
     }
+    @RequestMapping("queryCertId")
+    public ResultVO push(@RequestBody Map<String, Object> reqData) {
+        return complianceService.queryCertId(reqData);
+    }
 }

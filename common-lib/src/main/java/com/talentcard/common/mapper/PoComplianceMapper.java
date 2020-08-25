@@ -2,6 +2,7 @@ package com.talentcard.common.mapper;
 
 import com.talentcard.common.bo.PoComplianceBO;
 import com.talentcard.common.bo.QueryPolicyByTalentIdBO;
+import com.talentcard.common.pojo.CertApprovalPassRecordPO;
 import com.talentcard.common.pojo.PoCompliancePO;
 import com.talentcard.common.pojo.PoStatisticsPO;
 import org.apache.ibatis.annotations.Mapper;
@@ -63,4 +64,11 @@ public interface PoComplianceMapper extends BaseMapper<PoCompliancePO, Long> {
      * @return
      */
     List<PoComplianceBO> pageQuery(Map<String, Object> reqData);
+
+    /**
+     * 获取人认证id
+     * @param reqData
+     * @return
+     */
+    CertApprovalPassRecordPO queryCertId(Map<String, Object> reqData);
 }

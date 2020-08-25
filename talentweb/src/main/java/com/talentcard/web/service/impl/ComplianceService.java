@@ -13,6 +13,7 @@ import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.service.IComplianceService;
 import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IWxOfficalAccountService;
+import com.talentcard.web.vo.CerIdVO;
 import com.talentcard.web.vo.ComplianceNumVO;
 import com.talentcard.web.vo.ComplianceVO;
 import com.talentcard.web.vo.PushRecordVO;
@@ -179,8 +180,7 @@ public class ComplianceService implements IComplianceService {
             TalentPO talentPO=talentMapper.selectByPrimaryKey(talentId);
             String openId=talentPO.getOpenId();
             //推送
-            //int statusCode=wxOfficalAccountService.messToNotApply(openId,poComplianceBO.getPolicyName());
-            int statusCode=0;
+            int statusCode=wxOfficalAccountService.messToNotApply(openId,poComplianceBO.getPolicyName());
             //计算成功和失败次数
             if(statusCode==0){
                 successNum++;
@@ -198,9 +198,7 @@ public class ComplianceService implements IComplianceService {
         OpSendmessagePO opSendmessagePO= new OpSendmessagePO();
         opSendmessagePO.setPolicyId(Long.parseLong(reqData.get("pid").toString()));
         opSendmessagePO.setUserId((Long) session.getAttribute("userId"));
-        opSendmessagePO.setUsername((String)session.getAttribute("userName"));
-       /* opSendmessagePO.setUserId(9527L);
-        opSendmessagePO.setUsername("安洪旭");*/
+        opSendmessagePO.setUsername((String)session.getAttribute("username"));
         opSendmessagePO.setSuccess(new Long(successNum));
         opSendmessagePO.setFailure(new Long(failureNum));
         opSendmessagePO.setCreateTime(new Date());
@@ -218,5 +216,10 @@ public class ComplianceService implements IComplianceService {
         return new ResultVO(1000);
     }
 
+    @Override
+    public ResultVO queryCertId(Map<String, Object> reqData) {
+        CertApprovalPassRecordPO po = complianceMapper.queryCertId(reqData);
+        return new ResultVO(1000, CerIdVO.convert(po));
+    }
 
 }
