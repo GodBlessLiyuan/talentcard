@@ -197,7 +197,7 @@ public class ComplianceService implements IComplianceService {
         OpSendmessagePO opSendmessagePO= new OpSendmessagePO();
         opSendmessagePO.setPolicyId(Long.parseLong(reqData.get("pid").toString()));
         opSendmessagePO.setUserId((Long) session.getAttribute("userId"));
-        opSendmessagePO.setUsername((String)session.getAttribute("userName"));
+        opSendmessagePO.setUsername((String)session.getAttribute("username"));
         opSendmessagePO.setSuccess(new Long(successNum));
         opSendmessagePO.setFailure(new Long(failureNum));
         opSendmessagePO.setCreateTime(new Date());
