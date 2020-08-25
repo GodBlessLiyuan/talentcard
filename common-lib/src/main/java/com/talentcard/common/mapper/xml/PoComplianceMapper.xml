@@ -204,7 +204,7 @@
         SELECT
         c.cert_id as certId, c.talent_id as talentId
         FROM
-        po_compliance p, t_talent t, t_cert_approval c
+        po_compliance p, t_talent t, t_cert_approval_pass_record c
         <where>
             p.talent_id = t.talent_id and t.talent_id = c.talent_id
             <if test="pid != null and pid !=''">and  p.policy_id = #{pid,jdbcType=BIGINT}</if>
