@@ -4,19 +4,20 @@ import com.github.pagehelper.Page;
 import com.talentcard.common.bo.ApplyNumCountBO;
 import com.talentcard.common.bo.HavingApprovePolicyBO;
 import com.talentcard.common.bo.PolicyApplyBO;
+import com.talentcard.common.dto.ApplyNumCountDTO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
-import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
-import com.talentcard.common.dto.ApplyNumCountDTO;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.IBestPolicyToTalentService;
 import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IPolicyApplyService;
+import com.talentcard.web.service.ITalentService;
 import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.PolicyApplyDetailVO;
@@ -47,8 +48,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     private PolicyApprovalMapper policyApprovalMapper;
     @Resource
     private TalentMapper talentMapper;
-    @Autowired
-    private RoleMapper roleMapper;
+
     private static final String[] EXPORT_TITLES = {"序号", "政策名称", "政策编号", "申请人", "申请时间", "状态", "银行卡号",
             "开户行名", "持卡人"};
     @Autowired
@@ -59,6 +59,8 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     UserMapper userMapper;
     @Autowired
     private IBestPolicyToTalentService iBestPolicyToTalentService;
+    @Autowired
+    private ITalentService iTalentService;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap) {
@@ -111,8 +113,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         /**
          * 更新政策适配用户表
          */
-        iBestPolicyToTalentService.updatePOCompliance(applyPO.getTalentId(),applyPO.getPolicyId(),status);
-
+        iBestPolicyToTalentService.updatePOCompliance(applyPO.getTalentId(), applyPO.getPolicyId(), status);
 
         //用消息模板推送微信消息
         TalentPO talentPO = talentMapper.selectByPrimaryKey(applyPO.getTalentId());
@@ -137,6 +138,10 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         MessageUtil.sendTemplateMessage(messageDTO);
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyApply,
                 "审批用户\"%s\"的政策申请", talentPO.getName());
+
+
+        this.iTalentService.clearRedisCache(talentPO.getOpenId());
+
         return new ResultVO(1000);
     }
 
@@ -239,7 +244,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         /**
          * 更新政策适配用户表
          */
-        iBestPolicyToTalentService.updatePOCompliance(policyApplyPO.getTalentId(),policyApplyPO.getPolicyId(),policyApplyPO.getStatus());
+        iBestPolicyToTalentService.updatePOCompliance(policyApplyPO.getTalentId(), policyApplyPO.getPolicyId(), policyApplyPO.getStatus());
 
         /**
          * 用模版推送消息
@@ -270,6 +275,9 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         String detail = "撤销人才\"%s\"的政策申请“" + policyApplyPO.getPolicyName() + "”";
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentPolicyManager,
                 OpsRecordMenuConstant.S_PolicyApply, detail, talentPO.getName());
+
+        this.iTalentService.clearRedisCache(talentPO.getOpenId());
+
         return new ResultVO(1000);
     }
 }

@@ -2,6 +2,7 @@ package com.talentcard.web.service.impl;
 
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.web.service.IBestPolicyToTalentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,10 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
      */
     @Autowired
     private PoStatisticsMapper poStatisticsMapper;
+    @Autowired
+    private RedisMapUtil redisMapUtil;
+    @Autowired
+    private TalentMapper talentMapper;
 
 
     @Async("asyncTaskExecutor")
@@ -139,6 +144,11 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
          */
         for (Long talentId : allTalent) {
             bestTalent(talentId, allPolicy);
+
+            TalentPO po = talentMapper.selectByPrimaryKey(talentId);
+            if (po != null) {
+                redisMapUtil.del(po.getOpenId());
+            }
         }
 
         updatePolicyStatistics(allPolicy);
@@ -187,6 +197,12 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
         }
 
         bestTalent(talentId, allPolicy);
+
+        TalentPO po = talentMapper.selectByPrimaryKey(talentId);
+        if (po != null) {
+            redisMapUtil.del(po.getOpenId());
+        }
+
         /**
          * 更新政策对应的统计信息
          */
@@ -196,6 +212,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
 
     /**
      * 更新政策对应的统计信息
+     *
      * @param allPolicy
      * @return
      */
@@ -523,6 +540,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
 
     /**
      * 更新人才政策匹配表
+     *
      * @param talentId
      * @param policyId
      * @return

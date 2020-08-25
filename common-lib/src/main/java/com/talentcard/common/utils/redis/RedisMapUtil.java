@@ -32,7 +32,7 @@ public class RedisMapUtil {
      */
     public void hset(String key, String field, String value) {
         redisTemplate.opsForHash().put(key, field, value);
-        redisTemplate.expire(key, 10, TimeUnit.MINUTES);
+        redisTemplate.expire(key, 1, TimeUnit.HOURS);
     }
 
     /**
