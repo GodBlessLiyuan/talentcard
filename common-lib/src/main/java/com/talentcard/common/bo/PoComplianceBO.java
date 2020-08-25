@@ -50,4 +50,8 @@ public class PoComplianceBO extends PoCompliancePO {
      * 开户行名
      */
     private String bankName;
+    /**
+     * openid
+     */
+    private String openId;
 }

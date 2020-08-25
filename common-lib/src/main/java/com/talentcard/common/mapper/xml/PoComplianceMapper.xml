@@ -180,7 +180,7 @@
     </select>
     <!--符合条件人数首页数据查询-->
     <sql id="pageQuery_Column_List">
-    p.policy_id as policyId, p.talent_id as talentId, p.apply_time as applyTime, p.status as status, t.name as name, t.sex as sex, t.work_unit as workUnit, t.phone as phone
+    p.policy_id as policyId, p.talent_id as talentId, p.apply_time as applyTime, p.status as status, t.name as name, t.sex as sex, t.work_unit as workUnit, t.phone as phone, t.open_id as openId
     </sql>
     <select id="pageQuery" parameterType="java.util.Map" resultType="com.talentcard.common.bo.PoComplianceBO">
         SELECT
@@ -198,5 +198,16 @@
             <if test="endDate != null and endDate !=''">AND p.apply_time <![CDATA[<=]]> DATE_FORMAT(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')</if>
         </where>
         ORDER BY FIND_IN_SET(p.`status`,'3,0,1,2') asc, p.apply_time desc
+    </select>
+    <!--通过pid查询认证id接口-->
+    <select id="queryCertId" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.CertApprovalPassRecordPO">
+        SELECT
+        c.cert_id as certId, c.talent_id as talentId
+        FROM
+        po_compliance p, t_talent t, t_cert_approval c
+        <where>
+            p.talent_id = t.talent_id and t.talent_id = c.talent_id
+            <if test="pid != null and pid !=''">and  p.policy_id = #{pid,jdbcType=BIGINT}</if>
+        </where>
     </select>
 </mapper>

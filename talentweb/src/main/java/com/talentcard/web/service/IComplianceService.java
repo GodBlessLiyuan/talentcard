@@ -20,4 +20,5 @@ public interface IComplianceService {
     ResultVO exportExcel(Map<String, Object> reqData, HttpServletResponse response);
     ResultVO pushRecordQuery(Long pId);
     ResultVO push(HttpSession session,Map<String, Object> reqData);
+    ResultVO queryCertId(Map<String, Object> reqData);
 }

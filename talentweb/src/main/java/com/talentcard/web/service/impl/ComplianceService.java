@@ -13,6 +13,7 @@ import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.service.IComplianceService;
 import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IWxOfficalAccountService;
+import com.talentcard.web.vo.CerIdVO;
 import com.talentcard.web.vo.ComplianceNumVO;
 import com.talentcard.web.vo.ComplianceVO;
 import com.talentcard.web.vo.PushRecordVO;
@@ -215,5 +216,10 @@ public class ComplianceService implements IComplianceService {
         return new ResultVO(1000);
     }
 
+    @Override
+    public ResultVO queryCertId(Map<String, Object> reqData) {
+        CertApprovalPassRecordPO po = complianceMapper.queryCertId(reqData);
+        return new ResultVO(1000, CerIdVO.convert(po));
+    }
 
 }
