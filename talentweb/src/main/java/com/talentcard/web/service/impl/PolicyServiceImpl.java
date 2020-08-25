@@ -194,10 +194,10 @@ public class PolicyServiceImpl implements IPolicyService {
         policyMapper.updateByPrimaryKeySelective(policyPO);
         if (upDown == 1) {
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
-                    "上架政策\"%s\"", policyPO.getName());
+                    "上架政策\"%s\"", policyPO.getName()+":"+policyPO.getNum());
         } else if (upDown == 2) {
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
-                    "下架政策\"%s\"", policyPO.getName());
+                    "下架政策\"%s\"", policyPO.getName()+":"+policyPO.getNum());
         }
 
         /**
