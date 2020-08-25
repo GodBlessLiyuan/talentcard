@@ -8,7 +8,6 @@ import com.talentcard.web.utils.AccessTokenUtil;
 import com.talentcard.web.utils.RequestUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,12 +58,8 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword2("申请后可享受政策补贴，请及时申请哦~");
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
 
-        String res = sendTemplateMessage(messageDTO, notApplyPolicy);
-        if(StringUtils.isEmpty(res)){
-            return -1;
-        }
         try {
-            int result = Integer.valueOf(res);
+            int result = sendTemplateMessage(messageDTO, notApplyPolicy);
             return result;
         }catch (Exception e){
             logger.error("send message for not apply talent is error {}",e);
@@ -73,9 +68,9 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
     }
 
 
-    public String sendTemplateMessage(MessageDTO messageDTO, String template) {
+    public int sendTemplateMessage(MessageDTO messageDTO, String template) {
         if (messageDTO == null) {
-            return "";
+            return -1;
         }
         String at = AccessTokenUtil.getAccessToken();
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + at;
@@ -121,6 +116,8 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         JSONObject jsonObject = JSONObject.fromObject(weChatTemDto);
         String data = jsonObject.toString();
         String result = RequestUtil.post(url, data);
-        return result;
+        com.alibaba.fastjson.JSONObject object = com.alibaba.fastjson.JSONObject.parseObject(result);
+
+        return object.getInteger("errcode");
     }
 }
