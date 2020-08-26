@@ -513,7 +513,8 @@
         select
         p.name as policyName, p.num as num, p.start_time as startTime,
         p.end_time as endTime, pt.p_type_name as policyTypeName, r.name as roleName,
-        p.update_time as updateTime, p.up_down as upDown, p.policy_id as policyId
+        p.update_time as updateTime, p.up_down as upDown, p.policy_id as policyId,
+        pt.status as policyTypeUpDown
         from t_policy p
         left join t_role r
         on p.role_id = r.role_id
@@ -603,7 +604,7 @@
     <select id="findHavingApprovePolicy" resultType="com.talentcard.common.bo.HavingApprovePolicyBO">
     select
     approval.create_time as createTime, p.name as name, p.num as num, u.name as userName,
-    approval.result as result, approval.opinion as opinion, approval.update_time as updateTime
+    pa.status as result, approval.opinion as opinion, approval.update_time as updateTime
     from t_policy p
     left join t_policy_apply pa
     on p.policy_id = pa.policy_id

@@ -103,10 +103,10 @@ public class PolicyServiceImpl implements IPolicyService {
     public ResultVO update(HttpSession session, PolicyDTO dto) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
-        if (userId == null) {
-            // 用户过期
-            return ResultVO.notLogin();
-        }
+//        if (userId == null) {
+//            // 用户过期
+//            return ResultVO.notLogin();
+//        }
         Long policyId = dto.getPid();
         PolicyPO po = policyMapper.selectByPrimaryKey(policyId);
         if (null == po) {

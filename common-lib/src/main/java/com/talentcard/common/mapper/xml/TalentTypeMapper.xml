@@ -143,7 +143,7 @@
 
     <select id="selectByAllType" resultType="Long" parameterType="java.util.Map">
         select DISTINCT talent_id from t_talent_type
-        <where>
+        <trim prefix="WHERE" prefixOverrides="OR">
             <if test="card != null">
                 card_id in
                 <foreach collection="card" item="ca" index="index" open="(" close=")" separator=",">
@@ -151,41 +151,41 @@
                 </foreach>
             </if>
             <if test="category != null">
-                or
+                OR
                 category_id in
                 <foreach collection="category" item="cat" index="index" open="(" close=")" separator=",">
                     #{cat}
                 </foreach>
             </if>
             <if test="education != null">
-                or
+                OR
                 education_id in
                 <foreach collection="education" item="ed" index="index" open="(" close=")" separator=",">
                     #{ed}
                 </foreach>
             </if>
             <if test="title != null">
-                or
+                OR
                 title_id in
                 <foreach collection="title" item="ti" index="index" open="(" close=")" separator=",">
                     #{ti}
                 </foreach>
             </if>
             <if test="quality != null">
-                or
+                OR
                 quality in
                 <foreach collection="quality" item="qu" index="index" open="(" close=")" separator=",">
                     #{qu}
                 </foreach>
             </if>
             <if test="honour != null">
-                or
+                OR
                 honour_id in
                 <foreach collection="honour" item="ho" index="index" open="(" close=")" separator=",">
                     #{ho}
                 </foreach>
             </if>
-        </where>
+        </trim>
     </select>
 
     <select id="selectByNotType" resultType="Long" parameterType="java.util.Map">
