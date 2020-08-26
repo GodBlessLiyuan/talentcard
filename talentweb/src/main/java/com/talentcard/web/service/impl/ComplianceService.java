@@ -94,8 +94,7 @@ public class ComplianceService implements IComplianceService {
     public ResultVO exportExcel(Map<String, Object> reqData, HttpServletResponse response) {
         List<PoComplianceBO> bos = complianceMapper.pageQuery(reqData);
         //遍历取出人才政策id查出政策权益名称和政策权益编号和政策资金放入对应的BO对象中
-        for (PoComplianceBO poComplianceBO :
-                bos) {
+        for (PoComplianceBO poComplianceBO : bos) {
             PolicyPO policyPo = policyMapper.selectByPrimaryKey(poComplianceBO.getPolicyId());
             poComplianceBO.setPolicyName(policyPo.getName());
             poComplianceBO.setPolicyNum(policyPo.getNum());
