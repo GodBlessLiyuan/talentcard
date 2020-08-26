@@ -514,12 +514,14 @@
         p.name as policyName, p.num as num, p.start_time as startTime,
         p.end_time as endTime, pt.p_type_name as policyTypeName, r.name as roleName,
         p.update_time as updateTime, p.up_down as upDown, p.policy_id as policyId,
-        pt.status as policyTypeUpDown
+        pt.status as policyTypeUpDown, ps.total as meetConditionNumber
         from t_policy p
         left join t_role r
         on p.role_id = r.role_id
         left join po_type pt
         on p.p_tId = pt.p_tId
+        left join po_statistics ps
+        on p.policy_id = ps.policy_id
         where p.dr = 1
         <if test="start != null and start !=''">
             and <![CDATA[p.update_time >= #{start}]]>
