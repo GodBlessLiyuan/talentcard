@@ -18,7 +18,6 @@ import com.talentcard.web.vo.ComplianceNumVO;
 import com.talentcard.web.vo.ComplianceVO;
 import com.talentcard.web.vo.PushRecordVO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,7 +69,14 @@ public class ComplianceService implements IComplianceService {
     public ResultVO queryNum(Map<String, Object> reqData) {
         PoStatisticsPO po = poStatisticsMapper.selectByPrimaryKey(Long.parseLong(reqData.get("pid").toString()));
         if (po == null) {
-            return new ResultVO(1001);//未查到
+            ComplianceNumVO complianceNumVO = new ComplianceNumVO();
+            complianceNumVO.setPid(Long.parseLong(reqData.get("pid").toString()));
+            complianceNumVO.setNapply(0L);
+            complianceNumVO.setNapproval(0L);
+            complianceNumVO.setPass(0L);
+            complianceNumVO.setReject(0L);
+            complianceNumVO.setTotal(0L);
+            return new ResultVO(1000, complianceNumVO);//未查到
         }
         return new ResultVO(1000, ComplianceNumVO.convert(po));
     }
