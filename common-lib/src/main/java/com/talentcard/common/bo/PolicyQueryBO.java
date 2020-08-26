@@ -37,6 +37,8 @@ public class PolicyQueryBO {
 //    private Integer meetConditionNumber;
     //状态
     private Byte status;
+    //政策大类上下架
+    private Byte policyTypeUpDown;
 
     public static List<PolicyQueryBO> setUpStatus(List<PolicyQueryBO> policyQueryBOList) {
         if (policyQueryBOList == null) {
@@ -61,6 +63,10 @@ public class PolicyQueryBO {
                     //可申请
                     policyQueryBO.setStatus((byte) 1);
                 }
+            }
+            if(policyQueryBO.getPolicyTypeUpDown()==2){
+                policyQueryBO.setPolicyTypeName(policyQueryBO.getPolicyTypeName()+"（已下架）");
+
             }
         }
         return policyQueryBOList;
