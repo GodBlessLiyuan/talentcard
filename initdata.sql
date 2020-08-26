@@ -69,8 +69,11 @@ INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (48, 'editPolicyType');
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (49, 'policyTypeQuery');
 
 /*角色：主要是超级管理员和运营人员*/
-INSERT INTO `t_role`(`role_id`, `name`, `extra`, `create_time`) VALUES (1, '超级管理员', NULL, '2020-04-17 14:06:25');
-INSERT INTO `t_role`(`role_id`, `name`, `extra`, `create_time`) VALUES (2, '运营人员', NULL, '2020-04-17 14:06:44');
+INSERT INTO `talentcard`.`t_role`(`role_id`, `name`, `extra`, `create_time`, `role_type`) VALUES (1, '超级管理员', NULL, '2020-04-17 14:06:25', 1);
+INSERT INTO `talentcard`.`t_role`(`role_id`, `name`, `extra`, `create_time`, `role_type`) VALUES (2, '运营人员', NULL, '2020-04-17 14:06:44', 1);
+INSERT INTO `talentcard`.`t_role`(`role_id`, `name`, `extra`, `create_time`, `role_type`) VALUES (3, '组织部', NULL, '2020-08-26 15:21:03', 2);
+INSERT INTO `talentcard`.`t_role`(`role_id`, `name`, `extra`, `create_time`, `role_type`) VALUES (4, '人社局', NULL, '2020-07-31 15:21:14', 2);
+
 
 /*角色权限表*/
 /*超管*/
