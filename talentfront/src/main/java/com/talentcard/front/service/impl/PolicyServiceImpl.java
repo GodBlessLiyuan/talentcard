@@ -58,6 +58,7 @@ public class PolicyServiceImpl implements IPolicyService {
     private PoComplianceMapper poComplianceMapper;
     @Autowired
     private PoTypeExcludeMapper poTypeExcludeMapper;
+
     @Override
     public ResultVO policies(String openid) {
         TalentPO talentPO = talentMapper.queryByOpenid(openid);
@@ -407,7 +408,9 @@ public class PolicyServiceImpl implements IPolicyService {
             return new ResultVO(2500);
         }
         BankInfoBO bankInfoBO = bankMapper.findBankInfo(talentPO.getTalentId());
-        bankInfoBO.setTalentName(talentPO.getName());
+        if (bankInfoBO != null) {
+            bankInfoBO.setTalentName(talentPO.getName());
+        }
         return new ResultVO(1000, bankInfoBO);
     }
 
