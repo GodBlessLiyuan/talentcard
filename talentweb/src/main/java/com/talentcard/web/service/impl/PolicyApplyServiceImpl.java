@@ -49,8 +49,8 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     @Resource
     private TalentMapper talentMapper;
 
-    private static final String[] EXPORT_TITLES = {"序号", "政策名称", "政策编号", "申请人", "申请时间", "状态", "银行卡号",
-            "开户行名", "持卡人"};
+    private static final String[] EXPORT_TITLES = {"序号", "政策名称", "政策编号", "申请人", "申请状态", "银行卡号",
+            "开户行名", "持卡人", "政策资金", "申请时间"};
     @Autowired
     private ILogService logService;
     @Autowired
