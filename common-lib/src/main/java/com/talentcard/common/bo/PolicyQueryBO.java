@@ -34,7 +34,7 @@ public class PolicyQueryBO {
     //上下架
     private Byte upDown;
     //符合条件人数
-//    private Integer meetConditionNumber;
+    private Integer meetConditionNumber;
     //状态
     private Byte status;
     //政策大类上下架
