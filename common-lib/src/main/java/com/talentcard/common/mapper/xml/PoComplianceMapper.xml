@@ -190,6 +190,7 @@
         po_compliance p, t_talent t
         <where>
             p.talent_id = t.talent_id
+            and p.status != 10
             <if test="pid != null and pid !=''">and  p.policy_id = #{pid,jdbcType=BIGINT}</if>
             <if test="name != null and name !=''">and t.name like '%' #{name,jdbcType=CHAR} '%'</if>
             <if test="wunit != null and wunit !=''">and t.work_unit like '%' #{wunit,jdbcType=CHAR} '%'</if>
@@ -207,7 +208,7 @@
         FROM
         po_compliance p, t_talent t, t_cert_approval_pass_record c
         <where>
-            p.talent_id = t.talent_id and t.talent_id = c.talent_id and p.status != 10
+            p.talent_id = t.talent_id and t.talent_id = c.talent_id
             <if test="pid != null and pid !=''">and  p.policy_id = #{pid,jdbcType=BIGINT}</if>
         </where>
     </select>
