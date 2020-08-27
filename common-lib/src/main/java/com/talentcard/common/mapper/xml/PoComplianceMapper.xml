@@ -165,7 +165,7 @@
         left join t_policy p
         on poc.policy_id = p.policy_id
         where
-        (poc.status = 0 or poc.status = 3 or poc.status = 10)
+        (poc.status = 0 or  poc.status = 2 or poc.status = 3 or poc.status = 10)
         and poc.talent_id = #{talentId,jdbcType=BIGINT}
         and poc.year = #{year,jdbcType=INTEGER}
         order by poc.status asc, p.end_time asc
