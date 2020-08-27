@@ -92,7 +92,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
                 titleString = titleString + profTitlePOList.get(i).getCategory() + ",";
 
                 TalentTypePO talentTypePO = new TalentTypePO();
-                talentTypePO.setCategoryId((long) profTitlePOList.get(i).getCategory());
+                talentTypePO.setTitleId(profTitlePOList.get(i).getCategory());
                 talentTypePO.setType((byte) 4);
                 talentTypePO.setTalentId(talentId);
                 talentTypePOS.add(talentTypePO);
@@ -110,7 +110,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
                 qualityString = qualityString + profQualityPOList.get(i).getCategory() + ",";
 
                 TalentTypePO talentTypePO = new TalentTypePO();
-                talentTypePO.setCategoryId((long) profQualityPOList.get(i).getCategory());
+                talentTypePO.setQuality(profQualityPOList.get(i).getCategory());
                 talentTypePO.setType((byte) 5);
                 talentTypePO.setTalentId(talentId);
                 talentTypePOS.add(talentTypePO);
@@ -128,7 +128,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
                 honourString = honourString + talentHonourPOList.get(i).getHonourId() + ",";
 
                 TalentTypePO talentTypePO = new TalentTypePO();
-                talentTypePO.setCategoryId(talentHonourPOList.get(i).getHonourId());
+                talentTypePO.setHonourId(talentHonourPOList.get(i).getHonourId());
                 talentTypePO.setType((byte) 6);
                 talentTypePO.setTalentId(talentId);
                 talentTypePOS.add(talentTypePO);

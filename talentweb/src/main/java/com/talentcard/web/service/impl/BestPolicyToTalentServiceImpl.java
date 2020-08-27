@@ -427,6 +427,8 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                 }
             }
 
+            logger.info("pTid:{} applyPolicyId:{}", pTid,applyPolicyId);
+
             if (applyPolicyId != 0) {
                 for (PolicyPO po : policyPOS) {
                     if (oneApplyMapPolicy.containsKey(po.getPolicyId())) {
@@ -450,7 +452,8 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                         if (oneApplyMapPolicy.containsKey(po.getPolicyId())) {
                             PoCompliancePO poCompliancePO = oneApplyMapPolicy.get(po.getPolicyId());
                             if (poCompliancePO != null) {
-                                if (poCompliancePO.getStatus() != 0) {
+                                if (poCompliancePO.getStatus() == 10) {
+                                    poCompliancePO.setStatus((byte)0);
                                     this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
                                 }
                             }
@@ -476,6 +479,19 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                                 List<PoCompliancePO> poCompliancePOS = new ArrayList<>(1);
                                 poCompliancePOS.add(poCompliancePO);
                                 oneApplyTypeToPolicy.put(po.getPTid(), poCompliancePOS);
+                            }
+                        }
+                    } else {
+                        /**
+                         * 当存在历史政策记录时，删除未申请和不可申请状态的政策
+                         */
+                        if(oneApplyMapPolicy.containsKey(po.getPolicyId())){
+                            PoCompliancePO poCompliancePO = oneApplyMapPolicy.get(po.getPolicyId());
+                            if (poCompliancePO != null) {
+                                if (poCompliancePO.getStatus() != 1 && poCompliancePO.getStatus() != 3) {
+                                    this.poComplianceMapper.deleteByPrimaryKey(poCompliancePO.getPCoId());
+                                    oneApplyMapPolicy.remove(po.getPolicyId());
+                                }
                             }
                         }
                     }
