@@ -19,6 +19,7 @@ public class PolicyApplyBO extends PolicyApplyPO {
     private String bankNum;
     private String bankName;
     private String roleName;
+    private double initialFunds;
     private List<AnnexPO> annexes;
     private List<PolicyApprovalPO> approval;
 }
