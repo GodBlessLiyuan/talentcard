@@ -105,6 +105,26 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
             poTypeExcludePO.setPTid2(ptId);
             poTypeExcludeMapper.insert(poTypeExcludePO);
         }
+        //更新政策类型表中的互斥id字段，将互斥表中的关联关系进行回显
+        //首先将政策类型表中的所有政策类型id查出来
+        List<PolicyTypeBO> policyTypeBOs1 = poTypeMapper.queryExIdAndName();
+        //遍历这些政策类型id，进行互斥表中的有哪些互斥id进行查询出来，并更新大搜政策类型表中
+        PoTypePO poForUPdateEId = new PoTypePO();//新建pojo对象用来临时存储将要更新的数据
+        for (PolicyTypeBO policyTypeBO : policyTypeBOs1) {
+            //根据政策类型id查询互斥表中互斥的有哪些字段
+            List<PoTypeExcludePO> poTypeExcludePOS = poTypeExcludeMapper.queryExId(policyTypeBO.getPTid());
+            //遍历这些互斥id，取出拼接成”，“分割的字符串
+            String[] eIdsArry = new String[poTypeExcludePOS.size()];
+            for (int i = 0; i < eIdsArry.length; i++) {
+                eIdsArry[i] = poTypeExcludePOS.get(i).getPTid2().toString();
+            }
+            //查询出所有的互斥id进行拼接
+            String exIds = String.join(",", eIdsArry);
+            //将拼接后的互斥id更新到政策类型表中进行回显
+            poForUPdateEId.setPTid(policyTypeBO.getPTid());
+            poForUPdateEId.setExcludeId(exIds);
+            poTypeMapper.updateByPrimaryKeySelective(poForUPdateEId);
+        }
         return new ResultVO(1000);
     }
 
@@ -200,10 +220,10 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
         }
         if (po.getStatus() == 1) {
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
-                    "上架政策\"%s\"", poTypePO.getPTypeName());
+                    "上架政策类型\"%s\"", poTypePO.getPTypeName());
         } else if (po.getStatus()  == 2) {
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
-                    "下架政策\"%s\"", poTypePO.getPTypeName());
+                    "下架政策类型\"%s\"", poTypePO.getPTypeName());
         }
         return new ResultVO(1000);
     }
