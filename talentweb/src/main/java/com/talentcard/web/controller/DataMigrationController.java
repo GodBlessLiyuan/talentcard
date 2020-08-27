@@ -99,7 +99,7 @@ public class DataMigrationController {
         if (!StringUtils.equals(s_token, token)) {
             return new ResultVO(2000);
         }
-        iBestPolicyToTalentService.asynBestPolicy();
+        iBestPolicyToTalentService.asynBestPolicyForTalent(5L);
         return new ResultVO(1000, "success");
     }
 
