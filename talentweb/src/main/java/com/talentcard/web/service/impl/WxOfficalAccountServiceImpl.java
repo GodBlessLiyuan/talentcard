@@ -51,7 +51,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         //openId
         messageDTO.setOpenid(openId);
 
-        String first = String.format("您好，您符合“{%s}”条件，但系统暂未收到您的申请，申请后可享受政策补贴", policyName);
+        String first = String.format("您好，您符合“%s”条件，但系统暂未收到您的申请，申请后可享受政策补贴", policyName);
         messageDTO.setFirst(first);
         //信息类型
         messageDTO.setKeyword1("未申请");

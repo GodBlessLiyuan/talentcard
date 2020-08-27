@@ -514,7 +514,7 @@
         p.name as policyName, p.num as num, p.start_time as startTime,
         p.end_time as endTime, pt.p_type_name as policyTypeName, r.name as roleName,
         p.update_time as updateTime, p.up_down as upDown, p.policy_id as policyId,
-        pt.status as policyTypeUpDown, ps.total as meetConditionNumber
+        pt.status as policyTypeUpDown, ps.total as meetConditionNumber, pt.p_type_name as poTypeName
         from t_policy p
         left join t_role r
         on p.role_id = r.role_id

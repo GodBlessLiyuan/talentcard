@@ -176,12 +176,7 @@ public class ComplianceService implements IComplianceService {
         int failureNum = 0;
         //将推送的记录下来取到插入统计表后的数据获得SendId在进行插入，不然有关联关系插入不进去
         List<OpMessRecordPO> opMessRecordPOList = new ArrayList<>();
-        for (PoComplianceBO poComplianceBO :
-                bos) {
-            PolicyPO policyPo = policyMapper.selectByPrimaryKey(poComplianceBO.getPolicyId());
-            poComplianceBO.setPolicyName(policyPo.getName());
-            poComplianceBO.setPolicyNum(policyPo.getNum());
-            poComplianceBO.setPolicyFunds(policyPo.getFunds());
+        for (PoComplianceBO poComplianceBO : bos) {
             Long talentId = poComplianceBO.getTalentId();
             TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
             String openId = talentPO.getOpenId();

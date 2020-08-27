@@ -50,7 +50,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     private TalentMapper talentMapper;
 
     private static final String[] EXPORT_TITLES = {"序号", "政策名称", "政策编号", "申请人", "申请状态", "银行卡号",
-            "开户行名", "持卡人", "政策资金", "申请时间"};
+            "开户行名", "持卡人", "政策资金（元）", "申请时间"};
     @Autowired
     private ILogService logService;
     @Autowired
@@ -114,6 +114,11 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
          * 更新政策适配用户表
          */
         iBestPolicyToTalentService.updatePOCompliance(applyPO.getTalentId(), applyPO.getPolicyId(), status);
+
+        /**
+         * 政策修改后，需要重新匹配用户信息
+         */
+        iBestPolicyToTalentService.asynBestPolicyForTalent(applyPO.getTalentId());
 
         //用消息模板推送微信消息
         TalentPO talentPO = talentMapper.selectByPrimaryKey(applyPO.getTalentId());
