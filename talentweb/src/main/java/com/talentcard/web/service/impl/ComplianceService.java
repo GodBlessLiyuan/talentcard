@@ -137,7 +137,7 @@ public class ComplianceService implements IComplianceService {
             contents[num][1] = bo.getPolicyName();
             contents[num][2] = bo.getPolicyNum();
             contents[num][3] = bo.getName();
-            Byte status = bo.getStatus();
+            String status = String.valueOf(bo.getStatus());
             String statusString = "";
             if ("11".equals(status)) {
                 statusString = "未申请";
