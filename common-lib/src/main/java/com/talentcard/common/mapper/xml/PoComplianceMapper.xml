@@ -207,7 +207,7 @@
         FROM
         po_compliance p, t_talent t, t_cert_approval_pass_record c
         <where>
-            p.talent_id = t.talent_id and t.talent_id = c.talent_id
+            p.talent_id = t.talent_id and t.talent_id = c.talent_id and p.status != 10
             <if test="pid != null and pid !=''">and  p.policy_id = #{pid,jdbcType=BIGINT}</if>
         </where>
     </select>
