@@ -31,7 +31,7 @@ public class ExportCertInfoBO extends TalentCertificationInfoPO {
     /**
      * 驾证件类型
      */
-    private Byte cadType;
+    private Byte cardType;
     /**
      * 现工作单位
      */
