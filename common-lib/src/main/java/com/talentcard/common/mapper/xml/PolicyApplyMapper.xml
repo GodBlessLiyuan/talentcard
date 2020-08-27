@@ -275,7 +275,7 @@
     <select id="queryBankByTalentId" parameterType="java.lang.Long" resultType="com.talentcard.common.bo.PoComplianceBO">
         select
         b.bank_id as bankId, b.num as bankNum, b.name as bankName
-        from t_bank b left join t_policy_apply on  p.pa_id=b.pa_id
+        from t_bank b left join t_policy_apply p on p.pa_id=b.pa_id
         <where>
            <if test="paId != null and paId != ''">
             and p.talent_id= #{paId,jdbcType=BIGINT}
