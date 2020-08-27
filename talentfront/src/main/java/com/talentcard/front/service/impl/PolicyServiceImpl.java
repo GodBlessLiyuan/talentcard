@@ -290,7 +290,8 @@ public class PolicyServiceImpl implements IPolicyService {
         /**
          * 当用户没有符合条件的政策时，提示对应政策
          */
-        int res = updatePOCompliance(talentPO.getTalentId(), policyPO.getPolicyId(), 3);
+        Date current = new Date();
+        int res = updatePOCompliance(talentPO.getTalentId(), policyPO.getPolicyId(), 3 ,current);
         if (res == -1) {
             return new ResultVO(1002);
         }
@@ -307,13 +308,13 @@ public class PolicyServiceImpl implements IPolicyService {
         applyPO.setTalentName(talentPO.getName());
         applyPO.setPolicyId(dto.getPid());
         applyPO.setPolicyName(policyPO.getName());
-        applyPO.setCreateTime(new Date());
+        applyPO.setCreateTime(current);
         applyPO.setStatus((byte) 3);
         policyApplyMapper.insert(applyPO);
 
         PolicyApprovalPO approvalPO = new PolicyApprovalPO();
         approvalPO.setPaId(applyPO.getPaId());
-        approvalPO.setCreateTime(new Date());
+        approvalPO.setCreateTime(current);
         approvalPO.setType((byte) 1);
         policyApprovalMapper.insert(approvalPO);
 
@@ -422,7 +423,7 @@ public class PolicyServiceImpl implements IPolicyService {
      * @param policyId
      * @return -1：没有找到匹配的政策信息
      */
-    private int updatePOCompliance(Long talentId, Long policyId, int status) {
+    private int updatePOCompliance(Long talentId, Long policyId, int status, Date current) {
         /**
          * 同步政策申请表到符合政策条件的记录表中
          */
@@ -437,6 +438,7 @@ public class PolicyServiceImpl implements IPolicyService {
         if (poCompliancePOS != null && poCompliancePOS.size() > 0) {
             for (PoCompliancePO poCompliancePO : poCompliancePOS) {
                 poCompliancePO.setStatus((byte) status);
+                poCompliancePO.setApplyTime(current);
                 this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
                 return 0;
             }

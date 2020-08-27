@@ -8,4 +8,9 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface PoStatisticsMapper extends BaseMapper<PoStatisticsPO, Long> {
+    /**
+     * 删除所有的统计数据
+     * @return
+     */
+    int deleteAll();
 }

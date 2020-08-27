@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.EvFrontendEventApprovalMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.EvFrontendEventApprovalPO">
+    <id column="approval_id" jdbcType="BIGINT" property="approvalId" />
+    <result column="fe_id" jdbcType="BIGINT" property="feId" />
+    <result column="use_id" jdbcType="BIGINT" property="useId" />
+    <result column="username" jdbcType="CHAR" property="username" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="result" jdbcType="TINYINT" property="result" />
+    <result column="opinion" jdbcType="CHAR" property="opinion" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    approval_id, fe_id, use_id, username, create_time, `type`, update_time, `result`, 
+    opinion
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ev_frontend_event_approval
+    where approval_id = #{approvalId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ev_frontend_event_approval
+    where approval_id = #{approvalId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.EvFrontendEventApprovalPO">
+    insert into ev_frontend_event_approval (approval_id, fe_id, use_id, 
+      username, create_time, `type`, 
+      update_time, `result`, opinion
+      )
+    values (#{approvalId,jdbcType=BIGINT}, #{feId,jdbcType=BIGINT}, #{useId,jdbcType=BIGINT}, 
+      #{username,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{type,jdbcType=TINYINT}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{result,jdbcType=TINYINT}, #{opinion,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvFrontendEventApprovalPO">
+    insert into ev_frontend_event_approval
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="approvalId != null">
+        approval_id,
+      </if>
+      <if test="feId != null">
+        fe_id,
+      </if>
+      <if test="useId != null">
+        use_id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="result != null">
+        `result`,
+      </if>
+      <if test="opinion != null">
+        opinion,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="approvalId != null">
+        #{approvalId,jdbcType=BIGINT},
+      </if>
+      <if test="feId != null">
+        #{feId,jdbcType=BIGINT},
+      </if>
+      <if test="useId != null">
+        #{useId,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=TINYINT},
+      </if>
+      <if test="opinion != null">
+        #{opinion,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.EvFrontendEventApprovalPO">
+    update ev_frontend_event_approval
+    <set>
+      <if test="feId != null">
+        fe_id = #{feId,jdbcType=BIGINT},
+      </if>
+      <if test="useId != null">
+        use_id = #{useId,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null">
+        `result` = #{result,jdbcType=TINYINT},
+      </if>
+      <if test="opinion != null">
+        opinion = #{opinion,jdbcType=CHAR},
+      </if>
+    </set>
+    where approval_id = #{approvalId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.EvFrontendEventApprovalPO">
+    update ev_frontend_event_approval
+    set fe_id = #{feId,jdbcType=BIGINT},
+      use_id = #{useId,jdbcType=BIGINT},
+      username = #{username,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `type` = #{type,jdbcType=TINYINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      `result` = #{result,jdbcType=TINYINT},
+      opinion = #{opinion,jdbcType=CHAR}
+    where approval_id = #{approvalId,jdbcType=BIGINT}
+  </update>
+</mapper>

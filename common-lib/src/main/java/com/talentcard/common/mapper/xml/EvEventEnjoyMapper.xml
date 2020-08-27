@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.EvEventEnjoyMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.EvEventEnjoyPO">
+    <id column="ee_id" jdbcType="BIGINT" property="eeId" />
+    <result column="event_id" jdbcType="BIGINT" property="eventId" />
+    <result column="card_id" jdbcType="BIGINT" property="cardId" />
+    <result column="category" jdbcType="BIGINT" property="category" />
+    <result column="education" jdbcType="INTEGER" property="education" />
+    <result column="title" jdbcType="INTEGER" property="title" />
+    <result column="quality" jdbcType="INTEGER" property="quality" />
+    <result column="honour" jdbcType="BIGINT" property="honour" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ee_id, event_id, card_id, category, education, title, quality, honour, `type`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ev_event_enjoy
+    where ee_id = #{eeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ev_event_enjoy
+    where ee_id = #{eeId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.EvEventEnjoyPO">
+    insert into ev_event_enjoy (ee_id, event_id, card_id, 
+      category, education, title, 
+      quality, honour, `type`
+      )
+    values (#{eeId,jdbcType=BIGINT}, #{eventId,jdbcType=BIGINT}, #{cardId,jdbcType=BIGINT}, 
+      #{category,jdbcType=BIGINT}, #{education,jdbcType=INTEGER}, #{title,jdbcType=INTEGER}, 
+      #{quality,jdbcType=INTEGER}, #{honour,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvEventEnjoyPO">
+    insert into ev_event_enjoy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eeId != null">
+        ee_id,
+      </if>
+      <if test="eventId != null">
+        event_id,
+      </if>
+      <if test="cardId != null">
+        card_id,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="education != null">
+        education,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="quality != null">
+        quality,
+      </if>
+      <if test="honour != null">
+        honour,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eeId != null">
+        #{eeId,jdbcType=BIGINT},
+      </if>
+      <if test="eventId != null">
+        #{eventId,jdbcType=BIGINT},
+      </if>
+      <if test="cardId != null">
+        #{cardId,jdbcType=BIGINT},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=BIGINT},
+      </if>
+      <if test="education != null">
+        #{education,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=INTEGER},
+      </if>
+      <if test="quality != null">
+        #{quality,jdbcType=INTEGER},
+      </if>
+      <if test="honour != null">
+        #{honour,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.EvEventEnjoyPO">
+    update ev_event_enjoy
+    <set>
+      <if test="eventId != null">
+        event_id = #{eventId,jdbcType=BIGINT},
+      </if>
+      <if test="cardId != null">
+        card_id = #{cardId,jdbcType=BIGINT},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=BIGINT},
+      </if>
+      <if test="education != null">
+        education = #{education,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=INTEGER},
+      </if>
+      <if test="quality != null">
+        quality = #{quality,jdbcType=INTEGER},
+      </if>
+      <if test="honour != null">
+        honour = #{honour,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+    </set>
+    where ee_id = #{eeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.EvEventEnjoyPO">
+    update ev_event_enjoy
+    set event_id = #{eventId,jdbcType=BIGINT},
+      card_id = #{cardId,jdbcType=BIGINT},
+      category = #{category,jdbcType=BIGINT},
+      education = #{education,jdbcType=INTEGER},
+      title = #{title,jdbcType=INTEGER},
+      quality = #{quality,jdbcType=INTEGER},
+      honour = #{honour,jdbcType=BIGINT},
+      `type` = #{type,jdbcType=TINYINT}
+    where ee_id = #{eeId,jdbcType=BIGINT}
+  </update>
+</mapper>
