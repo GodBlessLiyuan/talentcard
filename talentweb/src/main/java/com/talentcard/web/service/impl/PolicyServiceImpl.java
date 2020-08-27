@@ -205,7 +205,6 @@ public class PolicyServiceImpl implements IPolicyService {
          */
         iBestPolicyToTalentService.asynBestPolicy();
 
-
         return new ResultVO(1000);
     }
 

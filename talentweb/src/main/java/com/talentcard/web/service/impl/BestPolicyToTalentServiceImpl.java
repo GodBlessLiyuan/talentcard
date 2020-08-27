@@ -151,6 +151,8 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
             }
         }
 
+        this.deletePolicy();
+
         updatePolicyStatistics(allPolicy);
         return;
     }
@@ -581,6 +583,16 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
             }
         }
 
+        return 0;
+    }
+
+    /**
+     * 删除政策统计信息
+     * @return
+     */
+    @Override
+    public int deletePolicy(){
+        this.poStatisticsMapper.deleteAll();
         return 0;
     }
 

@@ -26,4 +26,10 @@ public interface IBestPolicyToTalentService {
      * @return
      */
     int updatePOCompliance(Long talentId, Long policyId, byte status);
+
+    /**
+     * 删除政策统计信息
+     * @return
+     */
+    int deletePolicy();
 }

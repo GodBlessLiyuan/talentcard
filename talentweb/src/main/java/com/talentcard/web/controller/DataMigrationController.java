@@ -383,12 +383,13 @@ public class DataMigrationController {
 
     /**
      * 人才申请的符合条件的政策信息进行同步
+     *
      * @param token
      * @return
      */
     @RequestMapping("policyApprovalToPoCompliance")
     public ResultVO policyApprovalToPoCompliance(@RequestParam(value = "token") String token) {
-        if(!StringUtils.equals(s_token,token)){
+        if (!StringUtils.equals(s_token, token)) {
             return new ResultVO(2000);
         }
 
@@ -406,6 +407,9 @@ public class DataMigrationController {
             if (pos != null && pos.size() > 0) {
                 PoCompliancePO poCompliancePO = pos.get(0);
                 poCompliancePO.setStatus(po.getStatus());
+                if (poCompliancePO.getApplyTime() == null) {
+                    poCompliancePO.setApplyTime(po.getCreateTime());
+                }
                 this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
             } else {
                 PoCompliancePO poCompliancePO = new PoCompliancePO();

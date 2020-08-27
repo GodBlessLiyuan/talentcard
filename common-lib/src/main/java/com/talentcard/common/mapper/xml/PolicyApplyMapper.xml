@@ -24,6 +24,7 @@
         <result column="bank_num" jdbcType="CHAR" property="bankNum"/>
         <result column="bank_name" jdbcType="CHAR" property="bankName"/>
         <result column="role_name" jdbcType="CHAR" property="roleName"/>
+        <result column="funds" jdbcType="DOUBLE" property="initialFunds"/>
         <collection property="approval" ofType="com.talentcard.common.pojo.PolicyApprovalPO">
             <id column="approval_id" jdbcType="BIGINT" property="approvalId"/>
             <result column="approval_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -224,7 +225,8 @@
                pal.type,
                pal.username,
                pal.result,
-               pal.opinion
+               pal.opinion,
+               p.funds as funds
         from t_policy_apply pa
                  left join t_bank b on pa.pa_id = b.pa_id
                  left join t_policy_approval pal on pa.pa_id = pal.pa_id

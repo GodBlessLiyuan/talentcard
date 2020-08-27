@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.EvFrontendEventMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.EvFrontendEventPO">
+    <id column="fe_id" jdbcType="BIGINT" property="feId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="event_field" jdbcType="BIGINT" property="eventField" />
+    <result column="time" jdbcType="CHAR" property="time" />
+    <result column="duration" jdbcType="DOUBLE" property="duration" />
+    <result column="date" jdbcType="CHAR" property="date" />
+    <result column="sponsor" jdbcType="CHAR" property="sponsor" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="contact_person" jdbcType="CHAR" property="contactPerson" />
+    <result column="phone" jdbcType="CHAR" property="phone" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="talent_id" jdbcType="BIGINT" property="talentId" />
+    <result column="open_id" jdbcType="CHAR" property="openId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    fe_id, `name`, event_field, `time`, duration, `date`, sponsor, detail, contact_person, 
+    phone, picture, talent_id, open_id, `status`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ev_frontend_event
+    where fe_id = #{feId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ev_frontend_event
+    where fe_id = #{feId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.EvFrontendEventPO">
+    insert into ev_frontend_event (fe_id, `name`, event_field, 
+      `time`, duration, `date`, sponsor, 
+      detail, contact_person, phone, 
+      picture, talent_id, open_id, 
+      `status`)
+    values (#{feId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{eventField,jdbcType=BIGINT}, 
+      #{time,jdbcType=CHAR}, #{duration,jdbcType=DOUBLE}, #{date,jdbcType=CHAR}, #{sponsor,jdbcType=CHAR}, 
+      #{detail,jdbcType=VARCHAR}, #{contactPerson,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, 
+      #{picture,jdbcType=VARCHAR}, #{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, 
+      #{status,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvFrontendEventPO">
+    insert into ev_frontend_event
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="feId != null">
+        fe_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="eventField != null">
+        event_field,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="duration != null">
+        duration,
+      </if>
+      <if test="date != null">
+        `date`,
+      </if>
+      <if test="sponsor != null">
+        sponsor,
+      </if>
+      <if test="detail != null">
+        detail,
+      </if>
+      <if test="contactPerson != null">
+        contact_person,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+      <if test="talentId != null">
+        talent_id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="feId != null">
+        #{feId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="eventField != null">
+        #{eventField,jdbcType=BIGINT},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=CHAR},
+      </if>
+      <if test="duration != null">
+        #{duration,jdbcType=DOUBLE},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=CHAR},
+      </if>
+      <if test="sponsor != null">
+        #{sponsor,jdbcType=CHAR},
+      </if>
+      <if test="detail != null">
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPerson != null">
+        #{contactPerson,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=CHAR},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="talentId != null">
+        #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.EvFrontendEventPO">
+    update ev_frontend_event
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="eventField != null">
+        event_field = #{eventField,jdbcType=BIGINT},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=CHAR},
+      </if>
+      <if test="duration != null">
+        duration = #{duration,jdbcType=DOUBLE},
+      </if>
+      <if test="date != null">
+        `date` = #{date,jdbcType=CHAR},
+      </if>
+      <if test="sponsor != null">
+        sponsor = #{sponsor,jdbcType=CHAR},
+      </if>
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPerson != null">
+        contact_person = #{contactPerson,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=CHAR},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="talentId != null">
+        talent_id = #{talentId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where fe_id = #{feId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.EvFrontendEventPO">
+    update ev_frontend_event
+    set `name` = #{name,jdbcType=CHAR},
+      event_field = #{eventField,jdbcType=BIGINT},
+      `time` = #{time,jdbcType=CHAR},
+      duration = #{duration,jdbcType=DOUBLE},
+      `date` = #{date,jdbcType=CHAR},
+      sponsor = #{sponsor,jdbcType=CHAR},
+      detail = #{detail,jdbcType=VARCHAR},
+      contact_person = #{contactPerson,jdbcType=CHAR},
+      phone = #{phone,jdbcType=CHAR},
+      picture = #{picture,jdbcType=VARCHAR},
+      talent_id = #{talentId,jdbcType=BIGINT},
+      open_id = #{openId,jdbcType=CHAR},
+      `status` = #{status,jdbcType=TINYINT}
+    where fe_id = #{feId,jdbcType=BIGINT}
+  </update>
+</mapper>

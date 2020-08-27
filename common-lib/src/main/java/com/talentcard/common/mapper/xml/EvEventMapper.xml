@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.EvEventMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.EvEventPO">
+    <id column="event_id" jdbcType="BIGINT" property="eventId" />
+    <result column="up_down" jdbcType="TINYINT" property="upDown" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="num" jdbcType="CHAR" property="num" />
+    <result column="sponsor" jdbcType="CHAR" property="sponsor" />
+    <result column="time" jdbcType="CHAR" property="time" />
+    <result column="duration" jdbcType="DOUBLE" property="duration" />
+    <result column="date" jdbcType="CHAR" property="date" />
+    <result column="event_field" jdbcType="BIGINT" property="eventField" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="process" jdbcType="VARCHAR" property="process" />
+    <result column="target" jdbcType="VARCHAR" property="target" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="role_id" jdbcType="BIGINT" property="roleId" />
+    <result column="if_quota" jdbcType="TINYINT" property="ifQuota" />
+    <result column="male_quota" jdbcType="INTEGER" property="maleQuota" />
+    <result column="female_quota" jdbcType="INTEGER" property="femaleQuota" />
+    <result column="event_quota" jdbcType="INTEGER" property="eventQuota" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="dr" jdbcType="TINYINT" property="dr" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    event_id, up_down, `name`, num, sponsor, `time`, duration, `date`, event_field, detail, 
+    `process`, target, contact, picture, role_id, if_quota, male_quota, female_quota, 
+    event_quota, update_time, `status`, dr, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ev_event
+    where event_id = #{eventId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ev_event
+    where event_id = #{eventId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.EvEventPO">
+    insert into ev_event (event_id, up_down, `name`, 
+      num, sponsor, `time`, duration, 
+      `date`, event_field, detail, 
+      `process`, target, contact, 
+      picture, role_id, if_quota, 
+      male_quota, female_quota, event_quota, 
+      update_time, `status`, dr, 
+      create_time)
+    values (#{eventId,jdbcType=BIGINT}, #{upDown,jdbcType=TINYINT}, #{name,jdbcType=CHAR}, 
+      #{num,jdbcType=CHAR}, #{sponsor,jdbcType=CHAR}, #{time,jdbcType=CHAR}, #{duration,jdbcType=DOUBLE}, 
+      #{date,jdbcType=CHAR}, #{eventField,jdbcType=BIGINT}, #{detail,jdbcType=VARCHAR}, 
+      #{process,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
+      #{picture,jdbcType=VARCHAR}, #{roleId,jdbcType=BIGINT}, #{ifQuota,jdbcType=TINYINT}, 
+      #{maleQuota,jdbcType=INTEGER}, #{femaleQuota,jdbcType=INTEGER}, #{eventQuota,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvEventPO">
+    insert into ev_event
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eventId != null">
+        event_id,
+      </if>
+      <if test="upDown != null">
+        up_down,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="sponsor != null">
+        sponsor,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="duration != null">
+        duration,
+      </if>
+      <if test="date != null">
+        `date`,
+      </if>
+      <if test="eventField != null">
+        event_field,
+      </if>
+      <if test="detail != null">
+        detail,
+      </if>
+      <if test="process != null">
+        `process`,
+      </if>
+      <if test="target != null">
+        target,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="picture != null">
+        picture,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="ifQuota != null">
+        if_quota,
+      </if>
+      <if test="maleQuota != null">
+        male_quota,
+      </if>
+      <if test="femaleQuota != null">
+        female_quota,
+      </if>
+      <if test="eventQuota != null">
+        event_quota,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="dr != null">
+        dr,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eventId != null">
+        #{eventId,jdbcType=BIGINT},
+      </if>
+      <if test="upDown != null">
+        #{upDown,jdbcType=TINYINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=CHAR},
+      </if>
+      <if test="sponsor != null">
+        #{sponsor,jdbcType=CHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=CHAR},
+      </if>
+      <if test="duration != null">
+        #{duration,jdbcType=DOUBLE},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=CHAR},
+      </if>
+      <if test="eventField != null">
+        #{eventField,jdbcType=BIGINT},
+      </if>
+      <if test="detail != null">
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="process != null">
+        #{process,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="ifQuota != null">
+        #{ifQuota,jdbcType=TINYINT},
+      </if>
+      <if test="maleQuota != null">
+        #{maleQuota,jdbcType=INTEGER},
+      </if>
+      <if test="femaleQuota != null">
+        #{femaleQuota,jdbcType=INTEGER},
+      </if>
+      <if test="eventQuota != null">
+        #{eventQuota,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        #{dr,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.EvEventPO">
+    update ev_event
+    <set>
+      <if test="upDown != null">
+        up_down = #{upDown,jdbcType=TINYINT},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=CHAR},
+      </if>
+      <if test="sponsor != null">
+        sponsor = #{sponsor,jdbcType=CHAR},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=CHAR},
+      </if>
+      <if test="duration != null">
+        duration = #{duration,jdbcType=DOUBLE},
+      </if>
+      <if test="date != null">
+        `date` = #{date,jdbcType=CHAR},
+      </if>
+      <if test="eventField != null">
+        event_field = #{eventField,jdbcType=BIGINT},
+      </if>
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="process != null">
+        `process` = #{process,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        target = #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null">
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="ifQuota != null">
+        if_quota = #{ifQuota,jdbcType=TINYINT},
+      </if>
+      <if test="maleQuota != null">
+        male_quota = #{maleQuota,jdbcType=INTEGER},
+      </if>
+      <if test="femaleQuota != null">
+        female_quota = #{femaleQuota,jdbcType=INTEGER},
+      </if>
+      <if test="eventQuota != null">
+        event_quota = #{eventQuota,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="dr != null">
+        dr = #{dr,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where event_id = #{eventId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.EvEventPO">
+    update ev_event
+    set up_down = #{upDown,jdbcType=TINYINT},
+      `name` = #{name,jdbcType=CHAR},
+      num = #{num,jdbcType=CHAR},
+      sponsor = #{sponsor,jdbcType=CHAR},
+      `time` = #{time,jdbcType=CHAR},
+      duration = #{duration,jdbcType=DOUBLE},
+      `date` = #{date,jdbcType=CHAR},
+      event_field = #{eventField,jdbcType=BIGINT},
+      detail = #{detail,jdbcType=VARCHAR},
+      `process` = #{process,jdbcType=VARCHAR},
+      target = #{target,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=VARCHAR},
+      role_id = #{roleId,jdbcType=BIGINT},
+      if_quota = #{ifQuota,jdbcType=TINYINT},
+      male_quota = #{maleQuota,jdbcType=INTEGER},
+      female_quota = #{femaleQuota,jdbcType=INTEGER},
+      event_quota = #{eventQuota,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=TINYINT},
+      dr = #{dr,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where event_id = #{eventId,jdbcType=BIGINT}
+  </update>
+</mapper>
