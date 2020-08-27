@@ -25,7 +25,8 @@ public class PolicyQueryBO {
     private Date startTime;
     //申请时间结束时间
     private Date endTime;
-    //政策类型名称
+    //政策类型名称：如果下架，则增加（已下架）
+    //用于query中的查询结果
     private String policyTypeName;
     //责任单位
     private String roleName;
@@ -39,7 +40,8 @@ public class PolicyQueryBO {
     private Byte status;
     //政策大类上下架
     private Byte policyTypeUpDown;
-
+    //政策类型名称
+    private String poTypeName;
     public static List<PolicyQueryBO> setUpStatus(List<PolicyQueryBO> policyQueryBOList) {
         if (policyQueryBOList == null) {
             return null;
