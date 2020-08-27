@@ -115,6 +115,11 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
          */
         iBestPolicyToTalentService.updatePOCompliance(applyPO.getTalentId(), applyPO.getPolicyId(), status);
 
+        /**
+         * 政策修改后，需要重新匹配用户信息
+         */
+        iBestPolicyToTalentService.asynBestPolicyForTalent(applyPO.getTalentId());
+
         //用消息模板推送微信消息
         TalentPO talentPO = talentMapper.selectByPrimaryKey(applyPO.getTalentId());
         MessageDTO messageDTO = new MessageDTO();
