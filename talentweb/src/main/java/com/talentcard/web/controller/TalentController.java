@@ -1,18 +1,18 @@
 package com.talentcard.web.controller;
 
+import com.talentcard.common.bo.ExportCertInfoBO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.BatchCertificateDTO;
 import com.talentcard.web.service.ITalentService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -226,5 +226,10 @@ public class TalentController {
     public ResultVO getAllCert(@RequestParam(value = "talentId") String talentId) {
         return iTalentService.getAllCert(talentId);
 
+    }
+
+    @GetMapping("exporCertInfo")
+    public ResultVO exporCertInfo(HttpServletResponse response) {
+      return iTalentService.exporCertInfo(response);
     }
 }

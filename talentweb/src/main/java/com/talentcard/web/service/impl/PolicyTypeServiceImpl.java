@@ -101,13 +101,9 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
             poTypeExcludePO.setPTid1(ptId);
             poTypeExcludePO.setPTid2(Long.parseLong(dto.getEids()[i]));
             poTypeExcludeMapper.insert(poTypeExcludePO);
-            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                    , "互斥表新增数据进行的插入\"%s\"", poTypeExcludePO.getPTid1().toString() + ";" + poTypeExcludePO.getPTid2().toString());
             poTypeExcludePO.setPTid1(Long.parseLong(dto.getEids()[i]));
             poTypeExcludePO.setPTid2(ptId);
             poTypeExcludeMapper.insert(poTypeExcludePO);
-            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                    , "互斥表新增数据进行的插入\"%s\"", poTypeExcludePO.getPTid1().toString() + ";" + poTypeExcludePO.getPTid2().toString());
         }
         return new ResultVO(1000);
     }
@@ -129,29 +125,24 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
             return ResultVO.notLogin();
         }
         //将前台dto中更改的数据转换成po进行更新
+        PoTypePO poTypePO = poTypeMapper.selectByPrimaryKey(dto.getPtid());
         PoTypePO po = buildUpdatePOByDTO(new PoTypePO(), dto);
         poTypeMapper.updateByPrimaryKeySelective(po);
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                , "政策类型数据更新\"%s\"", po.toString());
+                , "编辑政策类型\"%s\"", poTypePO.getPTypeName());
         //取出刚刚插入的政策类型数据的政策类型id
         Long ptId = po.getPTid();
         //更新后删除互斥表中的关联数据
         poTypeExcludeMapper.delete(ptId);
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                , "互斥表中删除更新的关联数据\"%s\"", ptId.toString());
         //构造互斥表中的数据进行插入
         PoTypeExcludePO poTypeExcludePO = new PoTypeExcludePO();
         for (int i = 0; i < dto.getEids().length; i++) {
             poTypeExcludePO.setPTid1(ptId);
             poTypeExcludePO.setPTid2(Long.parseLong(dto.getEids()[i]));
             poTypeExcludeMapper.insert(poTypeExcludePO);
-            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                    , "互斥表新增数据进行的插入\"%s\"", poTypeExcludePO.getPTid1().toString() + ";" + poTypeExcludePO.getPTid2().toString());
             poTypeExcludePO.setPTid1(Long.parseLong(dto.getEids()[i]));
             poTypeExcludePO.setPTid2(ptId);
             poTypeExcludeMapper.insert(poTypeExcludePO);
-            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                    , "互斥表新增数据进行的插入\"%s\"", poTypeExcludePO.getPTid1().toString() + ";" + poTypeExcludePO.getPTid2().toString());
         }
         //更新政策类型表中的互斥id字段，将互斥表中的关联关系进行回显
         //首先将政策类型表中的所有政策类型id查出来
@@ -172,8 +163,6 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
             poForUPdateEId.setPTid(policyTypeBO.getPTid());
             poForUPdateEId.setExcludeId(exIds);
             poTypeMapper.updateByPrimaryKeySelective(poForUPdateEId);
-            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                    , "更新政策类型表中的互斥id进行回显\"%s\"", poForUPdateEId.getExcludeId());
         }
         return new ResultVO(1000);
 
@@ -188,6 +177,7 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
             // 用户过期
             return ResultVO.notLogin();
         }
+        PoTypePO poTypePO = poTypeMapper.selectByPrimaryKey(dto.getPtid());
         PoTypePO po = buildChangeStatusPOByDTO(new PoTypePO(), dto);
         poTypeMapper.updateByPrimaryKeySelective(po);
 
@@ -208,9 +198,13 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
                 }
             }
         }
-
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                , po.getStatus() == 1 ? "上架政策类型:" : "下架政策类型:", po.getPTypeName());
+        if (po.getStatus() == 1) {
+            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
+                    "上架政策\"%s\"", poTypePO.getPTypeName());
+        } else if (po.getStatus()  == 2) {
+            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
+                    "下架政策\"%s\"", poTypePO.getPTypeName());
+        }
         return new ResultVO(1000);
     }
 
