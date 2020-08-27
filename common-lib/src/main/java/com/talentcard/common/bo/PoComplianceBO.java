@@ -54,4 +54,8 @@ public class PoComplianceBO extends PoCompliancePO {
      * openid
      */
     private String openId;
+    /**
+     * bankid
+     */
+    private String bankId;
 }
