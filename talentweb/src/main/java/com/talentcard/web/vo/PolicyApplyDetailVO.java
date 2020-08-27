@@ -65,6 +65,11 @@ public class PolicyApplyDetailVO implements Serializable {
     private List<HavingApprovePolicyBO> havingApprovePolicyBOList;
 
     /**
+     * 资金
+     */
+    private double initialFunds;
+
+    /**
      * bo 转 vo
      *
      * @param bo
@@ -78,6 +83,7 @@ public class PolicyApplyDetailVO implements Serializable {
         vo.setStatus(bo.getStatus() == 1 ? "已同意" : bo.getStatus() == 2 ? "已驳回" : "待审批");
         vo.setPname(bo.getPolicyName());
         vo.setPnum(bo.getNum());
+        vo.setInitialFunds(bo.getInitialFunds());
 
         if (null != bo.getBankNum()) {
             BankVO bankVO = new BankVO();
