@@ -138,4 +138,9 @@
       `type` = #{type,jdbcType=TINYINT}
     where ee_id = #{eeId,jdbcType=BIGINT}
   </update>
+  <delete id="deleteByEventId">
+    delete from  ev_event_enjoy
+    where event_id = #{eventId,jdbcType=BIGINT}
+  </delete>
+
 </mapper>

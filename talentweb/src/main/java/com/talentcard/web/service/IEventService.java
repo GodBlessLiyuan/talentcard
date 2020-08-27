@@ -14,4 +14,6 @@ import javax.xml.transform.Result;
  */
 public interface IEventService {
     ResultVO add(HttpSession httpSession, EventDTO eventDTO);
+
+    ResultVO edit(HttpSession httpSession, EventDTO eventDTO);
 }
