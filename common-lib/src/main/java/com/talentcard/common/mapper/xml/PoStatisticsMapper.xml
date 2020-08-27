@@ -22,6 +22,9 @@
     delete from po_statistics
     where policy_id = #{policyId,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteAll" >
+    delete from po_statistics
+  </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.PoStatisticsPO">
     insert into po_statistics (policy_id, total, not_approval, 
       not_apply, pass, reject
