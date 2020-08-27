@@ -165,7 +165,7 @@
         left join t_policy p
         on poc.policy_id = p.policy_id
         where
-        (poc.status = 0 or  poc.status = 2 or poc.status = 3 or poc.status = 10)
+        (poc.status = 11 or  poc.status = 2 or poc.status = 3 or poc.status = 10)
         and poc.talent_id = #{talentId,jdbcType=BIGINT}
         and poc.year = #{year,jdbcType=INTEGER}
         order by poc.status asc, p.end_time asc
@@ -199,7 +199,7 @@
             <if test="beginDate != null and beginDate !=''">AND p.apply_time <![CDATA[>=]]> DATE_FORMAT(#{beginDate,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')</if>
             <if test="endDate != null and endDate !=''">AND p.apply_time <![CDATA[<=]]> DATE_FORMAT(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')</if>
         </where>
-        ORDER BY FIND_IN_SET(p.`status`,'3,0,1,2') asc, p.apply_time desc
+        ORDER BY FIND_IN_SET(p.`status`,'3,11,1,2') asc, p.apply_time desc
     </select>
     <!--通过pid查询认证id接口-->
     <select id="queryCertId" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.CertApprovalPassRecordPO">

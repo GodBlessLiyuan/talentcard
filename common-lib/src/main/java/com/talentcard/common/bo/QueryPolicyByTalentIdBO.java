@@ -48,7 +48,7 @@ public class QueryPolicyByTalentIdBO {
                 continue;
             }
             status = queryPolicyByTalentIdBO.getStatus();
-            if (status == 0) {
+            if (status == 11) {
                 if (queryPolicyByTalentIdBO.getStartTime() == null || queryPolicyByTalentIdBO.getEndTime() == null) {
                     continue;
                 }
