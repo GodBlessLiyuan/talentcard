@@ -41,7 +41,7 @@
         </collection>
     </resultMap>
     <sql id="Base_Column_List">
-    pa_id, talent_id, talent_name, policy_id, policy_name, create_time, `status`, actual_funds, 
+    pa_id, talent_id, talent_name, policy_id, policy_name, create_time, `status`, actual_funds,
     policy_approval_id
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -55,12 +55,12 @@
     where pa_id = #{paId,jdbcType=BIGINT}
   </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="paId" parameterType="com.talentcard.common.pojo.PolicyApplyPO">
-    insert into t_policy_apply (pa_id, talent_id, talent_name, 
-      policy_id, policy_name, create_time, 
+    insert into t_policy_apply (pa_id, talent_id, talent_name,
+      policy_id, policy_name, create_time,
       `status`, actual_funds, policy_approval_id
       )
-    values (#{paId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{talentName,jdbcType=CHAR}, 
-      #{policyId,jdbcType=BIGINT}, #{policyName,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+    values (#{paId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, #{talentName,jdbcType=CHAR},
+      #{policyId,jdbcType=BIGINT}, #{policyName,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
       #{status,jdbcType=TINYINT}, #{actualFunds,jdbcType=DECIMAL}, #{policyApprovalId,jdbcType=BIGINT}
       )
   </insert>
@@ -195,7 +195,7 @@
             and p.role_id = #{responsibleUnitId,jdbcType=BIGINT}
         </if>
         <if test="roleType ==2">
-        and p.role_id = #{roleId,jdbcType=BIGINT}
+            and p.role_id = #{roleId,jdbcType=BIGINT}
         </if>
         order by pa.`status` = 3 desc, pa.create_time desc
     </select>
@@ -274,14 +274,15 @@
 
     <select id="queryBankByTalentId" parameterType="java.lang.Long" resultType="com.talentcard.common.bo.PoComplianceBO">
         select
-        b.num as bankNum, b.name as bankName
-        from t_policy_apply p,t_bank b
+        b.bank_id as bankId, b.num as bankNum, b.name as bankName
+        from t_bank b left join t_policy_apply
         <where>
-        p.pa_id=b.pa_id
-        <if test="paId != null and paId != ''">
-            and p.talent_id= #{paId,jdbcType=BIGINT}
-        </if>
+            p.pa_id=b.pa_id
+            <if test="paId != null and paId != ''">
+                and p.talent_id= #{paId,jdbcType=BIGINT}
+            </if>
         </where>
+        order by b.bank_id desc
     </select>
     <select id="selectAll"  resultMap="BaseResultMap">
         select
