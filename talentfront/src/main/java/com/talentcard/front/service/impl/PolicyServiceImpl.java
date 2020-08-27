@@ -9,6 +9,7 @@ import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.dto.PolicyApplyDTO;
+import com.talentcard.front.service.IBestPolicyToTalentService;
 import com.talentcard.front.service.IPolicyService;
 import com.talentcard.front.vo.PolicyAppliesVO;
 import com.talentcard.front.vo.PolicyApplyDetailVO;
@@ -58,6 +59,8 @@ public class PolicyServiceImpl implements IPolicyService {
     private PoComplianceMapper poComplianceMapper;
     @Autowired
     private PoTypeExcludeMapper poTypeExcludeMapper;
+    @Autowired
+    private IBestPolicyToTalentService iBestPolicyToTalentService;
 
     @Override
     public ResultVO policies(String openid) {
@@ -336,6 +339,8 @@ public class PolicyServiceImpl implements IPolicyService {
             }
             annexMapper.batchInsert(annexPOs);
         }
+
+        iBestPolicyToTalentService.asynBestPolicyForTalent(talentPO.getTalentId());
 
         return new ResultVO(1000);
     }
