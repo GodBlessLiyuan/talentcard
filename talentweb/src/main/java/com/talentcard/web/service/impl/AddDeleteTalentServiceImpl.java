@@ -67,6 +67,10 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
     private byte ADD_VERIFY = 1;
     @Autowired
     private ILogService logService;
+    @Autowired
+    private CategoryMapper categoryMapper;
+    @Autowired
+    private HonourMapper honourMapper;
 
     @Override
     public ResultVO addEducation(HttpSession httpSession, EducationDTO educationDTO) {
@@ -159,8 +163,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "新增人才\"%s\"的学历信息",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "新增人才\"%s\"的学历信息", talentPO.getName());
         return new ResultVO(1000);
 
     }
@@ -250,8 +254,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "新增人才\"%s\"的职业资格信息",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "新增人才\"%s\"的职业资格信息", talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -340,8 +344,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "新增人才\"%s\"的职称信息",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "新增人才\"%s\"的职称信息", talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -412,9 +416,10 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String honour = EditTalentConstant.honourMap.get(talentHonourDTO.getHonourId().toString());
-        if (StringUtils.isEmpty(honour)) {
-            honour = "";
+        HonourPO honourPO = honourMapper.selectByPrimaryKey(talentHonourDTO.getHonourId());
+        String honour = "";
+        if (honourPO != null) {
+            honour = honourPO.getName();
         }
         String first = "您好，您的信息已更新，为您新增人才荣誉" + honour;
         messageDTO.setFirst(first);
@@ -431,8 +436,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "新增人才\"%s\"的主要人才荣誉",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "新增人才\"%s\"的主要人才荣誉", talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -509,8 +514,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "删除人才\"%s\"的学历信息",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "删除人才\"%s\"的学历信息", talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -583,8 +588,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "删除人才\"%s\"的职业资格信息",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "删除人才\"%s\"的职业资格信息", talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -653,8 +658,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "删除人才\"%s\"的职称信息",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "删除人才\"%s\"的职称信息", talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -704,9 +709,10 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         //openId
         messageDTO.setOpenid(talentPO.getOpenId());
         //开头
-        String honour = EditTalentConstant.honourMap.get(talentHonourPO.getHonourId().toString());
-        if (StringUtils.isEmpty(honour)) {
-            honour = "";
+        HonourPO honourPO = honourMapper.selectByPrimaryKey(talentHonourPO.getHonourId());
+        String honour = "";
+        if (honourPO != null) {
+            honour = honourPO.getName();
         }
         String first = "您好，您的主要人才荣誉\"" + honour + "\"因不符合条件，已被删除";
         messageDTO.setFirst(first);
@@ -723,8 +729,8 @@ public class AddDeleteTalentServiceImpl implements IAddDeleteTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "删除人才\"%s\"的主要人才荣誉",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "删除人才\"%s\"的主要人才荣誉", talentPO.getName());
         return new ResultVO(1000);
     }
 }
