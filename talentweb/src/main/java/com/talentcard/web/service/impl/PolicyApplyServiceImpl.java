@@ -24,6 +24,7 @@ import com.talentcard.web.vo.PolicyApplyDetailVO;
 import com.talentcard.web.vo.PolicyApplyVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -79,6 +80,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO approval(HttpSession session, Long paid, Byte status, String opinion, BigDecimal actualFunds) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
@@ -108,6 +110,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
 
         applyPO.setPaId(po.getPaId());
         applyPO.setActualFunds(actualFunds);
+        applyPO.setPolicyApprovalId(po.getApprovalId());
         policyApplyMapper.updateByPrimaryKey(applyPO);
 
         /**
