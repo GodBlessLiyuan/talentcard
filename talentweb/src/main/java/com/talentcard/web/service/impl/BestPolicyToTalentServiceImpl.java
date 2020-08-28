@@ -196,24 +196,23 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
 
         }
 
-        Map<Long, PolicyPO> exclude = bestTalent(talentId, allPolicy);
+        bestTalent(talentId, allPolicy);
+
 
         TalentPO po = talentMapper.selectByPrimaryKey(talentId);
         if (po != null) {
             redisMapUtil.del(po.getOpenId());
         }
 
-        /**
-         * 将排除的政策重新计算
-         */
-        if (exclude != null && exclude.size() > 0) {
-            for (Long key : exclude.keySet()) {
-                if (!allPolicy.containsKey(key)) {
-                    allPolicy.put(key, null);
+
+        List<PoStatisticsPO> poStatisticsPOS = this.poStatisticsMapper.selectByMap();
+        if (poStatisticsPOS != null && poStatisticsPOS.size() > 0) {
+            for (PoStatisticsPO po1 : poStatisticsPOS) {
+                if (!allPolicy.containsKey(po1.getPolicyId())) {
+                    allPolicy.put(po1.getPolicyId(), null);
                 }
             }
         }
-
         /**
          * 更新政策对应的统计信息
          */
@@ -268,6 +267,25 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                         }
                     }
                 }
+            } else {
+                PoStatisticsPO b = this.poStatisticsMapper.selectByPrimaryKey(policyId);
+                if (b == null) {
+                    PoStatisticsPO t = new PoStatisticsPO();
+                    t.setTotal(0L);
+                    t.setNotApply(0L);
+                    t.setNotApproval(0L);
+                    t.setPass(0L);
+                    t.setPolicyId(policyId);
+                    t.setReject(0L);
+                    this.poStatisticsMapper.insert(t);
+                } else {
+                    b.setTotal(0L);
+                    b.setNotApply(0L);
+                    b.setNotApproval(0L);
+                    b.setPass(0L);
+                    b.setReject(0L);
+                    this.poStatisticsMapper.updateByPrimaryKey(b);
+                }
             }
         }
 
@@ -309,7 +327,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
      * @param allPolicy
      * @return
      */
-    private Map bestTalent(Long talentId, Map<Long, PolicyPO> allPolicy) {
+    private boolean bestTalent(Long talentId, Map<Long, PolicyPO> allPolicy) {
         /**
          * 获取一个人所有符合条件的政策
          */
@@ -323,7 +341,6 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
         List<Integer> quality = new ArrayList<>(3);
         List<Long> honour = new ArrayList<>(3);
 
-        Map<Long, PolicyPO> excludeMap = new HashMap<>(5);
 
         for (TalentTypePO talentTypePO : talentTypePOS) {
             if (talentTypePO.getType() == 1) {
@@ -396,17 +413,12 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
             if (!allPolicy.containsKey(p1.getPolicyId())) {
                 if (p1.getStatus() != 1 && p1.getStatus() != 3) {
                     this.poComplianceMapper.deleteByPrimaryKey(p1.getPCoId());
-                    if (!excludeMap.containsKey(p1.getPolicyId())) {
-                        excludeMap.put(p1.getPolicyId(), null);
-                    }
+
                 }
                 continue;
             } else if (!onePolicys.contains(p1.getPolicyId())) {
                 if (p1.getStatus() != 1 && p1.getStatus() != 3) {
                     this.poComplianceMapper.deleteByPrimaryKey(p1.getPCoId());
-                    if (!excludeMap.containsKey(p1.getPolicyId())) {
-                        excludeMap.put(p1.getPolicyId(), null);
-                    }
                     continue;
                 }
             }
@@ -573,7 +585,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
             }
         }
 
-        return excludeMap;
+        return true;
     }
 
 

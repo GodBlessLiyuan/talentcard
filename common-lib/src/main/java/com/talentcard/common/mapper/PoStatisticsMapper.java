@@ -3,6 +3,8 @@ package com.talentcard.common.mapper;
 import com.talentcard.common.pojo.PoStatisticsPO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * PoStatisticsMapper继承基类
  */
@@ -13,4 +15,6 @@ public interface PoStatisticsMapper extends BaseMapper<PoStatisticsPO, Long> {
      * @return
      */
     int deleteAll();
+
+    List<PoStatisticsPO> selectByMap();
 }
