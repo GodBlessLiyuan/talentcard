@@ -16,5 +16,4 @@ public interface EvEventTalentMapper extends BaseMapper<EvEventTalentPO, Long> {
                                             @Param("workLocation") String workLocation,
                                             @Param("sex") Byte sex,
                                             @Param("status") Byte status);
-
 }

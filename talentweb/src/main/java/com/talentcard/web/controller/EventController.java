@@ -90,6 +90,8 @@ public class EventController {
                                     @RequestParam(value = "workLocation", defaultValue = "") String workLocation,
                                     @RequestParam(value = "sex", required = false) Byte sex,
                                     @RequestParam(value = "status", required = false) Byte status) {
+        name = name.replaceAll(" ", "");
+        workLocation = workLocation.replaceAll(" ", "");
         return iEventService.queryTalentInfo(pageNum, pageSize, name, workLocation, sex, status);
     }
 }

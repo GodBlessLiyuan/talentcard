@@ -101,4 +101,29 @@
       ee_id = #{eeId,jdbcType=BIGINT}
     where et_id = #{etId,jdbcType=BIGINT}
   </update>
+  <select id="queryTalentInfo" resultType="com.talentcard.common.bo.QueryTalentInfoBO">
+    select
+    t.name as name, t.sex as sex,
+    t.work_location as workLocation, t.phone as phone,
+    concat(c.title, c.initial_word) as talentCard, et.status as status,
+    et.create_time as createTime
+    from ev_event_talent et
+    left join t_talent t
+    on et.talent_id = t.talent_id
+    left join t_card c
+    on t.card_id = c. card_id
+    where
+    <if test="name != null and name !=''">
+    and t.name like '%' #{name, jdbcType=CHAR} '%'
+    </if>
+    <if test="workLocation != null and workLocation !=''">
+      and t.work_location like '%' #{workLocation, jdbcType=CHAR} '%'
+    </if>
+    <if test="sex != null and sex !=''">
+      and t.sex = #{sex, jdbcType=TINYINT}
+    </if>
+    <if test="status != null and status !=''">
+      and et.status = #{status, jdbcType=TINYINT}
+    </if>
+  </select>
 </mapper>

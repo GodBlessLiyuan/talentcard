@@ -1,10 +1,15 @@
 package com.talentcard.web.service.impl;
 
+import com.github.pagehelper.Page;
+import com.talentcard.common.bo.PolicyQueryBO;
+import com.talentcard.common.bo.QueryTalentInfoBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.EvEventEnjoyPO;
 import com.talentcard.common.pojo.EvEventLogPO;
 import com.talentcard.common.pojo.EvEventPO;
 import com.talentcard.common.pojo.UserPO;
+import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.EventDTO;
 import com.talentcard.web.service.IEventService;
@@ -127,7 +132,10 @@ public class EventServiceImpl implements IEventService {
 
     @Override
     public ResultVO queryTalentInfo(int pageNum, int pageSize, String name, String workLocation, Byte sex, Byte status) {
-        return new ResultVO(1000);
+        Page<QueryTalentInfoBO> page = PageHelper.startPage(pageNum, pageSize);
+        List<QueryTalentInfoBO> queryTalentInfoBOList =
+                evEventTalentMapper.queryTalentInfo(name, workLocation, sex, status);
+        return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), queryTalentInfoBOList));
     }
 
     /**
