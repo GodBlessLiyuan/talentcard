@@ -1,5 +1,6 @@
 package com.talentcard.common.mapper;
 
+import com.talentcard.common.bo.ExportCertInfoBO;
 import com.talentcard.common.bo.TalentCertificationBO;
 import com.talentcard.common.pojo.TalentCertificationInfoPO;
 import org.apache.ibatis.annotations.Mapper;
@@ -34,4 +35,10 @@ public interface TalentCertificationInfoMapper extends BaseMapper<TalentCertific
      * @return
      */
     List<TalentCertificationInfoPO> selectAll();
+    /**
+     * 导出人才认证信息
+     *
+     * @return
+     */
+    List<ExportCertInfoBO> exportCertInfo();
 }

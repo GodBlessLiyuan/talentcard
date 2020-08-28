@@ -2,16 +2,12 @@ package com.talentcard.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
-import com.talentcard.common.bo.ActivcateBO;
-import com.talentcard.common.bo.EditTalentRecordBO;
-import com.talentcard.common.bo.TalentBO;
-import com.talentcard.common.bo.TalentCertificationBO;
+import com.talentcard.common.bo.*;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
-import com.talentcard.common.utils.ExcelUtil;
+import com.talentcard.common.utils.*;
 import com.talentcard.common.utils.PageHelper;
-import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
@@ -21,6 +17,7 @@ import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.ITalentInfoCertificationService;
 import com.talentcard.web.service.ITalentService;
+import com.talentcard.web.service.IWxOfficalAccountService;
 import com.talentcard.web.utils.*;
 import com.talentcard.web.vo.EditTalentRecordVO;
 import com.talentcard.web.vo.TalentDetailVO;
@@ -37,9 +34,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.talentcard.common.utils.DateUtil.YMD;
 
 
 /**
@@ -85,6 +86,7 @@ public class TalentServiceImpl implements ITalentService {
     private EditTalentRecordMapper editTalentRecordMapper;
     @Autowired
     private ITalentInfoCertificationService iTalentInfoCertificationService;
+    private static final String[] EXPORT_TITLES = {"序号", "姓名", "证件类型", "证件号码", "现工作单位", "参保单位", "参保时间", "核检时间"};
 
     private static final String[] EXCEL_TITLE = {"姓名", "证件号码"};
     private static final String[] EXCEL_TITLE_RES = {"姓名", "证件号码", "人才卡", "人才类别", "人才荣誉", "认证结果", "说明"};
@@ -669,5 +671,50 @@ public class TalentServiceImpl implements ITalentService {
         map.put("total", editTalentRecordVOS.size());
         map.put("data", editTalentRecordVOS);
         return new ResultVO(1000, map);
+    }
+
+    @Override
+    public ResultVO exporCertInfo(HttpServletResponse response) {
+        List<ExportCertInfoBO> bos = talentCertificationInfoMapper.exportCertInfo();
+        //构造导出Excel文件名称
+        Date dt = new Date();
+        DateFormat df = new SimpleDateFormat("yyyyMMdd");
+        String formatdate = df.format(dt);
+        String fileName = "认证人才信息-" + formatdate;
+        //生成Excel表格
+        ExcelExportUtil.exportExcel(fileName, null, EXPORT_TITLES, this.buildExcelContents(bos), response);
+        return new ResultVO(1000);
+    }
+
+    private String[][] buildExcelContents(List<ExportCertInfoBO> bos) {
+        if (bos == null || bos.size() == 0) {
+            return null;
+        }
+        String[][] contents = new String[bos.size()][EXPORT_TITLES.length];
+        int num = 0;
+        for (ExportCertInfoBO bo : bos) {
+            //增加序号
+            int order = 1;
+            contents[num][0] = Integer.toString(order);
+            contents[num][1] = bo.getName();
+            String cardType="";
+            String cardNum ="";
+            if ("1".equals(bo.getCardType())) {
+                cardType = "身份证";
+                cardNum=bo.getIdCard();
+            } else if ("1".equals(bo.getCardType())) {
+                cardType = "护照";
+                cardNum=bo.getPassport();
+            } else if ("2".equals(bo.getCardType())) {
+                cardType = "驾驶证";
+                cardNum=bo.getDriverCard();
+            }
+            contents[num][2] = cardType;
+            contents[num][3] = cardNum;
+            contents[num][4] = bo.getWorkUnit();
+            num++;
+            order++;
+        }
+        return contents;
     }
 }

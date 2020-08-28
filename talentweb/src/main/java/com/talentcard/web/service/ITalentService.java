@@ -4,6 +4,7 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.BatchCertificateDTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,4 +82,10 @@ public interface ITalentService {
      * @return
      */
     ResultVO getAllCert(String talentId);
+    /**
+     * 获取管理员的操作记录
+     * @param
+     * @return
+     */
+    ResultVO exporCertInfo(HttpServletResponse response);
 }

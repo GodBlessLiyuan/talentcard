@@ -25,11 +25,12 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="dr" jdbcType="TINYINT" property="dr" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
   </resultMap>
   <sql id="Base_Column_List">
     event_id, up_down, `name`, num, sponsor, `time`, duration, `date`, event_field, detail, 
     `process`, target, contact, picture, role_id, if_quota, male_quota, female_quota, 
-    event_quota, update_time, `status`, dr, create_time
+    event_quota, update_time, `status`, dr, create_time, user_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -49,7 +50,7 @@
       picture, role_id, if_quota, 
       male_quota, female_quota, event_quota, 
       update_time, `status`, dr, 
-      create_time)
+      create_time, user_id)
     values (#{eventId,jdbcType=BIGINT}, #{upDown,jdbcType=TINYINT}, #{name,jdbcType=CHAR}, 
       #{num,jdbcType=CHAR}, #{sponsor,jdbcType=CHAR}, #{time,jdbcType=CHAR}, #{duration,jdbcType=DOUBLE}, 
       #{date,jdbcType=CHAR}, #{eventField,jdbcType=BIGINT}, #{detail,jdbcType=VARCHAR}, 
@@ -57,7 +58,7 @@
       #{picture,jdbcType=VARCHAR}, #{roleId,jdbcType=BIGINT}, #{ifQuota,jdbcType=TINYINT}, 
       #{maleQuota,jdbcType=INTEGER}, #{femaleQuota,jdbcType=INTEGER}, #{eventQuota,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvEventPO">
     insert into ev_event
@@ -131,6 +132,9 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="userId != null">
+        user_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="eventId != null">
@@ -201,6 +205,9 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -273,6 +280,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
     </set>
     where event_id = #{eventId,jdbcType=BIGINT}
   </update>
@@ -299,7 +309,28 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=TINYINT},
       dr = #{dr,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=BIGINT}
     where event_id = #{eventId,jdbcType=BIGINT}
   </update>
+
+  <insert id="add"  useGeneratedKeys="true" keyProperty="eventId"
+          parameterType="com.talentcard.common.pojo.EvEventPO">
+    insert into ev_event (event_id, up_down, `name`,
+      num, sponsor, `time`, duration,
+      `date`, event_field, detail,
+      `process`, target, contact,
+      picture, role_id, if_quota,
+      male_quota, female_quota, event_quota,
+      update_time, `status`, dr,
+      create_time, user_id)
+    values (#{eventId,jdbcType=BIGINT}, #{upDown,jdbcType=TINYINT}, #{name,jdbcType=CHAR},
+      #{num,jdbcType=CHAR}, #{sponsor,jdbcType=CHAR}, #{time,jdbcType=CHAR}, #{duration,jdbcType=DOUBLE},
+      #{date,jdbcType=CHAR}, #{eventField,jdbcType=BIGINT}, #{detail,jdbcType=VARCHAR},
+      #{process,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR},
+      #{picture,jdbcType=VARCHAR}, #{roleId,jdbcType=BIGINT}, #{ifQuota,jdbcType=TINYINT},
+      #{maleQuota,jdbcType=INTEGER}, #{femaleQuota,jdbcType=INTEGER}, #{eventQuota,jdbcType=INTEGER},
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT})
+  </insert>
 </mapper>

@@ -7,6 +7,7 @@
 4. ev_frontend_event_approval表：前台活动审批表
 5. ev_event_field表：活动场地表（目前直接数据库人工写入）
 6. ev_event_query表：活动查询表（优化后台查询的记录表）
-7. ev_ev_event_talent：人才活动表
+7. ev_event_talent：人才活动表
+7. ev_event_log：人才活动历史记录表
 
 ### 需要执行的旧数据导入到新的表格的数据 ###

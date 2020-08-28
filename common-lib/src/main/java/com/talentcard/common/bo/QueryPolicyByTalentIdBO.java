@@ -35,6 +35,9 @@ public class QueryPolicyByTalentIdBO {
     public static final Byte WAIT_APPROVAL = 5;
     //不可申请
     public static final Byte UNABLE_APPLY = 10;
+    //已驳回
+    public static final Byte REJECT = 4;
+
     public static List<QueryPolicyByTalentIdBO> setValueActualStatus(List<QueryPolicyByTalentIdBO> queryPolicyByTalentIdBOList) {
         Long current = System.currentTimeMillis();
         Long start;
@@ -67,7 +70,10 @@ public class QueryPolicyByTalentIdBO {
                 //无法申请
             } else if (status == 10) {
                 queryPolicyByTalentIdBO.setActualStatus(QueryPolicyByTalentIdBO.UNABLE_APPLY);
+            } else if (status == 2) {
+                queryPolicyByTalentIdBO.setActualStatus(QueryPolicyByTalentIdBO.REJECT);
             }
+
 
         }
         return queryPolicyByTalentIdBOList;

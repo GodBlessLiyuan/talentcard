@@ -62,5 +62,7 @@ public class EvEventPO implements Serializable {
 
     private Date createTime;
 
+    private Long userId;
+
     private static final long serialVersionUID = 1L;
 }
