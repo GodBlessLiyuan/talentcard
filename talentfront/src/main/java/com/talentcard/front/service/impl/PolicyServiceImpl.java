@@ -342,12 +342,7 @@ public class PolicyServiceImpl implements IPolicyService {
             annexMapper.batchInsert(annexPOs);
         }
 
-        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
-            @Override
-            public void afterCommit() {
-                iBestPolicyToTalentService.asynBestPolicyForTalent(talentPO.getTalentId());
-            }
-        });
+        iBestPolicyToTalentService.asynBestPolicyForTalent(talentPO.getTalentId());
 
         return new ResultVO(1000);
     }

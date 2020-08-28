@@ -7,7 +7,6 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.PoSettingPO;
 import com.talentcard.common.pojo.PoTypePO;
 import com.talentcard.common.pojo.PolicyPO;
-import com.talentcard.common.pojo.RolePO;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.PageHelper;
@@ -20,10 +19,10 @@ import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IPolicyService;
 import com.talentcard.web.utils.PolicyNameUtil;
 import com.talentcard.web.vo.PolicyDetailVO;
-import com.talentcard.web.vo.PolicyVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -34,7 +33,6 @@ import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author: xiahui
@@ -42,6 +40,7 @@ import java.util.Map;
  * @description: 人才政策管理
  * @version: 1.0
  */
+@EnableTransactionManagement
 @Service
 public class PolicyServiceImpl implements IPolicyService {
     @Resource
@@ -177,6 +176,7 @@ public class PolicyServiceImpl implements IPolicyService {
         return new ResultVO<>(1000, filePathConfig.getPublicBasePath() + picture);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVO upDown(HttpSession session, Long policyId, Byte upDown) {
         PolicyPO policyPO = policyMapper.selectByPrimaryKey(policyId);
