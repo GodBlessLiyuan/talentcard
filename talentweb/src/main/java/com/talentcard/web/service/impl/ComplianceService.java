@@ -130,9 +130,9 @@ public class ComplianceService implements IComplianceService {
         }
         String[][] contents = new String[bos.size()][EXPORT_TITLES.length];
         int num = 0;
+        int order = 1;
         for (PoComplianceBO bo : bos) {
-            //增加序号
-            int order = 1;
+
             contents[num][0] = Integer.toString(order);
             contents[num][1] = bo.getPolicyName();
             contents[num][2] = bo.getPolicyNum();
@@ -156,7 +156,9 @@ public class ComplianceService implements IComplianceService {
             if (bo.getApplyTime() != null) {
                 contents[num][9] = DateUtil.date2Str(bo.getApplyTime(), YMD);
             }
+
             num++;
+            //增加序号
             order++;
         }
         return contents;
