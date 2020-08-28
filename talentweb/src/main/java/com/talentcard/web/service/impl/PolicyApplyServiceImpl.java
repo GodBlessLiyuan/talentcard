@@ -106,6 +106,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         po.setResult(status);
         po.setOpinion(opinion);
         po.setActualFunds(actualFunds);
+        po.setUpdateTime(new Date());
         policyApprovalMapper.add(po);
 
         applyPO.setPaId(po.getPaId());
