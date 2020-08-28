@@ -209,8 +209,14 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
             if (null != bo.getBankNum() && !"".equals(bo.getBankNum())) {
                 content[7] = bo.getTalentName();
             }
-            if (bo.getStatus() != null && bo.getStatus() == 1 && bo.getActualFunds() != null) {
-                content[8] = bo.getActualFunds().toString();
+            if (bo.getStatus() != null && bo.getStatus() == 1) {
+                PolicyApprovalPO policyApprovalPO =
+                        policyApprovalMapper.selectByPrimaryKey(bo.getPolicyApprovalId());
+                if (policyApprovalPO != null) {
+                    content[8] = policyApprovalPO.getActualFunds().toString();
+                }else{
+
+                }
             } else {
                 PolicyPO policyPO = policyMapper.selectByPrimaryKey(bo.getPolicyId());
                 if (policyPO != null) {
