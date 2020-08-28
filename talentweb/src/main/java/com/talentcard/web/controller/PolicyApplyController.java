@@ -63,7 +63,7 @@ public class PolicyApplyController {
     }
 
     @RequestMapping("export")
-    public ResultVO export(@RequestParam(value = "start", defaultValue = "") String start,
+    public void export(@RequestParam(value = "start", defaultValue = "") String start,
                            @RequestParam(value = "end", defaultValue = "") String end,
                            @RequestParam(value = "num", defaultValue = "") String num,
                            @RequestParam(value = "name", defaultValue = "") String name,
@@ -78,7 +78,7 @@ public class PolicyApplyController {
         reqMap.put("apply", apply);
         reqMap.put("status", status);
 
-        return iPolicyApplyService.export(reqMap, res);
+        iPolicyApplyService.export(reqMap, res);
     }
 
     @RequestMapping("approval")
