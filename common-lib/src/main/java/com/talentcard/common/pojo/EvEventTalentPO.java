@@ -26,7 +26,9 @@ public class EvEventTalentPO implements Serializable {
 
     private String openId;
 
-    private Long eeId;
+    private Byte status;
+
+    private Long eventId;
 
     private static final long serialVersionUID = 1L;
 }

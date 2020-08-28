@@ -104,6 +104,9 @@ public class EventServiceImpl implements IEventService {
         //日志
         List<EvEventLogPO> evEventLogPOList = evEventLogMapper.findByEventId(eventId);
         eventDetailVO.setEvEventLogPOList(evEventLogPOList);
+        //enjoy信息
+        List<EvEventEnjoyPO> evEventEnjoyPOList = evEventEnjoyMapper.findByEventId(eventId);
+        eventDetailVO = EventDetailVO.setEnjoy(eventDetailVO,evEventEnjoyPOList);
         return new ResultVO(1000, eventDetailVO);
     }
 
@@ -152,45 +155,45 @@ public class EventServiceImpl implements IEventService {
         //        新建setting表
         EvEventEnjoyPO evEventEnjoyPO;
         if (eventDTO.getCardId() != null) {
-            for (String cardId : eventDTO.getCardId()) {
+            for (Long cardId : eventDTO.getCardId()) {
                 evEventEnjoyPO = new EvEventEnjoyPO();
-                evEventEnjoyPO.setCardId(Long.parseLong(cardId));
+                evEventEnjoyPO.setCardId(cardId);
                 evEventEnjoyPO.setEventId(eventId);
                 evEventEnjoyPO.setType((byte) 1);
                 evEventEnjoyMapper.insert(evEventEnjoyPO);
             }
         }
         if (eventDTO.getCategory() != null) {
-            for (String categoryId : eventDTO.getCategory()) {
+            for (Long categoryId : eventDTO.getCategory()) {
                 evEventEnjoyPO = new EvEventEnjoyPO();
-                evEventEnjoyPO.setCategory(Long.parseLong(categoryId));
+                evEventEnjoyPO.setCategory(categoryId);
                 evEventEnjoyPO.setEventId(eventId);
                 evEventEnjoyPO.setType((byte) 2);
                 evEventEnjoyMapper.insert(evEventEnjoyPO);
             }
         }
         if (eventDTO.getEducation() != null) {
-            for (String education : eventDTO.getEducation()) {
+            for (Integer education : eventDTO.getEducation()) {
                 evEventEnjoyPO = new EvEventEnjoyPO();
-                evEventEnjoyPO.setEducation(Integer.parseInt(education));
+                evEventEnjoyPO.setEducation(education);
                 evEventEnjoyPO.setEventId(eventId);
                 evEventEnjoyPO.setType((byte) 3);
                 evEventEnjoyMapper.insert(evEventEnjoyPO);
             }
         }
         if (eventDTO.getTitle() != null) {
-            for (String title : eventDTO.getTitle()) {
+            for (Integer title : eventDTO.getTitle()) {
                 evEventEnjoyPO = new EvEventEnjoyPO();
-                evEventEnjoyPO.setTitle(Integer.parseInt(title));
+                evEventEnjoyPO.setTitle(title);
                 evEventEnjoyPO.setEventId(eventId);
                 evEventEnjoyPO.setType((byte) 4);
                 evEventEnjoyMapper.insert(evEventEnjoyPO);
             }
         }
         if (eventDTO.getQuality() != null) {
-            for (String quality : eventDTO.getQuality()) {
+            for (Integer quality : eventDTO.getQuality()) {
                 evEventEnjoyPO = new EvEventEnjoyPO();
-                evEventEnjoyPO.setQuality(Integer.parseInt(quality));
+                evEventEnjoyPO.setQuality(quality);
                 evEventEnjoyPO.setEventId(eventId);
                 evEventEnjoyPO.setType((byte) 5);
                 evEventEnjoyMapper.insert(evEventEnjoyPO);
