@@ -53,7 +53,7 @@ public class EventDTO {
     /**
      * 可查看与申请此政策权益的人才职业资格IDs
      */
-    private String[] qualityIds;
+    private String[] quality;
     /**
      * 可查看与申请此政策权益的人才荣誉IDs
      */

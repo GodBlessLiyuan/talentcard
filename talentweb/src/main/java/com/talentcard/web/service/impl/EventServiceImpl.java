@@ -183,8 +183,8 @@ public class EventServiceImpl implements IEventService {
                 evEventEnjoyMapper.insert(evEventEnjoyPO);
             }
         }
-        if (eventDTO.getQualityIds() != null) {
-            for (String quality : eventDTO.getQualityIds()) {
+        if (eventDTO.getQuality() != null) {
+            for (String quality : eventDTO.getQuality()) {
                 evEventEnjoyPO = new EvEventEnjoyPO();
                 evEventEnjoyPO.setQuality(Integer.parseInt(quality));
                 evEventEnjoyPO.setEventId(eventId);
