@@ -196,11 +196,22 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
 
         }
 
-        bestTalent(talentId, allPolicy);
+        Map<Long, PolicyPO> exclude = bestTalent(talentId, allPolicy);
 
         TalentPO po = talentMapper.selectByPrimaryKey(talentId);
         if (po != null) {
             redisMapUtil.del(po.getOpenId());
+        }
+
+        /**
+         * 将排除的政策重新计算
+         */
+        if (exclude != null && exclude.size() > 0) {
+            for (Long key : exclude.keySet()) {
+                if (!allPolicy.containsKey(key)) {
+                    allPolicy.put(key, null);
+                }
+            }
         }
 
         /**
@@ -298,7 +309,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
      * @param allPolicy
      * @return
      */
-    private boolean bestTalent(Long talentId, Map<Long, PolicyPO> allPolicy) {
+    private Map bestTalent(Long talentId, Map<Long, PolicyPO> allPolicy) {
         /**
          * 获取一个人所有符合条件的政策
          */
@@ -312,6 +323,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
         List<Integer> quality = new ArrayList<>(3);
         List<Long> honour = new ArrayList<>(3);
 
+        Map<Long, PolicyPO> exclude = new HashMap<>(5);
 
         for (TalentTypePO talentTypePO : talentTypePOS) {
             if (talentTypePO.getType() == 1) {
@@ -384,11 +396,17 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
             if (!allPolicy.containsKey(p1.getPolicyId())) {
                 if (p1.getStatus() != 1 && p1.getStatus() != 3) {
                     this.poComplianceMapper.deleteByPrimaryKey(p1.getPCoId());
+                    if (!exclude.containsKey(p1.getPolicyId())) {
+                        exclude.put(p1.getPolicyId(), null);
+                    }
                 }
                 continue;
-            } else if(!onePolicys.contains(p1.getPolicyId())){
+            } else if (!onePolicys.contains(p1.getPolicyId())) {
                 if (p1.getStatus() != 1 && p1.getStatus() != 3) {
                     this.poComplianceMapper.deleteByPrimaryKey(p1.getPCoId());
+                    if (!exclude.containsKey(p1.getPolicyId())) {
+                        exclude.put(p1.getPolicyId(), null);
+                    }
                     continue;
                 }
             }
@@ -432,7 +450,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                 }
             }
 
-            logger.info("pTid:{} applyPolicyId:{}", pTid,applyPolicyId);
+            logger.info("pTid:{} applyPolicyId:{}", pTid, applyPolicyId);
 
             if (applyPolicyId != 0) {
                 for (PolicyPO po : policyPOS) {
@@ -458,7 +476,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                             PoCompliancePO poCompliancePO = oneApplyMapPolicy.get(po.getPolicyId());
                             if (poCompliancePO != null) {
                                 if (poCompliancePO.getStatus() == 10) {
-                                    poCompliancePO.setStatus((byte)11);
+                                    poCompliancePO.setStatus((byte) 11);
                                     this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
                                 }
                             }
@@ -490,7 +508,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                         /**
                          * 当存在历史政策记录时，删除未申请和不可申请状态的政策
                          */
-                        if(oneApplyMapPolicy.containsKey(po.getPolicyId())){
+                        if (oneApplyMapPolicy.containsKey(po.getPolicyId())) {
                             PoCompliancePO poCompliancePO = oneApplyMapPolicy.get(po.getPolicyId());
                             if (poCompliancePO != null) {
                                 if (poCompliancePO.getStatus() != 1 && poCompliancePO.getStatus() != 3) {
@@ -555,7 +573,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
             }
         }
 
-        return true;
+        return exclude;
     }
 
 
@@ -591,10 +609,11 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
 
     /**
      * 删除政策统计信息
+     *
      * @return
      */
     @Override
-    public int deletePolicy(){
+    public int deletePolicy() {
         this.poStatisticsMapper.deleteAll();
         return 0;
     }
