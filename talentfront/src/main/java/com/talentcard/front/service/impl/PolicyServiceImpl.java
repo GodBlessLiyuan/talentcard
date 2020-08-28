@@ -321,7 +321,7 @@ public class PolicyServiceImpl implements IPolicyService {
         approvalPO.setType((byte) 1);
         policyApprovalMapper.insert(approvalPO);
 
-        if (dto.getCard() != null && dto.getBank() != null && policyPO.getBank() == 1) {
+        if (dto.getCard() != null && dto.getBank() != null) {
             BankPO bankPO = new BankPO();
             bankPO.setNum(dto.getCard());
             bankPO.setName(dto.getBank());
