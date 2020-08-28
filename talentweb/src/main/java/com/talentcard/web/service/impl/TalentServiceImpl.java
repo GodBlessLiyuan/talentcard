@@ -685,7 +685,6 @@ public class TalentServiceImpl implements ITalentService {
         ExcelExportUtil.exportExcel(fileName, null, EXPORT_TITLES, this.buildExcelContents(bos), response);
         return new ResultVO(1000);
     }
-
     private String[][] buildExcelContents(List<ExportCertInfoBO> bos) {
         if (bos == null || bos.size() == 0) {
             return null;
