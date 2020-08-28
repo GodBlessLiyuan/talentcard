@@ -1,9 +1,11 @@
 package com.talentcard.web.service.impl;
 
 import com.talentcard.common.mapper.EvEventEnjoyMapper;
+import com.talentcard.common.mapper.EvEventLogMapper;
 import com.talentcard.common.mapper.EvEventMapper;
 import com.talentcard.common.mapper.UserMapper;
 import com.talentcard.common.pojo.EvEventEnjoyPO;
+import com.talentcard.common.pojo.EvEventLogPO;
 import com.talentcard.common.pojo.EvEventPO;
 import com.talentcard.common.pojo.UserPO;
 import com.talentcard.common.vo.ResultVO;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author ChenXU
@@ -28,6 +31,8 @@ public class EventServiceImpl implements IEventService {
     EvEventMapper evEventMapper;
     @Autowired
     EvEventEnjoyMapper evEventEnjoyMapper;
+    @Autowired
+    EvEventLogMapper evEventLogMapper;
     @Autowired
     UserMapper userMapper;
 
@@ -48,11 +53,23 @@ public class EventServiceImpl implements IEventService {
         //新建enjoy表
         Long eventId = evEventPO.getEventId();
         setEventEnjoy(eventDTO, eventId);
+        //新建log表
+        EvEventLogPO evEventLogPO = new EvEventLogPO();
+        evEventLogPO.setEventId(eventId);
+        evEventLogPO.setCreateTime(new Date());
+        evEventLogPO.setUserId(userId);
+        evEventLogPO.setType((byte)1);
+        evEventLogMapper.insertSelective(evEventLogPO);
         return new ResultVO(1000);
     }
 
     @Override
     public ResultVO edit(HttpSession httpSession, EventDTO eventDTO) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        UserPO userPO = userMapper.selectByPrimaryKey(userId);
+        if (userPO == null) {
+            return new ResultVO(2741, "无此用户！");
+        }
         Long eventId = eventDTO.getEventId();
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
         if(evEventPO==null){
@@ -65,9 +82,29 @@ public class EventServiceImpl implements IEventService {
         evEventEnjoyMapper.deleteByEventId(eventId);
         //更新enjoy表
         setEventEnjoy(eventDTO, eventId);
+        //新建log表
+        EvEventLogPO evEventLogPO = new EvEventLogPO();
+        evEventLogPO.setEventId(eventId);
+        evEventLogPO.setCreateTime(new Date());
+        evEventLogPO.setUserId(userId);
+        evEventLogPO.setType((byte)1);
+        evEventLogMapper.insertSelective(evEventLogPO);
         return new ResultVO(1000);
     }
 
+    @Override
+    public ResultVO findOne(Long eventId) {
+        EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
+        List<EvEventLogPO> evEventLogPOList = evEventLogMapper.findByEventId(eventId);
+
+        return new ResultVO(1000);
+    }
+
+    /**
+     * 设置活动享受群体
+     * @param eventDTO
+     * @param eventId
+     */
     public void setEventEnjoy(EventDTO eventDTO, Long eventId){
         //        新建setting表
         EvEventEnjoyPO evEventEnjoyPO;

@@ -16,4 +16,7 @@ public interface IEventService {
     ResultVO add(HttpSession httpSession, EventDTO eventDTO);
 
     ResultVO edit(HttpSession httpSession, EventDTO eventDTO);
+
+
+    ResultVO findOne(Long eventId);
 }

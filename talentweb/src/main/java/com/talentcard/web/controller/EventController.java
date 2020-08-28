@@ -23,8 +23,18 @@ public class EventController {
     @Autowired
     private IEventService iEventService;
 
-    @PostMapping("add")
+    @RequestMapping("add")
     public ResultVO add(HttpSession httpSession, @RequestBody EventDTO eventDTO) {
         return iEventService.add(httpSession, eventDTO);
+    }
+
+    @RequestMapping("edit")
+    public ResultVO edit(HttpSession httpSession, @RequestBody EventDTO eventDTO) {
+        return iEventService.edit(httpSession, eventDTO);
+    }
+
+    @RequestMapping("findOne")
+    public ResultVO findOne(Long eventId) {
+        return iEventService.findOne(eventId);
     }
 }
