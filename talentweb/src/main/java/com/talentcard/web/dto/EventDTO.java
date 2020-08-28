@@ -60,7 +60,6 @@ public class EventDTO {
     private Long[] honour;
 
     /**
-     *
      * @param evEventPO
      * @param eventDTO
      * @return evEventPO
@@ -84,6 +83,8 @@ public class EventDTO {
         evEventPO.setFemaleQuota(eventDTO.getFemaleQuota());
         evEventPO.setEventQuota(eventDTO.getEventQuota());
         evEventPO.setUpdateTime(new Date());
+        evEventPO.setStatus((byte) 5);
+        evEventPO.setUpDown((byte) 2);
         return evEventPO;
     }
 }

@@ -44,7 +44,7 @@ public class EventDetailVO {
     public static EventDetailVO convert(EvEventPO evEventPO) {
         EventDetailVO eventDetailVO = new EventDetailVO();
         eventDetailVO.setEventId(evEventPO.getEventId());
-        eventDetailVO.setUpDown(evEventPO.getUpDown());
+        eventDetailVO.setUpDown((evEventPO.getUpDown()));
         eventDetailVO.setName(evEventPO.getName());
         eventDetailVO.setNum(evEventPO.getNum());
         eventDetailVO.setSponsor(evEventPO.getSponsor());
@@ -58,7 +58,12 @@ public class EventDetailVO {
         eventDetailVO.setContact(evEventPO.getContact());
         eventDetailVO.setPicture(evEventPO.getPicture());
         eventDetailVO.setRoleId(evEventPO.getRoleId());
-        eventDetailVO.set
+        eventDetailVO.setIfQuota(evEventPO.getIfQuota());
+        eventDetailVO.setMaleQuota(evEventPO.getMaleQuota());
+        eventDetailVO.setFemaleQuota(evEventPO.getFemaleQuota());
+        eventDetailVO.setUpdateTime(evEventPO.getUpdateTime());
+        eventDetailVO.setCreateTime(evEventPO.getCreateTime());
+        eventDetailVO.setUserId(evEventPO.getUserId());
         return eventDetailVO;
     }
 }

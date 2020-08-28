@@ -1,9 +1,6 @@
 package com.talentcard.web.service.impl;
 
-import com.talentcard.common.mapper.EvEventEnjoyMapper;
-import com.talentcard.common.mapper.EvEventLogMapper;
-import com.talentcard.common.mapper.EvEventMapper;
-import com.talentcard.common.mapper.UserMapper;
+import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.EvEventEnjoyPO;
 import com.talentcard.common.pojo.EvEventLogPO;
 import com.talentcard.common.pojo.EvEventPO;
@@ -11,6 +8,7 @@ import com.talentcard.common.pojo.UserPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.EventDTO;
 import com.talentcard.web.service.IEventService;
+import com.talentcard.web.vo.EventDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +29,8 @@ public class EventServiceImpl implements IEventService {
     EvEventMapper evEventMapper;
     @Autowired
     EvEventEnjoyMapper evEventEnjoyMapper;
+    @Autowired
+    EvEventTalentMapper evEventTalentMapper;
     @Autowired
     EvEventLogMapper evEventLogMapper;
     @Autowired
@@ -58,7 +58,7 @@ public class EventServiceImpl implements IEventService {
         evEventLogPO.setEventId(eventId);
         evEventLogPO.setCreateTime(new Date());
         evEventLogPO.setUserId(userId);
-        evEventLogPO.setType((byte)1);
+        evEventLogPO.setType((byte) 1);
         evEventLogMapper.insertSelective(evEventLogPO);
         return new ResultVO(1000);
     }
@@ -72,8 +72,8 @@ public class EventServiceImpl implements IEventService {
         }
         Long eventId = eventDTO.getEventId();
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
-        if(evEventPO==null){
-            return new ResultVO(2750,"2750：无此后台活动！");
+        if (evEventPO == null) {
+            return new ResultVO(2750, "2750：无此后台活动！");
         }
         //更新event表
         evEventPO = EventDTO.dtoConvertPo(evEventPO, eventDTO);
@@ -87,7 +87,7 @@ public class EventServiceImpl implements IEventService {
         evEventLogPO.setEventId(eventId);
         evEventLogPO.setCreateTime(new Date());
         evEventLogPO.setUserId(userId);
-        evEventLogPO.setType((byte)1);
+        evEventLogPO.setType((byte) 1);
         evEventLogMapper.insertSelective(evEventLogPO);
         return new ResultVO(1000);
     }
@@ -95,17 +95,48 @@ public class EventServiceImpl implements IEventService {
     @Override
     public ResultVO findOne(Long eventId) {
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
+        EventDetailVO eventDetailVO = EventDetailVO.convert(evEventPO);
+        //日志
         List<EvEventLogPO> evEventLogPOList = evEventLogMapper.findByEventId(eventId);
+        eventDetailVO.setEvEventLogPOList(evEventLogPOList);
+        return new ResultVO(1000, eventDetailVO);
+    }
 
+    @Override
+    public ResultVO cancel(Long eventId) {
+        EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
+        if (evEventPO == null) {
+            return new ResultVO(2750, "无此后台活动！");
+        }
+        evEventPO.setStatus((byte) 10);
+        evEventMapper.updateByPrimaryKeySelective(evEventPO);
+        return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO upDown(Long eventId, Byte upDown) {
+        EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
+        if (evEventPO == null) {
+            return new ResultVO(2750, "无此后台活动！");
+        }
+        evEventPO.setStatus((byte) 10);
+        evEventPO.setUpDown(upDown);
+        evEventMapper.updateByPrimaryKeySelective(evEventPO);
+        return new ResultVO(1000);
+    }
+
+    @Override
+    public ResultVO queryTalentInfo(int pageNum, int pageSize, String name, String workLocation, Byte sex, Byte status) {
         return new ResultVO(1000);
     }
 
     /**
      * 设置活动享受群体
+     *
      * @param eventDTO
      * @param eventId
      */
-    public void setEventEnjoy(EventDTO eventDTO, Long eventId){
+    public void setEventEnjoy(EventDTO eventDTO, Long eventId) {
         //        新建setting表
         EvEventEnjoyPO evEventEnjoyPO;
         if (eventDTO.getCardId() != null) {
@@ -162,7 +193,7 @@ public class EventServiceImpl implements IEventService {
                 evEventEnjoyMapper.insert(evEventEnjoyPO);
             }
         }
-        
+
     }
 
 }
