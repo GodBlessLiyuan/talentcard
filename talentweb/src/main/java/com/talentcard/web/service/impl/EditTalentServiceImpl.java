@@ -570,6 +570,14 @@ public class EditTalentServiceImpl implements IEditTalentService {
         iEditTalentRecordService.addRecord(httpSession, talentId, EditTalentRecordConstant.editType,
                 EditTalentRecordConstant.talentCategoryContent, beforeJSON,
                 JSONObject.toJSONString(talentPO), opinion);
+
+
+        Integer updateTciResult = iTalentInfoCertificationService.update(talentId);
+        if (updateTciResult != 0) {
+            return new ResultVO(2663, "更新tci表失败！");
+        }
+
+
         /**
          * 清除redis缓存
          */
