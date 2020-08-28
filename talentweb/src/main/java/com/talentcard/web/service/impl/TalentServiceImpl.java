@@ -702,10 +702,10 @@ public class TalentServiceImpl implements ITalentService {
             if ("1".equals(cardType)) {
                 cardTypeName = "身份证";
                 cardNum=bo.getIdCard();
-            } else if ("1".equals(cardType)) {
+            } else if ("2".equals(cardType)) {
                 cardTypeName = "护照";
                 cardNum=bo.getPassport();
-            } else if ("2".equals(cardType)) {
+            } else if ("3".equals(cardType)) {
                 cardTypeName = "驾驶证";
                 cardNum=bo.getDriverCard();
             }

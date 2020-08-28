@@ -24,12 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.talentcard.common.utils.DateUtil.YMD;
 
@@ -108,7 +107,7 @@ public class ComplianceService implements IComplianceService {
             //下面进行银行卡信息查询用于导出
             //首先根据人才查询政策申请表，查出两张表已政策申请id关联机型查询银行卡信息
             List<PoComplianceBO> list = policyApplyMapper.queryBankByTalentId(poComplianceBO.getTalentId());
-            if(list!=null&&list.size()>0 ) {
+            if (list != null && list.size() > 0) {
                 poComplianceBO.setBankNum(list.get(0).getBankNum());
                 poComplianceBO.setBankName(list.get(0).getBankName());
             }
@@ -152,7 +151,30 @@ public class ComplianceService implements IComplianceService {
             contents[num][5] = bo.getBankNum();
             contents[num][6] = bo.getBankName();
             contents[num][7] = bo.getName();
-            contents[num][8] = Integer.toString(bo.getPolicyFunds());
+
+            String funds = Integer.toString(bo.getPolicyFunds());
+
+            if (bo.getStatus() == 1) {
+                Map<String, Object> map = new HashMap<>(3);
+                map.put("talentId", bo.getTalentId());
+                map.put("policyId", bo.getPolicyId());
+                map.put("status", 1);
+                List<PolicyApplyPO> pos = policyApplyMapper.selectByMap(map);
+                if (pos != null && pos.size() > 0) {
+                    DecimalFormat df2 = new DecimalFormat("#.00");
+                    for (PolicyApplyPO po : pos) {
+                        BigDecimal funds1 = po.getActualFunds();
+                        try {
+                            funds = df2.format(funds1);
+                            break;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            contents[num][8] = funds;
             if (bo.getApplyTime() != null) {
                 contents[num][9] = DateUtil.date2Str(bo.getApplyTime(), YMD);
             }
@@ -218,7 +240,7 @@ public class ComplianceService implements IComplianceService {
             opMessRecordMapper.insert(opMessRecordPO);
         }
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                , "进行一键推送\"%s\"",null);
+                , "进行一键推送\"%s\"", null);
         return new ResultVO(1000);
     }
 
