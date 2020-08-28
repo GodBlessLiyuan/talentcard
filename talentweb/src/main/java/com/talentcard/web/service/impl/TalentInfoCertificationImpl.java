@@ -67,11 +67,15 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             for (int i = 0; i < educationPOList.size() - 1; i++) {
                 EducationPO educationPO = educationPOList.get(i);
                 educationString = educationString + educationPO.getEducation() + ",";
+            }
 
+            for (int i = 0; i < educationPOList.size(); i++) {
+                EducationPO educationPO = educationPOList.get(i);
                 /**
                  * 只有全日制的学历才进行政策匹配
                  */
                 if(educationPO.getFullTime() == 1) {
+
                     TalentTypePO talentTypePO = new TalentTypePO();
                     talentTypePO.setEducationId(educationPO.getEducation());
                     talentTypePO.setType((byte) 3);
@@ -79,6 +83,7 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
                     talentTypePOS.add(talentTypePO);
                 }
             }
+
             educationString = educationString + educationPOList.get(educationPOList.size() - 1).getEducation();
             talentCertificationInfoPO.setEducation(educationString);
         } else {
@@ -90,13 +95,16 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             List<ProfTitlePO> profTitlePOList = talentBO.getProfTitlePOList();
             for (int i = 0; i < profTitlePOList.size() - 1; i++) {
                 titleString = titleString + profTitlePOList.get(i).getCategory() + ",";
+            }
 
+            for (int i = 0; i < profTitlePOList.size(); i++) {
                 TalentTypePO talentTypePO = new TalentTypePO();
                 talentTypePO.setTitleId(profTitlePOList.get(i).getCategory());
                 talentTypePO.setType((byte) 4);
                 talentTypePO.setTalentId(talentId);
                 talentTypePOS.add(talentTypePO);
             }
+
             titleString = titleString + profTitlePOList.get(profTitlePOList.size() - 1).getCategory();
             talentCertificationInfoPO.setPtCategory(titleString);
         } else {
@@ -108,13 +116,16 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             List<ProfQualityPO> profQualityPOList = talentBO.getProfQualityPOList();
             for (int i = 0; i < profQualityPOList.size() - 1; i++) {
                 qualityString = qualityString + profQualityPOList.get(i).getCategory() + ",";
+            }
 
+            for (int i = 0; i < profQualityPOList.size(); i++) {
                 TalentTypePO talentTypePO = new TalentTypePO();
                 talentTypePO.setQuality(profQualityPOList.get(i).getCategory());
                 talentTypePO.setType((byte) 5);
                 talentTypePO.setTalentId(talentId);
                 talentTypePOS.add(talentTypePO);
             }
+
             qualityString = qualityString + profQualityPOList.get(profQualityPOList.size() - 1).getCategory();
             talentCertificationInfoPO.setPqCategory(qualityString);
         } else {
@@ -126,13 +137,16 @@ public class TalentInfoCertificationImpl implements ITalentInfoCertificationServ
             List<TalentHonourPO> talentHonourPOList = talentBO.getTalentHonourPOList();
             for (int i = 0; i < talentHonourPOList.size() - 1; i++) {
                 honourString = honourString + talentHonourPOList.get(i).getHonourId() + ",";
+            }
 
+            for (int i = 0; i < talentHonourPOList.size(); i++) {
                 TalentTypePO talentTypePO = new TalentTypePO();
                 talentTypePO.setHonourId(talentHonourPOList.get(i).getHonourId());
                 talentTypePO.setType((byte) 6);
                 talentTypePO.setTalentId(talentId);
                 talentTypePOS.add(talentTypePO);
             }
+
             honourString = honourString + talentHonourPOList.get(talentHonourPOList.size() - 1).getHonourId();
             talentCertificationInfoPO.setHonourId(honourString);
         } else {

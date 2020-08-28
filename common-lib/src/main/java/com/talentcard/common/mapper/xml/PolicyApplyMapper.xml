@@ -288,4 +288,22 @@
         <include refid="Base_Column_List"/>
         from t_policy_apply order by pa_id desc
     </select>
+
+    <select id="selectByMap" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy_apply
+        <where>
+            <if test="talentId != null and talentId != ''">
+                and talent_id= #{talentId,jdbcType=BIGINT}
+            </if>
+            <if test="policyId != null and policyId != ''">
+                and policy_id= #{policyId,jdbcType=BIGINT}
+            </if>
+            <if test="status != null and status != ''">
+                and `status`= #{status,jdbcType=BIGINT}
+            </if>
+        </where>
+        order by pa_id desc
+    </select>
 </mapper>
