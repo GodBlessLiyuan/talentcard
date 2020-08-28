@@ -198,7 +198,7 @@ public class ComplianceService implements IComplianceService {
     public ResultVO push(HttpSession session, Map<String, Object> reqData) {
         List<PoComplianceBO> bos = complianceMapper.pageQuery(reqData);
         //根据人才政策id查出人才政策名称
-        PolicyPO policyPo = policyMapper.selectByPrimaryKey((Long) reqData.get("pid"));
+        PolicyPO policyPo = policyMapper.selectByPrimaryKey(Long.parseLong(reqData.get("pid").toString()));
         //计算成功和失败次数
         int successNum = 0;
         int failureNum = 0;
