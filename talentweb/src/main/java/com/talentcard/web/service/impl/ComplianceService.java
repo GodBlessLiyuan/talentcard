@@ -60,6 +60,9 @@ public class ComplianceService implements IComplianceService {
     @Autowired
     private TalentMapper talentMapper;
     @Autowired
+    private CertExamineRecordMapper certExamineRecordMapper;
+
+    @Autowired
     private IWxOfficalAccountService wxOfficalAccountService;
 
     private static final String[] EXPORT_TITLES = {"序号", "政策名称", "政策编号", "申请人", "申请状态", "银行卡号", "开户行名", "持卡人", "政策资金（元）", "申请时间"};
@@ -246,8 +249,19 @@ public class ComplianceService implements IComplianceService {
 
     @Override
     public ResultVO queryCertId(Map<String, Object> reqData) {
-        CertApprovalPassRecordPO po = complianceMapper.queryCertId(reqData);
-        return new ResultVO(1000, CerIdVO.convert(po));
+        if (!reqData.containsKey("tid")) {
+            return new ResultVO(2000);
+        }
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("talentId", reqData.get("tid"));
+        List<CertExamineRecordPO> pos = certExamineRecordMapper.selectByMap(map);
+        if (pos != null && pos.size() > 0) {
+            CertExamineRecordPO po = pos.get(0);
+            if (po != null) {
+                return new ResultVO(1000, CerIdVO.convert(po));
+            }
+        }
+        return new ResultVO(2000);
     }
 
 }
