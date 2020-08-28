@@ -105,14 +105,15 @@
     select
     t.name as name, t.sex as sex,
     t.work_location as workLocation, t.phone as phone,
-    concat(c.title, c.initial_word) as talentCard, et.status as status,
+    concat(c.title, '/',c.initial_word) as talentCard, et.status as status,
     et.create_time as createTime
     from ev_event_talent et
     left join t_talent t
     on et.talent_id = t.talent_id
     left join t_card c
-    on t.card_id = c. card_id
+    on t.card_id = c.card_id
     where
+    1 = 1
     <if test="name != null and name !=''">
     and t.name like '%' #{name, jdbcType=CHAR} '%'
     </if>

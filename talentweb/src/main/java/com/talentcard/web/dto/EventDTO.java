@@ -33,7 +33,6 @@ public class EventDTO {
     private Integer maleQuota;
     private Integer femaleQuota;
     private Integer eventQuota;
-    private Date updateTime;
     /**
      * 可查看与申请此政策权益的人才卡IDs
      */
@@ -85,6 +84,7 @@ public class EventDTO {
         evEventPO.setUpdateTime(new Date());
         evEventPO.setStatus((byte) 5);
         evEventPO.setUpDown((byte) 2);
+        evEventPO.setDr((byte) 1);
         return evEventPO;
     }
 }

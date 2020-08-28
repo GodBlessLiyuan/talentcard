@@ -124,7 +124,11 @@ public class EventServiceImpl implements IEventService {
         if (evEventPO == null) {
             return new ResultVO(2750, "无此后台活动！");
         }
-        evEventPO.setStatus((byte) 10);
+        if (upDown == 1) {
+            evEventPO.setStatus((byte) 1);
+        } else {
+            evEventPO.setStatus((byte) 10);
+        }
         evEventPO.setUpDown(upDown);
         evEventMapper.updateByPrimaryKeySelective(evEventPO);
         return new ResultVO(1000);
