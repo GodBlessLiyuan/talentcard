@@ -157,8 +157,6 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
         return;
     }
 
-
-    @Async("asyncTaskExecutor")
     @Override
     public void asynBestPolicyForTalent(Long talentId) {
 
