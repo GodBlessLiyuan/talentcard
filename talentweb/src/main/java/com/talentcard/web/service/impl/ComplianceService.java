@@ -108,7 +108,7 @@ public class ComplianceService implements IComplianceService {
             //下面进行银行卡信息查询用于导出
             //首先根据人才查询政策申请表，查出两张表已政策申请id关联机型查询银行卡信息
             List<PoComplianceBO> list = policyApplyMapper.queryBankByTalentId(poComplianceBO.getTalentId());
-            if(list!=null) {
+            if(list!=null&&list.size()>0 ) {
                 poComplianceBO.setBankNum(list.get(0).getBankNum());
                 poComplianceBO.setBankName(list.get(0).getBankName());
             }
@@ -117,7 +117,8 @@ public class ComplianceService implements IComplianceService {
         Date dt = new Date();
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
         String formatdate = df.format(dt);
-        String fileName = bos.get(0).getPolicyName() + formatdate;
+        //String fileName = bos.get(0).getPolicyName() + formatdate;
+        String fileName = formatdate;
         //生成Excel表格
         ExcelExportUtil.exportExcel(fileName, null, EXPORT_TITLES, this.buildExcelContents(bos), response);
         return new ResultVO(1000);
@@ -129,14 +130,14 @@ public class ComplianceService implements IComplianceService {
         }
         String[][] contents = new String[bos.size()][EXPORT_TITLES.length];
         int num = 0;
+        int order = 1;
         for (PoComplianceBO bo : bos) {
-            //增加序号
-            int order = 1;
+
             contents[num][0] = Integer.toString(order);
             contents[num][1] = bo.getPolicyName();
             contents[num][2] = bo.getPolicyNum();
             contents[num][3] = bo.getName();
-            Byte status = bo.getStatus();
+            String status = String.valueOf(bo.getStatus());
             String statusString = "";
             if ("11".equals(status)) {
                 statusString = "未申请";
@@ -155,7 +156,9 @@ public class ComplianceService implements IComplianceService {
             if (bo.getApplyTime() != null) {
                 contents[num][9] = DateUtil.date2Str(bo.getApplyTime(), YMD);
             }
+
             num++;
+            //增加序号
             order++;
         }
         return contents;

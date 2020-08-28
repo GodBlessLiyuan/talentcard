@@ -42,7 +42,7 @@ public class ComplianceController {
     }
 
     @GetMapping("exporExcel")
-    public ResultVO exporExcel(@RequestParam(value = "pid", required = false) Long pid,
+    public void exporExcel(@RequestParam(value = "pid", required = false) Long pid,
                                @RequestParam(value = "name", required = false) String name,
                                @RequestParam(value = "wunit", required = false) String wunit,
                                @RequestParam(value = "phone", required = false) String phone,
@@ -64,7 +64,7 @@ public class ComplianceController {
         if (!StringUtils.isEmpty(reqData.get("endDate"))) {
             reqData.replace("endDate", reqData.get("endDate") + " 23:59:59");
         }
-        return complianceService.exportExcel(reqData, response);
+        complianceService.exportExcel(reqData, response);
     }
 
     @RequestMapping("pushRecordQuery")

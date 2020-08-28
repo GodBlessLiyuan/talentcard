@@ -23,9 +23,9 @@
     where p_co_id = #{pCoId,jdbcType=BIGINT}
   </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="pCoId" parameterType="com.talentcard.common.pojo.PoCompliancePO">
-    insert into po_compliance (p_co_id, policy_id, talent_id, 
+    insert into po_compliance (p_co_id, policy_id, talent_id,
       apply_time, `status`, `year` )
-    values (#{pCoId,jdbcType=BIGINT}, #{policyId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT}, 
+    values (#{pCoId,jdbcType=BIGINT}, #{policyId,jdbcType=BIGINT}, #{talentId,jdbcType=BIGINT},
       #{applyTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{year,jdbcType=INTEGER})
   </insert>
     <insert id="insertSelective" parameterType="com.talentcard.common.pojo.PoCompliancePO">
@@ -126,11 +126,11 @@
 
     <select id="policyCount" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.PoStatisticsPO">
         select
-            policy_id as policyId,
-            sum(CASE WHEN po.`status`=0 THEN 1 ELSE 0 END) as notApply,
-            sum(CASE WHEN po.`status`=1 THEN 1 ELSE 0 END) as pass,
-            sum(CASE WHEN po.`status`=2 THEN 1 ELSE 0 END) as reject,
-            sum(CASE WHEN po.`status`=3 THEN 1 ELSE 0 END) as notApproval
+        policy_id as policyId,
+        sum(CASE WHEN po.`status`=11 THEN 1 ELSE 0 END) as notApply,
+        sum(CASE WHEN po.`status`=1 THEN 1 ELSE 0 END) as pass,
+        sum(CASE WHEN po.`status`=2 THEN 1 ELSE 0 END) as reject,
+        sum(CASE WHEN po.`status`=3 THEN 1 ELSE 0 END) as notApproval
         from po_compliance po
         <where>
             <if test="policyId != null">
@@ -165,7 +165,7 @@
         left join t_policy p
         on poc.policy_id = p.policy_id
         where
-        (poc.status = 0 or poc.status = 3 or poc.status = 10)
+        (poc.status = 11 or poc.status = 3 or poc.status = 10)
         and poc.talent_id = #{talentId,jdbcType=BIGINT}
         and poc.year = #{year,jdbcType=INTEGER}
         order by poc.status asc, p.end_time asc
@@ -177,11 +177,11 @@
         from po_compliance
         where policy_id = #{policyId,jdbcType=BIGINT}
         and
-        status = 0
+        status = 11
     </select>
     <!--符合条件人数首页数据查询-->
     <sql id="pageQuery_Column_List">
-    p.policy_id as policyId, p.talent_id as talentId, p.apply_time as applyTime, p.status as status, t.name as name, t.sex as sex, t.work_unit as workUnit, t.phone as phone, t.open_id as openId
+    p.policy_id as policyId, p.talent_id as talentId, p.apply_time as applyTime, p.`status` as status, t.name as name, t.sex as sex, t.work_unit as workUnit, t.phone as phone, t.open_id as openId
     </sql>
     <select id="pageQuery" parameterType="java.util.Map" resultType="com.talentcard.common.bo.PoComplianceBO">
         SELECT
@@ -195,11 +195,11 @@
             <if test="name != null and name !=''">and t.name like '%' #{name,jdbcType=CHAR} '%'</if>
             <if test="wunit != null and wunit !=''">and t.work_unit like '%' #{wunit,jdbcType=CHAR} '%'</if>
             <if test="phone != null and phone !=''">and t.phone like '%' #{phone,jdbcType=CHAR} '%'</if>
-            <if test="status != null and status !=''">and p.status = #{status,jdbcType=TINYINT}</if>
+            <if test="status != null and status !=''">and p.`status` = #{status,jdbcType=TINYINT}</if>
             <if test="beginDate != null and beginDate !=''">AND p.apply_time <![CDATA[>=]]> DATE_FORMAT(#{beginDate,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')</if>
             <if test="endDate != null and endDate !=''">AND p.apply_time <![CDATA[<=]]> DATE_FORMAT(#{endDate,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')</if>
         </where>
-        ORDER BY FIND_IN_SET(p.`status`,'3,0,1,2') asc, p.apply_time desc
+        ORDER BY FIND_IN_SET(p.`status`,'3,11,1,2') asc, p.apply_time desc
     </select>
     <!--通过pid查询认证id接口-->
     <select id="queryCertId" parameterType="java.util.Map" resultType="com.talentcard.common.pojo.CertApprovalPassRecordPO">

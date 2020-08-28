@@ -1,9 +1,9 @@
-package com.talentcard.web.service.impl;
+package com.talentcard.front.service.impl;
 
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.redis.RedisMapUtil;
-import com.talentcard.web.service.IBestPolicyToTalentService;
+import com.talentcard.front.service.IBestPolicyToTalentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
