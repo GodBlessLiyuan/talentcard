@@ -388,6 +388,11 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                     this.poComplianceMapper.deleteByPrimaryKey(p1.getPCoId());
                 }
                 continue;
+            } else if(!onePolicys.contains(p1.getPolicyId())){
+                if (p1.getStatus() != 1 && p1.getStatus() != 3) {
+                    this.poComplianceMapper.deleteByPrimaryKey(p1.getPCoId());
+                    continue;
+                }
             }
 
             oneApplyMapPolicy.put(p1.getPolicyId(), p1);
