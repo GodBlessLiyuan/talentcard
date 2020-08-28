@@ -109,7 +109,7 @@ public class ComplianceService implements IComplianceService {
             poComplianceBO.setPolicyFunds(policyPo.getFunds());
             //下面进行银行卡信息查询用于导出
             //首先根据人才查询政策申请表，查出两张表已政策申请id关联机型查询银行卡信息
-            List<PoComplianceBO> list = policyApplyMapper.queryBankByTalentId(poComplianceBO.getTalentId());
+            List<PoComplianceBO> list = policyApplyMapper.queryBankByTalentId(poComplianceBO.getTalentId(),poComplianceBO.getPolicyId());
             if (list != null && list.size() > 0) {
                 poComplianceBO.setBankNum(list.get(0).getBankNum());
                 poComplianceBO.setBankName(list.get(0).getBankName());
