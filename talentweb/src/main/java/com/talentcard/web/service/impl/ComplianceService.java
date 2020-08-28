@@ -107,15 +107,18 @@ public class ComplianceService implements IComplianceService {
             poComplianceBO.setPolicyFunds(policyPo.getFunds());
             //下面进行银行卡信息查询用于导出
             //首先根据人才查询政策申请表，查出两张表已政策申请id关联机型查询银行卡信息
-            PoComplianceBO poComplianceBO1 = policyApplyMapper.queryBankByTalentId(poComplianceBO.getTalentId());
-            poComplianceBO.setBankNum(poComplianceBO1.getBankNum());
-            poComplianceBO.setBankName(poComplianceBO1.getBankName());
+            List<PoComplianceBO> list = policyApplyMapper.queryBankByTalentId(poComplianceBO.getTalentId());
+            if(list!=null&&list.size()>0 ) {
+                poComplianceBO.setBankNum(list.get(0).getBankNum());
+                poComplianceBO.setBankName(list.get(0).getBankName());
+            }
         }
         //构造导出Excel文件名称
         Date dt = new Date();
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
         String formatdate = df.format(dt);
-        String fileName = bos.get(0).getPolicyName() + formatdate;
+        //String fileName = bos.get(0).getPolicyName() + formatdate;
+        String fileName = formatdate;
         //生成Excel表格
         ExcelExportUtil.exportExcel(fileName, null, EXPORT_TITLES, this.buildExcelContents(bos), response);
         return new ResultVO(1000);
@@ -127,16 +130,16 @@ public class ComplianceService implements IComplianceService {
         }
         String[][] contents = new String[bos.size()][EXPORT_TITLES.length];
         int num = 0;
+        int order = 1;
         for (PoComplianceBO bo : bos) {
-            //增加序号
-            int order = 1;
+
             contents[num][0] = Integer.toString(order);
             contents[num][1] = bo.getPolicyName();
             contents[num][2] = bo.getPolicyNum();
             contents[num][3] = bo.getName();
-            Byte status = bo.getStatus();
+            String status = String.valueOf(bo.getStatus());
             String statusString = "";
-            if ("0".equals(status)) {
+            if ("11".equals(status)) {
                 statusString = "未申请";
             } else if ("1".equals(status)) {
                 statusString = "已通过";
@@ -153,7 +156,9 @@ public class ComplianceService implements IComplianceService {
             if (bo.getApplyTime() != null) {
                 contents[num][9] = DateUtil.date2Str(bo.getApplyTime(), YMD);
             }
+
             num++;
+            //增加序号
             order++;
         }
         return contents;
@@ -170,7 +175,8 @@ public class ComplianceService implements IComplianceService {
     @Transactional
     public ResultVO push(HttpSession session, Map<String, Object> reqData) {
         List<PoComplianceBO> bos = complianceMapper.pageQuery(reqData);
-        //遍历取出人才政策id查出政策权益名称和政策权益编号和政策资金放入对应的BO对象中
+        //根据人才政策id查出人才政策名称
+        PolicyPO policyPo = policyMapper.selectByPrimaryKey((Long) reqData.get("pid"));
         //计算成功和失败次数
         int successNum = 0;
         int failureNum = 0;
@@ -181,7 +187,7 @@ public class ComplianceService implements IComplianceService {
             TalentPO talentPO = talentMapper.selectByPrimaryKey(talentId);
             String openId = talentPO.getOpenId();
             //推送
-            int statusCode = wxOfficalAccountService.messToNotApply(openId, poComplianceBO.getPolicyName());
+            int statusCode = wxOfficalAccountService.messToNotApply(openId, policyPo.getName());
             //计算成功和失败次数
             if (statusCode == 0) {
                 successNum++;
@@ -205,16 +211,14 @@ public class ComplianceService implements IComplianceService {
         opSendmessagePO.setFailure(new Long(failureNum));
         opSendmessagePO.setCreateTime(new Date());
         opSendmessageMapper.insert(opSendmessagePO);
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                , "将本次推送记录插入到记录汇总表中\"%s\"", opSendmessagePO.toString());
         //将返回的一键推送id插入到一键推送消息记录表中
         for (OpMessRecordPO opMessRecordPO : opMessRecordPOList) {
             //将插入消息汇总表的SendId取到进行关联插入到消息记录表
             opMessRecordPO.setSendId(opSendmessagePO.getSendId());
             opMessRecordMapper.insert(opMessRecordPO);
-            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                    , "插入到历史记录表中进行关联\"%s\"", opMessRecordPO.toString());
         }
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
+                , "进行一键推送\"%s\"",null);
         return new ResultVO(1000);
     }
 

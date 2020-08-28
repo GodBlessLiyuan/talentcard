@@ -455,7 +455,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                             PoCompliancePO poCompliancePO = oneApplyMapPolicy.get(po.getPolicyId());
                             if (poCompliancePO != null) {
                                 if (poCompliancePO.getStatus() == 10) {
-                                    poCompliancePO.setStatus((byte)0);
+                                    poCompliancePO.setStatus((byte)11);
                                     this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
                                 }
                             }
@@ -463,7 +463,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                             PoCompliancePO poCompliancePO = new PoCompliancePO();
                             poCompliancePO.setPolicyId(po.getPolicyId());
                             poCompliancePO.setTalentId(talentId);
-                            poCompliancePO.setStatus((byte) 0);
+                            poCompliancePO.setStatus((byte) 11);
                             poCompliancePO.setYear(year);
                             this.poComplianceMapper.insert(poCompliancePO);
 
