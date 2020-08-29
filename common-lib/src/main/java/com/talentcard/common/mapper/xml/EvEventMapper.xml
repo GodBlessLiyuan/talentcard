@@ -9,9 +9,10 @@
     <result column="sponsor" jdbcType="CHAR" property="sponsor" />
     <result column="time" jdbcType="CHAR" property="time" />
     <result column="duration" jdbcType="DOUBLE" property="duration" />
+    <result column="ef_id" jdbcType="BIGINT" property="efId" />
     <result column="date" jdbcType="CHAR" property="date" />
-    <result column="event_field" jdbcType="BIGINT" property="eventField" />
     <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="time_interval" jdbcType="CHAR" property="timeInterval" />
     <result column="process" jdbcType="VARCHAR" property="process" />
     <result column="target" jdbcType="VARCHAR" property="target" />
     <result column="contact" jdbcType="VARCHAR" property="contact" />
@@ -26,11 +27,14 @@
     <result column="dr" jdbcType="TINYINT" property="dr" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    event_id, up_down, `name`, num, sponsor, `time`, duration, `date`, event_field, detail, 
-    `process`, target, contact, picture, role_id, if_quota, male_quota, female_quota, 
-    event_quota, update_time, `status`, dr, create_time, user_id
+    event_id, up_down, `name`, num, sponsor, `time`, duration, ef_id, `date`, detail, 
+    time_interval, `process`, target, contact, picture, role_id, if_quota, male_quota, 
+    female_quota, event_quota, update_time, `status`, dr, create_time, user_id, start_time, 
+    end_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -42,23 +46,25 @@
     delete from ev_event
     where event_id = #{eventId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.EvEventPO">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="eventId" parameterType="com.talentcard.common.pojo.EvEventPO">
     insert into ev_event (event_id, up_down, `name`, 
       num, sponsor, `time`, duration, 
-      `date`, event_field, detail, 
+      ef_id, `date`, detail, time_interval, 
       `process`, target, contact, 
       picture, role_id, if_quota, 
       male_quota, female_quota, event_quota, 
       update_time, `status`, dr, 
-      create_time, user_id)
+      create_time, user_id, start_time, 
+      end_time)
     values (#{eventId,jdbcType=BIGINT}, #{upDown,jdbcType=TINYINT}, #{name,jdbcType=CHAR}, 
       #{num,jdbcType=CHAR}, #{sponsor,jdbcType=CHAR}, #{time,jdbcType=CHAR}, #{duration,jdbcType=DOUBLE}, 
-      #{date,jdbcType=CHAR}, #{eventField,jdbcType=BIGINT}, #{detail,jdbcType=VARCHAR}, 
+      #{efId,jdbcType=BIGINT}, #{date,jdbcType=CHAR}, #{detail,jdbcType=VARCHAR}, #{timeInterval,jdbcType=CHAR}, 
       #{process,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
       #{picture,jdbcType=VARCHAR}, #{roleId,jdbcType=BIGINT}, #{ifQuota,jdbcType=TINYINT}, 
       #{maleQuota,jdbcType=INTEGER}, #{femaleQuota,jdbcType=INTEGER}, #{eventQuota,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT})
+      #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvEventPO">
     insert into ev_event
@@ -84,14 +90,17 @@
       <if test="duration != null">
         duration,
       </if>
+      <if test="efId != null">
+        ef_id,
+      </if>
       <if test="date != null">
         `date`,
       </if>
-      <if test="eventField != null">
-        event_field,
-      </if>
       <if test="detail != null">
         detail,
+      </if>
+      <if test="timeInterval != null">
+        time_interval,
       </if>
       <if test="process != null">
         `process`,
@@ -135,6 +144,12 @@
       <if test="userId != null">
         user_id,
       </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="eventId != null">
@@ -158,14 +173,17 @@
       <if test="duration != null">
         #{duration,jdbcType=DOUBLE},
       </if>
+      <if test="efId != null">
+        #{efId,jdbcType=BIGINT},
+      </if>
       <if test="date != null">
         #{date,jdbcType=CHAR},
       </if>
-      <if test="eventField != null">
-        #{eventField,jdbcType=BIGINT},
-      </if>
       <if test="detail != null">
         #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="timeInterval != null">
+        #{timeInterval,jdbcType=CHAR},
       </if>
       <if test="process != null">
         #{process,jdbcType=VARCHAR},
@@ -209,6 +227,12 @@
       <if test="userId != null">
         #{userId,jdbcType=BIGINT},
       </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.EvEventPO">
@@ -232,14 +256,17 @@
       <if test="duration != null">
         duration = #{duration,jdbcType=DOUBLE},
       </if>
+      <if test="efId != null">
+        ef_id = #{efId,jdbcType=BIGINT},
+      </if>
       <if test="date != null">
         `date` = #{date,jdbcType=CHAR},
       </if>
-      <if test="eventField != null">
-        event_field = #{eventField,jdbcType=BIGINT},
-      </if>
       <if test="detail != null">
         detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="timeInterval != null">
+        time_interval = #{timeInterval,jdbcType=CHAR},
       </if>
       <if test="process != null">
         `process` = #{process,jdbcType=VARCHAR},
@@ -283,6 +310,12 @@
       <if test="userId != null">
         user_id = #{userId,jdbcType=BIGINT},
       </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where event_id = #{eventId,jdbcType=BIGINT}
   </update>
@@ -294,9 +327,10 @@
       sponsor = #{sponsor,jdbcType=CHAR},
       `time` = #{time,jdbcType=CHAR},
       duration = #{duration,jdbcType=DOUBLE},
+      ef_id = #{efId,jdbcType=BIGINT},
       `date` = #{date,jdbcType=CHAR},
-      event_field = #{eventField,jdbcType=BIGINT},
       detail = #{detail,jdbcType=VARCHAR},
+      time_interval = #{timeInterval,jdbcType=CHAR},
       `process` = #{process,jdbcType=VARCHAR},
       target = #{target,jdbcType=VARCHAR},
       contact = #{contact,jdbcType=VARCHAR},
@@ -310,27 +344,9 @@
       `status` = #{status,jdbcType=TINYINT},
       dr = #{dr,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      user_id = #{userId,jdbcType=BIGINT}
+      user_id = #{userId,jdbcType=BIGINT},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP}
     where event_id = #{eventId,jdbcType=BIGINT}
   </update>
-
-  <insert id="add"  useGeneratedKeys="true" keyProperty="eventId"
-          parameterType="com.talentcard.common.pojo.EvEventPO">
-    insert into ev_event (event_id, up_down, `name`,
-      num, sponsor, `time`, duration,
-      `date`, event_field, detail,
-      `process`, target, contact,
-      picture, role_id, if_quota,
-      male_quota, female_quota, event_quota,
-      update_time, `status`, dr,
-      create_time, user_id)
-    values (#{eventId,jdbcType=BIGINT}, #{upDown,jdbcType=TINYINT}, #{name,jdbcType=CHAR},
-      #{num,jdbcType=CHAR}, #{sponsor,jdbcType=CHAR}, #{time,jdbcType=CHAR}, #{duration,jdbcType=DOUBLE},
-      #{date,jdbcType=CHAR}, #{eventField,jdbcType=BIGINT}, #{detail,jdbcType=VARCHAR},
-      #{process,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR},
-      #{picture,jdbcType=VARCHAR}, #{roleId,jdbcType=BIGINT}, #{ifQuota,jdbcType=TINYINT},
-      #{maleQuota,jdbcType=INTEGER}, #{femaleQuota,jdbcType=INTEGER}, #{eventQuota,jdbcType=INTEGER},
-      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT},
-      #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT})
-  </insert>
 </mapper>

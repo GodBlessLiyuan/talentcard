@@ -1,7 +1,9 @@
 package com.talentcard.common.pojo;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * ev_frontend_event
@@ -13,13 +15,29 @@ public class EvFrontendEventPO implements Serializable {
 
     private String name;
 
-    private Long eventField;
-
     private String time;
+
+    /**
+     * 活动场地id
+     */
+    private Long efId;
 
     private Double duration;
 
-    private String date;
+    /**
+     * 活动人数
+     */
+    private Integer eventNum;
+
+    /**
+     * 活动日期
+     */
+    private Date eventDate;
+
+    /**
+     * 将一天时间划分成48个小时间段
+     */
+    private String timeInterval;
 
     private String sponsor;
 
@@ -27,6 +45,9 @@ public class EvFrontendEventPO implements Serializable {
 
     private String contactPerson;
 
+    /**
+     * 联系方式
+     */
     private String phone;
 
     private String picture;
@@ -39,9 +60,25 @@ public class EvFrontendEventPO implements Serializable {
     private String openId;
 
     /**
-     * 1：已同意；2：已驳回；3：待审批
+     * 1：已同意；2：已驳回；3：待审批； 4：取消
      */
     private Byte status;
 
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 活动开始时间
+     */
+    private Date startTime;
+
+    /**
+     * 活动结束时间
+     */
+    private Date endTime;
+
     private static final long serialVersionUID = 1L;
+
 }
