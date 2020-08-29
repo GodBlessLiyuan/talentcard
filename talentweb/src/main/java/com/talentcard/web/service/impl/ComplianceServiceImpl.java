@@ -42,7 +42,7 @@ import static com.talentcard.common.utils.DateUtil.YMD;
  */
 @Slf4j
 @Service
-public class ComplianceService implements IComplianceService {
+public class ComplianceServiceImpl implements IComplianceService {
     //private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ComplianceService.class);
     @Autowired
     private ILogService logService;
@@ -246,7 +246,7 @@ public class ComplianceService implements IComplianceService {
             opMessRecordMapper.insert(opMessRecordPO);
         }
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                , "进行一键推送\"%s\"", null);
+                , "一键推送提醒满足条件且未申请\"%s\"", policyPo.getName()+"("+policyPo.getNum()+")"+"的人才");
         return new ResultVO(1000);
     }
 
