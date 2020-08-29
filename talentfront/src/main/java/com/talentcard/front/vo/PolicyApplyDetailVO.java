@@ -72,10 +72,13 @@ public class PolicyApplyDetailVO implements Serializable {
         vo.setAnnexes(annexes);
 
         if (2 == bo.getStatus()) {
+            Long approvalId = 0L;
             for (PolicyApprovalPO po : bo.getApproval()) {
                 if (null != po.getOpinion()) {
-                    vo.setReason(po.getOpinion());
-                    break;
+                    if (po.getApprovalId() > approvalId) {
+                        vo.setReason(po.getOpinion());
+                        approvalId = po.getApprovalId();
+                    }
                 }
             }
         }
