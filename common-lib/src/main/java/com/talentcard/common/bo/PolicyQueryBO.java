@@ -42,6 +42,7 @@ public class PolicyQueryBO {
     private Byte policyTypeUpDown;
     //政策类型名称
     private String poTypeName;
+
     public static List<PolicyQueryBO> setUpStatus(List<PolicyQueryBO> policyQueryBOList) {
         if (policyQueryBOList == null) {
             return null;
@@ -66,9 +67,11 @@ public class PolicyQueryBO {
                     policyQueryBO.setStatus((byte) 1);
                 }
             }
-            if(policyQueryBO.getPolicyTypeUpDown()==2){
-                policyQueryBO.setPolicyTypeName(policyQueryBO.getPolicyTypeName()+"（已下架）");
-
+            if (policyQueryBO.getPolicyTypeUpDown() == 2) {
+                policyQueryBO.setPolicyTypeName(policyQueryBO.getPolicyTypeName() + "（已下架）");
+            }
+            if (policyQueryBO.getMeetConditionNumber() == null) {
+                policyQueryBO.setMeetConditionNumber(0);
             }
         }
         return policyQueryBOList;

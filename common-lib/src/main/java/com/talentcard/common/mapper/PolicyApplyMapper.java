@@ -62,7 +62,7 @@ public interface PolicyApplyMapper extends BaseMapper<PolicyApplyPO, Long> {
      * @param paId
      * @return
      */
-    List<PoComplianceBO> queryBankByTalentId(Long paId);
+    List<PoComplianceBO> queryBankByTalentId(@Param("talentId")Long paId,@Param("policyId")Long policyId);
 
     /**
      * 查询所有的请求信息

@@ -11,7 +11,7 @@ public interface IBestPolicyToTalentService {
      * 异步调用匹配出最适合用户的政策信息
      * @return
      */
-    void asynBestPolicy();
+    void asynBestPolicy(Long policyId);
 
     /**
      * 异步调用匹配最适合用户的政策信息

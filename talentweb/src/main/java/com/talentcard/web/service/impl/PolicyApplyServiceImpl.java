@@ -22,17 +22,21 @@ import com.talentcard.web.utils.MessageUtil;
 import com.talentcard.web.utils.WebParameterUtil;
 import com.talentcard.web.vo.PolicyApplyDetailVO;
 import com.talentcard.web.vo.PolicyApplyVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: xiahui
@@ -79,6 +83,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO approval(HttpSession session, Long paid, Byte status, String opinion, BigDecimal actualFunds) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
@@ -104,10 +109,12 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         po.setResult(status);
         po.setOpinion(opinion);
         po.setActualFunds(actualFunds);
+        po.setUpdateTime(new Date());
         policyApprovalMapper.add(po);
 
         applyPO.setPaId(po.getPaId());
         applyPO.setActualFunds(actualFunds);
+        applyPO.setPolicyApprovalId(po.getApprovalId());
         policyApplyMapper.updateByPrimaryKey(applyPO);
 
         /**
@@ -205,14 +212,37 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
             if (null != bo.getBankNum() && !"".equals(bo.getBankNum())) {
                 content[7] = bo.getTalentName();
             }
-            if (bo.getStatus() != null && bo.getStatus() == 1 && bo.getActualFunds() != null) {
-                content[8] = bo.getActualFunds().toString();
-            } else {
+
+            String funds = "";
+            if (bo.getStatus() != null && bo.getStatus() == 1) {
+
+                Map<String, Object> map = new HashMap<>(3);
+                map.put("talentId", bo.getTalentId());
+                map.put("policyId", bo.getPolicyId());
+                map.put("status", 1);
+                List<PolicyApplyPO> pos = policyApplyMapper.selectByMap(map);
+                if (pos != null && pos.size() > 0) {
+                    DecimalFormat df2 = new DecimalFormat("#.00");
+                    for (PolicyApplyPO po : pos) {
+                        BigDecimal funds1 = po.getActualFunds();
+                        try {
+                            funds = df2.format(funds1);
+                            break;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    content[8] = funds;
+                }
+            }
+
+            if (StringUtils.isEmpty(funds)) {
                 PolicyPO policyPO = policyMapper.selectByPrimaryKey(bo.getPolicyId());
                 if (policyPO != null) {
                     content[8] = policyPO.getFunds().toString();
                 }
             }
+
             content[9] = DateUtil.date2Str(bo.getCreateTime(), DateUtil.YMD_HMS);
             contents[num++] = content;
         }
