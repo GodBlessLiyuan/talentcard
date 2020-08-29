@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.common.mapper.EvEventTimeMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.EvEventTimePO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="ef_id" jdbcType="BIGINT" property="efId" />
+    <result column="place_date" jdbcType="DATE" property="placeDate" />
+    <result column="time_interval" jdbcType="CHAR" property="timeInterval" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, ef_id, place_date, time_interval
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ev_event_time
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ev_event_time
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.common.pojo.EvEventTimePO">
+    insert into ev_event_time (id, ef_id, place_date, 
+      time_interval)
+    values (#{id,jdbcType=BIGINT}, #{efId,jdbcType=BIGINT}, #{placeDate,jdbcType=DATE}, 
+      #{timeInterval,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvEventTimePO">
+    insert into ev_event_time
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="efId != null">
+        ef_id,
+      </if>
+      <if test="placeDate != null">
+        place_date,
+      </if>
+      <if test="timeInterval != null">
+        time_interval,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="efId != null">
+        #{efId,jdbcType=BIGINT},
+      </if>
+      <if test="placeDate != null">
+        #{placeDate,jdbcType=DATE},
+      </if>
+      <if test="timeInterval != null">
+        #{timeInterval,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.EvEventTimePO">
+    update ev_event_time
+    <set>
+      <if test="efId != null">
+        ef_id = #{efId,jdbcType=BIGINT},
+      </if>
+      <if test="placeDate != null">
+        place_date = #{placeDate,jdbcType=DATE},
+      </if>
+      <if test="timeInterval != null">
+        time_interval = #{timeInterval,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.EvEventTimePO">
+    update ev_event_time
+    set ef_id = #{efId,jdbcType=BIGINT},
+      place_date = #{placeDate,jdbcType=DATE},
+      time_interval = #{timeInterval,jdbcType=CHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
