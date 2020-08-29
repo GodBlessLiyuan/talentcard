@@ -99,7 +99,23 @@ public class DataMigrationController {
         if (!StringUtils.equals(s_token, token)) {
             return new ResultVO(2000);
         }
-        iBestPolicyToTalentService.asynBestPolicyForTalent(5L);
+        iBestPolicyToTalentService.asynBestPolicy(1L);
+        return new ResultVO(1000, "success");
+    }
+
+
+
+    /**
+     * 更新用户的标签属性
+     *
+     * @return
+     */
+    @RequestMapping("update11")
+    public ResultVO update11(@RequestParam(value = "token") String token, @RequestParam(value = "talentId") String talentId) {
+        if (!StringUtils.equals(s_token, token)) {
+            return new ResultVO(2000);
+        }
+        this.iBestPolicyToTalentService.asynBestPolicyForTalent(Long.valueOf(talentId));
         return new ResultVO(1000, "success");
     }
 
@@ -114,7 +130,8 @@ public class DataMigrationController {
         if (!StringUtils.equals(s_token, token)) {
             return new ResultVO(2000);
         }
-        iTalentInfoCertificationService.update((long) 3);
+        //iTalentInfoCertificationService.update((long) 2);
+        this.iBestPolicyToTalentService.asynBestPolicy(1L);
         return new ResultVO(1000, "success");
     }
 
@@ -150,13 +167,18 @@ public class DataMigrationController {
                 TalentPO tal = talentMapper.selectByPrimaryKey(po.getTalentId());
                 List<TalentTypePO> ll = map.get((byte) 1);
                 if (ll != null && ll.size() > 0) {
-
                     for (TalentTypePO po1 : ll) {
                         if (!po1.getCardId().equals(tal.getCardId())) {
                             po1.setCardId(tal.getCardId());
                             this.talentTypeMapper.updateByPrimaryKey(po1);
                         }
                     }
+                } else {
+                    TalentTypePO po1 = new TalentTypePO();
+                    po1.setType((byte) 1);
+                    po1.setTalentId(po.getTalentId());
+                    po1.setCardId(tal.getCardId());
+                    this.talentTypeMapper.insert(po1);
                 }
 
                 //人才学历

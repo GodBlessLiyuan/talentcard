@@ -2,6 +2,7 @@ package com.talentcard.web.vo;
 
 import com.talentcard.common.pojo.CardPO;
 import com.talentcard.common.pojo.CertApprovalPassRecordPO;
+import com.talentcard.common.pojo.CertExamineRecordPO;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,7 +29,7 @@ public class CerIdVO implements Serializable {
      * @param po
      * @return
      */
-    public static CerIdVO convert(CertApprovalPassRecordPO po) {
+    public static CerIdVO convert(CertExamineRecordPO po) {
         CerIdVO vo = new CerIdVO();
         vo.setCid(po.getCertId());
         vo.setTid(po.getTalentId());

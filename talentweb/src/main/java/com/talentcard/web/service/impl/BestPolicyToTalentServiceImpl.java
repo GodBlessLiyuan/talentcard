@@ -60,7 +60,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
 
     @Async("asyncTaskExecutor")
     @Override
-    public void asynBestPolicy() {
+    public void asynBestPolicy(Long policyId) {
 
         /**
          * 1.查询出所有符合条件的用户信息
@@ -151,14 +151,14 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
             }
         }
 
-        this.deletePolicy();
-
+        //this.deletePolicy();
+        if (!allPolicy.containsKey(policyId)) {
+            allPolicy.put(policyId, null);
+        }
         updatePolicyStatistics(allPolicy);
         return;
     }
 
-
-    @Async("asyncTaskExecutor")
     @Override
     public void asynBestPolicyForTalent(Long talentId) {
 
@@ -200,11 +200,21 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
 
         bestTalent(talentId, allPolicy);
 
+
         TalentPO po = talentMapper.selectByPrimaryKey(talentId);
         if (po != null) {
             redisMapUtil.del(po.getOpenId());
         }
 
+
+        List<PoStatisticsPO> poStatisticsPOS = this.poStatisticsMapper.selectByMap();
+        if (poStatisticsPOS != null && poStatisticsPOS.size() > 0) {
+            for (PoStatisticsPO po1 : poStatisticsPOS) {
+                if (!allPolicy.containsKey(po1.getPolicyId())) {
+                    allPolicy.put(po1.getPolicyId(), null);
+                }
+            }
+        }
         /**
          * 更新政策对应的统计信息
          */
@@ -258,6 +268,25 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                             this.poStatisticsMapper.updateByPrimaryKey(b);
                         }
                     }
+                }
+            } else {
+                PoStatisticsPO b = this.poStatisticsMapper.selectByPrimaryKey(policyId);
+                if (b == null) {
+                    PoStatisticsPO t = new PoStatisticsPO();
+                    t.setTotal(0L);
+                    t.setNotApply(0L);
+                    t.setNotApproval(0L);
+                    t.setPass(0L);
+                    t.setPolicyId(policyId);
+                    t.setReject(0L);
+                    this.poStatisticsMapper.insert(t);
+                } else {
+                    b.setTotal(0L);
+                    b.setNotApply(0L);
+                    b.setNotApproval(0L);
+                    b.setPass(0L);
+                    b.setReject(0L);
+                    this.poStatisticsMapper.updateByPrimaryKey(b);
                 }
             }
         }
@@ -386,8 +415,14 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
             if (!allPolicy.containsKey(p1.getPolicyId())) {
                 if (p1.getStatus() != 1 && p1.getStatus() != 3) {
                     this.poComplianceMapper.deleteByPrimaryKey(p1.getPCoId());
+
                 }
                 continue;
+            } else if (!onePolicys.contains(p1.getPolicyId())) {
+                if (p1.getStatus() != 1 && p1.getStatus() != 3) {
+                    this.poComplianceMapper.deleteByPrimaryKey(p1.getPCoId());
+                    continue;
+                }
             }
 
             oneApplyMapPolicy.put(p1.getPolicyId(), p1);
@@ -429,7 +464,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                 }
             }
 
-            logger.info("pTid:{} applyPolicyId:{}", pTid,applyPolicyId);
+            logger.info("pTid:{} applyPolicyId:{}", pTid, applyPolicyId);
 
             if (applyPolicyId != 0) {
                 for (PolicyPO po : policyPOS) {
@@ -455,7 +490,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                             PoCompliancePO poCompliancePO = oneApplyMapPolicy.get(po.getPolicyId());
                             if (poCompliancePO != null) {
                                 if (poCompliancePO.getStatus() == 10) {
-                                    poCompliancePO.setStatus((byte)11);
+                                    poCompliancePO.setStatus((byte) 11);
                                     this.poComplianceMapper.updateByPrimaryKey(poCompliancePO);
                                 }
                             }
@@ -487,7 +522,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
                         /**
                          * 当存在历史政策记录时，删除未申请和不可申请状态的政策
                          */
-                        if(oneApplyMapPolicy.containsKey(po.getPolicyId())){
+                        if (oneApplyMapPolicy.containsKey(po.getPolicyId())) {
                             PoCompliancePO poCompliancePO = oneApplyMapPolicy.get(po.getPolicyId());
                             if (poCompliancePO != null) {
                                 if (poCompliancePO.getStatus() != 1 && poCompliancePO.getStatus() != 3) {
@@ -588,10 +623,11 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
 
     /**
      * 删除政策统计信息
+     *
      * @return
      */
     @Override
-    public int deletePolicy(){
+    public int deletePolicy() {
         this.poStatisticsMapper.deleteAll();
         return 0;
     }
