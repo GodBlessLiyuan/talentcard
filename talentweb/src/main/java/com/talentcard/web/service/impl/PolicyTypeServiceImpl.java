@@ -17,6 +17,7 @@ import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IPolicyTypeService;
 import com.talentcard.web.vo.PolicyTypeVO;
 import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,16 +58,18 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
         //将互斥id取出来，然后进作为List查询条件查询出对应的互斥政策名称放入list中\
         if (policyTypeBOs!= null &&policyTypeBOs.size()>0) {
             for (int i = 0; i < policyTypeBOs.size(); i++) {
-                policyTypeBOs.get(i).setExcludeIds(Arrays.asList((Long[]) ConvertUtils.convert(policyTypeBOs.get(i).getExcludeId().split(","), Long.class)));
-                //根据互斥id查询互斥政策名称放入对应的List中
-                List<PolicyTypeBO> policyTypeNameList = poTypeMapper.queryPtNameByPtId(policyTypeBOs.get(i).getExcludeIds());
-                //将查询出的名字取出来放入List中
-                List<String> ePolicyTypeNames = new ArrayList<>();
-                for (PolicyTypeBO policyTypeBOForTypeName : policyTypeNameList) {
-                    ePolicyTypeNames.add(policyTypeBOForTypeName.getPTypeName());
+                if(StringUtils.isNotBlank(policyTypeBOs.get(i).getExcludeId())){
+                    policyTypeBOs.get(i).setExcludeIds(Arrays.asList((Long[]) ConvertUtils.convert(policyTypeBOs.get(i).getExcludeId().split(","), Long.class)));
+                    //根据互斥id查询互斥政策名称放入对应的List中
+                    List<PolicyTypeBO> policyTypeNameList = poTypeMapper.queryPtNameByPtId(policyTypeBOs.get(i).getExcludeIds());
+                    //将查询出的名字取出来放入List中
+                    List<String> ePolicyTypeNames = new ArrayList<>();
+                    for (PolicyTypeBO policyTypeBOForTypeName : policyTypeNameList) {
+                        ePolicyTypeNames.add(policyTypeBOForTypeName.getPTypeName());
+                    }
+                    //将上面去到的互斥名字数组放入BO中
+                    policyTypeBOs.get(i).setExcludeNames(ePolicyTypeNames);
                 }
-                //将上面去到的互斥名字数组放入BO中
-                policyTypeBOs.get(i).setExcludeNames(ePolicyTypeNames);
             }
             return new ResultVO(1000, new PageInfoVO<>(page.getTotal(), PolicyTypeVO.convert(policyTypeBOs)));
         }
