@@ -196,10 +196,10 @@ public class PolicyServiceImpl implements IPolicyService {
         policyMapper.updateByPrimaryKeySelective(policyPO);
         if (upDown == 1) {
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
-                    "上架政策\"%s\"", policyPO.getName()+":"+policyPO.getNum());
+                    "上架政策\"%s\"", policyPO.getName() + ":" + policyPO.getNum());
         } else if (upDown == 2) {
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
-                    "下架政策\"%s\"", policyPO.getName()+":"+policyPO.getNum());
+                    "下架政策\"%s\"", policyPO.getName() + ":" + policyPO.getNum());
         }
 
         /**
@@ -232,8 +232,12 @@ public class PolicyServiceImpl implements IPolicyService {
         po.setBank(dto.getBank());
         po.setAnnex(dto.getAnnex());
         po.setDescription(dto.getDesc());
-        String honour = listLongToString(dto.getTalentHonourIds(), ",");
-        po.setHonourIds(honour);
+        if (dto.getTalentHonourIds() != null && dto.getTalentHonourIds().length > 0) {
+            String honour = listLongToString(dto.getTalentHonourIds(), ",");
+            po.setHonourIds(honour);
+        } else {
+            po.setHonourIds("");
+        }
         po.setColor(dto.getColor());
         po.setAnnexInfo(dto.getInfo());
         if (!StringUtils.isEmpty(dto.getForm())) {
