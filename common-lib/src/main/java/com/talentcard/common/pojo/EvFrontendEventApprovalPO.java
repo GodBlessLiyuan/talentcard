@@ -1,12 +1,14 @@
 package com.talentcard.common.pojo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * ev_frontend_event_approval
- * @author 
+ *
+ * @author
  */
 @Data
 public class EvFrontendEventApprovalPO implements Serializable {
@@ -17,7 +19,7 @@ public class EvFrontendEventApprovalPO implements Serializable {
     /**
      * 审批人ID
      */
-    private Long useId;
+    private Long userId;
 
     /**
      * 审批人
@@ -27,7 +29,7 @@ public class EvFrontendEventApprovalPO implements Serializable {
     private Date createTime;
 
     /**
-     * 1：提交；2：审批
+     * 1：提交；2：审批；3：用户取消
      */
     private Byte type;
 
@@ -41,4 +43,5 @@ public class EvFrontendEventApprovalPO implements Serializable {
     private String opinion;
 
     private static final long serialVersionUID = 1L;
+
 }

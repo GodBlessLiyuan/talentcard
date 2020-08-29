@@ -4,10 +4,12 @@
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.EvFrontendEventPO">
     <id column="fe_id" jdbcType="BIGINT" property="feId" />
     <result column="name" jdbcType="CHAR" property="name" />
-    <result column="event_field" jdbcType="BIGINT" property="eventField" />
     <result column="time" jdbcType="CHAR" property="time" />
+    <result column="ef_id" jdbcType="BIGINT" property="efId" />
     <result column="duration" jdbcType="DOUBLE" property="duration" />
-    <result column="date" jdbcType="CHAR" property="date" />
+    <result column="event_num" jdbcType="INTEGER" property="eventNum" />
+    <result column="event_date" jdbcType="DATE" property="eventDate" />
+    <result column="time_interval" jdbcType="CHAR" property="timeInterval" />
     <result column="sponsor" jdbcType="CHAR" property="sponsor" />
     <result column="detail" jdbcType="VARCHAR" property="detail" />
     <result column="contact_person" jdbcType="CHAR" property="contactPerson" />
@@ -16,10 +18,14 @@
     <result column="talent_id" jdbcType="BIGINT" property="talentId" />
     <result column="open_id" jdbcType="CHAR" property="openId" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    fe_id, `name`, event_field, `time`, duration, `date`, sponsor, detail, contact_person, 
-    phone, picture, talent_id, open_id, `status`
+    fe_id, `name`, `time`, ef_id, duration, event_num, event_date, time_interval, sponsor, 
+    detail, contact_person, phone, picture, talent_id, open_id, `status`, create_time, 
+    start_time, end_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -32,16 +38,20 @@
     where fe_id = #{feId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.EvFrontendEventPO">
-    insert into ev_frontend_event (fe_id, `name`, event_field, 
-      `time`, duration, `date`, sponsor, 
-      detail, contact_person, phone, 
-      picture, talent_id, open_id, 
-      `status`)
-    values (#{feId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{eventField,jdbcType=BIGINT}, 
-      #{time,jdbcType=CHAR}, #{duration,jdbcType=DOUBLE}, #{date,jdbcType=CHAR}, #{sponsor,jdbcType=CHAR}, 
-      #{detail,jdbcType=VARCHAR}, #{contactPerson,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, 
-      #{picture,jdbcType=VARCHAR}, #{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, 
-      #{status,jdbcType=TINYINT})
+    insert into ev_frontend_event (fe_id, `name`, `time`, ef_id, 
+      duration, event_num, event_date, 
+      time_interval, sponsor, detail, 
+      contact_person, phone, picture, 
+      talent_id, open_id, `status`, 
+      create_time, start_time, end_time
+      )
+    values (#{feId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{time,jdbcType=CHAR}, #{efId,jdbcType=BIGINT}, 
+      #{duration,jdbcType=DOUBLE}, #{eventNum,jdbcType=INTEGER}, #{eventDate,jdbcType=DATE}, 
+      #{timeInterval,jdbcType=CHAR}, #{sponsor,jdbcType=CHAR}, #{detail,jdbcType=VARCHAR}, 
+      #{contactPerson,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{picture,jdbcType=VARCHAR}, 
+      #{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvFrontendEventPO">
     insert into ev_frontend_event
@@ -52,17 +62,23 @@
       <if test="name != null">
         `name`,
       </if>
-      <if test="eventField != null">
-        event_field,
-      </if>
       <if test="time != null">
         `time`,
+      </if>
+      <if test="efId != null">
+        ef_id,
       </if>
       <if test="duration != null">
         duration,
       </if>
-      <if test="date != null">
-        `date`,
+      <if test="eventNum != null">
+        event_num,
+      </if>
+      <if test="eventDate != null">
+        event_date,
+      </if>
+      <if test="timeInterval != null">
+        time_interval,
       </if>
       <if test="sponsor != null">
         sponsor,
@@ -88,6 +104,15 @@
       <if test="status != null">
         `status`,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="feId != null">
@@ -96,17 +121,23 @@
       <if test="name != null">
         #{name,jdbcType=CHAR},
       </if>
-      <if test="eventField != null">
-        #{eventField,jdbcType=BIGINT},
-      </if>
       <if test="time != null">
         #{time,jdbcType=CHAR},
+      </if>
+      <if test="efId != null">
+        #{efId,jdbcType=BIGINT},
       </if>
       <if test="duration != null">
         #{duration,jdbcType=DOUBLE},
       </if>
-      <if test="date != null">
-        #{date,jdbcType=CHAR},
+      <if test="eventNum != null">
+        #{eventNum,jdbcType=INTEGER},
+      </if>
+      <if test="eventDate != null">
+        #{eventDate,jdbcType=DATE},
+      </if>
+      <if test="timeInterval != null">
+        #{timeInterval,jdbcType=CHAR},
       </if>
       <if test="sponsor != null">
         #{sponsor,jdbcType=CHAR},
@@ -132,6 +163,15 @@
       <if test="status != null">
         #{status,jdbcType=TINYINT},
       </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.EvFrontendEventPO">
@@ -140,17 +180,23 @@
       <if test="name != null">
         `name` = #{name,jdbcType=CHAR},
       </if>
-      <if test="eventField != null">
-        event_field = #{eventField,jdbcType=BIGINT},
-      </if>
       <if test="time != null">
         `time` = #{time,jdbcType=CHAR},
+      </if>
+      <if test="efId != null">
+        ef_id = #{efId,jdbcType=BIGINT},
       </if>
       <if test="duration != null">
         duration = #{duration,jdbcType=DOUBLE},
       </if>
-      <if test="date != null">
-        `date` = #{date,jdbcType=CHAR},
+      <if test="eventNum != null">
+        event_num = #{eventNum,jdbcType=INTEGER},
+      </if>
+      <if test="eventDate != null">
+        event_date = #{eventDate,jdbcType=DATE},
+      </if>
+      <if test="timeInterval != null">
+        time_interval = #{timeInterval,jdbcType=CHAR},
       </if>
       <if test="sponsor != null">
         sponsor = #{sponsor,jdbcType=CHAR},
@@ -176,16 +222,27 @@
       <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
       </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where fe_id = #{feId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.EvFrontendEventPO">
     update ev_frontend_event
     set `name` = #{name,jdbcType=CHAR},
-      event_field = #{eventField,jdbcType=BIGINT},
       `time` = #{time,jdbcType=CHAR},
+      ef_id = #{efId,jdbcType=BIGINT},
       duration = #{duration,jdbcType=DOUBLE},
-      `date` = #{date,jdbcType=CHAR},
+      event_num = #{eventNum,jdbcType=INTEGER},
+      event_date = #{eventDate,jdbcType=DATE},
+      time_interval = #{timeInterval,jdbcType=CHAR},
       sponsor = #{sponsor,jdbcType=CHAR},
       detail = #{detail,jdbcType=VARCHAR},
       contact_person = #{contactPerson,jdbcType=CHAR},
@@ -193,7 +250,10 @@
       picture = #{picture,jdbcType=VARCHAR},
       talent_id = #{talentId,jdbcType=BIGINT},
       open_id = #{openId,jdbcType=CHAR},
-      `status` = #{status,jdbcType=TINYINT}
+      `status` = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP}
     where fe_id = #{feId,jdbcType=BIGINT}
   </update>
 </mapper>

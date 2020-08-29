@@ -72,7 +72,7 @@ public class EventDTO {
         evEventPO.setTime(eventDTO.getTime());
         evEventPO.setDuration(eventDTO.getDuration());
         evEventPO.setDate(eventDTO.getDate());
-        evEventPO.setEventField(eventDTO.getEventField());
+        evEventPO.setEfId(eventDTO.getEventField());
         evEventPO.setDetail(eventDTO.getDetail());
         evEventPO.setProcess(eventDTO.getProcess());
         evEventPO.setTarget(eventDTO.getTarget());
