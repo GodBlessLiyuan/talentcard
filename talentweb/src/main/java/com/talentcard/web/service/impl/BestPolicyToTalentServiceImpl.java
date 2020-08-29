@@ -60,7 +60,7 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
 
     @Async("asyncTaskExecutor")
     @Override
-    public void asynBestPolicy() {
+    public void asynBestPolicy(Long policyId) {
 
         /**
          * 1.查询出所有符合条件的用户信息
@@ -151,8 +151,10 @@ public class BestPolicyToTalentServiceImpl implements IBestPolicyToTalentService
             }
         }
 
-        this.deletePolicy();
-
+        //this.deletePolicy();
+        if (!allPolicy.containsKey(policyId)) {
+            allPolicy.put(policyId, null);
+        }
         updatePolicyStatistics(allPolicy);
         return;
     }

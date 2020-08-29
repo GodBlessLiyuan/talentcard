@@ -99,7 +99,7 @@ public class DataMigrationController {
         if (!StringUtils.equals(s_token, token)) {
             return new ResultVO(2000);
         }
-        iBestPolicyToTalentService.asynBestPolicy();
+        iBestPolicyToTalentService.asynBestPolicy(1L);
         return new ResultVO(1000, "success");
     }
 
@@ -131,7 +131,7 @@ public class DataMigrationController {
             return new ResultVO(2000);
         }
         //iTalentInfoCertificationService.update((long) 2);
-        this.iBestPolicyToTalentService.asynBestPolicy();
+        this.iBestPolicyToTalentService.asynBestPolicy(1L);
         return new ResultVO(1000, "success");
     }
 

@@ -208,7 +208,7 @@ public class PolicyServiceImpl implements IPolicyService {
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
             @Override
             public void afterCommit() {
-                iBestPolicyToTalentService.asynBestPolicy();
+                iBestPolicyToTalentService.asynBestPolicy(policyPO.getPolicyId());
             }
         });
         return new ResultVO(1000);
