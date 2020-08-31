@@ -7,10 +7,11 @@
     <result column="dr" jdbcType="TINYINT" property="dr" />
     <result column="talent_id" jdbcType="BIGINT" property="talentId" />
     <result column="open_id" jdbcType="CHAR" property="openId" />
-    <result column="ee_id" jdbcType="BIGINT" property="eeId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="event_id" jdbcType="BIGINT" property="eventId" />
   </resultMap>
   <sql id="Base_Column_List">
-    et_id, create_time, dr, talent_id, open_id, ee_id
+    et_id, create_time, dr, talent_id, open_id, `status`, event_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,9 +25,11 @@
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.EvEventTalentPO">
     insert into ev_event_talent (et_id, create_time, dr, 
-      talent_id, open_id, ee_id)
+      talent_id, open_id, `status`, 
+      event_id)
     values (#{etId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{dr,jdbcType=TINYINT}, 
-      #{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{eeId,jdbcType=BIGINT})
+      #{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, 
+      #{eventId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvEventTalentPO">
     insert into ev_event_talent
@@ -46,8 +49,11 @@
       <if test="openId != null">
         open_id,
       </if>
-      <if test="eeId != null">
-        ee_id,
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="eventId != null">
+        event_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -66,8 +72,11 @@
       <if test="openId != null">
         #{openId,jdbcType=CHAR},
       </if>
-      <if test="eeId != null">
-        #{eeId,jdbcType=BIGINT},
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="eventId != null">
+        #{eventId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -86,8 +95,11 @@
       <if test="openId != null">
         open_id = #{openId,jdbcType=CHAR},
       </if>
-      <if test="eeId != null">
-        ee_id = #{eeId,jdbcType=BIGINT},
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="eventId != null">
+        event_id = #{eventId,jdbcType=BIGINT},
       </if>
     </set>
     where et_id = #{etId,jdbcType=BIGINT}
@@ -98,7 +110,34 @@
       dr = #{dr,jdbcType=TINYINT},
       talent_id = #{talentId,jdbcType=BIGINT},
       open_id = #{openId,jdbcType=CHAR},
-      ee_id = #{eeId,jdbcType=BIGINT}
+      `status` = #{status,jdbcType=TINYINT},
+      event_id = #{eventId,jdbcType=BIGINT}
     where et_id = #{etId,jdbcType=BIGINT}
   </update>
+  <select id="queryTalentInfo" resultType="com.talentcard.common.bo.QueryTalentInfoBO">
+    select
+    t.name as name, t.sex as sex,
+    t.work_location as workLocation, t.phone as phone,
+    concat(c.title, '/',c.initial_word) as talentCard, et.status as status,
+    et.create_time as createTime
+    from ev_event_talent et
+    left join t_talent t
+    on et.talent_id = t.talent_id
+    left join t_card c
+    on t.card_id = c.card_id
+    where
+    1 = 1
+    <if test="name != null and name !=''">
+    and t.name like '%' #{name, jdbcType=CHAR} '%'
+    </if>
+    <if test="workLocation != null and workLocation !=''">
+      and t.work_location like '%' #{workLocation, jdbcType=CHAR} '%'
+    </if>
+    <if test="sex != null and sex !=''">
+      and t.sex = #{sex, jdbcType=TINYINT}
+    </if>
+    <if test="status != null and status !=''">
+      and et.status = #{status, jdbcType=TINYINT}
+    </if>
+  </select>
 </mapper>
