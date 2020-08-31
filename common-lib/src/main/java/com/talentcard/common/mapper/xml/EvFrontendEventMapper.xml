@@ -21,11 +21,12 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
     fe_id, `name`, `time`, ef_id, duration, event_num, event_date, time_interval, sponsor, 
     detail, contact_person, phone, picture, talent_id, open_id, `status`, create_time, 
-    start_time, end_time
+    start_time, end_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -43,15 +44,15 @@
       time_interval, sponsor, detail, 
       contact_person, phone, picture, 
       talent_id, open_id, `status`, 
-      create_time, start_time, end_time
-      )
+      create_time, start_time, end_time, 
+      update_time)
     values (#{feId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{time,jdbcType=CHAR}, #{efId,jdbcType=BIGINT}, 
       #{duration,jdbcType=DOUBLE}, #{eventNum,jdbcType=INTEGER}, #{eventDate,jdbcType=DATE}, 
       #{timeInterval,jdbcType=CHAR}, #{sponsor,jdbcType=CHAR}, #{detail,jdbcType=VARCHAR}, 
       #{contactPerson,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, #{picture,jdbcType=VARCHAR}, 
       #{talentId,jdbcType=BIGINT}, #{openId,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}
-      )
+      #{createTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvFrontendEventPO">
     insert into ev_frontend_event
@@ -113,6 +114,9 @@
       <if test="endTime != null">
         end_time,
       </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="feId != null">
@@ -171,6 +175,9 @@
       </if>
       <if test="endTime != null">
         #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -231,6 +238,9 @@
       <if test="endTime != null">
         end_time = #{endTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where fe_id = #{feId,jdbcType=BIGINT}
   </update>
@@ -253,7 +263,8 @@
       `status` = #{status,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       start_time = #{startTime,jdbcType=TIMESTAMP},
-      end_time = #{endTime,jdbcType=TIMESTAMP}
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where fe_id = #{feId,jdbcType=BIGINT}
   </update>
 </mapper>
