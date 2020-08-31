@@ -47,6 +47,7 @@ public class PolicyQueryBO {
         if (policyQueryBOList == null) {
             return null;
         }
+        Long current = System.currentTimeMillis();
         for (PolicyQueryBO policyQueryBO : policyQueryBOList) {
             //判断政策状态
             if (policyQueryBO.getUpDown() == 2) {
@@ -55,7 +56,6 @@ public class PolicyQueryBO {
             } else {
                 Long start = policyQueryBO.getStartTime().getTime();
                 Long end = policyQueryBO.getEndTime().getTime();
-                Long current = System.currentTimeMillis();
                 if (current >= end) {
                     //已失效
                     policyQueryBO.setStatus((byte) 3);

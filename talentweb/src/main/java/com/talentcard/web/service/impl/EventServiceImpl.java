@@ -1,8 +1,6 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
-import com.talentcard.common.bo.PolicyApplyBO;
-import com.talentcard.common.bo.PolicyQueryBO;
 import com.talentcard.common.bo.QueryTalentInfoBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
@@ -14,19 +12,14 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.EventDTO;
 import com.talentcard.web.service.IEventService;
 import com.talentcard.web.vo.EventDetailVO;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.List;;
 
 /**
  * @author ChenXU
@@ -65,7 +58,7 @@ public class EventServiceImpl implements IEventService {
         evEventPO = EventDTO.setEventPO(evEventPO, eventDTO);
         evEventPO.setUserId(userId);
         evEventPO.setCreateTime(new Date());
-        evEventMapper.insertSelective(evEventPO);
+        evEventMapper.add(evEventPO);
         //新建enjoy表
         Long eventId = evEventPO.getEventId();
         setEventEnjoy(eventDTO, eventId);
@@ -79,8 +72,11 @@ public class EventServiceImpl implements IEventService {
         //新建eventQuery表
         EvEventQueryPO evEventQueryPO = new EvEventQueryPO();
         evEventQueryPO.setEventId(eventId);
-        evEventQueryPO = EventDTO.setEventQueryPO(evEventQueryPO,eventDTO);
-        evEventQueryMapper.insertSelective(evEventQueryPO);
+        evEventQueryPO = EventDTO.setEventQueryPO(evEventQueryPO, eventDTO);
+        evEventQueryMapper.add(evEventQueryPO);
+        //更新event表：查询表的主键eqId
+        evEventPO.setEqId(evEventQueryPO.getEqId());
+        evEventMapper.updateByPrimaryKeySelective(evEventPO);
         return new ResultVO(1000);
     }
 
@@ -111,10 +107,13 @@ public class EventServiceImpl implements IEventService {
         evEventLogPO.setType((byte) 1);
         evEventLogMapper.insertSelective(evEventLogPO);
         //更新eventQuery表
-        EvEventQueryPO evEventQueryPO = new EvEventQueryPO();
+        EvEventQueryPO evEventQueryPO = evEventQueryMapper.selectByPrimaryKey(evEventPO.getEqId());
+        if (evEventQueryPO == null) {
+            return new ResultVO(2751, "活动查询总表查不到相关信息！");
+        }
         evEventQueryPO.setEventId(eventId);
-        evEventQueryPO = EventDTO.setEventQueryPO(evEventQueryPO,eventDTO);
-        evEventQueryMapper.insertSelective(evEventQueryPO);
+        evEventQueryPO = EventDTO.setEventQueryPO(evEventQueryPO, eventDTO);
+        evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
         return new ResultVO(1000);
     }
 
@@ -139,6 +138,13 @@ public class EventServiceImpl implements IEventService {
         }
         evEventPO.setStatus((byte) 10);
         evEventMapper.updateByPrimaryKeySelective(evEventPO);
+        //更新eventQuery表
+        EvEventQueryPO evEventQueryPO = evEventQueryMapper.selectByPrimaryKey(evEventPO.getEqId());
+        if (evEventQueryPO == null) {
+            return new ResultVO(2751, "活动查询总表查不到相关信息！");
+        }
+        evEventQueryPO.setStatus((byte) 4);
+        evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
         return new ResultVO(1000);
     }
 
@@ -153,8 +159,16 @@ public class EventServiceImpl implements IEventService {
         } else {
             evEventPO.setStatus((byte) 10);
         }
+        //更新event表
         evEventPO.setUpDown(upDown);
         evEventMapper.updateByPrimaryKeySelective(evEventPO);
+        //更新eventQuery表
+        EvEventQueryPO evEventQueryPO = evEventQueryMapper.selectByPrimaryKey(evEventPO.getEqId());
+        if (evEventQueryPO == null) {
+            return new ResultVO(2751, "活动查询总表查不到相关信息！");
+        }
+        evEventQueryPO.setUpDown(upDown);
+        evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
         return new ResultVO(1000);
     }
 

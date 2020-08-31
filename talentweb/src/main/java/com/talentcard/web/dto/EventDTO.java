@@ -78,6 +78,7 @@ public class EventDTO {
 
     /**
      * 构建evEventQueryPO
+     *
      * @param evEventQueryPO
      * @param eventDTO
      * @return
@@ -87,12 +88,12 @@ public class EventDTO {
         evEventQueryPO.setEventTime(eventDTO.getTime());
         evEventQueryPO.setEfId(eventDTO.getEventField());
         evEventQueryPO.setType((byte) 2);
-        evEventQueryPO.setStatus((byte)2);
-        evEventQueryPO.setUpDown((byte)2);
+        evEventQueryPO.setStatus((byte) 2);
+        evEventQueryPO.setUpDown((byte) 2);
         evEventQueryPO.setCreateTime(new Date());
         evEventQueryPO.setStartTime(DateUtil.str2Date(eventDTO.getStartTime(), DateUtil.YMD_HMS));
         evEventQueryPO.setEndTime(DateUtil.str2Date(eventDTO.getEndTime(), DateUtil.YMD_HMS));
         evEventQueryPO.setUpdateTime(new Date());
-        return  evEventQueryPO;
+        return evEventQueryPO;
     }
 }
