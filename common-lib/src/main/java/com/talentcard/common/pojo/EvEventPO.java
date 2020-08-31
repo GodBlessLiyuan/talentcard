@@ -1,14 +1,12 @@
 package com.talentcard.common.pojo;
 
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
  * ev_event
- *
- * @author
+ * @author 
  */
 @Data
 public class EvEventPO implements Serializable {
@@ -62,20 +60,41 @@ public class EvEventPO implements Serializable {
 
     private String target;
 
+    /**
+     * 联系方式
+     */
     private String contact;
 
+    /**
+     * 活动宣传图
+     */
     private String picture;
 
     private Long roleId;
 
+    /**
+     * 是否活动限额
+     */
     private Byte ifQuota;
 
+    /**
+     * 男士活动名额
+     */
     private Integer maleQuota;
 
+    /**
+     * 女士活动限额
+     */
     private Integer femaleQuota;
 
+    /**
+     * 活动总限额
+     */
     private Integer eventQuota;
 
+    /**
+     * 更新时间
+     */
     private Date updateTime;
 
     /**
@@ -88,8 +107,14 @@ public class EvEventPO implements Serializable {
      */
     private Byte dr;
 
+    /**
+     * 创建时间
+     */
     private Date createTime;
 
+    /**
+     * 用户ID
+     */
     private Long userId;
 
     /**
@@ -102,6 +127,7 @@ public class EvEventPO implements Serializable {
      */
     private Date endTime;
 
-    private static final long serialVersionUID = 1L;
+    private Long eqId;
 
+    private static final long serialVersionUID = 1L;
 }

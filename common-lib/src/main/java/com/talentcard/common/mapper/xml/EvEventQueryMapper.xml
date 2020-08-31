@@ -14,10 +14,11 @@
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="date" jdbcType="CHAR" property="date" />
   </resultMap>
   <sql id="Base_Column_List">
     eq_id, event_id, `name`, event_time, ef_id, `type`, `status`, up_down, create_time, 
-    start_time, end_time, update_time
+    start_time, end_time, update_time, `date`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -33,13 +34,13 @@
     insert into ev_event_query (eq_id, event_id, `name`, 
       event_time, ef_id, `type`, 
       `status`, up_down, create_time, 
-      start_time, end_time, update_time
-      )
+      start_time, end_time, update_time, 
+      `date`)
     values (#{eqId,jdbcType=BIGINT}, #{eventId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, 
       #{eventTime,jdbcType=CHAR}, #{efId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, 
       #{status,jdbcType=TINYINT}, #{upDown,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{date,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvEventQueryPO">
     insert into ev_event_query
@@ -80,6 +81,9 @@
       <if test="updateTime != null">
         update_time,
       </if>
+      <if test="date != null">
+        `date`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="eqId != null">
@@ -117,6 +121,9 @@
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
@@ -156,6 +163,9 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="date != null">
+        `date` = #{date,jdbcType=CHAR},
+      </if>
     </set>
     where eq_id = #{eqId,jdbcType=BIGINT}
   </update>
@@ -171,7 +181,61 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       start_time = #{startTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      `date` = #{date,jdbcType=CHAR}
     where eq_id = #{eqId,jdbcType=BIGINT}
   </update>
+
+     <insert id="add" useGeneratedKeys="true" keyProperty="eqId"
+            parameterType="com.talentcard.common.pojo.EvEventQueryPO">
+    insert into ev_event_query (eq_id, event_id, `name`,
+      event_time, ef_id, `type`,
+      `status`, up_down, create_time,
+      start_time, end_time, update_time,
+      `date`)
+    values (#{eqId,jdbcType=BIGINT}, #{eventId,jdbcType=BIGINT}, #{name,jdbcType=CHAR},
+      #{eventTime,jdbcType=CHAR}, #{efId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT},
+      #{status,jdbcType=TINYINT}, #{upDown,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP},
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{date,jdbcType=CHAR})
+  </insert>
+
+    <select id="query" resultType="com.talentcard.common.bo.EvEventQueryBO">
+        select
+        eq_id as eqId, event_id as eventId, `name`, event_time as eventTime,
+        ef_id as efId, `type`, `status`, up_down as upDown, create_time as createTime,
+        start_time as startTime, end_time as endTime, update_time as updateTime
+        from ev_event_query
+        where
+        1 = 1
+        <if test="name != null and name !=''">
+            and `name` like '%' #{name,jdbcType=CHAR} '%'
+        </if>
+        <if test="type != null and type !=0">
+            and `type` = #{type, jdbcType=TINYINT}
+        </if>
+        <if test="status != null and status == 1">
+            and `status` = 2 and `type` = 1
+            and <![CDATA[ (start_time >= #{currentTime} ]]>
+        </if>
+        <if test="status != null and status == 2">
+            and `status` = 2
+            and <![CDATA[ (start_time <= #{currentTime} and end_time >= #{currentTime} ]]>
+            and (`type` = 1 or (`type` = 2 and up_down = 1))
+        </if>
+        <if test="status != null and status == 3">
+            and `status` = 2
+            and <![CDATA[ end_time <= #{currentTime} ]]>
+        </if>
+        <if test="status != null and status == 4">
+            and `type` = 2 and up_down = 2
+        </if>
+        <if test="status != null and status == 5">
+            and (`status` = 4 or `status` = 5)
+        </if>
+        <if test="status != null and status == 6">
+          and `status` = 2 and `type` = 2
+          and <![CDATA[ (start_time >= #{currentTime} ]]>
+        </if>
+    </select>
 </mapper>
