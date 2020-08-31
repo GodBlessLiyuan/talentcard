@@ -59,7 +59,7 @@ public class EventDetailVO {
         eventDetailVO.setTime(evEventPO.getTime());
         eventDetailVO.setDuration(evEventPO.getDuration());
         eventDetailVO.setDate(evEventPO.getDate());
-        eventDetailVO.setEventField(evEventPO.getEventField());
+        eventDetailVO.setEventField(evEventPO.getEfId());
         eventDetailVO.setDetail(evEventPO.getDetail());
         eventDetailVO.setProcess(evEventPO.getProcess());
         eventDetailVO.setTarget(evEventPO.getTarget());

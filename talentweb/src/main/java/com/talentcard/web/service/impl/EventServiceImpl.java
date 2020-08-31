@@ -253,7 +253,6 @@ public class EventServiceImpl implements IEventService {
             content[7] = DateUtil.date2Str(queryTalentInfoBO.getCreateTime(), DateUtil.YMD_HMS);
             contents[num++] = content;
         }
-
         return contents;
     }
 
