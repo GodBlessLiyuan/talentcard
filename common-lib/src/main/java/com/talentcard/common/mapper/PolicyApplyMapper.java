@@ -5,12 +5,11 @@ import com.talentcard.common.bo.PoComplianceBO;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.dto.ApplyNumCountDTO;
 import com.talentcard.common.pojo.PolicyApplyPO;
-import com.talentcard.common.vo.ResultVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * PolicyApplyMapper继承基类
@@ -63,11 +62,18 @@ public interface PolicyApplyMapper extends BaseMapper<PolicyApplyPO, Long> {
      * @param paId
      * @return
      */
-    List<PoComplianceBO> queryBankByTalentId(Long paId);
+    List<PoComplianceBO> queryBankByTalentId(@Param("talentId")Long paId,@Param("policyId")Long policyId);
 
     /**
      * 查询所有的请求信息
      * @return
      */
     List<PolicyApplyPO> selectAll();
+
+    /**
+     * 查询条件talentId，policyId，status
+     * @param map
+     * @return
+     */
+    List<PolicyApplyPO> selectByMap(Map map);
 }

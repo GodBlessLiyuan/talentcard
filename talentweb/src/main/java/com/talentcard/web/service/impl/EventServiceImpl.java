@@ -54,7 +54,7 @@ public class EventServiceImpl implements IEventService {
         evEventPO = EventDTO.dtoConvertPo(evEventPO, eventDTO);
         evEventPO.setUserId(userId);
         evEventPO.setCreateTime(new Date());
-        evEventMapper.add(evEventPO);
+        evEventMapper.insert(evEventPO);
         //新建enjoy表
         Long eventId = evEventPO.getEventId();
         setEventEnjoy(eventDTO, eventId);

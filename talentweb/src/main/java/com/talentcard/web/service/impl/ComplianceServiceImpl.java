@@ -18,18 +18,18 @@ import com.talentcard.web.vo.ComplianceNumVO;
 import com.talentcard.web.vo.ComplianceVO;
 import com.talentcard.web.vo.PushRecordVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.talentcard.common.utils.DateUtil.YMD;
 
@@ -42,7 +42,7 @@ import static com.talentcard.common.utils.DateUtil.YMD;
  */
 @Slf4j
 @Service
-public class ComplianceService implements IComplianceService {
+public class ComplianceServiceImpl implements IComplianceService {
     //private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ComplianceService.class);
     @Autowired
     private ILogService logService;
@@ -60,6 +60,9 @@ public class ComplianceService implements IComplianceService {
     private OpMessRecordMapper opMessRecordMapper;
     @Autowired
     private TalentMapper talentMapper;
+    @Autowired
+    private CertExamineRecordMapper certExamineRecordMapper;
+
     @Autowired
     private IWxOfficalAccountService wxOfficalAccountService;
 
@@ -107,10 +110,12 @@ public class ComplianceService implements IComplianceService {
             poComplianceBO.setPolicyFunds(policyPo.getFunds());
             //下面进行银行卡信息查询用于导出
             //首先根据人才查询政策申请表，查出两张表已政策申请id关联机型查询银行卡信息
-            List<PoComplianceBO> list = policyApplyMapper.queryBankByTalentId(poComplianceBO.getTalentId());
-            if(list!=null&&list.size()>0 ) {
-                poComplianceBO.setBankNum(list.get(0).getBankNum());
-                poComplianceBO.setBankName(list.get(0).getBankName());
+            List<PoComplianceBO> list = policyApplyMapper.queryBankByTalentId(poComplianceBO.getTalentId(), poComplianceBO.getPolicyId());
+            if (list != null && list.size() > 0) {
+                if (list.get(0) != null && !StringUtils.isEmpty(list.get(0).getBankNum())) {
+                    poComplianceBO.setBankNum(list.get(0).getBankNum());
+                    poComplianceBO.setBankName(list.get(0).getBankName());
+                }
             }
         }
         //构造导出Excel文件名称
@@ -152,7 +157,30 @@ public class ComplianceService implements IComplianceService {
             contents[num][5] = bo.getBankNum();
             contents[num][6] = bo.getBankName();
             contents[num][7] = bo.getName();
-            contents[num][8] = Integer.toString(bo.getPolicyFunds());
+
+            String funds = Integer.toString(bo.getPolicyFunds());
+
+            if (bo.getStatus() == 1) {
+                Map<String, Object> map = new HashMap<>(3);
+                map.put("talentId", bo.getTalentId());
+                map.put("policyId", bo.getPolicyId());
+                map.put("status", 1);
+                List<PolicyApplyPO> pos = policyApplyMapper.selectByMap(map);
+                if (pos != null && pos.size() > 0) {
+                    DecimalFormat df2 = new DecimalFormat("#.00");
+                    for (PolicyApplyPO po : pos) {
+                        BigDecimal funds1 = po.getActualFunds();
+                        try {
+                            funds = df2.format(funds1);
+                            break;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            contents[num][8] = funds;
             if (bo.getApplyTime() != null) {
                 contents[num][9] = DateUtil.date2Str(bo.getApplyTime(), YMD);
             }
@@ -176,7 +204,7 @@ public class ComplianceService implements IComplianceService {
     public ResultVO push(HttpSession session, Map<String, Object> reqData) {
         List<PoComplianceBO> bos = complianceMapper.pageQuery(reqData);
         //根据人才政策id查出人才政策名称
-        PolicyPO policyPo = policyMapper.selectByPrimaryKey((Long) reqData.get("pid"));
+        PolicyPO policyPo = policyMapper.selectByPrimaryKey(Long.parseLong(reqData.get("pid").toString()));
         //计算成功和失败次数
         int successNum = 0;
         int failureNum = 0;
@@ -218,14 +246,25 @@ public class ComplianceService implements IComplianceService {
             opMessRecordMapper.insert(opMessRecordPO);
         }
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager
-                , "进行一键推送\"%s\"",null);
+                , "一键推送提醒满足条件且未申请\"%s\"", policyPo.getName()+"("+policyPo.getNum()+")"+"的人才");
         return new ResultVO(1000);
     }
 
     @Override
     public ResultVO queryCertId(Map<String, Object> reqData) {
-        CertApprovalPassRecordPO po = complianceMapper.queryCertId(reqData);
-        return new ResultVO(1000, CerIdVO.convert(po));
+        if (!reqData.containsKey("tid")) {
+            return new ResultVO(2000);
+        }
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("talentId", reqData.get("tid"));
+        List<CertExamineRecordPO> pos = certExamineRecordMapper.selectByMap(map);
+        if (pos != null && pos.size() > 0) {
+            CertExamineRecordPO po = pos.get(0);
+            if (po != null) {
+                return new ResultVO(1000, CerIdVO.convert(po));
+            }
+        }
+        return new ResultVO(2000);
     }
 
 }

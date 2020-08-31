@@ -96,7 +96,7 @@ public class StaffServiceImpl implements IStaffService {
         }
         //判断数量是否满足10
         Integer staffNum = staffMapper.findStaffNum(activityFirstContentId, activitySecondContentId);
-        if (staffNum >= 10) {
+        if (staffNum >= 15) {
             return new ResultVO(2505, "超出数量限制");
         }
         //staff表 insert

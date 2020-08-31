@@ -2,6 +2,7 @@ package com.talentcard.web.controller;
 
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IStaffService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,10 +33,10 @@ public class StaffController {
                           @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
                           @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime) {
         HashMap<String, Object> hashMap = new HashMap<>(5);
-        if (!startTime.equals("")) {
+        if (!StringUtils.isEmpty(startTime)) {
             startTime = startTime + " 00:00:00";
         }
-        if (!endTime.equals("")) {
+        if (!StringUtils.isEmpty(endTime)) {
             endTime = endTime + " 23:59:59";
         }
         hashMap.put("activitySecondContentName", activitySecondContentName);

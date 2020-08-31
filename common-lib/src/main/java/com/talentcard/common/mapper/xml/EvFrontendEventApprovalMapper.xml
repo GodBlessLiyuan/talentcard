@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.EvFrontendEventApprovalPO">
     <id column="approval_id" jdbcType="BIGINT" property="approvalId" />
     <result column="fe_id" jdbcType="BIGINT" property="feId" />
-    <result column="use_id" jdbcType="BIGINT" property="useId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="username" jdbcType="CHAR" property="username" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="type" jdbcType="TINYINT" property="type" />
@@ -13,7 +13,7 @@
     <result column="opinion" jdbcType="CHAR" property="opinion" />
   </resultMap>
   <sql id="Base_Column_List">
-    approval_id, fe_id, use_id, username, create_time, `type`, update_time, `result`, 
+    approval_id, fe_id, user_id, username, create_time, `type`, update_time, `result`, 
     opinion
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -27,11 +27,11 @@
     where approval_id = #{approvalId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.talentcard.common.pojo.EvFrontendEventApprovalPO">
-    insert into ev_frontend_event_approval (approval_id, fe_id, use_id, 
+    insert into ev_frontend_event_approval (approval_id, fe_id, user_id, 
       username, create_time, `type`, 
       update_time, `result`, opinion
       )
-    values (#{approvalId,jdbcType=BIGINT}, #{feId,jdbcType=BIGINT}, #{useId,jdbcType=BIGINT}, 
+    values (#{approvalId,jdbcType=BIGINT}, #{feId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
       #{username,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{type,jdbcType=TINYINT}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{result,jdbcType=TINYINT}, #{opinion,jdbcType=CHAR}
       )
@@ -45,8 +45,8 @@
       <if test="feId != null">
         fe_id,
       </if>
-      <if test="useId != null">
-        use_id,
+      <if test="userId != null">
+        user_id,
       </if>
       <if test="username != null">
         username,
@@ -74,8 +74,8 @@
       <if test="feId != null">
         #{feId,jdbcType=BIGINT},
       </if>
-      <if test="useId != null">
-        #{useId,jdbcType=BIGINT},
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
       </if>
       <if test="username != null">
         #{username,jdbcType=CHAR},
@@ -103,8 +103,8 @@
       <if test="feId != null">
         fe_id = #{feId,jdbcType=BIGINT},
       </if>
-      <if test="useId != null">
-        use_id = #{useId,jdbcType=BIGINT},
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
       </if>
       <if test="username != null">
         username = #{username,jdbcType=CHAR},
@@ -130,7 +130,7 @@
   <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.EvFrontendEventApprovalPO">
     update ev_frontend_event_approval
     set fe_id = #{feId,jdbcType=BIGINT},
-      use_id = #{useId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
       username = #{username,jdbcType=CHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       `type` = #{type,jdbcType=TINYINT},

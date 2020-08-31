@@ -203,4 +203,17 @@
         <!--  将待审批的记录置顶，按时间排序-->
         order by result = 3 desc, cea_id desc
     </select>
+
+
+    <select id="selectByMap" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_cert_examine_record
+        <where>
+            <if test="talentId != null and talentId != ''">
+                talent_id = #{talentId,jdbcType=BIGINT}
+            </if>
+        </where>
+        order by cea_id desc
+    </select>
 </mapper>

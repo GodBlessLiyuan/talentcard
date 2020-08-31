@@ -272,20 +272,41 @@
         </if>
     </select>
 
-    <select id="queryBankByTalentId" parameterType="java.lang.Long" resultType="com.talentcard.common.bo.PoComplianceBO">
+    <select id="queryBankByTalentId" resultType="com.talentcard.common.bo.PoComplianceBO">
         select
         b.bank_id as bankId, b.num as bankNum, b.name as bankName
-        from t_bank b left join t_policy_apply p on p.pa_id=b.pa_id
+        from t_policy_apply p left join t_bank b on p.pa_id=b.pa_id
         <where>
-           <if test="paId != null and paId != ''">
-            and p.talent_id= #{paId,jdbcType=BIGINT}
+           <if test="talentId != null and talentId != ''">
+            and p.talent_id= #{talentId,jdbcType=BIGINT}
            </if>
+            <if test="policyId != null and policyId != ''">
+                and p.policy_id= #{policyId,jdbcType=BIGINT}
+            </if>
         </where>
-        order by b.bank_id desc
+        order by p.pa_id desc limit 1
     </select>
     <select id="selectAll"  resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_policy_apply order by pa_id desc
+    </select>
+
+    <select id="selectByMap" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy_apply
+        <where>
+            <if test="talentId != null and talentId != ''">
+                and talent_id= #{talentId,jdbcType=BIGINT}
+            </if>
+            <if test="policyId != null and policyId != ''">
+                and policy_id= #{policyId,jdbcType=BIGINT}
+            </if>
+            <if test="status != null and status != ''">
+                and `status`= #{status,jdbcType=BIGINT}
+            </if>
+        </where>
+        order by pa_id desc
     </select>
 </mapper>

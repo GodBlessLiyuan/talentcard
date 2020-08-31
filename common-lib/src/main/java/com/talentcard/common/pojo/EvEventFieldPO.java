@@ -1,8 +1,9 @@
 package com.talentcard.common.pojo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * ev_event_field
@@ -13,7 +14,7 @@ public class EvEventFieldPO implements Serializable {
     private Long efId;
 
     /**
-     * 场地名称
+     * 活动场地
      */
     private String placeName;
 

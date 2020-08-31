@@ -685,31 +685,31 @@ public class TalentServiceImpl implements ITalentService {
         ExcelExportUtil.exportExcel(fileName, null, EXPORT_TITLES, this.buildExcelContents(bos), response);
         return new ResultVO(1000);
     }
-
     private String[][] buildExcelContents(List<ExportCertInfoBO> bos) {
         if (bos == null || bos.size() == 0) {
             return null;
         }
         String[][] contents = new String[bos.size()][EXPORT_TITLES.length];
         int num = 0;
+        //增加序号
+        int order = 1;
         for (ExportCertInfoBO bo : bos) {
-            //增加序号
-            int order = 1;
             contents[num][0] = Integer.toString(order);
             contents[num][1] = bo.getName();
-            String cardType="";
+            String cardType=String.valueOf(bo.getCardType());
             String cardNum ="";
-            if ("1".equals(bo.getCardType())) {
-                cardType = "身份证";
+            String cardTypeName="";
+            if ("1".equals(cardType)) {
+                cardTypeName = "身份证";
                 cardNum=bo.getIdCard();
-            } else if ("1".equals(bo.getCardType())) {
-                cardType = "护照";
+            } else if ("2".equals(cardType)) {
+                cardTypeName = "护照";
                 cardNum=bo.getPassport();
-            } else if ("2".equals(bo.getCardType())) {
-                cardType = "驾驶证";
+            } else if ("3".equals(cardType)) {
+                cardTypeName = "驾驶证";
                 cardNum=bo.getDriverCard();
             }
-            contents[num][2] = cardType;
+            contents[num][2] = cardTypeName;
             contents[num][3] = cardNum;
             contents[num][4] = bo.getWorkUnit();
             num++;
