@@ -43,6 +43,8 @@ public class EventServiceImpl implements IEventService {
     @Autowired
     EvEventTalentMapper evEventTalentMapper;
     @Autowired
+    EvEventQueryMapper evEventQueryMapper;
+    @Autowired
     EvEventLogMapper evEventLogMapper;
     @Autowired
     UserMapper userMapper;
@@ -54,13 +56,13 @@ public class EventServiceImpl implements IEventService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO add(HttpSession httpSession, EventDTO eventDTO) {
         Long userId = (Long) httpSession.getAttribute("userId");
-//        UserPO userPO = userMapper.selectByPrimaryKey(userId);
-//        if (userPO == null) {
-//            return new ResultVO(2741, "无此用户！");
-//        }
+        UserPO userPO = userMapper.selectByPrimaryKey(userId);
+        if (userPO == null || userPO.getUserId() == null) {
+            return new ResultVO(2741, "无此用户！");
+        }
         //event表
         EvEventPO evEventPO = new EvEventPO();
-        evEventPO = EventDTO.dtoConvertPo(evEventPO, eventDTO);
+        evEventPO = EventDTO.setEventPO(evEventPO, eventDTO);
         evEventPO.setUserId(userId);
         evEventPO.setCreateTime(new Date());
         evEventMapper.insertSelective(evEventPO);
@@ -74,6 +76,11 @@ public class EventServiceImpl implements IEventService {
         evEventLogPO.setUserId(userId);
         evEventLogPO.setType((byte) 1);
         evEventLogMapper.insertSelective(evEventLogPO);
+        //新建eventQuery表
+        EvEventQueryPO evEventQueryPO = new EvEventQueryPO();
+        evEventQueryPO.setEventId(eventId);
+        evEventQueryPO = EventDTO.setEventQueryPO(evEventQueryPO,eventDTO);
+        evEventQueryMapper.insertSelective(evEventQueryPO);
         return new ResultVO(1000);
     }
 
@@ -81,7 +88,7 @@ public class EventServiceImpl implements IEventService {
     public ResultVO edit(HttpSession httpSession, EventDTO eventDTO) {
         Long userId = (Long) httpSession.getAttribute("userId");
         UserPO userPO = userMapper.selectByPrimaryKey(userId);
-        if (userPO == null) {
+        if (userPO == null || userPO.getUserId() == null) {
             return new ResultVO(2741, "无此用户！");
         }
         Long eventId = eventDTO.getEventId();
@@ -90,7 +97,7 @@ public class EventServiceImpl implements IEventService {
             return new ResultVO(2750, "2750：无此后台活动！");
         }
         //更新event表
-        evEventPO = EventDTO.dtoConvertPo(evEventPO, eventDTO);
+        evEventPO = EventDTO.setEventPO(evEventPO, eventDTO);
         evEventMapper.updateByPrimaryKeySelective(evEventPO);
         //删除enjoy表
         evEventEnjoyMapper.deleteByEventId(eventId);
@@ -103,6 +110,11 @@ public class EventServiceImpl implements IEventService {
         evEventLogPO.setUserId(userId);
         evEventLogPO.setType((byte) 1);
         evEventLogMapper.insertSelective(evEventLogPO);
+        //更新eventQuery表
+        EvEventQueryPO evEventQueryPO = new EvEventQueryPO();
+        evEventQueryPO.setEventId(eventId);
+        evEventQueryPO = EventDTO.setEventQueryPO(evEventQueryPO,eventDTO);
+        evEventQueryMapper.insertSelective(evEventQueryPO);
         return new ResultVO(1000);
     }
 
@@ -249,7 +261,7 @@ public class EventServiceImpl implements IEventService {
             content[3] = queryTalentInfoBO.getWorkLocation();
             content[4] = queryTalentInfoBO.getPhone();
             content[5] = queryTalentInfoBO.getTalentCard();
-            content[6] = queryTalentInfoBO.getStatus()== 1 ? "已报名" : "已取消";
+            content[6] = queryTalentInfoBO.getStatus() == 1 ? "已报名" : "已取消";
             content[7] = DateUtil.date2Str(queryTalentInfoBO.getCreateTime(), DateUtil.YMD_HMS);
             contents[num++] = content;
         }
