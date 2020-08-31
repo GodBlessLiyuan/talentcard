@@ -17,9 +17,7 @@ public class EvEventQueryPO implements Serializable {
     private String name;
 
     private String eventTime;
-    /**
-     * 活动场地Id
-     */
+
     private Long efId;
 
     private Byte type;
@@ -50,6 +48,8 @@ public class EvEventQueryPO implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+
+    private String date;
 
     private static final long serialVersionUID = 1L;
 }

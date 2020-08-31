@@ -94,6 +94,7 @@ public class EventDTO {
         evEventQueryPO.setStartTime(DateUtil.str2Date(eventDTO.getStartTime(), DateUtil.YMD_HMS));
         evEventQueryPO.setEndTime(DateUtil.str2Date(eventDTO.getEndTime(), DateUtil.YMD_HMS));
         evEventQueryPO.setUpdateTime(new Date());
+        evEventQueryPO.setDate(eventDTO.getDate());
         return evEventQueryPO;
     }
 }

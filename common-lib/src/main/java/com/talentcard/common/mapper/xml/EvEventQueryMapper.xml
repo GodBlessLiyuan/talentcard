@@ -1,165 +1,175 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.talentcard.common.mapper.EvEventQueryMapper">
-    <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.EvEventQueryPO">
-        <id column="eq_id" jdbcType="BIGINT" property="eqId"/>
-        <result column="event_id" jdbcType="BIGINT" property="eventId"/>
-        <result column="name" jdbcType="CHAR" property="name"/>
-        <result column="event_time" jdbcType="CHAR" property="eventTime"/>
-        <result column="ef_id" jdbcType="BIGINT" property="efId"/>
-        <result column="type" jdbcType="TINYINT" property="type"/>
-        <result column="status" jdbcType="TINYINT" property="status"/>
-        <result column="up_down" jdbcType="TINYINT" property="upDown"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
-        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-    </resultMap>
-    <sql id="Base_Column_List">
+  <resultMap id="BaseResultMap" type="com.talentcard.common.pojo.EvEventQueryPO">
+    <id column="eq_id" jdbcType="BIGINT" property="eqId" />
+    <result column="event_id" jdbcType="BIGINT" property="eventId" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="event_time" jdbcType="CHAR" property="eventTime" />
+    <result column="ef_id" jdbcType="BIGINT" property="efId" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="up_down" jdbcType="TINYINT" property="upDown" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="date" jdbcType="CHAR" property="date" />
+  </resultMap>
+  <sql id="Base_Column_List">
     eq_id, event_id, `name`, event_time, ef_id, `type`, `status`, up_down, create_time, 
-    start_time, end_time, update_time
+    start_time, end_time, update_time, `date`
   </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ev_event_query
-        where eq_id = #{eqId,jdbcType=BIGINT}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ev_event_query
+    where eq_id = #{eqId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from ev_event_query
     where eq_id = #{eqId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.talentcard.common.pojo.EvEventQueryPO">
+  <insert id="insert" parameterType="com.talentcard.common.pojo.EvEventQueryPO">
     insert into ev_event_query (eq_id, event_id, `name`, 
       event_time, ef_id, `type`, 
       `status`, up_down, create_time, 
-      start_time, end_time, update_time
-      )
+      start_time, end_time, update_time, 
+      `date`)
     values (#{eqId,jdbcType=BIGINT}, #{eventId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, 
       #{eventTime,jdbcType=CHAR}, #{efId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT}, 
       #{status,jdbcType=TINYINT}, #{upDown,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{date,jdbcType=CHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvEventQueryPO">
-        insert into ev_event_query
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="eqId != null">
-                eq_id,
-            </if>
-            <if test="eventId != null">
-                event_id,
-            </if>
-            <if test="name != null">
-                `name`,
-            </if>
-            <if test="eventTime != null">
-                event_time,
-            </if>
-            <if test="efId != null">
-                ef_id,
-            </if>
-            <if test="type != null">
-                `type`,
-            </if>
-            <if test="status != null">
-                `status`,
-            </if>
-            <if test="upDown != null">
-                up_down,
-            </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="startTime != null">
-                start_time,
-            </if>
-            <if test="endTime != null">
-                end_time,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="eqId != null">
-                #{eqId,jdbcType=BIGINT},
-            </if>
-            <if test="eventId != null">
-                #{eventId,jdbcType=BIGINT},
-            </if>
-            <if test="name != null">
-                #{name,jdbcType=CHAR},
-            </if>
-            <if test="eventTime != null">
-                #{eventTime,jdbcType=CHAR},
-            </if>
-            <if test="efId != null">
-                #{efId,jdbcType=BIGINT},
-            </if>
-            <if test="type != null">
-                #{type,jdbcType=TINYINT},
-            </if>
-            <if test="status != null">
-                #{status,jdbcType=TINYINT},
-            </if>
-            <if test="upDown != null">
-                #{upDown,jdbcType=TINYINT},
-            </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="startTime != null">
-                #{startTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="endTime != null">
-                #{endTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.EvEventQueryPO">
-        update ev_event_query
-        <set>
-            <if test="eventId != null">
-                event_id = #{eventId,jdbcType=BIGINT},
-            </if>
-            <if test="name != null">
-                `name` = #{name,jdbcType=CHAR},
-            </if>
-            <if test="eventTime != null">
-                event_time = #{eventTime,jdbcType=CHAR},
-            </if>
-            <if test="efId != null">
-                ef_id = #{efId,jdbcType=BIGINT},
-            </if>
-            <if test="type != null">
-                `type` = #{type,jdbcType=TINYINT},
-            </if>
-            <if test="status != null">
-                `status` = #{status,jdbcType=TINYINT},
-            </if>
-            <if test="upDown != null">
-                up_down = #{upDown,jdbcType=TINYINT},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="startTime != null">
-                start_time = #{startTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="endTime != null">
-                end_time = #{endTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-        </set>
-        where eq_id = #{eqId,jdbcType=BIGINT}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.EvEventQueryPO">
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvEventQueryPO">
+    insert into ev_event_query
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eqId != null">
+        eq_id,
+      </if>
+      <if test="eventId != null">
+        event_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="eventTime != null">
+        event_time,
+      </if>
+      <if test="efId != null">
+        ef_id,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="upDown != null">
+        up_down,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="date != null">
+        `date`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eqId != null">
+        #{eqId,jdbcType=BIGINT},
+      </if>
+      <if test="eventId != null">
+        #{eventId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="eventTime != null">
+        #{eventTime,jdbcType=CHAR},
+      </if>
+      <if test="efId != null">
+        #{efId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="upDown != null">
+        #{upDown,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.common.pojo.EvEventQueryPO">
+    update ev_event_query
+    <set>
+      <if test="eventId != null">
+        event_id = #{eventId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=CHAR},
+      </if>
+      <if test="eventTime != null">
+        event_time = #{eventTime,jdbcType=CHAR},
+      </if>
+      <if test="efId != null">
+        ef_id = #{efId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="upDown != null">
+        up_down = #{upDown,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="date != null">
+        `date` = #{date,jdbcType=CHAR},
+      </if>
+    </set>
+    where eq_id = #{eqId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.common.pojo.EvEventQueryPO">
     update ev_event_query
     set event_id = #{eventId,jdbcType=BIGINT},
       `name` = #{name,jdbcType=CHAR},
@@ -171,22 +181,23 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       start_time = #{startTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      `date` = #{date,jdbcType=CHAR}
     where eq_id = #{eqId,jdbcType=BIGINT}
   </update>
 
-    <insert id="add" useGeneratedKeys="true" keyProperty="eqId"
+     <insert id="add" useGeneratedKeys="true" keyProperty="eqId"
             parameterType="com.talentcard.common.pojo.EvEventQueryPO">
     insert into ev_event_query (eq_id, event_id, `name`,
       event_time, ef_id, `type`,
       `status`, up_down, create_time,
-      start_time, end_time, update_time
-      )
+      start_time, end_time, update_time,
+      `date`)
     values (#{eqId,jdbcType=BIGINT}, #{eventId,jdbcType=BIGINT}, #{name,jdbcType=CHAR},
       #{eventTime,jdbcType=CHAR}, #{efId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT},
       #{status,jdbcType=TINYINT}, #{upDown,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP},
-      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{date,jdbcType=CHAR})
   </insert>
 
     <select id="query" resultType="com.talentcard.common.bo.EvEventQueryBO">

@@ -8,9 +8,13 @@ import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ITalentEventService;
+import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.javassist.Loader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -89,7 +93,29 @@ public class TalentEventServiceImpl implements ITalentEventService {
             } else {
                 evEventQueryBO.setActualStatus(ERROR_STATUS);
             }
+            //改变日期
+            if (!StringUtils.isEmpty(evEventQueryBO.getDate())) {
+                evEventQueryBO.setDate(dateConvert(evEventQueryBO.getDate()));
+            }
         }
         return evEventQueryBOList;
+    }
+
+    /**
+     * yyyy-MM-dd转换成yyyy/MM/dd
+     *
+     * @param date
+     * @return
+     * @throws ParseException
+     */
+    public String dateConvert(String date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date newDate = simpleDateFormat.parse(date);
+            date = new SimpleDateFormat("yyyy/MM/dd").format(newDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 }
