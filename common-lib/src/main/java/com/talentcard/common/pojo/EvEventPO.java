@@ -21,12 +21,24 @@ public class EvEventPO implements Serializable {
 
     private String name;
 
+    /**
+     * 活动编号
+     */
     private String num;
 
+    /**
+     * 活动发起方
+     */
     private String sponsor;
 
+    /**
+     * 活动时间
+     */
     private String time;
 
+    /**
+     * 活动时长
+     */
     private Double duration;
 
     /**
@@ -34,6 +46,9 @@ public class EvEventPO implements Serializable {
      */
     private Long efId;
 
+    /**
+     * 活动日期
+     */
     private String date;
 
     private String detail;
@@ -63,6 +78,9 @@ public class EvEventPO implements Serializable {
 
     private Date updateTime;
 
+    /**
+     * 1：提交待审批；2：已同意（已通过）；3：已驳回； 4：管理员取消；5：用户取消
+     */
     private Byte status;
 
     /**

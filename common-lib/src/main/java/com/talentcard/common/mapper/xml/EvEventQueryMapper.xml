@@ -10,9 +10,12 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="up_down" jdbcType="TINYINT" property="upDown" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    eq_id, event_id, `name`, event_time, `type`, `status`, up_down, create_time
+    eq_id, event_id, `name`, event_time, `type`, `status`, up_down, create_time, start_time, 
+    end_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -27,10 +30,12 @@
   <insert id="insert" parameterType="com.talentcard.common.pojo.EvEventQueryPO">
     insert into ev_event_query (eq_id, event_id, `name`, 
       event_time, `type`, `status`, 
-      up_down, create_time)
+      up_down, create_time, start_time, 
+      end_time)
     values (#{eqId,jdbcType=BIGINT}, #{eventId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, 
       #{eventTime,jdbcType=CHAR}, #{type,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, 
-      #{upDown,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
+      #{upDown,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvEventQueryPO">
     insert into ev_event_query
@@ -59,6 +64,12 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="eqId != null">
@@ -84,6 +95,12 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -111,6 +128,12 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where eq_id = #{eqId,jdbcType=BIGINT}
   </update>
@@ -122,7 +145,9 @@
       `type` = #{type,jdbcType=TINYINT},
       `status` = #{status,jdbcType=TINYINT},
       up_down = #{upDown,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP}
     where eq_id = #{eqId,jdbcType=BIGINT}
   </update>
 </mapper>
