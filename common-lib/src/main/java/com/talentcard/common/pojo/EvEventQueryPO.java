@@ -21,9 +21,7 @@ public class EvEventQueryPO implements Serializable {
     private Byte type;
 
     /**
-     * 1 已通过
-2 已取消
-3 已结束
+     * 1：提交待审批；2：已同意（已通过）；3：已驳回； 4：管理员取消；5：用户取消
      */
     private Byte status;
 
@@ -33,6 +31,16 @@ public class EvEventQueryPO implements Serializable {
     private Byte upDown;
 
     private Date createTime;
+
+    /**
+     * 活动开始时间
+     */
+    private Date startTime;
+
+    /**
+     * 活动结束时间
+     */
+    private Date endTime;
 
     private static final long serialVersionUID = 1L;
 }

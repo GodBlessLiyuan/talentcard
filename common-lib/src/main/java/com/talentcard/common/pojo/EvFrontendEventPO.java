@@ -60,7 +60,7 @@ public class EvFrontendEventPO implements Serializable {
     private String openId;
 
     /**
-     * 1：已同意；2：已驳回；3：待审批； 4：取消
+     * 1：提交待审批；2：已同意（已通过）；3：已驳回； 4：管理员取消；5：用户取消
      */
     private Byte status;
 
@@ -80,5 +80,4 @@ public class EvFrontendEventPO implements Serializable {
     private Date endTime;
 
     private static final long serialVersionUID = 1L;
-
 }
