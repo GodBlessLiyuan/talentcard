@@ -79,5 +79,10 @@ public class EvFrontendEventPO implements Serializable {
      */
     private Date endTime;
 
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
     private static final long serialVersionUID = 1L;
 }
