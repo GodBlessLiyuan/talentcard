@@ -79,4 +79,9 @@
       dr = #{dr,jdbcType=TINYINT}
     where ef_id = #{efId,jdbcType=BIGINT}
   </update>
+  <select id="queryAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ev_event_field
+  </select>
 </mapper>
