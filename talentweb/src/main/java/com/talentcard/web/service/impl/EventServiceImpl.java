@@ -54,16 +54,16 @@ public class EventServiceImpl implements IEventService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO add(HttpSession httpSession, EventDTO eventDTO) {
         Long userId = (Long) httpSession.getAttribute("userId");
-        UserPO userPO = userMapper.selectByPrimaryKey(userId);
-        if (userPO == null) {
-            return new ResultVO(2741, "无此用户！");
-        }
+//        UserPO userPO = userMapper.selectByPrimaryKey(userId);
+//        if (userPO == null) {
+//            return new ResultVO(2741, "无此用户！");
+//        }
         //event表
         EvEventPO evEventPO = new EvEventPO();
         evEventPO = EventDTO.dtoConvertPo(evEventPO, eventDTO);
         evEventPO.setUserId(userId);
         evEventPO.setCreateTime(new Date());
-        evEventMapper.insert(evEventPO);
+        evEventMapper.insertSelective(evEventPO);
         //新建enjoy表
         Long eventId = evEventPO.getEventId();
         setEventEnjoy(eventDTO, eventId);
