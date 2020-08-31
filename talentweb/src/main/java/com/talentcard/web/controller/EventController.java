@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -97,5 +98,22 @@ public class EventController {
             workLocation = workLocation.replaceAll(" ", "");
         }
         return iEventService.queryTalentInfo(pageNum, pageSize, name, workLocation, sex, status);
+    }
+
+    @RequestMapping("talentInfoExport")
+    public ResultVO talentInfoExport(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                     @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                     @RequestParam(value = "name", defaultValue = "") String name,
+                                     @RequestParam(value = "workLocation", defaultValue = "") String workLocation,
+                                     @RequestParam(value = "sex", required = false) Byte sex,
+                                     @RequestParam(value = "status", required = false) Byte status,
+                                     HttpServletResponse httpServletResponse) {
+        if (!StringUtils.isEmpty(name)) {
+            name = name.replaceAll(" ", "");
+        }
+        if (!StringUtils.isEmpty(workLocation)) {
+            workLocation = workLocation.replaceAll(" ", "");
+        }
+        return iEventService.talentInfoExport(pageNum, pageSize, name, workLocation, sex, status, httpServletResponse);
     }
 }

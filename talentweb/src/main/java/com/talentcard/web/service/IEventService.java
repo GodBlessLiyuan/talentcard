@@ -3,6 +3,7 @@ package com.talentcard.web.service;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.EventDTO;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.transform.Result;
 
@@ -15,6 +16,7 @@ import javax.xml.transform.Result;
 public interface IEventService {
     /**
      * 新增
+     *
      * @param httpSession
      * @param eventDTO
      * @return
@@ -23,6 +25,7 @@ public interface IEventService {
 
     /**
      * 编辑
+     *
      * @param httpSession
      * @param eventDTO
      * @return
@@ -31,6 +34,7 @@ public interface IEventService {
 
     /**
      * 查找详情
+     *
      * @param eventId
      * @return
      */
@@ -38,6 +42,7 @@ public interface IEventService {
 
     /**
      * 取消
+     *
      * @param eventId
      * @return
      */
@@ -45,6 +50,7 @@ public interface IEventService {
 
     /**
      * 上下架
+     *
      * @param eventId
      * @return
      */
@@ -52,6 +58,7 @@ public interface IEventService {
 
     /**
      * 人才信息查询
+     *
      * @param pageNum
      * @param pageSize
      * @param name
@@ -60,5 +67,18 @@ public interface IEventService {
      * @param status
      * @return
      */
-    ResultVO queryTalentInfo(int pageNum,int pageSize, String name,String workLocation, Byte sex, Byte status);
+    ResultVO queryTalentInfo(int pageNum, int pageSize, String name, String workLocation, Byte sex, Byte status);
+
+    /**
+     * 人才信息查询
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param name
+     * @param workLocation
+     * @param sex
+     * @param status
+     * @return
+     */
+    ResultVO talentInfoExport(int pageNum, int pageSize, String name, String workLocation, Byte sex, Byte status, HttpServletResponse httpServletResponse);
 }

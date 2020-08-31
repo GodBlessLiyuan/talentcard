@@ -1,26 +1,32 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.bo.PolicyQueryBO;
 import com.talentcard.common.bo.QueryTalentInfoBO;
 import com.talentcard.common.mapper.*;
-import com.talentcard.common.pojo.EvEventEnjoyPO;
-import com.talentcard.common.pojo.EvEventLogPO;
-import com.talentcard.common.pojo.EvEventPO;
-import com.talentcard.common.pojo.UserPO;
+import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.DateUtil;
+import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.dto.EventDTO;
 import com.talentcard.web.service.IEventService;
 import com.talentcard.web.vo.EventDetailVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ChenXU
@@ -40,6 +46,9 @@ public class EventServiceImpl implements IEventService {
     EvEventLogMapper evEventLogMapper;
     @Autowired
     UserMapper userMapper;
+
+    private static final String[] EXPORT_TITLES = {"序号", "姓名", "性别", "工作单位", "手机号码", "人才卡",
+            "状态", "报名时间"};
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -106,7 +115,7 @@ public class EventServiceImpl implements IEventService {
         eventDetailVO.setEvEventLogPOList(evEventLogPOList);
         //enjoy信息
         List<EvEventEnjoyPO> evEventEnjoyPOList = evEventEnjoyMapper.findByEventId(eventId);
-        eventDetailVO = EventDetailVO.setEnjoy(eventDetailVO,evEventEnjoyPOList);
+        eventDetailVO = EventDetailVO.setEnjoy(eventDetailVO, evEventEnjoyPOList);
         return new ResultVO(1000, eventDetailVO);
     }
 
@@ -143,6 +152,18 @@ public class EventServiceImpl implements IEventService {
         List<QueryTalentInfoBO> queryTalentInfoBOList =
                 evEventTalentMapper.queryTalentInfo(name, workLocation, sex, status);
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), queryTalentInfoBOList));
+    }
+
+    @Override
+    public ResultVO talentInfoExport(int pageNum, int pageSize, String name, String workLocation, Byte sex,
+                                     Byte status, HttpServletResponse httpServletResponse) {
+        Page<QueryTalentInfoBO> page = PageHelper.startPage(pageNum, pageSize);
+        List<QueryTalentInfoBO> queryTalentInfoBOList =
+                evEventTalentMapper.queryTalentInfo(name, workLocation, sex, status);
+        String[][] content = buildExcelContents(queryTalentInfoBOList);
+        //生成Excel表格
+        ExportUtil.exportExcel(null, EXPORT_TITLES, content, httpServletResponse);
+        return new ResultVO(1000);
     }
 
     /**
@@ -210,5 +231,31 @@ public class EventServiceImpl implements IEventService {
         }
 
     }
+
+    /**
+     * 根据 bos 构建 导出内容
+     *
+     * @param queryTalentInfoBOList
+     * @return
+     */
+    private String[][] buildExcelContents(List<QueryTalentInfoBO> queryTalentInfoBOList) {
+        String[][] contents = new String[queryTalentInfoBOList.size()][];
+        int num = 0;
+        for (QueryTalentInfoBO queryTalentInfoBO : queryTalentInfoBOList) {
+            String[] content = new String[10];
+            content[0] = String.valueOf(num + 1);
+            content[1] = queryTalentInfoBO.getName();
+            content[2] = queryTalentInfoBO.getSex() == 1 ? "男" : "女";
+            content[3] = queryTalentInfoBO.getWorkLocation();
+            content[4] = queryTalentInfoBO.getPhone();
+            content[5] = queryTalentInfoBO.getTalentCard();
+            content[6] = queryTalentInfoBO.getStatus()== 1 ? "已报名" : "已取消";
+            content[7] = DateUtil.date2Str(queryTalentInfoBO.getCreateTime(), DateUtil.YMD_HMS);
+            contents[num++] = content;
+        }
+
+        return contents;
+    }
+
 
 }
