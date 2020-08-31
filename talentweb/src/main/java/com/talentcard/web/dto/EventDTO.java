@@ -1,6 +1,8 @@
 package com.talentcard.web.dto;
 
 import com.talentcard.common.pojo.EvEventPO;
+import com.talentcard.common.pojo.EvEventQueryPO;
+import com.talentcard.common.utils.DateUtil;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -39,13 +41,15 @@ public class EventDTO {
     private Integer[] title;
     private Integer[] quality;
     private Long[] honour;
+    private String startTime;
+    private String endTime;
 
     /**
      * @param evEventPO
      * @param eventDTO
      * @return evEventPO
      */
-    public static EvEventPO dtoConvertPo(EvEventPO evEventPO, EventDTO eventDTO) {
+    public static EvEventPO setEventPO(EvEventPO evEventPO, EventDTO eventDTO) {
         evEventPO.setName(eventDTO.getName());
         evEventPO.setNum(eventDTO.getNum());
         evEventPO.setSponsor(eventDTO.getSponsor());
@@ -67,6 +71,28 @@ public class EventDTO {
         evEventPO.setStatus((byte) 5);
         evEventPO.setUpDown((byte) 2);
         evEventPO.setDr((byte) 1);
+        evEventPO.setStartTime(DateUtil.str2Date(eventDTO.getStartTime(), DateUtil.YMD_HMS));
+        evEventPO.setEndTime(DateUtil.str2Date(eventDTO.getEndTime(), DateUtil.YMD_HMS));
         return evEventPO;
+    }
+
+    /**
+     * 构建evEventQueryPO
+     * @param evEventQueryPO
+     * @param eventDTO
+     * @return
+     */
+    public static EvEventQueryPO setEventQueryPO(EvEventQueryPO evEventQueryPO, EventDTO eventDTO) {
+        evEventQueryPO.setName(eventDTO.getName());
+        evEventQueryPO.setEventTime(eventDTO.getTime());
+        evEventQueryPO.setEfId(eventDTO.getEventField());
+        evEventQueryPO.setType((byte) 2);
+        evEventQueryPO.setStatus((byte)2);
+        evEventQueryPO.setUpDown((byte)2);
+        evEventQueryPO.setCreateTime(new Date());
+        evEventQueryPO.setStartTime(DateUtil.str2Date(eventDTO.getStartTime(), DateUtil.YMD_HMS));
+        evEventQueryPO.setEndTime(DateUtil.str2Date(eventDTO.getEndTime(), DateUtil.YMD_HMS));
+        evEventQueryPO.setUpdateTime(new Date());
+        return  evEventQueryPO;
     }
 }
