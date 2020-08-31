@@ -142,5 +142,10 @@
     delete from  ev_event_enjoy
     where event_id = #{eventId,jdbcType=BIGINT}
   </delete>
-
+  <select id="findByEventId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ev_event_enjoy
+    where event_id = #{eventId,jdbcType=BIGINT}
+  </select>
 </mapper>

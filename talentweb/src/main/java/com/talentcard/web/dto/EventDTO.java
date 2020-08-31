@@ -33,34 +33,14 @@ public class EventDTO {
     private Integer maleQuota;
     private Integer femaleQuota;
     private Integer eventQuota;
-    private Date updateTime;
-    /**
-     * 可查看与申请此政策权益的人才卡IDs
-     */
-    private String[] cardId;
-    /**
-     * 可查看与申请此政策权益的人才类别IDs
-     */
-    private String[] category;
-    /**
-     * 可查看与申请此政策权益的人才学历IDs
-     */
-    private String[] education;
-    /**
-     * 可查看与申请此政策权益的人才职称IDs
-     */
-    private String[] title;
-    /**
-     * 可查看与申请此政策权益的人才职业资格IDs
-     */
-    private String[] qualityIds;
-    /**
-     * 可查看与申请此政策权益的人才荣誉IDs
-     */
+    private Long[] cardId;
+    private Long[] category;
+    private Integer[] education;
+    private Integer[] title;
+    private Integer[] quality;
     private Long[] honour;
 
     /**
-     *
      * @param evEventPO
      * @param eventDTO
      * @return evEventPO
@@ -84,6 +64,9 @@ public class EventDTO {
         evEventPO.setFemaleQuota(eventDTO.getFemaleQuota());
         evEventPO.setEventQuota(eventDTO.getEventQuota());
         evEventPO.setUpdateTime(new Date());
+        evEventPO.setStatus((byte) 5);
+        evEventPO.setUpDown((byte) 2);
+        evEventPO.setDr((byte) 1);
         return evEventPO;
     }
 }
