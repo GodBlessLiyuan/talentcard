@@ -139,4 +139,12 @@
       opinion = #{opinion,jdbcType=CHAR}
     where approval_id = #{approvalId,jdbcType=BIGINT}
   </update>
+  <select id="queryByFeid" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ev_frontend_event_approval
+    where fe_id = #{feid,jdbcType=BIGINT}
+    order by approval_id desc
+    limit 1
+  </select>
 </mapper>

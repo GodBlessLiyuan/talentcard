@@ -38,7 +38,7 @@
     delete from ev_frontend_event
     where fe_id = #{feId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.talentcard.common.pojo.EvFrontendEventPO">
+  <insert id="insert" parameterType="com.talentcard.common.pojo.EvFrontendEventPO" keyProperty="feId" useGeneratedKeys="true">
     insert into ev_frontend_event (fe_id, `name`, `time`, ef_id, 
       duration, event_num, event_date, 
       time_interval, sponsor, detail, 
@@ -54,7 +54,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvFrontendEventPO">
+  <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvFrontendEventPO" keyProperty="feId" useGeneratedKeys="true">
     insert into ev_frontend_event
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="feId != null">
@@ -267,4 +267,19 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where fe_id = #{feId,jdbcType=BIGINT}
   </update>
+  <!--我发起的人才活动首页数据查询-->
+  <sql id="pageQuery_Column_List">
+    f.fe_id as feId, `name`, `time`,f.ef_id as efId, f.duration, f.event_num as eventNum, event_date as eventDate,time_interval as timeInterval, f.sponsor, f.detail, f.contact_person as contactPerson, f.phone, f.picture, f.talent_id as talentId, f.open_id as openId, `status`, create_time as createTime,
+    start_time as startTime, end_time as endTime, update_time as updateTime
+  </sql>
+  <select id="pageQuery" parameterType="java.util.Map" resultType="com.talentcard.common.bo.EvFrontendEventBO">
+    SELECT
+    <include refid="pageQuery_Column_List"/>
+    FROM
+    ev_frontend_event f
+    <where>
+      <if test="oId != null and oId !=''">and f.open_id = #{oId,jdbcType=CHAR}</if>
+    </where>
+    order by find_in_set('f.status','1,2,3,4,5') asc, update_time desc
+  </select>
 </mapper>

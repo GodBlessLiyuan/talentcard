@@ -84,4 +84,9 @@
     <include refid="Base_Column_List" />
     from ev_event_field
   </select>
+  <select id="selectAllPlace" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ev_event_field
+  </select>
 </mapper>
