@@ -81,10 +81,10 @@ public class TalentEventServiceImpl implements ITalentEventService {
             status = evEventQueryBO.getStatus();
             upDown = evEventQueryBO.getUpDown();
             //前台活动；已通过；未开始
-            if (startTime >= currentTime && status == 2 && type == 1) {
+            if (startTime > currentTime && status == 2 && type == 1) {
                 evEventQueryBO.setActualStatus(APPROVE_NOT_START);
                 //报名已结束，前台、后台；
-            } else if (currentTime >= startTime && currentTime <= endTime
+            } else if (currentTime >= startTime && currentTime < endTime
                     && status == 2 && (type == 1 | (type == 2 & upDown == 1))) {
                 evEventQueryBO.setActualStatus(SIGN_UP_END);
                 //已结束，前台、后台；
@@ -97,7 +97,7 @@ public class TalentEventServiceImpl implements ITalentEventService {
             } else if (status == 4 || status == 5) {
                 evEventQueryBO.setActualStatus(CANCEL);
                 //报名中，后台；
-            } else if (status == 2 && type == 2) {
+            } else if (status == 2 && type == 2 && currentTime < startTime) {
                 evEventQueryBO.setActualStatus(SIGN_UP_IN_PROGRESS);
             } else {
                 evEventQueryBO.setActualStatus(ERROR_STATUS);

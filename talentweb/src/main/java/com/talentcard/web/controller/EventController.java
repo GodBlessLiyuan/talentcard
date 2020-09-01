@@ -57,7 +57,7 @@ public class EventController {
      * @return
      */
     @RequestMapping("findOne")
-    public ResultVO findOne(@Param("eventId") Long eventId) {
+    public ResultVO findOne(@RequestParam("eventId") Long eventId) {
         return iEventService.findOne(eventId);
     }
 
@@ -68,7 +68,7 @@ public class EventController {
      * @return
      */
     @RequestMapping("cancel")
-    public ResultVO cancel(@Param("eventId") Long eventId) {
+    public ResultVO cancel(@RequestParam("eventId") Long eventId) {
         return iEventService.cancel(eventId);
     }
 
@@ -80,7 +80,7 @@ public class EventController {
      * @return
      */
     @RequestMapping("upDown")
-    public ResultVO upDown(@Param("eventId") Long eventId, @Param("upDown") Byte upDown) {
+    public ResultVO upDown(@RequestParam("eventId") Long eventId, @RequestParam("upDown") Byte upDown) {
         return iEventService.upDown(eventId, upDown);
     }
 
