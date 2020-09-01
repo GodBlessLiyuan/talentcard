@@ -11,4 +11,5 @@ import java.util.List;
 @Mapper
 public interface EvEventFieldMapper extends BaseMapper<EvEventFieldPO, Long> {
     List<EvEventFieldPO> queryAll();
+    List<EvEventFieldPO> selectAllPlace();
 }
