@@ -239,4 +239,48 @@
         </if>
           order by status asc, start_time desc
     </select>
+  <select id="queryByEid" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ev_event_query
+    where event_id = #{eid,jdbcType=BIGINT}
+  </select>
+  <select id="approvalQuery" resultType="com.talentcard.common.bo.EvEventQueryBO">
+    select
+    eq_id as eqId, event_id as eventId, `name`, event_time as eventTime,
+    ef_id as efId, `type`, `status`, up_down as upDown, create_time as createTime,
+    start_time as startTime, end_time as endTime, update_time as updateTime
+    from ev_event_query
+    where
+    1 = 1
+    <if test="name != null and name !=''">
+      and `name` like '%' #{name,jdbcType=CHAR} '%'
+    </if>
+    <if test="type != null and type !=0">
+      and `type` = #{type, jdbcType=TINYINT}
+    </if>
+    <if test="status != null and status == 1">
+      and `status` = 2 and `type` = 1
+      and <![CDATA[ (start_time >= #{currentTime} ]]>
+    </if>
+    <if test="status != null and status == 2">
+      and `status` = 2
+      and <![CDATA[ (start_time <= #{currentTime} and end_time >= #{currentTime} ]]>
+      and (`type` = 1 or (`type` = 2 and up_down = 1))
+    </if>
+    <if test="status != null and status == 3">
+      and `status` = 2
+      and <![CDATA[ end_time <= #{currentTime} ]]>
+    </if>
+    <if test="status != null and status == 4">
+      and `type` = 2 and up_down = 2
+    </if>
+    <if test="status != null and status == 5">
+      and (`status` = 4 or `status` = 5)
+    </if>
+    <if test="status != null and status == 6">
+      and `status` = 2 and `type` = 2
+      and <![CDATA[ (start_time >= #{currentTime} ]]>
+    </if>
+  </select>
 </mapper>

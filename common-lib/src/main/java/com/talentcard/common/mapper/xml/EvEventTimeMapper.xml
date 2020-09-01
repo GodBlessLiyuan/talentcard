@@ -79,4 +79,16 @@
       time_interval = #{timeInterval,jdbcType=CHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <!--根据地点和日期查询占用的时间-->
+  <select id="queryByPlaceAndDate" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    ev_event_time
+    <where>
+      <if test="efid != null and efid !=''">and ef_id = #{efid,jdbcType=BIGINT}</if>
+      <if test="date != null and date !=''">and place_date = #{date,jdbcType=DATE}</if>
+    </where>
+  </select>
+
 </mapper>
