@@ -1,5 +1,6 @@
 package com.talentcard.web.service.impl;
 
+import com.talentcard.common.utils.DateUtil;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.dto.TemplateDataDTO;
 import com.talentcard.web.dto.WeChatTemDTO;
@@ -13,13 +14,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author: velve
  * @date: Created in 2020/8/21 16:00
- * @description: TODO
+ * @description: 微信公众号发送通知服务
  * @version: 1.0
  */
 @Service
@@ -31,6 +33,16 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
      */
     @Value("${wechat.sendToNotApplyPolicy}")
     private String notApplyPolicy;
+    /**
+     * 个人申请活动通过后，发送审批通过的通知
+     */
+    @Value("${wechat.sendToEventPass}")
+    private String eventPass;
+    /**
+     * 个人申请活动拒绝后，发送审批拒绝的通知
+     */
+    @Value("${wechat.sendToEventReject}")
+    private String eventReject;
 
     /**
      * @param openId     人才openId
@@ -62,10 +74,76 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
             int result = sendTemplateMessage(messageDTO, notApplyPolicy);
             return result;
         }catch (Exception e){
-            logger.error("send message for not apply talent is error {}",e);
+            logger.error("send message for messToNotApply is error {}",e);
             return -1;
         }
     }
+
+    /**
+     * 个人申请活动通过后，发送审批通过的通知
+     * @param openId
+     * @param eventName
+     * @return
+     */
+    @Override
+    public int messToEventAgree(String openId, String eventName){
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(openId);
+
+        String first = String.format("您好，您申请的“活动名称”已通过审核。", eventName);
+        messageDTO.setFirst(first);
+        //信息类型
+        messageDTO.setKeyword1("通过");
+        messageDTO.setKeyword2("请您按时举办活动，如未能如期举行，请提前取消。");
+        messageDTO.setRemark("审批意见：同意活动申请。");
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+
+        try {
+            int result = sendTemplateMessage(messageDTO, eventPass);
+            return result;
+        }catch (Exception e){
+            logger.error("send message for messToEventAgree is error {}",e);
+            return -1;
+        }
+    }
+
+
+    /**
+     * 个人申请活动拒绝后，发送审批拒绝的通知
+     * @param openId
+     * @param talentName
+     * @param eventName
+     * @param opinion
+     * @return
+     */
+    @Override
+    public int messToEventReject(String openId,String talentName, String eventName, String opinion){
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(openId);
+
+        String first = String.format("您好，您申请的“%s”被驳回", eventName);
+        messageDTO.setFirst(first);
+        //信息类型
+        messageDTO.setKeyword1(talentName);
+        messageDTO.setKeyword2(DateUtil.date2Str(new Date(),DateUtil.YMD_HMS));
+        messageDTO.setKeyword3("驳回");
+        messageDTO.setKeyword4("不满足活动要求。");
+        messageDTO.setRemark(opinion);
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+
+        try {
+            int result = sendTemplateMessage(messageDTO, eventPass);
+            return result;
+        }catch (Exception e){
+            logger.error("send message for messToEventPass is error {}",e);
+            return -1;
+        }
+    }
+
 
 
     public int sendTemplateMessage(MessageDTO messageDTO, String template) {
