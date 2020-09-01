@@ -47,5 +47,5 @@ public interface IEventService {
      * 详情查询
      * @return
      */
-    ResultVO findOne(Long eventId);
+    ResultVO findOne(String openId, Long eventId);
 }

@@ -40,7 +40,7 @@ public class EventController {
      * @return
      */
     @RequestMapping("cancel")
-    public ResultVO cancel(@RequestParam("etId")Long etId) {
+    public ResultVO cancel(@RequestParam("etId") Long etId) {
         return iEventService.cancel(etId);
     }
 
@@ -82,7 +82,8 @@ public class EventController {
      * @return
      */
     @RequestMapping("findOne")
-    public ResultVO findOne(@RequestParam("eventId") Long eventId) {
-        return iEventService.findOne(eventId);
+    public ResultVO findOne(@RequestParam("openId") String openId,
+                            @RequestParam("eventId") Long eventId) {
+        return iEventService.findOne(openId, eventId);
     }
 }

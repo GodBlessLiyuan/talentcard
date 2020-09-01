@@ -14,6 +14,7 @@ import java.util.List;
 public interface EvEventTalentMapper extends BaseMapper<EvEventTalentPO, Long> {
     /**
      * 人才信息查询
+     *
      * @param name
      * @param workLocation
      * @param sex
@@ -28,8 +29,18 @@ public interface EvEventTalentMapper extends BaseMapper<EvEventTalentPO, Long> {
     /**
      * 计数
      * 根据eventId查询当前活动报名人数
+     *
      * @param eventId
      * @return
      */
-    Integer countByEventId( @Param("eventId") Long eventId);
+    Integer countByEventId(@Param("eventId") Long eventId);
+
+    /**
+     * 根据活动id和openid判断是否参加
+     *
+     * @param openId
+     * @return
+     */
+    Integer checkIfEnrollEvent(@Param("openId") String openId,
+                               @Param("eventId") Long eventId);
 }

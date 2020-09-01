@@ -25,4 +25,5 @@ public interface EvEventMapper extends BaseMapper<EvEventPO, Long> {
      * @return
      */
     List<MyEventBO> findMyEvent(@Param("openId")String openId);
+
 }

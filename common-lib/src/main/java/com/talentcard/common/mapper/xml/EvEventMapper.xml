@@ -30,12 +30,15 @@
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
     <result column="eq_id" jdbcType="BIGINT" property="eqId" />
+    <result column="current_num" jdbcType="INTEGER" property="currentNum" />
+    <result column="current_male" jdbcType="INTEGER" property="currentMale" />
+    <result column="current_female" jdbcType="INTEGER" property="currentFemale" />
   </resultMap>
   <sql id="Base_Column_List">
     event_id, up_down, `name`, num, sponsor, `time`, duration, ef_id, `date`, detail, 
     time_interval, `process`, target, contact, picture, role_id, if_quota, male_quota, 
     female_quota, event_quota, update_time, `status`, dr, create_time, user_id, start_time, 
-    end_time, eq_id
+    end_time, eq_id, current_num, current_male, current_female
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -56,7 +59,8 @@
       male_quota, female_quota, event_quota, 
       update_time, `status`, dr, 
       create_time, user_id, start_time, 
-      end_time, eq_id)
+      end_time, eq_id, current_num, 
+      current_male, current_female)
     values (#{eventId,jdbcType=BIGINT}, #{upDown,jdbcType=TINYINT}, #{name,jdbcType=CHAR}, 
       #{num,jdbcType=CHAR}, #{sponsor,jdbcType=CHAR}, #{time,jdbcType=CHAR}, #{duration,jdbcType=DOUBLE}, 
       #{efId,jdbcType=BIGINT}, #{date,jdbcType=CHAR}, #{detail,jdbcType=VARCHAR}, #{timeInterval,jdbcType=CHAR}, 
@@ -65,7 +69,8 @@
       #{maleQuota,jdbcType=INTEGER}, #{femaleQuota,jdbcType=INTEGER}, #{eventQuota,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{dr,jdbcType=TINYINT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, #{startTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{eqId,jdbcType=BIGINT})
+      #{endTime,jdbcType=TIMESTAMP}, #{eqId,jdbcType=BIGINT}, #{currentNum,jdbcType=INTEGER}, 
+      #{currentMale,jdbcType=INTEGER}, #{currentFemale,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.EvEventPO">
     insert into ev_event
@@ -154,6 +159,15 @@
       <if test="eqId != null">
         eq_id,
       </if>
+      <if test="currentNum != null">
+        current_num,
+      </if>
+      <if test="currentMale != null">
+        current_male,
+      </if>
+      <if test="currentFemale != null">
+        current_female,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="eventId != null">
@@ -239,6 +253,15 @@
       </if>
       <if test="eqId != null">
         #{eqId,jdbcType=BIGINT},
+      </if>
+      <if test="currentNum != null">
+        #{currentNum,jdbcType=INTEGER},
+      </if>
+      <if test="currentMale != null">
+        #{currentMale,jdbcType=INTEGER},
+      </if>
+      <if test="currentFemale != null">
+        #{currentFemale,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -326,6 +349,15 @@
       <if test="eqId != null">
         eq_id = #{eqId,jdbcType=BIGINT},
       </if>
+      <if test="currentNum != null">
+        current_num = #{currentNum,jdbcType=INTEGER},
+      </if>
+      <if test="currentMale != null">
+        current_male = #{currentMale,jdbcType=INTEGER},
+      </if>
+      <if test="currentFemale != null">
+        current_female = #{currentFemale,jdbcType=INTEGER},
+      </if>
     </set>
     where event_id = #{eventId,jdbcType=BIGINT}
   </update>
@@ -357,7 +389,10 @@
       user_id = #{userId,jdbcType=BIGINT},
       start_time = #{startTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},
-      eq_id = #{eqId,jdbcType=BIGINT}
+      eq_id = #{eqId,jdbcType=BIGINT},
+      current_num = #{currentNum,jdbcType=INTEGER},
+      current_male = #{currentMale,jdbcType=INTEGER},
+      current_female = #{currentFemale,jdbcType=INTEGER}
     where event_id = #{eventId,jdbcType=BIGINT}
   </update>
 
@@ -381,4 +416,19 @@
       #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, #{startTime,jdbcType=TIMESTAMP},
       #{endTime,jdbcType=TIMESTAMP}, #{eqId,jdbcType=BIGINT})
   </insert>
+
+  <select id="findMyEvent" resultType="com.talentcard.common.bo.MyEventBO">
+    select
+    e.name as name, e.picture as picture, e.date as `date`, e.time as `time`, e.status as status,
+    ef.place_name as eventField, e.start_time as startTime, e.end_time as endTime, e.up_down as upDown,
+    e.event_quota as eventQuota, e.current_num as currentNum
+    from ev_event_talent et
+    left join ev_event e
+    on e.event_id = et.event_id
+    left join ev_event_field ef
+    on e.ef_id = ef.ef_id
+    where
+    et.dr = 1
+    and et.open_id = #{openId,jdbcType=CHAR}
+  </select>
 </mapper>
