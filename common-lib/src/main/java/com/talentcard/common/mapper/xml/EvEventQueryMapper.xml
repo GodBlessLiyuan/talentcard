@@ -237,5 +237,6 @@
           and `status` = 2 and `type` = 2
           and <![CDATA[ (start_time >= #{currentTime} ]]>
         </if>
+          order by status asc, start_time desc
     </select>
 </mapper>
