@@ -19,4 +19,11 @@ public interface ITalentEventService {
      * @return
      */
     ResultVO query(Integer pageNum, Integer pageSize, String name, Byte type, Byte status);
+
+    /**
+     * 计算报名人数
+     * @param eventId
+     * @return
+     */
+    ResultVO countNum(Long eventId);
 }

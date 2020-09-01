@@ -20,6 +20,16 @@ public class TalentEventController {
     @Autowired
     private ITalentEventService iTalentEventService;
 
+    /**
+     * 总查询
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param name
+     * @param type
+     * @param status
+     * @return
+     */
     @RequestMapping("query")
     public ResultVO query(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
@@ -30,5 +40,15 @@ public class TalentEventController {
             name = name.replaceAll(" ", "");
         }
         return iTalentEventService.query(pageNum, pageSize, name, type, status);
+    }
+
+    /**
+     * 统计报名人数
+     * @param eventId
+     * @return
+     */
+    @RequestMapping("countNum")
+    public ResultVO countNum(@RequestParam(value = "eventId") Long eventId) {
+        return iTalentEventService.countNum(eventId);
     }
 }

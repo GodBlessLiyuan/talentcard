@@ -3,6 +3,7 @@ package com.talentcard.web.service.impl;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.EvEventQueryBO;
 import com.talentcard.common.mapper.EvEventQueryMapper;
+import com.talentcard.common.mapper.EvEventTalentMapper;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
@@ -28,6 +29,8 @@ import java.util.List;
 public class TalentEventServiceImpl implements ITalentEventService {
     @Autowired
     EvEventQueryMapper evEventQueryMapper;
+    @Autowired
+    EvEventTalentMapper evEventTalentMapper;
     //已通过；未开始
     public static final Byte APPROVE_NOT_START = 1;
     //报名已结束
@@ -50,6 +53,12 @@ public class TalentEventServiceImpl implements ITalentEventService {
         List<EvEventQueryBO> evEventQueryBOList = evEventQueryMapper.query(name, type, status, currentTime);
         evEventQueryBOList = setQueryStatus(evEventQueryBOList);
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), evEventQueryBOList));
+    }
+
+    @Override
+    public ResultVO countNum(Long eventId) {
+        Integer num = evEventTalentMapper.countByEventId(eventId);
+        return new ResultVO(1000, num);
     }
 
     /**
