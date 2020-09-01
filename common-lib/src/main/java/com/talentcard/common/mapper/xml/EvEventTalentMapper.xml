@@ -140,4 +140,11 @@
       and et.status = #{status, jdbcType=TINYINT}
     </if>
   </select>
+  <select id="countByEventId" resultType="java.lang.Integer">
+    select
+    count(event_id)
+    from ev_event_talent
+    where event_id = #{eventId,jdbcType=BIGINT}
+    and status = 1
+  </select>
 </mapper>

@@ -204,7 +204,7 @@
         select
         eq_id as eqId, event_id as eventId, `name`, event_time as eventTime,
         ef_id as efId, `type`, `status`, up_down as upDown, create_time as createTime,
-        start_time as startTime, end_time as endTime, update_time as updateTime
+        start_time as startTime, end_time as endTime, update_time as updateTime, `date`
         from ev_event_query
         where
         1 = 1

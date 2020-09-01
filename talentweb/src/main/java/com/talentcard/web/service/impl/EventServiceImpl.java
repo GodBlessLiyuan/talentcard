@@ -50,9 +50,9 @@ public class EventServiceImpl implements IEventService {
     public ResultVO add(HttpSession httpSession, EventDTO eventDTO) {
         Long userId = (Long) httpSession.getAttribute("userId");
         UserPO userPO = userMapper.selectByPrimaryKey(userId);
-        if (userPO == null || userPO.getUserId() == null) {
-            return new ResultVO(2741, "无此用户！");
-        }
+//        if (userPO == null || userPO.getUserId() == null) {
+//            return new ResultVO(2741, "无此用户！");
+//        }
         //event表
         EvEventPO evEventPO = new EvEventPO();
         evEventPO = EventDTO.setEventPO(evEventPO, eventDTO);
