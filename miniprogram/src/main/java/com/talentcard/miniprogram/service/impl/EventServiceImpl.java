@@ -1,6 +1,5 @@
 package com.talentcard.miniprogram.service.impl;
 
-import com.sun.javafx.event.EventHandlerManager;
 import com.talentcard.common.mapper.EvEventMapper;
 import com.talentcard.common.mapper.EvEventTalentMapper;
 import com.talentcard.common.mapper.TalentMapper;
