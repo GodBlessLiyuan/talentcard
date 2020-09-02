@@ -68,8 +68,9 @@ public class EventController {
      * @return
      */
     @RequestMapping("cancel")
-    public ResultVO cancel(@RequestParam("eventId") Long eventId) {
-        return iEventService.cancel(eventId);
+    public ResultVO cancel(HttpSession httpSession,
+                           @RequestParam("eventId") Long eventId) {
+        return iEventService.cancel(httpSession, eventId);
     }
 
     /**
@@ -80,8 +81,10 @@ public class EventController {
      * @return
      */
     @RequestMapping("upDown")
-    public ResultVO upDown(@RequestParam("eventId") Long eventId, @RequestParam("upDown") Byte upDown) {
-        return iEventService.upDown(eventId, upDown);
+    public ResultVO upDown(HttpSession httpSession,
+                           @RequestParam("eventId") Long eventId,
+                           @RequestParam("upDown") Byte upDown) {
+        return iEventService.upDown(httpSession, eventId, upDown);
     }
 
     @RequestMapping("talentInfoQuery")

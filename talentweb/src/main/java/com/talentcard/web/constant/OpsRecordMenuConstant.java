@@ -13,6 +13,7 @@ public class OpsRecordMenuConstant {
     public static final String F_TalentLabelManage="人才标签管理";
     public static final String F_ExternalFunction="扩展功能";
     public static final String F_TalentActivities="人才活动";
+    public static final String F_OtherService="其他服务";
 
 
 
@@ -36,4 +37,6 @@ public class OpsRecordMenuConstant {
     public static final String S_TalentHonour="人才荣誉";
 
     public static String S_SendMessage="发送消息";
+
+    public static final String S_TalentActivity="人才活动";
 }
