@@ -9,7 +9,6 @@ import com.talentcard.common.utils.PageQueryUtil;
 import com.talentcard.common.utils.VerificationCodeUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
-import com.talentcard.miniprogram.constant.OpsRecordMenuConstant;
 import com.talentcard.miniprogram.dto.TalentActivitiesDTO;
 import com.talentcard.miniprogram.service.ILogService;
 import com.talentcard.miniprogram.service.ITalentActivitiesService;
@@ -125,8 +124,6 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
             evEventTimePO2.setTimeInterval(newTimeinterval);
             evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO2);
         }
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentActivities, OpsRecordMenuConstant.S_AddActivities
-                , "添加活动\"%s\"", evFrontendEventPO.getName());
         return new ResultVO(1000);
     }
 
@@ -201,8 +198,6 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
             evEventTimePO2.setTimeInterval(newTimeinterval);
             evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO2);
         }
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentActivities, OpsRecordMenuConstant.S_EditActivities
-                , "编辑活动\"%s\"", evFrontendEventPO.getName());
         return new ResultVO(1000);
     }
 
@@ -278,8 +273,6 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         //将新的时间段更新会时间占用表中
         evEventTimePO.setTimeInterval(newInterval);
         evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO);
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentActivities, OpsRecordMenuConstant.S_CancelActivities
-                , "取消活动\"%s\"", evFrontendEventPO.getName());
         return new ResultVO(1000);
     }
 
