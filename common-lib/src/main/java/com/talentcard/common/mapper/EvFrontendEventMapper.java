@@ -20,4 +20,11 @@ public interface EvFrontendEventMapper extends BaseMapper<EvFrontendEventPO, Lon
      * @return
      */
     List<EvFrontendEventBO> pageQuery(Map<String, Object> reqData);
+    /**
+     * 审批主页查询出所有的数据
+     *
+     * @param reqData
+     * @return
+     */
+    List<EvFrontendEventBO> approvalQuery(Map<String, Object> reqData);
 }
