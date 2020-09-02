@@ -54,16 +54,19 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO insert(HttpSession session, TalentActivitiesDTO dto) {
         //从session中获取userId的值
-       /* Long userId = (Long) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             // 用户过期
             return ResultVO.notLogin();
-        }*/
+        }
         //获取验证码和前台传的验证码进行比较
         String vcode1 = dto.getVcode();
+        if(StringUtils.isBlank(vcode1)){
+            return new ResultVO(1002);//用户输入验证码为空
+        }
         String vcode2 = VerificationCodeUtil.getCode(dto.getPhone());
-        if(!vcode1.equals(vcode2)){
-            return new ResultVO(1001);
+        if (!vcode1.equals(vcode2)) {
+            return new ResultVO(1001);//验证码不匹配
         }
         //将前台dto中获取的数据转换成po进行插入,将数据插入到前台活动表中
         EvFrontendEventPO evFrontendEventPO = buildPOByDTO(new EvFrontendEventPO(), dto);
@@ -131,11 +134,11 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO update(HttpSession session, TalentActivitiesDTO dto) {
         //从session中获取userId的值
-        /*Long userId = (Long) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             // 用户过期
             return ResultVO.notLogin();
-        }*/
+        }
         //将前台dto中获取的数据转换成po进行更新
         EvFrontendEventPO evFrontendEventPO = buildPOByDTO(new EvFrontendEventPO(), dto);
         evFrontendEventMapper.updateByPrimaryKeySelective(evFrontendEventPO);
@@ -212,64 +215,48 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO cancel(HttpSession session, Map<String, Object> reqData) {
-        String role = reqData.get("role").toString();//区分取消的角色
         //从session中获取userId的值
-       /* Long userId = (Long) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             // 用户过期
             return ResultVO.notLogin();
-        }*/
+        }
         //首先查询前台是否已经取消（根据活动id查询出后台是否取消状态）
         EvFrontendEventPO evFrontendEventPO = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
         //如果后台已经取消
         if (4 == evFrontendEventPO.getStatus()) {
             return new ResultVO(1001);//管理员已取消
         }
-        //如果没有取消则进行前台取消操作
-        if ("1".equals(role)) {//管理员取消
-            evFrontendEventPO.setStatus((byte) 4);
-            evFrontendEventPO.setUpdateTime(new Date());
-            evFrontendEventMapper.updateByPrimaryKeySelective(evFrontendEventPO);
-            //进行后台查询表更新操作
-            EvEventQueryPO evEventQueryPO = evEventQueryMapper.queryByEid(Long.parseLong(reqData.get("feid").toString()));
-            if (evEventQueryPO != null) {
-                evEventQueryPO.setStatus((byte) 4);
-                evEventQueryPO.setUpdateTime(new Date());
-                evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
-            }
-        }
-        //如果没有取消则进行前台取消操作
-        if ("2".equals(role)) {//用户取消
-            evFrontendEventPO.setStatus((byte) 5);
-            evFrontendEventPO.setUpdateTime(new Date());
-            evFrontendEventMapper.updateByPrimaryKeySelective(evFrontendEventPO);
-            //进行后台查询表更新操作
-            EvEventQueryPO evEventQueryPO = evEventQueryMapper.queryByEid(Long.parseLong(reqData.get("feid").toString()));
-            if (evEventQueryPO != null) {
-                evEventQueryPO.setStatus((byte) 5);
-                evEventQueryPO.setUpdateTime(new Date());
-                evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
-            }
+        //如果没有取消则进行前台取消操
+        evFrontendEventPO.setStatus((byte) 5);
+        evFrontendEventPO.setUpdateTime(new Date());
+        evFrontendEventMapper.updateByPrimaryKeySelective(evFrontendEventPO);
+        //进行后台查询表更新操作
+        EvEventQueryPO evEventQueryPO = evEventQueryMapper.queryByEid(Long.parseLong(reqData.get("feid").toString()));
+        if (evEventQueryPO != null) {
+            evEventQueryPO.setStatus((byte) 5);
+            evEventQueryPO.setUpdateTime(new Date());
+            evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
         }
         //取消活动后释放场地占用时间段
         //根据场地和日期查询所有占用的时间段
-        Map<String,Object> reqDate = new HashMap<>(1);
-        reqData.put("efid",evFrontendEventPO.getEfId().toString());
-        reqData.put("date",DateUtil.date2Str(evFrontendEventPO.getEventDate(),YMD));
+        Map<String, Object> reqDate = new HashMap<>(1);
+        reqData.put("efid", evFrontendEventPO.getEfId().toString());
+        reqData.put("date", DateUtil.date2Str(evFrontendEventPO.getEventDate(), YMD));
         EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(reqData);
-        List<String> list=Arrays.asList(evEventTimePO.getTimeInterval().split(","));
-        List<String> arrayList=new ArrayList<String>(list);//转换为ArrayLsit调用相关的remove方法
+        List<String> list = Arrays.asList(evEventTimePO.getTimeInterval().split(","));
+        List<String> arrayList = new ArrayList<String>(list);//转换为ArrayLsit调用相关的remove方法
         //查出当前活动的时间段
         EvFrontendEventPO EvFrontendEventPO1 = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
         String[] thisInterval = EvFrontendEventPO1.getTimeInterval().split(",");
         //从以前的时间段将现在的时间段删掉
-        for(int i=0;i<thisInterval.length;i++)
-            if(arrayList.contains(thisInterval[i])){
+        for (int i = 0; i < thisInterval.length; i++)
+            if (arrayList.contains(thisInterval[i])) {
                 arrayList.remove(thisInterval[i]);
             }
         //将新的arraylist转为数组
-        String[] newIntervalArray= (String[]) arrayList.toArray();
-        String newInterval= StringUtils.join(newIntervalArray,",");
+        String[] newIntervalArray = (String[]) arrayList.toArray();
+        String newInterval = StringUtils.join(newIntervalArray, ",");
         //将新的时间段更新会时间占用表中
         evEventTimePO.setTimeInterval(newInterval);
         evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO);
@@ -299,14 +286,16 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         EvEventFieldPO evEventFieldPO = evEventFieldMapper.selectByPrimaryKey(Long.parseLong(reqData.get("efid").toString()));
         return new ResultVO(1000, evEventFieldPO);
     }
+
     @Override
     public ResultVO queryByFeid(Map<String, Object> reqData) {
         EvFrontendEventApprovalPO evFrontendEventApprovalPO = evFrontendEventApprovalMapper.queryByFeid(Long.parseLong(reqData.get("feid").toString()));
         return new ResultVO(1000, evFrontendEventApprovalPO);
     }
+
     @Override
     public ResultVO detail(Map<String, Object> reqData) {
-        EvFrontendEventPO evFrontendEventPO= evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
+        EvFrontendEventPO evFrontendEventPO = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
         return new ResultVO(1000, TalentActivitiesVO.convert(evFrontendEventPO));
     }
 
@@ -320,7 +309,7 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         po.setFeId(dto.getFeid());
         po.setName(dto.getName());
         po.setEfId(dto.getEfid());
-        String time=DateUtil.date2Str(dto.getStime(),YMD_HMS)+" ~ "+DateUtil.date2Str(dto.getEtime(),YMD_HMS);
+        String time = DateUtil.date2Str(dto.getStime(), YMD_HMS) + " ~ " + DateUtil.date2Str(dto.getEtime(), YMD_HMS);
         po.setTime(time);
         po.setDuration(dto.getDuration());
         po.setSponsor(dto.getSponsor());

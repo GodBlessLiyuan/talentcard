@@ -23,7 +23,6 @@ import javax.servlet.http.HttpSession;
 import java.util.*;
 
 import static com.talentcard.common.utils.DateUtil.YMD;
-import static com.talentcard.common.utils.DateUtil.YMD_HMS;
 
 /**
  * @ Author     ：AnHongxu.
@@ -62,13 +61,12 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO cancel(HttpSession session, Map<String, Object> reqData) {
-        String role = reqData.get("role").toString();//区分取消的角色
         //从session中获取userId的值
-       /* Long userId = (Long) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             // 用户过期
             return ResultVO.notLogin();
-        }*/
+        }
         //首先查询前台是否已经取消（根据活动id查询出后台是否取消状态）
         EvFrontendEventPO evFrontendEventPO = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
         //如果后台已经取消
@@ -76,30 +74,16 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             return new ResultVO(1001);//管理员已取消
         }
         //如果没有取消则进行前台取消操作
-        if ("1".equals(role)) {//管理员取消
-            evFrontendEventPO.setStatus((byte) 4);
-            evFrontendEventPO.setUpdateTime(new Date());
-            evFrontendEventMapper.updateByPrimaryKeySelective(evFrontendEventPO);
-            //进行后台查询表更新操作
-            EvEventQueryPO evEventQueryPO = evEventQueryMapper.queryByEid(Long.parseLong(reqData.get("feid").toString()));
-            if (evEventQueryPO != null) {
-                evEventQueryPO.setStatus((byte) 4);
-                evEventQueryPO.setUpdateTime(new Date());
-                evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
-            }
-        }
-        //如果没有取消则进行前台取消操作
-        if ("2".equals(role)) {//用户取消
-            evFrontendEventPO.setStatus((byte) 5);
-            evFrontendEventPO.setUpdateTime(new Date());
-            evFrontendEventMapper.updateByPrimaryKeySelective(evFrontendEventPO);
-            //进行后台查询表更新操作
-            EvEventQueryPO evEventQueryPO = evEventQueryMapper.queryByEid(Long.parseLong(reqData.get("feid").toString()));
-            if (evEventQueryPO != null) {
-                evEventQueryPO.setStatus((byte) 5);
-                evEventQueryPO.setUpdateTime(new Date());
-                evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
-            }
+        //管理员取消
+        evFrontendEventPO.setStatus((byte) 4);
+        evFrontendEventPO.setUpdateTime(new Date());
+        evFrontendEventMapper.updateByPrimaryKeySelective(evFrontendEventPO);
+        //进行后台查询表更新操作
+        EvEventQueryPO evEventQueryPO = evEventQueryMapper.queryByEid(Long.parseLong(reqData.get("feid").toString()));
+        if (evEventQueryPO != null) {
+            evEventQueryPO.setStatus((byte) 4);
+            evEventQueryPO.setUpdateTime(new Date());
+            evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
         }
         //取消活动后释放场地占用时间段
         //根据场地和日期查询所有占用的时间段
@@ -123,7 +107,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
         //将新的时间段更新会时间占用表中
         evEventTimePO.setTimeInterval(newInterval);
         evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO);
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentActivities, OpsRecordMenuConstant.S_ActivitiesApproval
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                 , "取消活动\"%s\"", evFrontendEventPO.getName());
         return new ResultVO(1000);
     }
@@ -167,6 +151,12 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO approval(HttpSession session, Map<String, Object> reqData) {
+        //从session中获取userId的值
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         //进行审批表插入一条提交申请的插入记录
         EvFrontendEventApprovalPO evFrontendEventApprovalPO = new EvFrontendEventApprovalPO();
         evFrontendEventApprovalPO.setFeId(Long.parseLong(reqData.get("feid").toString()));
@@ -198,11 +188,11 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             evFrontendEventPO.setStatus((byte) 2);
             evFrontendEventMapper.updateByPrimaryKeySelective(evFrontendEventPO);
             //发送推送模板
-            String activityName=evFrontendEventPO.getName();
-            String openId=evFrontendEventPO.getOpenId();
-            String opinion=reqData.get("opinion").toString();
-            wxOfficalAccountService.messToEventAgree(openId,activityName);
-            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentActivities, OpsRecordMenuConstant.S_ActivitiesApproval
+            String activityName = evFrontendEventPO.getName();
+            String openId = evFrontendEventPO.getOpenId();
+            String opinion = reqData.get("opinion").toString();
+            wxOfficalAccountService.messToEventAgree(openId, activityName);
+            logService.insertActionRecord(session, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.F_TalentActivities
                     , "审批活动通过\"%s\"", activityName);
         }
         if ("2".equals(reqData.get("result").toString())) {
@@ -237,21 +227,22 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             evEventTimePO.setTimeInterval(newInterval);
             evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO);
             //发送推送模板
-            String activityName=evFrontendEventPO.getName();
-            String openId=evFrontendEventPO.getOpenId();
+            String activityName = evFrontendEventPO.getName();
+            String openId = evFrontendEventPO.getOpenId();
             //根据openid获取人才名称
             TalentPO talentPO = talentMapper.queryByOpenid(openId);
             String talentName = talentPO.getName();
-            String opinion=reqData.get("opinion").toString();
-            wxOfficalAccountService.messToEventReject(openId,talentName,activityName,opinion);
-            logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentActivities, OpsRecordMenuConstant.S_ActivitiesApproval
+            String opinion = reqData.get("opinion").toString();
+            wxOfficalAccountService.messToEventReject(openId, talentName, activityName, opinion);
+            logService.insertActionRecord(session, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                     , "审批活动驳回\"%s\"", activityName);
         }
         return new ResultVO(1000);
     }
+
     @Override
     public ResultVO detail(Map<String, Object> reqData) {
-        EvFrontendEventPO evFrontendEventPO= evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
+        EvFrontendEventPO evFrontendEventPO = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
         return new ResultVO(1000, ActivitiesApprovalVO.convert(evFrontendEventPO));
     }
 }
