@@ -75,4 +75,9 @@ public class ActivitiesApprovalController {
     public ResultVO detail(@RequestBody Map<String, Object> reqData) {
         return activitiesApprovalService.detail(reqData);
     }
+
+    @RequestMapping("notApprovalNum")
+    public ResultVO detail() {
+        return activitiesApprovalService.notApprovalNum();
+    }
 }

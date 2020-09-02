@@ -245,4 +245,10 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
         EvFrontendEventPO evFrontendEventPO = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
         return new ResultVO(1000, ActivitiesApprovalVO.convert(evFrontendEventPO));
     }
+
+    @Override
+    public ResultVO notApprovalNum() {
+        Long  notApprovalNum = evFrontendEventMapper.notApprovalNum();
+        return new ResultVO(1000, notApprovalNum);
+    }
 }

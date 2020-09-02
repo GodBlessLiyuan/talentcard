@@ -23,4 +23,5 @@ public interface IActivitiesApprovalService {
     ResultVO queryApprovalByFeid(Map<String, Object> reqData);
     ResultVO approval(HttpSession session,Map<String, Object> reqData);
     ResultVO detail(Map<String, Object> reqData);
+    ResultVO notApprovalNum();
 }
