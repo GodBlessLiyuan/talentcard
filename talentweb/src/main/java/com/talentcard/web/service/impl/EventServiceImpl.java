@@ -56,9 +56,9 @@ public class EventServiceImpl implements IEventService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO add(HttpSession httpSession, EventDTO eventDTO) {
         Long userId = (Long) httpSession.getAttribute("userId");
-        UserPO userPO = userMapper.selectByPrimaryKey(userId);
-        if (userPO == null || userPO.getUserId() == null) {
-            return new ResultVO(2741, "无此用户！");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
         }
         //event表
         EvEventPO evEventPO = new EvEventPO();
@@ -94,9 +94,9 @@ public class EventServiceImpl implements IEventService {
     @Override
     public ResultVO edit(HttpSession httpSession, EventDTO eventDTO) {
         Long userId = (Long) httpSession.getAttribute("userId");
-        UserPO userPO = userMapper.selectByPrimaryKey(userId);
-        if (userPO == null || userPO.getUserId() == null) {
-            return new ResultVO(2741, "无此用户！");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
         }
         Long eventId = eventDTO.getEventId();
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
@@ -160,9 +160,9 @@ public class EventServiceImpl implements IEventService {
     @Override
     public ResultVO cancel(HttpSession httpSession, Long eventId) {
         Long userId = (Long) httpSession.getAttribute("userId");
-        UserPO userPO = userMapper.selectByPrimaryKey(userId);
-        if (userPO == null || userPO.getUserId() == null) {
-            return new ResultVO(2741, "无此用户！");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
         }
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
         if (evEventPO == null) {
@@ -186,9 +186,9 @@ public class EventServiceImpl implements IEventService {
     @Override
     public ResultVO upDown(HttpSession httpSession, Long eventId, Byte upDown) {
         Long userId = (Long) httpSession.getAttribute("userId");
-        UserPO userPO = userMapper.selectByPrimaryKey(userId);
-        if (userPO == null || userPO.getUserId() == null) {
-            return new ResultVO(2741, "无此用户！");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
         }
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
         if (evEventPO == null) {
