@@ -134,6 +134,9 @@ public class EventServiceImpl implements IEventService {
     @Override
     public ResultVO findOne(Long eventId) {
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
+        if (evEventPO == null) {
+            return new ResultVO(1000, evEventPO);
+        }
         EventDetailVO eventDetailVO = EventDetailVO.convert(evEventPO);
         //日志
         List<EvEventLogBO> evEventLogBOList = evEventLogMapper.findByEventId(eventId);
