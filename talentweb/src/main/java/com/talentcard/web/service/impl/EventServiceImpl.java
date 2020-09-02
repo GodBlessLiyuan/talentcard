@@ -159,6 +159,11 @@ public class EventServiceImpl implements IEventService {
 
     @Override
     public ResultVO cancel(HttpSession httpSession, Long eventId) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        UserPO userPO = userMapper.selectByPrimaryKey(userId);
+        if (userPO == null || userPO.getUserId() == null) {
+            return new ResultVO(2741, "无此用户！");
+        }
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
         if (evEventPO == null) {
             return new ResultVO(2750, "无此后台活动！");
@@ -180,6 +185,11 @@ public class EventServiceImpl implements IEventService {
 
     @Override
     public ResultVO upDown(HttpSession httpSession, Long eventId, Byte upDown) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        UserPO userPO = userMapper.selectByPrimaryKey(userId);
+        if (userPO == null || userPO.getUserId() == null) {
+            return new ResultVO(2741, "无此用户！");
+        }
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
         if (evEventPO == null) {
             return new ResultVO(2750, "无此后台活动！");
