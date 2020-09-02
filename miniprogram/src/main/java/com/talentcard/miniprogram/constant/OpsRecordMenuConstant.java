@@ -1,4 +1,4 @@
-package com.talentcard.web.constant;
+package com.talentcard.miniprogram.constant;
 
 /**
  * @Description:
@@ -16,9 +16,9 @@ public class OpsRecordMenuConstant {
 
 
 
-    public static final String S_RoleManager="角色管理";
-    public static final String S_UserManager="用户管理";
-    public static final String S_TalentCardManager="人才卡管理";
+    public static final String S_AddActivities="发起活动";
+    public static final String S_CancelActivities="取消活动";
+    public static final String S_EditActivities="编辑活动";
     public static final String S_CommentUser="普通用户";
     public static final String S_ConfirmExam="认证审批";
     public static final String S_ConfirmTalent="认证人才";

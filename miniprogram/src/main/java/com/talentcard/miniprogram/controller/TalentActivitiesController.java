@@ -67,4 +67,8 @@ public class TalentActivitiesController {
     public ResultVO queryByFeid(@RequestBody Map<String, Object> reqData) {
         return talentActivitiesService.queryByFeid(reqData);
     }
+    @RequestMapping("detail")
+    public ResultVO detail(@RequestBody Map<String, Object> reqData) {
+        return talentActivitiesService.detail(reqData);
+    }
 }

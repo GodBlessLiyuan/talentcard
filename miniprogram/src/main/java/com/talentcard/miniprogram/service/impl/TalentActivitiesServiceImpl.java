@@ -6,13 +6,16 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.PageQueryUtil;
+import com.talentcard.common.utils.VerificationCodeUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.miniprogram.constant.OpsRecordMenuConstant;
 import com.talentcard.miniprogram.dto.TalentActivitiesDTO;
 import com.talentcard.miniprogram.service.ILogService;
 import com.talentcard.miniprogram.service.ITalentActivitiesService;
 import com.talentcard.miniprogram.vo.TalentActivitiesVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +60,12 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
             // 用户过期
             return ResultVO.notLogin();
         }*/
+        //获取验证码和前台传的验证码进行比较
+        String vcode1 = dto.getVcode();
+        String vcode2 = VerificationCodeUtil.getCode(dto.getPhone());
+        if(!vcode1.equals(vcode2)){
+            return new ResultVO(1001);
+        }
         //将前台dto中获取的数据转换成po进行插入,将数据插入到前台活动表中
         EvFrontendEventPO evFrontendEventPO = buildPOByDTO(new EvFrontendEventPO(), dto);
         evFrontendEventMapper.insert(evFrontendEventPO);
@@ -116,6 +125,8 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
             evEventTimePO2.setTimeInterval(newTimeinterval);
             evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO2);
         }
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentActivities, OpsRecordMenuConstant.S_AddActivities
+                , "添加活动\"%s\"", evFrontendEventPO.getName());
         return new ResultVO(1000);
     }
 
@@ -190,6 +201,8 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
             evEventTimePO2.setTimeInterval(newTimeinterval);
             evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO2);
         }
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentActivities, OpsRecordMenuConstant.S_EditActivities
+                , "编辑活动\"%s\"", evFrontendEventPO.getName());
         return new ResultVO(1000);
     }
 
@@ -243,6 +256,30 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
                 evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
             }
         }
+        //取消活动后释放场地占用时间段
+        //根据场地和日期查询所有占用的时间段
+        Map<String,Object> reqDate = new HashMap<>(1);
+        reqData.put("efid",evFrontendEventPO.getEfId().toString());
+        reqData.put("date",DateUtil.date2Str(evFrontendEventPO.getEventDate(),YMD));
+        EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(reqData);
+        List<String> list=Arrays.asList(evEventTimePO.getTimeInterval().split(","));
+        List<String> arrayList=new ArrayList<String>(list);//转换为ArrayLsit调用相关的remove方法
+        //查出当前活动的时间段
+        EvFrontendEventPO EvFrontendEventPO1 = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
+        String[] thisInterval = EvFrontendEventPO1.getTimeInterval().split(",");
+        //从以前的时间段将现在的时间段删掉
+        for(int i=0;i<thisInterval.length;i++)
+            if(arrayList.contains(thisInterval[i])){
+                arrayList.remove(thisInterval[i]);
+            }
+        //将新的arraylist转为数组
+        String[] newIntervalArray= (String[]) arrayList.toArray();
+        String newInterval= StringUtils.join(newIntervalArray,",");
+        //将新的时间段更新会时间占用表中
+        evEventTimePO.setTimeInterval(newInterval);
+        evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO);
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentActivities, OpsRecordMenuConstant.S_CancelActivities
+                , "取消活动\"%s\"", evFrontendEventPO.getName());
         return new ResultVO(1000);
     }
 
@@ -274,7 +311,11 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         EvFrontendEventApprovalPO evFrontendEventApprovalPO = evFrontendEventApprovalMapper.queryByFeid(Long.parseLong(reqData.get("feid").toString()));
         return new ResultVO(1000, evFrontendEventApprovalPO);
     }
-
+    @Override
+    public ResultVO detail(Map<String, Object> reqData) {
+        EvFrontendEventPO evFrontendEventPO= evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
+        return new ResultVO(1000, TalentActivitiesVO.convert(evFrontendEventPO));
+    }
 
     /**
      * 根据 dto 构建 po

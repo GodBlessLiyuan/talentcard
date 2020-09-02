@@ -147,4 +147,11 @@
     order by approval_id desc
     limit 1
   </select>
+  <select id="queryApprovalByFeid" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ev_frontend_event_approval
+    where fe_id = #{feid,jdbcType=BIGINT}
+    order by create_time asc
+  </select>
 </mapper>
