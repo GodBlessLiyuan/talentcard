@@ -84,8 +84,8 @@ public class EventController {
         return iEventService.upDown(eventId, upDown);
     }
 
-    @RequestMapping("queryTalentInfo")
-    public ResultVO queryTalentInfo(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+    @RequestMapping("talentInfoQuery")
+    public ResultVO talentInfoQuery(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                     @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                     @RequestParam(value = "eventId") Long eventId,
                                     @RequestParam(value = "name", defaultValue = "") String name,
