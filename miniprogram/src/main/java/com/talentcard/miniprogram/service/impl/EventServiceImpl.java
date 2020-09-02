@@ -146,6 +146,9 @@ public class EventServiceImpl implements IEventService {
             status = myEventBO.getStatus();
             upDown = myEventBO.getUpDown();
             Byte actualStatus = getActualStatus(startTime, endTime, status, upDown);
+            if (actualStatus.equals(SIGN_UP_IN_PROGRESS)) {
+                actualStatus = SIGN_UP;
+            }
             myEventBO.setActualStatus(actualStatus);
         }
         return new ResultVO(1000, null);
