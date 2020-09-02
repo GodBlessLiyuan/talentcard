@@ -116,7 +116,7 @@
   </update>
   <select id="queryTalentInfo" resultType="com.talentcard.common.bo.QueryTalentInfoBO">
     select
-    t.name as name, t.sex as sex,
+    t.name as name, t.sex as sex, t.open_id as openId,
     t.work_location as workLocation, t.phone as phone,
     concat(c.title, '/',c.initial_word) as talentCard, et.status as status,
     et.create_time as createTime
@@ -126,7 +126,7 @@
     left join t_card c
     on t.card_id = c.card_id
     where
-    1 = 1
+    et.event_id = #{eventId,jdbcType=BIGINT}
     <if test="name != null and name !=''">
     and t.name like '%' #{name, jdbcType=CHAR} '%'
     </if>
@@ -146,5 +146,16 @@
     from ev_event_talent
     where event_id = #{eventId,jdbcType=BIGINT}
     and status = 1
+  </select>
+
+  <select id="checkIfEnrollEvent" resultType="java.lang.Integer">
+    select
+    count(et_id)
+    from ev_event_talent et
+    where
+    et.event_id = #{eventId,jdbcType=BIGINT}
+    and et.open_id = #{openId,jdbcType=CHAR}
+    and et.dr = 1
+    and et.status = 1
   </select>
 </mapper>

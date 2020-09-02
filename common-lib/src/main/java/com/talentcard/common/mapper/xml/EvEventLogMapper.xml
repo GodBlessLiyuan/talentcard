@@ -115,9 +115,10 @@
     where el_id = #{elId,jdbcType=BIGINT}
   </update>
 
-  <select id="findByEventId" resultMap="BaseResultMap">
+  <select id="findByEventId" resultType="com.talentcard.common.bo.EvEventLogBO">
     select
-    <include refid="Base_Column_List" />
+     el_id as elId, create_time as createTime, user_id as userId,
+     `type`, `result`, opinion, event_id as eventId
     from ev_event_log
     where event_id = #{eventId,jdbcType=BIGINT}
   </select>

@@ -67,7 +67,7 @@ public interface IEventService {
      * @param status
      * @return
      */
-    ResultVO queryTalentInfo(int pageNum, int pageSize, String name, String workLocation, Byte sex, Byte status);
+    ResultVO queryTalentInfo(int pageNum, int pageSize, Long eventId, String name, String workLocation, Byte sex, Byte status);
 
     /**
      * 人才信息查询
@@ -80,5 +80,5 @@ public interface IEventService {
      * @param status
      * @return
      */
-    ResultVO talentInfoExport(int pageNum, int pageSize, String name, String workLocation, Byte sex, Byte status, HttpServletResponse httpServletResponse);
+    ResultVO talentInfoExport(int pageNum, int pageSize, Long eventId, String name, String workLocation, Byte sex, Byte status, HttpServletResponse httpServletResponse);
 }

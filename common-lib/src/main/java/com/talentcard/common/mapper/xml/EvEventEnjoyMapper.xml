@@ -148,4 +148,42 @@
     from ev_event_enjoy
     where event_id = #{eventId,jdbcType=BIGINT}
   </select>
+
+  <select id="findAllEventByFactor" resultType="java.lang.Long">
+    select
+    e.event_id
+    from ev_event e
+    left join ev_event_enjoy ee
+    on e.event_id = ee.event_id
+    where
+    e.up_down = 1
+    and e.dr = 1
+    and (ee.card_id = #{cardId,jdbcType=BIGINT}
+    <if test="categoryList != null">
+      <foreach collection="categoryList" item="category">
+        or ee.category = #{category, jdbcType=BIGINT}
+      </foreach>
+    </if>
+    <if test="educationList != null">
+      <foreach collection="educationList" item="education">
+        or ee.education = #{education, jdbcType=BIGINT}
+      </foreach>
+    </if>
+    <if test="titleList != null">
+      <foreach collection="titleList" item="title">
+        or ee.title = #{title, jdbcType=BIGINT}
+      </foreach>
+    </if>
+    <if test="qualityList != null">
+      <foreach collection="qualityList" item="quality">
+        or ee.quality = #{quality, jdbcType=BIGINT}
+      </foreach>
+    </if>
+    <if test="honourList != null">
+      <foreach collection="honourList" item="honour">
+        or ee.honour = #{honour, jdbcType=BIGINT}
+      </foreach>
+    </if>
+    )
+  </select>
 </mapper>

@@ -129,5 +129,11 @@ public class EvEventPO implements Serializable {
 
     private Long eqId;
 
+    private Integer currentNum;
+
+    private Integer currentMale;
+
+    private Integer currentFemale;
+
     private static final long serialVersionUID = 1L;
 }

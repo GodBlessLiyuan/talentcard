@@ -1,19 +1,26 @@
 package com.talentcard.miniprogram.service.impl;
 
+import com.talentcard.common.bo.MyEventBO;
+import com.talentcard.common.mapper.EvEventEnjoyMapper;
 import com.talentcard.common.mapper.EvEventMapper;
 import com.talentcard.common.mapper.EvEventTalentMapper;
 import com.talentcard.common.mapper.TalentMapper;
 import com.talentcard.common.pojo.EvEventPO;
 import com.talentcard.common.pojo.EvEventTalentPO;
+import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.miniprogram.dto.EventEnrollDTO;
 import com.talentcard.miniprogram.service.IEventService;
+import com.talentcard.miniprogram.service.ITalentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author ChenXU
@@ -28,7 +35,27 @@ public class EventServiceImpl implements IEventService {
     @Autowired
     EvEventMapper evEventMapper;
     @Autowired
+    EvEventEnjoyMapper evEventEnjoyMapper;
+    @Autowired
     EvEventTalentMapper evEventTalentMapper;
+    @Autowired
+    private ITalentService iTalentService;
+    //报名已结束
+    public static final Byte SIGN_UP_END = 2;
+    //已结束
+    public static final Byte END = 3;
+    //已下架
+    public static final Byte DOWN = 4;
+    //已取消
+    public static final Byte CANCEL = 5;
+    //报名中
+    public static final Byte SIGN_UP_IN_PROGRESS = 6;
+    //已报名
+    public static final Byte SIGN_UP = 7;
+    //未报名
+    public static final Byte NO_SIGN_UP = 8;
+    //异常状态
+    public static final Byte ERROR_STATUS = 10;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -57,12 +84,12 @@ public class EventServiceImpl implements IEventService {
         //更新活动表
         if (evEventPO.getIfQuota() == 1) {
             if (talentPO.getSex() == 1) {
-                evEventPO.setMaleQuota(evEventPO.getMaleQuota() - 1);
+                evEventPO.setMaleQuota(evEventPO.getCurrentMale() + 1);
             } else {
-                evEventPO.setFemaleQuota(evEventPO.getFemaleQuota() - 1);
+                evEventPO.setFemaleQuota(evEventPO.getCurrentFemale() + 1);
             }
         }
-        evEventPO.setEventQuota(evEventPO.getEventQuota() - 1);
+        evEventPO.setEventQuota(evEventPO.getCurrentNum() + 1);
         evEventMapper.updateByPrimaryKeySelective(evEventPO);
         return new ResultVO(1000);
     }
@@ -72,6 +99,20 @@ public class EventServiceImpl implements IEventService {
         EvEventTalentPO evEventTalentPO = evEventTalentMapper.selectByPrimaryKey(etId);
         if (evEventTalentPO == null) {
             return new ResultVO(2752, "当前人才未参加此活动，或者状态不对！");
+        }
+        //判断是否取消
+        EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(evEventTalentPO.getEventId());
+        if (evEventPO == null) {
+            return new ResultVO(2750);
+        }
+        if (evEventPO.getStatus() == 4) {
+            return new ResultVO(2753, "活动已经取消！");
+        }
+        //判断活动是否已经开始
+        Long currentTime = System.currentTimeMillis();
+        Long startTime = evEventPO.getStartTime().getTime();
+        if (currentTime >= startTime) {
+            return new ResultVO(2754, "活动已经开始！");
         }
         evEventTalentPO.setStatus((byte) 2);
         evEventTalentPO.setDr((byte) 2);
@@ -98,19 +139,96 @@ public class EventServiceImpl implements IEventService {
 
     @Override
     public ResultVO findAllEvent(String openId) {
-        return null;
+        /**
+         * 获取用户类型
+         */
+        TalentTypeVO vo = iTalentService.getTalentInfo(openId);
+        if (vo == null) {
+            return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
+        }
+        List<Long> eventIdList = evEventEnjoyMapper.findAllEventByFactor(vo.getCardId(), vo.getCategoryList(),
+                vo.getEducationList(), vo.getTitleList(), vo.getQualityList(), vo.getHonourList());
+        if (eventIdList.size() == 0) {
+            //查无活动
+            return new ResultVO(1000, null);
+        }
+        //去重
+        eventIdList = eventIdList.stream().distinct().collect(Collectors.toList());
+        //活动表，查询符合条件的活动和
+        List<MyEventBO> myEventBOList = evEventMapper.findAllEvent(eventIdList);
+        //状态赋值
+        Long startTime;
+        Long endTime;
+        Byte status;
+        Byte upDown;
+        for (MyEventBO myEventBO : myEventBOList) {
+            startTime = myEventBO.getStartTime().getTime();
+            endTime = myEventBO.getEndTime().getTime();
+            status = myEventBO.getStatus();
+            upDown = myEventBO.getUpDown();
+            Byte actualStatus = getActualStatus(startTime, endTime, status, upDown);
+            if (actualStatus.equals(SIGN_UP_IN_PROGRESS)) {
+                Integer checkIfEnrollEvent = evEventTalentMapper.checkIfEnrollEvent(openId, myEventBO.getEventId());
+                if (checkIfEnrollEvent == 0) {
+                    actualStatus = NO_SIGN_UP;
+                } else {
+                    actualStatus = SIGN_UP;
+                }
+            }
+            myEventBO.setActualStatus(actualStatus);
+        }
+        return new ResultVO(1000, myEventBOList);
     }
 
     @Override
     public ResultVO findMyEvent(String openId) {
-        return new ResultVO(1000, null);
+        List<MyEventBO> myEventBOList = evEventMapper.findMyEvent(openId);
+        Long startTime;
+        Long endTime;
+        Byte status;
+        Byte upDown;
+        for (MyEventBO myEventBO : myEventBOList) {
+            startTime = myEventBO.getStartTime().getTime();
+            endTime = myEventBO.getEndTime().getTime();
+            status = myEventBO.getStatus();
+            upDown = myEventBO.getUpDown();
+            Byte actualStatus = getActualStatus(startTime, endTime, status, upDown);
+            if (actualStatus.equals(SIGN_UP_IN_PROGRESS)) {
+                actualStatus = SIGN_UP;
+            }
+            myEventBO.setActualStatus(actualStatus);
+        }
+        return new ResultVO(1000, myEventBOList);
     }
 
     @Override
-    public ResultVO findOne(Long eventId) {
+    public ResultVO findOne(String openId, Long eventId) {
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
+        //设定状态值
+        Long startTime = evEventPO.getStartTime().getTime();
+        Long endTime = evEventPO.getEndTime().getTime();
+        Byte status = evEventPO.getStatus();
+        Byte upDown = evEventPO.getUpDown();
+        Byte actualStatus = getActualStatus(startTime, endTime, status, upDown);
+        if (actualStatus.equals(SIGN_UP_IN_PROGRESS)) {
+            Integer checkIfEnrollEvent = evEventTalentMapper.checkIfEnrollEvent(openId, eventId);
+            if (checkIfEnrollEvent == 0) {
+                actualStatus = NO_SIGN_UP;
+            } else {
+                actualStatus = SIGN_UP;
+            }
+        }
+        evEventPO.setStatus(actualStatus);
         return new ResultVO(1000, evEventPO);
     }
+
+    /**
+     * 校验
+     *
+     * @param evEventPO
+     * @param sex
+     * @return
+     */
 
     public Integer check(EvEventPO evEventPO, Byte sex) {
         if (evEventPO.getUpDown() == 2) {
@@ -130,19 +248,50 @@ public class EventServiceImpl implements IEventService {
         }
         if (evEventPO.getIfQuota() == 1) {
             if (sex == 1) {
-                if (evEventPO.getMaleQuota() <= 0) {
+                if (evEventPO.getMaleQuota() <= evEventPO.getCurrentMale()) {
                     return 1005;
                 }
             } else {
-                if (evEventPO.getFemaleQuota() <= 0) {
+                if (evEventPO.getFemaleQuota() <= evEventPO.getCurrentFemale()) {
                     return 1006;
                 }
             }
         } else {
-            if (evEventPO.getEventQuota() <= 0) {
+            if (evEventPO.getEventQuota() <= evEventPO.getCurrentNum()) {
                 return 1007;
             }
         }
         return 0;
+    }
+
+    /**
+     * 根据条件判断实际状态值
+     *
+     * @param startTime
+     * @param endTime
+     * @param status
+     * @param upDown
+     * @return
+     */
+    public Byte getActualStatus(Long startTime, Long endTime, Byte status, Byte upDown) {
+        Long currentTime = System.currentTimeMillis();
+        //报名已结束，前台、后台；
+        if (currentTime >= startTime && currentTime < endTime
+                && status == 2 && upDown == 1) {
+            return SIGN_UP_END;
+            //已结束，前台、后台；
+        } else if (status == 2 && endTime <= currentTime) {
+            return END;
+            //已下架，后台；
+        } else if (upDown == 2) {
+            return DOWN;
+            //已取消，前台、后台；
+        } else if (status == 4 || status == 5) {
+            return CANCEL;
+            //报名中，后台；
+        } else if (status == 2 && currentTime < startTime) {
+            return SIGN_UP_IN_PROGRESS;
+        }
+        return ERROR_STATUS;
     }
 }

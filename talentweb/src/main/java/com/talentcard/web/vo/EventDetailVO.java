@@ -1,5 +1,6 @@
 package com.talentcard.web.vo;
 
+import com.talentcard.common.bo.EvEventLogBO;
 import com.talentcard.common.pojo.EvEventEnjoyPO;
 import com.talentcard.common.pojo.EvEventLogPO;
 import com.talentcard.common.pojo.EvEventPO;
@@ -41,7 +42,7 @@ public class EventDetailVO {
     private Byte dr;
     private Date createTime;
     private Long userId;
-    private List<EvEventLogPO> evEventLogPOList;
+    private List<EvEventLogBO> evEventLogBOList;
     private List<Long> card;
     private List<Long> category;
     private List<Integer> education;
