@@ -46,7 +46,7 @@ public interface IEventService {
      * @param eventId
      * @return
      */
-    ResultVO cancel(Long eventId);
+    ResultVO cancel(HttpSession httpSession, Long eventId);
 
     /**
      * 上下架
@@ -54,7 +54,7 @@ public interface IEventService {
      * @param eventId
      * @return
      */
-    ResultVO upDown(Long eventId, Byte upDown);
+    ResultVO upDown(HttpSession httpSession, Long eventId, Byte upDown);
 
     /**
      * 人才信息查询

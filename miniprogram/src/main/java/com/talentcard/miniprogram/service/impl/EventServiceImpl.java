@@ -14,6 +14,7 @@ import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.miniprogram.dto.EventEnrollDTO;
 import com.talentcard.miniprogram.service.IEventService;
 import com.talentcard.miniprogram.service.ITalentService;
+import com.talentcard.miniprogram.vo.EventDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -167,14 +168,6 @@ public class EventServiceImpl implements IEventService {
             status = myEventBO.getStatus();
             upDown = myEventBO.getUpDown();
             Byte actualStatus = getActualStatus(startTime, endTime, status, upDown);
-            if (actualStatus.equals(SIGN_UP_IN_PROGRESS)) {
-                Integer checkIfEnrollEvent = evEventTalentMapper.checkIfEnrollEvent(openId, myEventBO.getEventId());
-                if (checkIfEnrollEvent == 0) {
-                    actualStatus = NO_SIGN_UP;
-                } else {
-                    actualStatus = SIGN_UP;
-                }
-            }
             myEventBO.setActualStatus(actualStatus);
         }
         return new ResultVO(1000, myEventBOList);
@@ -193,9 +186,6 @@ public class EventServiceImpl implements IEventService {
             status = myEventBO.getStatus();
             upDown = myEventBO.getUpDown();
             Byte actualStatus = getActualStatus(startTime, endTime, status, upDown);
-            if (actualStatus.equals(SIGN_UP_IN_PROGRESS)) {
-                actualStatus = SIGN_UP;
-            }
             myEventBO.setActualStatus(actualStatus);
         }
         return new ResultVO(1000, myEventBOList);
@@ -210,16 +200,20 @@ public class EventServiceImpl implements IEventService {
         Byte status = evEventPO.getStatus();
         Byte upDown = evEventPO.getUpDown();
         Byte actualStatus = getActualStatus(startTime, endTime, status, upDown);
-        if (actualStatus.equals(SIGN_UP_IN_PROGRESS)) {
-            Integer checkIfEnrollEvent = evEventTalentMapper.checkIfEnrollEvent(openId, eventId);
-            if (checkIfEnrollEvent == 0) {
-                actualStatus = NO_SIGN_UP;
-            } else {
-                actualStatus = SIGN_UP;
-            }
-        }
         evEventPO.setStatus(actualStatus);
-        return new ResultVO(1000, evEventPO);
+        //判断人才参加状态
+        Integer checkIfEnrollEvent = evEventTalentMapper.checkIfEnrollEvent(openId, eventId);
+        Byte talentStatus;
+        if (checkIfEnrollEvent == 0) {
+            talentStatus = NO_SIGN_UP;
+        } else {
+            talentStatus = SIGN_UP;
+        }
+        //构建VO
+        EventDetailVO eventDetailVO = new EventDetailVO();
+        eventDetailVO.setEvEventPO(evEventPO);
+        eventDetailVO.setTalentStatus(talentStatus);
+        return new ResultVO(1000, eventDetailVO);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.netflix.ribbon.proxy.annotation.Http;
 import com.talentcard.common.bo.EvEventLogBO;
 import com.talentcard.common.bo.QueryTalentInfoBO;
 import com.talentcard.common.mapper.*;
@@ -10,8 +11,11 @@ import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.EventDTO;
 import com.talentcard.web.service.IEventService;
+import com.talentcard.web.service.ILogService;
+import com.talentcard.web.utils.PolicyNameUtil;
 import com.talentcard.web.vo.EventDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +46,8 @@ public class EventServiceImpl implements IEventService {
     EvEventLogMapper evEventLogMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    private ILogService logService;
 
     private static final String[] EXPORT_TITLES = {"序号", "姓名", "性别", "工作单位", "手机号码", "人才卡",
             "状态", "报名时间"};
@@ -50,9 +56,9 @@ public class EventServiceImpl implements IEventService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO add(HttpSession httpSession, EventDTO eventDTO) {
         Long userId = (Long) httpSession.getAttribute("userId");
-        UserPO userPO = userMapper.selectByPrimaryKey(userId);
-        if (userPO == null || userPO.getUserId() == null) {
-            return new ResultVO(2741, "无此用户！");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
         }
         //event表
         EvEventPO evEventPO = new EvEventPO();
@@ -78,15 +84,19 @@ public class EventServiceImpl implements IEventService {
         //更新event表：查询表的主键eqId
         evEventPO.setEqId(evEventQueryPO.getEqId());
         evEventMapper.updateByPrimaryKeySelective(evEventPO);
+
+        String eventLog = eventDTO.getName() + "(" + eventDTO.getNum() + ")";
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
+                , "新增活动\"%s\"", eventLog);
         return new ResultVO(1000);
     }
 
     @Override
     public ResultVO edit(HttpSession httpSession, EventDTO eventDTO) {
         Long userId = (Long) httpSession.getAttribute("userId");
-        UserPO userPO = userMapper.selectByPrimaryKey(userId);
-        if (userPO == null || userPO.getUserId() == null) {
-            return new ResultVO(2741, "无此用户！");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
         }
         Long eventId = eventDTO.getEventId();
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
@@ -115,6 +125,9 @@ public class EventServiceImpl implements IEventService {
         evEventQueryPO.setEventId(eventId);
         evEventQueryPO = EventDTO.setEventQueryPO(evEventQueryPO, eventDTO);
         evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
+        String eventLog = eventDTO.getName() + "(" + eventDTO.getNum() + ")";
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
+                , "编辑活动\"%s\"", eventLog);
         return new ResultVO(1000);
     }
 
@@ -145,7 +158,12 @@ public class EventServiceImpl implements IEventService {
     }
 
     @Override
-    public ResultVO cancel(Long eventId) {
+    public ResultVO cancel(HttpSession httpSession, Long eventId) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
         if (evEventPO == null) {
             return new ResultVO(2750, "无此后台活动！");
@@ -159,11 +177,19 @@ public class EventServiceImpl implements IEventService {
         }
         evEventQueryPO.setStatus((byte) 4);
         evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
+        String eventLog = evEventPO.getName() + "(" + evEventPO.getNum() + ")";
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
+                , "取消活动\"%s\"", eventLog);
         return new ResultVO(1000);
     }
 
     @Override
-    public ResultVO upDown(Long eventId, Byte upDown) {
+    public ResultVO upDown(HttpSession httpSession, Long eventId, Byte upDown) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
         if (evEventPO == null) {
             return new ResultVO(2750, "无此后台活动！");
@@ -183,6 +209,15 @@ public class EventServiceImpl implements IEventService {
         }
         evEventQueryPO.setUpDown(upDown);
         evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
+
+        String eventLog = evEventPO.getName() + "(" + evEventPO.getNum() + ")";
+        if (upDown == 1) {
+            logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
+                    , "上架活动\"%s\"", eventLog);
+        } else {
+            logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
+                    , "下架活动\"%s\"", eventLog);
+        }
         return new ResultVO(1000);
     }
 
