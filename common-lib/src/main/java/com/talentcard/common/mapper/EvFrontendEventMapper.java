@@ -27,4 +27,11 @@ public interface EvFrontendEventMapper extends BaseMapper<EvFrontendEventPO, Lon
      * @return
      */
     List<EvFrontendEventBO> approvalQuery(Map<String, Object> reqData);
+    /**
+     * 查询 未审批数量
+     *
+     * @param
+     * @return
+     */
+    Long notApprovalNum();
 }
