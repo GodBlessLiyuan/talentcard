@@ -42,6 +42,9 @@ public class EventDetailVO {
     private Byte dr;
     private Date createTime;
     private Long userId;
+    private Integer currentNum;
+    private Integer currentMale;
+    private Integer currentFemale;
     private List<EvEventLogBO> evEventLogBOList;
     private List<Long> card;
     private List<Long> category;
@@ -73,6 +76,9 @@ public class EventDetailVO {
         eventDetailVO.setUpdateTime(evEventPO.getUpdateTime());
         eventDetailVO.setCreateTime(evEventPO.getCreateTime());
         eventDetailVO.setUserId(evEventPO.getUserId());
+        eventDetailVO.setCurrentMale(evEventPO.getCurrentMale());
+        eventDetailVO.setCurrentFemale(evEventPO.getCurrentFemale());
+        eventDetailVO.setCurrentNum(evEventPO.getCurrentNum());
         return eventDetailVO;
     }
 
