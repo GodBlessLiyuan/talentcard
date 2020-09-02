@@ -71,8 +71,8 @@ public class EventController {
      *
      * @return
      */
-    @RequestMapping("finMyEvent")
-    public ResultVO finMyEvent(@RequestParam("openId") String openId) {
+    @RequestMapping("findMyEvent")
+    public ResultVO findMyEvent(@RequestParam("openId") String openId) {
         return iEventService.findMyEvent(openId);
     }
 

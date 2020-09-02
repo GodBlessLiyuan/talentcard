@@ -116,7 +116,7 @@
   </update>
   <select id="queryTalentInfo" resultType="com.talentcard.common.bo.QueryTalentInfoBO">
     select
-    t.name as name, t.sex as sex,
+    t.name as name, t.sex as sex, t.open_id as openId,
     t.work_location as workLocation, t.phone as phone,
     concat(c.title, '/',c.initial_word) as talentCard, et.status as status,
     et.create_time as createTime
@@ -126,7 +126,7 @@
     left join t_card c
     on t.card_id = c.card_id
     where
-    1 = 1
+    et.event_id = #{eventId,jdbcType=BIGINT}
     <if test="name != null and name !=''">
     and t.name like '%' #{name, jdbcType=CHAR} '%'
     </if>

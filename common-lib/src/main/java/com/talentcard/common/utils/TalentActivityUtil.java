@@ -1,4 +1,4 @@
-package com.talentcard.front.utils;
+package com.talentcard.common.utils;
 
 import org.springframework.stereotype.Component;
 

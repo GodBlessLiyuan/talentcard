@@ -40,6 +40,11 @@
     female_quota, event_quota, update_time, `status`, dr, create_time, user_id, start_time, 
     end_time, eq_id, current_num, current_male, current_female
   </sql>
+  <sql id="My_Event_BO_List">
+    e.event_id as eventId, e.name as name, e.picture as picture, e.date as `date`, e.time as `time`,
+    e.status as status, ef.place_name as eventField, e.start_time as startTime, e.end_time as endTime,
+    e.up_down as upDown, e.event_quota as eventQuota, e.current_num as currentNum
+  </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -419,9 +424,7 @@
 
   <select id="findMyEvent" resultType="com.talentcard.common.bo.MyEventBO">
     select
-    e.name as name, e.picture as picture, e.date as `date`, e.time as `time`, e.status as status,
-    ef.place_name as eventField, e.start_time as startTime, e.end_time as endTime, e.up_down as upDown,
-    e.event_quota as eventQuota, e.current_num as currentNum
+    <include refid="My_Event_BO_List"/>
     from ev_event_talent et
     left join ev_event e
     on e.event_id = et.event_id
@@ -430,5 +433,19 @@
     where
     et.dr = 1
     and et.open_id = #{openId,jdbcType=CHAR}
+    order by e.status asc, e.start_time desc
+  </select>
+
+  <select id="findAllEvent" resultType="com.talentcard.common.bo.MyEventBO">
+    select
+    <include refid="My_Event_BO_List"/>
+    from ev_event e
+    where
+    (<foreach collection="eventIdList" separator="or" item="eventId">
+    e.event_id = #{eventId, jdbcType=BIGINT}
+    </foreach>)
+    and e.up_down = 1
+    and e.dr = 1
+    order by e.status asc, e.start_time desc
   </select>
 </mapper>

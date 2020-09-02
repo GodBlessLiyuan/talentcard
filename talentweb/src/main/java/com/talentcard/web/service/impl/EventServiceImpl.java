@@ -1,6 +1,7 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.talentcard.common.bo.EvEventLogBO;
 import com.talentcard.common.bo.QueryTalentInfoBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
@@ -122,8 +123,21 @@ public class EventServiceImpl implements IEventService {
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
         EventDetailVO eventDetailVO = EventDetailVO.convert(evEventPO);
         //日志
-        List<EvEventLogPO> evEventLogPOList = evEventLogMapper.findByEventId(eventId);
-        eventDetailVO.setEvEventLogPOList(evEventLogPOList);
+        List<EvEventLogBO> evEventLogBOList = evEventLogMapper.findByEventId(eventId);
+        if (evEventLogBOList.size() != 0) {
+            for (EvEventLogBO evEventLogBO : evEventLogBOList) {
+                if (evEventLogBO.getType() == 1) {
+                    evEventLogBO.setTypeName("发起活动");
+                } else if (evEventLogBO.getType() == 2) {
+                    evEventLogBO.setTypeName("取消活动");
+                } else if (evEventLogBO.getType() == 3) {
+                    evEventLogBO.setTypeName("上架");
+                } else if (evEventLogBO.getType() == 4) {
+                    evEventLogBO.setTypeName("下架");
+                }
+            }
+        }
+        eventDetailVO.setEvEventLogBOList(evEventLogBOList);
         //enjoy信息
         List<EvEventEnjoyPO> evEventEnjoyPOList = evEventEnjoyMapper.findByEventId(eventId);
         eventDetailVO = EventDetailVO.setEnjoy(eventDetailVO, evEventEnjoyPOList);
@@ -173,19 +187,18 @@ public class EventServiceImpl implements IEventService {
     }
 
     @Override
-    public ResultVO queryTalentInfo(int pageNum, int pageSize, String name, String workLocation, Byte sex, Byte status) {
+    public ResultVO queryTalentInfo(int pageNum, int pageSize, Long eventId, String name, String workLocation, Byte sex, Byte status) {
         Page<QueryTalentInfoBO> page = PageHelper.startPage(pageNum, pageSize);
         List<QueryTalentInfoBO> queryTalentInfoBOList =
-                evEventTalentMapper.queryTalentInfo(name, workLocation, sex, status);
+                evEventTalentMapper.queryTalentInfo(eventId, name, workLocation, sex, status);
         return new ResultVO<>(1000, new PageInfoVO<>(page.getTotal(), queryTalentInfoBOList));
     }
 
     @Override
-    public ResultVO talentInfoExport(int pageNum, int pageSize, String name, String workLocation, Byte sex,
+    public ResultVO talentInfoExport(int pageNum, int pageSize, Long eventId, String name, String workLocation, Byte sex,
                                      Byte status, HttpServletResponse httpServletResponse) {
-        Page<QueryTalentInfoBO> page = PageHelper.startPage(pageNum, pageSize);
         List<QueryTalentInfoBO> queryTalentInfoBOList =
-                evEventTalentMapper.queryTalentInfo(name, workLocation, sex, status);
+                evEventTalentMapper.queryTalentInfo(eventId, name, workLocation, sex, status);
         String[][] content = buildExcelContents(queryTalentInfoBOList);
         //生成Excel表格
         ExportUtil.exportExcel(null, EXPORT_TITLES, content, httpServletResponse);

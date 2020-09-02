@@ -21,7 +21,8 @@ public interface EvEventTalentMapper extends BaseMapper<EvEventTalentPO, Long> {
      * @param status
      * @return
      */
-    List<QueryTalentInfoBO> queryTalentInfo(@Param("name") String name,
+    List<QueryTalentInfoBO> queryTalentInfo(@Param("eventId") Long eventId,
+                                            @Param("name") String name,
                                             @Param("workLocation") String workLocation,
                                             @Param("sex") Byte sex,
                                             @Param("status") Byte status);

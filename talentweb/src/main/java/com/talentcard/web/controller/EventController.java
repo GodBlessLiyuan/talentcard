@@ -87,6 +87,7 @@ public class EventController {
     @RequestMapping("queryTalentInfo")
     public ResultVO queryTalentInfo(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                     @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                    @RequestParam(value = "eventId") Long eventId,
                                     @RequestParam(value = "name", defaultValue = "") String name,
                                     @RequestParam(value = "workLocation", defaultValue = "") String workLocation,
                                     @RequestParam(value = "sex", required = false) Byte sex,
@@ -97,12 +98,13 @@ public class EventController {
         if (!StringUtils.isEmpty(workLocation)) {
             workLocation = workLocation.replaceAll(" ", "");
         }
-        return iEventService.queryTalentInfo(pageNum, pageSize, name, workLocation, sex, status);
+        return iEventService.queryTalentInfo(pageNum, pageSize, eventId, name, workLocation, sex, status);
     }
 
     @RequestMapping("talentInfoExport")
     public ResultVO talentInfoExport(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                     @RequestParam(value = "eventId") Long eventId,
                                      @RequestParam(value = "name", defaultValue = "") String name,
                                      @RequestParam(value = "workLocation", defaultValue = "") String workLocation,
                                      @RequestParam(value = "sex", required = false) Byte sex,
@@ -114,6 +116,6 @@ public class EventController {
         if (!StringUtils.isEmpty(workLocation)) {
             workLocation = workLocation.replaceAll(" ", "");
         }
-        return iEventService.talentInfoExport(pageNum, pageSize, name, workLocation, sex, status, httpServletResponse);
+        return iEventService.talentInfoExport(pageNum, pageSize, eventId, name, workLocation, sex, status, httpServletResponse);
     }
 }

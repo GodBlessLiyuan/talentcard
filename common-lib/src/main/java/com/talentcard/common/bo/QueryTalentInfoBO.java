@@ -12,6 +12,7 @@ import java.util.Date;
  */
 @Data
 public class QueryTalentInfoBO {
+    private String openId;
     private String name;
     private Byte sex;
     private String workLocation;

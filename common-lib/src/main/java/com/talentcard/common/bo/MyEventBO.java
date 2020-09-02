@@ -12,6 +12,7 @@ import java.util.Date;
  */
 @Data
 public class MyEventBO {
+    private Long eventId;
     private String name;
     private String picture;
     private String date;

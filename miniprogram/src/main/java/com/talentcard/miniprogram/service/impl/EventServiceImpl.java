@@ -1,21 +1,26 @@
 package com.talentcard.miniprogram.service.impl;
 
 import com.talentcard.common.bo.MyEventBO;
+import com.talentcard.common.mapper.EvEventEnjoyMapper;
 import com.talentcard.common.mapper.EvEventMapper;
 import com.talentcard.common.mapper.EvEventTalentMapper;
 import com.talentcard.common.mapper.TalentMapper;
 import com.talentcard.common.pojo.EvEventPO;
 import com.talentcard.common.pojo.EvEventTalentPO;
+import com.talentcard.common.pojo.ScenicPO;
 import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.miniprogram.dto.EventEnrollDTO;
 import com.talentcard.miniprogram.service.IEventService;
+import com.talentcard.miniprogram.service.ITalentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author ChenXU
@@ -30,7 +35,11 @@ public class EventServiceImpl implements IEventService {
     @Autowired
     EvEventMapper evEventMapper;
     @Autowired
+    EvEventEnjoyMapper evEventEnjoyMapper;
+    @Autowired
     EvEventTalentMapper evEventTalentMapper;
+    @Autowired
+    private ITalentService iTalentService;
     //报名已结束
     public static final Byte SIGN_UP_END = 2;
     //已结束
@@ -130,7 +139,45 @@ public class EventServiceImpl implements IEventService {
 
     @Override
     public ResultVO findAllEvent(String openId) {
-        return null;
+        /**
+         * 获取用户类型
+         */
+        TalentTypeVO vo = iTalentService.getTalentInfo(openId);
+        if (vo == null) {
+            return new ResultVO(2500, "查找当前人才所属福利一级目录：查无此人");
+        }
+        List<Long> eventIdList = evEventEnjoyMapper.findAllEventByFactor(vo.getCardId(), vo.getCategoryList(),
+                vo.getEducationList(), vo.getTitleList(), vo.getQualityList(), vo.getHonourList());
+        if (eventIdList.size() == 0) {
+            //查无活动
+            return new ResultVO(1000, null);
+        }
+        //去重
+        eventIdList = eventIdList.stream().distinct().collect(Collectors.toList());
+        //活动表，查询符合条件的活动和
+        List<MyEventBO> myEventBOList = evEventMapper.findAllEvent(eventIdList);
+        //状态赋值
+        Long startTime;
+        Long endTime;
+        Byte status;
+        Byte upDown;
+        for (MyEventBO myEventBO : myEventBOList) {
+            startTime = myEventBO.getStartTime().getTime();
+            endTime = myEventBO.getEndTime().getTime();
+            status = myEventBO.getStatus();
+            upDown = myEventBO.getUpDown();
+            Byte actualStatus = getActualStatus(startTime, endTime, status, upDown);
+            if (actualStatus.equals(SIGN_UP_IN_PROGRESS)) {
+                Integer checkIfEnrollEvent = evEventTalentMapper.checkIfEnrollEvent(openId, myEventBO.getEventId());
+                if (checkIfEnrollEvent == 0) {
+                    actualStatus = NO_SIGN_UP;
+                } else {
+                    actualStatus = SIGN_UP;
+                }
+            }
+            myEventBO.setActualStatus(actualStatus);
+        }
+        return new ResultVO(1000, myEventBOList);
     }
 
     @Override
@@ -151,7 +198,7 @@ public class EventServiceImpl implements IEventService {
             }
             myEventBO.setActualStatus(actualStatus);
         }
-        return new ResultVO(1000, null);
+        return new ResultVO(1000, myEventBOList);
     }
 
     @Override
