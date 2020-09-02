@@ -12,6 +12,9 @@ public class OpsRecordMenuConstant {
     public static final String F_TalentPolicyManager="人才政策管理";
     public static final String F_TalentLabelManage="人才标签管理";
     public static final String F_ExternalFunction="扩展功能";
+    public static final String F_TalentActivities="人才活动";
+
+
 
     public static final String S_RoleManager="角色管理";
     public static final String S_UserManager="用户管理";
@@ -27,6 +30,7 @@ public class OpsRecordMenuConstant {
     public static final String S_FarmHouse="农家乐";
     public static final String S_Staff_Config="员工绑定信息";
     public static final String S_FeedBack="问题收集";
+    public static final String S_ActivitiesApproval="活动审批";
 
     public static final String S_TalentCategory="人才类别";
     public static final String S_TalentHonour="人才荣誉";

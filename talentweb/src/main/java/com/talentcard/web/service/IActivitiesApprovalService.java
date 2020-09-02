@@ -1,8 +1,6 @@
-package com.talentcard.miniprogram.service;
+package com.talentcard.web.service;
 
 import com.talentcard.common.vo.ResultVO;
-import com.talentcard.miniprogram.dto.TalentActivitiesDTO;
-
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -13,16 +11,16 @@ import java.util.Map;
  * @ Modified By：
  * @ Version:     1.0*/
 
-public interface ITalentActivitiesService {
+public interface IActivitiesApprovalService {
 
-    ResultVO insert(HttpSession session, TalentActivitiesDTO dto);
-    ResultVO update(HttpSession session, TalentActivitiesDTO dto);
-    ResultVO pageQuery(Map<String, Object> reqData);
+    ResultVO approvalQuery(Map<String, Object> reqData);
     ResultVO cancel(HttpSession session, Map<String, Object> reqData);
     ResultVO queryTalentByOpenId(Map<String, Object> reqData);
     ResultVO queryAllPlace();
     ResultVO queryByPlaceAndDate(Map<String, Object> reqData);
     ResultVO queryPlaceById(Map<String, Object> reqData);
     ResultVO queryByFeid(Map<String, Object> reqData);
+    ResultVO queryApprovalByFeid(Map<String, Object> reqData);
+    ResultVO approval(HttpSession session,Map<String, Object> reqData);
     ResultVO detail(Map<String, Object> reqData);
 }

@@ -34,5 +34,4 @@ public interface EvEventQueryMapper extends BaseMapper<EvEventQueryPO, Long> {
                                @Param("status") Byte status,
                                @Param("currentTime") String currentTime);
     EvEventQueryPO queryByEid(@Param("eid")Long eid);
-    List<EvEventQueryBO> approvalQuery(Map<String, Object> reqData);
 }

@@ -92,5 +92,9 @@ public class TalentActivitiesDTO implements Serializable {
          * 活动结束时间
          */
         private Date etime;
+        /**
+         * 验证码
+         */
+        private String vcode;
     }
 

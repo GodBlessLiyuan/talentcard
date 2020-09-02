@@ -1,4 +1,4 @@
-package com.talentcard.miniprogram.vo;
+package com.talentcard.web.vo;
 
 import com.talentcard.common.bo.EvFrontendEventBO;
 import com.talentcard.common.pojo.EvFrontendEventPO;
@@ -17,11 +17,11 @@ import java.util.List;
  * @ Version:     1.0
  */
 @Data
-public class TalentActivitiesVO {
+public class ActivitiesApprovalVO {
     /**
      * 活动id
      */
-    private Long feid;
+    private Long eventId;
 
     /**
      * 活动名称
@@ -34,7 +34,7 @@ public class TalentActivitiesVO {
     /**
      * 活动场地id
      */
-    private Long efid;
+    private Long eventField;
     /**
      * 活动时长
      */
@@ -42,15 +42,15 @@ public class TalentActivitiesVO {
     /**
      * 活动参与人数
      */
-    private Integer num;
+    private Integer eventQuota;
     /**
      * 活动日期
      */
-    private Date edate;
+    private Date date;
     /**
      * 时间间隔
      */
-    private List<String> interval;
+    private String interval;
     /**
      * 活动发起方
      */
@@ -103,40 +103,43 @@ public class TalentActivitiesVO {
      *
      * 3）进行中：审批通过，且当前时间≥活动开始时间，小于活动结束时间；
      *
-     * 3）已结束：当前时间≥活动结束时间的，活动状态为“已结束”；
+     * 4）已结束：当前时间≥活动结束时间的，活动状态为“已结束”；
      *
-     * 4）已驳回：审批的时候被驳回，活动状态为“已驳回”。
+     * 5）已驳回：审批的时候被驳回，活动状态为“已驳回”。
      *
-     * 5）已取消：活动结束前都可以取消，这样可以保证及时释放场地资源；如果活动取消，则状态变为”已取消“；
+     * 6）已取消：活动结束前都可以取消，这样可以保证及时释放场地资源；如果活动取消，则状态变为”已取消“；
      */
     private Byte sshow;
 
     private String ropinion;
-
+    //更新时间
+    private Date updateTime;
+    //更新时间
+    private String contact;
     /**
      * pos 转 vos
      *
      * @param bos
      * @return
      */
-    public static List<TalentActivitiesVO> convert(List<EvFrontendEventBO> bos) {
-        List<TalentActivitiesVO> vos = new ArrayList<>();
+    public static List<ActivitiesApprovalVO> convert(List<EvFrontendEventBO> bos) {
+        List<ActivitiesApprovalVO> vos = new ArrayList<>();
         for (EvFrontendEventBO bo : bos) {
-            vos.add(TalentActivitiesVO.convert(bo));
+            vos.add(ActivitiesApprovalVO.convert(bo));
         }
         return vos;
     }
 
-    public static TalentActivitiesVO convert(EvFrontendEventBO bo) {
-        TalentActivitiesVO vo = new TalentActivitiesVO();
-        vo.setFeid(bo.getFeId());
+    public static ActivitiesApprovalVO convert(EvFrontendEventBO bo) {
+        ActivitiesApprovalVO vo = new ActivitiesApprovalVO();
+        vo.setEventId(bo.getFeId());
         vo.setName(bo.getName());
-        vo.setTime(bo.getTime());
-        vo.setEfid(bo.getEfId());
+        vo.setTime(bo.getTimeInterval());
+        vo.setEventField(bo.getEfId());
         vo.setDuration(bo.getDuration());
-        vo.setNum(bo.getEventNum());
-        vo.setEdate(bo.getEventDate());
-        vo.setInterval(Arrays.asList(bo.getTimeInterval().split(",")));
+        vo.setEventQuota(bo.getEventNum());
+        vo.setDate(bo.getEventDate());
+        vo.setInterval(bo.getTimeInterval());
         vo.setSponsor(bo.getSponsor());
         vo.setDetail(bo.getDetail());
         vo.setCperson(bo.getContactPerson());
@@ -149,7 +152,9 @@ public class TalentActivitiesVO {
         vo.setCtime(bo.getCreateTime());
         vo.setStime(bo.getStartTime());
         vo.setEtime(bo.getEndTime());
+        vo.setUpdateTime(bo.getUpdateTime());
         vo.setRopinion(bo.getRejectOpinion());
+        vo.setContact(bo.getContactPerson()+":"+bo.getPhone());
         //进行实践判断，对于前台展示不同的状态
         //当前时间
         Date nowDate=new Date();
@@ -173,16 +178,17 @@ public class TalentActivitiesVO {
         }
         return vo;
     }
-    public static TalentActivitiesVO convert(EvFrontendEventPO bo) {
-        TalentActivitiesVO vo = new TalentActivitiesVO();
-        vo.setFeid(bo.getFeId());
+
+    public static ActivitiesApprovalVO convert(EvFrontendEventPO bo) {
+        ActivitiesApprovalVO vo = new ActivitiesApprovalVO();
+        vo.setEventId(bo.getFeId());
         vo.setName(bo.getName());
-        vo.setTime(bo.getTime());
-        vo.setEfid(bo.getEfId());
+        vo.setTime(bo.getTimeInterval());
+        vo.setEventField(bo.getEfId());
         vo.setDuration(bo.getDuration());
-        vo.setNum(bo.getEventNum());
-        vo.setEdate(bo.getEventDate());
-        vo.setInterval(Arrays.asList(bo.getTimeInterval().split(",")));
+        vo.setEventQuota(bo.getEventNum());
+        vo.setDate(bo.getEventDate());
+        vo.setInterval(bo.getTimeInterval());
         vo.setSponsor(bo.getSponsor());
         vo.setDetail(bo.getDetail());
         vo.setCperson(bo.getContactPerson());
@@ -195,6 +201,8 @@ public class TalentActivitiesVO {
         vo.setCtime(bo.getCreateTime());
         vo.setStime(bo.getStartTime());
         vo.setEtime(bo.getEndTime());
+        vo.setUpdateTime(bo.getUpdateTime());
+        vo.setContact(bo.getContactPerson()+":"+bo.getPhone());
         //进行实践判断，对于前台展示不同的状态
         //当前时间
         Date nowDate=new Date();
