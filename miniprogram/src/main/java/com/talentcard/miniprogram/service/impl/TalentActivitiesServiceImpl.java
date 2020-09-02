@@ -61,9 +61,12 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         }
         //获取验证码和前台传的验证码进行比较
         String vcode1 = dto.getVcode();
+        if(StringUtils.isBlank(vcode1)){
+            return new ResultVO(1002);//用户输入验证码为空
+        }
         String vcode2 = VerificationCodeUtil.getCode(dto.getPhone());
         if (!vcode1.equals(vcode2)) {
-            return new ResultVO(1001);
+            return new ResultVO(1001);//验证码不匹配
         }
         //将前台dto中获取的数据转换成po进行插入,将数据插入到前台活动表中
         EvFrontendEventPO evFrontendEventPO = buildPOByDTO(new EvFrontendEventPO(), dto);
