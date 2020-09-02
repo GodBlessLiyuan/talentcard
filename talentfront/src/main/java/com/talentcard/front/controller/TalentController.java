@@ -6,12 +6,10 @@ import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.dto.IdentificationDTO;
 import com.talentcard.front.service.ISmsService;
 import com.talentcard.front.service.ITalentService;
-import com.talentcard.front.utils.VerificationCodeUtil;
+import com.talentcard.common.utils.VerificationCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
 import java.util.Random;
 
 /**

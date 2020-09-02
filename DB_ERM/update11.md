@@ -16,3 +16,8 @@
 1：提交待审批；2：已同意（已通过）；3：已驳回； 4：管理员取消；5：用户取消
 
 ### 需要执行的旧数据导入到新的表格的数据 ###
+
+
+### application.properties ###
+1. 添加wechat.sendToEventPass
+2. 添加wechat.sendToEventReject

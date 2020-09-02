@@ -3,9 +3,8 @@ package com.talentcard.front.controller;
 import com.talentcard.common.dto.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IInsertCertificationService;
-import com.talentcard.front.utils.VerificationCodeUtil;
+import com.talentcard.common.utils.VerificationCodeUtil;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -21,4 +21,24 @@ public interface IWxOfficalAccountService {
      * @return 成功：0；为关注公众号：43004
      */
     int messToNotApply(String openId, String policyName);
+
+
+    /**
+     * 个人申请活动通过后，发送审批通过的通知
+     * @param openId
+     * @param eventName
+     * @return
+     */
+    int messToEventAgree(String openId, String eventName);
+
+
+    /**
+     * 个人申请活动拒绝后，发送审批拒绝的通知
+     * @param openId
+     * @param talentName
+     * @param eventName
+     * @param opinion
+     * @return
+     */
+    int messToEventReject(String openId,String talentName, String eventName, String opinion);
 }
