@@ -46,7 +46,7 @@ public interface IEventService {
      * @param eventId
      * @return
      */
-    ResultVO cancel(HttpSession httpSession, Long eventId);
+    ResultVO cancel(HttpSession httpSession, Long eventId, String opinion);
 
     /**
      * 上下架

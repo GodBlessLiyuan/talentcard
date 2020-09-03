@@ -161,7 +161,7 @@ public class EventServiceImpl implements IEventService {
     }
 
     @Override
-    public ResultVO cancel(HttpSession httpSession, Long eventId) {
+    public ResultVO cancel(HttpSession httpSession, Long eventId, String opinion) {
         Long userId = (Long) httpSession.getAttribute("userId");
         if (userId == null) {
             // 用户过期
@@ -180,6 +180,14 @@ public class EventServiceImpl implements IEventService {
         }
         evEventQueryPO.setStatus((byte) 4);
         evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
+        //新建log表
+        EvEventLogPO evEventLogPO = new EvEventLogPO();
+        evEventLogPO.setEventId(eventId);
+        evEventLogPO.setCreateTime(new Date());
+        evEventLogPO.setUserId(userId);
+        evEventLogPO.setType((byte) 2);
+        evEventLogPO.setOpinion(opinion);
+        evEventLogMapper.insertSelective(evEventLogPO);
         String eventLog = evEventPO.getName() + "(" + evEventPO.getNum() + ")";
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                 , "取消活动\"%s\"", eventLog);
@@ -212,7 +220,18 @@ public class EventServiceImpl implements IEventService {
         }
         evEventQueryPO.setUpDown(upDown);
         evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
-
+        //新建log表
+        EvEventLogPO evEventLogPO = new EvEventLogPO();
+        evEventLogPO.setEventId(eventId);
+        evEventLogPO.setCreateTime(new Date());
+        evEventLogPO.setUserId(userId);
+        if (upDown == 1) {
+            evEventLogPO.setType((byte) 3);
+        } else {
+            evEventLogPO.setType((byte) 4);
+        }
+        evEventLogMapper.insertSelective(evEventLogPO);
+        //日志
         String eventLog = evEventPO.getName() + "(" + evEventPO.getNum() + ")";
         if (upDown == 1) {
             logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity

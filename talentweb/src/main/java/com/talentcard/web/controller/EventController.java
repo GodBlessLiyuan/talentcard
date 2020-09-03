@@ -69,8 +69,9 @@ public class EventController {
      */
     @RequestMapping("cancel")
     public ResultVO cancel(HttpSession httpSession,
-                           @RequestParam("eventId") Long eventId) {
-        return iEventService.cancel(httpSession, eventId);
+                           @RequestParam("eventId") Long eventId,
+                           @RequestParam("opinion") String opinion) {
+        return iEventService.cancel(httpSession, eventId, opinion);
     }
 
     /**
