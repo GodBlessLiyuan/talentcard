@@ -232,10 +232,11 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         EvFrontendEventPO EvFrontendEventPO1 = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
         String[] thisInterval = EvFrontendEventPO1.getTimeInterval().split(",");
         //从以前的时间段将现在的时间段删掉
-        for (int i = 0; i < thisInterval.length; i++)
+        for (int i = 0; i < thisInterval.length; i++) {
             if (arrayList.contains(thisInterval[i])) {
                 arrayList.remove(thisInterval[i]);
             }
+        }
         //将新的arraylist转为数组
         String[] newIntervalArray =  arrayList.toArray(new String[0]);
         String newInterval = StringUtils.join(newIntervalArray, ",");

@@ -13,6 +13,7 @@ import com.talentcard.web.service.IActivitiesApprovalService;
 import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IWxOfficalAccountService;
 import com.talentcard.web.vo.ActivitiesApprovalVO;
+import com.talentcard.web.vo.ApprovalRecordVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,16 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             evEventQueryPO.setUpdateTime(new Date());
             evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
         }
+        //将取消额操作和取消的原因插入前台活动审批表
+        EvFrontendEventApprovalPO evFrontendEventApprovalPO = new EvFrontendEventApprovalPO();
+        evFrontendEventApprovalPO.setFeId(Long.parseLong(reqData.get("feid").toString()));
+        evFrontendEventApprovalPO.setUserId((Long) session.getAttribute("userId"));
+        evFrontendEventApprovalPO.setUsername((String) session.getAttribute("username"));
+        evFrontendEventApprovalPO.setType((byte)3);//活动取消
+        evFrontendEventApprovalPO.setCreateTime(new Date());
+        evFrontendEventApprovalPO.setUpdateTime(new Date());
+        evFrontendEventApprovalPO.setOpinion(reqData.get("opinion").toString());
+        evFrontendEventApprovalMapper.insertSelective(evFrontendEventApprovalPO);
         //取消活动后释放场地占用时间段
         //根据场地和日期查询所有占用的时间段
         Map<String, Object> reqDate = new HashMap<>(1);
@@ -97,10 +108,11 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
         EvFrontendEventPO EvFrontendEventPO1 = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
         String[] thisInterval = EvFrontendEventPO1.getTimeInterval().split(",");
         //从以前的时间段将现在的时间段删掉
-        for (int i = 0; i < thisInterval.length; i++)
+        for (int i = 0; i < thisInterval.length; i++) {
             if (arrayList.contains(thisInterval[i])) {
                 arrayList.remove(thisInterval[i]);
             }
+        }
         //将新的arraylist转为数组
         String[] newIntervalArray =  arrayList.toArray(new String[0]);
         String newInterval = StringUtils.join(newIntervalArray, ",");
@@ -145,7 +157,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
     @Override
     public ResultVO queryApprovalByFeid(Map<String, Object> reqData) {
         List<EvFrontendEventApprovalPO> evFrontendEventApprovalPOS = evFrontendEventApprovalMapper.queryApprovalByFeid(Long.parseLong(reqData.get("feid").toString()));
-        return new ResultVO(1000, evFrontendEventApprovalPOS);
+        return new ResultVO(1000, ApprovalRecordVO.convert(evFrontendEventApprovalPOS));
     }
 
     @Override
@@ -216,10 +228,11 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             EvFrontendEventPO EvFrontendEventPO1 = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
             String[] thisInterval = EvFrontendEventPO1.getTimeInterval().split(",");
             //从以前的时间段将现在的时间段删掉
-            for (int i = 0; i < thisInterval.length; i++)
+            for (int i = 0; i < thisInterval.length; i++) {
                 if (arrayList.contains(thisInterval[i])) {
                     arrayList.remove(thisInterval[i]);
                 }
+            }
             //将新的arraylist转为数组
             String[] newIntervalArray =  arrayList.toArray(new String[0]);
             String newInterval = StringUtils.join(newIntervalArray, ",");
