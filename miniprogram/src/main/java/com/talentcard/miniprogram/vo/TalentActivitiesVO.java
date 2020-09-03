@@ -4,6 +4,7 @@ import com.talentcard.common.bo.EvFrontendEventBO;
 import com.talentcard.common.pojo.EvFrontendEventPO;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -17,7 +18,7 @@ import java.util.List;
  * @ Version:     1.0
  */
 @Data
-public class TalentActivitiesVO {
+public class TalentActivitiesVO implements Serializable {
     /**
      * 活动id
      */
