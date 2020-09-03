@@ -53,12 +53,6 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO insert(HttpSession session, TalentActivitiesDTO dto) {
-        //从session中获取userId的值
-        Long userId = (Long) session.getAttribute("userId");
-        if (userId == null) {
-            // 用户过期
-            return ResultVO.notLogin();
-        }
         //获取验证码和前台传的验证码进行比较
         String vcode1 = dto.getVcode();
         if(StringUtils.isBlank(vcode1)){
@@ -133,12 +127,6 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO update(HttpSession session, TalentActivitiesDTO dto) {
-        //从session中获取userId的值
-        Long userId = (Long) session.getAttribute("userId");
-        if (userId == null) {
-            // 用户过期
-            return ResultVO.notLogin();
-        }
         //将前台dto中获取的数据转换成po进行更新
         EvFrontendEventPO evFrontendEventPO = buildPOByDTO(new EvFrontendEventPO(), dto);
         evFrontendEventMapper.updateByPrimaryKeySelective(evFrontendEventPO);
@@ -215,12 +203,6 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO cancel(HttpSession session, Map<String, Object> reqData) {
-        //从session中获取userId的值
-        Long userId = (Long) session.getAttribute("userId");
-        if (userId == null) {
-            // 用户过期
-            return ResultVO.notLogin();
-        }
         //首先查询前台是否已经取消（根据活动id查询出后台是否取消状态）
         EvFrontendEventPO evFrontendEventPO = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
         //如果后台已经取消
