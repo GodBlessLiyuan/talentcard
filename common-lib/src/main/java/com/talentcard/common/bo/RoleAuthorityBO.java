@@ -161,6 +161,17 @@ public class RoleAuthorityBO implements Serializable {
     private Byte talentHonourAdd;
     private Byte talentHonourEdit;
 
+    /**
+     * 活动管理
+     * eventQuery 活动查询
+     * eventAdd 活动新增
+     * eventEdit 活动编辑
+     * eventApproval 活动审批
+     */
+    private Byte eventQuery;
+    private Byte eventAdd;
+    private Byte eventEdit;
+    private Byte eventApproval;
 
     /**
      * 将角色权限表实体类转换为其VO表示实体类
@@ -222,6 +233,11 @@ public class RoleAuthorityBO implements Serializable {
                 case "editPolicyType": vo.setEditPolicyType(bo.getStatus());break;
                 case "policyTypeQuery": vo.setPolicyTypeQuery((bo.getStatus()));break;
                 case "logQuery": vo.setLogQuery(bo.getStatus());break;
+                /*第十一期*/
+                case "eventQuery": vo.setEventQuery(bo.getStatus());break;
+                case "eventAdd": vo.setEventAdd(bo.getStatus());break;
+                case "eventEdit": vo.setEventEdit((bo.getStatus()));break;
+                case "eventApproval": vo.setEventApproval(bo.getStatus());break;
             }
         }
         return vo;
