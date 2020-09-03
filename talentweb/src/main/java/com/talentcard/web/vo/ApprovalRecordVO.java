@@ -46,24 +46,28 @@ public class ApprovalRecordVO extends EvFrontendEventApprovalPO implements Seria
         vo.setUsername(po.getUsername());
         vo.setCreateTime(po.getCreateTime());
         vo.setType((po.getType()));
-        if(po.getType()==1){
-            vo.setTypeString("提交申请");
-        }
-        if(po.getType()==2){
-            vo.setTypeString("活动审批");
-        }
-        if(po.getType()==1){
-            vo.setTypeString("活动取消");
+        if (po.getType() != null) {
+            if (po.getType() == 1) {
+                vo.setTypeString("提交申请");
+            }
+            if (po.getType() == 2) {
+                vo.setTypeString("活动审批");
+            }
+            if (po.getType() == 1) {
+                vo.setTypeString("活动取消");
+            }
         }
         vo.setUpdateTime(po.getUpdateTime());
         vo.setResult(po.getResult());
-        if(po.getResult()==1){
-            vo.setResultString("通过");
+        if (po.getResult() != null) {
+            if (po.getResult() == 1) {
+                vo.setResultString("通过");
+            }
+            if (po.getResult() == 2) {
+                vo.setResultString("驳回");
+            }
         }
-        if(po.getResult()==2){
-            vo.setResultString("驳回");
+            vo.setOpinion(po.getOpinion());
+            return vo;
         }
-        vo.setOpinion(po.getOpinion());
-        return vo;
-    }
 }
