@@ -13,4 +13,5 @@ import lombok.Data;
 public class EventDetailVO {
     private EvEventPO evEventPO;
     private Byte talentStatus;
+    private Long etId;
 }

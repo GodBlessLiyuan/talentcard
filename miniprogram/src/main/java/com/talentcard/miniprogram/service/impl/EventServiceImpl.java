@@ -1,14 +1,8 @@
 package com.talentcard.miniprogram.service.impl;
 
 import com.talentcard.common.bo.MyEventBO;
-import com.talentcard.common.mapper.EvEventEnjoyMapper;
-import com.talentcard.common.mapper.EvEventMapper;
-import com.talentcard.common.mapper.EvEventTalentMapper;
-import com.talentcard.common.mapper.TalentMapper;
-import com.talentcard.common.pojo.EvEventPO;
-import com.talentcard.common.pojo.EvEventTalentPO;
-import com.talentcard.common.pojo.ScenicPO;
-import com.talentcard.common.pojo.TalentPO;
+import com.talentcard.common.mapper.*;
+import com.talentcard.common.pojo.*;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.miniprogram.dto.EventEnrollDTO;
@@ -39,6 +33,8 @@ public class EventServiceImpl implements IEventService {
     EvEventEnjoyMapper evEventEnjoyMapper;
     @Autowired
     EvEventTalentMapper evEventTalentMapper;
+    @Autowired
+    EvEventLogMapper evEventLogMapper;
     @Autowired
     private ITalentService iTalentService;
     //报名已结束
@@ -72,6 +68,10 @@ public class EventServiceImpl implements IEventService {
         Integer checkResult = check(evEventPO, talentPO.getSex());
         if (checkResult != 0) {
             return new ResultVO(checkResult);
+        }
+        Integer checkIfEnrollEvent = evEventTalentMapper.checkIfEnrollEvent(eventEnrollDTO.getOpenId(), eventEnrollDTO.getEventId());
+        if (checkIfEnrollEvent != 0) {
+            return new ResultVO(2755);
         }
         //新增人才表
         EvEventTalentPO evEventTalentPO = new EvEventTalentPO();
@@ -107,7 +107,12 @@ public class EventServiceImpl implements IEventService {
             return new ResultVO(2750);
         }
         if (evEventPO.getStatus() == 4) {
-            return new ResultVO(2753, "活动已经取消！");
+            String opinion = "";
+            EvEventLogPO evEventLogPO = evEventLogMapper.findLastCancelLog(evEventPO.getEventId());
+            if (evEventLogPO != null) {
+                opinion = evEventLogPO.getOpinion();
+            }
+            return new ResultVO(2753, opinion);
         }
         //判断活动是否已经开始
         Long currentTime = System.currentTimeMillis();
@@ -202,17 +207,20 @@ public class EventServiceImpl implements IEventService {
         Byte actualStatus = getActualStatus(startTime, endTime, status, upDown);
         evEventPO.setStatus(actualStatus);
         //判断人才参加状态
-        Integer checkIfEnrollEvent = evEventTalentMapper.checkIfEnrollEvent(openId, eventId);
+        EvEventTalentPO evEventTalentPO = evEventTalentMapper.findEnrollEventById(openId, eventId);
         Byte talentStatus;
-        if (checkIfEnrollEvent == 0) {
+        Long etId = null;
+        if (evEventTalentPO == null) {
             talentStatus = NO_SIGN_UP;
         } else {
             talentStatus = SIGN_UP;
+            etId = evEventTalentPO.getEtId();
         }
         //构建VO
         EventDetailVO eventDetailVO = new EventDetailVO();
         eventDetailVO.setEvEventPO(evEventPO);
         eventDetailVO.setTalentStatus(talentStatus);
+        eventDetailVO.setEtId(etId);
         return new ResultVO(1000, eventDetailVO);
     }
 

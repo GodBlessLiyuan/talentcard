@@ -13,4 +13,6 @@ import java.util.List;
 @Mapper
 public interface EvEventLogMapper extends BaseMapper<EvEventLogPO, Long> {
     List<EvEventLogBO> findByEventId(@Param("eventId") Long eventId);
+
+    EvEventLogPO findLastCancelLog(@Param("eventId") Long eventId);
 }
