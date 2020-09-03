@@ -216,11 +216,11 @@
         </if>
         <if test="status != null and status == 1">
             and `status` = 2 and `type` = 1
-            and <![CDATA[ (start_time > #{currentTime} ]]>
+            and <![CDATA[ start_time > #{currentTime} ]]>
         </if>
         <if test="status != null and status == 2">
             and `status` = 2
-            and <![CDATA[ (start_time <= #{currentTime} and end_time > #{currentTime} ]]>
+            and <![CDATA[ start_time <= #{currentTime} and end_time > #{currentTime} ]]>
             and (`type` = 1 or (`type` = 2 and up_down = 1))
         </if>
         <if test="status != null and status == 3">
@@ -235,7 +235,7 @@
         </if>
         <if test="status != null and status == 6">
           and `status` = 2 and `type` = 2
-          and <![CDATA[ (start_time > #{currentTime} ]]>
+          and <![CDATA[ start_time > #{currentTime} ]]>
         </if>
           order by status asc, start_time desc
     </select>
