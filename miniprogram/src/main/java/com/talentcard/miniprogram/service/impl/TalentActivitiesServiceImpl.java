@@ -255,7 +255,7 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
                 arrayList.remove(thisInterval[i]);
             }
         //将新的arraylist转为数组
-        String[] newIntervalArray = (String[]) arrayList.toArray();
+        String[] newIntervalArray =  arrayList.toArray(new String[0]);
         String newInterval = StringUtils.join(newIntervalArray, ",");
         //将新的时间段更新会时间占用表中
         evEventTimePO.setTimeInterval(newInterval);

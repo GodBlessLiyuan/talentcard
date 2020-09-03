@@ -102,7 +102,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
                 arrayList.remove(thisInterval[i]);
             }
         //将新的arraylist转为数组
-        String[] newIntervalArray = (String[]) arrayList.toArray();
+        String[] newIntervalArray =  arrayList.toArray(new String[0]);
         String newInterval = StringUtils.join(newIntervalArray, ",");
         //将新的时间段更新会时间占用表中
         evEventTimePO.setTimeInterval(newInterval);
@@ -157,7 +157,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             // 用户过期
             return ResultVO.notLogin();
         }
-        //进行审批表插入一条提交申请的插入记录
+        //进行审批表插入一条提交审批的插入记录
         EvFrontendEventApprovalPO evFrontendEventApprovalPO = new EvFrontendEventApprovalPO();
         evFrontendEventApprovalPO.setFeId(Long.parseLong(reqData.get("feid").toString()));
         evFrontendEventApprovalPO.setUserId((Long) session.getAttribute("userId"));
@@ -211,7 +211,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             reqData.put("date", DateUtil.date2Str(evFrontendEventPO.getEventDate(), YMD));
             EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(reqData);
             List<String> list = Arrays.asList(evEventTimePO.getTimeInterval().split(","));
-            List<String> arrayList = new ArrayList<String>(list);//转换为ArrayLsit调用相关的remove方法
+            ArrayList<String> arrayList = new ArrayList(list);//转换为ArrayLsit调用相关的remove方法
             //查出当前活动的时间段
             EvFrontendEventPO EvFrontendEventPO1 = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
             String[] thisInterval = EvFrontendEventPO1.getTimeInterval().split(",");
@@ -221,7 +221,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
                     arrayList.remove(thisInterval[i]);
                 }
             //将新的arraylist转为数组
-            String[] newIntervalArray = (String[]) arrayList.toArray();
+            String[] newIntervalArray =  arrayList.toArray(new String[0]);
             String newInterval = StringUtils.join(newIntervalArray, ",");
             //将新的时间段更新会时间占用表中
             evEventTimePO.setTimeInterval(newInterval);
