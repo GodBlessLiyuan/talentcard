@@ -53,7 +53,7 @@ public class ApprovalRecordVO extends EvFrontendEventApprovalPO implements Seria
             if (po.getType() == 2) {
                 vo.setTypeString("活动审批");
             }
-            if (po.getType() == 1) {
+            if (po.getType() == 3) {
                 vo.setTypeString("活动取消");
             }
         }
