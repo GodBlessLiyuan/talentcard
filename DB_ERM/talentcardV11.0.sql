@@ -308,11 +308,11 @@ CREATE TABLE ev_frontend_event_approval
 	-- 审批人
 	username char(32) COMMENT '审批人',
 	create_time datetime,
-	-- 1：提交审批；2：审批结果；
-	type tinyint COMMENT '1：提交审批；2：审批结果；',
+	-- 1：提交审批；2：审批结果；3：活动取消
+	type tinyint COMMENT '1：提交审批；2：审批结果；3：活动取消',
 	update_time datetime,
-	-- 1：同意；2：拒绝；3：取消
-	result tinyint COMMENT '1：同意；2：拒绝；3：取消',
+	-- 1：同意；2：拒绝；
+	result tinyint COMMENT '1：同意；2：拒绝；',
 	opinion char(255),
 	PRIMARY KEY (approval_id),
 	UNIQUE (approval_id)
