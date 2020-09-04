@@ -549,7 +549,7 @@ CREATE TABLE ta_social_security
 	-- 参保单位
 	securiy_work_unit char(255) COMMENT '参保单位',
 	-- 本次参保开始时间
-	security_time decimal COMMENT '本次参保开始时间',
+	security_time datetime COMMENT '本次参保开始时间',
 	-- 1：在职人员；2：中断人员；
 	social_type tinyint COMMENT '1：在职人员；2：中断人员；',
 	-- 核查时间

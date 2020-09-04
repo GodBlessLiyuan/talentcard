@@ -5,7 +5,7 @@
     <id column="talent_id" jdbcType="BIGINT" property="talentId" />
     <result column="old_work_unit" jdbcType="CHAR" property="oldWorkUnit" />
     <result column="securiy_work_unit" jdbcType="CHAR" property="securiyWorkUnit" />
-    <result column="security_time" jdbcType="DECIMAL" property="securityTime" />
+    <result column="security_time" jdbcType="TIMESTAMP" property="securityTime" />
     <result column="social_type" jdbcType="TINYINT" property="socialType" />
     <result column="check_time" jdbcType="TIMESTAMP" property="checkTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -30,7 +30,7 @@
       security_time, social_type, check_time, 
       create_time, update_time)
     values (#{talentId,jdbcType=BIGINT}, #{oldWorkUnit,jdbcType=CHAR}, #{securiyWorkUnit,jdbcType=CHAR}, 
-      #{securityTime,jdbcType=DECIMAL}, #{socialType,jdbcType=TINYINT}, #{checkTime,jdbcType=TIMESTAMP}, 
+      #{securityTime,jdbcType=TIMESTAMP}, #{socialType,jdbcType=TINYINT}, #{checkTime,jdbcType=TIMESTAMP}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.talentcard.common.pojo.SocialSecurityPO">
@@ -72,7 +72,7 @@
         #{securiyWorkUnit,jdbcType=CHAR},
       </if>
       <if test="securityTime != null">
-        #{securityTime,jdbcType=DECIMAL},
+        #{securityTime,jdbcType=TIMESTAMP},
       </if>
       <if test="socialType != null">
         #{socialType,jdbcType=TINYINT},
@@ -98,7 +98,7 @@
         securiy_work_unit = #{securiyWorkUnit,jdbcType=CHAR},
       </if>
       <if test="securityTime != null">
-        security_time = #{securityTime,jdbcType=DECIMAL},
+        security_time = #{securityTime,jdbcType=TIMESTAMP},
       </if>
       <if test="socialType != null">
         social_type = #{socialType,jdbcType=TINYINT},
@@ -119,7 +119,7 @@
     update ta_social_security
     set old_work_unit = #{oldWorkUnit,jdbcType=CHAR},
       securiy_work_unit = #{securiyWorkUnit,jdbcType=CHAR},
-      security_time = #{securityTime,jdbcType=DECIMAL},
+      security_time = #{securityTime,jdbcType=TIMESTAMP},
       social_type = #{socialType,jdbcType=TINYINT},
       check_time = #{checkTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},

@@ -29,7 +29,7 @@ public class SocialSecurityPO implements Serializable {
     /**
      * 本次参保开始时间
      */
-    private Long securityTime;
+    private Date securityTime;
 
     /**
      * 1：在职人员；2：中断人员；
