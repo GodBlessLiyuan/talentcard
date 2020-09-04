@@ -5,7 +5,7 @@ import com.talentcard.common.bo.EvFrontendEventBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.DateUtil;
-import com.talentcard.common.utils.PageQueryUtil;
+import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
@@ -54,7 +54,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
 
     @Override
     public ResultVO approvalQuery(Map<String, Object> reqData) {
-        Page<EvFrontendEventBO> page = PageQueryUtil.startPage(reqData);
+        Page<EvFrontendEventBO> page = PageHelper.startPage(reqData);
         List<EvFrontendEventBO> evFrontendEventBOS = evFrontendEventMapper.approvalQuery(reqData);
         return new ResultVO(1000, new PageInfoVO<>(page.getTotal(), ActivitiesApprovalVO.convert(evFrontendEventBOS)));
     }
@@ -91,7 +91,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
         evFrontendEventApprovalPO.setFeId(Long.parseLong(reqData.get("feid").toString()));
         evFrontendEventApprovalPO.setUserId((Long) session.getAttribute("userId"));
         evFrontendEventApprovalPO.setUsername((String) session.getAttribute("username"));
-        evFrontendEventApprovalPO.setType((byte)3);//活动取消
+        evFrontendEventApprovalPO.setType((byte) 3);//活动取消
         evFrontendEventApprovalPO.setCreateTime(new Date());
         evFrontendEventApprovalPO.setUpdateTime(new Date());
         evFrontendEventApprovalPO.setOpinion(reqData.get("opinion").toString());
@@ -114,7 +114,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             }
         }
         //将新的arraylist转为数组
-        String[] newIntervalArray =  arrayList.toArray(new String[0]);
+        String[] newIntervalArray = arrayList.toArray(new String[0]);
         String newInterval = StringUtils.join(newIntervalArray, ",");
         //将新的时间段更新会时间占用表中
         evEventTimePO.setTimeInterval(newInterval);
@@ -234,7 +234,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
                 }
             }
             //将新的arraylist转为数组
-            String[] newIntervalArray =  arrayList.toArray(new String[0]);
+            String[] newIntervalArray = arrayList.toArray(new String[0]);
             String newInterval = StringUtils.join(newIntervalArray, ",");
             //将新的时间段更新会时间占用表中
             evEventTimePO.setTimeInterval(newInterval);
@@ -261,7 +261,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
 
     @Override
     public ResultVO notApprovalNum() {
-        Long  notApprovalNum = evFrontendEventMapper.notApprovalNum();
+        Long notApprovalNum = evFrontendEventMapper.notApprovalNum();
         return new ResultVO(1000, notApprovalNum);
     }
 }

@@ -5,7 +5,7 @@ import com.talentcard.common.bo.EvFrontendEventBO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.DateUtil;
-import com.talentcard.common.utils.PageQueryUtil;
+import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.utils.VerificationCodeUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
@@ -194,7 +194,7 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
 
     @Override
     public ResultVO pageQuery(Map<String, Object> reqData) {
-        Page<EvFrontendEventBO> page = PageQueryUtil.startPage(reqData);
+        Page<EvFrontendEventBO> page = PageHelper.startPage(reqData);
         List<EvFrontendEventBO> evFrontendEventBOS = evFrontendEventMapper.pageQuery(reqData);
         return new ResultVO(1000, new PageInfoVO<>(page.getTotal(), TalentActivitiesVO.convert(evFrontendEventBOS)));
     }

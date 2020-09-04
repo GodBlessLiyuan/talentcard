@@ -6,7 +6,7 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExcelExportUtil;
-import com.talentcard.common.utils.PageQueryUtil;
+import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
@@ -86,7 +86,7 @@ public class ComplianceServiceImpl implements IComplianceService {
 
     @Override
     public ResultVO pageQuery(Map<String, Object> reqData) {
-        Page<PoComplianceBO> page = PageQueryUtil.startPage(reqData);
+        Page<PoComplianceBO> page = PageHelper.startPage(reqData);
         List<PoComplianceBO> bos = complianceMapper.pageQuery(reqData);
         //遍历取出人才政策id查出政策权益名称和政策权益编号和政策资金放入对应的BO对象中
         for (PoComplianceBO poComplianceBO :

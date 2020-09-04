@@ -17,6 +17,7 @@ public class DateUtil {
     public static final SimpleDateFormat YHM = new SimpleDateFormat("yyyy-MM");
     public static final SimpleDateFormat HM = new SimpleDateFormat("HH:mm");
     public static final SimpleDateFormat YM = new SimpleDateFormat("yyyy.MM");
+    public static final SimpleDateFormat YHM_NO = new SimpleDateFormat("yyyyMM");
 
     /**
      * str 转 date
