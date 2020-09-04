@@ -89,6 +89,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
     private byte EDIT_VERIFY = 2;
     @Autowired
     private ILogService logService;
+    @Autowired
+    private SocialSecurityMapper socialSecurityMapper;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editBasicInfo(HttpSession httpSession, BasicInfoDTO basicInfoDTO) {
@@ -646,6 +648,12 @@ public class EditTalentServiceImpl implements IEditTalentService {
         certificationTimesVO.setTitleTimes(titleTimes + talentBO.getProfTitlePOList().size());
         certificationTimesVO.setQualityTimes(qualityTimes + talentBO.getProfQualityPOList().size());
         certificationTimesVO.setHonourTimes(honourTimes + talentBO.getTalentHonourPOList().size());
+        //根据人才id将社保信息从社保信息表中取出返回展示到前台
+        SocialSecurityPO socialSecurityPO= socialSecurityMapper.selectByPrimaryKey(talentId);
+        talentBO.setSecurity_workUnit(socialSecurityPO.getSecuriyWorkUnit());
+        talentBO.setSocial_type(socialSecurityPO.getSocialType());
+        talentBO.setSecurity_time(socialSecurityPO.getSecurityTime());
+        talentBO.setCheck_time(socialSecurityPO.getCheckTime());
         HashMap<String, Object> result = new HashMap<>(4);
         result.put("talentInfo", talentBO);
         result.put("policyPOList", policyPOList);
