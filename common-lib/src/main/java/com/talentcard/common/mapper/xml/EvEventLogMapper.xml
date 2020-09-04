@@ -117,9 +117,12 @@
 
     <select id="findByEventId" resultType="com.talentcard.common.bo.EvEventLogBO">
     select
-     el_id as elId, create_time as createTime, user_id as userId,
-     `type`, `result`, opinion, event_id as eventId
-    from ev_event_log
+     el.el_id as elId,  el.create_time as createTime,  el.user_id as userId,
+     el.`type` as type,  el.`result` as result,  el.opinion as opinion,
+     el.event_id as eventId, u.username as userName
+    from ev_event_log el
+    left join t_user u
+    on el.user_id = u.user_id
     where event_id = #{eventId,jdbcType=BIGINT}
   </select>
     <select id="findLastCancelLog" resultMap="BaseResultMap">

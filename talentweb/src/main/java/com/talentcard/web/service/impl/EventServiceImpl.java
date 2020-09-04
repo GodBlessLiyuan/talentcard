@@ -269,10 +269,10 @@ public class EventServiceImpl implements IEventService {
      * @param eventId
      */
     public void setEventEnjoy(EventDTO eventDTO, Long eventId) {
-        //        新建setting表
+        // 新建enjoy表
         EvEventEnjoyPO evEventEnjoyPO;
-        if (eventDTO.getCardId() != null) {
-            for (Long cardId : eventDTO.getCardId()) {
+        if (eventDTO.getCard() != null) {
+            for (Long cardId : eventDTO.getCard()) {
                 evEventEnjoyPO = new EvEventEnjoyPO();
                 evEventEnjoyPO.setCardId(cardId);
                 evEventEnjoyPO.setEventId(eventId);
