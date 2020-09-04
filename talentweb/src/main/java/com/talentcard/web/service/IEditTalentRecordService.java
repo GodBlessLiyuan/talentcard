@@ -12,4 +12,8 @@ public interface IEditTalentRecordService {
     Integer addRecord(HttpSession httpSession, Long talentId, Byte operationType,
                       Byte operationContent, String beforeJson,
                       String afterJson, String opinion);
+
+    Integer addRecord(Long userId, Long talentId, Byte operationType,
+                      Byte operationContent, String beforeJson,
+                      String afterJson, String opinion);
 }
