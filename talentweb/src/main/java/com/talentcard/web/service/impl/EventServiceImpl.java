@@ -273,6 +273,12 @@ public class EventServiceImpl implements IEventService {
         return new ResultVO(1000);
     }
 
+    @Override
+    public ResultVO findEventTime(Map<String, Object> map) {
+        EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(map);
+        return new ResultVO(1000, evEventTimePO);
+    }
+
     /**
      * 设置活动享受群体
      *

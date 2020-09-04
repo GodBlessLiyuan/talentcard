@@ -6,6 +6,7 @@ import com.talentcard.web.dto.EventDTO;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.transform.Result;
+import java.util.Map;
 
 /**
  * @author ChenXU
@@ -81,4 +82,11 @@ public interface IEventService {
      * @return
      */
     ResultVO talentInfoExport(int pageNum, int pageSize, Long eventId, String name, String workLocation, Byte sex, Byte status, HttpServletResponse httpServletResponse);
+
+    /**
+     *
+     * @param map
+     * @return
+     */
+    ResultVO findEventTime(Map<String, Object> map);
 }
