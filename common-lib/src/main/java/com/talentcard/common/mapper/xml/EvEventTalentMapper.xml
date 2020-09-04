@@ -166,8 +166,5 @@
     where
     et.event_id = #{eventId,jdbcType=BIGINT}
     and et.open_id = #{openId,jdbcType=CHAR}
-    and et.dr = 1
-    and et.status = 1
-    limit 1
   </select>
 </mapper>

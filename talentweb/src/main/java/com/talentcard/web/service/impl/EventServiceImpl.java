@@ -17,14 +17,17 @@ import com.talentcard.web.service.IEventService;
 import com.talentcard.web.service.ILogService;
 import com.talentcard.web.utils.PolicyNameUtil;
 import com.talentcard.web.vo.EventDetailVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.List;;
+import java.text.ParseException;
+import java.util.*;
+
+import static com.talentcard.common.utils.DateUtil.YMD;
 
 /**
  * @author ChenXU
@@ -46,6 +49,8 @@ public class EventServiceImpl implements IEventService {
     EvEventLogMapper evEventLogMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    EvEventTimeMapper evEventTimeMapper;
     @Autowired
     private ILogService logService;
 
@@ -88,6 +93,8 @@ public class EventServiceImpl implements IEventService {
         String eventLog = eventDTO.getName() + "(" + eventDTO.getNum() + ")";
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                 , "新增活动\"%s\"", eventLog);
+        //更新time表
+        addEventUpdateEventTime(eventDTO);
         return new ResultVO(1000);
     }
 
@@ -128,6 +135,8 @@ public class EventServiceImpl implements IEventService {
         String eventLog = eventDTO.getName() + "(" + eventDTO.getNum() + ")";
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                 , "编辑活动\"%s\"", eventLog);
+        //更新time表
+        addEventUpdateEventTime(eventDTO);
         return new ResultVO(1000);
     }
 
@@ -191,6 +200,8 @@ public class EventServiceImpl implements IEventService {
         String eventLog = evEventPO.getName() + "(" + evEventPO.getNum() + ")";
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                 , "取消活动\"%s\"", eventLog);
+        //更新time表
+        cancelEventUpdateEventTime(evEventPO);
         return new ResultVO(1000);
     }
 
@@ -352,5 +363,86 @@ public class EventServiceImpl implements IEventService {
         return contents;
     }
 
+    /**
+     * 新增/编辑活动时，更新活动场地时间表
+     *
+     * @param eventDTO
+     */
+    public void addEventUpdateEventTime(EventDTO eventDTO) {
+        //根据活动场地和活动的日期进行活动场地占用情况的插入或更新
+        //判断是插入还是更新
+        //如果根据活动场地和日期没有查到数据，则进行插入操作,否则进行时间段合并进行更新
+        Map<String, Object> map = new HashMap(2);
+        map.put("efid", eventDTO.getEventField());
+        map.put("date", eventDTO.getDate());
+        EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(map);
+
+        if (evEventTimePO == null) {
+            EvEventTimePO evEventTimePO1 = new EvEventTimePO();
+            evEventTimePO1.setEfId(eventDTO.getEventField());
+            try {
+                evEventTimePO1.setPlaceDate(DateUtil.YMD.parse(eventDTO.getDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            evEventTimePO1.setTimeInterval(eventDTO.getTime());
+            evEventTimeMapper.insert(evEventTimePO1);
+        } else {
+            EvEventTimePO evEventTimePO2 = new EvEventTimePO();
+            //原来有的数组
+            String array1[] = evEventTimePO.getTimeInterval().split(",");
+            //新添加的数组
+            String array2[] = eventDTO.getTime().split(",");
+            //合并数组
+            String[] result = Arrays.copyOf(array1, array1.length + array2.length);
+            System.arraycopy(array2, 0, result, array1.length, array2.length);
+            //去重
+            HashSet<String> set = new HashSet();
+            for (String i : result) {
+                set.add(i);
+            }
+            String[] newArray = set.toArray(new String[1]);
+            String newTimeinterval = String.join(",", newArray);
+            evEventTimePO2.setId(evEventTimePO.getId());
+            evEventTimePO2.setTimeInterval(newTimeinterval);
+            evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO2);
+        }
+
+    }
+
+    /**
+     * 取消活动时，更新活动场地时间表
+     *
+     * @param evEventPO
+     */
+    public void cancelEventUpdateEventTime(EvEventPO evEventPO) {
+        //取消活动后释放场地占用时间段
+        //根据场地和日期查询所有占用的时间段
+        Map<String, Object> reqData = new HashMap<>(2);
+        reqData.put("efid", evEventPO.getEfId());
+        reqData.put("date", evEventPO.getDate());
+        EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(reqData);
+        if (evEventTimePO == null) {
+            return;
+        }
+        List<String> list = Arrays.asList(evEventTimePO.getTimeInterval().split(","));
+        //转换为ArrayList调用相关的remove方法
+        List<String> arrayList = new ArrayList<>(list);
+        //查出当前活动的时间段
+        String[] thisInterval = evEventPO.getTime().split(",");
+        //从以前的时间段将现在的时间段删掉
+        for (int i = 0; i < thisInterval.length; i++) {
+            if (arrayList.contains(thisInterval[i])) {
+                arrayList.remove(thisInterval[i]);
+            }
+        }
+        //将新的arrayList转为数组
+        String[] newIntervalArray = arrayList.toArray(new String[0]);
+        String newInterval = StringUtils.join(newIntervalArray, ",");
+        //将新的时间段更新会时间占用表中
+        evEventTimePO.setTimeInterval(newInterval);
+        evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO);
+
+    }
 
 }

@@ -69,12 +69,16 @@ public class EventServiceImpl implements IEventService {
         if (checkResult != 0) {
             return new ResultVO(checkResult);
         }
-        Integer checkIfEnrollEvent = evEventTalentMapper.checkIfEnrollEvent(eventEnrollDTO.getOpenId(), eventEnrollDTO.getEventId());
-        if (checkIfEnrollEvent != 0) {
-            return new ResultVO(2755);
+        EvEventTalentPO evEventTalentPO = evEventTalentMapper.
+                findEnrollEventById(eventEnrollDTO.getOpenId(), eventEnrollDTO.getEventId());
+        if (evEventTalentPO != null && evEventTalentPO.getStatus() == 1) {
+            return new ResultVO(2755, "当前就是报名状态！");
+        }
+        //报名过
+        if (evEventTalentPO == null) {
+            evEventTalentPO = new EvEventTalentPO();
         }
         //新增人才表
-        EvEventTalentPO evEventTalentPO = new EvEventTalentPO();
         evEventTalentPO.setCreateTime(new Date());
         evEventTalentPO.setDr((byte) 1);
         evEventTalentPO.setEventId(eventEnrollDTO.getEventId());
@@ -210,11 +214,13 @@ public class EventServiceImpl implements IEventService {
         EvEventTalentPO evEventTalentPO = evEventTalentMapper.findEnrollEventById(openId, eventId);
         Byte talentStatus;
         Long etId = null;
-        if (evEventTalentPO == null) {
-            talentStatus = NO_SIGN_UP;
-        } else {
+        //已报名
+        if (evEventTalentPO != null && evEventTalentPO.getStatus() == 1) {
             talentStatus = SIGN_UP;
             etId = evEventTalentPO.getEtId();
+            //未报名
+        } else {
+            talentStatus = NO_SIGN_UP;
         }
         //构建VO
         EventDetailVO eventDetailVO = new EventDetailVO();
