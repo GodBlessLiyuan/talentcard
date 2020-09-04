@@ -5,7 +5,6 @@ import com.talentcard.common.bo.UserBO;
 import com.talentcard.common.bo.UserRoleBO;
 import com.talentcard.common.mapper.RoleMapper;
 import com.talentcard.common.mapper.UserMapper;
-import com.talentcard.common.pojo.OpwebRecordPO;
 import com.talentcard.common.pojo.RolePO;
 import com.talentcard.common.pojo.UserPO;
 import com.talentcard.common.vo.PageInfoVO;

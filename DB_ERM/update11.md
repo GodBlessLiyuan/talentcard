@@ -8,8 +8,8 @@
 5. ev_event_field表：活动场地表（目前直接数据库人工写入）
 6. ev_event_query表：活动查询表（优化后台查询的记录表）
 7. ev_event_talent：人才活动表
-7. ev_event_log：人才活动历史记录表
-
+8. ev_event_log：人才活动历史记录表
+9. ta_social_security：社保信息记录表
 
 ### 活动状态 status ###
 
