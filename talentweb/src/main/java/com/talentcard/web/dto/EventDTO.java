@@ -35,7 +35,7 @@ public class EventDTO {
     private Integer maleQuota;
     private Integer femaleQuota;
     private Integer eventQuota;
-    private Long[] cardId;
+    private Long[] card;
     private Long[] category;
     private Integer[] education;
     private Integer[] title;
