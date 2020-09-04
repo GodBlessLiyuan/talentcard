@@ -271,8 +271,8 @@ public class EventServiceImpl implements IEventService {
     public void setEventEnjoy(EventDTO eventDTO, Long eventId) {
         //        新建setting表
         EvEventEnjoyPO evEventEnjoyPO;
-        if (eventDTO.getCardId() != null) {
-            for (Long cardId : eventDTO.getCardId()) {
+        if (eventDTO.getCard() != null) {
+            for (Long cardId : eventDTO.getCard()) {
                 evEventEnjoyPO = new EvEventEnjoyPO();
                 evEventEnjoyPO.setCardId(cardId);
                 evEventEnjoyPO.setEventId(eventId);
