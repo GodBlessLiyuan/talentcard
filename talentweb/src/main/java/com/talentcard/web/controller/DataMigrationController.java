@@ -556,7 +556,7 @@ public class DataMigrationController {
                                 /**
                                  * 记录操作行为
                                  */
-                                iEditTalentRecordService.addRecord((long) 1, po.getTalentId(), EditTalentRecordConstant.security_social,
+                                iEditTalentRecordService.addRecord((long) 1, po.getTalentId(), EditTalentRecordConstant.synchronization,
                                         EditTalentRecordConstant.security_social, before, after, "与社保信息不一致");
                             }
 
