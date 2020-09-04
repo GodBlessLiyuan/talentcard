@@ -548,14 +548,17 @@ CREATE TABLE ta_social_security
 	old_work_unit char(255) COMMENT '历史工作单位',
 	-- 参保单位
 	securiy_work_unit char(255) COMMENT '参保单位',
-	-- 参保时间
-	security_time decimal COMMENT '参保时间',
+	-- 本次参保开始时间
+	security_time decimal COMMENT '本次参保开始时间',
+	-- 1：在职人员；2：中断人员；
+	social_type tinyint COMMENT '1：在职人员；2：中断人员；',
 	-- 核查时间
 	check_time datetime COMMENT '核查时间',
 	-- 创建时间
 	create_time datetime COMMENT '创建时间',
 	-- 更新时间
 	update_time datetime COMMENT '更新时间',
+	PRIMARY KEY (talent_id),
 	UNIQUE (talent_id)
 );
 

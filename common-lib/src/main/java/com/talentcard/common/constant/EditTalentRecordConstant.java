@@ -18,6 +18,8 @@ public class EditTalentRecordConstant {
     public static final Byte deleteType = 2;
     //修改
     public static final Byte editType = 3;
+    //同步
+    public static final Byte synchronization = 4;
 
     /**
      * 操作对象内容
@@ -36,6 +38,8 @@ public class EditTalentRecordConstant {
     public static final Byte basicInfoContent = 6;
     //人才卡
     public static final Byte talentCard = 7;
+    //社保信息
+    public static final Byte security_social = 8;
 
 
     public final static HashMap<Byte, String> operationTypeMap = new HashMap<>(3);
@@ -44,6 +48,7 @@ public class EditTalentRecordConstant {
         operationTypeMap.put(addType, "新增");
         operationTypeMap.put(deleteType, "删除");
         operationTypeMap.put(editType, "修改");
+        operationTypeMap.put(synchronization, "同步");
 
         operationContentMap.put(educationContent,"学历");
         operationContentMap.put(titleContent,"职称");
@@ -52,5 +57,6 @@ public class EditTalentRecordConstant {
         operationContentMap.put(talentCategoryContent,"人才类别");
         operationContentMap.put(basicInfoContent,"基本信息");
         operationContentMap.put(talentCard,"人才卡");
+        operationContentMap.put(security_social, "社保信息");
     }
 }
