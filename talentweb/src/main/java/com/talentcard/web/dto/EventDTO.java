@@ -71,7 +71,7 @@ public class EventDTO {
         evEventPO.setCurrentMale(0);
         evEventPO.setCurrentFemale(0);
         evEventPO.setUpdateTime(new Date());
-        evEventPO.setStatus((byte) 5);
+        evEventPO.setStatus((byte) 2);
         evEventPO.setUpDown((byte) 2);
         evEventPO.setDr((byte) 1);
         evEventPO.setStartTime(DateUtil.str2Date(eventDTO.getStartTime(), DateUtil.YMD_HMS));
