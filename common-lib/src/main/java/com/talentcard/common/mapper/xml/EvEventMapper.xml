@@ -440,6 +440,8 @@
     select
     <include refid="My_Event_BO_List"/>
     from ev_event e
+    left join ev_event_field ef
+    on e.ef_id = ef.ef_id
     where
     (<foreach collection="eventIdList" separator="or" item="eventId">
     e.event_id = #{eventId, jdbcType=BIGINT}
