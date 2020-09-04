@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author ChenXU
@@ -121,5 +122,17 @@ public class EventController {
             workLocation = workLocation.replaceAll(" ", "");
         }
         return iEventService.talentInfoExport(pageNum, pageSize, eventId, name, workLocation, sex, status, httpServletResponse);
+    }
+
+
+    /**
+     * 根据id查询当前活动所占用的时间
+     *
+     * @param map
+     * @return
+     */
+    @RequestMapping("findEventTime")
+    public ResultVO findEventTime(@RequestBody Map<String, Object> map) {
+        return iEventService.findEventTime(map);
     }
 }
