@@ -280,7 +280,7 @@
     <where>
       <if test="oId != null and oId !=''">and f.open_id = #{oId,jdbcType=CHAR}</if>
     </where>
-    order by find_in_set('f.`status`','1,2,3,4,5') asc, update_time desc
+    order by find_in_set(f.`status`,'1,2,3,4,5') asc, update_time desc
   </select>
   <!--审批主页数据查询-->
   <select id="approvalQuery" parameterType="java.util.Map" resultType="com.talentcard.common.bo.EvFrontendEventBO">
@@ -297,7 +297,7 @@
       <if test="sshow != null and sshow !='' and sshow == 5">and f.`status` = 3</if>
       <if test="sshow != null and sshow !='' and sshow == 6">and (f.`status` = 4 or f.`status` = 5)</if>
     </where>
-    order by find_in_set('f.`status`','1,2,3,4,5') asc, update_time desc
+    order by find_in_set(f.`status`,'1,2,3,4,5') asc, update_time desc
   </select>
   <select id="notApprovalNum"  resultType="java.lang.Long">
     SELECT
