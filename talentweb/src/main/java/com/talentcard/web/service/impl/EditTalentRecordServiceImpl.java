@@ -31,7 +31,6 @@ public class EditTalentRecordServiceImpl implements IEditTalentRecordService {
         editTalentRecordPO.setCreateTime(new Date());
         editTalentRecordPO.setTalentId(talentId);
         editTalentRecordPO.setUserId((Long) httpSession.getAttribute("userId"));
-        editTalentRecordPO.setComment("");
         editTalentRecordPO.setBeforeJsonRecord(beforeJson);
         editTalentRecordPO.setAfterJsonRecord(afterJson);
         editTalentRecordPO.setComment(opinion);

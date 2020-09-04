@@ -8,7 +8,7 @@ import com.talentcard.common.mapper.PolicyMapper;
 import com.talentcard.common.pojo.PoTypeExcludePO;
 import com.talentcard.common.pojo.PoTypePO;
 import com.talentcard.common.pojo.PolicyPO;
-import com.talentcard.common.utils.PageQueryUtil;
+import com.talentcard.common.utils.PageHelper;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
@@ -53,12 +53,12 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
      */
     @Override
     public ResultVO pageQuery(Map<String, Object> reqData) {
-        Page<PolicyTypeBO> page = PageQueryUtil.startPage(reqData);
+        Page<PolicyTypeBO> page = PageHelper.startPage(reqData);
         List<PolicyTypeBO> policyTypeBOs = poTypeMapper.pageQuery(reqData);
         //将互斥id取出来，然后进作为List查询条件查询出对应的互斥政策名称放入list中\
-        if (policyTypeBOs!= null &&policyTypeBOs.size()>0) {
+        if (policyTypeBOs != null && policyTypeBOs.size() > 0) {
             for (int i = 0; i < policyTypeBOs.size(); i++) {
-                if(StringUtils.isNotBlank(policyTypeBOs.get(i).getExcludeId())){
+                if (StringUtils.isNotBlank(policyTypeBOs.get(i).getExcludeId())) {
                     policyTypeBOs.get(i).setExcludeIds(Arrays.asList((Long[]) ConvertUtils.convert(policyTypeBOs.get(i).getExcludeId().split(","), Long.class)));
                     //根据互斥id查询互斥政策名称放入对应的List中
                     List<PolicyTypeBO> policyTypeNameList = poTypeMapper.queryPtNameByPtId(policyTypeBOs.get(i).getExcludeIds());
@@ -136,7 +136,7 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
 
     @Override
     public ResultVO queryExIdAndName(Map<String, Object> reqData) {
-        Page<PolicyTypeBO> page = PageQueryUtil.startPage(reqData);
+        Page<PolicyTypeBO> page = PageHelper.startPage(reqData);
         List<PolicyTypeBO> policyTypeBOs = poTypeMapper.queryExIdAndName();
         return new ResultVO(1000, new PageInfoVO<>(page.getTotal(), PolicyTypeVO.convert(policyTypeBOs)));
     }
@@ -227,7 +227,7 @@ public class PolicyTypeServiceImpl implements IPolicyTypeService {
         if (po.getStatus() == 1) {
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
                     "上架政策类型\"%s\"", poTypePO.getPTypeName());
-        } else if (po.getStatus()  == 2) {
+        } else if (po.getStatus() == 2) {
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
                     "下架政策类型\"%s\"", poTypePO.getPTypeName());
         }
