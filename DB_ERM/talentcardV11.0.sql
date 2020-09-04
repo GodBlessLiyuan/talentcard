@@ -28,6 +28,7 @@ DROP TABLE IF EXISTS t_policy_apply;
 DROP TABLE IF EXISTS t_policy;
 DROP TABLE IF EXISTS po_type;
 DROP TABLE IF EXISTS po_type_exclude;
+DROP TABLE IF EXISTS ta_social_security;
 DROP TABLE IF EXISTS t_activity_residue_num;
 DROP TABLE IF EXISTS t_role_authority;
 DROP TABLE IF EXISTS t_authority;
@@ -328,7 +329,8 @@ CREATE TABLE m_farmhouse_daily
 	daily_time date NOT NULL,
 	number bigint,
 	times bigint,
-	update_time datetime,
+	-- 更新时间
+	update_time datetime COMMENT '更新时间',
 	PRIMARY KEY (fh_d),
 	UNIQUE (fh_d),
 	UNIQUE (dailyFarmHouseID)
@@ -344,7 +346,8 @@ CREATE TABLE m_farmhouse_month
 	month date NOT NULL,
 	number bigint,
 	times bigint,
-	update_time datetime,
+	-- 更新时间
+	update_time datetime COMMENT '更新时间',
 	PRIMARY KEY (fh_m),
 	UNIQUE (fh_m),
 	UNIQUE (monthFarmhouseID)
@@ -362,7 +365,8 @@ CREATE TABLE m_trip_daily
 	free_times bigint unsigned,
 	discount_times bigint unsigned,
 	total_times bigint unsigned,
-	update_time datetime,
+	-- 更新时间
+	update_time datetime COMMENT '更新时间',
 	PRIMARY KEY (td_id),
 	UNIQUE (td_id),
 	UNIQUE (sid_daily)
@@ -380,7 +384,8 @@ CREATE TABLE m_trip_month
 	free_times bigint unsigned,
 	discount_times bigint unsigned,
 	total_times bigint unsigned,
-	update_time datetime,
+	-- 更新时间
+	update_time datetime COMMENT '更新时间',
 	PRIMARY KEY (tm_id),
 	UNIQUE (tm_id),
 	UNIQUE (sid_month)
@@ -535,6 +540,26 @@ CREATE TABLE po_type_exclude
 );
 
 
+CREATE TABLE ta_social_security
+(
+	-- 人才ID
+	talent_id bigint unsigned NOT NULL COMMENT '人才ID',
+	-- 历史工作单位
+	old_work_unit char(255) COMMENT '历史工作单位',
+	-- 参保单位
+	securiy_work_unit char(255) COMMENT '参保单位',
+	-- 参保时间
+	security_time decimal COMMENT '参保时间',
+	-- 核查时间
+	check_time datetime COMMENT '核查时间',
+	-- 创建时间
+	create_time datetime COMMENT '创建时间',
+	-- 更新时间
+	update_time datetime COMMENT '更新时间',
+	UNIQUE (talent_id)
+);
+
+
 CREATE TABLE t_activity_residue_num
 (
 	arn_id bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -586,7 +611,8 @@ CREATE TABLE t_banner
 	type tinyint unsigned,
 	extra char(255),
 	create_time datetime,
-	update_time datetime,
+	-- 更新时间
+	update_time datetime COMMENT '更新时间',
 	status tinyint unsigned,
 	-- 1 未删除  2 已删除
 	dr tinyint COMMENT '1 未删除  2 已删除',
@@ -641,7 +667,8 @@ CREATE TABLE t_card
 	create_person char(16),
 	update_person char(16),
 	create_time datetime,
-	update_time datetime,
+	-- 更新时间
+	update_time datetime COMMENT '更新时间',
 	-- 1正在使用
 	-- 2删除
 	dr tinyint unsigned COMMENT '1正在使用
@@ -760,7 +787,8 @@ CREATE TABLE t_cert_examine_record
 	honour_id bigint unsigned,
 	-- 1通过；2驳回；3待审批
 	result tinyint unsigned COMMENT '1通过；2驳回；3待审批',
-	create_time datetime,
+	-- 创建时间
+	create_time datetime COMMENT '创建时间',
 	PRIMARY KEY (cea_id),
 	UNIQUE (cea_id)
 );
@@ -772,7 +800,8 @@ CREATE TABLE t_config
 	config_value text,
 	-- 创建时间
 	create_time datetime COMMENT '创建时间',
-	update_time datetime,
+	-- 更新时间
+	update_time datetime COMMENT '更新时间',
 	PRIMARY KEY (config_key),
 	UNIQUE (config_key)
 );
@@ -1306,7 +1335,7 @@ CREATE TABLE t_role
 CREATE TABLE t_role_authority
 (
 	ra_id bigint unsigned NOT NULL AUTO_INCREMENT,
-	-- 1权限开放; 2权限关闭    
+	-- 1权限开放; 2权限关闭
 	status tinyint(4) DEFAULT 1 COMMENT '1权限开放; 2权限关闭    ',
 	authority_id bigint unsigned NOT NULL,
 	role_id bigint unsigned NOT NULL,
@@ -1589,7 +1618,8 @@ CREATE TABLE t_talent_trip
 	open_id char(128) NOT NULL,
 	scenic_id bigint unsigned NOT NULL,
 	staff_id bigint unsigned,
-	create_time datetime,
+	-- 创建时间
+	create_time datetime COMMENT '创建时间',
 	effective_time datetime NOT NULL,
 	update_time datetime,
 	-- 1待使用
@@ -2141,6 +2171,14 @@ ALTER TABLE ev_frontend_event
 
 
 ALTER TABLE po_compliance
+	ADD FOREIGN KEY (talent_id)
+	REFERENCES t_talent (talent_id)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE ta_social_security
 	ADD FOREIGN KEY (talent_id)
 	REFERENCES t_talent (talent_id)
 	ON UPDATE RESTRICT
