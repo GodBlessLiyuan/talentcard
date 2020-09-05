@@ -225,8 +225,15 @@ public class EventServiceImpl implements IEventService {
         } else {
             talentStatus = NO_SIGN_UP;
         }
+        //查询审批意见
+        String opinion = "";
+        EvEventLogPO evEventLogPO1 = evEventLogMapper.findLastCancelLog(evEventPO.getEventId());
+        if (evEventLogPO1 != null) {
+            opinion = evEventLogPO1.getOpinion();
+        }
         //构建VO
         EventDetailVO eventDetailVO = new EventDetailVO();
+        eventDetailVO.setOpinion(opinion);
         eventDetailVO.setEvEventPO(evEventPO);
         eventDetailVO.setTalentStatus(talentStatus);
         eventDetailVO.setEtId(etId);
