@@ -41,4 +41,13 @@ public interface IWxOfficalAccountService {
      * @return
      */
     int messToEventReject(String openId,String talentName, String eventName, String opinion);
+
+
+    /**
+     * 后台管理员取消活动
+     * @param openId
+     * @param opinion
+     * @return
+     */
+    int messToEventCancel(String openId,String opinion);
 }
