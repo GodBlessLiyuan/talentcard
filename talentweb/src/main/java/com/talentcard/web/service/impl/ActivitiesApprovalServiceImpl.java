@@ -119,6 +119,12 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
         //将新的时间段更新会时间占用表中
         evEventTimePO.setTimeInterval(newInterval);
         evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO);
+        //将管理员取消活动后将消息推送给发起的用户
+        //发送推送模板
+        String activityName = EvFrontendEventPO1.getName();
+        String openId = EvFrontendEventPO1.getOpenId();
+        String opinion = reqData.get("opinion").toString();
+        wxOfficalAccountService.messToEventCancel(openId, activityName,opinion);
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                 , "取消活动\"%s\"", evFrontendEventPO.getName());
         return new ResultVO(1000);
