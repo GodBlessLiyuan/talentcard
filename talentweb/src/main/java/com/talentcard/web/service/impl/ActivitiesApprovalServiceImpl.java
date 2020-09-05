@@ -193,14 +193,15 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             EvEventQueryPO evEventQueryPO = new EvEventQueryPO();
             evEventQueryPO.setEventId(evFrontendEventPO.getFeId());
             evEventQueryPO.setName(evFrontendEventPO.getName());
-            evEventQueryPO.setEventTime(evFrontendEventPO.getTime());
+            evEventQueryPO.setEventTime(evFrontendEventPO.getTimeInterval());
             evEventQueryPO.setEfId(evFrontendEventPO.getEfId());
             evEventQueryPO.setType((byte) 1);
             evEventQueryPO.setStatus((byte) 2);
             evEventQueryPO.setCreateTime(evFrontendEventPO.getCreateTime());
-            evEventQueryPO.setUpdateTime(new Date());
+            evEventQueryPO.setUpdateTime(evFrontendEventPO.getUpdateTime());
             evEventQueryPO.setStartTime(evFrontendEventPO.getStartTime());
             evEventQueryPO.setEndTime(evFrontendEventPO.getEndTime());
+            evEventQueryPO.setDate(DateUtil.date2Str(evFrontendEventPO.getEventDate(),YMD));
             evEventQueryMapper.insertSelective(evEventQueryPO);
             //更新前台活动表的审批状态
             evFrontendEventPO.setStatus((byte) 2);
