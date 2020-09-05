@@ -459,6 +459,9 @@
       <if test="name != null and name != ''">
         `name` = #{name,jdbcType=CHAR}
       </if>
+      <if test="num !=null and num != ''">
+        and num = #{num,jdbcType=CHAR}
+      </if>
     </where>
   </select>
 </mapper>

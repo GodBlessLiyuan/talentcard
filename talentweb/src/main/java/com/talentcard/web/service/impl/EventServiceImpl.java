@@ -70,7 +70,7 @@ public class EventServiceImpl implements IEventService {
          * 活动重名
          */
         Map<String, Object> map = new HashMap<>(1);
-        map.put("name", eventDTO.getName());
+        map.put("num", eventDTO.getNum());
         List<EvEventPO> list = evEventMapper.query(map);
         if (list != null && list.size() > 0) {
             return new ResultVO(2801);
@@ -125,7 +125,7 @@ public class EventServiceImpl implements IEventService {
          * 活动重名
          */
         Map<String, Object> map = new HashMap<>(1);
-        map.put("name", eventDTO.getName());
+        map.put("num", eventDTO.getNum());
         List<EvEventPO> list = evEventMapper.query(map);
         if (list != null && list.size() > 0) {
             return new ResultVO(2801);
