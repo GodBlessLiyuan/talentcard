@@ -147,23 +147,24 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
     /**
      * 后台管理员取消活动
      * @param openId
+     * @param eventName
      * @param opinion
      * @return
      */
     @Override
-    public int messToEventCancel(String openId,String opinion){
+    public int messToEventCancel(String openId, String eventName,String opinion){
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
         //openId
         messageDTO.setOpenid(openId);
-
-        messageDTO.setFirst("抱歉，您报名的“活动名称”已取消，给您造成不便,敬请谅解");
+        String first = String.format("抱歉，您报名的“%s”已取消，给您造成不便,敬请谅解",eventName);
+        messageDTO.setFirst(first);
         //信息类型
         messageDTO.setKeyword1("已取消");
         messageDTO.setKeyword2("点击查看活动详情");
         messageDTO.setKeyword3("驳回");
         messageDTO.setKeyword4("不满足活动要求。");
-        messageDTO.setRemark("取消原因："+openId);
+        messageDTO.setRemark("取消原因："+opinion);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
 
         try {
