@@ -79,6 +79,7 @@ public class EventDetailVO {
         eventDetailVO.setCurrentMale(evEventPO.getCurrentMale());
         eventDetailVO.setCurrentFemale(evEventPO.getCurrentFemale());
         eventDetailVO.setCurrentNum(evEventPO.getCurrentNum());
+        eventDetailVO.setStatus(evEventPO.getStatus());
         return eventDetailVO;
     }
 
