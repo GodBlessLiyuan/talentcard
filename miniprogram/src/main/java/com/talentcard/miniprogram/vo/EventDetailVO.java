@@ -14,4 +14,5 @@ public class EventDetailVO {
     private EvEventPO evEventPO;
     private Byte talentStatus;
     private Long etId;
+    private String opinion;
 }
