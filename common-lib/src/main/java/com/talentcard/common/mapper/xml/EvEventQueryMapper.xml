@@ -244,5 +244,6 @@
     <include refid="Base_Column_List" />
     from ev_event_query
     where event_id = #{eid,jdbcType=BIGINT}
+    and type=1
   </select>
 </mapper>
