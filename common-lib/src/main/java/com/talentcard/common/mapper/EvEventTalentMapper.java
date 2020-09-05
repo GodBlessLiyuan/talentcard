@@ -53,4 +53,10 @@ public interface EvEventTalentMapper extends BaseMapper<EvEventTalentPO, Long> {
      */
     EvEventTalentPO findEnrollEventById(@Param("openId") String openId,
                                         @Param("eventId") Long eventId);
+
+    /**
+     * 查询某活动所有参与人
+     * @return
+     */
+    List<EvEventTalentPO> selectAll(@Param("eventId") Long eventId);
 }
