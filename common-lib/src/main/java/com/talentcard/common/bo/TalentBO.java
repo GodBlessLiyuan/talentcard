@@ -96,6 +96,22 @@ public class TalentBO extends TalentPO {
      * 卡号
      */
     private String cardNum;
+    /**
+     * 社保单位
+     */
+    private String security_workUnit;
+    /**
+     * 参保时间
+     */
+    private Date security_time;
+    /**
+     * 核查时间
+     */
+    private Date check_time;
+    /**
+     * 人员类型
+     */
+    private Byte social_type;
 
     private Long certId;
     private Byte certificationStatus;

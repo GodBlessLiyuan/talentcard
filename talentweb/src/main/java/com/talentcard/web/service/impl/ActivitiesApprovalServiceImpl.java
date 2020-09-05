@@ -98,10 +98,10 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
         evFrontendEventApprovalMapper.insertSelective(evFrontendEventApprovalPO);
         //取消活动后释放场地占用时间段
         //根据场地和日期查询所有占用的时间段
-        Map<String, Object> reqDate = new HashMap<>(1);
-        reqData.put("efid", evFrontendEventPO.getEfId().toString());
-        reqData.put("date", DateUtil.date2Str(evFrontendEventPO.getEventDate(), YMD));
-        EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(reqData);
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("efid", evFrontendEventPO.getEfId().toString());
+        map.put("date", DateUtil.date2Str(evFrontendEventPO.getEventDate(), YMD));
+        EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(map);
         List<String> list = Arrays.asList(evEventTimePO.getTimeInterval().split(","));
         List<String> arrayList = new ArrayList<String>(list);//转换为ArrayLsit调用相关的remove方法
         //查出当前活动的时间段
@@ -218,10 +218,10 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             //释放占用时间段
             //驳回活动后释放场地占用时间段
             //根据场地和日期查询所有占用的时间段
-            Map<String, Object> reqDate = new HashMap<>(1);
-            reqData.put("efid", evFrontendEventPO.getEfId().toString());
-            reqData.put("date", DateUtil.date2Str(evFrontendEventPO.getEventDate(), YMD));
-            EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(reqData);
+            Map<String, Object>  map = new HashMap<>(1);
+            map.put("efid", evFrontendEventPO.getEfId().toString());
+            map.put("date", DateUtil.date2Str(evFrontendEventPO.getEventDate(), YMD));
+            EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(map);
             List<String> list = Arrays.asList(evEventTimePO.getTimeInterval().split(","));
             ArrayList<String> arrayList = new ArrayList(list);//转换为ArrayLsit调用相关的remove方法
             //查出当前活动的时间段
