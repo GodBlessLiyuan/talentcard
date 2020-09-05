@@ -180,7 +180,7 @@ public class EventServiceImpl implements IEventService {
         if (evEventPO == null) {
             return new ResultVO(2750, "无此后台活动！");
         }
-        evEventPO.setStatus((byte) 10);
+        evEventPO.setStatus((byte) 4);
         evEventMapper.updateByPrimaryKeySelective(evEventPO);
         //更新eventQuery表
         EvEventQueryPO evEventQueryPO = evEventQueryMapper.selectByPrimaryKey(evEventPO.getEqId());
@@ -216,11 +216,13 @@ public class EventServiceImpl implements IEventService {
         if (evEventPO == null) {
             return new ResultVO(2750, "无此后台活动！");
         }
-        if (upDown == 1) {
+
+        /*if (upDown == 1) {
             evEventPO.setStatus((byte) 1);
         } else {
             evEventPO.setStatus((byte) 10);
-        }
+        }*/
+
         //更新event表
         evEventPO.setUpDown(upDown);
         evEventMapper.updateByPrimaryKeySelective(evEventPO);

@@ -37,4 +37,22 @@ public class EditTalentRecordServiceImpl implements IEditTalentRecordService {
         Integer insertResult = editTalentRecordMapper.insertSelective(editTalentRecordPO);
         return insertResult;
     }
+
+
+    @Override
+    public Integer addRecord(Long userId, Long talentId, Byte operationType,
+                             Byte operationContent, String beforeJson,
+                             String afterJson, String opinion) {
+        EditTalentRecordPO editTalentRecordPO = new EditTalentRecordPO();
+        editTalentRecordPO.setOperationContent(operationContent);
+        editTalentRecordPO.setOperationType(operationType);
+        editTalentRecordPO.setCreateTime(new Date());
+        editTalentRecordPO.setTalentId(talentId);
+        editTalentRecordPO.setUserId(userId);
+        editTalentRecordPO.setBeforeJsonRecord(beforeJson);
+        editTalentRecordPO.setAfterJsonRecord(afterJson);
+        editTalentRecordPO.setComment(opinion);
+        Integer insertResult = editTalentRecordMapper.insertSelective(editTalentRecordPO);
+        return insertResult;
+    }
 }

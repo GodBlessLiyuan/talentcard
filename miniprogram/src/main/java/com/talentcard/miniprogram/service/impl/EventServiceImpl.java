@@ -2,7 +2,10 @@ package com.talentcard.miniprogram.service.impl;
 
 import com.talentcard.common.bo.MyEventBO;
 import com.talentcard.common.mapper.*;
-import com.talentcard.common.pojo.*;
+import com.talentcard.common.pojo.EvEventLogPO;
+import com.talentcard.common.pojo.EvEventPO;
+import com.talentcard.common.pojo.EvEventTalentPO;
+import com.talentcard.common.pojo.TalentPO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.common.vo.TalentTypeVO;
 import com.talentcard.miniprogram.dto.EventEnrollDTO;
@@ -283,23 +286,23 @@ public class EventServiceImpl implements IEventService {
      */
     public Byte getActualStatus(Long startTime, Long endTime, Byte status, Byte upDown) {
         Long currentTime = System.currentTimeMillis();
-        //报名已结束，前台、后台；
-        if (currentTime >= startTime && currentTime < endTime
-                && status == 2 && upDown == 1) {
-            return SIGN_UP_END;
-            //已结束，前台、后台；
-        } else if (status == 2 && endTime <= currentTime) {
-            return END;
+        if (upDown == 2) {
             //已下架，后台；
-        } else if (upDown == 2) {
             return DOWN;
-            //已取消，前台、后台；
         } else if (status == 4 || status == 5) {
+            //已取消，后台；
             return CANCEL;
+        } else if (currentTime >= startTime && currentTime < endTime) {
+            //报名已结束，后台；
+            return SIGN_UP_END;
+        } else if (endTime <= currentTime) {
+            //已结束，后台；
+            return END;
+        } else if (currentTime < startTime) {
             //报名中，后台；
-        } else if (status == 2 && currentTime < startTime) {
             return SIGN_UP_IN_PROGRESS;
         }
+
         return ERROR_STATUS;
     }
 }

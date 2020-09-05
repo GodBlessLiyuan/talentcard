@@ -1,18 +1,38 @@
 package com.talentcard.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.constant.EditTalentRecordConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.DateUtil;
+import com.talentcard.common.utils.ExcelExportUtil;
+import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.IBestPolicyToTalentService;
 import com.talentcard.web.service.IDataMigrationService;
+import com.talentcard.web.service.IEditTalentRecordService;
 import com.talentcard.web.service.ITalentInfoCertificationService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -45,6 +65,15 @@ public class DataMigrationController {
     private PoComplianceMapper poComplianceMapper;
     @Value("${vbooster.token}")
     private String s_token;
+    @Autowired
+    private SocialSecurityMapper socialSecurityMapper;
+
+    @Autowired
+    private FilePathConfig filePathConfig;
+
+    @Autowired
+    private IEditTalentRecordService iEditTalentRecordService;
+
 
     /**
      * 认证审批表 人才数据迁移
@@ -102,7 +131,6 @@ public class DataMigrationController {
         iBestPolicyToTalentService.asynBestPolicy(1L);
         return new ResultVO(1000, "success");
     }
-
 
 
     /**
@@ -447,4 +475,154 @@ public class DataMigrationController {
         return new ResultVO(1000);
     }
 
+
+    @RequestMapping("updateTalentInfo")
+    public void updateTalentInfo(HttpServletRequest req, @RequestParam(value = "token") String token,
+                                 @RequestParam(value = "checktime") String checktime,
+                                 HttpServletResponse res) {
+        if (!StringUtils.equals(s_token, token)) {
+            return;
+        }
+        MultipartFile file = ((MultipartHttpServletRequest) req).getFile("file");
+
+        String directory = "/tmp/";
+        String url = FileUtil.uploadFile
+                (file, filePathConfig.getLocalBasePath(), filePathConfig.getProjectDir(),
+                        directory, "xls");
+        String filePath = filePathConfig.getLocalBasePath() + "/" + url;
+
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(new File(filePath));
+            //解析excel
+            POIFSFileSystem pSystem = new POIFSFileSystem(fis);
+            //获取整个excel
+            HSSFWorkbook hb = new HSSFWorkbook(pSystem);
+            //获取第一个表单sheet
+            HSSFSheet sheet = hb.getSheetAt(0);
+            //获取第一行
+            int firstrow = sheet.getFirstRowNum();
+            //获取最后一行
+            int lastrow = sheet.getLastRowNum();
+
+            Map<Integer, List<String>> errors = new HashMap<>(3);
+            //数据库中，未查询到用户
+            errors.put(0, new ArrayList<>());
+            //更新数据
+            errors.put(1, new ArrayList<>());
+            //未更新数据
+            errors.put(2, new ArrayList<>());
+            String[][] excelData = new String[lastrow][10];
+
+            //循环行数依次获取列数
+            for (int i = 1; i < lastrow + 1; i++) {
+                //获取哪一行i
+                Row row = sheet.getRow(i);
+
+                if (row != null) {
+                    int firstcell = row.getFirstCellNum();
+                    //创建一个集合，用处将每一行的每一列数据都存入集合中
+                    for (int j = firstcell; j < 9; j++) {
+                        excelData[i - 1][j] = row.getCell(j).getStringCellValue();
+                    }
+                    //证件号
+                    Cell card = row.getCell(3);
+                    TalentPO po = talentMapper.selectByIdCard(card.getStringCellValue());
+
+                    if (po != null) {
+                        SocialSecurityPO socialSecurityPO = this.socialSecurityMapper.selectByPrimaryKey(po.getTalentId());
+                        if (socialSecurityPO == null) {
+                            socialSecurityPO = new SocialSecurityPO();
+                            socialSecurityPO.setTalentId(po.getTalentId());
+                            socialSecurityPO.setCheckTime(DateUtil.str2Date(checktime, DateUtil.YMD));
+                            socialSecurityPO.setOldWorkUnit(po.getWorkUnit());
+                            socialSecurityPO.setSecuriyWorkUnit(po.getWorkUnit());
+                            socialSecurityPO.setCreateTime(new Date());
+                            socialSecurityMapper.insert(socialSecurityPO);
+                        }
+                        boolean needUpdate = false;
+
+                        Cell securityWorkUnit = row.getCell(5);
+                        if (securityWorkUnit != null && !StringUtils.isEmpty(securityWorkUnit.getStringCellValue())) {
+                            if (!StringUtils.equals(socialSecurityPO.getSecuriyWorkUnit(), securityWorkUnit.getStringCellValue())) {
+                                JSONObject object = new JSONObject();
+                                object.put("workUnit", socialSecurityPO.getSecuriyWorkUnit());
+                                String before = object.toJSONString();
+                                socialSecurityPO.setSecuriyWorkUnit(securityWorkUnit.getStringCellValue());
+                                needUpdate = true;
+                                JSONObject afterObject = new JSONObject();
+                                afterObject.put("workUnit", socialSecurityPO.getSecuriyWorkUnit());
+                                String after = afterObject.toJSONString();
+                                /**
+                                 * 记录操作行为
+                                 */
+                                iEditTalentRecordService.addRecord((long) 1, po.getTalentId(), EditTalentRecordConstant.synchronization,
+                                        EditTalentRecordConstant.security_social, before, after, "与社保信息不一致");
+                            }
+
+                        } else {
+                            if (!StringUtils.isEmpty(socialSecurityPO.getSecuriyWorkUnit())) {
+                                socialSecurityPO.setSecuriyWorkUnit(null);
+                                needUpdate = true;
+                            }
+                        }
+
+                        Cell time = row.getCell(6);
+                        if (time != null && !StringUtils.isEmpty(time.getStringCellValue())) {
+                            socialSecurityPO.setSecurityTime(DateUtil.str2Date(time.getStringCellValue(), DateUtil.YHM_NO));
+                        } else {
+                            socialSecurityPO.setSecurityTime(null);
+                        }
+
+
+                        Cell type = row.getCell(8);
+                        if (type != null && !StringUtils.isEmpty(type.getStringCellValue())) {
+                            if (StringUtils.equals(type.getStringCellValue(), "在职人员")) {
+                                if (socialSecurityPO.getSocialType() != null && socialSecurityPO.getSocialType() != 1) {
+                                    needUpdate = true;
+                                }
+                                socialSecurityPO.setSocialType((byte) 1);
+                            } else if (StringUtils.equals(type.getStringCellValue(), "中断人员")) {
+                                if (socialSecurityPO.getSocialType() != null && socialSecurityPO.getSocialType() != 2) {
+                                    needUpdate = true;
+                                }
+                                socialSecurityPO.setSocialType((byte) 2);
+                            } else {
+                                if (socialSecurityPO.getSocialType() != null && socialSecurityPO.getSocialType() != 3) {
+                                    needUpdate = true;
+                                }
+                                socialSecurityPO.setSocialType((byte) 3);
+                            }
+                        } else {
+                            if (socialSecurityPO.getSocialType() != null && socialSecurityPO.getSocialType() != 3) {
+                                needUpdate = true;
+                            }
+                            socialSecurityPO.setSocialType((byte) 3);
+                        }
+
+                        socialSecurityPO.setUpdateTime(new Date());
+
+                        this.socialSecurityMapper.updateByPrimaryKey(socialSecurityPO);
+                        if (needUpdate) {
+                            excelData[firstrow][9] = "更新数据";
+                        }
+                    } else {
+                        excelData[firstrow][9] = "未查到对应用户";
+                    }
+                }
+            }
+            fis.close();
+
+            ExcelExportUtil.exportExcel("result_" + file.getOriginalFilename(), null,
+                    new String[]{"序号", "姓名", "证件类型", "证件号码", "现工作单位", "参保单位", "本次参保开始时间", "单位性质", "人员类别", "执行操作"},
+                    excelData, res);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return;
+    }
 }
