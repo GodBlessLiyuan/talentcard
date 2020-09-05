@@ -66,7 +66,7 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         //将前台dto中获取的数据转换成po进行插入,将数据插入到前台活动表中
         EvFrontendEventPO evFrontendEventPO = buildPOByDTO(new EvFrontendEventPO(), dto);
         evFrontendEventMapper.insert(evFrontendEventPO);
-        //再将数据插入到活动查询表中
+        /*//再将数据插入到活动查询表中
         EvEventQueryPO evEventQueryPO = new EvEventQueryPO();
         evEventQueryPO.setEqId(null);
         evEventQueryPO.setEventId(evFrontendEventPO.getFeId());
@@ -78,7 +78,7 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         evEventQueryPO.setStatus((byte) 1);
         evEventQueryPO.setUpDown((byte) 1);
         evEventQueryPO.setCreateTime(new Date());
-        evEventQueryMapper.insert(evEventQueryPO);
+        evEventQueryMapper.insert(evEventQueryPO);*/
         //进行审批表插入一条提交申请的插入记录
         EvFrontendEventApprovalPO evFrontendEventApprovalPO = new EvFrontendEventApprovalPO();
         evFrontendEventApprovalPO.setFeId(evFrontendEventPO.getFeId());
