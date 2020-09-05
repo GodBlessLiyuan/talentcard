@@ -80,15 +80,23 @@ public class EventServiceImpl implements IEventService {
         //报名过
         if (evEventTalentPO == null) {
             evEventTalentPO = new EvEventTalentPO();
+            //新增人才表
+            evEventTalentPO.setCreateTime(new Date());
+            evEventTalentPO.setDr((byte) 1);
+            evEventTalentPO.setEventId(eventEnrollDTO.getEventId());
+            evEventTalentPO.setOpenId(eventEnrollDTO.getOpenId());
+            evEventTalentPO.setTalentId(talentPO.getTalentId());
+            evEventTalentPO.setStatus((byte) 1);
+            evEventTalentMapper.insertSelective(evEventTalentPO);
+        }else {
+            evEventTalentPO.setDr((byte) 1);
+            evEventTalentPO.setEventId(eventEnrollDTO.getEventId());
+            evEventTalentPO.setOpenId(eventEnrollDTO.getOpenId());
+            evEventTalentPO.setTalentId(talentPO.getTalentId());
+            evEventTalentPO.setStatus((byte) 1);
+            evEventTalentMapper.updateByPrimaryKeySelective(evEventTalentPO);
         }
-        //新增人才表
-        evEventTalentPO.setCreateTime(new Date());
-        evEventTalentPO.setDr((byte) 1);
-        evEventTalentPO.setEventId(eventEnrollDTO.getEventId());
-        evEventTalentPO.setOpenId(eventEnrollDTO.getOpenId());
-        evEventTalentPO.setTalentId(talentPO.getTalentId());
-        evEventTalentPO.setStatus((byte) 1);
-        evEventTalentMapper.insertSelective(evEventTalentPO);
+
         //更新活动表
         if (evEventPO.getIfQuota() == 1) {
             if (talentPO.getSex() == 1) {
