@@ -6,6 +6,7 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.utils.StringSortUtil;
 import com.talentcard.common.utils.VerificationCodeUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
@@ -55,7 +56,7 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
     public ResultVO insert(HttpSession session, TalentActivitiesDTO dto) {
         //获取验证码和前台传的验证码进行比较
         String vcode1 = dto.getVcode();
-        if(StringUtils.isBlank(vcode1)){
+        if (StringUtils.isBlank(vcode1)) {
             return new ResultVO(1002);//用户输入验证码为空
         }
         String vcode2 = VerificationCodeUtil.getCode(dto.getPhone());
@@ -127,8 +128,14 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO update(HttpSession session, TalentActivitiesDTO dto) {
+        EvFrontendEventPO old = evFrontendEventMapper.selectByPrimaryKey(dto.getFeid());
+        if (old == null) {
+            return new ResultVO(2000);
+        }
+        String oldTimeInterval = old.getTimeInterval();
+
         //将前台dto中获取的数据转换成po进行更新
-        EvFrontendEventPO evFrontendEventPO = buildPOByDTO(new EvFrontendEventPO(), dto);
+        EvFrontendEventPO evFrontendEventPO = buildPOByDTO(old, dto);
         evFrontendEventMapper.updateByPrimaryKeySelective(evFrontendEventPO);
        /* //更新后再进行更新活动查询表
         //再将数据插入到活动查询表中
@@ -170,21 +177,9 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
             evEventTimeMapper.insert(evEventTimePO1);
         } else {
             EvEventTimePO evEventTimePO2 = new EvEventTimePO();
-            //原来有的数组
-            //原来有的数组
-            String array1[] = evEventTimePO.getTimeInterval().split(",");
-            //新添加的数组
-            String array2[] = dto.getInterval();
-            //合并数组
-            String[] result = Arrays.copyOf(array1, array1.length + array2.length);
-            System.arraycopy(array2, 0, result, array1.length, array2.length);
-            //去重
-            HashSet<String> set = new HashSet();
-            for (String i : result) {
-                set.add(i);
-            }
-            String[] newArray = set.toArray(new String[1]);
-            String newTimeinterval = String.join(",", newArray);
+
+            String newTimeinterval = StringSortUtil.sort(evEventTimePO.getTimeInterval(), oldTimeInterval, evFrontendEventPO.getTimeInterval());
+
             evEventTimePO2.setId(evEventTimePO.getId());
             evEventTimePO2.setTimeInterval(newTimeinterval);
             evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO2);
@@ -238,7 +233,7 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
             }
         }
         //将新的arraylist转为数组
-        String[] newIntervalArray =  arrayList.toArray(new String[0]);
+        String[] newIntervalArray = arrayList.toArray(new String[0]);
         String newInterval = StringUtils.join(newIntervalArray, ",");
         //将新的时间段更新会时间占用表中
         evEventTimePO.setTimeInterval(newInterval);

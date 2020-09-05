@@ -8,6 +8,7 @@ import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.utils.StringSortUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
@@ -93,7 +94,7 @@ public class EventServiceImpl implements IEventService {
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                 , "新增活动\"%s\"", eventLog);
         //更新time表
-        addEventUpdateEventTime(eventDTO);
+        addEventUpdateEventTime(eventDTO,null);
         return new ResultVO(1000);
     }
 
@@ -109,6 +110,7 @@ public class EventServiceImpl implements IEventService {
         if (evEventPO == null) {
             return new ResultVO(2750, "2750：无此后台活动！");
         }
+        String oldTimeInterval = evEventPO.getTimeInterval();
         //更新event表
         evEventPO = EventDTO.setEventPO(evEventPO, eventDTO);
         evEventMapper.updateByPrimaryKeySelective(evEventPO);
@@ -135,7 +137,7 @@ public class EventServiceImpl implements IEventService {
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                 , "编辑活动\"%s\"", eventLog);
         //更新time表
-        addEventUpdateEventTime(eventDTO);
+        addEventUpdateEventTime(eventDTO,oldTimeInterval);
         return new ResultVO(1000);
     }
 
@@ -200,12 +202,12 @@ public class EventServiceImpl implements IEventService {
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                 , "取消活动\"%s\"", eventLog);
 
-        Map<String,Object> map = new HashMap<>(1);
-        map.put("eventId",eventId);
-        map.put("status",1);
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("eventId", eventId);
+        map.put("status", 1);
         List<EvEventTalentPO> list = evEventTalentMapper.query(map);
-        for(EvEventTalentPO po:list){
-            iWxOfficalAccountService.messToEventCancel(po.getOpenId(),evEventPO.getName(),opinion);
+        for (EvEventTalentPO po : list) {
+            iWxOfficalAccountService.messToEventCancel(po.getOpenId(), evEventPO.getName(), opinion);
         }
 //
         //更新time表
@@ -286,6 +288,12 @@ public class EventServiceImpl implements IEventService {
     @Override
     public ResultVO findEventTime(Map<String, Object> map) {
         EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(map);
+        if (map.containsKey("eventId")) {
+            Object eventId = map.get("eventId");
+            if(eventId!=null){
+
+            }
+        }
         return new ResultVO(1000, evEventTimePO);
     }
 
@@ -384,7 +392,7 @@ public class EventServiceImpl implements IEventService {
      *
      * @param eventDTO
      */
-    public void addEventUpdateEventTime(EventDTO eventDTO) {
+    public void addEventUpdateEventTime(EventDTO eventDTO,String oldTimeInterval) {
         //根据活动场地和活动的日期进行活动场地占用情况的插入或更新
         //判断是插入还是更新
         //如果根据活动场地和日期没有查到数据，则进行插入操作,否则进行时间段合并进行更新
@@ -404,21 +412,11 @@ public class EventServiceImpl implements IEventService {
             evEventTimePO1.setTimeInterval(eventDTO.getTime());
             evEventTimeMapper.insert(evEventTimePO1);
         } else {
+            /**
+             * 重新计算占用场地时间
+             */
+            String newTimeinterval = StringSortUtil.sort(evEventTimePO.getTimeInterval(),oldTimeInterval,eventDTO.getTime());
             EvEventTimePO evEventTimePO2 = new EvEventTimePO();
-            //原来有的数组
-            String array1[] = evEventTimePO.getTimeInterval().split(",");
-            //新添加的数组
-            String array2[] = eventDTO.getTime().split(",");
-            //合并数组
-            String[] result = Arrays.copyOf(array1, array1.length + array2.length);
-            System.arraycopy(array2, 0, result, array1.length, array2.length);
-            //去重
-            HashSet<String> set = new HashSet();
-            for (String i : result) {
-                set.add(i);
-            }
-            String[] newArray = set.toArray(new String[1]);
-            String newTimeinterval = String.join(",", newArray);
             evEventTimePO2.setId(evEventTimePO.getId());
             evEventTimePO2.setTimeInterval(newTimeinterval);
             evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO2);
