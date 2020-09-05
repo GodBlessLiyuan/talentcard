@@ -289,7 +289,7 @@ public class EventServiceImpl implements IEventService {
         if (upDown == 2) {
             //已下架，后台；
             return DOWN;
-        } else if (status == 2) {
+        } else if (status == 4 || status == 5) {
             //已取消，后台；
             return CANCEL;
         } else if (currentTime >= startTime && currentTime < endTime) {
