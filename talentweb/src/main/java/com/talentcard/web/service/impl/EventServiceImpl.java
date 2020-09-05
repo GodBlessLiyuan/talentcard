@@ -1,7 +1,6 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
-import com.netflix.ribbon.proxy.annotation.Http;
 import com.talentcard.common.bo.EvEventLogBO;
 import com.talentcard.common.bo.QueryTalentInfoBO;
 import com.talentcard.common.mapper.*;
@@ -15,7 +14,7 @@ import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.EventDTO;
 import com.talentcard.web.service.IEventService;
 import com.talentcard.web.service.ILogService;
-import com.talentcard.web.utils.PolicyNameUtil;
+import com.talentcard.web.service.IWxOfficalAccountService;
 import com.talentcard.web.vo.EventDetailVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.util.*;
-
-import static com.talentcard.common.utils.DateUtil.YMD;
 
 /**
  * @author ChenXU
@@ -53,6 +50,8 @@ public class EventServiceImpl implements IEventService {
     EvEventTimeMapper evEventTimeMapper;
     @Autowired
     private ILogService logService;
+    @Autowired
+    private IWxOfficalAccountService iWxOfficalAccountService;
 
     private static final String[] EXPORT_TITLES = {"序号", "姓名", "性别", "工作单位", "手机号码", "人才卡",
             "状态", "报名时间"};
@@ -200,6 +199,15 @@ public class EventServiceImpl implements IEventService {
         String eventLog = evEventPO.getName() + "(" + evEventPO.getNum() + ")";
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                 , "取消活动\"%s\"", eventLog);
+
+        Map<String,Object> map = new HashMap<>(1);
+        map.put("eventId",eventId);
+        map.put("status",1);
+        List<EvEventTalentPO> list = evEventTalentMapper.query(map);
+        for(EvEventTalentPO po:list){
+            iWxOfficalAccountService.messToEventCancel(po.getOpenId(),evEventPO.getName(),opinion);
+        }
+//
         //更新time表
         cancelEventUpdateEventTime(evEventPO);
         return new ResultVO(1000);

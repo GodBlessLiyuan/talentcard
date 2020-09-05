@@ -167,4 +167,18 @@
     et.event_id = #{eventId,jdbcType=BIGINT}
     and et.open_id = #{openId,jdbcType=CHAR}
   </select>
+
+  <select id="query" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ev_event_talent et
+    <where>
+      <if test="eventId != null and eventId != ''">
+        et.event_id = #{eventId,jdbcType=BIGINT}
+      </if>
+      <if test="status != null and status != ''">
+        and et.`status` = #{status,jdbcType=BIGINT}
+      </if>
+    </where>
+  </select>
 </mapper>
