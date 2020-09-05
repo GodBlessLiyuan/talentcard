@@ -450,4 +450,15 @@
     and e.dr = 1
     order by e.status asc, e.start_time desc
   </select>
+
+  <select id="query" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+     from ev_event
+    <where>
+      <if test="name != null and name != ''">
+        `name` = #{name,jdbcType=CHAR}
+      </if>
+    </where>
+  </select>
 </mapper>

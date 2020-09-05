@@ -65,6 +65,16 @@ public class EventServiceImpl implements IEventService {
             // 用户过期
             return ResultVO.notLogin();
         }
+
+        /**
+         * 活动重名
+         */
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("name", eventDTO.getName());
+        List<EvEventPO> list = evEventMapper.query(map);
+        if (list != null && list.size() > 0) {
+            return new ResultVO(2801);
+        }
         //event表
         EvEventPO evEventPO = new EvEventPO();
         evEventPO = EventDTO.setEventPO(evEventPO, eventDTO);
@@ -94,7 +104,7 @@ public class EventServiceImpl implements IEventService {
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                 , "新增活动\"%s\"", eventLog);
         //更新time表
-        addEventUpdateEventTime(eventDTO,null);
+        addEventUpdateEventTime(eventDTO, null);
         return new ResultVO(1000);
     }
 
@@ -110,6 +120,17 @@ public class EventServiceImpl implements IEventService {
         if (evEventPO == null) {
             return new ResultVO(2750, "2750：无此后台活动！");
         }
+
+        /**
+         * 活动重名
+         */
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("name", eventDTO.getName());
+        List<EvEventPO> list = evEventMapper.query(map);
+        if (list != null && list.size() > 0) {
+            return new ResultVO(2801);
+        }
+
         String oldTimeInterval = evEventPO.getTimeInterval();
         //更新event表
         evEventPO = EventDTO.setEventPO(evEventPO, eventDTO);
@@ -137,7 +158,7 @@ public class EventServiceImpl implements IEventService {
         logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                 , "编辑活动\"%s\"", eventLog);
         //更新time表
-        addEventUpdateEventTime(eventDTO,oldTimeInterval);
+        addEventUpdateEventTime(eventDTO, oldTimeInterval);
         return new ResultVO(1000);
     }
 
@@ -290,7 +311,7 @@ public class EventServiceImpl implements IEventService {
         EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(map);
         if (map.containsKey("eventId")) {
             Object eventId = map.get("eventId");
-            if(eventId!=null){
+            if (eventId != null) {
 
             }
         }
@@ -392,7 +413,7 @@ public class EventServiceImpl implements IEventService {
      *
      * @param eventDTO
      */
-    public void addEventUpdateEventTime(EventDTO eventDTO,String oldTimeInterval) {
+    public void addEventUpdateEventTime(EventDTO eventDTO, String oldTimeInterval) {
         //根据活动场地和活动的日期进行活动场地占用情况的插入或更新
         //判断是插入还是更新
         //如果根据活动场地和日期没有查到数据，则进行插入操作,否则进行时间段合并进行更新
@@ -415,7 +436,7 @@ public class EventServiceImpl implements IEventService {
             /**
              * 重新计算占用场地时间
              */
-            String newTimeinterval = StringSortUtil.sort(evEventTimePO.getTimeInterval(),oldTimeInterval,eventDTO.getTime());
+            String newTimeinterval = StringSortUtil.sort(evEventTimePO.getTimeInterval(), oldTimeInterval, eventDTO.getTime());
             EvEventTimePO evEventTimePO2 = new EvEventTimePO();
             evEventTimePO2.setId(evEventTimePO.getId());
             evEventTimePO2.setTimeInterval(newTimeinterval);
