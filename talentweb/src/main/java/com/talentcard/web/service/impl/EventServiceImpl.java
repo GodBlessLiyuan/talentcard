@@ -127,7 +127,7 @@ public class EventServiceImpl implements IEventService {
         Map<String, Object> map = new HashMap<>(1);
         map.put("num", eventDTO.getNum());
         List<EvEventPO> list = evEventMapper.query(map);
-        if (list != null && list.size() > 0) {
+        if (list != null && list.size() > 1) {
             return new ResultVO(2801);
         }
 
