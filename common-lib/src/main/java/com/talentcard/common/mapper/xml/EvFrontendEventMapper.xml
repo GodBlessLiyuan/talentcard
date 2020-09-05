@@ -291,7 +291,7 @@
     <where>
       <if test="name != null and name !=''">and f.`name` like '%' #{name,jdbcType=CHAR} '%'</if>
       <if test="sshow != null and sshow !='' and sshow == 1">and f.`status` = 1</if>
-      <if test="sshow != null and sshow !='' and sshow == 2">and f.`status` = 2 and <![CDATA[ f.start_time < #{currentTime} ]]></if>
+      <if test="sshow != null and sshow !='' and sshow == 2">and f.`status` = 2 and <![CDATA[ f.start_time > #{currentTime} ]]></if>
       <if test="sshow != null and sshow !='' and sshow == 3">and f.`status` = 2 and <![CDATA[ f.start_time < #{currentTime} and f.end_time >= #{currentTime} ]]></if>
       <if test="sshow != null and sshow !='' and sshow == 4">and f.`status` = 2 and <![CDATA[ f.end_time <= #{currentTime} ]]></if>
       <if test="sshow != null and sshow !='' and sshow == 5">and f.`status` = 3</if>
