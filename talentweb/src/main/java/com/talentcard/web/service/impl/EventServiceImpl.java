@@ -248,12 +248,6 @@ public class EventServiceImpl implements IEventService {
             return new ResultVO(2750, "无此后台活动！");
         }
 
-        /*if (upDown == 1) {
-            evEventPO.setStatus((byte) 1);
-        } else {
-            evEventPO.setStatus((byte) 10);
-        }*/
-
         //更新event表
         evEventPO.setUpDown(upDown);
         evEventMapper.updateByPrimaryKeySelective(evEventPO);
@@ -264,6 +258,7 @@ public class EventServiceImpl implements IEventService {
         }
         evEventQueryPO.setUpDown(upDown);
         evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
+
         //新建log表
         EvEventLogPO evEventLogPO = new EvEventLogPO();
         evEventLogPO.setEventId(eventId);
@@ -460,20 +455,8 @@ public class EventServiceImpl implements IEventService {
         if (evEventTimePO == null) {
             return;
         }
-        List<String> list = Arrays.asList(evEventTimePO.getTimeInterval().split(","));
-        //转换为ArrayList调用相关的remove方法
-        List<String> arrayList = new ArrayList<>(list);
-        //查出当前活动的时间段
-        String[] thisInterval = evEventPO.getTime().split(",");
-        //从以前的时间段将现在的时间段删掉
-        for (int i = 0; i < thisInterval.length; i++) {
-            if (arrayList.contains(thisInterval[i])) {
-                arrayList.remove(thisInterval[i]);
-            }
-        }
-        //将新的arrayList转为数组
-        String[] newIntervalArray = arrayList.toArray(new String[0]);
-        String newInterval = StringUtils.join(newIntervalArray, ",");
+
+        String newInterval = StringSortUtil.sort(evEventTimePO.getTimeInterval(),evEventPO.getTimeInterval(),"");
         //将新的时间段更新会时间占用表中
         evEventTimePO.setTimeInterval(newInterval);
         evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO);

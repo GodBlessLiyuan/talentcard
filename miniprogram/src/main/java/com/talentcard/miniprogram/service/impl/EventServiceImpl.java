@@ -1,6 +1,7 @@
 package com.talentcard.miniprogram.service.impl;
 
 import com.talentcard.common.bo.MyEventBO;
+import com.talentcard.common.constant.EventConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.EvEventLogPO;
 import com.talentcard.common.pojo.EvEventPO;
@@ -40,22 +41,12 @@ public class EventServiceImpl implements IEventService {
     EvEventLogMapper evEventLogMapper;
     @Autowired
     private ITalentService iTalentService;
-    //报名已结束
-    public static final Byte SIGN_UP_END = 2;
-    //已结束
-    public static final Byte END = 3;
-    //已下架
-    public static final Byte DOWN = 4;
-    //已取消
-    public static final Byte CANCEL = 5;
-    //报名中
-    public static final Byte SIGN_UP_IN_PROGRESS = 6;
+
     //已报名
     public static final Byte SIGN_UP = 7;
     //未报名
     public static final Byte NO_SIGN_UP = 8;
-    //异常状态
-    public static final Byte ERROR_STATUS = 10;
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -88,7 +79,7 @@ public class EventServiceImpl implements IEventService {
             evEventTalentPO.setTalentId(talentPO.getTalentId());
             evEventTalentPO.setStatus((byte) 1);
             evEventTalentMapper.insertSelective(evEventTalentPO);
-        }else {
+        } else {
             evEventTalentPO.setDr((byte) 1);
             evEventTalentPO.setEventId(eventEnrollDTO.getEventId());
             evEventTalentPO.setOpenId(eventEnrollDTO.getOpenId());
@@ -121,7 +112,7 @@ public class EventServiceImpl implements IEventService {
         if (evEventPO == null) {
             return new ResultVO(2750);
         }
-        if (evEventPO.getStatus() == 4) {
+        if (evEventPO.getStatus() == EventConstant.ADMINCANCEL) {
             String opinion = "";
             EvEventLogPO evEventLogPO = evEventLogMapper.findLastCancelLog(evEventPO.getEventId());
             if (evEventLogPO != null) {
@@ -182,12 +173,13 @@ public class EventServiceImpl implements IEventService {
         Long endTime;
         Byte status;
         Byte upDown;
+        long currentTime = System.currentTimeMillis();
         for (MyEventBO myEventBO : myEventBOList) {
             startTime = myEventBO.getStartTime().getTime();
             endTime = myEventBO.getEndTime().getTime();
             status = myEventBO.getStatus();
             upDown = myEventBO.getUpDown();
-            Byte actualStatus = getActualStatus(startTime, endTime, status, upDown);
+            Byte actualStatus = (byte) EventConstant.getStatus(currentTime, startTime, endTime, status, upDown);
             myEventBO.setActualStatus(actualStatus);
         }
         return new ResultVO(1000, myEventBOList);
@@ -200,12 +192,13 @@ public class EventServiceImpl implements IEventService {
         Long endTime;
         Byte status;
         Byte upDown;
+        long currentTime = System.currentTimeMillis();
         for (MyEventBO myEventBO : myEventBOList) {
             startTime = myEventBO.getStartTime().getTime();
             endTime = myEventBO.getEndTime().getTime();
             status = myEventBO.getStatus();
             upDown = myEventBO.getUpDown();
-            Byte actualStatus = getActualStatus(startTime, endTime, status, upDown);
+            Byte actualStatus = (byte) EventConstant.getStatus(currentTime, startTime, endTime, status, upDown);
             myEventBO.setActualStatus(actualStatus);
         }
         return new ResultVO(1000, myEventBOList);
@@ -219,7 +212,8 @@ public class EventServiceImpl implements IEventService {
         Long endTime = evEventPO.getEndTime().getTime();
         Byte status = evEventPO.getStatus();
         Byte upDown = evEventPO.getUpDown();
-        Byte actualStatus = getActualStatus(startTime, endTime, status, upDown);
+
+        Byte actualStatus = (byte) EventConstant.getStatus(System.currentTimeMillis(), startTime, endTime, status, upDown);
         evEventPO.setStatus(actualStatus);
         //判断人才参加状态
         EvEventTalentPO evEventTalentPO = evEventTalentMapper.findEnrollEventById(openId, eventId);
@@ -290,34 +284,4 @@ public class EventServiceImpl implements IEventService {
         return 0;
     }
 
-    /**
-     * 根据条件判断实际状态值
-     *
-     * @param startTime
-     * @param endTime
-     * @param status
-     * @param upDown
-     * @return
-     */
-    public Byte getActualStatus(Long startTime, Long endTime, Byte status, Byte upDown) {
-        Long currentTime = System.currentTimeMillis();
-        if (upDown == 2) {
-            //已下架，后台；
-            return DOWN;
-        } else if (status == 4 || status == 5) {
-            //已取消，后台；
-            return CANCEL;
-        } else if (currentTime >= startTime && currentTime < endTime) {
-            //报名已结束，后台；
-            return SIGN_UP_END;
-        } else if (endTime <= currentTime) {
-            //已结束，后台；
-            return END;
-        } else if (currentTime < startTime) {
-            //报名中，后台；
-            return SIGN_UP_IN_PROGRESS;
-        }
-
-        return ERROR_STATUS;
-    }
 }

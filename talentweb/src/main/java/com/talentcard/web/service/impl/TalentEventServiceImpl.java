@@ -2,6 +2,7 @@ package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.EvEventQueryBO;
+import com.talentcard.common.constant.EventConstant;
 import com.talentcard.common.mapper.EvEventQueryMapper;
 import com.talentcard.common.mapper.EvEventTalentMapper;
 import com.talentcard.common.utils.DateUtil;
@@ -10,7 +11,6 @@ import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.service.ITalentEventService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.javassist.Loader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,20 +31,6 @@ public class TalentEventServiceImpl implements ITalentEventService {
     EvEventQueryMapper evEventQueryMapper;
     @Autowired
     EvEventTalentMapper evEventTalentMapper;
-    //已通过；未开始
-    public static final Byte APPROVE_NOT_START = 1;
-    //报名已结束
-    public static final Byte SIGN_UP_END = 2;
-    //已结束
-    public static final Byte END = 3;
-    //已下架
-    public static final Byte DOWN = 4;
-    //已取消
-    public static final Byte CANCEL = 5;
-    //报名中
-    public static final Byte SIGN_UP_IN_PROGRESS = 6;
-    //异常状态
-    public static final Byte ERROR_STATUS = 10;
 
     @Override
     public ResultVO query(Integer pageNum, Integer pageSize, String name, Byte type, Byte status) {
@@ -80,51 +66,21 @@ public class TalentEventServiceImpl implements ITalentEventService {
             type = evEventQueryBO.getType();
             status = evEventQueryBO.getStatus();
             upDown = evEventQueryBO.getUpDown();
-            //前台活动；已通过；未开始
-            if (startTime > currentTime && status == 2 && type == 1) {
-                evEventQueryBO.setActualStatus(APPROVE_NOT_START);
-                //报名已结束，前台、后台；
-            } else if (currentTime >= startTime && currentTime < endTime
-                    && status == 2 && (type == 1 | (type == 2 & upDown == 1))) {
-                evEventQueryBO.setActualStatus(SIGN_UP_END);
-                //已结束，前台、后台；
-            } else if (status == 2 && endTime <= currentTime) {
-                evEventQueryBO.setActualStatus(END);
-                //已下架，后台；
-            } else if (type == 2 && upDown == 2) {
-                evEventQueryBO.setActualStatus(DOWN);
-                //已取消，前台、后台；
-            } else if (status == 4 || status == 5) {
-                evEventQueryBO.setActualStatus(CANCEL);
-                //报名中，后台；
-            } else if (status == 2 && type == 2 && currentTime < startTime) {
-                evEventQueryBO.setActualStatus(SIGN_UP_IN_PROGRESS);
-            } else {
-                evEventQueryBO.setActualStatus(ERROR_STATUS);
-            }
+
+            evEventQueryBO.setStatus((byte)EventConstant.getStatus(currentTime, startTime, endTime, status, upDown));
+            evEventQueryBO.setActualStatus(evEventQueryBO.getStatus());
+
             //改变日期
             if (!StringUtils.isEmpty(evEventQueryBO.getDate())) {
-                evEventQueryBO.setDate(dateConvert(evEventQueryBO.getDate()));
+                /**
+                 * yyyy-MM-dd转换成yyyy/MM/dd
+                 */
+                Date date = DateUtil.str2Date(evEventQueryBO.getDate(), DateUtil.YMD);
+                String s_date = DateUtil.date2Str(date, DateUtil.YMD_);
+                evEventQueryBO.setDate(s_date);
             }
         }
         return evEventQueryBOList;
     }
 
-    /**
-     * yyyy-MM-dd转换成yyyy/MM/dd
-     *
-     * @param date
-     * @return
-     * @throws ParseException
-     */
-    public String dateConvert(String date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date newDate = simpleDateFormat.parse(date);
-            date = new SimpleDateFormat("yyyy/MM/dd").format(newDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
 }
