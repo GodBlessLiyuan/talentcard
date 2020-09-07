@@ -51,6 +51,7 @@ public class EventConstant {
 
     /**
      * 根据状态返回前端需要的状态值
+     *
      * @param startTime
      * @param endTime
      * @param status
@@ -58,7 +59,7 @@ public class EventConstant {
      * @return
      */
     public static int getStatus(Long currentTime, Long startTime, Long endTime, Byte status, Byte upDown) {
-        if (upDown == 2) {
+        if (upDown != null && upDown == 2) {
             //下架
             return EventConstant.STOP;
         } else if (status == EventConstant.ADMINCANCEL) {
