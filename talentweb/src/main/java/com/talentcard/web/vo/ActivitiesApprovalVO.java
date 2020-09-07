@@ -185,7 +185,7 @@ public class ActivitiesApprovalVO implements Serializable {
         //将当前时间转换为long类型
         Long startTime=vo.getStime().getTime();
         Long endTime=vo.getEtime().getTime();
-        vo.setSshow((byte) EventConstant.getStatus(currentTime,startTime,endTime,vo.getStatus(), (byte) 1));
+        vo.setSshow((byte) EventConstant.getStatus(currentTime,startTime,endTime,vo.getStatus(), (byte) 100));
         return vo;
     }
 
@@ -241,7 +241,7 @@ public class ActivitiesApprovalVO implements Serializable {
         //将当前时间转换为long类型
         Long startTime=vo.getStime().getTime();
         Long endTime=vo.getEtime().getTime();
-        vo.setSshow((byte) EventConstant.getStatus(currentTime,startTime,endTime,vo.getStatus(), (byte) 1));
+        vo.setSshow((byte) EventConstant.getStatus(currentTime,startTime,endTime,vo.getStatus(), (byte) 100));
         return vo;
     }
 
