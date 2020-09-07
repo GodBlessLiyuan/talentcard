@@ -17,7 +17,6 @@ import com.talentcard.web.service.IEventService;
 import com.talentcard.web.service.ILogService;
 import com.talentcard.web.service.IWxOfficalAccountService;
 import com.talentcard.web.vo.EventDetailVO;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
