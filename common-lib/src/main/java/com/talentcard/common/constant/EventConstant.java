@@ -83,8 +83,16 @@ public class EventConstant {
                 if (upDown != null && upDown == 100) {
                     return EventConstant.AGREE;
                 } else {
-                    //报名中
-                    return EventConstant.ING;
+                    /**
+                     * 小程序没有upDown
+                     */
+                    if(upDown == null){
+                        return EventConstant.AGREE;
+                    }else {
+                        //报名中
+                        return EventConstant.ING;
+                    }
+
                 }
             } else if (currentTime >= startTime && currentTime < endTime) {
                 //报名已结束
