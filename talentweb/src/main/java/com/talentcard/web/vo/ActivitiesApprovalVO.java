@@ -1,6 +1,7 @@
 package com.talentcard.web.vo;
 
 import com.talentcard.common.bo.EvFrontendEventBO;
+import com.talentcard.common.constant.EventConstant;
 import com.talentcard.common.pojo.EvFrontendEventPO;
 import lombok.Data;
 
@@ -158,7 +159,7 @@ public class ActivitiesApprovalVO implements Serializable {
         vo.setContact(bo.getContactPerson()+":"+bo.getPhone());
         //进行实践判断，对于前台展示不同的状态
         //当前时间
-        Date nowDate=new Date();
+       /* Date nowDate=new Date();
         if (bo.getStatus()==1){
             vo.setSshow((byte)1);//审批中
         }
@@ -176,7 +177,15 @@ public class ActivitiesApprovalVO implements Serializable {
         }
         if (bo.getStatus()==4||bo.getStatus()==5){
             vo.setSshow((byte)6);//已取消
-        }
+        }*/
+        //进行时间判断，对于前台展示不同的状态
+        //当前时间
+        Date nowDate=new Date();
+        Long currentTime=nowDate.getTime();
+        //将当前时间转换为long类型
+        Long startTime=vo.getStime().getTime();
+        Long endTime=vo.getEtime().getTime();
+        vo.setSshow((byte) EventConstant.getStatus(currentTime,startTime,endTime,vo.getStatus(), (byte) 1));
         return vo;
     }
 
@@ -206,7 +215,7 @@ public class ActivitiesApprovalVO implements Serializable {
         vo.setContact(bo.getContactPerson()+":"+bo.getPhone());
         //进行实践判断，对于前台展示不同的状态
         //当前时间
-        Date nowDate=new Date();
+       /* Date nowDate=new Date();
         if (bo.getStatus()==1){
             vo.setSshow((byte)1);//审批中
         }
@@ -224,7 +233,15 @@ public class ActivitiesApprovalVO implements Serializable {
         }
         if (bo.getStatus()==4||bo.getStatus()==5){
             vo.setSshow((byte)6);//已取消
-        }
+        }*/
+        //进行时间判断，对于前台展示不同的状态
+        //当前时间
+        Date nowDate=new Date();
+        Long currentTime=nowDate.getTime();
+        //将当前时间转换为long类型
+        Long startTime=vo.getStime().getTime();
+        Long endTime=vo.getEtime().getTime();
+        vo.setSshow((byte) EventConstant.getStatus(currentTime,startTime,endTime,vo.getStatus(), (byte) 1));
         return vo;
     }
 
