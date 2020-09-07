@@ -292,10 +292,11 @@
       <if test="name != null and name !=''">and f.`name` like '%' #{name,jdbcType=CHAR} '%'</if>
       <if test="sshow != null and sshow !='' and sshow == 1">and f.`status` = 1</if>
       <if test="sshow != null and sshow !='' and sshow == 2">and f.`status` = 2 and <![CDATA[ f.start_time > #{currentTime} ]]></if>
-      <if test="sshow != null and sshow !='' and sshow == 3">and f.`status` = 2 and <![CDATA[ f.start_time < #{currentTime} and f.end_time >= #{currentTime} ]]></if>
-      <if test="sshow != null and sshow !='' and sshow == 4">and f.`status` = 2 and <![CDATA[ f.end_time <= #{currentTime} ]]></if>
-      <if test="sshow != null and sshow !='' and sshow == 5">and f.`status` = 3</if>
-      <if test="sshow != null and sshow !='' and sshow == 6">and (f.`status` = 4 or f.`status` = 5)</if>
+      <if test="sshow != null and sshow !='' and sshow == 10">and f.`status` = 2 and <![CDATA[ f.start_time < #{currentTime} and f.end_time >= #{currentTime} ]]></if>
+      <if test="sshow != null and sshow !='' and sshow == 7">and f.`status` = 2 and <![CDATA[ f.end_time <= #{currentTime} ]]></if>
+      <if test="sshow != null and sshow !='' and sshow == 3">and f.`status` = 3</if>
+      <if test="sshow != null and sshow !='' and sshow == 4">and f.`status` = 4</if>
+      <if test="sshow != null and sshow !='' and sshow == 5">and f.`status` = 5</if>
     </where>
     order by find_in_set(f.`status`,'1,2,3,4,5') asc, update_time desc
   </select>
