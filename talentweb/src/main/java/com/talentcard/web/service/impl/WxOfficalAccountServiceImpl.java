@@ -68,7 +68,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         //信息类型
         messageDTO.setKeyword1("未申请");
         messageDTO.setKeyword2("申请后可享受政策补贴，请及时申请哦~");
-        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl()+"/activity.html/#/activity-talent/detail?feid=30&status=5");
 
         try {
             int result = sendTemplateMessage(messageDTO, notApplyPolicy);
@@ -86,7 +86,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
      * @return
      */
     @Override
-    public int messToEventAgree(String openId, String eventName){
+    public int messToEventAgree(String openId, String eventName, long feId,int status){
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
         //openId
@@ -98,7 +98,10 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword1("通过");
         messageDTO.setKeyword2("请您按时举办活动，如未能如期举行，请提前取消。");
         messageDTO.setRemark("审批意见：同意活动申请。");
-        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+
+        String url = String.format("%s/activity.html/#/activity-talent/detail?feid=%s&status=%s",WebParameterUtil.getIndexUrl(),
+                feId,status);
+        messageDTO.setUrl(url);
 
         try {
             int result = sendTemplateMessage(messageDTO, eventPass);
@@ -119,7 +122,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
      * @return
      */
     @Override
-    public int messToEventReject(String openId,String talentName, String eventName, String opinion){
+    public int messToEventReject(String openId,String talentName, String eventName, String opinion, long feId,int status){
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
         //openId
@@ -133,7 +136,10 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword3("驳回");
         messageDTO.setKeyword4("不满足活动要求。");
         messageDTO.setRemark(opinion);
-        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+
+        String url = String.format("%s/activity.html/#/activity-talent/detail?feid=%s&status=%s",WebParameterUtil.getIndexUrl(),
+                feId,status);
+        messageDTO.setUrl(url);
 
         try {
             int result = sendTemplateMessage(messageDTO, eventPass);

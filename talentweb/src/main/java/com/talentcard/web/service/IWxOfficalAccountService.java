@@ -29,7 +29,7 @@ public interface IWxOfficalAccountService {
      * @param eventName
      * @return
      */
-    int messToEventAgree(String openId, String eventName);
+    int messToEventAgree(String openId, String eventName, long feId,int status);
 
 
     /**
@@ -40,7 +40,7 @@ public interface IWxOfficalAccountService {
      * @param opinion
      * @return
      */
-    int messToEventReject(String openId,String talentName, String eventName, String opinion);
+    int messToEventReject(String openId,String talentName, String eventName, String opinion,long feId,int status);
 
 
     /**
