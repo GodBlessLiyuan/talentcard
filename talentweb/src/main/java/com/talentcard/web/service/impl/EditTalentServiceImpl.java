@@ -91,6 +91,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
     private ILogService logService;
     @Autowired
     private SocialSecurityMapper socialSecurityMapper;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO editBasicInfo(HttpSession httpSession, BasicInfoDTO basicInfoDTO) {
@@ -141,8 +142,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "编辑人才\"%s\"的基本信息",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的基本信息", talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -240,8 +241,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "编辑人才\"%s\"的学历信息",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的学历信息", talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -336,8 +337,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "编辑人才\"%s\"的职业资格信息",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的职业资格信息", talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -434,8 +435,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "编辑人才\"%s\"的职称信息",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的职称信息", talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -530,8 +531,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "编辑人才\"%s\"的主要人才荣誉",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的主要人才荣誉", talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -584,8 +585,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(openId);
-        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "编辑人才\"%s\"的人才类别",talentPO.getName());
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的人才类别", talentPO.getName());
         return new ResultVO(1000);
     }
 
@@ -649,11 +650,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
         certificationTimesVO.setQualityTimes(qualityTimes + talentBO.getProfQualityPOList().size());
         certificationTimesVO.setHonourTimes(honourTimes + talentBO.getTalentHonourPOList().size());
         //根据人才id将社保信息从社保信息表中取出返回展示到前台
-        SocialSecurityPO socialSecurityPO= socialSecurityMapper.selectByPrimaryKey(talentId);
-        talentBO.setSecurity_workUnit(socialSecurityPO.getSecuriyWorkUnit());
-        talentBO.setSocial_type(socialSecurityPO.getSocialType());
-        talentBO.setSecurity_time(socialSecurityPO.getSecurityTime());
-        talentBO.setCheck_time(socialSecurityPO.getCheckTime());
+        SocialSecurityPO socialSecurityPO = socialSecurityMapper.selectByPrimaryKey(talentId);
+        if (socialSecurityPO != null) {
+            talentBO.setSecurity_workUnit(socialSecurityPO.getSecuriyWorkUnit());
+            talentBO.setSocial_type(socialSecurityPO.getSocialType());
+            talentBO.setSecurity_time(socialSecurityPO.getSecurityTime());
+            talentBO.setCheck_time(socialSecurityPO.getCheckTime());
+        }
         HashMap<String, Object> result = new HashMap<>(4);
         result.put("talentInfo", talentBO);
         result.put("policyPOList", policyPOList);
@@ -671,7 +674,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultVO changeCard(HttpSession session,Long talentId, Long newCardId, String opinion) {
+    public ResultVO changeCard(HttpSession session, Long talentId, Long newCardId, String opinion) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
@@ -777,9 +780,8 @@ public class EditTalentServiceImpl implements IEditTalentService {
         sendTemplateMessage(messageDTO);
 
 
-
-        this.iEditTalentRecordService.addRecord(session,talentId,EditTalentRecordConstant.editType, EditTalentRecordConstant.talentCard,
-                JSONObject.toJSONString(oldCardPO),JSONObject.toJSONString(newCardPO),opinion);
+        this.iEditTalentRecordService.addRecord(session, talentId, EditTalentRecordConstant.editType, EditTalentRecordConstant.talentCard,
+                JSONObject.toJSONString(oldCardPO), JSONObject.toJSONString(newCardPO), opinion);
 
         /**
          * 更新用户类别表中的人才卡信息
@@ -789,13 +791,13 @@ public class EditTalentServiceImpl implements IEditTalentService {
          * 清缓存
          */
         iTalentService.clearRedisCache(talentPO.getOpenId());
-        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager,OpsRecordMenuConstant.S_ConfirmTalent,
-                "编辑人才\"%s\"的人才卡",talentPO.getName());
+        logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.S_ConfirmTalent,
+                "编辑人才\"%s\"的人才卡", talentPO.getName());
         return new ResultVO(1000);
     }
 
     @Async("asyncTaskExecutor")
-    public void sendTemplateMessage(MessageDTO messageDTO){
+    public void sendTemplateMessage(MessageDTO messageDTO) {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
