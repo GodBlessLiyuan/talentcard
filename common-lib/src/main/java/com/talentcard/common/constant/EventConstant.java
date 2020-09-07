@@ -43,6 +43,10 @@ public class EventConstant {
      * 报名已结束
      */
     public static final int REGISTRATION_IS_OVER = 9;
+    /**
+     * 活动进行中
+     */
+    public static final int EVENTING = 10;
 
 
     /**
@@ -76,7 +80,7 @@ public class EventConstant {
                 return EventConstant.ING;
             } else if (currentTime > startTime && endTime < endTime) {
                 //报名已结束
-                return EventConstant.REGISTRATION_IS_OVER;
+                return EventConstant.EVENTING;
             } else if (currentTime > endTime) {
                 //已结束
                 return EventConstant.FINISH;
