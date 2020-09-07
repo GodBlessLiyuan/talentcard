@@ -78,10 +78,10 @@ public class EventConstant {
             if (startTime > currentTime) {
                 //报名中
                 return EventConstant.ING;
-            } else if (currentTime > startTime && endTime < endTime) {
+            } else if (currentTime >= startTime && currentTime < endTime) {
                 //报名已结束
                 return EventConstant.EVENTING;
-            } else if (currentTime > endTime) {
+            } else if (currentTime >= endTime) {
                 //已结束
                 return EventConstant.FINISH;
             }
