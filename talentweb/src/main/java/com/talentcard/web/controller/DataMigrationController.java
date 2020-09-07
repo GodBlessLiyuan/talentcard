@@ -618,10 +618,10 @@ public class DataMigrationController {
                 }
             }
             fis.close();
-
-            logService.insertActionRecord(1, "system", OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity,
-                                        "修改\"%s\"个人才的现工作单位为参保单位", String.valueOf(fixTotal));
-
+            if (fixTotal <= 0) {
+                logService.insertActionRecord(1, "system", OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity,
+                        "修改%s个人才的现工作单位为参保单位", String.valueOf(fixTotal));
+            }
             ExcelExportUtil.exportExcel("result_" + file.getOriginalFilename(), null,
                     new String[]{"序号", "姓名", "证件类型", "证件号码", "现工作单位", "参保单位", "本次参保开始时间", "单位性质", "人员类别", "执行操作"},
                     excelData, res);
