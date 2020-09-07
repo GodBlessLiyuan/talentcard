@@ -77,8 +77,15 @@ public class EventConstant {
         } else if (status == EventConstant.AGREE) {
             //已同意（已通过，未开始）
             if (startTime > currentTime) {
-                //报名中
-                return EventConstant.ING;
+                /**
+                 * 小程序已通过，未开始
+                 */
+                if (upDown != null && upDown == 100) {
+                    return EventConstant.AGREE;
+                } else {
+                    //报名中
+                    return EventConstant.ING;
+                }
             } else if (currentTime >= startTime && currentTime < endTime) {
                 //报名已结束
                 return EventConstant.EVENTING;
