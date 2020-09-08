@@ -17,5 +17,4 @@ public interface FabricApi {
     @PostMapping("fabric/userRegister")
     ResultVO userRegister(@RequestBody String reqUserRegister) throws IOException;
 
-    ResultVO createProfile(@RequestBody Profile profile);
 }
