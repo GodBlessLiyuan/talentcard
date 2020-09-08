@@ -2,7 +2,6 @@ package sbsdk.convert;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.bsnsapi.fabric.chaincodeEntities.Ticket;
 import com.talentcard.common.utils.StringToObjUtil;
 
 import java.util.ArrayList;
@@ -24,9 +23,11 @@ public class StringSToStringS {
         List<JSONObject> lists = StringToObjUtil.strToObj(paras, List.class);
         List<T> list=new ArrayList<>(lists.size());
         for(JSONObject jsonObject:lists){
-            //jsonObject.get("dataInfo")得到的是字符串，不能使用  JSON.toJavaObject((JSON) String)
-            T dataInfo = JSON.parseObject((String) jsonObject.get(lieName) , clazz);
-            list.add(dataInfo);
+            //jsonObject.get("dataInfo")得到的是字符串，不能使用  JSON.toJavaObject((JSON) String)。没删除是true
+            if(true==(boolean)jsonObject.get("isDelete")){
+                T dataInfo = JSON.parseObject((String) jsonObject.get(lieName) , clazz);
+                list.add(dataInfo);
+            }
         }
         return JSON.toJSONString(list);
     }

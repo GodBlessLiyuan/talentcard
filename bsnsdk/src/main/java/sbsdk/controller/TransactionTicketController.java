@@ -83,6 +83,7 @@ public class TransactionTicketController {
         try{
             ResKeyEscrow resKeyEscrow = TransactionService.reqChainCode(this.ticketFunName(ticket, request));
             //这些封装
+//            return resKeyEscrow.getCcRes().getCcData();
             return StringSToStringS.convert(resKeyEscrow.getCcRes().getCcData(),"dataInfo",Ticket.class);
         }catch (Exception e){
             e.printStackTrace();
