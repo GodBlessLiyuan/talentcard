@@ -1,7 +1,7 @@
-package com.bsnsapi.fabric.controller;
+package sbsdk.controller;
 
-import com.bsnsapi.fabric.config.MyConfig;
-import com.bsnsapi.fabric.vo.ResultVO;
+
+import com.talentcard.common.vo.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +12,7 @@ import sbsdk.talentcard.bsnsdk.entity.req.fabric.ReqKeyEscrowEnroll;
 import sbsdk.talentcard.bsnsdk.entity.req.fabric.ReqUserRegister;
 import sbsdk.talentcard.bsnsdk.entity.res.fabric.ResKeyEscrowEnroll;
 import sbsdk.talentcard.bsnsdk.entity.res.fabric.ResUserRegister;
+import sbsdk.config.MyConfig;
 
 import java.io.IOException;
 

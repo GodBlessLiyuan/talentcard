@@ -1,4 +1,4 @@
-package com.bsnsapi.fabric.controller.handler;
+package sbsdk.controller.handler;
 
 import com.bsnsapi.fabric.vo.ResultVO;
 import org.slf4j.Logger;

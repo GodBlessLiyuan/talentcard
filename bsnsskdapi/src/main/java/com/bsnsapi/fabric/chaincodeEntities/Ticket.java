@@ -1,4 +1,4 @@
-package sbsdk.chaincodeEntities;
+package com.bsnsapi.fabric.chaincodeEntities;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;

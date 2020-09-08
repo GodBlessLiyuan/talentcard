@@ -11,6 +11,7 @@
 
     <groupId>com.talentcard</groupId>
     <artifactId>bsnsskdapi</artifactId>
+    <version>1.0.0</version>
 
     <dependencies>
         <!--springcloud feign添加的依赖包-->
@@ -36,12 +37,6 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
             <version>1.18.4</version>
-        </dependency>
-        <!--引入的sdk的jar包-->
-        <dependency>
-            <groupId>com.talentcard</groupId>
-            <artifactId>bsnsdk</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <repositories>

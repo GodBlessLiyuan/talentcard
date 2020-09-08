@@ -1,7 +1,6 @@
-package com.bsnsapi.fabric.controller;
+package sbsdk.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.bsnsapi.fabric.config.MyConfig;
 import com.bsnsapi.fabric.dto.CreateDTO;
 import com.bsnsapi.fabric.vo.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sbsdk.config.MyConfig;
 import sbsdk.talentcard.bsnsdk.client.fabric.service.NodeService;
 import sbsdk.talentcard.bsnsdk.client.fabric.service.TransactionService;
 import sbsdk.talentcard.bsnsdk.entity.req.fabric.ReqGetTransaction;
@@ -30,11 +30,13 @@ import java.security.NoSuchAlgorithmException;
 public class TransactionController {
     @Autowired
     private MyConfig myConfig;
+
     private ReqKeyEscrow initDTO(CreateDTO createDTO){
         myConfig.initConfig();
         String[] args={JSON.toJSONString(createDTO.getTicket())};
-        createDTO.getReqKeyEscrow().setArgs(args);
-        return createDTO.getReqKeyEscrow();
+//        createDTO.getReqKeyEscrow().setArgs(args);
+//        return createDTO.getReqKeyEscrow();
+        return null;
     }
    /***
     我感觉只有 "funcName":"createTicket", 不一样，其他都一样。

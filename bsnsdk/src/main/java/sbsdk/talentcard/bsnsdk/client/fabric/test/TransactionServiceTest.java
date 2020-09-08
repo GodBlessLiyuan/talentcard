@@ -6,7 +6,7 @@ import sbsdk.talentcard.bsnsdk.entity.config.Config;
 import sbsdk.talentcard.bsnsdk.entity.req.fabric.ReqKeyEscrow;
 import sbsdk.talentcard.bsnsdk.util.Log;
 import sbsdk.talentcard.bsnsdk.util.exception.GlobalException;
-import sbsdk.chaincodeEntities.Ticket;
+import com.bsnsapi.fabric.chaincodeEntities.Ticket;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

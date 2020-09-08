@@ -1,9 +1,7 @@
 package com.bsnsapi.fabric.dto;
 
 import lombok.Data;
-import sbsdk.chaincodeEntities.Ticket;
-import sbsdk.talentcard.bsnsdk.entity.config.Config;
-import sbsdk.talentcard.bsnsdk.entity.req.fabric.ReqKeyEscrow;
+
 
 import java.io.Serializable;
 
@@ -19,9 +17,9 @@ public class CreateDTO implements Serializable {
      "reqKeyEscrow":{}}
      * */
     //票；入场券，标签；
-    private Ticket ticket;
+    private String ticket;
     /***
      有三中这种类，reqkey.setArgs(args);
      */
-    private ReqKeyEscrow reqKeyEscrow;
+    private String reqKeyEscrow;
 }

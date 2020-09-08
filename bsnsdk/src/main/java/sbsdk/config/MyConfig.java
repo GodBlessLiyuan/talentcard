@@ -1,4 +1,4 @@
-package com.bsnsapi.fabric.config;
+package sbsdk.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -42,15 +42,20 @@ public class MyConfig {
      * 证书
      */
     private String cert;
-    public void initConfig(){
-        Config config=new Config();
-        config.setAppCode(appCode);
-        config.setUserCode(userCode);
-        config.setApi(api);
-        config.setCert(cert);
-        config.setPrk(prk);
-        config.setPuk(puk);
-        config.setMspDir(mspDir);
-        config.initConfig(config);
+
+    Config config;
+
+    public void initConfig() {
+        if (config == null) {
+            config = new Config();
+            config.setAppCode(appCode);
+            config.setUserCode(userCode);
+            config.setApi(api);
+            config.setCert(cert);
+            config.setPrk(prk);
+            config.setPuk(puk);
+            config.setMspDir(mspDir);
+            config.initConfig(config);
+        }
     }
 }

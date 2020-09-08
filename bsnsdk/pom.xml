@@ -124,6 +124,12 @@
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.talentcard</groupId>
+            <artifactId>bsnsskdapi</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

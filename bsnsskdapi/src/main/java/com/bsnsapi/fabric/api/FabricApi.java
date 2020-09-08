@@ -1,9 +1,10 @@
 package com.bsnsapi.fabric.api;
 
 import com.bsnsapi.fabric.vo.ResultVO;
+import com.bsnsapi.fabric.chaincodeEntities.Profile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import sbsdk.talentcard.bsnsdk.entity.req.fabric.ReqUserRegister;
+
 
 import java.io.IOException;
 
@@ -14,5 +15,7 @@ import java.io.IOException;
  */
 public interface FabricApi {
     @PostMapping("fabric/userRegister")
-    ResultVO userRegister(@RequestBody ReqUserRegister reqUserRegister) throws IOException;
+    ResultVO userRegister(@RequestBody String reqUserRegister) throws IOException;
+
+    ResultVO createProfile(@RequestBody Profile profile);
 }
