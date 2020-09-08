@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.*;
 import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.constant.SocialSecurityConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.*;
@@ -679,16 +680,17 @@ public class TalentServiceImpl implements ITalentService {
     @Override
     public ResultVO exporCertInfo(HttpServletResponse response) {
         List<ExportCertInfoBO> bos = talentCertificationInfoMapper.exportCertInfo();
+        //将社保信息添加到之前的表格中一起导出
         for (ExportCertInfoBO bo: bos) {
             SocialSecurityPO socialSecurityPO = socialSecurityMapper.selectByPrimaryKey(bo.getTalentId());
             if (socialSecurityPO != null) {
                 String securityWork = socialSecurityPO.getSecuriyWorkUnit();
                 String securityTime = DateUtil.date2Str(socialSecurityPO.getSecurityTime(), YHM_NO);
                 String socialType = "";
-                if (socialSecurityPO.getSocialType() != null && socialSecurityPO.getSocialType() == 1) {
+                if (socialSecurityPO.getSocialType() != null && socialSecurityPO.getSocialType() == SocialSecurityConstant.TALENT_PAYROLL) {
                     socialType = "在职人员";
                 }
-                if (socialSecurityPO.getSocialType() != null && socialSecurityPO.getSocialType() == 2) {
+                if (socialSecurityPO.getSocialType() != null && socialSecurityPO.getSocialType() == SocialSecurityConstant.TALENT_INTERRUPT) {
                     socialType = "中断人员";
                 }
                 String checkTime = DateUtil.date2Str(socialSecurityPO.getCheckTime(), YMDHZ);
