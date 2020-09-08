@@ -27,6 +27,7 @@ import java.security.NoSuchAlgorithmException;
  */
 @RestController
 @RequestMapping("transaction")
+@Deprecated
 public class TransactionController {
     @Autowired
     private MyConfig myConfig;

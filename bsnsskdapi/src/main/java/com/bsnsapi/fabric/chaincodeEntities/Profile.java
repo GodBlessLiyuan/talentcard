@@ -17,7 +17,7 @@ public class Profile implements Serializable {
     //	Sex string `json:"sex"`
     //	PoliticalStatus string `json:"politicalStatus"`
 
-
+    public Profile(){}
     public Profile(String type, String id, String name) {
         this.type = type;
         this.id = id;
