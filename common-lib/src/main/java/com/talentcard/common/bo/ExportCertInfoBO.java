@@ -36,4 +36,20 @@ public class ExportCertInfoBO extends TalentCertificationInfoPO {
      * 现工作单位
      */
     private String workUnit;
+    /**
+     * 参保单位
+     */
+    private String securityWork;
+    /**
+     * 参保开始时间：年月，202010
+     */
+    private String securityTime;
+    /**
+     * 人员类别
+     */
+    private String socialType;
+    /**
+     * 核查时间：年月日，比如2020年8月31日
+     */
+    private String checkTime;
 }
