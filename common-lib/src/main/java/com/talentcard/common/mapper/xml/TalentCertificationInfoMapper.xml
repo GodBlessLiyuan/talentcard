@@ -158,7 +158,7 @@
     order by t.talent_id desc
   </select>
   <select id="exportCertInfo" resultType="com.talentcard.common.bo.ExportCertInfoBO">
-    select t.talent_id, t1.name as name, t1.id_card as idCard, t1.passport as passport, t1.driver_card as driverCard, t1.card_type as cardType, t1.work_unit as workUnit
+    select t.talent_id as talentId, t1.name as name, t1.id_card as idCard, t1.passport as passport, t1.driver_card as driverCard, t1.card_type as cardType, t1.work_unit as workUnit
     from t_talent_certification_info t
     left join t_talent t1
     on t.talent_id = t1.talent_id
