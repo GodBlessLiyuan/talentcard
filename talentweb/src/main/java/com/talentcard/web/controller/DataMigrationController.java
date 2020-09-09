@@ -9,10 +9,8 @@ import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExcelExportUtil;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.vo.ResultVO;
-import com.talentcard.web.service.IBestPolicyToTalentService;
-import com.talentcard.web.service.IDataMigrationService;
-import com.talentcard.web.service.IEditTalentRecordService;
-import com.talentcard.web.service.ITalentInfoCertificationService;
+import com.talentcard.web.constant.OpsRecordMenuConstant;
+import com.talentcard.web.service.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -73,6 +71,9 @@ public class DataMigrationController {
 
     @Autowired
     private IEditTalentRecordService iEditTalentRecordService;
+
+    @Autowired
+    private ILogService logService;
 
 
     /**
@@ -514,6 +515,7 @@ public class DataMigrationController {
             errors.put(2, new ArrayList<>());
             String[][] excelData = new String[lastrow][10];
 
+            int fixTotal = 0;
             //循环行数依次获取列数
             for (int i = 1; i < lastrow + 1; i++) {
                 //获取哪一行i
@@ -558,6 +560,10 @@ public class DataMigrationController {
                                  */
                                 iEditTalentRecordService.addRecord((long) 1, po.getTalentId(), EditTalentRecordConstant.synchronization,
                                         EditTalentRecordConstant.security_social, before, after, "与社保信息不一致");
+//                                logService.insertActionRecord(1, "system", OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity,
+//                                        "同步\"%s\"的的社保信息", po.getName());
+                                fixTotal++;
+
                             }
 
                         } else {
@@ -612,7 +618,10 @@ public class DataMigrationController {
                 }
             }
             fis.close();
-
+            if (fixTotal <= 0) {
+                logService.insertActionRecord(1, "system", OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity,
+                        "修改%s个人才的现工作单位为参保单位", String.valueOf(fixTotal));
+            }
             ExcelExportUtil.exportExcel("result_" + file.getOriginalFilename(), null,
                     new String[]{"序号", "姓名", "证件类型", "证件号码", "现工作单位", "参保单位", "本次参保开始时间", "单位性质", "人员类别", "执行操作"},
                     excelData, res);

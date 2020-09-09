@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.*;
 import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.constant.SocialSecurityConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.*;
@@ -40,7 +41,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.talentcard.common.utils.DateUtil.YMD;
+import static com.talentcard.common.utils.DateUtil.*;
 
 
 /**
@@ -69,6 +70,8 @@ public class TalentServiceImpl implements ITalentService {
     @Autowired
     private UserCardMapper userCardMapper;
     @Autowired
+    SocialSecurityMapper socialSecurityMapper;
+    @Autowired
     private UserCurrentInfoMapper userCurrentInfoMapper;
     @Autowired
     private FilePathConfig filePathConfig;
@@ -86,7 +89,8 @@ public class TalentServiceImpl implements ITalentService {
     private EditTalentRecordMapper editTalentRecordMapper;
     @Autowired
     private ITalentInfoCertificationService iTalentInfoCertificationService;
-    private static final String[] EXPORT_TITLES = {"序号", "姓名", "证件类型", "证件号码", "现工作单位", "参保单位", "参保时间", "核检时间"};
+
+    private static final String[] EXPORT_TITLES = {"序号", "姓名", "证件类型", "证件号码", "现工作单位", "参保单位", "参保开始时间", "人员类别","核查时间"};
 
     private static final String[] EXCEL_TITLE = {"姓名", "证件号码"};
     private static final String[] EXCEL_TITLE_RES = {"姓名", "证件号码", "人才卡", "人才类别", "人才荣誉", "认证结果", "说明"};
@@ -676,6 +680,26 @@ public class TalentServiceImpl implements ITalentService {
     @Override
     public ResultVO exporCertInfo(HttpServletResponse response) {
         List<ExportCertInfoBO> bos = talentCertificationInfoMapper.exportCertInfo();
+        //将社保信息添加到之前的表格中一起导出
+        for (ExportCertInfoBO bo: bos) {
+            SocialSecurityPO socialSecurityPO = socialSecurityMapper.selectByPrimaryKey(bo.getTalentId());
+            if (socialSecurityPO != null) {
+                String securityWork = socialSecurityPO.getSecuriyWorkUnit();
+                String securityTime = DateUtil.date2Str(socialSecurityPO.getSecurityTime(), YHM_NO);
+                String socialType = "";
+                if (socialSecurityPO.getSocialType() != null && socialSecurityPO.getSocialType() == SocialSecurityConstant.TALENT_PAYROLL) {
+                    socialType = "在职人员";
+                }
+                if (socialSecurityPO.getSocialType() != null && socialSecurityPO.getSocialType() == SocialSecurityConstant.TALENT_INTERRUPT) {
+                    socialType = "中断人员";
+                }
+                String checkTime = DateUtil.date2Str(socialSecurityPO.getCheckTime(), YMDHZ);
+                bo.setSecurityWork(securityWork);
+                bo.setSecurityTime(securityTime);
+                bo.setSocialType(socialType);
+                bo.setCheckTime(checkTime);
+            }
+        }
         //构造导出Excel文件名称
         Date dt = new Date();
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
@@ -712,6 +736,10 @@ public class TalentServiceImpl implements ITalentService {
             contents[num][2] = cardTypeName;
             contents[num][3] = cardNum;
             contents[num][4] = bo.getWorkUnit();
+            contents[num][5] = bo.getSecurityWork();
+            contents[num][6] = bo.getSecurityTime();
+            contents[num][7] = bo.getSocialType();
+            contents[num][8] = bo.getCheckTime();
             num++;
             order++;
         }

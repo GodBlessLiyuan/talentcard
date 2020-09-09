@@ -51,6 +51,7 @@ public class EventConstant {
 
     /**
      * 根据状态返回前端需要的状态值
+     *
      * @param startTime
      * @param endTime
      * @param status
@@ -58,7 +59,7 @@ public class EventConstant {
      * @return
      */
     public static int getStatus(Long currentTime, Long startTime, Long endTime, Byte status, Byte upDown) {
-        if (upDown == 2) {
+        if (upDown != null && upDown == 2) {
             //下架
             return EventConstant.STOP;
         } else if (status == EventConstant.ADMINCANCEL) {
@@ -76,12 +77,27 @@ public class EventConstant {
         } else if (status == EventConstant.AGREE) {
             //已同意（已通过，未开始）
             if (startTime > currentTime) {
-                //报名中
-                return EventConstant.ING;
-            } else if (currentTime > startTime && endTime < endTime) {
+                /**
+                 * 小程序已通过，未开始
+                 */
+                if (upDown != null && upDown == 100) {
+                    return EventConstant.AGREE;
+                } else {
+                    /**
+                     * 小程序没有upDown
+                     */
+                    if(upDown == null){
+                        return EventConstant.AGREE;
+                    }else {
+                        //报名中
+                        return EventConstant.ING;
+                    }
+
+                }
+            } else if (currentTime >= startTime && currentTime < endTime) {
                 //报名已结束
                 return EventConstant.EVENTING;
-            } else if (currentTime > endTime) {
+            } else if (currentTime >= endTime) {
                 //已结束
                 return EventConstant.FINISH;
             }

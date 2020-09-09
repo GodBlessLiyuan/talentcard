@@ -38,4 +38,23 @@ public class LogServiceImpl implements ILogService {
         opwebRecordPO.setCreateTime(new Date());
         opwebRecordMapper.insert(opwebRecordPO);
     }
+
+
+    @Async("asyncTaskExecutor")
+    @Override
+    public void insertActionRecord(long userId, String userName, String firstMenu, String secondMenu, String detail, String... params) {
+        OpwebRecordPO opwebRecordPO = new OpwebRecordPO();
+        opwebRecordPO.setUseId(userId);
+        opwebRecordPO.setUsername(userName);
+        opwebRecordPO.setFristMenu(firstMenu);
+        opwebRecordPO.setSecondMenu(secondMenu);
+        if (params != null && params.length > 0) {
+            opwebRecordPO.setDetailInfo(String.format(detail, params));
+        } else {
+            opwebRecordPO.setDetailInfo(detail);
+        }
+
+        opwebRecordPO.setCreateTime(new Date());
+        opwebRecordMapper.insert(opwebRecordPO);
+    }
 }
