@@ -194,10 +194,10 @@ public class EventServiceImpl implements IEventService {
     @Transactional(rollbackFor = Exception.class)
     public ResultVO cancel(HttpSession httpSession, Long eventId, String opinion) {
         Long userId = (Long) httpSession.getAttribute("userId");
-//        if (userId == null) {
-//            // 用户过期
-//            return ResultVO.notLogin();
-//        }
+        if (userId == null) {
+            // 用户过期
+            return ResultVO.notLogin();
+        }
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
         if (evEventPO == null) {
             return new ResultVO(2750, "无此后台活动！");
