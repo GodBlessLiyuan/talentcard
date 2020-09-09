@@ -73,6 +73,7 @@ public class EventDetailVO {
         eventDetailVO.setIfQuota(evEventPO.getIfQuota());
         eventDetailVO.setMaleQuota(evEventPO.getMaleQuota());
         eventDetailVO.setFemaleQuota(evEventPO.getFemaleQuota());
+        eventDetailVO.setEventQuota(evEventPO.getEventQuota());
         eventDetailVO.setUpdateTime(evEventPO.getUpdateTime());
         eventDetailVO.setCreateTime(evEventPO.getCreateTime());
         eventDetailVO.setUserId(evEventPO.getUserId());
