@@ -238,6 +238,10 @@ public class EventServiceImpl implements IEventService {
             talentStatus = SIGN_UP;
             etId = evEventTalentPO.getEtId();
             //未报名
+        } else if (evEventTalentPO != null && evEventTalentPO.getStatus() == 2) {
+            talentStatus = NO_SIGN_UP;
+            etId = evEventTalentPO.getEtId();
+            //未报名
         } else {
             talentStatus = NO_SIGN_UP;
         }
