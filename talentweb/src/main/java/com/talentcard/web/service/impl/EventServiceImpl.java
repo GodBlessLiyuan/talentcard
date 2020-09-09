@@ -191,12 +191,13 @@ public class EventServiceImpl implements IEventService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO cancel(HttpSession httpSession, Long eventId, String opinion) {
         Long userId = (Long) httpSession.getAttribute("userId");
-        if (userId == null) {
-            // 用户过期
-            return ResultVO.notLogin();
-        }
+//        if (userId == null) {
+//            // 用户过期
+//            return ResultVO.notLogin();
+//        }
         EvEventPO evEventPO = evEventMapper.selectByPrimaryKey(eventId);
         if (evEventPO == null) {
             return new ResultVO(2750, "无此后台活动！");
@@ -455,7 +456,7 @@ public class EventServiceImpl implements IEventService {
             return;
         }
 
-        String newInterval = StringSortUtil.sort(evEventTimePO.getTimeInterval(),evEventPO.getTimeInterval(),"");
+        String newInterval = StringSortUtil.sort(evEventTimePO.getTimeInterval(),evEventPO.getTime(),"");
         //将新的时间段更新会时间占用表中
         evEventTimePO.setTimeInterval(newInterval);
         evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO);
