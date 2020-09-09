@@ -91,12 +91,12 @@ public class EventServiceImpl implements IEventService {
         //更新活动表
         if (evEventPO.getIfQuota() == 1) {
             if (talentPO.getSex() == 1) {
-                evEventPO.setMaleQuota(evEventPO.getCurrentMale() + 1);
+                evEventPO.setCurrentMale(evEventPO.getCurrentMale() + 1);
             } else {
-                evEventPO.setFemaleQuota(evEventPO.getCurrentFemale() + 1);
+                evEventPO.setCurrentFemale(evEventPO.getCurrentFemale() + 1);
             }
         }
-        evEventPO.setEventQuota(evEventPO.getCurrentNum() + 1);
+        evEventPO.setCurrentNum(evEventPO.getCurrentNum() + 1);
         evEventMapper.updateByPrimaryKeySelective(evEventPO);
         return new ResultVO(1000);
     }
@@ -129,6 +129,20 @@ public class EventServiceImpl implements IEventService {
         evEventTalentPO.setStatus((byte) 2);
         evEventTalentPO.setDr((byte) 2);
         evEventTalentMapper.updateByPrimaryKeySelective(evEventTalentPO);
+        //更新eventPO，人数-1
+        if (evEventPO.getIfQuota() == 1) {
+            TalentPO talentPO = talentMapper.selectByOpenId(evEventTalentPO.getOpenId());
+            if (talentPO == null) {
+                return new ResultVO(2500);
+            }
+            if (talentPO.getSex() == 1) {
+                evEventPO.setCurrentMale(evEventPO.getCurrentMale() - 1);
+            } else {
+                evEventPO.setCurrentFemale(evEventPO.getCurrentFemale() - 1);
+            }
+        }
+        evEventPO.setCurrentNum(evEventPO.getCurrentNum() - 1);
+        evEventMapper.updateByPrimaryKeySelective(evEventPO);
         return new ResultVO(1000);
     }
 

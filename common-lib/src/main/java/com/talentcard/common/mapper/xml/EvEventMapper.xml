@@ -431,8 +431,7 @@
     left join ev_event_field ef
     on e.ef_id = ef.ef_id
     where
-    et.dr = 1
-    and et.open_id = #{openId,jdbcType=CHAR}
+    et.open_id = #{openId,jdbcType=CHAR}
     order by e.status asc, e.start_time desc
   </select>
 
