@@ -234,8 +234,12 @@ public class EventServiceImpl implements IEventService {
         Byte talentStatus;
         Long etId = null;
         //已报名
-        if (evEventTalentPO != null) {
+        if (evEventTalentPO != null && evEventTalentPO.getStatus() == 1) {
             talentStatus = SIGN_UP;
+            etId = evEventTalentPO.getEtId();
+            //未报名
+        } else if (evEventTalentPO != null && evEventTalentPO.getStatus() == 2) {
+            talentStatus = NO_SIGN_UP;
             etId = evEventTalentPO.getEtId();
             //未报名
         } else {
