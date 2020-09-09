@@ -136,12 +136,18 @@ public class EventServiceImpl implements IEventService {
                 return new ResultVO(2500);
             }
             if (talentPO.getSex() == 1) {
-                evEventPO.setCurrentMale(evEventPO.getCurrentMale() - 1);
+                if (evEventPO.getCurrentMale() > 0) {
+                    evEventPO.setCurrentMale(evEventPO.getCurrentMale() - 1);
+                }
             } else {
-                evEventPO.setCurrentFemale(evEventPO.getCurrentFemale() - 1);
+                if (evEventPO.getCurrentFemale() > 0) {
+                    evEventPO.setCurrentFemale(evEventPO.getCurrentFemale() - 1);
+                }
             }
         }
-        evEventPO.setCurrentNum(evEventPO.getCurrentNum() - 1);
+        if (evEventPO.getCurrentNum() > 0) {
+            evEventPO.setCurrentNum(evEventPO.getCurrentNum() - 1);
+        }
         evEventMapper.updateByPrimaryKeySelective(evEventPO);
         return new ResultVO(1000);
     }
