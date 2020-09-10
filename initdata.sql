@@ -72,13 +72,20 @@ INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (50, 'eventQuery');
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (51, 'eventAdd');
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (52, 'eventEdit');
 INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (53, 'eventApproval');
+/*一级目录权限*/
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (54, 'systemManage');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (55, 'cardManage');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (56, 'talentManage');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (57, 'policyManage');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (58, 'tagManage');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (59, 'otherService');
+INSERT INTO `t_authority`(`authority_id`, `name`) VALUES (60, 'extraFunction');
 
 /*角色：主要是超级管理员和运营人员*/
 INSERT INTO `talentcard`.`t_role`(`role_id`, `name`, `extra`, `create_time`, `role_type`) VALUES (1, '超级管理员', NULL, '2020-04-17 14:06:25', 1);
 INSERT INTO `talentcard`.`t_role`(`role_id`, `name`, `extra`, `create_time`, `role_type`) VALUES (2, '运营人员', NULL, '2020-04-17 14:06:44', 1);
 INSERT INTO `talentcard`.`t_role`(`role_id`, `name`, `extra`, `create_time`, `role_type`) VALUES (3, '组织部', NULL, '2020-08-26 15:21:03', 2);
 INSERT INTO `talentcard`.`t_role`(`role_id`, `name`, `extra`, `create_time`, `role_type`) VALUES (4, '人社局', NULL, '2020-07-31 15:21:14', 2);
-
 
 /*角色权限表*/
 /*超管*/
@@ -193,6 +200,56 @@ INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VAL
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (105, 1, 52, 2);
 INSERT INTO `t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (106, 1, 53, 2);
 
+/*组织部人社局权限*/
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (107, 1, 2, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (108, 1, 3, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (109, 1, 4, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (110, 1, 5, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (111, 1, 15, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (112, 1, 16, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (113, 1, 17, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (114, 1, 18, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (115, 1, 2, 4);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (116, 1, 3, 4);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (117, 1, 4, 4);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (118, 1, 5, 4);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (119, 1, 15, 4);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (120, 1, 16, 4);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (121, 1, 17, 4);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (122, 1, 18, 4);
+
+/*一级目录权限*/
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (123, 1, 54, 1);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (124, 1, 55, 1);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (125, 1, 56, 1);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (126, 1, 57, 1);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (127, 1, 58, 1);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (128, 1, 59, 1);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (129, 1, 60, 1);
+
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (130, 1, 54, 2);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (131, 1, 55, 2);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (132, 1, 56, 2);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (133, 1, 57, 2);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (134, 1, 58, 2);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (135, 1, 59, 2);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (136, 1, 60, 2);
+
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (137, 1, 54, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (138, 1, 55, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (139, 1, 56, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (140, 1, 57, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (141, 1, 58, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (142, 1, 59, 3);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (143, 1, 60, 3);
+
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (144, 1, 54, 4);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (145, 1, 55, 4);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (146, 1, 56, 4);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (147, 1, 57, 4);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (148, 1, 58, 4);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (149, 1, 59, 4);
+INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (150, 1, 60, 4);
 /*用户：超级管理员角色*/
 INSERT INTO `t_user`(`user_id`, `username`, `name`, `password`, `create_time`, `dr`, `extra`, `role_id`) VALUES
 (1, 'admin', 'admin', '15a162a79e4f467350be58833cdd8c66', '2020-04-22 10:57:40', 1, '222', 1);

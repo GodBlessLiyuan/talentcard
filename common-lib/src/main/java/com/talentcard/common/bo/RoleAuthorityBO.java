@@ -174,6 +174,23 @@ public class RoleAuthorityBO implements Serializable {
     private Byte eventApproval;
 
     /**
+     * 一级目录权限
+     * systemManage 系统管理
+     * cardManage 卡片管理
+     * talentManage 人才管理
+     * policyManage 政策管理
+     * tagManage 标签管理
+     * otherService 其他服务
+     * extraFunction 扩展功能
+     */
+    private Byte systemManage;
+    private Byte cardManage;
+    private Byte talentManage;
+    private Byte policyManage;
+    private Byte tagManage;
+    private Byte otherService;
+    private Byte extraFunction;
+    /**
      * 将角色权限表实体类转换为其VO表示实体类
      * @param bos
      * @return
@@ -238,6 +255,14 @@ public class RoleAuthorityBO implements Serializable {
                 case "eventAdd": vo.setEventAdd(bo.getStatus());break;
                 case "eventEdit": vo.setEventEdit((bo.getStatus()));break;
                 case "eventApproval": vo.setEventApproval(bo.getStatus());break;
+                /*一级目录权限*/
+                case "systemManage": vo.setSystemManage(bo.getStatus());break;
+                case "cardManage": vo.setCardManage(bo.getStatus());break;
+                case "talentManage": vo.setTalentManage((bo.getStatus()));break;
+                case "policyManage": vo.setPolicyManage(bo.getStatus());break;
+                case "tagManage": vo.setTagManage(bo.getStatus());break;
+                case "otherService": vo.setOtherService((bo.getStatus()));break;
+                case "extraFunction": vo.setExtraFunction(bo.getStatus());break;
             }
         }
         return vo;
