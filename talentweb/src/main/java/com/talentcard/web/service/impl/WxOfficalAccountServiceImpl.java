@@ -207,7 +207,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword3("驳回");
         messageDTO.setKeyword4("不满足活动要求。");
         messageDTO.setRemark("取消原因：" + opinion);
-        messageDTO.setUrl(WebParameterUtil.getEventDetail() + "?eventId=" + eventId + "&type=1");
+        messageDTO.setUrl(WebParameterUtil.getEventDetail() + "?eventId=" + eventId + "&type=2");
 
         try {
             int result = sendTemplateMessage(messageDTO, eventPass);
