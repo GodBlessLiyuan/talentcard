@@ -76,4 +76,10 @@ public interface PolicyApplyMapper extends BaseMapper<PolicyApplyPO, Long> {
      * @return
      */
     List<PolicyApplyPO> selectByMap(Map map);
+    /**
+     * 查询条件talentId，policyId
+     * @param map
+     * @return
+     */
+    PolicyApplyPO selectPaidByMap(Map map);
 }

@@ -312,4 +312,19 @@
         </where>
         order by pa_id desc
     </select>
+    <select id="selectPaidByMap" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy_apply
+        <where>
+            <if test="talentId != null and talentId != ''">
+                and talent_id= #{talentId,jdbcType=BIGINT}
+            </if>
+            <if test="policyId != null and policyId != ''">
+                and policy_id= #{policyId,jdbcType=BIGINT}
+            </if>
+           and status = 3
+        </where>
+        order by pa_id desc limit 1
+    </select>
 </mapper>
