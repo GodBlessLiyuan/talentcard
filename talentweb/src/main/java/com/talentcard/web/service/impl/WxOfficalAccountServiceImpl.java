@@ -93,7 +93,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         //openId
         messageDTO.setOpenid(openId);
 
-        String first = String.format("您好，您申请的“活动名称”已通过审核。", eventName);
+        String first = String.format("您好，您申请的“%s”已通过审核。", eventName);
         messageDTO.setFirst(first);
         //信息类型
         messageDTO.setKeyword1("通过");
