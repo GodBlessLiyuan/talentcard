@@ -62,7 +62,6 @@ public class ComplianceServiceImpl implements IComplianceService {
     private TalentMapper talentMapper;
     @Autowired
     private CertExamineRecordMapper certExamineRecordMapper;
-
     @Autowired
     private IWxOfficalAccountService wxOfficalAccountService;
 
@@ -89,12 +88,19 @@ public class ComplianceServiceImpl implements IComplianceService {
         Page<PoComplianceBO> page = PageHelper.startPage(reqData);
         List<PoComplianceBO> bos = complianceMapper.pageQuery(reqData);
         //遍历取出人才政策id查出政策权益名称和政策权益编号和政策资金放入对应的BO对象中
-        for (PoComplianceBO poComplianceBO :
-                bos) {
+        for (PoComplianceBO poComplianceBO : bos) {
             PolicyPO policyPo = policyMapper.selectByPrimaryKey(poComplianceBO.getPolicyId());
             poComplianceBO.setPolicyName(policyPo.getName());
             poComplianceBO.setPolicyNum(policyPo.getNum());
             poComplianceBO.setPolicyFunds(policyPo.getFunds());
+            //根据人才id和政策id查询出政策申请id拼进去为了前端查看详情入参
+            Map<String,Object> map = new HashMap<>(1);
+            map.put("talentId",poComplianceBO.getTalentId());
+            map.put("policyId",poComplianceBO.getPolicyId());
+            PolicyApplyPO policyApplyPO = policyApplyMapper.selectPaidByMap(map);
+            if(policyApplyPO!=null) {
+                poComplianceBO.setPaId(policyApplyPO.getPaId());
+            }
         }
         return new ResultVO(1000, new PageInfoVO<>(page.getTotal(), ComplianceVO.convert(bos)));
     }

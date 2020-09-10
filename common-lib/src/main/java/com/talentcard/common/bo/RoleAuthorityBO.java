@@ -68,6 +68,7 @@ public class RoleAuthorityBO implements Serializable {
      * createPolicyType 创建政策类型
      * editPolicyType 编辑政策类型
      * policyTypeQuery 政策类型查询
+     * 15-20；47-49
      */
     private Byte policyCreate;
     private Byte policyUpdate;

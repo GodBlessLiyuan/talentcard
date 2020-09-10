@@ -96,8 +96,8 @@ public class PolicyApplyController {
     }
 
     @RequestMapping("count")
-    public ResultVO count() {
-        return iPolicyApplyService.count();
+    public ResultVO count(HttpSession httpSession) {
+        return iPolicyApplyService.count(httpSession);
     }
 
     /**
