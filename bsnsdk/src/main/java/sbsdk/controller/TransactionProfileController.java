@@ -1,6 +1,7 @@
 package sbsdk.controller;
 
 import com.bsnsapi.fabric.chaincodeEntities.Profile;
+import com.bsnsapi.fabric.vo.ResultVO ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,13 +27,13 @@ public class TransactionProfileController {
     @Autowired
     private MyConfig myConfig;
     @PostMapping("createProfile")
-    public String createProfile(@RequestBody Profile profile, HttpServletRequest request){
+    public ResultVO createProfile(@RequestBody Profile profile, HttpServletRequest request){
         try{
             TransactionService.reqChainCode(this.profileFunName(profile,request));
-            return TransactionStatus.OK.getStatus();
+            return new ResultVO(1000);
         }catch (Exception e){
             e.printStackTrace();
-            return TransactionStatus.Error.getStatus();
+            return new ResultVO(2000);
         }
     }
 
@@ -46,23 +47,23 @@ public class TransactionProfileController {
     }
 
     @PostMapping("getProfile")
-    public String getProfile(@RequestBody Profile profile,HttpServletRequest request){
+    public ResultVO getProfile(@RequestBody Profile profile,HttpServletRequest request){
         try{
             ResKeyEscrow resKeyEscrow = TransactionService.reqChainCode(this.profileFunName(profile, request));
-            return resKeyEscrow.getCcRes().getCcData();
+            return new ResultVO(1000,resKeyEscrow.getCcRes().getCcData());
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return new ResultVO(2000);
         }
     }
     @PostMapping("updateProfile")
-    public String updateProfile(@RequestBody Profile profile,HttpServletRequest request){
+    public ResultVO updateProfile(@RequestBody Profile profile,HttpServletRequest request){
         try{
             TransactionService.reqChainCode(this.profileFunName(profile,request));
-            return TransactionStatus.OK.getStatus();
+            return new ResultVO(1000);
         }catch (Exception e){
             e.printStackTrace();
-            return TransactionStatus.Error.getStatus();
+            return new ResultVO(2000);
         }
     }
 }
