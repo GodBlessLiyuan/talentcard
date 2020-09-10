@@ -68,7 +68,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         //信息类型
         messageDTO.setKeyword1("未申请");
         messageDTO.setKeyword2("申请后可享受政策补贴，请及时申请哦~");
-        messageDTO.setUrl(WebParameterUtil.getIndexUrl() + "/activity.html/#/activity-talent/detail?feid=30&status=5");
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
 
         try {
             int result = sendTemplateMessage(messageDTO, notApplyPolicy);
@@ -93,7 +93,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         //openId
         messageDTO.setOpenid(openId);
 
-        String first = String.format("您好，您申请的“活动名称”已通过审核。", eventName);
+        String first = String.format("您好，您申请的“%s”已通过审核。", eventName);
         messageDTO.setFirst(first);
         //信息类型
         messageDTO.setKeyword1("通过");

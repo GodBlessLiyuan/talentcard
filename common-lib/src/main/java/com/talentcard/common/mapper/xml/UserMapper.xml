@@ -177,7 +177,7 @@
     left join t_role_authority ra on r.role_id = ra.role_id
     left join t_authority a on ra.authority_id = a.authority_id
     <where>
-      ra.`status`=1 and u.dr=1 and a.`name` in ('userUpdate','userDelete')
+      and u.dr=1
       <if test="username != null and username != ''">
         and u.username like '%' #{username} '%'
       </if>
