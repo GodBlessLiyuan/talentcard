@@ -96,6 +96,10 @@ public class ComplianceVO implements Serializable {
      * 政策资金
      */
     private String openid;
+    /**
+     * 政策申请id
+     */
+    private Long paid;
 
 
 
@@ -128,6 +132,7 @@ public class ComplianceVO implements Serializable {
         vo.setTid(bo.getTalentId());
         vo.setWunit(bo.getWorkUnit());
         vo.setOpenid(bo.getOpenId());
+        vo.setPaid(bo.getPaId());
         return vo;
     }
 }
