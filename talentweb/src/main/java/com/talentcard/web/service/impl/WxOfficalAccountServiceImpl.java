@@ -68,7 +68,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         //信息类型
         messageDTO.setKeyword1("未申请");
         messageDTO.setKeyword2("申请后可享受政策补贴，请及时申请哦~");
-        messageDTO.setUrl(WebParameterUtil.getIndexUrl() + "/activity.html/#/activity-talent/detail?feid=30&status=5");
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
 
         try {
             int result = sendTemplateMessage(messageDTO, notApplyPolicy);
