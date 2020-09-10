@@ -55,24 +55,28 @@ public class StringSortUtil {
             }
         }
 
-        Collections.sort(datas, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                try {
-                    if (!StringUtils.isEmpty(o1) && !StringUtils.isEmpty(o2)) {
-                        Integer i1 = Integer.valueOf(o1);
-                        Integer i2 = Integer.valueOf(o2);
-                        return i1 > i2 ? 1 : -1;
+        if (datas != null && datas.size() > 0) {
+            Collections.sort(datas, new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    try {
+                        if (!StringUtils.isEmpty(o1) && !StringUtils.isEmpty(o2)) {
+                            Integer i1 = Integer.valueOf(o1);
+                            Integer i2 = Integer.valueOf(o2);
+                            return i1 > i2 ? 1 : -1;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    return 0;
                 }
-                return 0;
-            }
-        });
+            });
 
-        String[] newArray = datas.toArray(new String[1]);
-        return String.join(",", newArray);
+            String[] newArray = datas.toArray(new String[1]);
+            return String.join(",", newArray);
+        } else {
+            return "";
+        }
     }
 
     public static void main(String args[]) {

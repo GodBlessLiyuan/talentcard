@@ -223,6 +223,7 @@
         </if>
         <if test="status != null and status == 4">
             and `status` = 4
+            and (`type` = 1 or (`type` = 2 and up_down = 1))
         </if>
         <if test="status != null and status == 5">
             and `status` = 5 and `type` = 1
