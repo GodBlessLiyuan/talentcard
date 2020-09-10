@@ -228,7 +228,7 @@ public class EventServiceImpl implements IEventService {
         map.put("status", 1);
         List<EvEventTalentPO> list = evEventTalentMapper.query(map);
         for (EvEventTalentPO po : list) {
-            iWxOfficalAccountService.messToEventCancel(po.getOpenId(), evEventPO.getName(), opinion);
+            iWxOfficalAccountService.messToBackEndEventCancel(po.getOpenId(), po.getEventId(), evEventPO.getName(), opinion);
         }
 //
         //更新time表
@@ -456,7 +456,7 @@ public class EventServiceImpl implements IEventService {
             return;
         }
 
-        String newInterval = StringSortUtil.sort(evEventTimePO.getTimeInterval(),evEventPO.getTime(),"");
+        String newInterval = StringSortUtil.sort(evEventTimePO.getTimeInterval(), evEventPO.getTime(), "");
         //将新的时间段更新会时间占用表中
         evEventTimePO.setTimeInterval(newInterval);
         evEventTimeMapper.updateByPrimaryKeySelective(evEventTimePO);
