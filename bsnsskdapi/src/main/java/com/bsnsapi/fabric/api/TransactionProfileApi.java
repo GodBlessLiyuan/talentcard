@@ -1,6 +1,7 @@
 package com.bsnsapi.fabric.api;
 
 import com.bsnsapi.fabric.chaincodeEntities.Profile;
+import com.bsnsapi.fabric.vo.ResultVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -12,11 +13,11 @@ import java.util.List;
  * */
 public interface TransactionProfileApi {
     @PostMapping("transactionProfile/createProfile")
-    String createProfile(@RequestBody Profile profile, HttpServletRequest request);
+    ResultVO createProfile(@RequestBody Profile profile, HttpServletRequest request);
 
     @PostMapping("transactionProfile/getProfile")
-    String getProfile(@RequestBody Profile profile, HttpServletRequest request);
+    ResultVO getProfile(@RequestBody Profile profile, HttpServletRequest request);
 
     @PostMapping("transactionProfile/updateProfile")
-    String updateProfile(@RequestBody Profile profile, HttpServletRequest request);
+    ResultVO updateProfile(@RequestBody Profile profile, HttpServletRequest request);
 }

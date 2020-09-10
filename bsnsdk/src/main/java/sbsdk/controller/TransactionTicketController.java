@@ -1,6 +1,7 @@
 package sbsdk.controller;
 
 import com.bsnsapi.fabric.chaincodeEntities.Ticket;
+import com.bsnsapi.fabric.vo.ResultVO ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,13 +27,13 @@ public class TransactionTicketController {
     private MyConfig myConfig;
 
     @PostMapping("transactionTicketApi/createTicket")
-    public String createTicket(@RequestBody Ticket ticket, HttpServletRequest request){
+    public ResultVO createTicket(@RequestBody Ticket ticket, HttpServletRequest request){
         try{
             TransactionService.reqChainCode(this.ticketFunName(ticket, request));
-            return TransactionStatus.OK.getStatus();
+            return new ResultVO(1000);
         }catch (Exception e){
             e.printStackTrace();
-            return TransactionStatus.Error.getStatus();
+            return new ResultVO(2000);
         }
     }
 
@@ -46,48 +47,47 @@ public class TransactionTicketController {
     }
 
     @PostMapping("transactionTicketApi/getTicketInfo")
-    public String getTicketInfo(@RequestBody Ticket ticket, HttpServletRequest request){
+    public ResultVO getTicketInfo(@RequestBody Ticket ticket, HttpServletRequest request){
         try{
             ResKeyEscrow resKeyEscrow = TransactionService.reqChainCode(this.ticketFunName(ticket, request));
-            return resKeyEscrow.getCcRes().getCcData();
+            return new ResultVO(1000,resKeyEscrow.getCcRes().getCcData());
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return new ResultVO(2000);
         }
     }
 
     @PostMapping("transactionTicketApi/changeTicket")
-    public String changeTicket(@RequestBody Ticket ticket, HttpServletRequest request){
+    public ResultVO changeTicket(@RequestBody Ticket ticket, HttpServletRequest request){
         try{
             TransactionService.reqChainCode(this.ticketFunName(ticket, request));
-            return TransactionStatus.OK.getStatus();
+            return new ResultVO(1000);
         }catch (Exception e){
             e.printStackTrace();
-            return TransactionStatus.Error.getStatus();
+            return new ResultVO(2000);
         }
     }
 
     @PostMapping("transactionTicketApi/invokeTicket")
-    public String invokeTicket(@RequestBody Ticket ticket, HttpServletRequest request){
+    public ResultVO invokeTicket(@RequestBody Ticket ticket, HttpServletRequest request){
         try{
             TransactionService.reqChainCode(this.ticketFunName(ticket, request));
-            return TransactionStatus.OK.getStatus();
+            return new ResultVO(1000);
         }catch (Exception e){
             e.printStackTrace();
-            return TransactionStatus.Error.getStatus();
+            return new ResultVO(2000);
         }
     }
 
     @PostMapping("transactionTicketApi/getHistoryForTicketStatus")
-    public String getHistoryForTicketStatus(@RequestBody Ticket ticket, HttpServletRequest request){
+    public ResultVO getHistoryForTicketStatus(@RequestBody Ticket ticket, HttpServletRequest request){
         try{
             ResKeyEscrow resKeyEscrow = TransactionService.reqChainCode(this.ticketFunName(ticket, request));
-            //这些封装
 //            return resKeyEscrow.getCcRes().getCcData();
-            return StringSToStringS.convert(resKeyEscrow.getCcRes().getCcData(),"dataInfo",Ticket.class);
+            return new ResultVO(1000,resKeyEscrow.getCcRes().getCcData());
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return new ResultVO(2000);
         }
     }
 }

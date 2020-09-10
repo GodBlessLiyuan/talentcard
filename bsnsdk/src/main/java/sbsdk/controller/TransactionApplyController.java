@@ -1,6 +1,7 @@
 package sbsdk.controller;
 
 import com.bsnsapi.fabric.chaincodeEntities.Application;
+import com.bsnsapi.fabric.vo.ResultVO ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,13 +26,15 @@ public class TransactionApplyController {
     @Autowired
     private MyConfig myConfig;
     @PostMapping("transactionApplyApi/apply")
-    public String apply(@RequestBody Application application, HttpServletRequest request){
+    public ResultVO apply(@RequestBody Application application, HttpServletRequest request){
         try{
             TransactionService.reqChainCode(this.applyFunName(application,request));
-            return TransactionStatus.OK.getStatus();
+//            return TransactionStatus.OK.getStatus();
+            return new ResultVO(1000);
         }catch (Exception e){
             e.printStackTrace();
-            return TransactionStatus.Error.getStatus();
+//            return TransactionStatus.Error.getStatus();
+            return new ResultVO(2000);
         }
     }
 
@@ -45,13 +48,13 @@ public class TransactionApplyController {
     }
 
     @PostMapping("transactionApplyApi/getApplicationInfo")
-    public String getApplicationInfo(@RequestBody Application application,HttpServletRequest request){
+    public ResultVO getApplicationInfo(@RequestBody Application application,HttpServletRequest request){
         try{
             ResKeyEscrow resKeyEscrow = TransactionService.reqChainCode(this.applyFunName(application, request));
-            return resKeyEscrow.getCcRes().getCcData();
+            return new ResultVO(1000,resKeyEscrow.getCcRes().getCcData());
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return new ResultVO(2000);
         }
     }
     /**
@@ -61,13 +64,13 @@ public class TransactionApplyController {
      "txTime":"2020-09-08 10:47:55","isDelete":false}]
      * */
     @PostMapping("transactionApplyApi/getHistoryForApplication")
-    public String getHistoryForApplication(@RequestBody Application application,HttpServletRequest request){
+    public ResultVO getHistoryForApplication(@RequestBody Application application,HttpServletRequest request){
         try{
             ResKeyEscrow resKeyEscrow = TransactionService.reqChainCode(this.applyFunName(application, request));
-            return StringSToStringS.convert(resKeyEscrow.getCcRes().getCcData(),"dataInfo", Application.class);
+            return new ResultVO(1000,resKeyEscrow.getCcRes().getCcData());
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return new ResultVO(2000);
         }
     }
 }

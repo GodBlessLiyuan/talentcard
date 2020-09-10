@@ -2,6 +2,7 @@ package com.bsnsapi.fabric.api;
 
 import com.bsnsapi.fabric.chaincodeEntities.Application;
 import com.bsnsapi.fabric.chaincodeEntities.Ticket;
+import com.bsnsapi.fabric.vo.ResultVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -14,17 +15,17 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface TransactionTicketApi {
     @PostMapping("transactionTicketApi/createTicket")
-    String createTicket(@RequestBody Ticket ticket, HttpServletRequest request);
+    ResultVO createTicket(@RequestBody Ticket ticket, HttpServletRequest request);
 
     @PostMapping("transactionTicketApi/getTicketInfo")
-    String getTicketInfo(@RequestBody Ticket ticket, HttpServletRequest request);
+    ResultVO getTicketInfo(@RequestBody Ticket ticket, HttpServletRequest request);
 
     @PostMapping("transactionTicketApi/changeTicket")
-    String changeTicket(@RequestBody Ticket ticket, HttpServletRequest request);
+    ResultVO changeTicket(@RequestBody Ticket ticket, HttpServletRequest request);
 
     @PostMapping("transactionTicketApi/invokeTicket")
-    String invokeTicket(@RequestBody Ticket ticket, HttpServletRequest request);
+    ResultVO invokeTicket(@RequestBody Ticket ticket, HttpServletRequest request);
 
     @PostMapping("transactionTicketApi/getHistoryForTicketStatus")
-    String getHistoryForTicketStatus(@RequestBody Ticket ticket, HttpServletRequest request);
+    ResultVO getHistoryForTicketStatus(@RequestBody Ticket ticket, HttpServletRequest request);
 }

@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class StringSToStringS {
     public static <T> String convert(String paras, String lieName, Class<T> clazz) {
+//        System.out.println(paras);
         List<JSONObject> lists = StringToObjUtil.strToObj(paras, List.class);
         List<T> list = new ArrayList<>(lists.size());
         for (JSONObject jsonObject : lists) {
@@ -28,6 +29,8 @@ public class StringSToStringS {
                 if (!jsonObject.getBoolean("isDelete")) {
                     T dataInfo = JSON.parseObject((String) jsonObject.get(lieName), clazz);
                     list.add(dataInfo);
+                }else{
+                    list.add(null);
                 }
             }else {
                 T dataInfo = JSON.parseObject((String) jsonObject.get(lieName), clazz);
