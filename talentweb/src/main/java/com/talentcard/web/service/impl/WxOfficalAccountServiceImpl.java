@@ -68,25 +68,26 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         //信息类型
         messageDTO.setKeyword1("未申请");
         messageDTO.setKeyword2("申请后可享受政策补贴，请及时申请哦~");
-        messageDTO.setUrl(WebParameterUtil.getIndexUrl()+"/activity.html/#/activity-talent/detail?feid=30&status=5");
+        messageDTO.setUrl(WebParameterUtil.getIndexUrl() + "/activity.html/#/activity-talent/detail?feid=30&status=5");
 
         try {
             int result = sendTemplateMessage(messageDTO, notApplyPolicy);
             return result;
-        }catch (Exception e){
-            logger.error("send message for messToNotApply is error {}",e);
+        } catch (Exception e) {
+            logger.error("send message for messToNotApply is error {}", e);
             return -1;
         }
     }
 
     /**
      * 个人申请活动通过后，发送审批通过的通知
+     *
      * @param openId
      * @param eventName
      * @return
      */
     @Override
-    public int messToEventAgree(String openId, String eventName, long feId,int status){
+    public int messToEventAgree(String openId, String eventName, long feId, int status) {
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
         //openId
@@ -99,15 +100,15 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword2("请您按时举办活动，如未能如期举行，请提前取消。");
         messageDTO.setRemark("审批意见：同意活动申请。");
 
-        String url = String.format("%s/activity.html/#/activity-talent/detail?feid=%s&status=%s",WebParameterUtil.getIndexUrl(),
-                feId,status);
+        String url = String.format("%s/activity.html/#/activity-talent/detail?feid=%s&status=%s", WebParameterUtil.getIndexUrl(),
+                feId, status);
         messageDTO.setUrl(url);
 
         try {
             int result = sendTemplateMessage(messageDTO, eventPass);
             return result;
-        }catch (Exception e){
-            logger.error("send message for messToEventAgree is error {}",e);
+        } catch (Exception e) {
+            logger.error("send message for messToEventAgree is error {}", e);
             return -1;
         }
     }
@@ -115,6 +116,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
 
     /**
      * 个人申请活动拒绝后，发送审批拒绝的通知
+     *
      * @param openId
      * @param talentName
      * @param eventName
@@ -122,7 +124,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
      * @return
      */
     @Override
-    public int messToEventReject(String openId,String talentName, String eventName, String opinion, long feId,int status){
+    public int messToEventReject(String openId, String talentName, String eventName, String opinion, long feId, int status) {
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
         //openId
@@ -132,57 +134,89 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setFirst(first);
         //信息类型
         messageDTO.setKeyword1(talentName);
-        messageDTO.setKeyword2(DateUtil.date2Str(new Date(),DateUtil.YMD_HMS));
+        messageDTO.setKeyword2(DateUtil.date2Str(new Date(), DateUtil.YMD_HMS));
         messageDTO.setKeyword3("驳回");
         messageDTO.setKeyword4("不满足活动要求。");
         messageDTO.setRemark(opinion);
 
-        String url = String.format("%s/activity.html/#/activity-talent/detail?feid=%s&status=%s",WebParameterUtil.getIndexUrl(),
-                feId,status);
+        String url = String.format("%s/activity.html/#/activity-talent/detail?feid=%s&status=%s", WebParameterUtil.getIndexUrl(),
+                feId, status);
         messageDTO.setUrl(url);
 
         try {
             int result = sendTemplateMessage(messageDTO, eventPass);
             return result;
-        }catch (Exception e){
-            logger.error("send message for messToEventPass is error {}",e);
+        } catch (Exception e) {
+            logger.error("send message for messToEventPass is error {}", e);
             return -1;
         }
     }
 
     /**
      * 后台管理员取消活动
+     *
      * @param openId
      * @param eventName
      * @param opinion
      * @return
      */
     @Override
-    public int messToEventCancel(String openId, String eventName,String opinion){
+    public int messToEventCancel(String openId, String eventName, String opinion) {
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
         //openId
         messageDTO.setOpenid(openId);
-        String first = String.format("抱歉，您报名的“%s”已取消，给您造成不便,敬请谅解",eventName);
+        String first = String.format("抱歉，您报名的“%s”已取消，给您造成不便,敬请谅解", eventName);
         messageDTO.setFirst(first);
         //信息类型
         messageDTO.setKeyword1("已取消");
         messageDTO.setKeyword2("点击查看活动详情");
         messageDTO.setKeyword3("驳回");
         messageDTO.setKeyword4("不满足活动要求。");
-        messageDTO.setRemark("取消原因："+opinion);
+        messageDTO.setRemark("取消原因：" + opinion);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
 
         try {
             int result = sendTemplateMessage(messageDTO, eventPass);
             return result;
-        }catch (Exception e){
-            logger.error("send message for messToEventPass is error {}",e);
+        } catch (Exception e) {
+            logger.error("send message for messToEventPass is error {}", e);
             return -1;
         }
     }
 
+    /**
+     * 后台管理员取消活动
+     *
+     * @param openId
+     * @param eventName
+     * @param opinion
+     * @return
+     */
+    @Override
+    public int messToBackEndEventCancel(String openId, Long eventId, String eventName, String opinion) {
+        //用消息模板推送微信消息
+        MessageDTO messageDTO = new MessageDTO();
+        //openId
+        messageDTO.setOpenid(openId);
+        String first = String.format("抱歉，您申请的“%s”已取消，给您造成不便,敬请谅解", eventName);
+        messageDTO.setFirst(first);
+        //信息类型
+        messageDTO.setKeyword1("已取消");
+        messageDTO.setKeyword2("点击查看活动详情");
+        messageDTO.setKeyword3("驳回");
+        messageDTO.setKeyword4("不满足活动要求。");
+        messageDTO.setRemark("取消原因：" + opinion);
+        messageDTO.setUrl(WebParameterUtil.getEventDetail() + "?eventId=" + eventId + "&type=2");
 
+        try {
+            int result = sendTemplateMessage(messageDTO, eventPass);
+            return result;
+        } catch (Exception e) {
+            logger.error("send message for messToEventPass is error {}", e);
+            return -1;
+        }
+    }
 
     public int sendTemplateMessage(MessageDTO messageDTO, String template) {
         if (messageDTO == null) {

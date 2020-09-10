@@ -21,6 +21,7 @@ public class WebParameterUtil {
     private static String freeBenefitsUrl;
     private static String appBrandPass;
     private static String appBrandUserName;
+    private static String eventDetail;
 
     public static String getIndexUrl() {
         return indexUrl;
@@ -60,6 +61,10 @@ public class WebParameterUtil {
 
     public static String getAppBrandUserName() {
         return appBrandUserName;
+    }
+
+    public static String getEventDetail() {
+        return eventDetail;
     }
 
     @Value("${project.indexUrl}")
@@ -110,5 +115,10 @@ public class WebParameterUtil {
     @Value("${project.appBrandUserName}")
     private void setAppBrandUserName(String appBrandUserName) {
         WebParameterUtil.appBrandUserName = appBrandUserName;
+    }
+
+    @Value("${project.eventDetail}")
+    private void setEventDetail(String eventDetail) {
+        WebParameterUtil.eventDetail = eventDetail;
     }
 }

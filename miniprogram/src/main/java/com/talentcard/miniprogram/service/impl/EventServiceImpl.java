@@ -71,7 +71,7 @@ public class EventServiceImpl implements IEventService {
         //报名过
         if (evEventTalentPO == null) {
             evEventTalentPO = new EvEventTalentPO();
-            //新增人才表
+            //新增人才活动表
             evEventTalentPO.setCreateTime(new Date());
             evEventTalentPO.setDr((byte) 1);
             evEventTalentPO.setEventId(eventEnrollDTO.getEventId());
@@ -80,6 +80,8 @@ public class EventServiceImpl implements IEventService {
             evEventTalentPO.setStatus((byte) 1);
             evEventTalentMapper.insertSelective(evEventTalentPO);
         } else {
+            //更新人才活动表
+            evEventTalentPO.setCreateTime(new Date());
             evEventTalentPO.setDr((byte) 1);
             evEventTalentPO.setEventId(eventEnrollDTO.getEventId());
             evEventTalentPO.setOpenId(eventEnrollDTO.getOpenId());
@@ -136,12 +138,18 @@ public class EventServiceImpl implements IEventService {
                 return new ResultVO(2500);
             }
             if (talentPO.getSex() == 1) {
-                evEventPO.setCurrentMale(evEventPO.getCurrentMale() - 1);
+                if (evEventPO.getCurrentMale() > 0) {
+                    evEventPO.setCurrentMale(evEventPO.getCurrentMale() - 1);
+                }
             } else {
-                evEventPO.setCurrentFemale(evEventPO.getCurrentFemale() - 1);
+                if (evEventPO.getCurrentFemale() > 0) {
+                    evEventPO.setCurrentFemale(evEventPO.getCurrentFemale() - 1);
+                }
             }
         }
-        evEventPO.setCurrentNum(evEventPO.getCurrentNum() - 1);
+        if (evEventPO.getCurrentNum() > 0) {
+            evEventPO.setCurrentNum(evEventPO.getCurrentNum() - 1);
+        }
         evEventMapper.updateByPrimaryKeySelective(evEventPO);
         return new ResultVO(1000);
     }

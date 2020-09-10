@@ -94,7 +94,7 @@ public class EventController {
                                     @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                     @RequestParam(value = "eventId") Long eventId,
                                     @RequestParam(value = "name", defaultValue = "") String name,
-                                    @RequestParam(value = "workLocation", defaultValue = "") String workLocation,
+                                    @RequestParam(value = "workUnit", defaultValue = "") String workLocation,
                                     @RequestParam(value = "sex", required = false) Byte sex,
                                     @RequestParam(value = "status", required = false) Byte status) {
         if (!StringUtils.isEmpty(name)) {
@@ -111,7 +111,7 @@ public class EventController {
                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                      @RequestParam(value = "eventId") Long eventId,
                                      @RequestParam(value = "name", defaultValue = "") String name,
-                                     @RequestParam(value = "workLocation", defaultValue = "") String workLocation,
+                                     @RequestParam(value = "workUnit", defaultValue = "") String workLocation,
                                      @RequestParam(value = "sex", required = false) Byte sex,
                                      @RequestParam(value = "status", required = false) Byte status,
                                      HttpServletResponse httpServletResponse) {
