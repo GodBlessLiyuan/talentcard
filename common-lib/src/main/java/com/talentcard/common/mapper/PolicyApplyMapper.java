@@ -44,10 +44,10 @@ public interface PolicyApplyMapper extends BaseMapper<PolicyApplyPO, Long> {
     /**
      * 计算相关状态的数量
      *
-     * @param status
+     * @param roleId
      * @return
      */
-    Long countByStatus(Byte status);
+    Long countWaitApproval(@Param("roleId")Long roleId);
 
     /**
      * 计算具体责任单位相关状态的申请数量
