@@ -525,7 +525,9 @@ public class DataMigrationController {
                     int firstcell = row.getFirstCellNum();
                     //创建一个集合，用处将每一行的每一列数据都存入集合中
                     for (int j = firstcell; j < 9; j++) {
-                        excelData[i - 1][j] = row.getCell(j).getStringCellValue();
+                        if (row.getCell(j) != null) {
+                            excelData[i - 1][j] = row.getCell(j).getStringCellValue();
+                        }
                     }
                     //证件号
                     Cell card = row.getCell(3);
