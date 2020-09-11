@@ -3,6 +3,7 @@ package com.talentcard.miniprogram.service.impl;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.EvFrontendEventBO;
 import com.talentcard.common.constant.EventConstant;
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.DateUtil;
@@ -24,10 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpSession;
 
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.talentcard.common.utils.DateUtil.YMD;
 import static com.talentcard.common.utils.DateUtil.YMD_HMS;
@@ -159,6 +157,11 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
 
     @Override
     public ResultVO pageQuery(Map<String, Object> reqData) {
+        //判断如果没有openid则返回空，即查不出数据
+        if(reqData.get("openId")==null||TalentConstant.isDefaultTalent(reqData.get("openId").toString())){
+            List<EvFrontendEventBO> evFrontendEventBOS=new ArrayList<>();
+            return new ResultVO(1000, evFrontendEventBOS);
+        }
         Page<EvFrontendEventBO> page = PageHelper.startPage(reqData);
         List<EvFrontendEventBO> evFrontendEventBOS = evFrontendEventMapper.pageQuery(reqData);
         return new ResultVO(1000, new PageInfoVO<>(page.getTotal(), TalentActivitiesVO.convert(evFrontendEventBOS)));
