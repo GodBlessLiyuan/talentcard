@@ -30,7 +30,7 @@ public interface IWxOfficalAccountService {
      * @param eventName
      * @return
      */
-    int messToEventAgree(String openId, String eventName, long feId, int status);
+    int messToEventAgree(String openId, String eventName, String opinion,long feId, int status);
 
 
     /**
