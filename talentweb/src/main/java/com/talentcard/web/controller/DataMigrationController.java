@@ -513,7 +513,7 @@ public class DataMigrationController {
             errors.put(1, new ArrayList<>());
             //未更新数据
             errors.put(2, new ArrayList<>());
-            String[][] excelData = new String[lastrow][10];
+            String[][] excelData = new String[lastrow + 2][10];
 
             int fixTotal = 0;
             //循环行数依次获取列数
@@ -529,12 +529,17 @@ public class DataMigrationController {
                             if (row.getCell(j) != null) {
                                 excelData[i - 1][j] = row.getCell(j).getStringCellValue();
                             }
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                     //证件号
                     Cell card = row.getCell(3);
+                    if (card == null) {
+                        continue;
+                    } else if (StringUtils.isEmpty(card.getStringCellValue())) {
+                        continue;
+                    }
                     TalentPO po = talentMapper.selectByIdCard(card.getStringCellValue());
 
                     if (po != null) {

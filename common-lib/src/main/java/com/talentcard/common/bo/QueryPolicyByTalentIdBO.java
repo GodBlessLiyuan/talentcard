@@ -21,7 +21,9 @@ public class QueryPolicyByTalentIdBO {
     private Date startTime;
     //政策活动结束时间
     private Date endTime;
-    //状态 0：未申请；1：已同意；2：已驳回；3：待审批；10：不可申请（互斥申请政策存在）
+    /**
+     * 状态 11：未申请；1：已同意；2：已驳回；3：待审批；10：不可申请（互斥申请政策存在）
+     */
     private Byte status;
     //实际状态 1可申请；2未开启；3已失效 5:审批中；10不可申请
     private Byte actualStatus;
