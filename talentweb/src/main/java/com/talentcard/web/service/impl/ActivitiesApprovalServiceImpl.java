@@ -102,7 +102,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
         evFrontendEventApprovalMapper.insertSelective(evFrontendEventApprovalPO);
         //取消活动后释放场地占用时间段
         //根据场地和日期查询所有占用的时间段
-        Map<String, Object> map = new HashMap<>(1);
+        Map<String, Object> map = new HashMap<>(2);
         map.put("efid", evFrontendEventPO.getEfId().toString());
         map.put("date", DateUtil.date2Str(evFrontendEventPO.getEventDate(), YMD));
         EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(map);
