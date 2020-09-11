@@ -16,6 +16,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -527,7 +528,15 @@ public class DataMigrationController {
                     for (int j = firstcell; j < 9; j++) {
                         try {
                             if (row.getCell(j) != null) {
-                                excelData[i - 1][j] = row.getCell(j).getStringCellValue();
+                                Cell cell = row.getCell(j);
+                                if(cell.getCellType()==CellType.STRING){
+                                    excelData[i - 1][j] = row.getCell(j).getStringCellValue();
+                                }else if(cell.getCellType()==CellType.NUMERIC){
+                                    excelData[i - 1][j] = String.valueOf(cell.getNumericCellValue());
+                                }else if(cell.getCellType()==CellType.FORMULA){
+                                    excelData[i - 1][j] = String.valueOf(cell.getCellFormula());
+                                }
+
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
