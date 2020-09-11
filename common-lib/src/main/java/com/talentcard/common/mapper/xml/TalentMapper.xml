@@ -800,6 +800,12 @@
         where id_card = #{idCard,jdbcType=CHAR}
     </select>
 
+    <select id="selectByPassport" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_talent
+        where passport = #{passport,jdbcType=CHAR}
+    </select>
     <select id="selectByOpenIdNotDr" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -824,4 +830,6 @@
         select talent_id as talentId, open_id as openId from t_talent
         where talent_id>#{unSendID} and <![CDATA[ create_time<=#{time} ]]> and status=#{status} and dr=1
     </select>
+
+
 </mapper>

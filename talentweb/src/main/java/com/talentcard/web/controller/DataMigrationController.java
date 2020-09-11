@@ -542,6 +542,7 @@ public class DataMigrationController {
                             e.printStackTrace();
                         }
                     }
+                    Cell typeCard = row.getCell(2);
                     //证件号
                     Cell card = row.getCell(3);
                     if (card == null) {
@@ -549,7 +550,16 @@ public class DataMigrationController {
                     } else if (StringUtils.isEmpty(card.getStringCellValue())) {
                         continue;
                     }
-                    TalentPO po = talentMapper.selectByIdCard(card.getStringCellValue());
+                    TalentPO po = null;
+                    if("护照".equals(typeCard.getStringCellValue())){
+                        po = talentMapper.selectByPassport(card.getStringCellValue());
+                    }else {
+                        //身份证
+                        po = talentMapper.selectByIdCard(card.getStringCellValue());
+                    }
+
+
+
 
                     if (po != null) {
                         SocialSecurityPO socialSecurityPO = this.socialSecurityMapper.selectByPrimaryKey(po.getTalentId());
