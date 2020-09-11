@@ -144,7 +144,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setUrl(url);
 
         try {
-            int result = sendTemplateMessage(messageDTO, eventPass);
+            int result = sendTemplateMessage(messageDTO, eventReject);
             return result;
         } catch (Exception e) {
             logger.error("send message for messToEventPass is error {}", e);
