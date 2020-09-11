@@ -102,7 +102,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
         evFrontendEventApprovalMapper.insertSelective(evFrontendEventApprovalPO);
         //取消活动后释放场地占用时间段
         //根据场地和日期查询所有占用的时间段
-        Map<String, Object> map = new HashMap<>(1);
+        Map<String, Object> map = new HashMap<>(2);
         map.put("efid", evFrontendEventPO.getEfId().toString());
         map.put("date", DateUtil.date2Str(evFrontendEventPO.getEventDate(), YMD));
         EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(map);
@@ -208,7 +208,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             String opinion = reqData.get("opinion").toString();
             wxOfficalAccountService.messToEventAgree(openId, activityName, opinion, feId, EventConstant.AGREE);
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.F_TalentActivities
-                    , "审批活动通过\"%s\"", activityName);
+                    , "审批小程序中提交的活动申请：\"%s\"", activityName);
         }
         if ("2".equals(reqData.get("result").toString())) {
             evFrontendEventApprovalPO.setResult((byte) 2);
@@ -241,7 +241,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             String opinion = reqData.get("opinion").toString();
             wxOfficalAccountService.messToEventReject(openId, talentName, activityName, opinion, feId, EventConstant.REJECT);
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
-                    , "审批活动驳回\"%s\"", activityName);
+                    , "审批小程序中提交的活动申请：\"%s\"", activityName);
         }
         return new ResultVO(1000);
     }
