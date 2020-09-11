@@ -525,8 +525,12 @@ public class DataMigrationController {
                     int firstcell = row.getFirstCellNum();
                     //创建一个集合，用处将每一行的每一列数据都存入集合中
                     for (int j = firstcell; j < 9; j++) {
-                        if (row.getCell(j) != null) {
-                            excelData[i - 1][j] = row.getCell(j).getStringCellValue();
+                        try {
+                            if (row.getCell(j) != null) {
+                                excelData[i - 1][j] = row.getCell(j).getStringCellValue();
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
                     }
                     //证件号
@@ -612,10 +616,10 @@ public class DataMigrationController {
 
                         this.socialSecurityMapper.updateByPrimaryKey(socialSecurityPO);
                         if (needUpdate) {
-                            excelData[firstrow][9] = "更新数据";
+                            excelData[i][9] = "更新数据";
                         }
                     } else {
-                        excelData[firstrow][9] = "未查到对应用户";
+                        excelData[i][9] = "未查到对应用户";
                     }
                 }
             }
