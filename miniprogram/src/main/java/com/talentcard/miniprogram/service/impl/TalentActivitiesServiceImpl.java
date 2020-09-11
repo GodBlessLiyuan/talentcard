@@ -3,6 +3,7 @@ package com.talentcard.miniprogram.service.impl;
 import com.github.pagehelper.Page;
 import com.talentcard.common.bo.EvFrontendEventBO;
 import com.talentcard.common.constant.EventConstant;
+import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.DateUtil;
@@ -24,10 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpSession;
 
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.talentcard.common.utils.DateUtil.YMD;
 import static com.talentcard.common.utils.DateUtil.YMD_HMS;
@@ -159,6 +157,10 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
 
     @Override
     public ResultVO pageQuery(Map<String, Object> reqData) {
+        //判断如果没有openid则返回空，即查不出数据
+        if (reqData.get("openId") == null || TalentConstant.isDefaultTalent(reqData.get("openId").toString())) {
+            return new ResultVO(1000, new ArrayList<EvFrontendEventBO>(0));
+        }
         Page<EvFrontendEventBO> page = PageHelper.startPage(reqData);
         List<EvFrontendEventBO> evFrontendEventBOS = evFrontendEventMapper.pageQuery(reqData);
         return new ResultVO(1000, new PageInfoVO<>(page.getTotal(), TalentActivitiesVO.convert(evFrontendEventBOS)));
@@ -171,7 +173,7 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         //首先查询前台是否已经取消（根据活动id查询出后台是否取消状态）
         EvFrontendEventPO evFrontendEventPO = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
 
-        if(evFrontendEventPO ==  null){
+        if (evFrontendEventPO == null) {
             return new ResultVO(2000);
         }
         //如果后台已经取消
@@ -205,8 +207,8 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         map.put("date", DateUtil.date2Str(evFrontendEventPO.getEventDate(), YMD));
         EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(map);
 
-        if(evEventTimePO != null){
-            String newInterval =  StringSortUtil.sort(evEventTimePO.getTimeInterval(),evFrontendEventPO.getTimeInterval(),"");
+        if (evEventTimePO != null) {
+            String newInterval = StringSortUtil.sort(evEventTimePO.getTimeInterval(), evFrontendEventPO.getTimeInterval(), "");
             //将新的时间段更新会时间占用表中
             evEventTimePO.setTimeInterval(newInterval);
             evEventTimeMapper.updateByPrimaryKey(evEventTimePO);
