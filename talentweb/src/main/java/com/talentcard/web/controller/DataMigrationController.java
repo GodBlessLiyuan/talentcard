@@ -558,9 +558,6 @@ public class DataMigrationController {
                         po = talentMapper.selectByIdCard(card.getStringCellValue());
                     }
 
-
-
-
                     if (po != null) {
                         SocialSecurityPO socialSecurityPO = this.socialSecurityMapper.selectByPrimaryKey(po.getTalentId());
                         if (socialSecurityPO == null) {
@@ -610,6 +607,7 @@ public class DataMigrationController {
                             socialSecurityPO.setSecurityTime(null);
                         }
 
+                        socialSecurityPO.setCheckTime(DateUtil.str2Date(checktime, DateUtil.YMD));
 
                         Cell type = row.getCell(8);
                         if (type != null && !StringUtils.isEmpty(type.getStringCellValue())) {
@@ -648,7 +646,7 @@ public class DataMigrationController {
                 }
             }
             fis.close();
-            if (fixTotal <= 0) {
+            if (fixTotal > 0) {
                 logService.insertActionRecord(1, "system", OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity,
                         "修改%s个人才的现工作单位为参保单位", String.valueOf(fixTotal));
             }
