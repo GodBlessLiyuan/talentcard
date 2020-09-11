@@ -529,11 +529,11 @@ public class DataMigrationController {
                         try {
                             if (row.getCell(j) != null) {
                                 Cell cell = row.getCell(j);
-                                if(cell.getCellType()==CellType.STRING){
+                                if (cell.getCellType() == CellType.STRING) {
                                     excelData[i - 1][j] = row.getCell(j).getStringCellValue();
-                                }else if(cell.getCellType()==CellType.NUMERIC){
+                                } else if (cell.getCellType() == CellType.NUMERIC) {
                                     excelData[i - 1][j] = String.valueOf(cell.getNumericCellValue());
-                                }else if(cell.getCellType()==CellType.FORMULA){
+                                } else if (cell.getCellType() == CellType.FORMULA) {
                                     excelData[i - 1][j] = String.valueOf(cell.getCellFormula());
                                 }
 
@@ -630,10 +630,10 @@ public class DataMigrationController {
 
                         this.socialSecurityMapper.updateByPrimaryKey(socialSecurityPO);
                         if (needUpdate) {
-                            excelData[i][9] = "更新数据";
+                            excelData[i - 1][9] = "更新数据";
                         }
                     } else {
-                        excelData[i][9] = "未查到对应用户";
+                        excelData[i - 1][9] = "未查到对应用户";
                     }
                 }
             }
