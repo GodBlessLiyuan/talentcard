@@ -11,6 +11,7 @@ import com.talentcard.common.utils.StringSortUtil;
 import com.talentcard.common.utils.VerificationCodeUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
+import com.talentcard.miniprogram.constant.ApprovalStatusConstant;
 import com.talentcard.miniprogram.dto.TalentActivitiesDTO;
 import com.talentcard.miniprogram.service.ITalentActivitiesService;
 import com.talentcard.miniprogram.vo.TalentActivitiesVO;
@@ -188,6 +189,15 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
             evEventQueryPO.setUpdateTime(new Date());
             evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
         }
+        //将活动取消的记录插入活动审批表中
+        EvFrontendEventApprovalPO evFrontendEventApprovalPO = new EvFrontendEventApprovalPO();
+        evFrontendEventApprovalPO.setFeId(Long.parseLong(reqData.get("feid").toString()));
+        evFrontendEventApprovalPO.setUserId((Long) session.getAttribute("userId"));
+        evFrontendEventApprovalPO.setUsername((String) session.getAttribute("username"));
+        evFrontendEventApprovalPO.setType(ApprovalStatusConstant.CANCEL);//活动取消
+        evFrontendEventApprovalPO.setCreateTime(new Date());
+        evFrontendEventApprovalPO.setUpdateTime(new Date());
+        evFrontendEventApprovalMapper.insertSelective(evFrontendEventApprovalPO);
         //取消活动后释放场地占用时间段
         //根据场地和日期查询所有占用的时间段
         Map<String, Object> map = new HashMap<>(1);

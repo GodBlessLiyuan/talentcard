@@ -243,12 +243,15 @@
             and (`status` = 3 or create_time between date_sub(now(), interval #{month,jdbcType=BIGINT} month) and now())
         </if>
     </select>
-    <select id="countByStatus" resultType="java.lang.Long">
+    <select id="countWaitApproval" resultType="java.lang.Long">
         select count(pa_id)
         from t_policy_apply pa
         left join t_policy p on pa.policy_id = p.policy_id
-        where pa.`status` = #{status,jdbcType=TINYINT}
+        where pa.`status` = 3
         and p.dr = 1
+        <if test="roleId != null and roleId !=''">
+        and p.role_id = #{roleId,jdbcType=BIGINT}
+        </if>
     </select>
     <select id="applyNumCount" parameterType="com.talentcard.common.dto.ApplyNumCountDTO" resultType="com.talentcard.common.bo.ApplyNumCountBO">
         select
@@ -308,5 +311,20 @@
             </if>
         </where>
         order by pa_id desc
+    </select>
+    <select id="selectPaidByMap" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy_apply
+        <where>
+            <if test="talentId != null and talentId != ''">
+                and talent_id= #{talentId,jdbcType=BIGINT}
+            </if>
+            <if test="policyId != null and policyId != ''">
+                and policy_id= #{policyId,jdbcType=BIGINT}
+            </if>
+           and status = 3
+        </where>
+        order by pa_id desc limit 1
     </select>
 </mapper>

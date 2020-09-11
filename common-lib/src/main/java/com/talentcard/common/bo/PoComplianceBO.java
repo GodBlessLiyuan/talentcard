@@ -58,4 +58,8 @@ public class PoComplianceBO extends PoCompliancePO {
      * bankid
      */
     private String bankId;
+    /**
+     * 政策申请id
+     */
+    private Long paId;
 }

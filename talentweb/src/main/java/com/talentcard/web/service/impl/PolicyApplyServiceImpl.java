@@ -1,6 +1,7 @@
 package com.talentcard.web.service.impl;
 
 import com.github.pagehelper.Page;
+import com.netflix.discovery.converters.Auto;
 import com.talentcard.common.bo.ApplyNumCountBO;
 import com.talentcard.common.bo.HavingApprovePolicyBO;
 import com.talentcard.common.bo.PolicyApplyBO;
@@ -61,6 +62,8 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     PolicyMapper policyMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    RoleMapper roleMapper;
     @Autowired
     private IBestPolicyToTalentService iBestPolicyToTalentService;
     @Autowired
@@ -173,8 +176,23 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     }
 
     @Override
-    public ResultVO count() {
-        Long count = policyApplyMapper.countByStatus((byte) 3);
+    public ResultVO count(HttpSession httpSession) {
+        //从session中获取userId的值
+        Long userId = (Long) httpSession.getAttribute("userId");
+        UserPO userPO = userMapper.selectByPrimaryKey(userId);
+        if (userPO == null) {
+            return new ResultVO(2741, "查无此角色！");
+        }
+        RolePO rolePO = roleMapper.selectByPrimaryKey(userPO.getRoleId());
+        if (rolePO == null) {
+            return new ResultVO(2741, "查无此角色！");
+        }
+        Long roleId = null;
+        //政策角色
+        if (rolePO.getRoleType() == 2) {
+            roleId = rolePO.getRoleId();
+        }
+        Long count = policyApplyMapper.countWaitApproval(roleId);
         return new ResultVO<>(1000, count);
     }
 
@@ -303,7 +321,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         //模版编号
         messageDTO.setTemplateId(4);
         //结束
-        String remark = "变更原因：您的个人信息有待重新核实。";
+        String remark = "操作原因：" + opinion;
         messageDTO.setRemark(remark);
         messageDTO.setUrl(WebParameterUtil.getIndexUrl());
         MessageUtil.sendTemplateMessage(messageDTO);
