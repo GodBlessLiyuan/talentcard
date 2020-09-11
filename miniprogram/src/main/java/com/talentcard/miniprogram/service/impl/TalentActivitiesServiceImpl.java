@@ -139,7 +139,7 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         //根据活动场地和活动的日期进行活动场地占用情况的插入或更新
         //判断是插入还是更新
         //如果根据活动场地和日期没有查到数据，则进行插入操作,否则进行时间段合并进行更新
-        Map<String, Object> map = new HashMap(1);
+        Map<String, Object> map = new HashMap(2);
         map.put("efid", dto.getEfid());
         map.put("date", dto.getDate());
         EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(map);
@@ -200,7 +200,7 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         evFrontendEventApprovalMapper.insertSelective(evFrontendEventApprovalPO);
         //取消活动后释放场地占用时间段
         //根据场地和日期查询所有占用的时间段
-        Map<String, Object> map = new HashMap<>(1);
+        Map<String, Object> map = new HashMap<>(2);
         map.put("efid", evFrontendEventPO.getEfId().toString());
         map.put("date", DateUtil.date2Str(evFrontendEventPO.getEventDate(), YMD));
         EvEventTimePO evEventTimePO = evEventTimeMapper.queryByPlaceAndDate(map);

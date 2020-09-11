@@ -278,7 +278,7 @@
     FROM
     ev_frontend_event f
     <where>
-      <if test="oId != null and oId !=''">and f.open_id = #{oId,jdbcType=CHAR}</if>
+      <if test="oid != null and oid !=''">and f.open_id = #{oid,jdbcType=CHAR}</if>
     </where>
     order by find_in_set(f.`status`,'1,2,3,4,5') asc, update_time desc
   </select>
