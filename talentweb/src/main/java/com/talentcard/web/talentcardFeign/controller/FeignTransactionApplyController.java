@@ -21,16 +21,16 @@ public class FeignTransactionApplyController {
     private TransactionApplyClient transactionApplyClient;
     @PostMapping("transactionApplyApi/apply")
     ResultVO apply(@RequestBody Application application, HttpServletRequest request){
-        return transactionApplyClient.apply(application);
+        return transactionApplyClient.apply(application,request);
     }
 
     @PostMapping("transactionApplyApi/getApplicationInfo")
     ResultVO getApplicationInfo(@RequestBody Application application, HttpServletRequest request){
-        return transactionApplyClient.getApplicationInfo(application);
+        return transactionApplyClient.getApplicationInfo(application,request);
     }
 
     @PostMapping("transactionApplyApi/getHistoryForApplication")
     ResultVO getHistoryForApplication(@RequestBody Application application, HttpServletRequest request){
-        return transactionApplyClient.getHistoryForApplication(application);
+        return transactionApplyClient.getHistoryForApplication(application,request);
     }
 }
