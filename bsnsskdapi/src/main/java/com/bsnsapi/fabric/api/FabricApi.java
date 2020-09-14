@@ -13,6 +13,7 @@ import java.io.IOException;
  * @author: liyuan
  * @data 2020-09-03 20:10
  */
+@Deprecated
 public interface FabricApi {
     @PostMapping("fabric/userRegister")
     ResultVO userRegister(@RequestBody String reqUserRegister) throws IOException;
