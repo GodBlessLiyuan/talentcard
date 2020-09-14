@@ -82,7 +82,7 @@ public class PolicyServiceImpl implements IPolicyService {
         List<Integer> existQualities = profQualityMapper.queryNameByTalentId(talentId);
         List<Long> existHonours = talentHonourMapper.queryNameByTalentId(talentId);
         String[] existCategories = null;
-        if (null != talentPO.getCategory()) {
+        if (!StringUtils.isEmpty(talentPO.getCategory())) {
             existCategories = talentPO.getCategory().split(",");
         }
 
