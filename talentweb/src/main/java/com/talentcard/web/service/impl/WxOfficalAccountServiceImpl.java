@@ -101,7 +101,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword2("请您按时举办活动，如未能如期举行，请提前取消。");
         messageDTO.setRemark("审批意见：" + opinion);
         //微信推送消息详情页
-        String url = String.format(FilePathConfig.getStaticPublicWxBasePath()+"#/activity-talent/detail?feid=%s&status=%s", feId, status);
+        String url = String.format(FilePathConfig.getStaticPublicWxBasePath()+"activity.html#/activity-talent/detail?feid=%s&status=%s&appid=%s", feId, status,openId);
         messageDTO.setUrl(url);
 
         try {
@@ -139,7 +139,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword4(opinion);
         messageDTO.setRemark("您可以按照驳回意见修改后重新提交");
         //微信推送消息详情页
-        String url = String.format(FilePathConfig.getStaticPublicWxBasePath()+"#/activity-talent/detail?feid=%s&status=%s", feId, status);
+        String url = String.format(FilePathConfig.getStaticPublicWxBasePath()+"activity.html#/activity-talent/detail?feid=%s&status=%s&appid=%s", feId, status,openId);
         messageDTO.setUrl(url);
 
         try {
@@ -152,7 +152,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
     }
 
     /**
-     * 后台管理员取消活动
+     * 后台管理员取消活动的小程序详情页
      *
      * @param openId     openid
      * @param eventName  活动名称
@@ -176,7 +176,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword4("不满足活动要求。");
         messageDTO.setRemark("取消原因：" + opinion);
         //微信推送消息详情页
-        String url = String.format(FilePathConfig.getStaticPublicWxBasePath()+"#/activity-talent/detail?feid=%s&status=%s", feId, status);
+        String url = String.format(FilePathConfig.getStaticPublicWxBasePath()+"activity.html#/activity-talent/detail?feid=%s&status=%s&appid=%s", feId, status,openId);
         messageDTO.setUrl(url);
 
         try {
