@@ -16,6 +16,7 @@ import java.io.IOException;
  @FeignClient("item-service")
  public interface BrandClient extends BrandApi{}
  */
+@Deprecated
 public interface TransactionApi {
     @PostMapping("transaction/reqChainCode")
     ResultVO reqChainCode(@RequestBody CreateDTO createDTO) throws IOException;

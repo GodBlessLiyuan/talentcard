@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface TransactionApplyApi {
     @PostMapping("transactionApplyApi/apply")
-    ResultVO apply(@RequestBody Application application, HttpServletRequest request);
+    ResultVO apply(@RequestBody Application application);
 
     @PostMapping("transactionApplyApi/getApplicationInfo")
-    ResultVO getApplicationInfo(@RequestBody Application application, HttpServletRequest request);
+    ResultVO getApplicationInfo(@RequestBody Application applicatio);
 
     @PostMapping("transactionApplyApi/getHistoryForApplication")
-    ResultVO getHistoryForApplication(@RequestBody Application application, HttpServletRequest request);
+    ResultVO getHistoryForApplication(@RequestBody Application application);
 }
