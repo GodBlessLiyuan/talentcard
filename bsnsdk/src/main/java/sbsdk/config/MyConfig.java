@@ -60,7 +60,13 @@ public class MyConfig {
             config = new Config();
             config.setAppCode(appCode);
             config.setUserCode(userCode);
-            config.setApi(api);
+            if (index == 0) {
+                config.setApi(api);
+            } else if (index == 1) {
+                config.setApi(api2);
+            } else if (index == 2) {
+                config.setApi(api2);
+            }
             config.setCert(cert);
             config.setPrk(prk);
             config.setPuk(puk);
