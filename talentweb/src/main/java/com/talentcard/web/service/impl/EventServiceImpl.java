@@ -79,6 +79,9 @@ public class EventServiceImpl implements IEventService {
         evEventPO = EventDTO.setEventPO(evEventPO, eventDTO);
         evEventPO.setUserId(userId);
         evEventPO.setCreateTime(new Date());
+        evEventPO.setCurrentNum(0);
+        evEventPO.setCurrentMale(0);
+        evEventPO.setCurrentFemale(0);
         evEventMapper.add(evEventPO);
         //新建enjoy表
         Long eventId = evEventPO.getEventId();
