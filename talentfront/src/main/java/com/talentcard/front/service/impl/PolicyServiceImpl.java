@@ -418,8 +418,8 @@ public class PolicyServiceImpl implements IPolicyService {
         BankInfoBO bankInfoBO = bankMapper.findBankInfo(talentPO.getTalentId());
         if (bankInfoBO == null) {
             bankInfoBO = new BankInfoBO();
-            bankInfoBO.setTalentName(talentPO.getName());
         }
+        bankInfoBO.setTalentName(talentPO.getName());
         return new ResultVO(1000, bankInfoBO);
     }
 
