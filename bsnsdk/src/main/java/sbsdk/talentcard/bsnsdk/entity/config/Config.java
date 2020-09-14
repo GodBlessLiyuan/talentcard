@@ -47,7 +47,9 @@ public class Config {
     //子用户证书存储处理
     IKeyStore keyStore;
 
-    public static Config config;
+
+
+    public Config config;
 
     public void initConfig(Config cg) {
         if (config == null) {

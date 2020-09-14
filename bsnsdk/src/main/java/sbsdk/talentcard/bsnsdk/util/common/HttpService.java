@@ -1,6 +1,7 @@
 package sbsdk.talentcard.bsnsdk.util.common;
 
 import com.alibaba.fastjson.JSON;
+import org.springframework.stereotype.Component;
 import sbsdk.talentcard.bsnsdk.entity.base.BaseReqModel;
 import sbsdk.talentcard.bsnsdk.entity.base.BaseResArrayModel;
 import sbsdk.talentcard.bsnsdk.entity.base.BaseResModel;
@@ -16,26 +17,19 @@ import org.springframework.core.io.Resource;
 import javax.json.JsonException;
 import java.io.File;
 
-
+@Component
 public class HttpService<T extends Object & IBody, K extends Object & IBody> {
     /***
      * httpService.post 封装了两次
      * */
-    public BaseResModel<K> post(BaseReqModel<T> req, String url, String cert, Class<K> clazz) {
+    public BaseResModel<K> post(BaseReqModel<T> req, String url, String cert, Class<K> clazz) throws Exception {
 
         String res;
         BaseResModel<K> resModel = new BaseResModel<K>();
-        try {
-            req.sign();
-            res = doPost(req, url, cert);
 
-            System.out.println("响应结果：" + res);
-        } catch (GlobalException e) {
-            throw e;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new GlobalException(ResultInfoEnum.SYSTEM_ERROR);
-        }
+        req.sign();
+        res = doPost(req, url, cert);
+
 
         if (res != null && res.length() > 0) {
             try {

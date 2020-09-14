@@ -23,12 +23,14 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 public class TransactionApplyController {
+
     @Autowired
-    private MyConfig myConfig;
+    private TransactionService transactionService;
+
     @PostMapping("transactionApplyApi/apply")
     public ResultVO apply(@RequestBody Application application, HttpServletRequest request){
         try{
-            TransactionService.reqChainCode(this.applyFunName(application,request));
+            transactionService.reqChainCode(this.applyFunName(application,request));
 //            return TransactionStatus.OK.getStatus();
             return new ResultVO(1000);
         }catch (Exception e){
@@ -39,7 +41,6 @@ public class TransactionApplyController {
     }
 
     private ReqKeyEscrow applyFunName(Application application, HttpServletRequest request) {
-        myConfig.initConfig();
         ReqKeyEscrow reqKeyEscrow = Apply2Ticket.convert(application);
         String[] url = request.getRequestURI().split("/");
         // /transactionProfile/getProfile
@@ -50,7 +51,7 @@ public class TransactionApplyController {
     @PostMapping("transactionApplyApi/getApplicationInfo")
     public ResultVO getApplicationInfo(@RequestBody Application application,HttpServletRequest request){
         try{
-            ResKeyEscrow resKeyEscrow = TransactionService.reqChainCode(this.applyFunName(application, request));
+            ResKeyEscrow resKeyEscrow = transactionService.reqChainCode(this.applyFunName(application, request));
             return new ResultVO(1000,resKeyEscrow.getCcRes().getCcData());
         }catch (Exception e){
             e.printStackTrace();
@@ -66,7 +67,7 @@ public class TransactionApplyController {
     @PostMapping("transactionApplyApi/getHistoryForApplication")
     public ResultVO getHistoryForApplication(@RequestBody Application application,HttpServletRequest request){
         try{
-            ResKeyEscrow resKeyEscrow = TransactionService.reqChainCode(this.applyFunName(application, request));
+            ResKeyEscrow resKeyEscrow = transactionService.reqChainCode(this.applyFunName(application, request));
             return new ResultVO(1000,resKeyEscrow.getCcRes().getCcData());
         }catch (Exception e){
             e.printStackTrace();

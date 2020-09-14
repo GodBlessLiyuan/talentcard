@@ -15,9 +15,17 @@ import sbsdk.talentcard.bsnsdk.entity.config.Config;
 @Data
 public class MyConfig {
     /**
-     * 节点网关地址
+     * 节点网关地址1
      */
     private String api;
+    /**
+     * 节点网关地址2
+     */
+    private String api2;
+    /**
+     * 节点网关地址3
+     */
+    private String api3;
     /**
      * 用户编号
      */
@@ -45,8 +53,10 @@ public class MyConfig {
 
     Config config;
 
-    public void initConfig() {
-        if (config == null) {
+    Config configs[] = new Config[3];
+
+    public Config initConfig(int index) {
+        if (configs[index] == null) {
             config = new Config();
             config.setAppCode(appCode);
             config.setUserCode(userCode);
@@ -56,6 +66,10 @@ public class MyConfig {
             config.setPuk(puk);
             config.setMspDir(mspDir);
             config.initConfig(config);
+            configs[index] = config;
         }
+
+        return configs[index];
     }
+
 }
