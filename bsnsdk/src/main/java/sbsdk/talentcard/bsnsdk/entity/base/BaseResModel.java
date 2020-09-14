@@ -26,12 +26,12 @@ public class BaseResModel<T extends Object & IBody> implements IBaseResModel {
     }
 
     @Override
-    public boolean verify() throws Exception {
+    public boolean verify(Config config) throws Exception {
         String signValue = (this.header == null ? "" : this.header.getHeaderString()) + (this.body == null ? "" : this.body.getEncryptionValue());
-        Log.d(signValue);
-        AlgorithmTypeEnum algorithmTypeEnum = AlgorithmTypeEnum.fromAlgorithmTypeEnum(Config.config.getAppInfo().getAlgorithmType());
+
+        AlgorithmTypeEnum algorithmTypeEnum = AlgorithmTypeEnum.fromAlgorithmTypeEnum(config.getAppInfo().getAlgorithmType());
         AlgorithmTypeContext algorithmTypeContext = new AlgorithmTypeContext(algorithmTypeEnum);
-        boolean verify = algorithmTypeContext.getAlgorithmTypeHandle().verify(Common.readFile(Common.getClassPathResource(Config.config.getPuk())),  this.mac,signValue);
+        boolean verify = algorithmTypeContext.getAlgorithmTypeHandle().verify(Common.readFile(Common.getClassPathResource(config.getPuk())),  this.mac,signValue);
          return verify;
     }
 

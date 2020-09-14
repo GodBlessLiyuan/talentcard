@@ -22,10 +22,10 @@ public class StoreUtils {
      * @param fileName
      * @return
      */
-    public static UserCertInfo generateCSR(String name,String appCode, String fileName) {
+    public static UserCertInfo generateCSR(String name,String appCode, String fileName, Config config) {
         try {
             String DN = "CN=" + Common.getCNName(name, appCode)+",OU=client";
-            AlgorithmTypeEnum algorithmTypeEnum = AlgorithmTypeEnum.fromAlgorithmTypeEnum(Config.config.getAppInfo().getAlgorithmType());
+            AlgorithmTypeEnum algorithmTypeEnum = AlgorithmTypeEnum.fromAlgorithmTypeEnum(config.getAppInfo().getAlgorithmType());
             AlgorithmTypeContext algorithmTypeContext = new AlgorithmTypeContext(algorithmTypeEnum);
             UserCertInfo certInfo=algorithmTypeContext.getAlgorithmTypeHandle().getUserCertInfo(DN);
             if(Objects.isNull(certInfo)){

@@ -126,12 +126,12 @@ public class TransData {
 
     }
 
-    public static String getTransdata(TransactionRequest request, TransactionUser user) throws Exception {
+    public static String getTransdata(TransactionRequest request, TransactionUser user, Config config) throws Exception {
         ProposalPackage.Proposal proposal = proposal(request, user);
         byte[] proposalBytes = convertToBytes(proposal);
         byte[] signBytes;
         try {
-            AlgorithmTypeEnum algorithmTypeEnum = AlgorithmTypeEnum.fromAlgorithmTypeEnum(Config.config.getAppInfo().getAlgorithmType());
+            AlgorithmTypeEnum algorithmTypeEnum = AlgorithmTypeEnum.fromAlgorithmTypeEnum(config.getAppInfo().getAlgorithmType());
             signBytes = FabricTransUtil.getTransSign(algorithmTypeEnum,user.getPrivateKey(),proposalBytes);
         } catch (CryptoException e) {
             e.printStackTrace();

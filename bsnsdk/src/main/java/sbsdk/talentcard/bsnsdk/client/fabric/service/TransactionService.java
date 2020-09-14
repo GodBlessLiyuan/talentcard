@@ -82,7 +82,7 @@ public class TransactionService {
         /****
          * 包含信息头 header、body、签名值mac；body是类：ResKeyEscrow
          * */
-        BaseResModel<ResKeyEscrow> res = httpService.post(req, api, config.getCert(), ResKeyEscrow.class);
+        BaseResModel<ResKeyEscrow> res = httpService.post(req, api, config.getCert(), ResKeyEscrow.class, config);
         return res.getBody();
     }
 
@@ -116,7 +116,7 @@ public class TransactionService {
 
         String transData = null;
         try {
-            transData = getTransdata(request, user);
+            transData = getTransdata(request, user, config);
         } catch (Exception e) {
             e.printStackTrace();
             throw new GlobalException(ResultInfoEnum.TRANSACTION_CONVERSION_ERROR.getMsg());
@@ -128,7 +128,7 @@ public class TransactionService {
         req.setReqHeader(config.getUserCode(), config.getAppCode());
         req.setBody(keyNo);
         HttpService<ReqKeyEscrowNo, ResKeyEscrowNo> httpService = new HttpService<ReqKeyEscrowNo, ResKeyEscrowNo>();
-        BaseResModel<ResKeyEscrowNo> res = httpService.post(req, api, config.getCert(), ResKeyEscrowNo.class);
+        BaseResModel<ResKeyEscrowNo> res = httpService.post(req, api, config.getCert(), ResKeyEscrowNo.class, config);
 
         return res.getBody();
 

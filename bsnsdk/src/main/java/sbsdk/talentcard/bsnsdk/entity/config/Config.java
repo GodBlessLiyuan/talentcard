@@ -57,7 +57,8 @@ public class Config {
             keyStore = new KeyStore(config.getMspDir());
             ResUserInfo res = null;
             try {
-                res = AppService.getAppInfo();//httpService.noSignPost
+                //httpService.noSignPost
+                res = AppService.getAppInfo(config);
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new GlobalException(ResultInfoEnum.GET_APP_INFO_ERROR);

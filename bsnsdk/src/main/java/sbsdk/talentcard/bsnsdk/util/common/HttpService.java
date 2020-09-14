@@ -1,18 +1,19 @@
 package sbsdk.talentcard.bsnsdk.util.common;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.http.client.HttpClient;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import sbsdk.talentcard.bsnsdk.entity.base.BaseReqModel;
 import sbsdk.talentcard.bsnsdk.entity.base.BaseResArrayModel;
 import sbsdk.talentcard.bsnsdk.entity.base.BaseResModel;
 import sbsdk.talentcard.bsnsdk.entity.base.IBody;
+import sbsdk.talentcard.bsnsdk.entity.config.Config;
 import sbsdk.talentcard.bsnsdk.util.Log;
 import sbsdk.talentcard.bsnsdk.util.enums.ResultInfoEnum;
 import sbsdk.talentcard.bsnsdk.util.exception.GlobalException;
-import org.apache.http.client.HttpClient;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 import javax.json.JsonException;
 import java.io.File;
@@ -22,12 +23,12 @@ public class HttpService<T extends Object & IBody, K extends Object & IBody> {
     /***
      * httpService.post 封装了两次
      * */
-    public BaseResModel<K> post(BaseReqModel<T> req, String url, String cert, Class<K> clazz) throws Exception {
+    public BaseResModel<K> post(BaseReqModel<T> req, String url, String cert, Class<K> clazz, Config config) throws Exception {
 
         String res;
         BaseResModel<K> resModel = new BaseResModel<K>();
 
-        req.sign();
+        req.sign(config);
         res = doPost(req, url, cert);
 
 
@@ -50,14 +51,14 @@ public class HttpService<T extends Object & IBody, K extends Object & IBody> {
 
             boolean result = false;
             try {
-                result = resModel.verify();
+                result = resModel.verify(config);
             } catch (Exception e) {
                 throw new GlobalException(ResultInfoEnum.RES_MAC_ERROR);
             }
 
             if (!result) {
                 throw new GlobalException(ResultInfoEnum.RES_MAC_ERROR);
-            }else{
+            } else {
                 Log.i("================验签成功！！！=================");
             }
 
@@ -118,12 +119,12 @@ public class HttpService<T extends Object & IBody, K extends Object & IBody> {
 
     }
 
-    public BaseResArrayModel<K> arrayPost(BaseReqModel<T> req, String url, String cert, Class<K> clazz) {
+    public BaseResArrayModel<K> arrayPost(BaseReqModel<T> req, String url, String cert, Class<K> clazz, Config config) {
 
         String res;
         BaseResArrayModel<K> resModel = new BaseResArrayModel<K>();
         try {
-            req.sign();
+            req.sign(config);
             res = doPost(req, url, cert);
 
             System.out.println("响应结果：" + res);
@@ -151,7 +152,7 @@ public class HttpService<T extends Object & IBody, K extends Object & IBody> {
 
             boolean result = false;
             try {
-                result = resModel.verify();
+                result = resModel.verify(config);
             } catch (Exception e) {
                 throw new GlobalException(ResultInfoEnum.RES_MAC_ERROR);
             }

@@ -29,7 +29,7 @@ public class BaseReqModel<T extends Object & IBody> implements IBaseReqModel {
     }
 
     @Override
-    public void sign() throws Exception {
+    public void sign(Config config) throws Exception {
         if (this.header == null) {
             throw new GlobalException(ResultInfoEnum.REQUEST_HEADER_ERROR);
         }
@@ -39,9 +39,9 @@ public class BaseReqModel<T extends Object & IBody> implements IBaseReqModel {
         if (this.body != null) {
             signValue += this.body.getEncryptionValue();
         }
-        AlgorithmTypeEnum algorithmTypeEnum = AlgorithmTypeEnum.fromAlgorithmTypeEnum(Config.config.getAppInfo().getAlgorithmType());
+        AlgorithmTypeEnum algorithmTypeEnum = AlgorithmTypeEnum.fromAlgorithmTypeEnum(config.getAppInfo().getAlgorithmType());
         AlgorithmTypeContext algorithmTypeContext = new AlgorithmTypeContext(algorithmTypeEnum);
-        String sign = algorithmTypeContext.getAlgorithmTypeHandle().sign(Common.readFile(Common.getClassPathResource(Config.config.getPrk())), signValue);
+        String sign = algorithmTypeContext.getAlgorithmTypeHandle().sign(Common.readFile(Common.getClassPathResource(config.getPrk())), signValue);
         this.mac = sign;
     }
 
