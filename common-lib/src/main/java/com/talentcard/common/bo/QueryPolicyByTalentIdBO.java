@@ -70,7 +70,7 @@ public class QueryPolicyByTalentIdBO {
             } else if (status == 3) {
                 queryPolicyByTalentIdBO.setActualStatus(QueryPolicyByTalentIdBO.WAIT_APPROVAL);
                 //无法申请
-            } else if (status == 10) {
+            } else if (status == 1 || status == 10) {
                 queryPolicyByTalentIdBO.setActualStatus(QueryPolicyByTalentIdBO.UNABLE_APPLY);
             } else if (status == 2) {
                 queryPolicyByTalentIdBO.setActualStatus(QueryPolicyByTalentIdBO.REJECT);

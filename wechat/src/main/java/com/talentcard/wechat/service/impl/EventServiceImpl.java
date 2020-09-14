@@ -154,7 +154,7 @@ public class EventServiceImpl implements IEventService {
                 oldCard = talentMapper.activate(openId, oldCardFormerStatus, (byte) 2);
             }
             /**
-             * 如果找不到旧卡，则是用户弱智把当前卡删了！！！
+             * 如果找不到旧卡，则是用户把当前卡删了！！！
              * 单纯删卡同时高级卡更换高级卡
              */
             if (oldCard == null) {
