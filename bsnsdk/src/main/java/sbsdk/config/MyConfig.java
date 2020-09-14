@@ -38,10 +38,14 @@ public class MyConfig {
      * 应用公钥
      */
     private String puk;
+    private String puk2;
+    private String puk3;
     /**
      * 应用私钥
      */
     private String prk;
+    private String prk2;
+    private String prk3;
     /**
      * 证书存数目录
      */
@@ -50,6 +54,8 @@ public class MyConfig {
      * 证书
      */
     private String cert;
+    private String cert2;
+    private String cert3;
 
     Config config;
 
@@ -62,14 +68,22 @@ public class MyConfig {
             config.setUserCode(userCode);
             if (index == 0) {
                 config.setApi(api);
+                config.setCert(cert);
+                config.setPrk(prk);
+                config.setPuk(puk);
+
             } else if (index == 1) {
                 config.setApi(api2);
+                config.setCert(cert2);
+                config.setPrk(prk2);
+                config.setPuk(puk2);
             } else if (index == 2) {
-                config.setApi(api2);
+                config.setApi(api3);
+                config.setCert(cert3);
+                config.setPrk(prk3);
+                config.setPuk(puk3);
             }
-            config.setCert(cert);
-            config.setPrk(prk);
-            config.setPuk(puk);
+
             config.setMspDir(mspDir);
             config.initConfig(config);
             configs[index] = config;
