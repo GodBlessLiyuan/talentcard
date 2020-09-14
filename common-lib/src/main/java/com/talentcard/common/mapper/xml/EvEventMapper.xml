@@ -432,6 +432,7 @@
     on e.ef_id = ef.ef_id
     where
     et.open_id = #{openId,jdbcType=CHAR}
+    and et.status = 1
     order by e.status asc, e.start_time desc
   </select>
 
