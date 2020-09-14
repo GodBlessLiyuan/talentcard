@@ -98,10 +98,9 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         //信息类型
         messageDTO.setKeyword1("通过");
         messageDTO.setKeyword2("请您按时举办活动，如未能如期举行，请提前取消。");
-        messageDTO.setRemark("审批意见："+opinion);
+        messageDTO.setRemark("审批意见：" + opinion);
 
-        String url = String.format("%s/activity.html/#/activity-talent/detail?feid=%s&status=%s", WebParameterUtil.getIndexUrl(),
-                feId, status);
+        String url = String.format("http://dev.localcards.gov.vbooster.cn/wx/#/activity-talent/detail?feid=%s&status=%s", feId, status);
         messageDTO.setUrl(url);
 
         try {
@@ -139,8 +138,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword4(opinion);
         messageDTO.setRemark("您可以按照驳回意见修改后重新提交");
 
-        String url = String.format("%s/activity.html/#/activity-talent/detail?feid=%s&status=%s", WebParameterUtil.getIndexUrl(),
-                feId, status);
+        String url = String.format("http://dev.localcards.gov.vbooster.cn/wx/#/activity-talent/detail?feid=%s&status=%s", feId, status);
         messageDTO.setUrl(url);
 
         try {
@@ -161,7 +159,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
      * @return
      */
     @Override
-    public int messToEventCancel(String openId, String eventName, String opinion) {
+    public int messToEventCancel(String openId, String eventName, String opinion, long feId, int status) {
         //用消息模板推送微信消息
         MessageDTO messageDTO = new MessageDTO();
         //openId
@@ -174,7 +172,8 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword3("驳回");
         messageDTO.setKeyword4("不满足活动要求。");
         messageDTO.setRemark("取消原因：" + opinion);
-        messageDTO.setUrl(WebParameterUtil.getIndexUrl());
+        String url = String.format("http://dev.localcards.gov.vbooster.cn/wx/#/activity-talent/detail?feid=%s&status=%s\"", feId, status);
+        messageDTO.setUrl(url);
 
         try {
             int result = sendTemplateMessage(messageDTO, eventPass);

@@ -118,7 +118,7 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
         String activityName = evFrontendEventPO.getName();
         String openId = evFrontendEventPO.getOpenId();
         String opinion = reqData.get("opinion").toString();
-        wxOfficalAccountService.messToBackEndEventCancel(openId, evFrontendEventPO.getFeId(),activityName, opinion);
+        wxOfficalAccountService.messToEventCancel(openId, activityName, opinion, evFrontendEventPO.getFeId(), EventConstant.ADMINCANCEL);
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity
                 , "取消活动\"%s\"", evFrontendEventPO.getName());
         return new ResultVO(1000);
@@ -206,7 +206,11 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             String activityName = evFrontendEventPO.getName();
             String openId = evFrontendEventPO.getOpenId();
             String opinion = reqData.get("opinion").toString();
-            wxOfficalAccountService.messToEventAgree(openId, activityName, opinion, feId, EventConstant.AGREE);
+            //当前时间
+            Date nowDate = new Date();
+            Long currentTime = nowDate.getTime();
+            int sshow = EventConstant.getStatus(currentTime, evFrontendEventPO.getStartTime().getTime(), evFrontendEventPO.getEndTime().getTime(), evFrontendEventPO.getStatus(), (byte) 100);
+            wxOfficalAccountService.messToEventAgree(openId, activityName, opinion, feId, sshow);
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.F_TalentActivities
                     , "审批小程序中提交的活动申请：\"%s\"", activityName);
         }
