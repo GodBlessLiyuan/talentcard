@@ -13,11 +13,11 @@ import java.util.List;
  * */
 public interface TransactionProfileApi {
     @PostMapping("transactionProfile/createProfile")
-    ResultVO createProfile(@RequestBody Profile profile, HttpServletRequest request);
+    ResultVO createProfile(@RequestBody Profile profile);
 
     @PostMapping("transactionProfile/getProfile")
-    ResultVO getProfile(@RequestBody Profile profile, HttpServletRequest request);
+    ResultVO getProfile(@RequestBody Profile profile);
 
     @PostMapping("transactionProfile/updateProfile")
-    ResultVO updateProfile(@RequestBody Profile profile, HttpServletRequest request);
+    ResultVO updateProfile(@RequestBody Profile profile);
 }

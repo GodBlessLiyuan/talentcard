@@ -15,13 +15,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface TransactionTicketApi {
     @PostMapping("transactionTicketApi/createTicket")
-    ResultVO createTicket(@RequestBody Ticket ticket, HttpServletRequest request);
+    ResultVO createTicket(@RequestBody Ticket ticket);
 
     @PostMapping("transactionTicketApi/getTicketInfo")
-    ResultVO getTicketInfo(@RequestBody Ticket ticket, HttpServletRequest request);
+    ResultVO getTicketInfo(@RequestBody Ticket ticket);
 
     @PostMapping("transactionTicketApi/changeTicket")
-    ResultVO changeTicket(@RequestBody Ticket ticket, HttpServletRequest request);
+    ResultVO changeTicket(@RequestBody Ticket ticket);
 
     @PostMapping("transactionTicketApi/invokeTicket")
     ResultVO invokeTicket(@RequestBody Ticket ticket, HttpServletRequest request);
