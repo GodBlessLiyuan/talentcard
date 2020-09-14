@@ -207,8 +207,8 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
             String openId = evFrontendEventPO.getOpenId();
             String opinion = reqData.get("opinion").toString();
             //当前时间
-            Date nowDate = new Date();
-            Long currentTime = nowDate.getTime();
+            long currentTime = System.currentTimeMillis();
+            //前台活动详情需要的页面参数，状态
             int sshow = EventConstant.getStatus(currentTime, evFrontendEventPO.getStartTime().getTime(), evFrontendEventPO.getEndTime().getTime(), evFrontendEventPO.getStatus(), (byte) 100);
             wxOfficalAccountService.messToEventAgree(openId, activityName, opinion, feId, sshow);
             logService.insertActionRecord(session, OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.F_TalentActivities

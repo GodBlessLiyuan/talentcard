@@ -1,5 +1,6 @@
 package com.talentcard.web.service.impl;
 
+import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.dto.TemplateDataDTO;
@@ -99,8 +100,8 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword1("通过");
         messageDTO.setKeyword2("请您按时举办活动，如未能如期举行，请提前取消。");
         messageDTO.setRemark("审批意见：" + opinion);
-
-        String url = String.format("http://dev.localcards.gov.vbooster.cn/wx/#/activity-talent/detail?feid=%s&status=%s", feId, status);
+        //微信推送消息详情页
+        String url = String.format(FilePathConfig.getStaticPublicWxBasePath()+"#/activity-talent/detail?feid=%s&status=%s", feId, status);
         messageDTO.setUrl(url);
 
         try {
@@ -137,8 +138,8 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword3("驳回");
         messageDTO.setKeyword4(opinion);
         messageDTO.setRemark("您可以按照驳回意见修改后重新提交");
-
-        String url = String.format("http://dev.localcards.gov.vbooster.cn/wx/#/activity-talent/detail?feid=%s&status=%s", feId, status);
+        //微信推送消息详情页
+        String url = String.format(FilePathConfig.getStaticPublicWxBasePath()+"#/activity-talent/detail?feid=%s&status=%s", feId, status);
         messageDTO.setUrl(url);
 
         try {
@@ -156,6 +157,8 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
      * @param openId
      * @param eventName
      * @param opinion
+     * @param opinion
+     * @param opinion
      * @return
      */
     @Override
@@ -172,7 +175,8 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         messageDTO.setKeyword3("驳回");
         messageDTO.setKeyword4("不满足活动要求。");
         messageDTO.setRemark("取消原因：" + opinion);
-        String url = String.format("http://dev.localcards.gov.vbooster.cn/wx/#/activity-talent/detail?feid=%s&status=%s\"", feId, status);
+        //微信推送消息详情页
+        String url = String.format(FilePathConfig.getStaticPublicWxBasePath()+"#/activity-talent/detail?feid=%s&status=%s", feId, status);
         messageDTO.setUrl(url);
 
         try {
