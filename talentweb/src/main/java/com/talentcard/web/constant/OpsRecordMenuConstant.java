@@ -39,4 +39,10 @@ public class OpsRecordMenuConstant {
     public static String S_SendMessage="发送消息";
 
     public static final String S_TalentActivity="人才活动";
+
+    /**
+     * 认证人才
+     */
+    public static final String M_AUTH_TALENT = "认证人才";
+
 }

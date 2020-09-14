@@ -647,7 +647,7 @@ public class DataMigrationController {
             }
             fis.close();
             if (fixTotal > 0) {
-                logService.insertActionRecord(1, "system", OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity,
+                logService.insertActionRecord(1, "system", OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.M_AUTH_TALENT,
                         "修改%s个人才的现工作单位为参保单位", String.valueOf(fixTotal));
             }
             ExcelExportUtil.exportExcel("result_" + file.getOriginalFilename(), null,
