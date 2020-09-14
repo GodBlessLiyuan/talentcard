@@ -28,6 +28,9 @@ public interface IWxOfficalAccountService {
      *
      * @param openId
      * @param eventName
+     * @param opinion
+     * @param feId
+     * @param status
      * @return
      */
     int messToEventAgree(String openId, String eventName, String opinion, long feId, int status);
@@ -47,6 +50,11 @@ public interface IWxOfficalAccountService {
 
     /**
      * 前台小程序的活动被管理员取消
+     * @param openId
+     * @param eventName
+     * @param opinion
+     * @param feId
+     * @param status
      */
     int messToEventCancel(String openId, String eventName, String opinion, long feId, int status);
 

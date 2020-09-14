@@ -154,11 +154,11 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
     /**
      * 后台管理员取消活动
      *
-     * @param openId
-     * @param eventName
-     * @param opinion
-     * @param opinion
-     * @param opinion
+     * @param openId     openid
+     * @param eventName  活动名称
+     * @param opinion    审批意见
+     * @param feId       活动id
+     * @param status     前台展示状态
      * @return
      */
     @Override
