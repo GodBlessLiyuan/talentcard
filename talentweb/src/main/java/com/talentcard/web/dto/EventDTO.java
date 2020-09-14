@@ -67,9 +67,6 @@ public class EventDTO {
         evEventPO.setMaleQuota(eventDTO.getMaleQuota());
         evEventPO.setFemaleQuota(eventDTO.getFemaleQuota());
         evEventPO.setEventQuota(eventDTO.getEventQuota());
-        evEventPO.setCurrentNum(0);
-        evEventPO.setCurrentMale(0);
-        evEventPO.setCurrentFemale(0);
         evEventPO.setUpdateTime(new Date());
         evEventPO.setStatus((byte) 2);
         evEventPO.setUpDown((byte) 2);
