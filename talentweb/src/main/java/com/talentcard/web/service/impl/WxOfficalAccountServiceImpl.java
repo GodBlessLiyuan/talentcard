@@ -202,7 +202,7 @@ public class WxOfficalAccountServiceImpl implements IWxOfficalAccountService {
         MessageDTO messageDTO = new MessageDTO();
         //openId
         messageDTO.setOpenid(openId);
-        String first = String.format("抱歉，您申请的“%s”已取消，给您造成不便,敬请谅解", eventName);
+        String first = String.format("抱歉，您报名的“%s”已取消，给您造成不便,敬请谅解", eventName);
         messageDTO.setFirst(first);
         //信息类型
         messageDTO.setKeyword1("已取消");
