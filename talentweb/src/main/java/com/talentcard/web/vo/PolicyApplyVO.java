@@ -47,6 +47,10 @@ public class PolicyApplyVO implements Serializable {
      * 责任单位名称
      */
     private String roleName;
+    /**
+     * 人才的openid，20200916改造加入
+     */
+    private String oid;
 
     /**
      * bos 转 vos
@@ -78,6 +82,7 @@ public class PolicyApplyVO implements Serializable {
         vo.setApply(bo.getTalentName());
         vo.setStatus(bo.getStatus());
         vo.setRoleName(bo.getRoleName());
+        vo.setOid(bo.getOpenId());
         return vo;
     }
 }

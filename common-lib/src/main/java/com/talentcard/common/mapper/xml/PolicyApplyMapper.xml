@@ -15,6 +15,7 @@
     <resultMap id="DetailResultMap" type="com.talentcard.common.bo.PolicyApplyBO">
         <id column="pa_id" jdbcType="BIGINT" property="paId"/>
         <result column="talent_id" jdbcType="BIGINT" property="talentId"/>
+        <result column="open_id" jdbcType="CHAR" property="openId"/>
         <result column="talent_name" jdbcType="CHAR" property="talentName"/>
         <result column="policy_id" jdbcType="BIGINT" property="policyId"/>
         <result column="policy_name" jdbcType="CHAR" property="policyName"/>
@@ -171,6 +172,7 @@
     <select id="query" resultMap="DetailResultMap">
         select pa.pa_id,
         pa.talent_id,
+        t.open_id,
         pa.talent_name,
         pa.policy_id,
         pa.policy_name,
@@ -184,6 +186,7 @@
         left join t_bank b on pa.pa_id = b.pa_id
         left join t_policy p on pa.policy_id = p.policy_id
         left join t_role r on p.role_id = r.role_id
+        left join t_talent t on pa.talent_id = t.talent_id
         where p.dr = 1
         <if test="start != null and start !=''">and pa.create_time >= #{start}</if>
         <if test="end != null and end !=''">and pa.create_time &lt;= #{end}</if>
