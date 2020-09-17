@@ -47,6 +47,10 @@ public class EventConstant {
      * 活动进行中
      */
     public static final int EVENTING = 10;
+    /**
+     * 小程序活动审批表中的用户或管理员的为取消状态的标识： 3
+     */
+    public static final byte CANSEL = 3;
 
 
     /**

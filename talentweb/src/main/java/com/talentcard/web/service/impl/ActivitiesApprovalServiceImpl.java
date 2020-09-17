@@ -74,9 +74,12 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
         }
         //首先查询前台是否已经取消（根据活动id查询出后台是否取消状态）
         EvFrontendEventPO evFrontendEventPO = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong(reqData.get("feid").toString()));
+        //优化
+        //EvFrontendEventPO evFrontendEventPO = evFrontendEventMapper.selectByPrimaryKey(Long.parseLong((String)reqData.get("feid")));
         //如果后台已经取消
         if (EventConstant.ADMINCANCEL == evFrontendEventPO.getStatus()) {
-            return new ResultVO(1001);//管理员已取消
+            //管理员已取消
+            return new ResultVO(1001);
         }
         //如果没有取消则进行前台取消操作
         //管理员取消
@@ -87,6 +90,8 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
         EvEventQueryPO evEventQueryPO = evEventQueryMapper.queryByEid(Long.parseLong(reqData.get("feid").toString()));
         if (evEventQueryPO != null) {
             evEventQueryPO.setStatus((byte) 4);
+            //优化
+            //evEventQueryPO.setStatus((byte)EventConstant.ADMINCANCEL);
             evEventQueryPO.setUpdateTime(new Date());
             evEventQueryMapper.updateByPrimaryKeySelective(evEventQueryPO);
         }
@@ -95,7 +100,10 @@ public class ActivitiesApprovalServiceImpl implements IActivitiesApprovalService
         evFrontendEventApprovalPO.setFeId(Long.parseLong(reqData.get("feid").toString()));
         evFrontendEventApprovalPO.setUserId((Long) session.getAttribute("userId"));
         evFrontendEventApprovalPO.setUsername((String) session.getAttribute("username"));
-        evFrontendEventApprovalPO.setType((byte) 3);//活动取消
+        //活动取消
+        evFrontendEventApprovalPO.setType((byte) 3);
+        //优化
+        //evFrontendEventApprovalPO.setType(EventConstant.CANSEL);
         evFrontendEventApprovalPO.setCreateTime(new Date());
         evFrontendEventApprovalPO.setUpdateTime(new Date());
         evFrontendEventApprovalPO.setOpinion(reqData.get("opinion").toString());
