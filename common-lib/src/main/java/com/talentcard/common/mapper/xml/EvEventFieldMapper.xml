@@ -83,12 +83,10 @@
     select
     <include refid="Base_Column_List" />
     from ev_event_field
-    where dr = 1
   </select>
   <select id="selectAllPlace" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from ev_event_field
-    where dr = 1
   </select>
 </mapper>
