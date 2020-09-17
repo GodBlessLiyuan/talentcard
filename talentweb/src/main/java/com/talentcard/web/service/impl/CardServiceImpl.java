@@ -8,9 +8,7 @@ import com.talentcard.common.mapper.OpwebRecordMapper;
 import com.talentcard.common.mapper.PolicyMapper;
 import com.talentcard.common.mapper.UserMapper;
 import com.talentcard.common.pojo.CardPO;
-import com.talentcard.common.pojo.OpwebRecordPO;
 import com.talentcard.common.pojo.PolicyPO;
-import com.talentcard.common.pojo.UserPO;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.WechatApiUtil;
 import com.talentcard.common.vo.ResultVO;
@@ -57,6 +55,7 @@ public class CardServiceImpl implements ICardService {
     private OpwebRecordMapper opwebRecordMapper;
     @Autowired
     private ILogService logService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResultVO add(String name, String title, String notice,
@@ -158,8 +157,8 @@ public class CardServiceImpl implements ICardService {
         cardPO.setUpdateTime(new Date());
         cardPO.setTripTimes(tripTimes);
         cardMapper.insertSelective(cardPO);
-        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,
-                "新增人才卡\"%s\"",CardUtil.getCardName(cardPO));
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_CardManager, OpsRecordMenuConstant.S_TalentCardManager,
+                "新增人才卡\"%s\"", CardUtil.getCardName(cardPO));
 
         return new ResultVO(1000, wechatResult);
     }
@@ -241,8 +240,8 @@ public class CardServiceImpl implements ICardService {
         if (updateResult == 0) {
             logger.error("update cardMapper error");
         }
-        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,
-                "修改人才卡\"%s\"",CardUtil.getCardName(cardPO));
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_CardManager, OpsRecordMenuConstant.S_TalentCardManager,
+                "修改人才卡\"%s\"", CardUtil.getCardName(cardPO));
 
         return new ResultVO(1000);
     }
@@ -269,10 +268,12 @@ public class CardServiceImpl implements ICardService {
         List<PolicyPO> policyPOList = policyMapper.queryByDr((byte) 1);
         //用逗号拆分，判断权益表的cards是否有当前cardId
         for (PolicyPO policyPO : policyPOList) {
-            String[] policys = policyPO.getCards().split(",");
-            for (String policy : policys) {
-                if (cardIdString.equals(policy)) {
-                    policyInfo.add(policyPO.getName());
+            if (!StringUtils.isEmpty(policyPO.getCards())) {
+                String[] policys = policyPO.getCards().split(",");
+                for (String policy : policys) {
+                    if (cardIdString.equals(policy)) {
+                        policyInfo.add(policyPO.getName());
+                    }
                 }
             }
         }
@@ -286,7 +287,7 @@ public class CardServiceImpl implements ICardService {
     }
 
     @Override
-    public ResultVO delete(Long cardId,HttpSession httpSession) {
+    public ResultVO delete(Long cardId, HttpSession httpSession) {
         //从session中获取userId的值
         Long userId = (Long) httpSession.getAttribute("userId");
         if (userId == null) {
@@ -316,8 +317,8 @@ public class CardServiceImpl implements ICardService {
         if (updateResult == 0) {
             logger.error("update cardMapper error");
         }
-        logService.insertActionRecord(httpSession,OpsRecordMenuConstant.F_CardManager,OpsRecordMenuConstant.S_TalentCardManager,
-                "删除人才卡\"%s\"",CardUtil.getCardName(cardPO));
+        logService.insertActionRecord(httpSession, OpsRecordMenuConstant.F_CardManager, OpsRecordMenuConstant.S_TalentCardManager,
+                "删除人才卡\"%s\"", CardUtil.getCardName(cardPO));
 
         return new ResultVO(1000, result);
     }

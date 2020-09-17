@@ -4,6 +4,7 @@ import com.talentcard.common.bo.EvFrontendEventBO;
 import com.talentcard.common.constant.EventConstant;
 import com.talentcard.common.pojo.EvFrontendEventPO;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class TalentActivitiesVO implements Serializable {
     /**
      * 人才openid
      */
-    private String  oid;
+    private String oid;
     /**
      * 1：已同意；2：已驳回；3：待审批
      */
@@ -100,15 +101,15 @@ public class TalentActivitiesVO implements Serializable {
     /**
      * 活动状态展示：
      * 1）审批中：只要活动没有审批就显示为审批中；
-     *
+     * <p>
      * 2）已通过：审批通过，且活动还没有开始，活动状态为“已通过”；
-     *
+     * <p>
      * 3）进行中：审批通过，且当前时间≥活动开始时间，小于活动结束时间；
-     *
+     * <p>
      * 3）已结束：当前时间≥活动结束时间的，活动状态为“已结束”；
-     *
+     * <p>
      * 4）已驳回：审批的时候被驳回，活动状态为“已驳回”。
-     *
+     * <p>
      * 5）已取消：活动结束前都可以取消，这样可以保证及时释放场地资源；如果活动取消，则状态变为”已取消“；
      */
     private Byte sshow;
@@ -138,7 +139,9 @@ public class TalentActivitiesVO implements Serializable {
         vo.setDuration(bo.getDuration());
         vo.setNum(bo.getEventNum());
         vo.setEdate(bo.getEventDate());
-        vo.setInterval(Arrays.asList(bo.getTimeInterval().split(",")));
+        if (!StringUtils.isEmpty(bo.getTimeInterval())) {
+            vo.setInterval(Arrays.asList(bo.getTimeInterval().split(",")));
+        }
         vo.setSponsor(bo.getSponsor());
         vo.setDetail(bo.getDetail());
         vo.setCperson(bo.getContactPerson());
@@ -175,14 +178,15 @@ public class TalentActivitiesVO implements Serializable {
         }*/
         //进行时间判断，对于前台展示不同的状态
         //当前时间
-        Date nowDate=new Date();
-        Long currentTime=nowDate.getTime();
+        Date nowDate = new Date();
+        Long currentTime = nowDate.getTime();
         //将当前时间转换为long类型
-        Long startTime=vo.getStime().getTime();
-        Long endTime=vo.getEtime().getTime();
-        vo.setSshow((byte) EventConstant.getStatus(currentTime,startTime,endTime,vo.getStatus(), (byte) 100));
+        Long startTime = vo.getStime().getTime();
+        Long endTime = vo.getEtime().getTime();
+        vo.setSshow((byte) EventConstant.getStatus(currentTime, startTime, endTime, vo.getStatus(), (byte) 100));
         return vo;
     }
+
     public static TalentActivitiesVO convert(EvFrontendEventPO bo) {
         TalentActivitiesVO vo = new TalentActivitiesVO();
         vo.setFeid(bo.getFeId());
@@ -192,7 +196,9 @@ public class TalentActivitiesVO implements Serializable {
         vo.setDuration(bo.getDuration());
         vo.setNum(bo.getEventNum());
         vo.setEdate(bo.getEventDate());
-        vo.setInterval(Arrays.asList(bo.getTimeInterval().split(",")));
+        if (!StringUtils.isEmpty(bo.getTimeInterval())) {
+            vo.setInterval(Arrays.asList(bo.getTimeInterval().split(",")));
+        }
         vo.setSponsor(bo.getSponsor());
         vo.setDetail(bo.getDetail());
         vo.setCperson(bo.getContactPerson());
@@ -228,12 +234,10 @@ public class TalentActivitiesVO implements Serializable {
         }*/
         //进行时间判断，对于前台展示不同的状态
         //当前时间
-        Date nowDate=new Date();
-        Long currentTime=nowDate.getTime();
         //将当前时间转换为long类型
-        Long startTime=vo.getStime().getTime();
-        Long endTime=vo.getEtime().getTime();
-        vo.setSshow((byte) EventConstant.getStatus(currentTime,startTime,endTime,vo.getStatus(), (byte) 100));
+        Long startTime = vo.getStime().getTime();
+        Long endTime = vo.getEtime().getTime();
+        vo.setSshow((byte) EventConstant.getStatus(System.currentTimeMillis(), startTime, endTime, vo.getStatus(), (byte) 100));
         return vo;
     }
 

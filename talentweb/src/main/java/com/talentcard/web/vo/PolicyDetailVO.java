@@ -173,6 +173,7 @@ public class PolicyDetailVO implements Serializable {
     private String responsibleUnit;
     //符合条件人数
     private Long meetConditionNumber;
+
     /**
      * po 转 vo
      *
@@ -185,13 +186,26 @@ public class PolicyDetailVO implements Serializable {
         vo.setName(po.getName());
         vo.setNum(po.getNum());
         vo.setDesc(po.getDescription());
-        vo.setCardIds(po.getCards().split(","));
-        vo.setCategoryIds(po.getCategories().split(","));
-        vo.setEducIds(po.getEducations().split(","));
-        vo.setTitleIds(po.getTitles().split(","));
-        vo.setQualityIds(po.getQualities().split(","));
+        if (!StringUtils.isEmpty(po.getCards())) {
+            vo.setCardIds(po.getCards().split(","));
+        }
+        if (!StringUtils.isEmpty(po.getCategories())) {
+            vo.setCategoryIds(po.getCategories().split(","));
+        }
+        if (!StringUtils.isEmpty(po.getEducations())) {
+            vo.setEducIds(po.getEducations().split(","));
+        }
+        if (!StringUtils.isEmpty(po.getTitles())) {
+            vo.setTitleIds(po.getTitles().split(","));
+        }
+        if (!StringUtils.isEmpty(po.getQualities())) {
+            vo.setQualityIds(po.getQualities().split(","));
+        }
+
         String tempStr = po.getHonourIds();
-        vo.setTalentHonourIds(stringToLongList(tempStr, ","));
+        if (!StringUtils.isEmpty(tempStr)) {
+            vo.setTalentHonourIds(stringToLongList(tempStr, ","));
+        }
         vo.setColor(po.getColor());
         vo.setApply(po.getApply());
         vo.setRate(po.getRate());

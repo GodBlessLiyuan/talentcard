@@ -241,6 +241,28 @@ INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `
 
 INSERT INTO `talentcard`.`t_role_authority`(`ra_id`, `status`, `authority_id`, `role_id`) VALUES (140, 1, 57, 4);
 
+
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,54,1);
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,55,1);
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,56,1);
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,57,1);
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,58,1);
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,59,1);
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,60,1);
+
+
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,54,2);
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,55,2);
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,56,2);
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,57,2);
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,58,2);
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,59,2);
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,60,2);
+
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,57,3);
+INSERT INTO `t_role_authority` (`status`,`authority_id`,`role_id`) VALUES (1,57,4);
+
+
 /*用户：超级管理员角色*/
 INSERT INTO `t_user`(`user_id`, `username`, `name`, `password`, `create_time`, `dr`, `extra`, `role_id`) VALUES
 (1, 'admin', 'admin', '15a162a79e4f467350be58833cdd8c66', '2020-04-22 10:57:40', 1, '222', 1);

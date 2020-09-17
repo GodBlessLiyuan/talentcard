@@ -28,7 +28,7 @@ public class PoCompliancePO implements Serializable {
     private Date applyTime;
 
     /**
-     * 11：未申请；1：已同意；2：已驳回；3：待审批
+     * 11：未申请；1：已同意；2：已驳回；3：待审批；10：不可申请
      */
     private Byte status;
     /**

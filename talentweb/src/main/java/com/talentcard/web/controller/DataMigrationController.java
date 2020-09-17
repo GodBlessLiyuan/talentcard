@@ -16,6 +16,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -513,7 +514,7 @@ public class DataMigrationController {
             errors.put(1, new ArrayList<>());
             //未更新数据
             errors.put(2, new ArrayList<>());
-            String[][] excelData = new String[lastrow][10];
+            String[][] excelData = new String[lastrow + 2][10];
 
             int fixTotal = 0;
             //循环行数依次获取列数
@@ -527,15 +528,35 @@ public class DataMigrationController {
                     for (int j = firstcell; j < 9; j++) {
                         try {
                             if (row.getCell(j) != null) {
-                                excelData[i - 1][j] = row.getCell(j).getStringCellValue();
+                                Cell cell = row.getCell(j);
+                                if (cell.getCellType() == CellType.STRING) {
+                                    excelData[i - 1][j] = row.getCell(j).getStringCellValue();
+                                } else if (cell.getCellType() == CellType.NUMERIC) {
+                                    excelData[i - 1][j] = String.valueOf(cell.getNumericCellValue());
+                                } else if (cell.getCellType() == CellType.FORMULA) {
+                                    excelData[i - 1][j] = String.valueOf(cell.getCellFormula());
+                                }
+
                             }
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
+                    Cell typeCard = row.getCell(2);
                     //证件号
                     Cell card = row.getCell(3);
-                    TalentPO po = talentMapper.selectByIdCard(card.getStringCellValue());
+                    if (card == null) {
+                        continue;
+                    } else if (StringUtils.isEmpty(card.getStringCellValue())) {
+                        continue;
+                    }
+                    TalentPO po = null;
+                    if("护照".equals(typeCard.getStringCellValue())){
+                        po = talentMapper.selectByPassport(card.getStringCellValue());
+                    }else {
+                        //身份证
+                        po = talentMapper.selectByIdCard(card.getStringCellValue());
+                    }
 
                     if (po != null) {
                         SocialSecurityPO socialSecurityPO = this.socialSecurityMapper.selectByPrimaryKey(po.getTalentId());
@@ -586,6 +607,7 @@ public class DataMigrationController {
                             socialSecurityPO.setSecurityTime(null);
                         }
 
+                        socialSecurityPO.setCheckTime(DateUtil.str2Date(checktime, DateUtil.YMD));
 
                         Cell type = row.getCell(8);
                         if (type != null && !StringUtils.isEmpty(type.getStringCellValue())) {
@@ -616,16 +638,16 @@ public class DataMigrationController {
 
                         this.socialSecurityMapper.updateByPrimaryKey(socialSecurityPO);
                         if (needUpdate) {
-                            excelData[i][9] = "更新数据";
+                            excelData[i - 1][9] = "更新数据";
                         }
                     } else {
-                        excelData[i][9] = "未查到对应用户";
+                        excelData[i - 1][9] = "未查到对应用户";
                     }
                 }
             }
             fis.close();
-            if (fixTotal <= 0) {
-                logService.insertActionRecord(1, "system", OpsRecordMenuConstant.F_OtherService, OpsRecordMenuConstant.S_TalentActivity,
+            if (fixTotal > 0) {
+                logService.insertActionRecord(1, "system", OpsRecordMenuConstant.F_TalentManager, OpsRecordMenuConstant.M_AUTH_TALENT,
                         "修改%s个人才的现工作单位为参保单位", String.valueOf(fixTotal));
             }
             ExcelExportUtil.exportExcel("result_" + file.getOriginalFilename(), null,
