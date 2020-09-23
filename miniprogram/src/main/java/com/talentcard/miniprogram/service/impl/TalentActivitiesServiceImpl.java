@@ -66,7 +66,8 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         }
         String vcode2 = VerificationCodeUtil.getCode(dto.getPhone());
         if (!vcode1.equals(vcode2)) {
-            return new ResultVO(1001);//验证码不匹配
+            //验证码不匹配
+            return new ResultVO(1001);
         }
         //将前台dto中获取的数据转换成po进行插入,将数据插入到前台活动表中
         EvFrontendEventPO evFrontendEventPO = buildPOByDTO(new EvFrontendEventPO(), dto);
@@ -81,7 +82,7 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
                 for (String time : dto.getInterval()) {
                     if (ArrayUtils.contains(originTimeinterval, time)) {
                         //时间段已经被占用不允许插入，请选择其他时间段
-                        return new ResultVO(1001);
+                        return new ResultVO(1003);
                     }
                 }
             }
