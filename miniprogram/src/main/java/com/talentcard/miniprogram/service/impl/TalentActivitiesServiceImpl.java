@@ -17,6 +17,7 @@ import com.talentcard.miniprogram.dto.TalentActivitiesDTO;
 import com.talentcard.miniprogram.service.ITalentActivitiesService;
 import com.talentcard.miniprogram.vo.TalentActivitiesVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,8 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         //获取验证码和前台传的验证码进行比较
         String vcode1 = dto.getVcode();
         if (StringUtils.isBlank(vcode1)) {
-            return new ResultVO(1002);//用户输入验证码为空
+            //用户输入验证码为空
+            return new ResultVO(1002);
         }
         String vcode2 = VerificationCodeUtil.getCode(dto.getPhone());
         if (!vcode1.equals(vcode2)) {
@@ -68,8 +70,24 @@ public class TalentActivitiesServiceImpl implements ITalentActivitiesService {
         }
         //将前台dto中获取的数据转换成po进行插入,将数据插入到前台活动表中
         EvFrontendEventPO evFrontendEventPO = buildPOByDTO(new EvFrontendEventPO(), dto);
+        //在多个人并发操作时，判断如果前面人将时间段占用了，则第二个人不能进行插入
+        Map<String, Object> data = new HashMap(2);
+        data.put("efid", dto.getEfid());
+        data.put("date", dto.getDate());
+        EvEventTimePO evEventTimePOForSelect = evEventTimeMapper.queryByPlaceAndDate(data);
+        if (evEventTimePOForSelect != null && evEventTimePOForSelect.getTimeInterval() != null) {
+            String[] originTimeinterval = evEventTimePOForSelect.getTimeInterval().split(",");
+            if (dto.getInterval() != null && dto.getInterval().length > 0) {
+                for (String time : dto.getInterval()) {
+                    if (ArrayUtils.contains(originTimeinterval, time)) {
+                        //时间段已经被占用不允许插入，请选择其他时间段
+                        return new ResultVO(1001);
+                    }
+                }
+            }
+        }
+        //将活动信息插入到前台活动表中
         evFrontendEventMapper.insert(evFrontendEventPO);
-
         //进行审批表插入一条提交申请的插入记录
         EvFrontendEventApprovalPO evFrontendEventApprovalPO = new EvFrontendEventApprovalPO();
         evFrontendEventApprovalPO.setFeId(evFrontendEventPO.getFeId());
