@@ -63,16 +63,16 @@ public class PolicyApplyController {
     }
 
     @RequestMapping("export")
-    public ResultVO query(@RequestParam(value = "start", defaultValue = "") String start,
-                          @RequestParam(value = "end", defaultValue = "") String end,
-                          @RequestParam(value = "num", defaultValue = "") String num,
-                          @RequestParam(value = "name", defaultValue = "") String name,
-                          @RequestParam(value = "apply", defaultValue = "") String apply,
-                          @RequestParam(value = "status", defaultValue = "0") Byte status,
-                          @RequestParam(value = "roleType", required = false, defaultValue = "0") Byte roleType,
-                          @RequestParam(value = "responsibleUnitId", required = false) Long responsibleUnitId,
-                          @RequestParam(value = "roleId", required = false) Long roleId,
-                          HttpServletResponse res) {
+    public ResultVO export(@RequestParam(value = "start", defaultValue = "") String start,
+                           @RequestParam(value = "end", defaultValue = "") String end,
+                           @RequestParam(value = "num", defaultValue = "") String num,
+                           @RequestParam(value = "name", defaultValue = "") String name,
+                           @RequestParam(value = "apply", defaultValue = "") String apply,
+                           @RequestParam(value = "status", defaultValue = "0") Byte status,
+                           @RequestParam(value = "roleType", required = false, defaultValue = "0") Byte roleType,
+                           @RequestParam(value = "responsibleUnitId", required = false) Long responsibleUnitId,
+                           @RequestParam(value = "roleId", required = false) Long roleId,
+                           HttpServletResponse res) {
         HashMap<String, Object> reqMap = new HashMap<>(9);
         if (!StringUtils.isEmpty(start)) {
             start = start + " 00:00:00";
@@ -83,7 +83,9 @@ public class PolicyApplyController {
         reqMap.put("start", start);
         reqMap.put("end", end);
         reqMap.put("num", num);
-        reqMap.put("name", name.replaceAll("%", "\\\\%"));
+        if (StringUtils.isNotBlank(name)) {
+            reqMap.put("name", name.replaceAll("%", "\\\\%"));
+        }
         reqMap.put("apply", apply);
         reqMap.put("status", status);
         reqMap.put("roleType", roleType);
