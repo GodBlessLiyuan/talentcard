@@ -77,12 +77,11 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     }
 
     @Override
-    public ResultVO export(HashMap<String, Object> reqMap, HttpServletResponse res) {
+    public void export(HashMap<String, Object> reqMap, HttpServletResponse res) {
         List<PolicyApplyBO> bos = policyApplyMapper.query(reqMap);
         String[][] content = buildExcelContents(bos);
         //生成Excel表格
         ExportUtil.exportExcel(null, EXPORT_TITLES, content, res);
-        return new ResultVO(1000);
     }
 
     @Override
