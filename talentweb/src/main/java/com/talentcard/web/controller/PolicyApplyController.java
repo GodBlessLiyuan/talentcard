@@ -69,15 +69,28 @@ public class PolicyApplyController {
                            @RequestParam(value = "name", defaultValue = "") String name,
                            @RequestParam(value = "apply", defaultValue = "") String apply,
                            @RequestParam(value = "status", defaultValue = "0") Byte status,
+                           @RequestParam(value = "roleType", required = false, defaultValue = "0") Byte roleType,
+                           @RequestParam(value = "responsibleUnitId", required = false) Long responsibleUnitId,
+                           @RequestParam(value = "roleId", required = false) Long roleId,
                            HttpServletResponse res) {
-        HashMap<String, Object> reqMap = new HashMap<>(6);
+        HashMap<String, Object> reqMap = new HashMap<>(9);
+        if (!StringUtils.isEmpty(start)) {
+            start = start + " 00:00:00";
+        }
+        if (!StringUtils.isEmpty(end)) {
+            end = end + " 23:59:59";
+        }
         reqMap.put("start", start);
         reqMap.put("end", end);
-        reqMap.put("name", name.replaceAll("%", "\\\\%"));
         reqMap.put("num", num);
+        if (StringUtils.isNotBlank(name)) {
+            reqMap.put("name", name.replaceAll("%", "\\\\%"));
+        }
         reqMap.put("apply", apply);
         reqMap.put("status", status);
-
+        reqMap.put("roleType", roleType);
+        reqMap.put("roleId", roleId);
+        reqMap.put("responsibleUnitId", responsibleUnitId);
         iPolicyApplyService.export(reqMap, res);
     }
 

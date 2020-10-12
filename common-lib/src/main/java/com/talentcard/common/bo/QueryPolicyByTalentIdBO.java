@@ -21,7 +21,9 @@ public class QueryPolicyByTalentIdBO {
     private Date startTime;
     //政策活动结束时间
     private Date endTime;
-    //状态 0：未申请；1：已同意；2：已驳回；3：待审批；10：不可申请（互斥申请政策存在）
+    /**
+     * 状态 11：未申请；1：已同意；2：已驳回；3：待审批；10：不可申请（互斥申请政策存在）
+     */
     private Byte status;
     //实际状态 1可申请；2未开启；3已失效 5:审批中；10不可申请
     private Byte actualStatus;
@@ -68,7 +70,7 @@ public class QueryPolicyByTalentIdBO {
             } else if (status == 3) {
                 queryPolicyByTalentIdBO.setActualStatus(QueryPolicyByTalentIdBO.WAIT_APPROVAL);
                 //无法申请
-            } else if (status == 10) {
+            } else if (status == 1 || status == 10) {
                 queryPolicyByTalentIdBO.setActualStatus(QueryPolicyByTalentIdBO.UNABLE_APPLY);
             } else if (status == 2) {
                 queryPolicyByTalentIdBO.setActualStatus(QueryPolicyByTalentIdBO.REJECT);

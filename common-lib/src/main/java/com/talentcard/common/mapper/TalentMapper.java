@@ -176,7 +176,19 @@ public interface TalentMapper extends BaseMapper<TalentPO, Long> {
      */
     TalentBO certApprovalDetail(@Param("certId") Long certId);
 
+    /**
+     * 查询身份证对应的用户
+     * @param idCard
+     * @return
+     */
     TalentPO selectByIdCard(@Param("idCard") String idCard);
+
+    /**
+     * 查询护照对应的用户
+     * @param passport
+     * @return
+     */
+    TalentPO selectByPassport(@Param("passport") String passport);
 
     /**
      * 根据unionId 查询 openId

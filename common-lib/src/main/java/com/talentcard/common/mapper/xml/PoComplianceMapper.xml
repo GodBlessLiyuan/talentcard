@@ -168,7 +168,7 @@
         poc.talent_id = #{talentId,jdbcType=BIGINT}
         and poc.year = #{year,jdbcType=INTEGER}
         and (poc.status = 11 or  poc.status = 2 or poc.status = 3 or poc.status = 10 or poc.status = 1)
-        order by poc.status asc, p.end_time asc
+        order by FIELD(poc.status, 2, 11, 3, 1, 10) asc, p.end_time asc
     </select>
 
     <select id="countMeetConditionNumber"  resultMap="BaseResultMap">

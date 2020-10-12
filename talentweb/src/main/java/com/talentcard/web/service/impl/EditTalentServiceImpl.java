@@ -853,7 +853,7 @@ public class EditTalentServiceImpl implements IEditTalentService {
         List<Integer> existQualities = editTalentPolicyDTO.getQualityList();
         List<Long> existHonours = editTalentPolicyDTO.getHonourList();
         String[] existCategories = null;
-        if (null != editTalentPolicyDTO.getCategory()) {
+        if (!StringUtils.isEmpty(editTalentPolicyDTO.getCategory())) {
             existCategories = editTalentPolicyDTO.getCategory().split(",");
         }
 

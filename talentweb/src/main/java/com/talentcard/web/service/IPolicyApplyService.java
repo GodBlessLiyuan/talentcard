@@ -31,7 +31,7 @@ public interface IPolicyApplyService {
      * @param reqMap
      * @return
      */
-    ResultVO export(HashMap<String, Object> reqMap, HttpServletResponse res);
+    void export(HashMap<String, Object> reqMap, HttpServletResponse res);
 
     /**
      * 审批
