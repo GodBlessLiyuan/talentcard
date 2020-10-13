@@ -17,6 +17,7 @@
         <module>talenteureka</module>
         <module>miniprogram</module>
         <module>bsnsdk</module>
+        <module>talentrabbit</module>
     </modules>
 
     <name>talentcard</name>
