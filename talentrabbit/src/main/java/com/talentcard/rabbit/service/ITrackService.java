@@ -1,5 +1,7 @@
 package com.talentcard.rabbit.service;
 
+import java.util.Map;
+
 /**
  * @author: xiahui
  * @date: Created in 2020/10/13 10:28
@@ -7,5 +9,5 @@ package com.talentcard.rabbit.service;
  * @version: 1.0
  */
 public interface ITrackService {
-    void track(Object data);
+    void track(Map<String, Object> data);
 }

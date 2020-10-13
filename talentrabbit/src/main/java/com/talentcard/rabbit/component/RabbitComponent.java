@@ -5,6 +5,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 /**
  * @author: xiahui
  * @date: Created in 2019/11/5 10:53
@@ -18,12 +20,12 @@ public class RabbitComponent {
     private ITrackService service;
 
     /**
-     * 服务追踪
+     * 追踪队列
      *
      * @param data 数据包
      */
     @RabbitListener(queues = "track")
-    public void track(Object data) {
+    public void track(Map<String, Object> data) {
         service.track(data);
     }
 }
