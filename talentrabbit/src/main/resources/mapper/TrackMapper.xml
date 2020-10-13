@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talentcard.rabbit.mapper.TrackMapper">
+  <resultMap id="BaseResultMap" type="com.talentcard.rabbit.pojo.TrackPO">
+    <id column="track_id" jdbcType="BIGINT" property="trackId" />
+    <result column="track_time" jdbcType="TIMESTAMP" property="trackTime" />
+    <result column="track_type" jdbcType="TINYINT" property="trackType" />
+    <result column="track_node" jdbcType="TINYINT" property="trackNode" />
+    <result column="track_content" jdbcType="CHAR" property="trackContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    track_id, track_time, track_type, track_node, track_content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_track
+    where track_id = #{trackId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_track
+    where track_id = #{trackId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.talentcard.rabbit.pojo.TrackPO">
+    insert into t_track (track_id, track_time, track_type, 
+      track_node, track_content)
+    values (#{trackId,jdbcType=BIGINT}, #{trackTime,jdbcType=TIMESTAMP}, #{trackType,jdbcType=TINYINT}, 
+      #{trackNode,jdbcType=TINYINT}, #{trackContent,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.talentcard.rabbit.pojo.TrackPO">
+    insert into t_track
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="trackId != null">
+        track_id,
+      </if>
+      <if test="trackTime != null">
+        track_time,
+      </if>
+      <if test="trackType != null">
+        track_type,
+      </if>
+      <if test="trackNode != null">
+        track_node,
+      </if>
+      <if test="trackContent != null">
+        track_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="trackId != null">
+        #{trackId,jdbcType=BIGINT},
+      </if>
+      <if test="trackTime != null">
+        #{trackTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="trackType != null">
+        #{trackType,jdbcType=TINYINT},
+      </if>
+      <if test="trackNode != null">
+        #{trackNode,jdbcType=TINYINT},
+      </if>
+      <if test="trackContent != null">
+        #{trackContent,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.talentcard.rabbit.pojo.TrackPO">
+    update t_track
+    <set>
+      <if test="trackTime != null">
+        track_time = #{trackTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="trackType != null">
+        track_type = #{trackType,jdbcType=TINYINT},
+      </if>
+      <if test="trackNode != null">
+        track_node = #{trackNode,jdbcType=TINYINT},
+      </if>
+      <if test="trackContent != null">
+        track_content = #{trackContent,jdbcType=CHAR},
+      </if>
+    </set>
+    where track_id = #{trackId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.talentcard.rabbit.pojo.TrackPO">
+    update t_track
+    set track_time = #{trackTime,jdbcType=TIMESTAMP},
+      track_type = #{trackType,jdbcType=TINYINT},
+      track_node = #{trackNode,jdbcType=TINYINT},
+      track_content = #{trackContent,jdbcType=CHAR}
+    where track_id = #{trackId,jdbcType=BIGINT}
+  </update>
+</mapper>
