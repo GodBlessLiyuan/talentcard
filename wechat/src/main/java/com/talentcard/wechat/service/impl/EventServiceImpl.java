@@ -2,8 +2,10 @@ package com.talentcard.wechat.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.ActivcateBO;
+import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.rabbit.RabbitUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.wechat.service.IEventService;
 import com.talentcard.wechat.service.IWxTalentService;
@@ -81,6 +83,12 @@ public class EventServiceImpl implements IEventService {
             //更新customField
             TalentInfoUpdateUtil.updateJuniorCardCustomField(newCard.getCode(),
                     newCard.getWxCardId(), newCardTalentId);
+            //人才追踪的领取卡
+            TalentPO talentPO = talentMapper.selectByPrimaryKey(newCardTalentId);
+            UserCardPO userCardPO = userCardMapper.selectByPrimaryKey(newCard.getUcId());
+            if(talentPO != null && userCardPO !=null){
+                RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_RECEIVE, talentPO.getName()+"领取人才卡："+userCardPO.getNum());
+            }
         } else {
             /**
              * 高级卡
@@ -213,6 +221,13 @@ public class EventServiceImpl implements IEventService {
             //更新customField
             TalentInfoUpdateUtil.updateSeniorCardCustomField(newCard.getCode(),
                     newCard.getWxCardId(), newCardTalentId);
+
+            //人才追踪的领取卡
+            TalentPO talentPO = talentMapper.selectByPrimaryKey(newCard.getTalentId());
+            UserCardPO userCardPO = userCardMapper.selectByPrimaryKey(newCard.getUcId());
+            if(talentPO != null && userCardPO !=null){
+                RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_RECEIVE, talentPO.getName()+"领取人才卡："+userCardPO.getNum());
+            }
         }
 
 

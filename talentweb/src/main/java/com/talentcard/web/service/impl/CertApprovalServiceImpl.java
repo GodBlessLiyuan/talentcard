@@ -5,9 +5,11 @@ import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.ApprovalBO;
 import com.talentcard.common.bo.CertApprovalBO;
 import com.talentcard.common.bo.TalentBO;
+import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.WechatApiUtil;
+import com.talentcard.common.utils.rabbit.RabbitUtil;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ICertApprovalService;
@@ -217,7 +219,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
              * 清除redis缓存
              */
             talentService.clearRedisCache(openId);
-
+            //人才追踪的提交认证驳回
+            RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_REJECT, currentTalent.getName()+"提交认证信息，被驳回");
         } else {
             /**
              * 审批通过
@@ -455,7 +458,8 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             certApprovalPassRecordPO.setTalentId(talentId);
             certApprovalPassRecordPO.setTalentBoJson(talentBoJson);
             certApprovalPassRecordMapper.insertSelective(certApprovalPassRecordPO);
-
+            //人才追踪的提交认证信息，已通过审批 talentPO
+            RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_PASS, talentPO.getName()+"提交认证信息，已通过审批");
             /**
              * 更新用户类别表中的人才类别信息
              */
