@@ -3,9 +3,11 @@ package com.talentcard.front.service.impl;
 import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.InsertCertificationBO;
 import com.talentcard.common.constant.InsertCertificationConstant;
+import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.dto.*;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.rabbit.RabbitUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IInsertCertificationService;
 import com.talentcard.front.service.ITalentService;
@@ -166,6 +168,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(talentPO.getOpenId());
+        //人才追踪的添加认证的提交认证
+        if (insertCertId == null) {
+            RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_SUBMIT, talentPO.getName()+"提交认证信息");
+        }
         return new ResultVO(1000);
     }
 
@@ -283,6 +289,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(talentPO.getOpenId());
+        //人才追踪的添加认证的提交认证
+        if (insertCertId == null) {
+            RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_SUBMIT, talentPO.getName()+"提交认证信息");
+        }
         return new ResultVO(1000);
     }
 
@@ -396,6 +406,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(talentPO.getOpenId());
+        //人才追踪的添加认证的提交认证
+        if (insertCertId == null) {
+            RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_SUBMIT, talentPO.getName()+"提交认证信息");
+        }
         return new ResultVO(1000);
     }
 
@@ -510,6 +524,10 @@ public class InsertCertificationImpl implements IInsertCertificationService {
          * 清除redis缓存
          */
         iTalentService.clearRedisCache(talentPO.getOpenId());
+        //人才追踪的添加认证的提交认证
+        if (insertCertId == null) {
+            RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_SUBMIT, talentPO.getName()+"提交认证信息");
+        }
         return new ResultVO(1000);
     }
 

@@ -5,10 +5,12 @@ import com.github.pagehelper.Page;
 import com.talentcard.common.bo.*;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.constant.SocialSecurityConstant;
+import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.*;
 import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.utils.rabbit.RabbitUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
@@ -547,6 +549,8 @@ public class TalentServiceImpl implements ITalentService {
         talentCertificationInfoMapper.insertSelective(talentCertificationInfoPO);
         sendMessage(talentPO);
 
+        //人才追踪的批量认证的正常业务逻辑是认证通过
+        RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_PASS, talentPO.getName()+"提交认证信息，已通过审批");
         /**
          * 更新用户类别表中的人才卡信息
          */
