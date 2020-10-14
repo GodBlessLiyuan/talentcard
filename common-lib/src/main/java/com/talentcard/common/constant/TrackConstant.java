@@ -49,7 +49,6 @@ public class TrackConstant {
      * 1：领取；2：使用；3：享受
      */
     private Byte SERVICE_RECEIVED = 1;
-    ;
     private Byte SERVICE_USED = 2;
     private Byte SERVICE_ENJOYED = 3;
 
