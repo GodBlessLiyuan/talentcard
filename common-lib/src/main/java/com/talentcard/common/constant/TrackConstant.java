@@ -16,11 +16,11 @@ public class TrackConstant {
     /**
      * 2：政策追踪
      */
-    private Byte POLICY_TRACK = 1;
+    private Byte POLICY_TRACK = 2;
     /**
      * 3：服务追踪
      */
-    private Byte SERVICE_TRACK = 1;
+    private Byte SERVICE_TRACK = 3;
 
     /**
      * 1：人才追踪
@@ -31,7 +31,7 @@ public class TrackConstant {
     private Byte TALENT_SUBMIT = 2;
     private Byte TALENT_PASS = 3;
     private Byte TALENT_REJECT = 4;
-    private Byte TALENT_RECEIVE = 4;
+    private Byte TALENT_RECEIVE = 5;
 
 
     /**
