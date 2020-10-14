@@ -12,26 +12,26 @@ public class TrackConstant {
     /**
      * 1：人才追踪
      */
-    private Byte TALENT_TRACK = 1;
+    public static final Byte TALENT_TRACK = 1;
     /**
      * 2：政策追踪
      */
-    private Byte POLICY_TRACK = 2;
+    public static final Byte POLICY_TRACK = 2;
     /**
      * 3：服务追踪
      */
-    private Byte SERVICE_TRACK = 3;
+    public static final Byte SERVICE_TRACK = 3;
 
     /**
      * 1：人才追踪
      * <p>
      * 1：注册；2：提交；3：通过；4：驳回；5：领取
      */
-    private Byte TALENT_REGISTER = 1;
-    private Byte TALENT_SUBMIT = 2;
-    private Byte TALENT_PASS = 3;
-    private Byte TALENT_REJECT = 4;
-    private Byte TALENT_RECEIVE = 5;
+    public static final Byte TALENT_REGISTER = 1;
+    public static final Byte TALENT_SUBMIT = 2;
+    public static final Byte TALENT_PASS = 3;
+    public static final Byte TALENT_REJECT = 4;
+    public static final Byte TALENT_RECEIVE = 5;
 
 
     /**
@@ -39,17 +39,17 @@ public class TrackConstant {
      * <p>
      * 1：申请；2：驳回；3：通过
      */
-    private Byte POLICY_APPLY = 1;
-    private Byte POLICY_REJECT = 2;
-    private Byte POLICY_PASS = 3;
+    public static final Byte POLICY_APPLY = 1;
+    public static final Byte POLICY_REJECT = 2;
+    public static final Byte POLICY_PASS = 3;
 
     /**
      * 3：服务追踪
      * <p>
      * 1：领取；2：使用；3：享受
      */
-    private Byte SERVICE_RECEIVED = 1;
-    private Byte SERVICE_USED = 2;
-    private Byte SERVICE_ENJOYED = 3;
+    public static final Byte SERVICE_RECEIVED = 1;
+    public static final Byte SERVICE_USED = 2;
+    public static final Byte SERVICE_ENJOYED = 3;
 
 }
