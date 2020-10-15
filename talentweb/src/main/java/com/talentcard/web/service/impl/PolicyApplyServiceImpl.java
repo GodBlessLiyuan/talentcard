@@ -166,7 +166,7 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
             Byte eventStatus = TrackConstant.POLICY_PASS;
             RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, eventStatus, eventLog, true);
         } else if (2 == status) {
-            String eventLog = talentName + "申请政策\"" + policyName + "\",已通过审批";
+            String eventLog = talentName + "申请政策\"" + policyName + "\",被驳回";
             Byte eventStatus = TrackConstant.POLICY_REJECT;
             RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, eventStatus, eventLog, true);
         }
