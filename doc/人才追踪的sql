@@ -1,21 +1,21 @@
--- 汇总的sql
+-- 汇总的sql ,union all不用去重
 -- 人才追踪的申请注册人才卡
 SELECT create_time as track_time,1 as track_type ,1 as track_node ,CONCAT(name,'申请注册人才卡') as track_content FROM talentcard.`t_talent` WHERE create_time is not NULL
-   UNION
+   UNION ALL
 -- 人才追踪的提交认证信息
 SELECT cp.create_time as track_time,1 as track_type ,2 as track_node ,CONCAT(name,'提交认证信息')
 	from talentcard.t_cert_approval as cp LEFT JOIN talentcard.t_certification as c on cp.cert_id=c.cert_id
 			LEFT JOIN talentcard.t_talent as t on c.talent_id=t.talent_id
   WHERE cp.type=1
- union
+ UNION ALL
 -- 提交认证信息，已通过审批
-SELECT cp.create_time as track_time,1 as track_type ,2 as track_node ,CONCAT(name,'提交认证信息，已通过审批')
+SELECT cp.create_time as track_time,1 as track_type ,3 as track_node ,CONCAT(name,'提交认证信息，已通过审批')
 	from talentcard.t_cert_approval as cp LEFT JOIN talentcard.t_certification as c on cp.cert_id=c.cert_id
 			LEFT JOIN talentcard.t_talent as t on c.talent_id=t.talent_id
   WHERE cp.type=2 and  cp.result=1
- UNION
+ UNION ALL
 -- 提交认证信息，被驳回
-SELECT cp.create_time as track_time,1 as track_type ,2 as track_node ,CONCAT(name,'提交认证信息，被驳回')
+SELECT cp.create_time as track_time,1 as track_type ,4 as track_node ,CONCAT(name,'提交认证信息，被驳回')
 	from talentcard.t_cert_approval as cp LEFT JOIN talentcard.t_certification as c on cp.cert_id=c.cert_id
 			LEFT JOIN talentcard.t_talent as t on c.talent_id=t.talent_id
   WHERE cp.type=2 and  cp.result=2
