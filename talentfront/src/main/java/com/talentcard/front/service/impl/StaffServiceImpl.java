@@ -237,9 +237,7 @@ public class StaffServiceImpl implements IStaffService {
 
             /*区块链埋点*/
             TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
-            String talentName = talentPO.getName();
-            String scenicSpotName = scenicPO.getName();
-            String eventLog = talentName + "使用\"" + scenicSpotName + "\"免费旅游券";
+            String eventLog = talentPO.getName() + "使用\"" + scenicPO.getName() + "\"免费旅游券";
             RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_USED, eventLog, true);
 
         } else {
@@ -247,9 +245,7 @@ public class StaffServiceImpl implements IStaffService {
 
             /*区块链埋点*/
             TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
-            String talentName = talentPO.getName();
-            String scenicSpotName = scenicPO.getName();
-            String eventLog = talentName + "享受\"" + scenicSpotName + "\"旅游折扣";
+            String eventLog = talentPO.getName() + "享受\"" + scenicPO.getName() + "\"旅游折扣";
             RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_ENJOYED, eventLog, true);
 
         }
@@ -384,9 +380,7 @@ public class StaffServiceImpl implements IStaffService {
         this.redisMapUtil.hdel(talentOpenId, TalentConstant.TALENT_AVAILABLE);
 
         /*区块链埋点*/
-        String talentName = talentPO.getName();
-        String farmhouseName = farmhousePO.getName();
-        String eventLog = talentName + "享受\"" + farmhouseName + "\"农家乐折扣";
+        String eventLog = talentPO.getName() + "享受\"" + farmhousePO.getName() + "\"农家乐折扣";
         RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_ENJOYED, eventLog, true);
 
         return new ResultVO(1000, result);

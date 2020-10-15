@@ -159,16 +159,12 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         this.iTalentService.clearRedisCache(talentPO.getOpenId());
 
         /*区块链埋点*/
-        String talentName = talentPO.getName();
-        String policyName = applyPO.getPolicyName();
         if (1 == status) {
-            String eventLog = talentName + "申请政策\"" + policyName + "\",已通过审批";
-            Byte eventStatus = TrackConstant.POLICY_PASS;
-            RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, eventStatus, eventLog, true);
+            String eventLog = talentPO.getName() + "申请政策\"" + applyPO.getPolicyName() + "\",已通过审批";
+            RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, TrackConstant.POLICY_PASS, eventLog, true);
         } else if (2 == status) {
-            String eventLog = talentName + "申请政策\"" + policyName + "\",被驳回";
-            Byte eventStatus = TrackConstant.POLICY_REJECT;
-            RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, eventStatus, eventLog, true);
+            String eventLog = talentPO.getName() + "申请政策\"" + applyPO.getPolicyName() + "\",被驳回";
+            RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, TrackConstant.POLICY_REJECT, eventLog, true);
         }
 
         return new ResultVO(1000);

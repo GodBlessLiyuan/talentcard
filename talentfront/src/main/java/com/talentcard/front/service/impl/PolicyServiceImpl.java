@@ -347,9 +347,7 @@ public class PolicyServiceImpl implements IPolicyService {
         iBestPolicyToTalentService.asynBestPolicyForTalent(talentPO.getTalentId());
 
         /*区块链埋点*/
-        String talentName = talentPO.getName();
-        String policyName = policyPO.getName();
-        String eventLog = talentName + "申请政策\"" + policyName + "\"";
+        String eventLog = talentPO.getName() + "申请政策\"" + policyPO.getName() + "\"";
         RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, TrackConstant.POLICY_APPLY, eventLog, true);
 
         return new ResultVO(1000);
