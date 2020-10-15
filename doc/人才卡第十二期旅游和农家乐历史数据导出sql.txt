@@ -1,0 +1,21 @@
+--查询出领取旅游券的数据
+SELECT tt.create_time as track_time,3 as track_type ,1 as track_node ,CONCAT(t.name,'领取\"',s.name,'\"免费旅游券') as track_content FROM talentcard.`t_talent_trip` tt left join talentcard.`t_scenic` as s  on  tt.scenic_id=s.scenic_id left join talentcard.t_talent t on tt.open_id=t.open_id WHERE tt.create_time is not NULL;
+--查询出使用和享受折扣的旅游和农家乐的数据
+SELECT tah.create_time as track_time,3 as track_type ,CASE tah.status when 2 then 2 when 3 then 3 END AS track_node ,CASE when(tah.activity_first_content_id='1' and tah.`status`='2')then CONCAT(t.name,'使用\"',tah.activity_second_content_name,'\"免费旅游券') when(tah.activity_first_content_id='1' and tah.`status`='3')then CONCAT(t.name,'享受\"',tah.activity_second_content_name,'\"旅游折扣') when(tah.activity_first_content_id='2' and tah.`status`='3')then CONCAT(t.name,'享受\"',tah.activity_second_content_name,'\"农家乐折扣') end as track_content FROM talentcard.`t_talent_activity_history` tah left join talentcard.t_talent t on tah.open_id=t.open_id WHERE tah.create_time is not NULL;
+--一起查询
+SELECT tah.create_time as track_time,3 as track_type ,CASE tah.status when 2 then 2 when 3 then 3 END AS track_node ,CASE when(tah.activity_first_content_id='1' and tah.`status`='2')then CONCAT(t.name,'使用\"',tah.activity_second_content_name,'\"免费旅游券') when(tah.activity_first_content_id='1' and tah.`status`='3')then CONCAT(t.name,'享受\"',tah.activity_second_content_name,'\"旅游折扣') when(tah.activity_first_content_id='2' and tah.`status`='3')then CONCAT(t.name,'享受\"',tah.activity_second_content_name,'\"农家乐折扣') end as track_content FROM talentcard.`t_talent_activity_history` tah left join talentcard.t_talent t on tah.open_id=t.open_id WHERE tah.create_time is not NULL
+union all
+SELECT tt.create_time as track_time,3 as track_type ,1 as track_node ,CONCAT(t.name,'领取\"',s.name,'\"免费旅游券') as track_content FROM talentcard.`t_talent_trip` tt left join talentcard.`t_scenic` as s  on  tt.scenic_id=s.scenic_id left join talentcard.t_talent t on tt.open_id=t.open_id WHERE tt.create_time is not NULL
+ORDER BY track_time asc;
+--直接插入
+INSERT into datav.t_track (track_time,track_type,track_node,track_content)( 
+SELECT tah.create_time as track_time,3 as track_type ,CASE tah.status when 2 then 2 when 3 then 3 END AS track_node ,CASE when(tah.activity_first_content_id='1' and tah.`status`='2')then CONCAT(t.name,'使用\"',tah.activity_second_content_name,'\"免费旅游券') when(tah.activity_first_content_id='1' and tah.`status`='3')then CONCAT(t.name,'享受\"',tah.activity_second_content_name,'\"旅游折扣') when(tah.activity_first_content_id='2' and tah.`status`='3')then CONCAT(t.name,'享受\"',tah.activity_second_content_name,'\"农家乐折扣') end as track_content FROM talentcard.`t_talent_activity_history` tah left join talentcard.t_talent t on tah.open_id=t.open_id WHERE tah.create_time is not NULL
+union all
+SELECT tt.create_time as track_time,3 as track_type ,1 as track_node ,CONCAT(t.name,'领取\"',s.name,'\"免费旅游券') as track_content FROM talentcard.`t_talent_trip` tt left join talentcard.`t_scenic` as s  on  tt.scenic_id=s.scenic_id left join talentcard.t_talent t on tt.open_id=t.open_id WHERE tt.create_time is not NULL
+ORDER BY track_time asc)
+
+--最终用的查询
+SELECT tt.create_time as track_time,3 as track_type ,1 as track_node ,CONCAT(t.name,'领取\"',s.name,'\"免费旅游券') as track_content FROM talentcard.`t_talent_trip` tt left join talentcard.`t_scenic` as s  on  tt.scenic_id=s.scenic_id left join talentcard.t_talent t on tt.open_id=t.open_id WHERE tt.create_time is not NULL
+union all
+SELECT tah.create_time as track_time,3 as track_type ,CASE tah.status when 2 then 2 when 3 then 3 END AS track_node ,CASE when(tah.activity_first_content_id='1' and tah.`status`='2')then CONCAT(t.name,'使用\"',tah.activity_second_content_name,'\"免费旅游券') when(tah.activity_first_content_id='1' and tah.`status`='3')then CONCAT(t.name,'享受\"',tah.activity_second_content_name,'\"旅游折扣') when(tah.activity_first_content_id='2' and tah.`status`='3')then CONCAT(t.name,'享受\"',tah.activity_second_content_name,'\"农家乐折扣') end as track_content FROM talentcard.`t_talent_activity_history` tah left join talentcard.t_talent t on tah.open_id=t.open_id WHERE tah.create_time is not NULL
+ORDER BY track_time asc;
