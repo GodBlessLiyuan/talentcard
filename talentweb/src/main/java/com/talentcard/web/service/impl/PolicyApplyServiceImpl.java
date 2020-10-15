@@ -5,12 +5,14 @@ import com.netflix.discovery.converters.Auto;
 import com.talentcard.common.bo.ApplyNumCountBO;
 import com.talentcard.common.bo.HavingApprovePolicyBO;
 import com.talentcard.common.bo.PolicyApplyBO;
+import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.dto.ApplyNumCountDTO;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.utils.rabbit.RabbitUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
@@ -155,6 +157,15 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
 
 
         this.iTalentService.clearRedisCache(talentPO.getOpenId());
+
+        /*区块链埋点*/
+        if (1 == status) {
+            String eventLog = talentPO.getName() + "申请政策\"" + applyPO.getPolicyName() + "\",已通过审批";
+            RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, TrackConstant.POLICY_PASS, eventLog, true);
+        } else if (2 == status) {
+            String eventLog = talentPO.getName() + "申请政策\"" + applyPO.getPolicyName() + "\",被驳回";
+            RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, TrackConstant.POLICY_REJECT, eventLog, true);
+        }
 
         return new ResultVO(1000);
     }
