@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.ScenicBO;
 import com.talentcard.common.constant.TalentConstant;
+import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.StringToObjUtil;
+import com.talentcard.common.utils.rabbit.RabbitUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.common.vo.TalentTypeVO;
@@ -247,15 +249,15 @@ public class TalentTripServiceImpl implements ITalentTripService {
             return new ResultVO(1003, "当前用户已经把当月/年次数用尽");
         }*/
         Calendar c = Calendar.getInstance();
-        String endTime = DateUtil.date2Str(c.getTime(),DateUtil.YMD_HMS);
+        String endTime = DateUtil.date2Str(c.getTime(), DateUtil.YMD_HMS);
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
-        String startTime = DateUtil.date2Str(c.getTime(),DateUtil.YMD_HMS);
+        String startTime = DateUtil.date2Str(c.getTime(), DateUtil.YMD_HMS);
 
         //限制当天只能核销一次
-        Integer dailyTotal = talentTripMapper.talentGetTimes(openId,activitySecondContentId, startTime, endTime,(byte)2 );
-        if(dailyTotal > 0){
+        Integer dailyTotal = talentTripMapper.talentGetTimes(openId, activitySecondContentId, startTime, endTime, (byte) 2);
+        if (dailyTotal > 0) {
             return new ResultVO(1001, "当前福利已被领取完");
         }
 
@@ -280,8 +282,11 @@ public class TalentTripServiceImpl implements ITalentTripService {
         LocalDate date = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         redisMapUtil.hdel("talentfarmhouse", "benefitNum" + date.format(formatter));
-
         redisMapUtil.del(openId);
+
+        /*区块链埋点*/
+        String eventLog = talentPO.getName() + "领取\"" + scenicPO.getName() + "\"免费旅游券";
+        RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_RECEIVED, eventLog, true);
 
         return new ResultVO(1000, "领取成功");
     }

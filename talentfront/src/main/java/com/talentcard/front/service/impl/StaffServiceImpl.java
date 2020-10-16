@@ -3,9 +3,11 @@ package com.talentcard.front.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.constant.TalentConstant;
+import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.TalentActivityUtil;
+import com.talentcard.common.utils.rabbit.RabbitUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.common.vo.TalentTypeVO;
@@ -232,8 +234,20 @@ public class StaffServiceImpl implements IStaffService {
         result.put("vertifyNum", vertifyNum);
         if (ifTicket == TICKET) {
             result.put("discount", 0);
+
+            /*区块链埋点*/
+            TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
+            String eventLog = talentPO.getName() + "使用\"" + scenicPO.getName() + "\"免费旅游券";
+            RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_USED, eventLog, true);
+
         } else {
             result.put("discount", scenicPO.getDiscount());
+
+            /*区块链埋点*/
+            TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
+            String eventLog = talentPO.getName() + "享受\"" + scenicPO.getName() + "\"旅游折扣";
+            RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_ENJOYED, eventLog, true);
+
         }
         sendMessage(talentOpenId, staffOpenId, (long) 1, activitySecondContentId);
 
@@ -364,6 +378,10 @@ public class StaffServiceImpl implements IStaffService {
 
         this.redisMapUtil.hdel(talentOpenId, TalentConstant.TALENT_FOOTPIRNT);
         this.redisMapUtil.hdel(talentOpenId, TalentConstant.TALENT_AVAILABLE);
+
+        /*区块链埋点*/
+        String eventLog = talentPO.getName() + "享受\"" + farmhousePO.getName() + "\"农家乐折扣";
+        RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_ENJOYED, eventLog, true);
 
         return new ResultVO(1000, result);
     }

@@ -4,9 +4,11 @@ import com.talentcard.common.bo.BankInfoBO;
 import com.talentcard.common.bo.PolicyApplyBO;
 import com.talentcard.common.bo.QueryPolicyByTalentIdBO;
 import com.talentcard.common.config.FilePathConfig;
+import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.FileUtil;
+import com.talentcard.common.utils.rabbit.RabbitUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.dto.PolicyApplyDTO;
 import com.talentcard.front.service.IBestPolicyToTalentService;
@@ -296,7 +298,7 @@ public class PolicyServiceImpl implements IPolicyService {
          * 当用户没有符合条件的政策时，提示对应政策
          */
         Date current = new Date();
-        int res = updatePOCompliance(talentPO.getTalentId(), policyPO.getPolicyId(), 3 ,current);
+        int res = updatePOCompliance(talentPO.getTalentId(), policyPO.getPolicyId(), 3, current);
         if (res == -1) {
             return new ResultVO(1002);
         }
@@ -343,6 +345,10 @@ public class PolicyServiceImpl implements IPolicyService {
         }
 
         iBestPolicyToTalentService.asynBestPolicyForTalent(talentPO.getTalentId());
+
+        /*区块链埋点*/
+        String eventLog = talentPO.getName() + "申请政策\"" + policyPO.getName() + "\"";
+        RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, TrackConstant.POLICY_APPLY, eventLog, true);
 
         return new ResultVO(1000);
     }
