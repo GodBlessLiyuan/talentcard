@@ -1,2 +1,0 @@
-首选写好controller，之后写好对应的接口调用，最后feign配置一下，之后autowire注入一下就可以使用了
-

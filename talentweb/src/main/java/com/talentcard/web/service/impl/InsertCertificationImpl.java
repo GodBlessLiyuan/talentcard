@@ -7,9 +7,11 @@ import com.talentcard.common.bo.InsertCertApprovalBO;
 import com.talentcard.common.bo.InsertCertificationBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.constant.InsertCertificationConstant;
+import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.utils.rabbit.RabbitUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
@@ -122,9 +124,14 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         if (result == 1) {
             //通过
             status = InsertCertificationConstant.approveStatus;
+            //人才追踪的添加认证的提交认证通过
+            RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_PASS, talentPO.getName()+"提交认证信息，已通过审批");
+
         } else {
             //驳回
             status = InsertCertificationConstant.rejectStatus;
+            //人才追踪的添加认证的提交认证
+            RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_REJECT, talentPO.getName()+"提交认证信息，被驳回");
         }
         insertCertificationPO.setStatus(status);
         insertCertificationMapper.updateByPrimaryKeySelective(insertCertificationPO);

@@ -7,9 +7,11 @@ import com.talentcard.common.bo.InsertCertificationBO;
 import com.talentcard.common.bo.TalentBO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.constant.TalentConstant;
+import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.StringToObjUtil;
+import com.talentcard.common.utils.rabbit.RabbitUtil;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.common.vo.TalentTypeVO;
@@ -415,6 +417,8 @@ public class TalentServiceImpl implements ITalentService {
         if (StringUtils.isEmpty(unionId)) {
             return new ResultVO(2213);
         }
+        //人才追踪的注册用户
+        RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK,TrackConstant.TALENT_REGISTER,talentPO.getName()+"申请注册人才卡");
         return new ResultVO(1000);
     }
 
@@ -607,6 +611,8 @@ public class TalentServiceImpl implements ITalentService {
          * 清除redis缓存
          */
         clearRedisCache(openId);
+        //人才追踪的提交认证
+        RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_SUBMIT, talentPO.getName()+"提交认证信息");
         return new ResultVO(1000);
     }
 
