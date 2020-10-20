@@ -238,7 +238,7 @@ public class StaffServiceImpl implements IStaffService {
             /*区块链埋点*/
             TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
             String eventLog = talentPO.getName() + "使用\"" + scenicPO.getName() + "\"免费旅游券";
-            RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_USED, eventLog, true);
+            RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_TRIP, eventLog, true);
 
         } else {
             result.put("discount", scenicPO.getDiscount());
@@ -246,7 +246,7 @@ public class StaffServiceImpl implements IStaffService {
             /*区块链埋点*/
             TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
             String eventLog = talentPO.getName() + "享受\"" + scenicPO.getName() + "\"旅游折扣";
-            RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_ENJOYED, eventLog, true);
+            RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_TRIP, eventLog, true);
 
         }
         sendMessage(talentOpenId, staffOpenId, (long) 1, activitySecondContentId);
@@ -381,7 +381,7 @@ public class StaffServiceImpl implements IStaffService {
 
         /*区块链埋点*/
         String eventLog = talentPO.getName() + "享受\"" + farmhousePO.getName() + "\"农家乐折扣";
-        RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_ENJOYED, eventLog, true);
+        RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_FARMHOURSE, eventLog, true);
 
         return new ResultVO(1000, result);
     }

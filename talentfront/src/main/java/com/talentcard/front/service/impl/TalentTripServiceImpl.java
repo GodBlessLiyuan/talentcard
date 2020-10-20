@@ -286,7 +286,7 @@ public class TalentTripServiceImpl implements ITalentTripService {
 
         /*区块链埋点*/
         String eventLog = talentPO.getName() + "领取\"" + scenicPO.getName() + "\"免费旅游券";
-        RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_RECEIVED, eventLog, true);
+        RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_TRIP, eventLog, true);
 
         return new ResultVO(1000, "领取成功");
     }
