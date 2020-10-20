@@ -28,14 +28,14 @@ SELECT icp.create_time as track_time,1 as track_type ,2 as track_node ,CONCAT(na
 	WHERE icp.type=1 and icp.dr=1
 UNION ALL
 -- 添加认证通过
-SELECT icp.create_time as track_time,1 as track_type ,3 as track_node ,CONCAT(name,'提交认证信息')
+SELECT icp.create_time as track_time,1 as track_type ,3 as track_node ,CONCAT(name,'提交认证信息，已通过审批')
 	FROM talentcard.t_insert_cert_approval as icp
 		LEFT JOIN talentcard.t_insert_certification as ic on icp.insert_cert_id=ic.insert_cert_id
 		LEFT JOIN talentcard.t_talent as t on ic.talent_id=t.talent_id
 	WHERE icp.type=2 and icp.result=1 and icp.dr=1
 UNION ALL
 --  添加认证驳回
-SELECT icp.create_time as track_time,1 as track_type ,4 as track_node ,CONCAT(name,'提交认证信息')
+SELECT icp.create_time as track_time,1 as track_type ,4 as track_node ,CONCAT(name,'提交认证信息，被驳回')
 	FROM talentcard.t_insert_cert_approval as icp
 		LEFT JOIN talentcard.t_insert_certification as ic on icp.insert_cert_id=ic.insert_cert_id
 		LEFT JOIN talentcard.t_talent as t on ic.talent_id=t.talent_id
