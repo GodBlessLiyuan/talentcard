@@ -3,7 +3,7 @@ SELECT
 	tt.create_time AS track_time,
 	3 AS track_type,
 	1 AS track_node,
-	CONCAT( t.NAME, '领取\"', s.NAME, '\"免费旅游券' ) AS track_content
+	CONCAT( t.NAME, '领取\"', s.NAME, '\"的免费旅游券' ) AS track_content
 FROM
 	talentcard.`t_talent_trip` tt
 	LEFT JOIN talentcard.`t_scenic` AS s ON tt.scenic_id = s.scenic_id
@@ -23,11 +23,11 @@ CASE
 CASE
 
 	WHEN ( tah.activity_first_content_id = '1' AND tah.`status` = '2' ) THEN
-	CONCAT( t.NAME, '使用\"', tah.activity_second_content_name, '\"免费旅游券' )
+	CONCAT( t.NAME, '享受\"', tah.activity_second_content_name, '\"的免费旅游' )
 	WHEN ( tah.activity_first_content_id = '1' AND tah.`status` = '3' ) THEN
-	CONCAT( t.NAME, '享受\"', tah.activity_second_content_name, '\"旅游折扣' )
+	CONCAT( t.NAME, '享受\"', tah.activity_second_content_name, '\"的旅游折扣' )
 	WHEN ( tah.activity_first_content_id = '2' AND tah.`status` = '3' ) THEN
-	CONCAT( t.NAME, '享受\"', tah.activity_second_content_name, '\"农家乐折扣' )
+	CONCAT( t.NAME, '享受\"', tah.activity_second_content_name, '\"的农家乐折扣' )
 	END AS track_content
 FROM
 	talentcard.`t_talent_activity_history` tah
