@@ -23,7 +23,7 @@ CASE
 CASE
 
 	WHEN ( tah.activity_first_content_id = '1' AND tah.`status` = '2' ) THEN
-	CONCAT( t.NAME, '使用\"', tah.activity_second_content_name, '\"免费旅游券' )
+	CONCAT( t.NAME, '享受\"', tah.activity_second_content_name, '\"免费旅游' )
 	WHEN ( tah.activity_first_content_id = '1' AND tah.`status` = '3' ) THEN
 	CONCAT( t.NAME, '享受\"', tah.activity_second_content_name, '\"旅游折扣' )
 	WHEN ( tah.activity_first_content_id = '2' AND tah.`status` = '3' ) THEN

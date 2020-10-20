@@ -237,7 +237,7 @@ public class StaffServiceImpl implements IStaffService {
 
             /*区块链埋点*/
             TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
-            String eventLog = talentPO.getName() + "使用\"" + scenicPO.getName() + "\"免费旅游券";
+            String eventLog = talentPO.getName() + "享受\"" + scenicPO.getName() + "\"免费旅游";
             RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_TRIP, eventLog, true);
 
         } else {
