@@ -14,7 +14,7 @@ SELECT
 	tah.create_time AS track_time,
 	3 AS track_type,
 CASE
-	tah.STATUS
+
 	WHEN ( tah.activity_first_content_id = '1' ) THEN
 	1
 	WHEN ( tah.activity_first_content_id = '2' ) THEN
@@ -22,12 +22,12 @@ CASE
 	END AS track_node,
 CASE
 
-	WHEN ( tah.activity_first_content_id = '1' AND tah.`status` = '2' ) THEN
-	CONCAT( t.NAME, '享受\"', tah.activity_second_content_name, '\"的免费旅游' )
-	WHEN ( tah.activity_first_content_id = '1' AND tah.`status` = '3' ) THEN
-	CONCAT( t.NAME, '享受\"', tah.activity_second_content_name, '\"的旅游折扣' )
-	WHEN ( tah.activity_first_content_id = '2' AND tah.`status` = '3' ) THEN
-	CONCAT( t.NAME, '享受\"', tah.activity_second_content_name, '\"的农家乐折扣' )
+		WHEN ( tah.activity_first_content_id = '1' AND tah.`status` = '2' ) THEN
+		CONCAT( t.NAME, '享受\"', tah.activity_second_content_name, '\"的免费旅游' )
+		WHEN ( tah.activity_first_content_id = '1' AND tah.`status` = '3' ) THEN
+		CONCAT( t.NAME, '享受\"', tah.activity_second_content_name, '\"的旅游折扣' )
+		WHEN ( tah.activity_first_content_id = '2' AND tah.`status` = '2' ) THEN
+		CONCAT( t.NAME, '享受\"', tah.activity_second_content_name, '\"的农家乐折扣' )
 	END AS track_content
 FROM
 	talentcard.`t_talent_activity_history` tah
