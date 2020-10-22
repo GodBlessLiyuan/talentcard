@@ -223,6 +223,7 @@ public class EventServiceImpl implements IEventService {
                     newCard.getWxCardId(), newCardTalentId);
 
             //人才追踪的领取卡
+            logger.info("卡主键{}，人才主键",newCard.getUcId(),newCard.getTalentId());
             TalentPO talentPO = talentMapper.selectByPrimaryKey(newCard.getTalentId());
             UserCardPO userCardPO = userCardMapper.selectByPrimaryKey(newCard.getUcId());
             if(talentPO != null && userCardPO !=null){
