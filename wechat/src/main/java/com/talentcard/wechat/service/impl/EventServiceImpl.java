@@ -174,7 +174,12 @@ public class EventServiceImpl implements IEventService {
                         newCard.getWxCardId(), newCardTalentId);
 
                 iWxTalentService.cleanRedisCache(openId);
-
+                //人才追踪的领取卡
+                TalentPO talentPO = talentMapper.selectByPrimaryKey(newCard.getTalentId());
+                UserCardPO userCardPO = userCardMapper.selectByPrimaryKey(newCard.getUcId());
+                if(talentPO != null && userCardPO !=null){
+                    RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_RECEIVE, talentPO.getName()+"领取人才卡："+userCardPO.getNum());
+                }
                 return new ResultVO(1000, "虽然是领取高级卡，但没有操作，用户删卡或者高级卡更换");
             }
             //取出旧卡的talentId和certId
@@ -223,7 +228,6 @@ public class EventServiceImpl implements IEventService {
                     newCard.getWxCardId(), newCardTalentId);
 
             //人才追踪的领取卡
-            logger.info("卡主键{}，人才主键",newCard.getUcId(),newCard.getTalentId());
             TalentPO talentPO = talentMapper.selectByPrimaryKey(newCard.getTalentId());
             UserCardPO userCardPO = userCardMapper.selectByPrimaryKey(newCard.getUcId());
             if(talentPO != null && userCardPO !=null){
