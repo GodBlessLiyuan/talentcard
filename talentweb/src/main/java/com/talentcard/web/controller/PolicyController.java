@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author: xiahui
@@ -77,8 +78,8 @@ public class PolicyController {
     }
 
     @RequestMapping("delete")
-    public ResultVO update(HttpServletRequest request, @RequestParam(value = "pid") Long pid) {
-        return service.delete(request.getSession(), pid);
+    public ResultVO update(HttpServletRequest request, Map map) {
+        return service.delete(request.getSession(), map);
     }
 
     @RequestMapping("detail")

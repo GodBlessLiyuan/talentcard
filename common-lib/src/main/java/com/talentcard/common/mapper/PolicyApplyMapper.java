@@ -3,11 +3,13 @@ package com.talentcard.common.mapper;
 import com.talentcard.common.bo.ApplyNumCountBO;
 import com.talentcard.common.bo.PoComplianceBO;
 import com.talentcard.common.bo.PolicyApplyBO;
+import com.talentcard.common.bo.PolicyApprovalBO;
 import com.talentcard.common.dto.ApplyNumCountDTO;
 import com.talentcard.common.pojo.PolicyApplyPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.security.Policy;
 import java.util.List;
 import java.util.Map;
 
@@ -82,4 +84,22 @@ public interface PolicyApplyMapper extends BaseMapper<PolicyApplyPO, Long> {
      * @return
      */
     PolicyApplyPO selectPaidByMap(Map map);
+    /**
+     * 政策审批首页数据查询
+     * @param map
+     * @return
+     */
+    List<PolicyApprovalBO> pageQuery(Map map);
+    /**
+     * 分角色查询未审批数量
+     * @param rid
+     * @return
+     */
+    Long notApprovalNum(@Param("rid")Long rid);
+    /**
+     * 查询审批表未审批和待审批的政策申请记录
+     * @param map
+     * @return
+     */
+    List<PolicyApplyPO> selectByPidAndStatus(Map map);
 }

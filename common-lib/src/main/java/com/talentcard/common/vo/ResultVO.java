@@ -27,6 +27,18 @@ public class ResultVO<T> implements Serializable {
         this.data = data;
     }
 
+    /**
+     * 构造成功执行的构造参数
+     * @return
+     */
+    public static ResultVO<Object> ok(){
+        return new ResultVO<Object>(1000);
+    }
+
+    public ResultVO setData(T data){
+        this.data = data;
+        return this;
+    }
     public static ResultVO notLogin(){
         return new ResultVO(2104);
     }

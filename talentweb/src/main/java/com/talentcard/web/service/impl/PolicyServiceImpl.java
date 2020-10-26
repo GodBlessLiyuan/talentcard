@@ -6,6 +6,7 @@ import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.PoSettingPO;
 import com.talentcard.common.pojo.PoTypePO;
+import com.talentcard.common.pojo.PolicyApplyPO;
 import com.talentcard.common.pojo.PolicyPO;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.FileUtil;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: xiahui
@@ -59,6 +61,8 @@ public class PolicyServiceImpl implements IPolicyService {
     private IBestPolicyToTalentService iBestPolicyToTalentService;
     @Autowired
     private PoTypeMapper poTypeMapper;
+    @Autowired
+    private PolicyApplyMapper policyApplyMapper;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
@@ -125,19 +129,33 @@ public class PolicyServiceImpl implements IPolicyService {
     }
 
     @Override
-    public ResultVO delete(HttpSession session, Long pid) {
+    public ResultVO delete(HttpSession session, Map reqDate) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             // 用户过期
             return ResultVO.notLogin();
         }
-        PolicyPO policyPO = policyMapper.selectByPrimaryKey(pid);
+        PolicyPO policyPO = policyMapper.selectByPrimaryKey(Long.valueOf(String.valueOf(reqDate.get("pid"))));
         if (policyPO == null) {
             return new ResultVO(2402, "查无此政策！");
         }
+        //查询政策申请表看是否有正在申请或审批通过的记录，如果有则不允许删除
+        List<PolicyApplyPO> policyApplyPOS = policyApplyMapper.selectByPidAndStatus(reqDate);
+        if (policyApplyPOS.size() > 0) {
+            return new ResultVO(1001, "该政策有正在审批或审批通过的记录，不允许删除！");
+        }
         policyPO.setDr((byte) 2);
         policyMapper.updateByPrimaryKey(policyPO);
+        /**
+         * 重新计算适配的人群
+         */
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
+            @Override
+            public void afterCommit() {
+                iBestPolicyToTalentService.asynBestPolicy(policyPO.getPolicyId());
+            }
+        });
         logService.insertActionRecord(session, OpsRecordMenuConstant.F_TalentPolicyManager, OpsRecordMenuConstant.S_PolicyManager,
                 "删除政策\"%s\"", PolicyNameUtil.getNameNumber(policyPO));
         return new ResultVO(1000);
