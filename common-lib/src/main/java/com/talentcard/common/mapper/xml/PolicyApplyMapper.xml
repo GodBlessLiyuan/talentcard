@@ -354,19 +354,19 @@
         <if test="rid != null and rid !=''">and p.role_id = #{rid,jdbcType=TINYINT}</if>
         <if test="pname != null and pname !=''">and p.policy_name like '%' #{pname} '%'</if>
         <if test="num != null and num !=''">and p.num like '%' #{num} '%'</if>
-        <if test="status != null and and num !='' status == 1">
+        <if test="status != null and status !='' status == 1">
             and <![CDATA[ p.start_time <= #{currentTime} and end_time > #{currentTime} ]]>
             and p.up_down = 1
         </if>
-        <if test="status != null and and num !='' status == 2">
+        <if test="status != null and status !='' status == 2">
             and <![CDATA[ p.start_time >= #{currentTime}]]>
             and p.up_down = 1
         </if>
-        <if test="status != null and and num !='' status == 3">
+        <if test="status != null and status !='' status == 3">
             and <![CDATA[ p.end_time <= #{currentTime}]]>
             and p.up_down = 1
         </if>
-        <if test="status != null and and num !='' status == 4">
+        <if test="status != null and status !='' status == 4">
             and p.up_down = 2
         </if>
         <if test="ptid != null and ptid !=''">
@@ -387,20 +387,5 @@
                 p.role_id = #{rid,jdbcType=BIGINT}
             </if>
         </where>
-    </select>
-    <!--政策申请中和待审批的申请查询-->
-    <select id="selectByPidAndStatus" parameterType="java.util.Map" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_policy_apply
-        <where>
-            <if test="policyId != null and policyId != ''">
-                and policy_id= #{policyId,jdbcType=BIGINT}
-            </if>
-            <if test="status != null and status != ''">
-                and `status`= 1 or `status` =3
-            </if>
-        </where>
-        order by pa_id desc
     </select>
 </mapper>

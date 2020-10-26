@@ -400,6 +400,11 @@ public class PolicyServiceImpl implements IPolicyService {
         int year = calendar.get(Calendar.YEAR);
         List<QueryPolicyByTalentIdBO> queryPolicyByTalentIdBOList = poComplianceMapper.
                 queryPolicyByTalentId(talentPO.getTalentId(), year);
+        //加入颜色标签
+        for (QueryPolicyByTalentIdBO queryPolicyByTalentIdBO : queryPolicyByTalentIdBOList) {
+            PolicyPO policyPO = policyMapper.selectByPrimaryKey(queryPolicyByTalentIdBO.getPolicyId());
+            queryPolicyByTalentIdBO.setColor(policyPO.getColor());
+        }
         queryPolicyByTalentIdBOList = QueryPolicyByTalentIdBO.setValueActualStatus(queryPolicyByTalentIdBOList);
         return new ResultVO(1000, queryPolicyByTalentIdBOList);
     }

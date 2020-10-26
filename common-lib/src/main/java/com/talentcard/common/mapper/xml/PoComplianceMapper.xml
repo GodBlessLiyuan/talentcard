@@ -212,4 +212,16 @@
             <if test="pid != null and pid !=''">and  p.policy_id = #{pid,jdbcType=BIGINT}</if>
         </where>
     </select>
+    <!--政策审批中和待审批的申请查询-->
+    <select id="selectByPidAndStatus" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from po_compliance
+        <where>
+            <if test="pid != null and pid != ''">
+                and policy_id= #{pid,jdbcType=BIGINT}
+            </if>
+            and `status`= 1 or `status` =3
+        </where>
+    </select>
 </mapper>
