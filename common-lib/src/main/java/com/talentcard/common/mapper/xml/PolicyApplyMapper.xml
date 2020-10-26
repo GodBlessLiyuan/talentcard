@@ -332,7 +332,7 @@
     </select>
     <!--政策审批20201023修改添加-->
     <select id="pageQuery" parameterType="java.util.Map" resultType="com.talentcard.common.bo.PolicyApprovalBO">
-        select p.p_id as policyId,
+        select p.policy_id as policyId,
         p.name as policyName,
         p.num as num,
         ps.total as total,
@@ -347,26 +347,26 @@
         p.up_down as upDown
         from
         t_policy p
-        left join po_statistics ps on pa.policy_id = ps.policy_id
+        left join po_statistics ps on p.policy_id = ps.policy_id
         left join po_type pt on p.p_tId = pt.p_tId
         left join t_role r on p.role_id = r.role_id
         where p.dr = 1
         <if test="rid != null and rid !=''">and p.role_id = #{rid,jdbcType=TINYINT}</if>
         <if test="pname != null and pname !=''">and p.policy_name like '%' #{pname} '%'</if>
         <if test="num != null and num !=''">and p.num like '%' #{num} '%'</if>
-        <if test="status != null and status !='' status == 1">
+        <if test="status != null and status !='' and status == 1">
             and <![CDATA[ p.start_time <= #{currentTime} and end_time > #{currentTime} ]]>
             and p.up_down = 1
         </if>
-        <if test="status != null and status !='' status == 2">
+        <if test="status != null and status !='' and status == 2">
             and <![CDATA[ p.start_time >= #{currentTime}]]>
             and p.up_down = 1
         </if>
-        <if test="status != null and status !='' status == 3">
+        <if test="status != null and status !='' and status == 3">
             and <![CDATA[ p.end_time <= #{currentTime}]]>
             and p.up_down = 1
         </if>
-        <if test="status != null and status !='' status == 4">
+        <if test="status != null and status !='' and status == 4">
             and p.up_down = 2
         </if>
         <if test="ptid != null and ptid !=''">
@@ -381,7 +381,6 @@
         from
         t_policy p
         left join po_statistics ps on p.policy_id = ps.policy_id
-        from t_policy p
         <where>
             <if test="rid != null and rid !=''">
                 p.role_id = #{rid,jdbcType=BIGINT}

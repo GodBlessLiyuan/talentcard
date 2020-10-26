@@ -221,7 +221,7 @@
             <if test="pid != null and pid != ''">
                 and policy_id= #{pid,jdbcType=BIGINT}
             </if>
-            and `status`= 1 or `status` =3
+            and (`status`= 1 or `status` =3)
         </where>
     </select>
 </mapper>

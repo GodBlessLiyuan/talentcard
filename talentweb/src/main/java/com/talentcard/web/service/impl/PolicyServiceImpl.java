@@ -127,11 +127,11 @@ public class PolicyServiceImpl implements IPolicyService {
     @Override
     public ResultVO delete(HttpSession session, Map<String, Object> reqData) {
         //从session中获取userId的值
-       /* Long userId = (Long) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             // 用户过期
             return ResultVO.notLogin();
-        }*/
+        }
         PolicyPO policyPO = policyMapper.selectByPrimaryKey(Long.valueOf(String.valueOf(reqData.get("pid"))));
         if (policyPO == null) {
             return new ResultVO(2402, "查无此政策！");
