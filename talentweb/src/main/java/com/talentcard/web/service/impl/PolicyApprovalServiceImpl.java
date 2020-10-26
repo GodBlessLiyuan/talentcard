@@ -90,13 +90,13 @@ public class PolicyApprovalServiceImpl implements IPolicyApprovalService {
         Long notApprovalNum;
         if (rolePO.getRoleType() != null && rolePO.getRoleType() != 1) {
             notApprovalNum = policyApplyMapper.notApprovalNum(null);
-            Map map= new HashMap(1);
-            map.put("notApprovalNum",notApprovalNum);
+            Map map = new HashMap(1);
+            map.put("notApprovalNum", notApprovalNum);
             return ResultVO.ok().setData(map);
         } else if (rolePO.getRoleType() != null && rolePO.getRoleType() != 2) {
             notApprovalNum = policyApplyMapper.notApprovalNum(rolePO.getRoleId());
-            Map map= new HashMap(1);
-            map.put("notApprovalNum",notApprovalNum);
+            Map map = new HashMap(1);
+            map.put("notApprovalNum", notApprovalNum);
             return ResultVO.ok().setData(map);
         } else {
             //角色类型错误

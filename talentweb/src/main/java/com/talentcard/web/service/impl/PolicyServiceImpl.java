@@ -138,7 +138,6 @@ public class PolicyServiceImpl implements IPolicyService {
         }
         //查询政策申请表看是否有正在申请或审批通过的记录，如果有则不允许删除
         List<PoCompliancePO> poCompliancePOS = poComplianceMapper.selectByPidAndStatus(reqData);
-        System.out.println(poCompliancePOS.toString());
         if (poCompliancePOS.size() > 0) {
             return new ResultVO(1001, "该政策有正在审批或审批通过的记录，不允许删除！");
         }
