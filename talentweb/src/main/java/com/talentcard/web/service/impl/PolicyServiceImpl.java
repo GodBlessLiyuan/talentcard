@@ -125,6 +125,7 @@ public class PolicyServiceImpl implements IPolicyService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO delete(HttpSession session, Map<String, Object> reqData) {
         //从session中获取userId的值
         Long userId = (Long) session.getAttribute("userId");
