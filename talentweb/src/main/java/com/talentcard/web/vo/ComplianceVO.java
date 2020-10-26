@@ -104,6 +104,14 @@ public class ComplianceVO implements Serializable {
      * 责任单位名称
      */
     private String runit;
+    /**
+     * 角色类型
+     */
+    private Byte rtype;
+    /**
+     * 角色id
+     */
+    private Long rid;
 
 
 
@@ -138,6 +146,8 @@ public class ComplianceVO implements Serializable {
         vo.setOpenid(bo.getOpenId());
         vo.setPaid(bo.getPaId());
         vo.setRunit(bo.getResponsibleUnit());
+        vo.setRtype(bo.getRoleType());
+        vo.setRid(bo.getRoleId());
         return vo;
     }
 }
