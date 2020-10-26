@@ -51,7 +51,7 @@ public interface IPolicyService {
      * @param pid
      * @return
      */
-    ResultVO delete(HttpSession session, Long pid);
+    ResultVO delete(HttpSession session,Map reqData);
 
     /**
      * 查看详情

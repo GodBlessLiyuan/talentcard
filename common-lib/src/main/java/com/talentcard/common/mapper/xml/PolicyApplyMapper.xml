@@ -330,4 +330,77 @@
         </where>
         order by pa_id desc limit 1
     </select>
+    <!--政策审批20201023修改添加-->
+    <select id="pageQuery" parameterType="java.util.Map" resultType="com.talentcard.common.bo.PolicyApprovalBO">
+        select p.p_id as policyId,
+        p.name as policyName,
+        p.num as num,
+        ps.total as total,
+        ps.not_approval as notApprovalNum,
+        ps.not_apply as notApplyNum,
+        ps.pass as passNum,
+        ps.reject as rejectNum,
+        p.start_time as startTime,
+        p.end_time as endTime,
+        pt.p_type_name as policyTypeName,
+        r.name as responsibleUnit,
+        p.up_down as upDown
+        from
+        t_policy p
+        left join po_statistics ps on pa.policy_id = ps.policy_id
+        left join po_type pt on p.p_tId = pt.p_tId
+        left join t_role r on p.role_id = r.role_id
+        where p.dr = 1
+        <if test="rid != null and rid !=''">and p.role_id = #{rid,jdbcType=TINYINT}</if>
+        <if test="pname != null and pname !=''">and p.policy_name like '%' #{pname} '%'</if>
+        <if test="num != null and num !=''">and p.num like '%' #{num} '%'</if>
+        <if test="status != null and and num !='' status == 1">
+            and <![CDATA[ p.start_time <= #{currentTime} and end_time > #{currentTime} ]]>
+            and p.up_down = 1
+        </if>
+        <if test="status != null and and num !='' status == 2">
+            and <![CDATA[ p.start_time >= #{currentTime}]]>
+            and p.up_down = 1
+        </if>
+        <if test="status != null and and num !='' status == 3">
+            and <![CDATA[ p.end_time <= #{currentTime}]]>
+            and p.up_down = 1
+        </if>
+        <if test="status != null and and num !='' status == 4">
+            and p.up_down = 2
+        </if>
+        <if test="ptid != null and ptid !=''">
+            and p.p_tId = #{ptid,jdbcType=BIGINT}
+        </if>
+        order by ps.not_approval desc,p.up_down asc, p.update_time desc
+    </select>
+    <!--不同角色下的待审批数量-->
+    <select id="notApprovalNum" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select
+        sum(ps.not_approval) as notApprovalNum
+        from
+        t_policy p
+        left join po_statistics ps on p.policy_id = ps.policy_id
+        from t_policy p
+        <where>
+            <if test="rid != null and rid !=''">
+                p.role_id = #{rid,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
+    <!--政策申请中和待审批的申请查询-->
+    <select id="selectByPidAndStatus" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_policy_apply
+        <where>
+            <if test="policyId != null and policyId != ''">
+                and policy_id= #{policyId,jdbcType=BIGINT}
+            </if>
+            <if test="status != null and status != ''">
+                and `status`= 1 or `status` =3
+            </if>
+        </where>
+        order by pa_id desc
+    </select>
 </mapper>

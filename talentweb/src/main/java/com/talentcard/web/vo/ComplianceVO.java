@@ -100,6 +100,10 @@ public class ComplianceVO implements Serializable {
      * 政策申请id
      */
     private Long paid;
+    /**
+     * 责任单位名称
+     */
+    private String runit;
 
 
 
@@ -133,6 +137,7 @@ public class ComplianceVO implements Serializable {
         vo.setWunit(bo.getWorkUnit());
         vo.setOpenid(bo.getOpenId());
         vo.setPaid(bo.getPaId());
+        vo.setRunit(bo.getResponsibleUnit());
         return vo;
     }
 }

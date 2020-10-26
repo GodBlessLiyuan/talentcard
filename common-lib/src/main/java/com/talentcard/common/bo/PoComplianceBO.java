@@ -62,4 +62,8 @@ public class PoComplianceBO extends PoCompliancePO {
      * 政策申请id
      */
     private Long paId;
+    /**
+     * 责任单位名称
+     */
+    private String responsibleUnit;
 }

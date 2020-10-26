@@ -64,6 +64,10 @@ public class ComplianceServiceImpl implements IComplianceService {
     private CertExamineRecordMapper certExamineRecordMapper;
     @Autowired
     private IWxOfficalAccountService wxOfficalAccountService;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private RoleMapper roleMapper;
 
     private static final String[] EXPORT_TITLES = {"序号", "政策名称", "政策编号", "申请人", "申请状态", "银行卡号", "开户行名", "持卡人", "政策资金（元）", "申请时间"};
 
@@ -92,6 +96,8 @@ public class ComplianceServiceImpl implements IComplianceService {
             PolicyPO policyPo = policyMapper.selectByPrimaryKey(poComplianceBO.getPolicyId());
             poComplianceBO.setPolicyName(policyPo.getName());
             poComplianceBO.setPolicyNum(policyPo.getNum());
+            RolePO rolePO = roleMapper.selectByPrimaryKey(policyPo.getRoleId());
+            poComplianceBO.setResponsibleUnit(rolePO.getName());
             poComplianceBO.setPolicyFunds(policyPo.getFunds());
             //根据人才id和政策id查询出政策申请id拼进去为了前端查看详情入参
             Map<String,Object> map = new HashMap<>(1);
