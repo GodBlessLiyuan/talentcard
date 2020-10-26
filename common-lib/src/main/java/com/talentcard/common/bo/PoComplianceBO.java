@@ -66,4 +66,12 @@ public class PoComplianceBO extends PoCompliancePO {
      * 责任单位名称
      */
     private String responsibleUnit;
+    /**
+     * 角色类型
+     */
+    private Byte roleType;
+    /**
+     * 角色id
+     */
+    private Long roleId;
 }

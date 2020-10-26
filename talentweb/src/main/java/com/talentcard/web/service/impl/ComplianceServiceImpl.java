@@ -99,6 +99,9 @@ public class ComplianceServiceImpl implements IComplianceService {
             RolePO rolePO = roleMapper.selectByPrimaryKey(policyPo.getRoleId());
             poComplianceBO.setResponsibleUnit(rolePO.getName());
             poComplianceBO.setPolicyFunds(policyPo.getFunds());
+            //返回角色id和角色类型，用户前端判断权限
+            poComplianceBO.setRoleType(rolePO.getRoleType());
+            poComplianceBO.setRoleId(rolePO.getRoleId());
             //根据人才id和政策id查询出政策申请id拼进去为了前端查看详情入参
             Map<String,Object> map = new HashMap<>(1);
             map.put("talentId",poComplianceBO.getTalentId());
