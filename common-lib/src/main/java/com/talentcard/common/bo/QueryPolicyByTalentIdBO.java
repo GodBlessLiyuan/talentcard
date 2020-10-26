@@ -21,6 +21,8 @@ public class QueryPolicyByTalentIdBO {
     private Date startTime;
     //政策活动结束时间
     private Date endTime;
+    //政策颜色标签
+    private String color;
     /**
      * 状态 11：未申请；1：已同意；2：已驳回；3：待审批；10：不可申请（互斥申请政策存在）
      */

@@ -4,10 +4,7 @@ import com.github.pagehelper.Page;
 import com.talentcard.common.bo.PolicyQueryBO;
 import com.talentcard.common.config.FilePathConfig;
 import com.talentcard.common.mapper.*;
-import com.talentcard.common.pojo.PoSettingPO;
-import com.talentcard.common.pojo.PoTypePO;
-import com.talentcard.common.pojo.PolicyApplyPO;
-import com.talentcard.common.pojo.PolicyPO;
+import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.FileUtil;
 import com.talentcard.common.utils.PageHelper;
@@ -27,6 +24,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -61,8 +59,6 @@ public class PolicyServiceImpl implements IPolicyService {
     private IBestPolicyToTalentService iBestPolicyToTalentService;
     @Autowired
     private PoTypeMapper poTypeMapper;
-    @Autowired
-    private PolicyApplyMapper policyApplyMapper;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
@@ -129,20 +125,20 @@ public class PolicyServiceImpl implements IPolicyService {
     }
 
     @Override
-    public ResultVO delete(HttpSession session, Map reqDate) {
+    public ResultVO delete(HttpSession session, Map<String, Object> reqData) {
         //从session中获取userId的值
-        Long userId = (Long) session.getAttribute("userId");
+       /* Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             // 用户过期
             return ResultVO.notLogin();
-        }
-        PolicyPO policyPO = policyMapper.selectByPrimaryKey(Long.valueOf(String.valueOf(reqDate.get("pid"))));
+        }*/
+        PolicyPO policyPO = policyMapper.selectByPrimaryKey(Long.valueOf(String.valueOf(reqData.get("pid"))));
         if (policyPO == null) {
             return new ResultVO(2402, "查无此政策！");
         }
         //查询政策申请表看是否有正在申请或审批通过的记录，如果有则不允许删除
-        List<PolicyApplyPO> policyApplyPOS = policyApplyMapper.selectByPidAndStatus(reqDate);
-        if (policyApplyPOS.size() > 0) {
+        List<PoCompliancePO> poCompliancePOS = poComplianceMapper.selectByPidAndStatus(reqData);
+        if (poCompliancePOS.size() > 0) {
             return new ResultVO(1001, "该政策有正在审批或审批通过的记录，不允许删除！");
         }
         policyPO.setDr((byte) 2);

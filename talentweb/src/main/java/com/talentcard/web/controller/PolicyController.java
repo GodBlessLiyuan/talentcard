@@ -78,7 +78,7 @@ public class PolicyController {
     }
 
     @RequestMapping("delete")
-    public ResultVO update(HttpServletRequest request, Map map) {
+    public ResultVO update(HttpServletRequest request, @RequestBody Map<String, Object> map) {
         return service.delete(request.getSession(), map);
     }
 

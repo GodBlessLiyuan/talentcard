@@ -96,10 +96,4 @@ public interface PolicyApplyMapper extends BaseMapper<PolicyApplyPO, Long> {
      * @return
      */
     Long notApprovalNum(@Param("rid")Long rid);
-    /**
-     * 查询审批表未审批和待审批的政策申请记录
-     * @param map
-     * @return
-     */
-    List<PolicyApplyPO> selectByPidAndStatus(Map map);
 }
