@@ -352,7 +352,7 @@
         left join t_role r on p.role_id = r.role_id
         where p.dr = 1
         <if test="rid != null and rid !=''">and p.role_id = #{rid,jdbcType=TINYINT}</if>
-        <if test="pname != null and pname !=''">and p.policy_name like '%' #{pname} '%'</if>
+        <if test="pname != null and pname !=''">and p.name like '%' #{pname} '%'</if>
         <if test="num != null and num !=''">and p.num like '%' #{num} '%'</if>
         <if test="status != null and status !='' and status == 1">
             and <![CDATA[ p.start_time <= #{currentTime} and end_time > #{currentTime} ]]>

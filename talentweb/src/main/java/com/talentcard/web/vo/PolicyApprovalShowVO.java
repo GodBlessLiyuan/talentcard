@@ -20,6 +20,10 @@ public class PolicyApprovalShowVO implements Serializable {
     private static final long SerialVersionUID = 1L;
     private static final byte UP = 1;
     private static final byte DOWN = 2;
+    private static final String AVAILABLE = "1";
+    private static final String NOT_OPEN = "2";
+    private static final String INVALID = "3";
+    private static final String OFF_THE_SHELF = "4";
     /**
      * 政策id
      */
@@ -94,16 +98,16 @@ public class PolicyApprovalShowVO implements Serializable {
         vo.setPtname(bo.getPolicyTypeName());
         Date nowDate = new Date();
         if (nowDate.compareTo(bo.getStartTime()) >= 0 && nowDate.compareTo(bo.getEndTime()) < 0 && bo.getUpDown() == UP) {
-            vo.setStatus("1");
+            vo.setStatus(AVAILABLE);
         }
         if (nowDate.compareTo(bo.getStartTime()) < 0 && bo.getUpDown() == UP) {
-            vo.setStatus("2");
+            vo.setStatus(NOT_OPEN);
         }
         if (nowDate.compareTo(bo.getEndTime()) >= 0 && bo.getUpDown() == UP) {
-            vo.setStatus("3");
+            vo.setStatus(INVALID);
         }
         if (bo.getUpDown() == DOWN) {
-            vo.setStatus("4");
+            vo.setStatus(OFF_THE_SHELF);
         }
         vo.setRunit(bo.getResponsibleUnit());
         return vo;
