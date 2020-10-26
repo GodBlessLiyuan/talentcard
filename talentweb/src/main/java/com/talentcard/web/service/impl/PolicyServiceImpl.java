@@ -127,17 +127,18 @@ public class PolicyServiceImpl implements IPolicyService {
     @Override
     public ResultVO delete(HttpSession session, Map<String, Object> reqData) {
         //从session中获取userId的值
-       /* Long userId = (Long) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             // 用户过期
             return ResultVO.notLogin();
-        }*/
+        }
         PolicyPO policyPO = policyMapper.selectByPrimaryKey(Long.valueOf(String.valueOf(reqData.get("pid"))));
         if (policyPO == null) {
             return new ResultVO(2402, "查无此政策！");
         }
         //查询政策申请表看是否有正在申请或审批通过的记录，如果有则不允许删除
         List<PoCompliancePO> poCompliancePOS = poComplianceMapper.selectByPidAndStatus(reqData);
+        System.out.println(poCompliancePOS.toString());
         if (poCompliancePOS.size() > 0) {
             return new ResultVO(1001, "该政策有正在审批或审批通过的记录，不允许删除！");
         }
