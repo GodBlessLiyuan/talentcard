@@ -94,16 +94,16 @@ public class PolicyApprovalShowVO implements Serializable {
         vo.setPtname(bo.getPolicyTypeName());
         Date nowDate = new Date();
         if (nowDate.compareTo(bo.getStartTime()) >= 0 && nowDate.compareTo(bo.getEndTime()) < 0 && bo.getUpDown() == UP) {
-            vo.setStatus("可申请");
+            vo.setStatus("1");
         }
         if (nowDate.compareTo(bo.getStartTime()) < 0 && bo.getUpDown() == UP) {
-            vo.setStatus("未开启");
+            vo.setStatus("2");
         }
         if (nowDate.compareTo(bo.getEndTime()) >= 0 && bo.getUpDown() == UP) {
-            vo.setStatus("已失效");
+            vo.setStatus("3");
         }
         if (bo.getUpDown() == DOWN) {
-            vo.setStatus("已下架");
+            vo.setStatus("4");
         }
         vo.setRunit(bo.getResponsibleUnit());
         return vo;

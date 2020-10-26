@@ -1132,7 +1132,7 @@ CREATE TABLE t_insert_title
 CREATE TABLE t_opweb_record
 (
 	op_id bigint NOT NULL AUTO_INCREMENT,
-	user_id bigint unsigned,
+	use_id bigint unsigned,
 	-- 审批人
 	username char(32) COMMENT '审批人',
 	-- 一级目录
