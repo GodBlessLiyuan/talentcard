@@ -54,7 +54,16 @@
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.talentcard</groupId>
+            <artifactId>bsnsdk</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.talentcard</groupId>-->
+<!--            <artifactId>bsnsskdapi</artifactId>-->
+<!--            <version>1.0.0</version>-->
+<!--        </dependency>-->
         <!--redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -130,6 +139,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
     </dependencies>
 

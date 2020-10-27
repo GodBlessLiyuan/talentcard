@@ -5,7 +5,9 @@ import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.rabbit.BsnRabbitUtil;
 import com.talentcard.common.utils.rabbit.RabbitUtil;
+import com.talentcard.common.utils.rabbit.chaincodeEntities.Profile;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.wechat.service.IEventService;
 import com.talentcard.wechat.service.IWxTalentService;
@@ -42,6 +44,11 @@ public class EventServiceImpl implements IEventService {
     CardMapper cardMapper;
     @Autowired
     IWxTalentService iWxTalentService;
+    /**
+     * 区块链调用接口
+     */
+    @Autowired
+    BsnRabbitUtil bsnRabbitUtil;
 
     /**
      * 监控到用户领取卡的操作
@@ -88,6 +95,14 @@ public class EventServiceImpl implements IEventService {
             UserCardPO userCardPO = userCardMapper.selectByPrimaryKey(newCard.getUcId());
             if(talentPO != null && userCardPO !=null){
                 RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_RECEIVE, talentPO.getName()+"领取人才卡："+userCardPO.getNum());
+
+                Profile profile = new Profile();
+                profile.setId(String.valueOf(talentPO.getTalentId()));
+                profile.setWx_card_num(newCard.getCode());
+                profile.setWx_card(newCard.getWxCardId());
+                profile.setModule(String.valueOf(TrackConstant.TALENT_TRACK));
+                profile.setAction(String.valueOf(TrackConstant.TALENT_RECEIVE));
+                bsnRabbitUtil.sendProfile(profile, false);
             }
         } else {
             /**
@@ -234,6 +249,14 @@ public class EventServiceImpl implements IEventService {
             UserCardPO userCardPO = userCardMapper.selectByPrimaryKey(newCard.getUcId());
             if(talentPO != null && userCardPO !=null){
                 RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_RECEIVE, talentPO.getName()+"领取人才卡："+userCardPO.getNum());
+
+                Profile profile = new Profile();
+                profile.setId(String.valueOf(talentPO.getTalentId()));
+                profile.setWx_card_num(newCard.getCode());
+                profile.setWx_card(newCard.getWxCardId());
+                profile.setModule(String.valueOf(TrackConstant.TALENT_TRACK));
+                profile.setAction(String.valueOf(TrackConstant.TALENT_RECEIVE));
+                bsnRabbitUtil.sendProfile(profile, false);
             }
         }
 

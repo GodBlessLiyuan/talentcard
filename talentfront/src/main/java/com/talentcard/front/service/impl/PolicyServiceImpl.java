@@ -8,7 +8,9 @@ import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.FileUtil;
+import com.talentcard.common.utils.rabbit.BsnRabbitUtil;
 import com.talentcard.common.utils.rabbit.RabbitUtil;
+import com.talentcard.common.utils.rabbit.chaincodeEntities.Application;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.dto.PolicyApplyDTO;
 import com.talentcard.front.service.IBestPolicyToTalentService;
@@ -16,6 +18,7 @@ import com.talentcard.front.service.IPolicyService;
 import com.talentcard.front.vo.PolicyAppliesVO;
 import com.talentcard.front.vo.PolicyApplyDetailVO;
 import com.talentcard.front.vo.PolicyDetailVO;
+import netscape.javascript.JSObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,6 +68,8 @@ public class PolicyServiceImpl implements IPolicyService {
     private PoTypeExcludeMapper poTypeExcludeMapper;
     @Autowired
     private IBestPolicyToTalentService iBestPolicyToTalentService;
+    @Autowired
+    private BsnRabbitUtil bsnRabbitUtil;
 
     @Override
     public ResultVO policies(String openid) {
@@ -349,6 +354,14 @@ public class PolicyServiceImpl implements IPolicyService {
         /*区块链埋点*/
         String eventLog = talentPO.getName() + "申请政策\"" + policyPO.getName() + "\"";
         RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, TrackConstant.POLICY_APPLY, eventLog, true);
+
+        Application application = new Application();
+        application.setId(String.format("%s_%s",applyPO.getPaId(),talentPO.getTalentId()));
+        application.setUid(String.valueOf(talentPO.getTalentId()));
+        application.setPid(String.valueOf(policyPO.getPolicyId()));
+        application.setPolicy(policyPO.getName());
+        application.setStatus(String.valueOf(TrackConstant.POLICY_APPLY));
+        bsnRabbitUtil.sendApplication(application, false);
 
         return new ResultVO(1000);
     }

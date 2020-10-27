@@ -11,7 +11,10 @@ import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.utils.rabbit.BsnRabbitUtil;
+import com.talentcard.common.utils.rabbit.ConstantBsn;
 import com.talentcard.common.utils.rabbit.RabbitUtil;
+import com.talentcard.common.utils.rabbit.chaincodeEntities.Profile;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
@@ -76,6 +79,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     TalentJsonRecordMapper talentJsonRecordMapper;
     @Autowired
     private ILogService logService;
+    @Autowired
+    private BsnRabbitUtil bsnRabbitUtil;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> hashMap) {
@@ -127,11 +132,25 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             //人才追踪的添加认证的提交认证通过
             RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_PASS, talentPO.getName()+"提交认证信息已通过审批");
 
+            Profile profile = new Profile();
+            profile.setId(String.valueOf(talentPO.getTalentId()));
+            profile.setModule(String.valueOf(insertCertificationBO.getType()));
+            profile.setAction(String.valueOf(TrackConstant.TALENT_PASS));
+            bsnRabbitUtil.sendProfile(profile, false);
+
+
         } else {
             //驳回
             status = InsertCertificationConstant.rejectStatus;
             //人才追踪的添加认证的提交认证
             RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_REJECT, talentPO.getName()+"提交认证信息已被驳回");
+
+            Profile profile = new Profile();
+            profile.setId(String.valueOf(talentPO.getTalentId()));
+            profile.setModule(String.valueOf(insertCertificationBO.getType()));
+            profile.setAction(String.valueOf(TrackConstant.TALENT_REJECT));
+            bsnRabbitUtil.sendProfile(profile, false);
+
         }
         insertCertificationPO.setStatus(status);
         insertCertificationMapper.updateByPrimaryKeySelective(insertCertificationPO);

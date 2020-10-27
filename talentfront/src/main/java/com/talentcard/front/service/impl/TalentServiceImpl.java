@@ -11,7 +11,9 @@ import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.StringToObjUtil;
+import com.talentcard.common.utils.rabbit.BsnRabbitUtil;
 import com.talentcard.common.utils.rabbit.RabbitUtil;
+import com.talentcard.common.utils.rabbit.chaincodeEntities.Profile;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.common.vo.TalentTypeVO;
@@ -23,6 +25,7 @@ import com.talentcard.front.utils.CardNumberUtil;
 import com.talentcard.front.utils.MessageUtil;
 import com.talentcard.common.utils.TalentActivityUtil;
 import com.talentcard.front.vo.TalentVO;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +81,8 @@ public class TalentServiceImpl implements ITalentService {
     private CertExamineRecordMapper certExamineRecordMapper;
     @Autowired
     TalentCertificationInfoMapper talentCertificationInfoMapper;
+    @Autowired
+    BsnRabbitUtil bsnRabbitUtil;
 
     @Override
     public ResultVO<TalentPO> findStatus(String openId) {
@@ -419,6 +424,19 @@ public class TalentServiceImpl implements ITalentService {
         }
         //人才追踪的注册用户
         RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK,TrackConstant.TALENT_REGISTER,talentPO.getName()+"申请注册人才卡");
+        //区块链记录用户行为
+        Profile profile = new Profile();
+        profile.setId(String.valueOf(userCardPO.getTalentId()));
+        profile.setOpenid(openId);
+        profile.setWx_card(String.valueOf(userCardPO.getCardId()));
+        profile.setWx_card_num(userCardPO.getCurrentNum());
+        profile.setIdentity_card(DigestUtils.md5Hex(idCard));
+        profile.setCard_type(String.valueOf(cardType));
+        profile.setPassport(passport);
+        profile.setName(talentPO.getName());
+
+        bsnRabbitUtil.sendProfile(profile, false);
+
         return new ResultVO(1000);
     }
 
@@ -613,6 +631,15 @@ public class TalentServiceImpl implements ITalentService {
         clearRedisCache(openId);
         //人才追踪的提交认证
         RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_SUBMIT, talentPO.getName()+"提交认证信息");
+
+
+        //区块链记录用户行为
+        Profile profile = new Profile();
+        profile.setId(String.valueOf(talentPO.getTalentId()));
+        profile.setModule("identification");
+        profile.setAction(String.valueOf(TrackConstant.TALENT_SUBMIT));
+        bsnRabbitUtil.sendProfile(profile, false);
+
         return new ResultVO(1000);
     }
 
