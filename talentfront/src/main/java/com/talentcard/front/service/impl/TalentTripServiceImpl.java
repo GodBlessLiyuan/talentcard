@@ -289,8 +289,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
         redisMapUtil.del(openId);
 
         /*区块链埋点*/
-        String eventLog = talentPO.getName() + "领取\"" + scenicPO.getName() + "\"免费旅游券";
-        RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_RECEIVED, eventLog, true);
+        String eventLog = talentPO.getName() + "领取\"" + scenicPO.getName() + "\"的免费旅游券";
+        RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_TRIP, eventLog, true);
 
         Business business = new Business();
         business.setUid(String.valueOf(talentPO.getTalentId()));

@@ -46,10 +46,8 @@ public class TrackConstant {
     /**
      * 3：服务追踪
      * <p>
-     * 1：领取；2：使用；3：享受
+     * 1：旅游；2：农家乐
      */
-    public static final Byte SERVICE_RECEIVED = 1;
-    public static final Byte SERVICE_USED = 2;
-    public static final Byte SERVICE_ENJOYED = 3;
-
+    public static final Byte SERVICE_TRIP = 1;
+    public static final Byte SERVICE_FARMHOURSE = 2;
 }

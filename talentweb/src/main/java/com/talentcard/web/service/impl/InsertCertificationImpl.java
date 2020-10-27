@@ -130,7 +130,7 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             //通过
             status = InsertCertificationConstant.approveStatus;
             //人才追踪的添加认证的提交认证通过
-            RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_PASS, talentPO.getName()+"提交认证信息，已通过审批");
+            RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_PASS, talentPO.getName()+"提交认证信息已通过审批");
 
             Profile profile = new Profile();
             profile.setId(String.valueOf(talentPO.getTalentId()));
@@ -143,13 +143,14 @@ public class InsertCertificationImpl implements IInsertCertificationService {
             //驳回
             status = InsertCertificationConstant.rejectStatus;
             //人才追踪的添加认证的提交认证
-            RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_REJECT, talentPO.getName()+"提交认证信息，被驳回");
+            RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_REJECT, talentPO.getName()+"提交认证信息已被驳回");
 
             Profile profile = new Profile();
             profile.setId(String.valueOf(talentPO.getTalentId()));
             profile.setModule(String.valueOf(insertCertificationBO.getType()));
             profile.setAction(String.valueOf(TrackConstant.TALENT_REJECT));
             bsnRabbitUtil.sendProfile(profile, false);
+
         }
         insertCertificationPO.setStatus(status);
         insertCertificationMapper.updateByPrimaryKeySelective(insertCertificationPO);

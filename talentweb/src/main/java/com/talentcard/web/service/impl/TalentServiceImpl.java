@@ -554,7 +554,7 @@ public class TalentServiceImpl implements ITalentService {
         sendMessage(talentPO);
 
         //人才追踪的批量认证的正常业务逻辑是认证通过
-        RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_PASS, talentPO.getName()+"提交认证信息，已通过审批");
+        RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_PASS, talentPO.getName()+"提交认证信息已通过审批");
 
         //区块链记录用户行为
         Profile profile = new Profile();
@@ -562,6 +562,7 @@ public class TalentServiceImpl implements ITalentService {
         profile.setModule("identification");
         profile.setAction(String.valueOf(TrackConstant.TALENT_PASS));
         bsnRabbitUtil.sendProfile(profile, false);
+
 
         /**
          * 更新用户类别表中的人才卡信息
