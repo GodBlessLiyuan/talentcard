@@ -18,14 +18,11 @@ import com.talentcard.front.service.IPolicyService;
 import com.talentcard.front.vo.PolicyAppliesVO;
 import com.talentcard.front.vo.PolicyApplyDetailVO;
 import com.talentcard.front.vo.PolicyDetailVO;
-import netscape.javascript.JSObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationAdapter;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
