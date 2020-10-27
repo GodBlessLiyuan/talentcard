@@ -1,5 +1,7 @@
 package com.talentcard.front.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.talentcard.common.bo.ActivcateBO;
 import com.talentcard.common.bo.InsertCertificationBO;
 import com.talentcard.common.constant.InsertCertificationConstant;
@@ -7,11 +9,15 @@ import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.dto.*;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.StringToObjUtil;
+import com.talentcard.common.utils.rabbit.BsnRabbitUtil;
 import com.talentcard.common.utils.rabbit.RabbitUtil;
+import com.talentcard.common.utils.rabbit.chaincodeEntities.Profile;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.front.service.IInsertCertificationService;
 import com.talentcard.front.service.ITalentService;
 import com.talentcard.front.vo.InsertCertificationVO;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +59,8 @@ public class InsertCertificationImpl implements IInsertCertificationService {
     private ProfQualityMapper profQualityMapper;
     @Autowired
     private TalentHonourMapper talentHonourMapper;
+    @Autowired
+    private BsnRabbitUtil bsnRabbitUtil;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -171,6 +179,14 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         //人才追踪的添加认证的提交认证
         if (insertCertId == null) {
             RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_SUBMIT, talentPO.getName()+"提交认证信息");
+
+            //区块链记录用户行为
+            Profile profile = new Profile();
+            profile.setId(String.valueOf(talentPO.getTalentId()));
+            profile.setModule("addEducation");
+            profile.setAction(String.valueOf(TrackConstant.TALENT_SUBMIT));
+            profile.setExtra(JSON.toJSONString(insertEducationPO));
+            bsnRabbitUtil.sendProfile(profile, false);
         }
         return new ResultVO(1000);
     }
@@ -292,6 +308,13 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         //人才追踪的添加认证的提交认证
         if (insertCertId == null) {
             RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_SUBMIT, talentPO.getName()+"提交认证信息");
+
+            Profile profile = new Profile();
+            profile.setId(String.valueOf(talentPO.getTalentId()));
+            profile.setModule("addProfQuality");
+            profile.setAction(String.valueOf(TrackConstant.TALENT_SUBMIT));
+            profile.setExtra(JSON.toJSONString(insertQualityPO));
+            bsnRabbitUtil.sendProfile(profile, false);
         }
         return new ResultVO(1000);
     }
@@ -409,6 +432,13 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         //人才追踪的添加认证的提交认证
         if (insertCertId == null) {
             RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_SUBMIT, talentPO.getName()+"提交认证信息");
+
+            Profile profile = new Profile();
+            profile.setId(String.valueOf(talentPO.getTalentId()));
+            profile.setModule("addProfTitle");
+            profile.setAction(String.valueOf(TrackConstant.TALENT_SUBMIT));
+            profile.setExtra(JSON.toJSONString(insertTitlePO));
+            bsnRabbitUtil.sendProfile(profile, false);
         }
         return new ResultVO(1000);
     }
@@ -527,6 +557,13 @@ public class InsertCertificationImpl implements IInsertCertificationService {
         //人才追踪的添加认证的提交认证
         if (insertCertId == null) {
             RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_SUBMIT, talentPO.getName()+"提交认证信息");
+
+            Profile profile = new Profile();
+            profile.setId(String.valueOf(talentPO.getTalentId()));
+            profile.setModule("addTalentHonour");
+            profile.setAction(String.valueOf(TrackConstant.TALENT_SUBMIT));
+            profile.setExtra(JSON.toJSONString(insertHonourPO));
+            bsnRabbitUtil.sendProfile(profile, false);
         }
         return new ResultVO(1000);
     }

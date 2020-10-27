@@ -9,7 +9,9 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.StringToObjUtil;
+import com.talentcard.common.utils.rabbit.BsnRabbitUtil;
 import com.talentcard.common.utils.rabbit.RabbitUtil;
+import com.talentcard.common.utils.rabbit.chaincodeEntities.Business;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.common.vo.TalentTypeVO;
@@ -57,6 +59,8 @@ public class TalentTripServiceImpl implements ITalentTripService {
     private ITalentService iTalentService;
     @Autowired
     private CardMapper cardMapper;
+    @Autowired
+    private BsnRabbitUtil bsnRabbitUtil;
 
     @Override
     public ResultVO findSecondContent(String openId, String name, Byte starLevel, Byte area, Byte order) {
@@ -287,6 +291,19 @@ public class TalentTripServiceImpl implements ITalentTripService {
         /*区块链埋点*/
         String eventLog = talentPO.getName() + "领取\"" + scenicPO.getName() + "\"免费旅游券";
         RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_RECEIVED, eventLog, true);
+
+        Business business = new Business();
+        business.setUid(String.valueOf(talentPO.getTalentId()));
+        business.setBid("1_"+activitySecondContentId);
+        business.setMenu("旅游");
+        business.setActivity(scenicPO.getName());
+        business.setCreate_time(DateUtil.date2Str(new Date(),DateUtil.YMD_HMS));
+        business.setFunds(String.valueOf(0));
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status",1);
+        business.setExtra(jsonObject.toJSONString());
+        bsnRabbitUtil.sendBusiness(business, false);
+
 
         return new ResultVO(1000, "领取成功");
     }

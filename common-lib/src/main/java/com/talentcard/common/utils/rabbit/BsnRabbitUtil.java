@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class BsnRabbitUtil {
                                                                           @Override
                                                                           public void afterCommit() {
                                                                               // RabbitMQ
-                                                                              autoTemplate.convertAndSend("track", data);
+                                                                              autoTemplate.convertAndSend("application", data);
                                                                           }
                                                                       }
             );
@@ -69,7 +70,7 @@ public class BsnRabbitUtil {
                                                                           @Override
                                                                           public void afterCommit() {
                                                                               // RabbitMQ
-                                                                              autoTemplate.convertAndSend("track", data);
+                                                                              autoTemplate.convertAndSend("business", data);
                                                                           }
                                                                       }
             );
@@ -86,6 +87,7 @@ public class BsnRabbitUtil {
      * @param sync
      */
     public void sendProfile(Profile profile, boolean sync) {
+
         // 封装数据
         Map<String, Object> data = new HashMap<>();
         data.put("method", "profile");
@@ -96,7 +98,7 @@ public class BsnRabbitUtil {
                                                                           @Override
                                                                           public void afterCommit() {
                                                                               // RabbitMQ
-                                                                              autoTemplate.convertAndSend("track", data);
+                                                                              autoTemplate.convertAndSend("profile", data);
                                                                           }
                                                                       }
             );

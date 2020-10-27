@@ -8,6 +8,7 @@ import com.talentcard.common.utils.rabbit.chaincodeEntities.Profile;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import sbsdk.talentcard.bsnsdk.client.fabric.service.TransactionService;
 import sbsdk.talentcard.bsnsdk.entity.req.fabric.ReqKeyEscrow;
 import sbsdk.talentcard.bsnsdk.entity.res.fabric.ResKeyEscrow;
@@ -22,7 +23,8 @@ import java.util.Map;
  * @version: 1.0
  */
 public class BsnListener {
-
+    @Value("${vbooster.prefix}")
+    private boolean prefix;
     @Autowired
     private TransactionService transactionService;
 
@@ -37,14 +39,19 @@ public class BsnListener {
             String method = (String) data.get("method");
             String data_c = (String) data.get("data");
             if (StringUtils.equals(method, "application")) {
+
+                Application new_application = StringToObjUtil.strToObj(data_c, Application.class);
+                if (new_application != null) {
+                    new_application.setId(prefix + new_application.getId());
+                }
                 //查询是否存在，
-                ResKeyEscrow resKeyEscrow = transactionService.reqChainCode(this.setMethodName(data_c, "getApplicationInfo"));
+                ResKeyEscrow resKeyEscrow = transactionService.reqChainCode(this.setMethodName(JSON.toJSONString(new_application), "getApplicationInfo"));
                 if (resKeyEscrow != null) {
                     String res = resKeyEscrow.getCcRes().getCcData();
                     if (StringUtils.isNotEmpty(res)) {
                         Application old_application = StringToObjUtil.strToObj(res, Application.class);
                         if (old_application != null) {
-                            Application new_application = StringToObjUtil.strToObj(data_c, Application.class);
+
                             if (new_application != null) {
                                 if (StringUtils.isNotEmpty(new_application.getStatus())) {
                                     old_application.setStatus(new_application.getStatus());
@@ -66,13 +73,19 @@ public class BsnListener {
                 }
 
             } else if (StringUtils.equals(method, "business")) {
-                ResKeyEscrow resKeyEscrow = transactionService.reqChainCode(this.setMethodName(data_c, "getBusinessActivityInfoByUID"));
+
+                Business new_business = StringToObjUtil.strToObj(data_c, Business.class);
+                if (new_business != null) {
+                    new_business.setUid(prefix + new_business.getUid());
+                }
+
+                ResKeyEscrow resKeyEscrow = transactionService.reqChainCode(this.setMethodName(JSON.toJSONString(new_business), "getBusinessActivityInfoByUID"));
                 if (resKeyEscrow != null) {
                     String res = resKeyEscrow.getCcRes().getCcData();
                     if (StringUtils.isNotEmpty(res)) {
                         Business old_business = StringToObjUtil.strToObj(res, Business.class);
                         if (old_business != null) {
-                            Business new_business = StringToObjUtil.strToObj(data_c, Business.class);
+
                             if (new_business != null) {
                                 old_business.setBid(new_business.getBid());
                                 old_business.setMenu(new_business.getMenu());
@@ -90,39 +103,45 @@ public class BsnListener {
                     this.transactionService.reqChainCode(this.setMethodName(data_c, "createBusinessActivity"));
                 }
             } else if (StringUtils.equals(method, "profile")) {
-                ResKeyEscrow resKeyEscrow = transactionService.reqChainCode(this.setMethodName(data_c, "getProfileByID"));
+
+                Profile new_profile = StringToObjUtil.strToObj(data_c, Profile.class);
+                if (new_profile != null) {
+                    new_profile.setId(prefix + new_profile.getId());
+                }
+
+                ResKeyEscrow resKeyEscrow = transactionService.reqChainCode(this.setMethodName(JSON.toJSONString(new_profile), "getProfileByID"));
                 if (resKeyEscrow != null) {
                     String res = resKeyEscrow.getCcRes().getCcData();
                     if (StringUtils.isNotEmpty(res)) {
                         Profile old_profile = StringToObjUtil.strToObj(res, Profile.class);
                         if (old_profile != null) {
-                            Profile new_profile = StringToObjUtil.strToObj(data_c, Profile.class);
+
                             if (new_profile != null) {
-                                if(StringUtils.isNotEmpty(new_profile.getName())){
+                                if (StringUtils.isNotEmpty(new_profile.getName())) {
                                     old_profile.setName(new_profile.getName());
                                 }
-                                if(StringUtils.isNotEmpty(new_profile.getIdentity_card())){
+                                if (StringUtils.isNotEmpty(new_profile.getIdentity_card())) {
                                     old_profile.setIdentity_card(new_profile.getIdentity_card());
                                 }
-                                if(StringUtils.isNotEmpty(new_profile.getPassport())){
+                                if (StringUtils.isNotEmpty(new_profile.getPassport())) {
                                     old_profile.setPassport(new_profile.getPassport());
                                 }
-                                if(StringUtils.isNotEmpty(new_profile.getOpenid())){
+                                if (StringUtils.isNotEmpty(new_profile.getOpenid())) {
                                     old_profile.setOpenid(new_profile.getOpenid());
                                 }
-                                if(StringUtils.isNotEmpty(new_profile.getWx_card())){
+                                if (StringUtils.isNotEmpty(new_profile.getWx_card())) {
                                     old_profile.setWx_card(new_profile.getWx_card());
                                 }
-                                if(StringUtils.isNotEmpty(new_profile.getWx_card_num())){
+                                if (StringUtils.isNotEmpty(new_profile.getWx_card_num())) {
                                     old_profile.setWx_card_num(new_profile.getWx_card_num());
                                 }
-                                if(StringUtils.isNotEmpty(new_profile.getAction())){
+                                if (StringUtils.isNotEmpty(new_profile.getAction())) {
                                     old_profile.setAction(new_profile.getAction());
                                 }
-                                if(StringUtils.isNotEmpty(new_profile.getModule())){
+                                if (StringUtils.isNotEmpty(new_profile.getModule())) {
                                     old_profile.setModule(new_profile.getModule());
                                 }
-                                if(StringUtils.isNotEmpty(new_profile.getExtra())){
+                                if (StringUtils.isNotEmpty(new_profile.getExtra())) {
                                     old_profile.setExtra(new_profile.getExtra());
                                 }
 

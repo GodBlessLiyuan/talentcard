@@ -39,6 +39,8 @@ public class HttpService<T extends Object & IBody, K extends Object & IBody> {
 
                 String bodystr = JSON.toJSONString(resModel.getBody());
 
+                Log.i("bodystr:"+bodystr);
+
                 resModel.setBody(JSON.parseObject(bodystr, clazz));
 
             } catch (JsonException e) {
