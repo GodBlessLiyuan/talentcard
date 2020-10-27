@@ -187,10 +187,9 @@
         SELECT
         <include refid="pageQuery_Column_List"/>
         FROM
-        po_compliance p, t_talent t
+        po_compliance p left join t_talent t on p.talent_id = t.talent_id
         <where>
-            p.talent_id = t.talent_id
-            and p.status != 10
+            p.status != 10
             <if test="pid != null and pid !=''">and  p.policy_id = #{pid,jdbcType=BIGINT}</if>
             <if test="name != null and name !=''">and t.name like '%' #{name,jdbcType=CHAR} '%'</if>
             <if test="wunit != null and wunit !=''">and t.work_unit like '%' #{wunit,jdbcType=CHAR} '%'</if>
