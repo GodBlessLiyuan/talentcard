@@ -117,7 +117,22 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+
+                <configuration>
+                    <mainClass>sbsdk.BsnsdkApplication</mainClass>
+                    <layout>ZIP</layout>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
+
+
             <!--Error:(14,27) java: 程序包sun.security.pkcs10不存在-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

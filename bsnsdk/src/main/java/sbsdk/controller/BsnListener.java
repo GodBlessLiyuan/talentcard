@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import sbsdk.talentcard.bsnsdk.client.fabric.service.TransactionService;
 import sbsdk.talentcard.bsnsdk.entity.req.fabric.ReqKeyEscrow;
 import sbsdk.talentcard.bsnsdk.entity.res.fabric.ResKeyEscrow;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @description: TODO
  * @version: 1.0
  */
+@Component
 public class BsnListener {
     @Value("${vbooster.prefix}")
     private boolean prefix;
