@@ -6,8 +6,11 @@ import com.talentcard.common.constant.TalentConstant;
 import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
+import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.TalentActivityUtil;
+import com.talentcard.common.utils.rabbit.BsnRabbitUtil;
 import com.talentcard.common.utils.rabbit.RabbitUtil;
+import com.talentcard.common.utils.rabbit.chaincodeEntities.Business;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.common.vo.TalentTypeVO;
@@ -62,6 +65,8 @@ public class StaffServiceImpl implements IStaffService {
     private ITalentService iTalentService;
     @Autowired
     private ITalentTripService iTalentTripService;
+    @Autowired
+    private BsnRabbitUtil bsnRabbitUtil;
 
     //用卡券核销
     private final static byte TICKET = 2;
@@ -240,6 +245,18 @@ public class StaffServiceImpl implements IStaffService {
             String eventLog = talentPO.getName() + "享受\"" + scenicPO.getName() + "\"的免费旅游";
             RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_TRIP, eventLog, true);
 
+            Business business = new Business();
+            business.setUid(String.valueOf(talentPO.getTalentId()));
+            business.setBid("1_"+activitySecondContentId);
+            business.setMenu("旅游");
+            business.setActivity(scenicPO.getName());
+            business.setCreate_time(DateUtil.date2Str(new Date(),DateUtil.YMD_HMS));
+            business.setFunds(String.valueOf(0));
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("status",2);
+            business.setExtra(jsonObject.toJSONString());
+            bsnRabbitUtil.sendBusiness(business, false);
+
         } else {
             result.put("discount", scenicPO.getDiscount());
 
@@ -247,6 +264,18 @@ public class StaffServiceImpl implements IStaffService {
             TalentPO talentPO = talentMapper.selectByOpenId(talentOpenId);
             String eventLog = talentPO.getName() + "享受\"" + scenicPO.getName() + "\"的旅游折扣";
             RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_TRIP, eventLog, true);
+
+            Business business = new Business();
+            business.setUid(String.valueOf(talentPO.getTalentId()));
+            business.setBid("1_"+activitySecondContentId);
+            business.setMenu("旅游");
+            business.setActivity(scenicPO.getName());
+            business.setCreate_time(DateUtil.date2Str(new Date(),DateUtil.YMD_HMS));
+            business.setFunds(String.valueOf(scenicPO.getDiscount()));
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("status",2);
+            business.setExtra(jsonObject.toJSONString());
+            bsnRabbitUtil.sendBusiness(business, false);
 
         }
         sendMessage(talentOpenId, staffOpenId, (long) 1, activitySecondContentId);
@@ -382,6 +411,18 @@ public class StaffServiceImpl implements IStaffService {
         /*区块链埋点*/
         String eventLog = talentPO.getName() + "享受\"" + farmhousePO.getName() + "\"的农家乐折扣";
         RabbitUtil.sendTrackMsg(TrackConstant.SERVICE_TRACK, TrackConstant.SERVICE_FARMHOURSE, eventLog, true);
+
+        Business business = new Business();
+        business.setUid(String.valueOf(talentPO.getTalentId()));
+        business.setBid("2_"+activitySecondContentId);
+        business.setMenu("农家乐");
+        business.setActivity(farmhousePO.getName());
+        business.setCreate_time(DateUtil.date2Str(new Date(),DateUtil.YMD_HMS));
+        business.setFunds(String.valueOf(farmhousePO.getDiscount()));
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status",2);
+        business.setExtra(jsonObject.toJSONString());
+        bsnRabbitUtil.sendBusiness(business, false);
 
         return new ResultVO(1000, result);
     }

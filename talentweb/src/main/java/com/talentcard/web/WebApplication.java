@@ -1,7 +1,6 @@
 package com.talentcard.web;
 
 import com.talentcard.common.config.FilePathConfig;
-import com.talentcard.common.config.RedisConfig;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;

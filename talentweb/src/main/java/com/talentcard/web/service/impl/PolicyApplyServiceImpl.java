@@ -12,7 +12,9 @@ import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.DateUtil;
 import com.talentcard.common.utils.ExportUtil;
 import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.utils.rabbit.BsnRabbitUtil;
 import com.talentcard.common.utils.rabbit.RabbitUtil;
+import com.talentcard.common.utils.rabbit.chaincodeEntities.Application;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
@@ -70,6 +72,8 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
     private IBestPolicyToTalentService iBestPolicyToTalentService;
     @Autowired
     private ITalentService iTalentService;
+    @Autowired
+    private BsnRabbitUtil bsnRabbitUtil;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, HashMap<String, Object> reqMap) {
@@ -162,9 +166,20 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
         if (1 == status) {
             String eventLog = talentPO.getName() + "申请政策的\"" + applyPO.getPolicyName() + "\"已通过审批";
             RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, TrackConstant.POLICY_PASS, eventLog, true);
+
+            Application application = new Application();
+            application.setId(String.format("%s_%s",applyPO.getPaId(),talentPO.getTalentId()));
+            application.setStatus(String.valueOf(TrackConstant.POLICY_PASS));
+            bsnRabbitUtil.sendApplication(application, false);
+
         } else if (2 == status) {
             String eventLog = talentPO.getName() + "申请政策的\"" + applyPO.getPolicyName() + "\"被驳回";
             RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, TrackConstant.POLICY_REJECT, eventLog, true);
+
+            Application application = new Application();
+            application.setId(String.format("%s_%s",applyPO.getPaId(),talentPO.getTalentId()));
+            application.setStatus(String.valueOf(TrackConstant.POLICY_REJECT));
+            bsnRabbitUtil.sendApplication(application, false);
         }
 
         return new ResultVO(1000);

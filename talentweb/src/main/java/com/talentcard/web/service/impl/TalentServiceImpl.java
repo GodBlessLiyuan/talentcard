@@ -10,7 +10,9 @@ import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.*;
 import com.talentcard.common.utils.PageHelper;
+import com.talentcard.common.utils.rabbit.BsnRabbitUtil;
 import com.talentcard.common.utils.rabbit.RabbitUtil;
+import com.talentcard.common.utils.rabbit.chaincodeEntities.Profile;
 import com.talentcard.common.utils.redis.RedisMapUtil;
 import com.talentcard.common.vo.PageInfoVO;
 import com.talentcard.common.vo.ResultVO;
@@ -104,6 +106,8 @@ public class TalentServiceImpl implements ITalentService {
     private static final Integer ERROR_TALENT_STATUS = 13;
     @Autowired
     private ILogService logService;
+    @Autowired
+    private BsnRabbitUtil bsnRabbitUtil;
 
     @Override
     public ResultVO query(int pageNum, int pageSize, Map<String, Object> reqMap) {
@@ -551,6 +555,15 @@ public class TalentServiceImpl implements ITalentService {
 
         //人才追踪的批量认证的正常业务逻辑是认证通过
         RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_PASS, talentPO.getName()+"提交认证信息已通过审批");
+
+        //区块链记录用户行为
+        Profile profile = new Profile();
+        profile.setId(String.valueOf(talentPO.getTalentId()));
+        profile.setModule("identification");
+        profile.setAction(String.valueOf(TrackConstant.TALENT_PASS));
+        bsnRabbitUtil.sendProfile(profile, false);
+
+
         /**
          * 更新用户类别表中的人才卡信息
          */

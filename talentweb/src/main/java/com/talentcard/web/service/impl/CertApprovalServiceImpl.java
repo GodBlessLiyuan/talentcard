@@ -9,7 +9,9 @@ import com.talentcard.common.constant.TrackConstant;
 import com.talentcard.common.mapper.*;
 import com.talentcard.common.pojo.*;
 import com.talentcard.common.utils.WechatApiUtil;
+import com.talentcard.common.utils.rabbit.BsnRabbitUtil;
 import com.talentcard.common.utils.rabbit.RabbitUtil;
+import com.talentcard.common.utils.rabbit.chaincodeEntities.Profile;
 import com.talentcard.web.constant.OpsRecordMenuConstant;
 import com.talentcard.web.dto.MessageDTO;
 import com.talentcard.web.service.ICertApprovalService;
@@ -86,6 +88,9 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
     private ILogService logService;
     @Autowired
     private ITalentInfoCertificationService iTalentInfoCertificationService;
+
+    @Autowired
+    private BsnRabbitUtil bsnRabbitUtil;
     /**
      * 审批result的值含义
      */
@@ -221,6 +226,14 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             talentService.clearRedisCache(openId);
             //人才追踪的提交认证驳回
             RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_REJECT, currentTalent.getName()+"提交认证信息已被驳回");
+
+            //区块链记录用户行为
+            Profile profile = new Profile();
+            profile.setId(String.valueOf(currentTalent.getTalentId()));
+            profile.setModule("identification");
+            profile.setAction(String.valueOf(TrackConstant.TALENT_REJECT));
+            bsnRabbitUtil.sendProfile(profile, false);
+
         } else {
             /**
              * 审批通过
@@ -460,6 +473,15 @@ public class CertApprovalServiceImpl implements ICertApprovalService {
             certApprovalPassRecordMapper.insertSelective(certApprovalPassRecordPO);
             //人才追踪的提交认证信息，已通过审批 talentPO
             RabbitUtil.sendTrackMsg(TrackConstant.TALENT_TRACK, TrackConstant.TALENT_PASS, talentPO.getName()+"提交认证信息已通过审批");
+
+            //区块链记录用户行为
+            Profile profile = new Profile();
+            profile.setId(String.valueOf(currentTalent.getTalentId()));
+            profile.setModule("identification");
+            profile.setAction(String.valueOf(TrackConstant.TALENT_PASS));
+            bsnRabbitUtil.sendProfile(profile, false);
+
+
             /**
              * 更新用户类别表中的人才类别信息
              */
