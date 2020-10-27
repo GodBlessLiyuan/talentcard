@@ -16,7 +16,7 @@
         <module>talentadmin</module>
         <module>talenteureka</module>
         <module>miniprogram</module>
-        <module>bsnsdk</module>
+        <!--<module>bsnsdk</module>-->
         <module>talentrabbit</module>
     </modules>
 
