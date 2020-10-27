@@ -326,7 +326,6 @@
             <if test="policyId != null and policyId != ''">
                 and policy_id= #{policyId,jdbcType=BIGINT}
             </if>
-           and status = 3
         </where>
         order by pa_id desc limit 1
     </select>
