@@ -160,10 +160,10 @@ public class PolicyApplyServiceImpl implements IPolicyApplyService {
 
         /*区块链埋点*/
         if (1 == status) {
-            String eventLog = talentPO.getName() + "申请政策\"" + applyPO.getPolicyName() + "\",已通过审批";
+            String eventLog = talentPO.getName() + "申请政策的\"" + applyPO.getPolicyName() + "\"已通过审批";
             RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, TrackConstant.POLICY_PASS, eventLog, true);
         } else if (2 == status) {
-            String eventLog = talentPO.getName() + "申请政策\"" + applyPO.getPolicyName() + "\",被驳回";
+            String eventLog = talentPO.getName() + "申请政策的\"" + applyPO.getPolicyName() + "\"被驳回";
             RabbitUtil.sendTrackMsg(TrackConstant.POLICY_TRACK, TrackConstant.POLICY_REJECT, eventLog, true);
         }
 
